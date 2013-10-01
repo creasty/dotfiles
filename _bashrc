@@ -1,0 +1,104 @@
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+
+#  General
+#-----------------------------------------------
+alias ls='ls -G'
+alias ll='ls -Gl'
+alias la='ls -Ga'
+alias lla='ls -Gla'
+
+alias df='df -h'
+
+alias refresh='. ~/.bash_profile'
+
+alias hosts='vi /etc/hosts'
+
+
+#  Application
+#-----------------------------------------------
+alias sl='subl -a'
+alias ff='open -a Firefox'
+alias ch='open -a "Google Chrome"'
+alias finder='open -a Finder'
+
+alias aart='java -jar /wwwstage/cmd/AsciiArt/jitac.jar'
+
+#alias webkit2png='python /wwwstage/cmd/webkit2png.py -F -d -D ~/Desktop/'
+alias webkit2evernote='webkit2png -C -W 1920 -H 1200 --clipwidth=960 --clipheight=600 -s 0.5 -D ~/Desktop/ -d'
+alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348 -s 0.5 -D ~/Desktop/ -d'
+
+alias ti='titanium'
+
+
+#  XAMPP Apache
+#-----------------------------------------------
+alias svr='sudo xampp start'
+alias svrr='sudo xampp restart'
+alias svrs='sudo xampp stop'
+
+
+#  OS
+#-----------------------------------------------
+chloc() {
+	MSG=`scselect | egrep -i "\($1" | cut -c 4- | cut -f 1 | head -n 1 | xargs scselect | sed -E 's/.+ \((.+)\)/Location changed to \1/'`
+
+	if [ "$MSG" = "" ]; then
+		growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "Unable to change location" Error
+	else
+		growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$MSG" Location changed
+	fi
+}
+
+
+#  Ruby / Rails
+#-----------------------------------------------
+alias b='bundle'
+alias be='bundle exec'
+alias rdbc='bundle exec rake db:create'
+alias rdbm='bundle exec rake db:migrate'
+
+
+#  Git
+#-----------------------------------------------
+alias gpl='git pull origin $(branch)'
+alias gpu='git push origin $(branch)'
+
+branch() {
+	echo "$(git branch | awk '/\*/ { print $2 }')"
+}
+
+
+#  Prompt
+#-----------------------------------------------
+source ~/.git-prompt.sh
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM=1
+
+ps1_hostname() {
+	if [ $(hostname) != 'mac2.local' ]; then
+		echo "@$(hostname -s)"
+	fi
+}
+
+
+# PS1='\[\e[01;32m\]\
+# \u\
+# `ps1_hostname`\
+# \[\e[00m\] \[\e[34m\]\
+# \W\
+# \[\e[00m\]\[\e[33m\]\
+# `__git_ps1`\
+# \[\e[00m\] \$ \[\e[0m\]'
+
+PS1='\[\e[34m\]\
+\W\
+\[\e[00m\]\[\e[33m\]\
+`__git_ps1`\
+\[\e[00m\] \$ \[\e[0m\]'
+
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

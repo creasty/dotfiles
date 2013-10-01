@@ -1,0 +1,27 @@
+[user]
+	name = Yuki Iwanaga
+	email = yuki@creasty.com
+[core]
+	editor = vim
+	excludesfile = /Users/ykiwng/.gitignore
+[color]
+	ui = true
+[alias]
+	a = add .
+	m = merge --no-ff
+	c = commit -a
+	cm = commit -am
+	ca = commit --amend
+	k = checkout
+	km = checkout master
+	s = status -s
+	b = branch
+	l = log -1 HEAD
+	g = log --oneline --graph
+	f = flow
+	fs = flow feature start
+	ff = flow feature finish
+	rs = flow release start
+	rf = flow release finish
+[url "https://"]
+	insteadOf = git://
