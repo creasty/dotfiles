@@ -3,4 +3,5 @@
 vimfiles/sessions/*
 vimfiles/bundle/*
 vimfiles/.netrwhist
+!.gitkeep
 
