@@ -23,14 +23,14 @@ else
 fi
 
 # clone / update
-if [ -d .git ]; then
-  echo "Cloning repo..."
-  cd ~
-  git clone --recursive git@github.com:creasty/dotfiles.git
-else
+if [ -d ~/dotfiles/.git ]; then
   echo "Updating repo..."
   cd ~/dotfiles
   git pull origin master
+else
+  echo "Cloning repo..."
+  cd ~
+  git clone --recursive git@github.com:creasty/dotfiles.git
 fi
 echo "ok"
 
