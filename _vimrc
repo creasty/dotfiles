@@ -90,6 +90,8 @@ NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 
+NeoBundleCheck
+
 
 "-------------------------------------------------------------------------------
 " Basics
