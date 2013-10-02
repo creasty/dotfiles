@@ -3,12 +3,12 @@
 " Plugin manager
 "-------------------------------------------------------------------------------
 set nocompatible
+filetype plugin indent off
 
 if has('vim_starting')
-  set runtimepath+=~/dotfiles/vimfiles/bundle/neobundle.vim/
+  set runtimepath+=~/dotfiles/neobundle.vim/
+  call neobundle#rc(expand('~/dotfiles/vimfiles/bundle/'))
 endif
-
-call neobundle#rc(expand('~/dotfiles/vimfiles/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -20,8 +20,6 @@ NeoBundle 'Shougo/vimproc', {
     \ 'unix' : 'make -f make_unix.mak',
   \ },
 \ }
-
-filetype plugin indent on
 
 " unused bundles
 NeoBundleCheck
