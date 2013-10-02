@@ -1,11 +1,20 @@
 [user]
 	name = Yuki Iwanaga
 	email = yuki@creasty.com
+
+[github]
+	user = creasty
+
 [core]
 	editor = vim
-	excludesfile = /Users/ykiwng/.gitignore
+	excludesfile = ~/.gitignore
+
 [color]
 	ui = true
+
+[merge]
+	tool = vimdiff
+
 [alias]
 	a = add .
 	m = merge --no-ff
@@ -18,10 +27,32 @@
 	b = branch
 	l = log -1 HEAD
 	g = log --oneline --graph
+
 	f = flow
 	fs = flow feature start
 	ff = flow feature finish
 	rs = flow release start
 	rf = flow release finish
+
+	res  = reset --soft HEAD
+	res1 = reset --soft HEAD~
+	res2 = reset --soft HEAD~~
+	res3 = reset --soft HEAD~~~
+	res4 = reset --soft HEAD~~~~
+	res5 = reset --soft HEAD~~~~~
+	reh  = reset --hard HEAD
+	reh1 = reset --hard HEAD~
+	reh2 = reset --hard HEAD~~
+	reh3 = reset --hard HEAD~~~
+	reh4 = reset --hard HEAD~~~~
+	reh5 = reset --hard HEAD~~~~~
+
+	e = "!f() { git status -s | cut -b 4- | grep -v '\\/$' | uniq ; }; vim `f`"
+	eum = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
+	aum = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	dum =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
+	em = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
+
 [url "https://"]
 	insteadOf = git://
+

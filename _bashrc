@@ -1,4 +1,8 @@
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+#  Paths
+#-----------------------------------------------
+PATH=$PATH:$HOME/.rvm/bin
+export PATH="/usr/local/heroku/bin:$PATH"
 
 
 #  General
@@ -98,7 +102,3 @@ PS1='\[\e[34m\]\
 \[\e[00m\]\[\e[33m\]\
 `__git_ps1`\
 \[\e[00m\] \$ \[\e[0m\]'
-
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
