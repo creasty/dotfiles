@@ -84,7 +84,7 @@ NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
 \ }
 "NeoBundle 'project.vim'
 "NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'thinca/vim-qfreplace'
+"NeoBundle 'thinca/vim-qfreplace'
 "NeoBundle 'm2ym/rsense'
 NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'Yggdroot/indentLine'
