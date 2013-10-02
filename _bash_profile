@@ -1,0 +1,19 @@
+
+export PATH=/usr/local/heroku/bin:$PATH
+export PATH=$PATH:$HOME/.rvm/bin
+export PATH=$PATH:$HOME/.rbenv/shims
+export PATH=$PATH:$HOME/.npm/node_modules/bin
+export PATH=$PATH:/opt/local/bin
+
+
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+if [ -f ~/.aliases ]; then
+	. ~/.aliases
+fi
+
+eval "$(rbenv init -)"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

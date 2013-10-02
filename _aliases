@@ -1,0 +1,50 @@
+#  General
+#-----------------------------------------------
+alias refresh='. ~/.bash_profile'
+alias ls='ls -G'
+alias ll='ls -Gl'
+alias la='ls -Ga'
+alias lla='ls -Gla'
+alias df='df -h'
+
+
+#  Application
+#-----------------------------------------------
+alias hosts='vi /etc/hosts'
+alias sl='subl -a'
+alias ff='open -a Firefox'
+alias ch='open -a "Google Chrome"'
+alias finder='open -a Finder'
+
+
+#  Exec
+#-----------------------------------------------
+alias aart='java -jar ~/dotfiles/scripts/AsciiArt/jitac.jar'
+
+alias webkit2png='python ~/dotfiles/scripts/webkit2png.py -F -d -D ~/Desktop/'
+alias webkit2evernote='webkit2png -C -W 1920 -H 1200 --clipwidth=960 --clipheight=600 -s 0.5 -D ~/Desktop/ -d'
+alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348 -s 0.5 -D ~/Desktop/ -d'
+
+alias ti='titanium'
+
+
+#  XAMPP Apache
+#-----------------------------------------------
+alias svr='sudo xampp start'
+alias svrr='sudo xampp restart'
+alias svrs='sudo xampp stop'
+
+
+#  Ruby / Rails
+#-----------------------------------------------
+alias b='bundle'
+alias be='bundle exec'
+alias rdbc='bundle exec rake db:create'
+alias rdbm='bundle exec rake db:migrate'
+
+
+#  Git
+#-----------------------------------------------
+alias gpl='git pull origin $(branch)'
+alias gpu='git push origin $(branch)'
+

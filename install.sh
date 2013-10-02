@@ -37,12 +37,16 @@ echo "ok"
 # symbolic links
 echo "Creating symbolic links..."
 cd ~
+ln -s ~/dotfiles/_bashrc ~/.bashrc
+ln -s ~/dotfiles/_bash_profile ~/.bash_profile
+ln -s ~/dotfiles/_aliases ~/.aliases
 ln -s ~/dotfiles/vimfiles ~/.vim
 ln -s ~/dotfiles/_vimrc ~/.vimrc
 ln -s ~/dotfiles/_gitconfig ~/.gitconfig
 ln -s ~/dotfiles/_gitignore ~/.gitignore
 ln -s ~/dotfiles/_railsrc ~/.railsrc
 ln -s ~/dotfiles/_ackrc ~/.ackrc
+ln -s ~/dotfiles/scripts/git-prompt.sh ~/.git-prompt.sh
 echo "ok"
 
 # neo bundle
