@@ -1,6 +1,6 @@
-
 .DS_Store
 vimfiles/sessions/*
 vimfiles/bundle/*
 vimfiles/.netrwhist
 !.gitkeep
+
