@@ -205,6 +205,9 @@ syntax enable
 " 常にステータスラインを表示
 set laststatus=2
 
+" 常にタブバーを表示
+set showtabline=2
+
 " 括弧の対応をハイライト
 set showmatch
 
