@@ -546,29 +546,32 @@ let g:neocomplete#sources#dictionary#dictionaries = {
 \ }
 
 if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+  let g:neocomplete#keyword_patterns = {}
 endif
 
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
-inoremap <expr><c-g> neocomplete#complete_common_string()
-inoremap <expr><c-s-g> neocomplete#undo_completion()
+" inoremap <expr><c-g> neocomplete#complete_common_string()
+" inoremap <expr><c-s-g> neocomplete#undo_completion()
 
-" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return neocomplete#smart_close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
 
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><TAB>  pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 " inoremap <expr><c-h> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><C-y> neocomplete#close_popup()
-" inoremap <expr><C-e> neocomplete#cancel_popup()
+" inoremap <expr><c-g> neocomplete#cancel_popup()
+
+inoremap <expr><c-f> pumvisible() ? neocomplete#cancel_popup() . "\<right>" : "\<right>"
+inoremap <expr><c-b> pumvisible() ? neocomplete#cancel_popup() . "\<left>" : "\<left>"
+inoremap <expr><c-a> pumvisible() ? neocomplete#cancel_popup() . "\<home>" : "\<home>"
+inoremap <expr><c-e> pumvisible() ? neocomplete#cancel_popup() . "\<end>" : "\<end>"
 
 " Omni completion
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -584,6 +587,11 @@ let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
+
+hi Pmenu      ctermfg=235 guifg=black  ctermbg=245 guibg=brcyan
+hi PmenuSel   ctermfg=245 guifg=brcyan ctermbg=235 guibg=black
+hi PmenuSbar  ctermfg=235 guifg=black
+hi PmenuThumb ctermfg=245 guifg=brcyan
 
 
 "-------------------------------------------------------------------------------
@@ -638,6 +646,7 @@ let g:session_autosave = 'yes'
 let g:session_autoload = 'yes'
 let g:session_default_to_last = 1
 
+
 "-------------------------------------------------------------------------------
 " Plugin: NERD Tree
 "-------------------------------------------------------------------------------
@@ -690,6 +699,7 @@ let g:yankring_replace_n_pkey = '<m-p>'
 let g:yankring_replace_n_nkey = '<m-n>'
 nnoremap <space><space>y :YRShow<CR>
 
+
 "-------------------------------------------------------------------------------
 " Plugin: CtrlP
 "-------------------------------------------------------------------------------
@@ -706,14 +716,14 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|build|sass-cache)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-  \ }
+\ }
 
 let g:ctrlp_buftag_types = {
-\ 'go'         : '--language-force=go --golang-types=ftv',
-\ 'coffee'     : '--language-force=coffee --coffee-types=cmfvf',
-\ 'markdown'   : '--language-force=markdown --markdown-types=hik',
-\ 'objc'       : '--language-force=objc --objc-types=mpci',
-\ 'rc'         : '--language-force=rust --rust-types=fTm'
+  \ 'go':       '--language-force=go --golang-types=ftv',
+  \ 'coffee':   '--language-force=coffee --coffee-types=cmfvf',
+  \ 'markdown': '--language-force=markdown --markdown-types=hik',
+  \ 'objc':     '--language-force=objc --objc-types=mpci',
+  \ 'rc':       '--language-force=rust --rust-types=fTm',
 \ }
 
 

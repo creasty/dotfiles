@@ -14,14 +14,8 @@ fi
 # install vim
 echo "Checking vim..."
 which vim > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-  if [[ $(vim --version) == *\+lua\ * ]]; then
-    echo "ok"
-  else
-    echo "Installing vim with if_lua..."
-    sudo brew install vim --with-lua --with-perl --with-python --with-ruby
-    echo "ok"
-  fi
+if [[ ($? -eq 0) && ($(vim --version) == *\+lua\ *) ]]; then
+  echo "ok"
 else
   echo "Installing vim..."
   sudo brew install vim --with-lua --with-perl --with-python --with-ruby
@@ -54,16 +48,19 @@ echo "ok"
 # symbolic links
 echo "Creating symbolic links..."
 cd ~
-ln -s ~/dotfiles/_bashrc ~/.bashrc
+
+ln -s ~/dotfiles/_bashrc       ~/.bashrc
 ln -s ~/dotfiles/_bash_profile ~/.bash_profile
-ln -s ~/dotfiles/_aliases ~/.aliases
-ln -s ~/dotfiles/vimfiles ~/.vim
-ln -s ~/dotfiles/_vimrc ~/.vimrc
-ln -s ~/dotfiles/_gitconfig ~/.gitconfig
-ln -s ~/dotfiles/_gitignore ~/.gitignore
-ln -s ~/dotfiles/_railsrc ~/.railsrc
-ln -s ~/dotfiles/_ackrc ~/.ackrc
+ln -s ~/dotfiles/_aliases      ~/.aliases
+ln -s ~/dotfiles/vimfiles      ~/.vim
+ln -s ~/dotfiles/_vimrc        ~/.vimrc
+ln -s ~/dotfiles/_gitconfig    ~/.gitconfig
+ln -s ~/dotfiles/_gitignore    ~/.gitignore
+ln -s ~/dotfiles/_railsrc      ~/.railsrc
+ln -s ~/dotfiles/_ackrc        ~/.ackrc
+
 ln -s ~/dotfiles/scripts/git-prompt.sh ~/.git-prompt.sh
+
 echo "ok"
 
 # neo bundle
