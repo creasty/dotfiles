@@ -79,7 +79,7 @@ NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
 \ }
 " NeoBundle 'project.vim'
 " NeoBundle 'nathanaelkane/vim-indent-guides'
-" NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'Yggdroot/indentLine'
 " NeoBundle 'thinca/vim-qfreplace'
 " NeoBundle 'm2ym/rsense'
 NeoBundle 'Shougo/vinarise.vim'
@@ -248,9 +248,10 @@ hi Visual guifg=brcyan guibg=black ctermfg=245 ctermbg=235
 
 " 不可視文字の表示
 set list
-"set listchars=tab:┊\ ,trail:_,eol:$
-set listchars=tab:▸\ ,trail:˽
-hi SpecialKey ctermfg=235 guifg=black
+" set listchars=tab:┊\ ,trail:_,eol:$
+" set listchars=tab:▸\ ,trail:˽
+set listchars=trail:˽
+hi SpecialKey ctermfg=234 guifg=brblack
 
 " 印字不可能文字を16進数で表示
 set display=uhex
@@ -823,6 +824,14 @@ xnoremap al :Alignta<Space>
 let g:yankring_replace_n_pkey = '<m-p>'
 let g:yankring_replace_n_nkey = '<m-n>'
 nnoremap <space><space>y :YRShow<CR>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: indent line
+"-------------------------------------------------------------------------------
+let g:indentLine_char = '¦'
+let g:indentLine_color_term = 234
+let g:indentLine_color_gui = 'brblack'
 
 
 "-------------------------------------------------------------------------------
