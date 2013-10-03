@@ -93,6 +93,9 @@ NeoBundle 'SearchComplete'
 NeoBundle 'smartchr'
 NeoBundle 'kana/vim-fakeclip.git'
 NeoBundle 'YankRing.vim'
+NeoBundle 'rubycomplete.vim'
+NeoBundle 'Rip-Rip/clang_complete'
+NeoBundle 'kana/vim-altr'
 
 
 NeoBundleCheck
@@ -470,6 +473,17 @@ map <C-n> <Down>
 map <C-p> <Up>
 inoremap <silent> <C-h> <C-g>u<C-h>
 
+" 括弧までを消したり置き換えたりする
+" http://vim-users.jp/2011/04/hack214/
+vnoremap ( t(
+vnoremap ) t)
+vnoremap ] t]
+vnoremap [ t[
+onoremap ( t(
+onoremap ) t)
+onoremap ] t]
+onoremap [ t[
+
 " ヤンク
 inoremap <silent> <C-y>e <Esc>ly0<Insert>
 inoremap <silent> <C-y>0 <Esc>ly$<Insert>
@@ -488,6 +502,14 @@ inoremap ,dt strftime('%H:%M:%S')
 " ファイルを開いた時に最後のカーソル位置を再現する
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
+" 各種エンコーディングで開き直す
+command! -bang -nargs=? Utf8
+  \ edit<bang> ++enc=utf-8 <args>
+command! -bang -nargs=? Sjis
+  \ edit<bang> ++enc=cp932 <args>
+command! -bang -nargs=? Euc
+  \ edit<bang> ++enc=eucjp <args>
+
 
 "-------------------------------------------------------------------------------
 " Filetype
@@ -505,29 +527,30 @@ au BufNewFile,BufRead Guardfile    set filetype=ruby
 au BufNewFile,BufRead cpanfile     set filetype=perl
 au BufRead, BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
-autocmd FileType apache     setlocal sw=4 ts=4 sts=0 et
-autocmd FileType c          setlocal sw=4 ts=4 sts=0 et
-autocmd FileType cs         setlocal sw=4 ts=4 sts=0 et
-autocmd FileType css        setlocal sw=2 ts=2 sts=0 et
-autocmd FileType diff       setlocal sw=4 ts=4 sts=0 et
-autocmd FileType eruby      setlocal sw=4 ts=4 sts=0 et
-autocmd FileType html       setlocal sw=2 ts=2 sts=0 et
-autocmd FileType java       setlocal sw=4 ts=4 sts=0 et
-autocmd FileType javascript setlocal sw=2 ts=2 sts=0 et
-autocmd FileType coffee     setlocal sw=2 ts=2 sts=0 et
-autocmd FileType perl       setlocal sw=4 ts=4 sts=0 et
-autocmd FileType php        setlocal sw=4 ts=4 sts=0 et
-autocmd FileType python     setlocal sw=4 ts=4 sts=0 et
-autocmd FileType ruby       setlocal sw=2 ts=2 sts=0 et
-autocmd FileType haml       setlocal sw=2 ts=2 sts=0 et
-autocmd FileType sh         setlocal sw=4 ts=4 sts=0 et
-autocmd FileType sql        setlocal sw=4 ts=4 sts=0 et
-autocmd FileType vim        setlocal sw=2 ts=2 sts=0 et
-autocmd FileType xhtml      setlocal sw=2 ts=2 sts=0 et
-autocmd FileType xml        setlocal sw=4 ts=4 sts=0 et
-autocmd FileType yaml       setlocal sw=2 ts=2 sts=0 et
-autocmd FileType scala      setlocal sw=2 ts=2 sts=0 et
-autocmd FileType scheme     setlocal sw=2 ts=2 sts=0 et
+autocmd FileType yaml       setlocal sw=2 ts=2 et fenc=utf-8
+autocmd FileType apache     setlocal sw=4 ts=4
+autocmd FileType c          setlocal sw=4 ts=4
+autocmd FileType cs         setlocal sw=4 ts=4 et
+autocmd FileType css        setlocal sw=2 ts=2 et
+autocmd FileType diff       setlocal sw=4 ts=4 et
+autocmd FileType eruby      setlocal sw=4 ts=4 et
+autocmd FileType html       setlocal sw=2 ts=2 et
+autocmd FileType java       setlocal sw=4 ts=4 et
+autocmd FileType javascript setlocal sw=2 ts=2 et
+autocmd FileType coffee     setlocal sw=2 ts=2 et
+autocmd FileType perl       setlocal sw=4 ts=4 et
+autocmd FileType php        setlocal sw=4 ts=4 et
+autocmd FileType python     setlocal sw=4 ts=4 et
+autocmd FileType ruby       setlocal sw=2 ts=2 et
+autocmd FileType haml       setlocal sw=2 ts=2 et
+autocmd FileType sh         setlocal sw=4 ts=4 et
+autocmd FileType sql        setlocal sw=4 ts=4 et
+autocmd FileType vim        setlocal sw=2 ts=2 et
+autocmd FileType xhtml      setlocal sw=2 ts=2 et
+autocmd FileType xml        setlocal sw=4 ts=4 et
+autocmd FileType yaml       setlocal sw=2 ts=2 et
+autocmd FileType scala      setlocal sw=2 ts=2 et
+autocmd FileType scheme     setlocal sw=2 ts=2 et
 
 
 "-------------------------------------------------------------------------------
@@ -539,15 +562,30 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
+let $DICTDIR = $HOME . '/dotfiles/dict'
 let g:neocomplete#sources#dictionary#dictionaries = {
-  \ 'default':  '',
-  \ 'vimshell': $HOME . '/.vimshell_hist',
-  \ 'ruby':     $HOME . '/dotfiles/dict/ruby.dict',
+  \ 'default':    '',
+  \ 'vimshell':   $HOME . '/.vimshell_hist',
+  \ 'ruby':       $DICTDIR . '/ruby.dict',
+  \ 'java':       $DICTDIR . '/java.dict',
+  \ 'javascript': $DICTDIR . '/javascript.dict',
+  \ 'coffee':     $DICTDIR . '/javascript.dict',
+  \ 'html':       $DICTDIR . '/html.dict',
+  \ 'php':        $DICTDIR . '/php.dict',
+  \ 'objc':       $DICTDIR . '/objc.dict',
+  \ 'perl':       $DICTDIR . '/perl.dict',
+  \ 'scala':      $DICTDIR . '/scala.dict',
 \ }
 
 if !exists('g:neocomplete#keyword_patterns')
   let g:neocomplete#keyword_patterns = {}
 endif
+
+" キャッシュしないファイル名
+let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
+
+" 自動補完を行わないバッファ名
+let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
 
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
@@ -587,7 +625,9 @@ let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
+let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
+" Color
 hi Pmenu      ctermfg=235 guifg=black  ctermbg=245 guibg=brcyan
 hi PmenuSel   ctermfg=245 guifg=brcyan ctermbg=235 guibg=black
 hi PmenuSbar  ctermfg=235 guifg=black
@@ -606,6 +646,39 @@ smap <c-x> <Plug>(neosnippet_expand_or_jump)
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+
+"-------------------------------------------------------------------------------
+" Plugin: clang_complete
+"-------------------------------------------------------------------------------
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#force_omni_input_patterns.c =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+let g:neocomplete#force_omni_input_patterns.objc =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.objcpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+" let g:clang_use_library = 1
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Ruby complete
+"-------------------------------------------------------------------------------
+let g:rubycomplete_rails = 1
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_include_object = 1
+let g:rubycomplete_include_object_space = 1
+
+" MyAutocmd FileType ruby,eruby setlocal omnifunc=rubycomplete#Complete
 
 
 "-------------------------------------------------------------------------------
@@ -631,6 +704,18 @@ let g:user_emmet_settings = {
 
 
 "-------------------------------------------------------------------------------
+" Plugin: surround
+"-------------------------------------------------------------------------------
+nmap ,( csw(
+nmap ,) csw)
+nmap ,{ csw{
+nmap ,} csw}
+nmap ,[ csw[
+nmap ,] csw]
+nmap ,' csw'
+nmap ," csw"
+
+"-------------------------------------------------------------------------------
 " Plugin: tComment
 "-------------------------------------------------------------------------------
 let g:tcommentMapLeader1 = '<C-/>'
@@ -654,6 +739,26 @@ let NERDSpaceDelims = 1
 let NERDShutUp = 1
 
 map <C-s> :NERDTreeToggle<CR>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Alter
+"-------------------------------------------------------------------------------
+nmap <F3> <Plug>(altr-forward)
+nmap <F2> <Plug>(altr-back)
+
+let s:bundle = neobundle#get("vim-altr")
+function! s:bundle.hooks.on_source(bundle)
+  " For ruby tdd
+  call altr#define('%.rb', 'spec/%_spec.rb')
+  " For ruby tdd
+  call altr#define('lib/%.rb', 'spec/lib/%_spec.rb', 'spec/%_spec.rb')
+  " For rails tdd
+  call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
+  call altr#define('app/controllers/%.rb', 'spec/controllers/%_spec.rb')
+  call altr#define('app/helpers/%.rb', 'spec/helpers/%_spec.rb')
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
@@ -690,6 +795,28 @@ nnoremap ,mf :exe "CtrlP" g:memolist_path<cr><f5>
 "-------------------------------------------------------------------------------
 xnoremap <silent> a: :Alignta  01 :<CR>
 xnoremap al :Alignta<Space>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Monday
+"-------------------------------------------------------------------------------
+" call <SID>AddPair("public", "protected")
+" call <SID>AddPair("protected", "private")
+" call <SID>AddPair("private", "public")
+" call <SID>AddPair("true", "false")
+" call <SID>AddPair("false", "true")
+" call <SID>AddPair("yes", "no")
+" call <SID>AddPair("no", "yes")
+" call <SID>AddPair("on", "off")
+" call <SID>AddPair("off", "on")
+" call <SID>AddPair("else", "elseif")
+" call <SID>AddPair("elseif", "else")
+" call <SID>AddPair("it", "specify")
+" call <SID>AddPair("specify", "it")
+" call <SID>AddPair("describe", "context")
+" call <SID>AddPair("context", "describe")
+" call <SID>AddPair("if", "unless")
+" call <SID>AddPair("unless", "if")
 
 
 "-------------------------------------------------------------------------------
