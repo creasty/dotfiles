@@ -1,6 +1,6 @@
 
 "-------------------------------------------------------------------------------
-" Plugin manager
+" Plugin manager: neobundle
 "-------------------------------------------------------------------------------
 set nocompatible
 filetype plugin indent off
@@ -12,6 +12,7 @@ endif
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
+
 NeoBundle 'Shougo/vimproc', {
   \ 'build' : {
     \ 'windows' : 'make -f make_mingw32.mak',
@@ -20,21 +21,6 @@ NeoBundle 'Shougo/vimproc', {
     \ 'unix' : 'make -f make_unix.mak',
   \ },
 \ }
-
-" unused bundles
-NeoBundleCheck
-
-" pathogen.vimによってbundle配下のpluginをpathに加える
-filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-set helpfile=$VIMRUNTIME/doc/help.txt
-filetype plugin on
-
-
-"-------------------------------------------------------------------------------
-" Plugins
-"-------------------------------------------------------------------------------
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
@@ -62,6 +48,18 @@ NeoBundle 'Align'
 NeoBundle 'gitv'
 NeoBundle 'mattn/emmet-vim'
 NeoBundleLazy 'Shougo/neocomplcache.vim'
+NeoBundleLazy 'Shougo/neosnippet.vim', {
+  \ 'autoload': {
+  \   'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
+  \   'filetypes': 'snippet',
+  \   'insert': 1,
+  \   'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
+  \ }
+\ }
+NeoBundleLazy 'Shougo/vimshell.vim', {
+\   'autoload': { 'commands': ['VimShell'] },
+\   'depends': ['Shougo/vimproc'],
+\ }
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'othree/eregex.vim'
 NeoBundle 'tyru/operator-html-escape.vim'
@@ -89,8 +87,27 @@ NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
 NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
+NeoBundle 'monday'
+NeoBundle 'closetag.vim'
+NeoBundle 'SearchComplete'
+NeoBundle 'smartchr'
+NeoBundle 'kana/vim-fakeclip.git'
+NeoBundle 'YankRing.vim'
+NeoBundle 'rhysd/clever-f.vim'
+
 
 NeoBundleCheck
+filetype plugin indent on
+
+
+"-------------------------------------------------------------------------------
+" Plugin manager: pathogen
+"-------------------------------------------------------------------------------
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+set helpfile=$VIMRUNTIME/doc/help.txt
+filetype plugin on
 
 
 "-------------------------------------------------------------------------------
@@ -461,10 +478,16 @@ inoremap <silent> <C-y>0 <Esc>ly$<Insert>
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 
+" 保存時に tab をスペースに変換する
+" autocmd BufWritePre * :%s/\t/  /ge
+
 " 日時の自動入力
 inoremap ,df strftime('%Y/%m/%d %H:%M:%S')
 inoremap ,dd strftime('%Y/%m/%d')
 inoremap ,dt strftime('%H:%M:%S')
+
+" ファイルを開いた時に最後のカーソル位置を再現する
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 
 "-------------------------------------------------------------------------------
@@ -508,6 +531,82 @@ autocmd FileType scala      setlocal sw=2 ts=2 sts=0 et
 autocmd FileType scheme     setlocal sw=2 ts=2 sts=0 et
 
 
+"-------------------------------------------------------------------------------
+" Plugin: NeoComplete
+"-------------------------------------------------------------------------------
+let g:acp_enableAtStartup = 0
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+let g:neocomplete#sources#dictionary#dictionaries = {
+  \ 'default':  '',
+  \ 'vimshell': $HOME . '/.vimshell_hist',
+  \ 'ruby':     $HOME . '/dotfiles/dict/ruby.dict',
+\ }
+
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
+
+inoremap <expr><c-g> neocomplete#complete_common_string()
+inoremap <expr><c-s-g> neocomplete#undo_completion()
+
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#smart_close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><c-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" inoremap <expr><C-y> neocomplete#close_popup()
+" inoremap <expr><C-e> neocomplete#cancel_popup()
+
+" Omni completion
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
+
+
+"-------------------------------------------------------------------------------
+" Plugin: NeoSnippet
+"-------------------------------------------------------------------------------
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.vim/snipmate-snippets/snippets, ~/dotfiles/snippets,  ~/.vim/snipmate-snippets-rubymotion/snippets'
+
+imap <c-x> <Plug>(neosnippet_expand_or_jump)
+smap <c-x> <Plug>(neosnippet_expand_or_jump)
+
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Smartchr
+"-------------------------------------------------------------------------------
+inoremap <expr> , smartchr#one_of(', ', ',')
+inoremap <expr> : smartchr#one_of(':', '=>')
+autocmd FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
 
 
 "-------------------------------------------------------------------------------
@@ -593,6 +692,12 @@ nnoremap ,mf :exe "CtrlP" g:memolist_path<cr><f5>
 "-------------------------------------------------------------------------------
 xnoremap <silent> a: :Alignta  01 :<CR>
 xnoremap al :Alignta<Space>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: YankRing
+"-------------------------------------------------------------------------------
+nnoremap <space><space>y :YRShow<CR>
 
 
 "-------------------------------------------------------------------------------
