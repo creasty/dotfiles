@@ -24,7 +24,6 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
-NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'itchyny/lightline.vim'
@@ -37,8 +36,6 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-session'
@@ -47,8 +44,8 @@ NeoBundle 'mattn/multi-vim'
 NeoBundle 'Align'
 NeoBundle 'gitv'
 NeoBundle 'mattn/emmet-vim'
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundleLazy 'Shougo/neosnippet.vim', {
+NeoBundle 'Shougo/neocomplete'
+NeoBundleLazy 'Shougo/neosnippet', {
   \ 'autoload': {
   \   'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
   \   'filetypes': 'snippet',
@@ -81,11 +78,11 @@ NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
   \ }
 \ }
 " NeoBundle 'project.vim'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'Yggdroot/indentLine'
 " NeoBundle 'thinca/vim-qfreplace'
 " NeoBundle 'm2ym/rsense'
 NeoBundle 'Shougo/vinarise.vim'
-NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'monday'
 NeoBundle 'closetag.vim'
@@ -96,6 +93,13 @@ NeoBundle 'YankRing.vim'
 NeoBundle 'rubycomplete.vim'
 NeoBundle 'Rip-Rip/clang_complete'
 NeoBundle 'kana/vim-altr'
+
+NeoBundle 'tpope/vim-haml'
+NeoBundle 'claco/jasmine.vim'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tpope/vim-cucumber'
 
 
 NeoBundleCheck
@@ -599,7 +603,7 @@ function! s:my_cr_function()
 endfunction
 
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? neocomplete#close_popup() : "\<TAB>"
+inoremap <expr><TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 " inoremap <expr><c-h> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
@@ -639,10 +643,16 @@ hi PmenuThumb ctermfg=245 guifg=brcyan
 " Plugin: NeoSnippet
 "-------------------------------------------------------------------------------
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/dotfiles/snippets'
+let g:neosnippet#snippets_directory='~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
 imap <c-x> <Plug>(neosnippet_expand_or_jump)
 smap <c-x> <Plug>(neosnippet_expand_or_jump)
+
+imap <expr><TAB> neosnippet#expandable_or_jumpable()
+  \ ? "\<Plug>(neosnippet_expand_or_jump)"
+  \ : pumvisible()
+    \ ? neocomplete#close_popup()
+    \ : "\<TAB>"
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
