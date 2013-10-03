@@ -1,0 +1,435 @@
+# describe
+snippet desc
+abbr    describe end
+prev_word '^'
+    describe "${1:name}" do
+        ${2}
+    end
+
+snippet desch
+abbr    spec_helper describe
+prev_word '^'
+    require 'spec_helper'
+
+    describe ${1:`Snippet_RubySpecNameFromFilename()`} do
+        ${2}
+    end
+
+snippet desccon
+abbr    describe for controller
+prev_word '^'
+    describe "${1:GET|POST|PUT|DELETE} ${2:/some/path}${3}" do
+        ${4}
+    end
+
+snippet bef
+prev_word '^'
+    before do
+        ${1}
+    end
+
+alias bef before
+
+snippet befa
+prev_word '^'
+    before(:all) do
+        ${1}
+    end
+
+alias befa beforeall
+
+snippet aft
+prev_word '^'
+    after do
+        ${1}
+    end
+
+alias aft after
+
+snippet afta
+prev_word '^'
+    after(:all) do
+        ${1}
+    end
+
+alias afta afterall
+
+snippet con
+prev_word '^'
+    context "${1}" do
+        ${2}
+    end
+
+alias con context
+
+snippet cona
+prev_word '^'
+abbr context after callback
+    context "after #${1:save!}" do
+        before do
+            subject.$1
+        end
+        ${2}
+    end
+
+snippet subjc
+prev_word '^'
+    subject { ${1:FactoryGirl.create(:${2:name\})} }
+
+alias subjc subject
+
+snippet subjb
+prev_word '^'
+    subject { ${1:FactoryGirl.build(:${2:name\})} }
+
+# it
+snippet it
+prev_word '^'
+    it "${1}" do
+        ${2}
+    end
+
+snippet itb
+prev_word '^'
+abbr        it {}
+        it { ${1} }
+
+snippet its
+prev_word '^'
+    it "should ${1:work correctly}" do
+        ${2}
+    end
+
+snippet is
+prev_word '^'
+    it { should ${1} }
+
+snippet isn
+prev_word '^'
+    it { should_not ${1} }
+
+# should
+snippet sh
+    should == ${1:value}
+    ${2}
+
+snippet shn
+    should_not == ${1:value}
+    ${2}
+
+snippet shs
+    should satisfy { |${1:obj}| ${2} }
+    ${3}
+
+snippet shp
+    should be_${1:predicate}
+
+alias shp shbe
+
+snippet shh
+    should have(${1:num}).${2:things}
+    ${3}
+
+snippet she
+    should eq(${1:value})
+    ${3}
+
+snippet shne
+    should_not eq(${1:value})
+    ${2}
+
+snippet shnredt
+    response.should_not redirect_to(${1:url})
+    ${2}
+
+snippet shbw
+    should be_within(${1:tolerance}).of(${2:result})
+    ${3}
+
+snippet shnbw
+    should_not be_within(${1:tolerance}).of(${2:result})
+    ${4}
+
+snippet shhal
+    should have_at_least(${1:num}).${2:things}
+    ${3}
+
+snippet shhi
+    should have(${1:n}).records
+    ${2}
+
+snippet shns
+    should_not satisfy { |${1:obj}| ${2} }
+    ${3}
+
+snippet shbko
+    should be_a_kind_of(${1:class})
+    ${2}
+
+snippet shnbko
+    should_not be_a_kind_of(${1:klass})
+    ${2}
+
+snippet shnbe
+    should_not be_${1:predicate}
+
+snippet shre
+    should raise_error(${1:error})
+    ${2}
+
+snippet shnre
+    should_not raise_error(${1:error})
+    ${2}
+
+alias shre shraise
+
+snippet shc
+    expect {
+        ${1}
+    }.should change(${2:described_class}, :${3:count}).by(${4:1})
+
+alias shc exshc
+
+snippet shnc
+    expect {
+        ${1}
+    }.should_not change(${2:target}, :${3:method})
+
+snippet shrt
+    should respond_to(:${1:sym})
+    ${2}
+
+snippet shnrt
+    should_not respond_to(:${1:sym})
+    ${2}
+
+snippet shr
+    should_receive(:${1:message})${2}
+    ${3}
+
+snippet shnr
+    should_not_receive(:${1:message})${2}
+    ${3}
+
+snippet wia
+    with(${1:args})
+    ${2}
+
+snippet shm
+    should match(/${1:regexp}/)
+    ${2}
+
+snippet shnm
+    should_not match(/${1:regexp}/)
+    ${2}
+
+snippet shredt
+    response.should redirect_to(${1:url})
+    ${2}
+
+snippet shbr
+    response.should be_redirect
+    ${1}
+
+snippet shnbr
+    response.should_not be_redirect
+    ${1}
+
+snippet shbs
+    response.should be_success
+    ${1}
+
+snippet shnbs
+    response.should_not be_success
+    ${1}
+
+snippet shtemp
+    response.should render_template(:${1:template})
+    ${2}
+
+snippet shbio
+    should be_instance_of(${1:class})
+    ${2}
+
+snippet shnbio
+    should_not be_instance_of(${1:klass})
+    ${2}
+
+# shared_context
+snippet sc
+prev_word '^'
+abbr shared_context do end
+    shared_context "${1:condition}" do
+        ${2}
+    end
+
+alias sc shared_context
+
+snippet scm
+prev_word '^'
+abbr shared_context with metadata
+    shared_context "${1:condition}", :${2:key} => ${3:value} do
+        ${4}
+    end
+
+snippet inc
+prev_word '^'
+abbr include_context
+    include_context "${1}"
+
+alias inc include_context
+
+# shared_example
+snippet se
+prev_word '^'
+abbr shared_examples do end
+    shared_examples "${1:do something}" do
+        ${2}
+    end
+
+alias se shared_examples
+
+snippet sed
+prev_word '^'
+    shared_examples "${1:}" do
+        describe "as $1" do
+            ${2}
+        end
+    end
+
+snippet ibl
+prev_word '^'
+abbr it_behaves_like
+    it_behaves_like '${1}'
+
+alias ibl it_behaves
+
+snippet ine
+prev_word '^'
+abbr include_examples
+    include_examples "${1}"
+
+alias ine include_examples
+
+# let
+snippet let
+prev_word '^'
+abbr let {}
+    let(:${1}) { ${2} }
+
+snippet let!
+prev_word '^'
+abbr let! {}
+    let!(:${1}) { ${2} }
+
+snippet letf
+prev_word '^'
+    let(:${1:model}) do
+        FactoryGirl.create(:${2:$1})
+    end
+
+# matcher
+snippet atl
+    at_least(${1:n}).times
+
+snippet atm
+    at_most(${1:n}).times
+
+snippet on
+    once
+
+snippet tw
+    twice
+
+snippet ber
+    be_redirect
+
+snippet ex
+    exactly(${1:n}).times
+
+alias ex exact
+
+snippet annot
+    any_number_of_times
+
+snippet shham
+    ${1:target}.should have_at_most(${2:num}).${3:things}
+    ${4}
+
+snippet ant
+    and_throw(${1:sym})
+
+snippet any
+    and_yield(${1:values})
+
+snippet mat
+    RSpec::Matchers.define :${1:matcher_name} do
+        match do |model|
+            # return Boolean
+            ${2}
+        end
+
+        failure_message_for_should do
+          # Failure message for should
+        end
+
+        failure_message_for_should_not do
+          # Failure message for should
+        end
+    end
+
+alias mat matcher
+
+
+# stub
+snippet anr
+    and_return(${1:value})
+
+snippet anrb
+    and_return { ${1} }
+
+snippet anra
+    and_raise(${1:exception})
+
+snippet st
+    stub(:${1:method}).and_returns(${2:return})
+
+alias st stub
+
+snippet sm
+    stub_model(${1:model}, {${2}})
+snippet mm
+    mock_model(${1:model})${2}
+
+snippet moc
+    ${1:var} = mock("${2:mock_name}"${3:, :null_object => true})
+    ${4}
+
+# FactoryGirl
+snippet facb
+    FactoryGirl.build(:${1})
+
+snippet fac
+    FactoryGirl(:${1}, ${2})
+
+snippet facc
+    FactoryGirl.create(:${1})
+
+snippet facs
+    sequence(:${1}) {|n| "${2}#{n}"}
+
+snippet facn
+    FactoryGirl.next(:${1:sequence-name})
+
+snippet faca
+    f.${1:model} {|a| a.association(:${2:$1})}
+
+snippet facd
+    FactoryGirl.define do
+        ${1}
+    end
+
+snippet facf
+    factory ${1:name} do
+        ${2}
+    end

@@ -1,0 +1,62 @@
+snippet fn
+abbr Function
+  ${1:name} = (${2:args}) ->
+    ${3:# body...}
+
+snippet fnb
+abbr Function bind
+  ${1:(${2:args\}) }=>
+    ${3:# body...}
+
+snippet if
+abbr if...then...else
+  if ${1:condition} then ${2:value} else ${3:other}
+
+snippet foa
+abbr Array Comprehension
+  for ${1:name} in ${2:array}
+    ${3:# body...}
+
+snippet foo
+abbr Object Comprehension
+  for ${1:key}, ${2:value} of ${3:Object}
+    ${4:# body...}
+
+snippet for
+abbr Range Comprehension (inclusive)
+  for ${1:name} in [${2:start}..${3:finish}]${4: by ${5:step}}
+    ${6:# body...}
+
+snippet fox
+Range Comprehension (exclusive)
+  for ${1:name} in [${2:start}...${3:finish}]${4: by ${5:step}}
+    ${6:# body...}
+
+snippet sw
+abbr Switch
+  switch ${1:object}
+    when ${2:value}
+      ${3:# body...}
+
+snippet cla
+abbr Class
+  class ${1:ClassName}${2: extends ${3:Ancestor}}
+
+    ${4:constructor: (${5:args}) ->
+      ${6:# body...}}
+    $7
+
+snippet try
+abbr Try .. Catch
+  try
+    ${1}
+  catch ${2:error}
+    ${3}
+
+snippet req
+abbr Require
+  ${3} = require(${1:'${2:sys\}'})
+
+snippet log
+abbr Console.log
+  console.log ${1:"${2:msg\}"}

@@ -627,6 +627,7 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
 let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
+
 " Color
 hi Pmenu      ctermfg=235 guifg=black  ctermbg=245 guibg=brcyan
 hi PmenuSel   ctermfg=245 guifg=brcyan ctermbg=235 guibg=black
@@ -638,7 +639,7 @@ hi PmenuThumb ctermfg=245 guifg=brcyan
 " Plugin: NeoSnippet
 "-------------------------------------------------------------------------------
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.vim/snipmate-snippets/snippets, ~/dotfiles/snippets,  ~/.vim/snipmate-snippets-rubymotion/snippets'
+let g:neosnippet#snippets_directory='~/dotfiles/snippets'
 
 imap <c-x> <Plug>(neosnippet_expand_or_jump)
 smap <c-x> <Plug>(neosnippet_expand_or_jump)
@@ -651,19 +652,6 @@ endif
 "-------------------------------------------------------------------------------
 " Plugin: clang_complete
 "-------------------------------------------------------------------------------
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_overwrite_completefunc = 1
-let g:neocomplete#force_omni_input_patterns.c =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-let g:neocomplete#force_omni_input_patterns.cpp =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-let g:neocomplete#force_omni_input_patterns.objc =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-let g:neocomplete#force_omni_input_patterns.objcpp =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
 " let g:clang_use_library = 1
