@@ -3,7 +3,7 @@
 # install git
 echo "Checking git..."
 which git > /dev/null 2>&1
-if [ $? -eq 0 ] ; then
+if [ $? -eq 0 ]; then
   echo "ok"
 else
   echo "Installing git..."
@@ -14,11 +14,28 @@ fi
 # install vim
 echo "Checking vim..."
 which vim > /dev/null 2>&1
-if [ $? -eq 0 ] ; then
-  echo "ok"
+if [ $? -eq 0 ]; then
+  if [[ $(vim --version) == *\+lua\ * ]]; then
+    echo "ok"
+  else
+    echo "Installing vim with if_lua..."
+    sudo brew install vim --with-lua --with-perl --with-python --with-ruby
+    echo "ok"
+  fi
 else
   echo "Installing vim..."
-  sudo brew install vim
+  sudo brew install vim --with-lua --with-perl --with-python --with-ruby
+  echo "ok"
+fi
+
+# install mercurial
+echo "Checking mercurial..."
+which hg > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "ok"
+else
+  echo "Installing mercurial..."
+  brew install mercurial
   echo "ok"
 fi
 

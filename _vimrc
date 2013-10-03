@@ -47,7 +47,7 @@ NeoBundle 'mattn/multi-vim'
 NeoBundle 'Align'
 NeoBundle 'gitv'
 NeoBundle 'mattn/emmet-vim'
-NeoBundleLazy 'Shougo/neocomplcache.vim'
+NeoBundle 'Shougo/neocomplete.vim'
 NeoBundleLazy 'Shougo/neosnippet.vim', {
   \ 'autoload': {
   \   'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
@@ -73,17 +73,17 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'rking/ag.vim'
-"NeoBundle 'thinca/vim-quickrun.git'
+" NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'tmhedberg/matchit.git'
 NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
   \ 'autoload': {
   \   'insert': 1,
   \ }
 \ }
-"NeoBundle 'project.vim'
-"NeoBundle 'nathanaelkane/vim-indent-guides'
-"NeoBundle 'thinca/vim-qfreplace'
-"NeoBundle 'm2ym/rsense'
+" NeoBundle 'project.vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'thinca/vim-qfreplace'
+" NeoBundle 'm2ym/rsense'
 NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
@@ -93,7 +93,6 @@ NeoBundle 'SearchComplete'
 NeoBundle 'smartchr'
 NeoBundle 'kana/vim-fakeclip.git'
 NeoBundle 'YankRing.vim'
-NeoBundle 'rhysd/clever-f.vim'
 
 
 NeoBundleCheck
@@ -202,7 +201,7 @@ inoremap <c-u> <esc>ui
 inoremap <c-s-u> <esc>Ui
 
 " タブページ
-map T :tabnew<cr>
+nmap ^ :tabnew<cr>
 
 
 "-------------------------------------------------------------------------------
@@ -556,7 +555,7 @@ let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 inoremap <expr><c-g> neocomplete#complete_common_string()
 inoremap <expr><c-s-g> neocomplete#undo_completion()
 
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+" inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return neocomplete#smart_close_popup() . "\<CR>"
   " For no inserting <CR> key.
@@ -566,8 +565,8 @@ endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><c-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" inoremap <expr><c-h> neocomplete#smart_close_popup()."\<C-h>"
+" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><C-y> neocomplete#close_popup()
 " inoremap <expr><C-e> neocomplete#cancel_popup()
 
@@ -612,10 +611,14 @@ autocmd FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
 "-------------------------------------------------------------------------------
 " Plugin: Emmet
 "-------------------------------------------------------------------------------
-let g:user_emmet_expandabbr_key = '<c-m>'
-
+let g:user_emmet_mode='a'
+let g:user_emmet_leader_key = '<c-m>'
 let g:user_emmet_settings = {
-  \ 'lang' : 'ja'
+  \ 'lang': 'ja',
+  \ 'indentation': '  ',
+  \ 'html' : {
+    \ 'indentation': "\t",
+  \ },
 \ }
 
 
@@ -648,24 +651,10 @@ map <C-s> :NERDTreeToggle<CR>
 " Plugin: Multi Cursor
 "-------------------------------------------------------------------------------
 let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_next_key = '<c-r>'
-let g:multi_cursor_prev_key = '<c-s-r>'
-let g:multi_cursor_skip_key = '<D-k>' "until we got multiple keys support
-let g:multi_cursor_quit_key = '<Esc>'
-
-
-"-------------------------------------------------------------------------------
-" Plugin: Indent guides
-"-------------------------------------------------------------------------------
-" let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=indent_guide ctermbg=indent_guide
-" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=indent_guide ctermbg=indent_guide
-
-let g:indentLine_char = '┊'
-
+let g:multi_cursor_next_key = 'D'
+" let g:multi_cursor_prev_key = ''
+let g:multi_cursor_skip_key = ',D'
+let g:multi_cursor_quit_key = '<c-c>'
 
 
 "-------------------------------------------------------------------------------
@@ -697,8 +686,9 @@ xnoremap al :Alignta<Space>
 "-------------------------------------------------------------------------------
 " Plugin: YankRing
 "-------------------------------------------------------------------------------
+let g:yankring_replace_n_pkey = '<m-p>'
+let g:yankring_replace_n_nkey = '<m-n>'
 nnoremap <space><space>y :YRShow<CR>
-
 
 "-------------------------------------------------------------------------------
 " Plugin: CtrlP

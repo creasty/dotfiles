@@ -6,6 +6,7 @@ alias ll='ls -Gl'
 alias la='ls -Ga'
 alias lla='ls -Gla'
 alias df='df -h'
+alias vi='vim'
 
 
 #  Application
