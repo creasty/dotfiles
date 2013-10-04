@@ -218,12 +218,8 @@ nmap ^ :tabnew<cr>
 "-------------------------------------------------------------------------------
 " Color scheme
 set background=dark
-let g:solarized_visibility="low"
-let g:solarized_termtrans=1
-let g:solarized_contrast="normal"
-let g:solarized_bold=0
 set t_Co=256
-colorscheme Tomorrow-Night-Bright
+colorscheme My-Tomorrow-Night-Bright
 
 " シンタックスハイライト
 syntax enable
@@ -404,15 +400,6 @@ set fileformats=unix,dos,mac
 " cvsの時は文字コードをeuc-jpに設定
 autocmd FileType cvs :set fileencoding=euc-jp
 
-" 以下のファイルの時は文字コードをutf-8に設定
-autocmd FileType svn :set fileencoding=utf-8
-autocmd FileType js :set fileencoding=utf-8
-autocmd FileType css :set fileencoding=utf-8
-autocmd FileType html :set fileencoding=utf-8
-autocmd FileType xml :set fileencoding=utf-8
-autocmd FileType java :set fileencoding=utf-8
-autocmd FileType scala :set fileencoding=utf-8
-
 " ワイルドカードで表示するときに優先度を低くする拡張子
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 
@@ -434,6 +421,7 @@ set autoindent
 set smartindent
 set cindent
 set smarttab
+set noexpandtab
 
 " softtabstop は Tab キー押し下げ時の挿入される空白の量
 " 0 の場合は tabstop と同じ
@@ -520,8 +508,9 @@ command! -bang -nargs=? Euc
 
 
 "-------------------------------------------------------------------------------
-" Filetype
+" Filetype specific
 "-------------------------------------------------------------------------------
+" 拡張子
 au BufNewFile,BufRead *.psgi       set filetype=perl
 au BufNewFile,BufRead *.t          set filetype=perl
 au BufNewFile,BufRead *.ejs        set filetype=html
@@ -535,30 +524,31 @@ au BufNewFile,BufRead Guardfile    set filetype=ruby
 au BufNewFile,BufRead cpanfile     set filetype=perl
 au BufRead, BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
-autocmd FileType yaml       setlocal sw=2 ts=2 et fenc=utf-8
-autocmd FileType apache     setlocal sw=4 ts=4
-autocmd FileType c          setlocal sw=4 ts=4
-autocmd FileType cs         setlocal sw=4 ts=4 et
-autocmd FileType css        setlocal sw=2 ts=2 et
-autocmd FileType diff       setlocal sw=4 ts=4 et
-autocmd FileType eruby      setlocal sw=4 ts=4 et
-autocmd FileType html       setlocal sw=2 ts=2 et
-autocmd FileType java       setlocal sw=4 ts=4 et
-autocmd FileType javascript setlocal sw=2 ts=2 et
-autocmd FileType coffee     setlocal sw=2 ts=2 et
-autocmd FileType perl       setlocal sw=4 ts=4 et
-autocmd FileType php        setlocal sw=4 ts=4 et
-autocmd FileType python     setlocal sw=4 ts=4 et
-autocmd FileType ruby       setlocal sw=2 ts=2 et
-autocmd FileType haml       setlocal sw=2 ts=2 et
-autocmd FileType sh         setlocal sw=4 ts=4 et
-autocmd FileType sql        setlocal sw=4 ts=4 et
-autocmd FileType vim        setlocal sw=2 ts=2 et
-autocmd FileType xhtml      setlocal sw=2 ts=2 et
-autocmd FileType xml        setlocal sw=4 ts=4 et
-autocmd FileType yaml       setlocal sw=2 ts=2 et
-autocmd FileType scala      setlocal sw=2 ts=2 et
-autocmd FileType scheme     setlocal sw=2 ts=2 et
+" ソフトタブ
+autocmd FileType yaml       setlocal et
+autocmd FileType diff       setlocal et
+autocmd FileType eruby      setlocal et
+autocmd FileType javascript setlocal et
+autocmd FileType coffee     setlocal et
+autocmd FileType perl       setlocal et
+autocmd FileType ruby       setlocal et
+autocmd FileType haml       setlocal et
+autocmd FileType sh         setlocal et
+autocmd FileType sql        setlocal et
+autocmd FileType vim        setlocal et
+autocmd FileType yaml       setlocal et
+autocmd FileType scala      setlocal et
+autocmd FileType scheme     setlocal et
+
+" 以下のファイルの時は文字コードをutf-8に設定
+autocmd FileType svn   setlocal fenc=utf-8
+autocmd FileType js    setlocal fenc=utf-8
+autocmd FileType css   setlocal fenc=utf-8
+autocmd FileType html  setlocal fenc=utf-8
+autocmd FileType xml   setlocal fenc=utf-8
+autocmd FileType java  setlocal fenc=utf-8
+autocmd FileType scala setlocal fenc=utf-8
+autocmd FileType yml   setlocal fenc=utf-8
 
 
 "-------------------------------------------------------------------------------
@@ -567,8 +557,13 @@ autocmd FileType scheme     setlocal sw=2 ts=2 et
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
+let g:neocomplcache_max_list = 20
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#disable_auto_complete = 0
+let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#enable_insert_char_pre = 1
+set completeopt-=preview
 
 let $DICTDIR = $HOME . '/dotfiles/dict'
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -618,6 +613,7 @@ inoremap <expr><c-f> pumvisible() ? neocomplete#cancel_popup() . "\<right>" : "\
 inoremap <expr><c-b> pumvisible() ? neocomplete#cancel_popup() . "\<left>" : "\<left>"
 inoremap <expr><c-a> pumvisible() ? neocomplete#cancel_popup() . "\<home>" : "\<home>"
 inoremap <expr><c-e> pumvisible() ? neocomplete#cancel_popup() . "\<end>" : "\<end>"
+inoremap <expr><c-c> pumvisible() ? neocomplete#cancel_popup() : "\<esc>"
 
 " Omni completion
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -636,21 +632,11 @@ let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
 let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
 
-" Color
-hi Pmenu      ctermfg=235 guifg=black  ctermbg=245 guibg=brcyan
-hi PmenuSel   ctermfg=245 guifg=brcyan ctermbg=235 guibg=black
-hi PmenuSbar  ctermfg=235 guifg=black
-hi PmenuThumb ctermfg=245 guifg=brcyan
-
-
 "-------------------------------------------------------------------------------
 " Plugin: NeoSnippet
 "-------------------------------------------------------------------------------
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory='~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
-
-imap <c-x> <Plug>(neosnippet_expand_or_jump)
-smap <c-x> <Plug>(neosnippet_expand_or_jump)
 
 imap <expr><TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
