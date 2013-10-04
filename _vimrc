@@ -27,7 +27,6 @@ NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'surround.vim'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -100,6 +99,9 @@ NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-cucumber'
+
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
 
 
 NeoBundleCheck
@@ -220,7 +222,8 @@ let g:solarized_visibility="low"
 let g:solarized_termtrans=1
 let g:solarized_contrast="normal"
 let g:solarized_bold=0
-colorscheme solarized
+set t_Co=256
+colorscheme Tomorrow-Night-Bright
 
 " シンタックスハイライト
 syntax enable
