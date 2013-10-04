@@ -52,6 +52,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
   \   'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ }
 \ }
+NeoBundle 'SyntaxComplete'
 NeoBundleLazy 'Shougo/vimshell.vim', {
 \   'autoload': { 'commands': ['VimShell'] },
 \   'depends': ['Shougo/vimproc'],
@@ -236,10 +237,12 @@ set showmatch
 " 行番号表示
 set number
 hi LineNr ctermbg=none guibg=none ctermfg=235 guifg=black
+hi CursorLineNr ctermbg=234 guibg=brblack ctermfg=235 guifg=black
 
 " カーソル行をハイライト
 set cursorline
 hi CursorLine ctermbg=234 guibg=brblack
+" hi CursorLine ctermbg=none guibg=none
 hi SignColumn ctermbg=none guibg=none
 
 " Visual モードのカラーリング
@@ -247,9 +250,7 @@ hi Visual guifg=brcyan guibg=black ctermfg=245 ctermbg=235
 
 " 不可視文字の表示
 set list
-" set listchars=tab:┊\ ,trail:_,eol:$
-" set listchars=tab:▸\ ,trail:˽
-set listchars=trail:˽
+set listchars=tab:▸\ ,trail:˽
 hi SpecialKey ctermfg=234 guifg=brblack
 
 " 印字不可能文字を16進数で表示
@@ -613,7 +614,9 @@ inoremap <expr><c-f> pumvisible() ? neocomplete#cancel_popup() . "\<right>" : "\
 inoremap <expr><c-b> pumvisible() ? neocomplete#cancel_popup() . "\<left>" : "\<left>"
 inoremap <expr><c-a> pumvisible() ? neocomplete#cancel_popup() . "\<home>" : "\<home>"
 inoremap <expr><c-e> pumvisible() ? neocomplete#cancel_popup() . "\<end>" : "\<end>"
+inoremap <expr><space> pumvisible() ? neocomplete#cancel_popup() . "\<space>" : "\<space>"
 inoremap <expr><c-c> pumvisible() ? neocomplete#cancel_popup() : "\<esc>"
+inoremap <expr><c-j> pumvisible() ? neocomplete#close_popup() : "\<cr>"
 
 " Omni completion
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -646,6 +649,17 @@ imap <expr><TAB> neosnippet#expandable_or_jumpable()
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
+endif
+
+
+"-------------------------------------------------------------------------------
+" Plugin: SyntaxComplete
+"-------------------------------------------------------------------------------
+if has("autocmd") && exists("+omnifunc")
+  autocmd Filetype *
+    \ if &omnifunc == "" |
+    \   setlocal omnifunc=syntaxcomplete#Complete |
+    \ endif
 endif
 
 
@@ -819,6 +833,7 @@ nnoremap <space><space>y :YRShow<CR>
 " Plugin: indent line
 "-------------------------------------------------------------------------------
 let g:indentLine_char = '¦'
+" let g:indentLine_char = '┊'
 let g:indentLine_color_term = 234
 let g:indentLine_color_gui = 'brblack'
 
