@@ -57,6 +57,7 @@ NeoBundleLazy 'Shougo/vimshell.vim', {
 \   'autoload': { 'commands': ['VimShell'] },
 \   'depends': ['Shougo/vimproc'],
 \ }
+NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'othree/eregex.vim'
 NeoBundle 'tyru/operator-html-escape.vim'
@@ -84,7 +85,7 @@ NeoBundle 'Yggdroot/indentLine'
 " NeoBundle 'm2ym/rsense'
 NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'monday'
+NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'closetag.vim'
 NeoBundle 'SearchComplete'
 NeoBundle 'smartchr'
@@ -199,11 +200,11 @@ set complete+=k
 set clipboard=unnamed
 
 " Ev/Rvでvimrcの編集と反映
-"command! Ev edit $MYVIMRC
-"command! Rv source $MYVIMRC
+command Ev edit $MYVIMRC
+command Sv source $MYVIMRC
 
 " C-c と Esc の挙動を同じに
-inoremap <C-c> <Esc>
+inoremap <C-c> <esc>
 
 " Undo/Redo
 nnoremap U :redo<CR>
@@ -418,7 +419,7 @@ command! Sjis Cp932
 " Editing
 "-------------------------------------------------------------------------------
 " 自動でインデント
-set autoindent
+" set autoindent
 set smartindent
 set cindent
 set smarttab
@@ -499,6 +500,9 @@ inoremap ,dt strftime('%H:%M:%S')
 " ファイルを開いた時に最後のカーソル位置を再現する
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
+" automatically change the current directory
+autocmd BufEnter * silent! lcd %:p:h
+
 " 各種エンコーディングで開き直す
 command! -bang -nargs=? Utf8
   \ edit<bang> ++enc=utf-8 <args>
@@ -506,6 +510,11 @@ command! -bang -nargs=? Sjis
   \ edit<bang> ++enc=cp932 <args>
 command! -bang -nargs=? Euc
   \ edit<bang> ++enc=eucjp <args>
+
+" 矩形選択で連番を付ける: 3co
+nnoremap <silent> co :ContinuousNumber <C-a><CR>
+vnoremap <silent> co :ContinuousNumber <C-a><CR>
+command! -count -nargs=1 ContinuousNumber let c = col('.')|for n in range(1, <count>?<count>-line('.'):1)|exec 'normal! j' . n . <q-args>|call cursor('.', c)|endfor
 
 
 "-------------------------------------------------------------------------------
@@ -638,6 +647,7 @@ let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 "-------------------------------------------------------------------------------
 " Plugin: NeoSnippet
 "-------------------------------------------------------------------------------
+let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory='~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
@@ -800,25 +810,25 @@ xnoremap al :Alignta<Space>
 
 
 "-------------------------------------------------------------------------------
-" Plugin: Monday
+" Plugin: Switch
 "-------------------------------------------------------------------------------
-" call <SID>AddPair("public", "protected")
-" call <SID>AddPair("protected", "private")
-" call <SID>AddPair("private", "public")
-" call <SID>AddPair("true", "false")
-" call <SID>AddPair("false", "true")
-" call <SID>AddPair("yes", "no")
-" call <SID>AddPair("no", "yes")
-" call <SID>AddPair("on", "off")
-" call <SID>AddPair("off", "on")
-" call <SID>AddPair("else", "elseif")
-" call <SID>AddPair("elseif", "else")
-" call <SID>AddPair("it", "specify")
-" call <SID>AddPair("specify", "it")
-" call <SID>AddPair("describe", "context")
-" call <SID>AddPair("context", "describe")
-" call <SID>AddPair("if", "unless")
-" call <SID>AddPair("unless", "if")
+let g:switch_custom_definitions =
+  \ [
+    \ ['public', 'protected', 'private'],
+    \ ['on', 'off'],
+    \ ['it', 'specify'],
+    \ ['describe', 'context'],
+    \ ['and', 'or']
+  \ ]
+
+nnoremap - :Switch<cr>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Endwise
+"-------------------------------------------------------------------------------
+let g:endwise_no_mappings = 1
+imap <c-j> <CR><Plug>DiscretionaryEnd
 
 
 "-------------------------------------------------------------------------------
@@ -836,6 +846,12 @@ let g:indentLine_char = '¦'
 " let g:indentLine_char = '┊'
 let g:indentLine_color_term = 234
 let g:indentLine_color_gui = 'brblack'
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Unite
+"-------------------------------------------------------------------------------
+" nmap <c-q> :Unite file_rec/async:!<cr>
 
 
 "-------------------------------------------------------------------------------

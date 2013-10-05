@@ -1,4 +1,5 @@
 snippet =b
+prev_word '^'
   =begin
   ${1}
   =end
@@ -44,16 +45,17 @@ snippet until
 		${2}
 	end
 
-snippet cla class ... end
+snippet cla
+abbr	class ... end
 	class ${1:`substitute(Filename(), '^.', '\u&', '')`}
 		${2}
 	end
 
-snippet mod module ... end
+snippet mod
+abbr	module ... end
 	module ${1:`substitute(Filename(), '^.', '\u&', '')`}
 		${2}
 	end
-
 
 snippet r
 	attr_reader :${1:attr_names}
