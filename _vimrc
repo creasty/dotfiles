@@ -78,7 +78,6 @@ NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
   \   'insert': 1,
   \ }
 \ }
-" NeoBundle 'project.vim'
 " NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Yggdroot/indentLine'
 " NeoBundle 'thinca/vim-qfreplace'
@@ -727,6 +726,7 @@ nmap ,] csw]
 nmap ,' csw'
 nmap ," csw"
 
+
 "-------------------------------------------------------------------------------
 " Plugin: tComment
 "-------------------------------------------------------------------------------
@@ -739,16 +739,20 @@ let g:tcommentMapLeaderOp2 = 'gC'
 "-------------------------------------------------------------------------------
 " Plugin: Session
 "-------------------------------------------------------------------------------
-let g:session_autosave = 'yes'
-let g:session_autoload = 'yes'
-let g:session_default_to_last = 1
+let g:session_autosave = 0
+let g:session_autoload = 0
+let g:session_default_to_last = 0
+let g:session_default_overwrite = 1
+let g:session_command_aliases = 1
 
 
 "-------------------------------------------------------------------------------
 " Plugin: NERD Tree
 "-------------------------------------------------------------------------------
-let NERDSpaceDelims = 1
-let NERDShutUp = 1
+let g:NERDSpaceDelims = 1
+let g:NERDShutUp = 1
+let g:NERDTreeShowHidden=1
+let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
 
 map <C-s> :NERDTreeToggle<CR>
 
@@ -1013,3 +1017,40 @@ function! s:syntastic()
   SyntasticCheck
   call lightline#update()
 endfunction
+
+
+"-------------------------------------------------------------------------------
+" My function
+"-------------------------------------------------------------------------------
+function! s:to_fullpath(filename)
+    let name = substitute(fnamemodify(a:filename, ":p"), '\', '/', "g")
+    if filereadable(name)
+        return name
+    else
+        return a:filename
+    endif
+endfunction
+
+function! s:tabwinnr(filename)
+    let filename = s:to_fullpath(a:filename)
+    let list = map(range(1, tabpagenr("$")), "map(tabpagebuflist(v:val), 's:to_fullpath(bufname(v:val)) == filename ? [' . (v:key+1) . ', v:key+1] : []')")
+    let list = filter(eval(join(list, '+')), "!empty(v:val)")
+    return list
+endfunction
+
+function! Tabdrop(filename)
+    let result = s:tabwinnr(a:filename)
+    if empty(result)
+        execute "tabnew" a:filename
+        return
+    endif
+    let [tabnr, winnr] = get(result, 0)
+    execute "tabnext" tabnr
+    execute winnr . "wincmd w"
+endfunction
+
+function! CommandCabbr(abbreviation, expansion)
+  execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
+endfunction
+
+command! -complete=file -nargs=1 Tabdrop call Tabdrop(<q-args>)

@@ -213,8 +213,8 @@ snippet pool
 snippet except
 	NSException *${1:badness};
 	$1 = [NSException exceptionWithName:@"${2:$1Name}"
-	                             reason:@"${3}"
-	                           userInfo:nil];
+		reason:@"${3}"
+		userInfo:nil];
 	[$1 raise];
 snippet prag
 	#pragma mark ${1:-}
