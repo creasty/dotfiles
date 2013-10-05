@@ -419,7 +419,7 @@ command! Sjis Cp932
 " Editing
 "-------------------------------------------------------------------------------
 " 自動でインデント
-" set autoindent
+set noautoindent
 set smartindent
 set cindent
 set smarttab
