@@ -1,0 +1,110 @@
+
+#  Base
+#-----------------------------------------------
+# print japanese chars
+setopt print_eight_bit
+
+# completion
+fpath=($HOME/dotfiles/zsh-completions/src $fpath)
+autoload -Uz compinit
+compinit
+
+# history
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+
+# command correct edition before each completion attempt
+setopt correct
+
+# auto directory pushd that you can get dirs list by cd -[tab]
+setopt auto_pushd
+
+# no beep sound when complete list displayed
+setopt nolistbeep
+
+# emacs like keybind
+bindkey -e
+
+
+#  Oh my zsh
+#-----------------------------------------------
+ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="robbyrussell"
+
+plugins=(git git-flow ruby gem linux osx)
+
+source ~/.oh-my-zsh/oh-my-zsh.sh
+
+
+#  Apperance
+#-----------------------------------------------
+# set terminal title including current directory
+case "${TERM}" in
+  kterm*|xterm)
+    precmd() {
+      echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+    }
+    ;;
+esac
+
+
+#  Prompt
+#-----------------------------------------------
+source ~/.git-prompt.sh
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM=1
+
+PROMPT='%{$fg[blue]%}%c%{$reset_color%}%{$fg[yellow]%}$(__git_ps1)%{$reset_color%} %(!,#,$) '
+
+
+#  Change network location setting
+#-----------------------------------------------
+chloc() {
+  MSG=`scselect | egrep -i "\($1" | cut -c 4- | cut -f 1 | head -n 1 | xargs scselect | sed -E 's/.+ \((.+)\)/Location changed to \1/'`
+
+  if [ "$MSG" = "" ]; then
+    growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "Unable to change location" Error
+  else
+    growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$MSG" Location changed
+  fi
+}
+
+
+#  Auto rehash after gem un/install
+#-----------------------------------------------
+gem() {
+  $HOME/.rbenv/shims/gem $*
+  if [ "$1" = "install" ] || [ "$1" = "i" ] || [ "$1" = "uninstall" ] || [ "$1" = "uni" ]
+  then
+    rbenv rehash
+    rehash
+  fi
+}
+
+
+#  一定時間以上かかった処理の終了時に通知
+#-----------------------------------------------
+local COMMAND=""
+local COMMAND_TIME=""
+precmd() {
+  if [ "$COMMAND_TIME" -ne "0" ] ; then
+    local d=`date +%s`
+    d=`expr $d - $COMMAND_TIME`
+    if [ "$d" -ge "30" ] ; then
+      COMMAND="$COMMAND "
+      which growlnotify > /dev/null 2>&1 && growlnotify -t "${${(s: :)COMMAND}[1]}" -m "$COMMAND";
+    fi
+  fi
+  COMMAND="0"
+  COMMAND_TIME="0"
+}
+preexec () {
+  COMMAND="${1}"
+  if [ "`perl -e 'print($ARGV[0]=~/ssh|^vi/)' $COMMAND`" -ne 1 ] ; then
+    COMMAND_TIME=`date +%s`
+  fi
+}
+

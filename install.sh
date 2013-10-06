@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+# install zsh
+echo "Checking zsh..."
+which zsh > /dev/null 2>&1
+if [ $? -eq 0 ] ; then
+  echo "ok"
+else
+  echo "Installing zsh.."
+  sudo brew install zsh
+  curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+  sudo mv /etc/zshenv /etc/zprofile
+  sudo echo "/usr/local/bin/zsh\n" >> /etc/shells
+  chpass -s /usr/local/bin/zsh
+fi
+
 # install git
 echo "Checking git..."
 which git > /dev/null 2>&1
@@ -51,6 +65,8 @@ cd ~
 
 ln -s ~/dotfiles/_bashrc       ~/.bashrc
 ln -s ~/dotfiles/_bash_profile ~/.bash_profile
+ln -s ~/dotfiles/_zshrc        ~/.zshrc
+ln -s ~/dotfiles/_zshenv       ~/.zshenv
 ln -s ~/dotfiles/_aliases      ~/.aliases
 ln -s ~/dotfiles/vimfiles      ~/.vim
 ln -s ~/dotfiles/_vimrc        ~/.vimrc
