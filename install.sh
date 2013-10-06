@@ -3,15 +3,18 @@
 # install zsh
 echo "Checking zsh..."
 which zsh > /dev/null 2>&1
-if [ $? -eq 0 ] ; then
+if [ $? -eq 0 ]; then
   echo "ok"
 else
-  echo "Installing zsh.."
+  echo "Installing zsh..."
   sudo brew install zsh
-  curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
   sudo mv /etc/zshenv /etc/zprofile
-  sudo echo "/usr/local/bin/zsh\n" >> /etc/shells
+  sudo echo "\n/usr/local/bin/zsh" >> /etc/shells
   chpass -s /usr/local/bin/zsh
+fi
+fi [ -d ~/.oh-my-zsh ]; then
+  echo "Installing oh-my-zsh..."
+  curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 fi
 
 # install git

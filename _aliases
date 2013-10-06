@@ -1,7 +1,8 @@
 
 #  General
 #-----------------------------------------------
-alias refresh='. ~/.bash_profile'
+alias refresh='source ~/.zshrc'
+
 alias ls='ls -G'
 alias ll='ls -Gl'
 alias la='ls -Ga'
@@ -42,6 +43,14 @@ alias b='bundle'
 alias be='bundle exec'
 alias rdbc='bundle exec rake db:create'
 alias rdbm='bundle exec rake db:migrate'
+alias rdbr='bundle exec rake db:reset'
+alias rdbs='bundle exec rake db:reset'
+alias rs='bundle exec rails s'
+alias rs1='bundle exec rails s -p 3001'
+alias rs2='bundle exec rails s -p 3002'
+alias rs3='bundle exec rails s -p 3003'
+alias rs4='bundle exec rails s -p 3004'
+alias rs5='bundle exec rails s -p 3005'
 
 
 #  Git
@@ -71,5 +80,5 @@ extract() {
   esac
 }
 
-# alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 

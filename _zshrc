@@ -1,6 +1,9 @@
 
 #  Base
 #-----------------------------------------------
+# load math functions
+zmodload -i zsh/mathfunc
+
 # print japanese chars
 setopt print_eight_bit
 
@@ -10,9 +13,13 @@ autoload -Uz compinit
 compinit
 
 # history
+setopt share_history
+setopt inc_append_history
+setopt hist_ignore_space
+
 HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=100000
+SAVEHIST=100000
 
 # command correct edition before each completion attempt
 setopt correct
