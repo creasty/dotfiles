@@ -1,25 +1,18 @@
 
-plugins=(svn git perl ruby linux osx)
-
 #  Base
 #-----------------------------------------------
-# 日本語ファイル名を表示可能にする
+# print japanese chars
 setopt print_eight_bit
 
-# 補完機能を有効にする
+# completion
 fpath=($HOME/dotfiles/zsh-completions/src $fpath)
 autoload -Uz compinit
 compinit
 
-# ヒストリの設定
-setopt no_share_history
+# history
 HISTFILE=~/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
-setopt auto_pushd
-
-# Oh my zsh
-source ~/.oh-my-zsh/oh-my-zsh.sh
+HISTSIZE=1000
+SAVEHIST=1000
 
 # command correct edition before each completion attempt
 setopt correct
@@ -34,64 +27,37 @@ setopt nolistbeep
 bindkey -e
 
 
+#  Oh my zsh
+#-----------------------------------------------
+ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="robbyrussell"
+
+plugins=(git git-flow ruby gem linux osx)
+
+source ~/.oh-my-zsh/oh-my-zsh.sh
+
+
 #  Apperance
 #-----------------------------------------------
-# ZSH_THEME="skaro"
-
 # set terminal title including current directory
 case "${TERM}" in
   kterm*|xterm)
-      precmd() {
-          echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-      }
-      ;;
+    precmd() {
+      echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+    }
+    ;;
 esac
 
 
 #  Prompt
 #-----------------------------------------------
-# source ~/.git-prompt.sh
-#
-# GIT_PS1_SHOWDIRTYSTATE=1
-# GIT_PS1_SHOWUNTRACKEDFILES=1
-# GIT_PS1_SHOWUPSTREAM=1
-#
-# XPS1='\[\e[34m\]\
-# \W\
-# \[\e[00m\]\[\e[33m\]\
-# `__git_ps1`\
-# \[\e[00m\] \$ \[\e[0m\]'
+source ~/.git-prompt.sh
 
-ZSH_THEME_GIT_PROMPT_PREFIX="[⭠ %{$fg[red]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}] %{$fg[yellow]%}✗%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%}]"
-# PROMPT='%{%(?.$fg_bold[green].$fg_bold[red])%}%h %{$fg[cyan]%}%2~ %{$fg_bold[blue]%}$(git_prompt_info) %{$reset_color%}» '
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWUPSTREAM=1
 
-case ${UID} in
-  0)
-    PROMPT="%B%{^[[31m%}%/#%{^[[m%}%b "
-    PROMPT2="%B%{^[[31m%}%_#%{^[[m%}%b "
-    SPROMPT="%B%{^[[31m%}%r is correct? [n,y,a,e]:%{^[[m%}%b "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-      PROMPT="%{^[[37m%}${HOST%%.*} ${PROMPT}"
-    ;;
-  *)
-    PROMPT="%{^[[31m%}%/%%%{^[[m%} "
-    PROMPT2="%{^[[31m%}%_%%%{^[[m%} "
-    SPROMPT="%{^[[31m%}%r is correct? [n,y,a,e]:%{^[[m%} "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-      PROMPT="%{^[[37m%}${HOST%%.*} ${PROMPT}"
-    ;;
-esac
-
-show_buffer_stack() {
-  POSTDISPLAY="
-  stack: $LBUFFER"
-  zle push-line
-}
-zle -N show_buffer_stack
-bindkey "^[q" show_buffer_stack
+PROMPT='%{$fg[blue]%}%c%{$reset_color%}%{$fg[yellow]%}$(__git_ps1)%{$reset_color%} %(!,#,$) '
 
 
 #  Change network location setting
