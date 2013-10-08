@@ -33,6 +33,8 @@
 	ff = flow feature finish
 	rs = flow release start
 	rf = flow release finish
+	xs = flow hotfix start
+	xf = flow hotfix finish
 
 	res  = reset --soft HEAD
 	res1 = reset --soft HEAD~
