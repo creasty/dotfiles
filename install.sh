@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# install mercurial
+echo "Checking mercurial..."
+which hg > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "ok"
+else
+  echo "Installing mercurial..."
+  brew install mercurial
+  echo "ok"
+fi
+
 # install zsh
 echo "Checking zsh..."
 which zsh > /dev/null 2>&1
@@ -7,9 +18,9 @@ if [ $? -eq 0 ]; then
   echo "ok"
 else
   echo "Installing zsh..."
-  sudo brew install zsh
+  brew install zsh
   sudo mv /etc/zshenv /etc/zprofile
-  sudo echo "\n/usr/local/bin/zsh" >> /etc/shells
+  sudo echo "\n/usr/local/bin/zsh" >> /etc/shells # TODO: not working
   chpass -s /usr/local/bin/zsh
 fi
 fi [ -d ~/.oh-my-zsh ]; then
@@ -24,7 +35,7 @@ if [ $? -eq 0 ]; then
   echo "ok"
 else
   echo "Installing git..."
-  sudo brew install git
+  brew install git
   echo "ok"
 fi
 
@@ -35,18 +46,8 @@ if [[ ($? -eq 0) && ($(vim --version) == *\+lua\ *) ]]; then
   echo "ok"
 else
   echo "Installing vim..."
-  sudo brew install vim --with-lua --with-perl --with-python --with-ruby
-  echo "ok"
-fi
-
-# install mercurial
-echo "Checking mercurial..."
-which hg > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-  echo "ok"
-else
-  echo "Installing mercurial..."
-  brew install mercurial
+  brew install vim --with-lua --with-perl --with-python --with-ruby # ??
+  brew install macvim --with-cscope --with-lua --HEAD
   echo "ok"
 fi
 
@@ -77,8 +78,6 @@ ln -s ~/dotfiles/_gitconfig    ~/.gitconfig
 ln -s ~/dotfiles/_gitignore    ~/.gitignore
 ln -s ~/dotfiles/_railsrc      ~/.railsrc
 ln -s ~/dotfiles/_ackrc        ~/.ackrc
-
-ln -s ~/dotfiles/scripts/git-prompt.sh ~/.git-prompt.sh
 
 echo "ok"
 
