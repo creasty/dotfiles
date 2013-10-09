@@ -93,6 +93,9 @@ NeoBundle 'YankRing.vim'
 NeoBundle 'rubycomplete.vim'
 NeoBundle 'Rip-Rip/clang_complete'
 NeoBundle 'kana/vim-altr'
+NeoBundle 't9md/vim-textmanip'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'airblade/vim-rooter'
 
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'claco/jasmine.vim'
@@ -336,6 +339,10 @@ nmap # #zz
 nmap g* g*zz
 nmap g# g#zz
 
+" 検索パターンの入力時に自動エスケープ
+cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
+
 
 "-------------------------------------------------------------------------------
 " Encoding
@@ -515,6 +522,21 @@ nnoremap <silent> co :ContinuousNumber <C-a><CR>
 vnoremap <silent> co :ContinuousNumber <C-a><CR>
 command! -count -nargs=1 ContinuousNumber let c = col('.')|for n in range(1, <count>?<count>-line('.'):1)|exec 'normal! j' . n . <q-args>|call cursor('.', c)|endfor
 
+" 自動的にディレクトリを作成する
+" http://vim-users.jp/2011/02/hack202/
+augroup vimrc-auto-mkdir
+  autocmd!
+  autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+  function! s:auto_mkdir(dir, force)
+    if !isdirectory(a:dir) && (
+      \ a:force ||
+      \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$'
+    \)
+      call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+    endif
+  endfunction
+augroup END
+
 
 "-------------------------------------------------------------------------------
 " Filetype specific
@@ -558,6 +580,10 @@ autocmd FileType xml   setlocal fenc=utf-8
 autocmd FileType java  setlocal fenc=utf-8
 autocmd FileType scala setlocal fenc=utf-8
 autocmd FileType yml   setlocal fenc=utf-8
+
+" ファイルタイプのエリアス
+autocmd FileType js setlocal ft=javascript
+autocmd FileType cs setlocal ft=coffee
 
 
 "-------------------------------------------------------------------------------
@@ -693,11 +719,34 @@ let g:rubycomplete_include_object_space = 1
 
 
 "-------------------------------------------------------------------------------
+" Plugin: TextManip
+"-------------------------------------------------------------------------------
+" 選択したテキストの移動
+vmap <C-j> <Plug>(Textmanip.move_selection_down)
+vmap <C-k> <Plug>(Textmanip.move_selection_up)
+vmap <C-h> <Plug>(Textmanip.move_selection_left)
+vmap <C-l> <Plug>(Textmanip.move_selection_right)
+
+" 行の複製
+vmap <C-u> <Plug>(Textmanip.duplicate_selection_v)
+nmap <C-u> <Plug>(Textmanip.duplicate_selection_n)
+
+
+"-------------------------------------------------------------------------------
 " Plugin: Smartchr
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> : smartchr#one_of(':', '=>')
+inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
 autocmd FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
+
+
+"-------------------------------------------------------------------------------
+" Plugin: OpenBrowser
+"-------------------------------------------------------------------------------
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
 
 
 "-------------------------------------------------------------------------------
@@ -712,6 +761,7 @@ let g:user_emmet_settings = {
     \ 'indentation': "\t",
   \ },
 \ }
+" inoremap <expr> ] searchpair('\[', '', '\]', 'nbW', 'synIDattr(synID(line("."), col("."), 1), "name") =~? "String"') ? ']' : "\<C-n>"
 
 
 "-------------------------------------------------------------------------------
@@ -755,6 +805,16 @@ let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
 
 map <C-s> :NERDTreeToggle<CR>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Rooter
+"-------------------------------------------------------------------------------
+let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot']
+" let g:rooter_use_lcd = 1
+let g:rooter_manual_only = 1
+let g:rooter_change_directory_for_non_project_files = 1
+autocmd BufEnter * :Rooter
 
 
 "-------------------------------------------------------------------------------

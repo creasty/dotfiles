@@ -114,6 +114,15 @@ gem() {
 }
 
 
+#  Project root (.git dir)
+#-----------------------------------------------
+cdrt() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `git rev-parse --show-toplevel`
+  fi
+}
+
+
 #  一定時間以上かかった処理の終了時に通知
 #-----------------------------------------------
 local COMMAND=""
