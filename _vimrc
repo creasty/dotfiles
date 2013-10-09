@@ -537,6 +537,19 @@ augroup vimrc-auto-mkdir
   endfunction
 augroup END
 
+" 閉じタグを補完する
+augroup MyXML
+  autocmd!
+  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+augroup END
+
+" 編集中ファイルのファイル名を変更する
+command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
+
+" 編集中ファイルのファイル名を変更する
+command! -nargs=0 Delete call delete(expand('%'))|q!
+
 
 "-------------------------------------------------------------------------------
 " Filetype specific
