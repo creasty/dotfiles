@@ -71,17 +71,13 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'rking/ag.vim'
-" NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'tmhedberg/matchit.git'
 NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
   \ 'autoload': {
   \   'insert': 1,
   \ }
 \ }
-" NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Yggdroot/indentLine'
-" NeoBundle 'thinca/vim-qfreplace'
-" NeoBundle 'm2ym/rsense'
 NeoBundle 'Shougo/vinarise.vim'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'AndrewRadev/switch.vim'
@@ -106,6 +102,11 @@ NeoBundle 'tpope/vim-cucumber'
 
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/vim-tomorrow-theme'
+
+" 何故か動かない
+" NeoBundle 'thinca/vim-quickrun.git'
+" NeoBundle 'thinca/vim-qfreplace'
+" NeoBundle 'm2ym/rsense'
 
 
 NeoBundleCheck
@@ -133,7 +134,7 @@ silent !stty -ixon > /dev/null 2>/dev/null
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " キーマップリーダー
-let mapleader = ","
+let mapleader = ','
 
 " 全角記号の幅
 set ambiwidth=double
@@ -239,35 +240,25 @@ set showmatch
 
 " 行番号表示
 set number
-hi LineNr ctermbg=none guibg=none ctermfg=235 guifg=black
-hi CursorLineNr ctermbg=234 guibg=brblack ctermfg=235 guifg=black
 
 " カーソル行をハイライト
 set cursorline
-hi CursorLine ctermbg=234 guibg=brblack
-" hi CursorLine ctermbg=none guibg=none
-hi SignColumn ctermbg=none guibg=none
-
-" Visual モードのカラーリング
-hi Visual guifg=brcyan guibg=black ctermfg=245 ctermbg=235
 
 " 不可視文字の表示
 set list
 set listchars=tab:▸\ ,trail:˽
-hi SpecialKey ctermfg=234 guifg=brblack
 
 " 印字不可能文字を16進数で表示
 set display=uhex
 
 " 全角スペースの表示
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 match ZenkakuSpace /　/
 
 " カレントウィンドウにのみ罫線を引く
 augroup cch
-autocmd! cch
-autocmd WinLeave * set nocursorline
-autocmd WinEnter,BufRead * set cursorline
+  autocmd! cch
+  autocmd WinLeave * set nocursorline
+  autocmd WinEnter,BufRead * set cursorline
 augroup END
 
 " コマンド実行中は再描画しない
@@ -531,7 +522,7 @@ augroup vimrc-auto-mkdir
     if !isdirectory(a:dir) && (
       \ a:force ||
       \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$'
-    \)
+    \ )
       call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
     endif
   endfunction
@@ -641,21 +632,12 @@ let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
-" inoremap <expr><c-g> neocomplete#complete_common_string()
-" inoremap <expr><c-s-g> neocomplete#undo_completion()
-
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
 
-" <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-" inoremap <expr><c-h> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><C-y> neocomplete#close_popup()
-" inoremap <expr><c-g> neocomplete#cancel_popup()
 
 inoremap <expr><c-f> pumvisible() ? neocomplete#cancel_popup() . "\<right>" : "\<right>"
 inoremap <expr><c-b> pumvisible() ? neocomplete#cancel_popup() . "\<left>" : "\<left>"
@@ -706,7 +688,7 @@ endif
 if has("autocmd") && exists("+omnifunc")
   autocmd Filetype *
     \ if &omnifunc == "" |
-    \   setlocal omnifunc=syntaxcomplete#Complete |
+      \ setlocal omnifunc=syntaxcomplete#Complete |
     \ endif
 endif
 
@@ -964,56 +946,63 @@ let g:ctrlp_buftag_types = {
 let g:lightline = {
   \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
-  \   'left': [['mode', 'paste'], ['fugitive','filename'], ['ctrlpmark']],
-  \   'right': [['syntastic', 'lineinfo', 'percent'], ['filetype'], ['fileencoding']]
+    \ 'left': [
+      \ ['mode', 'paste'],
+      \ ['fugitive','filename'],
+      \ ['ctrlpmark']
+    \ ],
+    \ 'right': [
+      \ ['syntastic', 'lineinfo', 'percent'],
+      \ ['filetype'],
+      \ ['fileencoding']
+    \ ]
   \ },
   \ 'component_function': {
-  \   'modified': 'MyModified',
-  \   'readonly': 'MyReadonly',
-  \   'fugitive': 'MyFugitive',
-  \   'filename': 'MyFilename',
-  \   'fileformat': 'MyFileformat',
-  \   'filetype': 'MyFiletype',
-  \   'fileencoding': 'MyFileencoding',
-  \   'mode': 'MyMode',
-  \   'ctrlpmark': 'CtrlPMark',
+    \ 'modified':     'LightlineModified',
+    \ 'readonly':     'LightlineReadonly',
+    \ 'fugitive':     'LightlineFugitive',
+    \ 'filename':     'LightlineFilename',
+    \ 'fileformat':   'LightlineFileformat',
+    \ 'filetype':     'LightlineFiletype',
+    \ 'fileencoding': 'LightlineFileencoding',
+    \ 'mode':         'LightlineMode',
+    \ 'ctrlpmark':    'LightlineCtrlPMark',
   \ },
   \ 'component_expand': {
-  \   'syntastic': 'SyntasticStatuslineFlag',
+    \ 'syntastic': 'SyntasticStatuslineFlag',
   \ },
   \ 'component_type': {
-  \   'syntastic': 'error',
+    \ 'syntastic': 'error',
   \ },
   \ '_separator': { 'left': "\u2b80", 'right': "\u2b82" },
   \ '_subseparator': { 'left': "\u2b81", 'right': "\u2b83" },
   \ 'subseparator': { 'left': "│", 'right': "│" },
 \ }
 
-function! MyModified()
+function! LightlineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
-function! MyReadonly()
+function! LightlineReadonly()
   "let icon = "\u2b64"
   let icon = "!!"
   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? icon : ''
 endfunction
 
-
-function! MyFilename()
+function! LightlineFilename()
   let fname = expand('%:t')
   return fname == 'ControlP' ? g:lightline.ctrlp_item :
-        \ fname == '__Tagbar__' ? g:lightline.fname :
-        \ fname =~ '__Gundo\|NERD_tree' ? '' :
-        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \ &ft == 'unite' ? unite#get_status_string() :
-        \ &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-        \ ('' != fname ? fname : '[No Name]') .
-        \ ('' != MyModified() ? ' ' . MyModified() : '')
+    \ fname == '__Tagbar__' ? g:lightline.fname :
+    \ fname =~ '__Gundo\|NERD_tree' ? '' :
+    \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \ &ft == 'unite' ? unite#get_status_string() :
+    \ &ft == 'vimshell' ? vimshell#get_status_string() :
+    \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+    \ ('' != fname ? fname : '[No Name]') .
+    \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
 endfunction
 
-function! MyFugitive()
+function! LightlineFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
       "let icon = "\u2b60 "
@@ -1026,19 +1015,19 @@ function! MyFugitive()
   return ''
 endfunction
 
-function! MyFileformat()
+function! LightlineFileformat()
   return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
-function! MyFiletype()
+function! LightlineFiletype()
   return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'plain') : ''
 endfunction
 
-function! MyFileencoding()
+function! LightlineFileencoding()
   return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
-function! MyMode()
+function! LightlineMode()
   let fname = expand('%:t')
   return fname == '__Tagbar__' ? 'Tagbar' :
     \ fname == 'ControlP' ? 'CtrlP' :
@@ -1059,7 +1048,7 @@ let g:lightline.ctrlp_next = ''
 let g:ctrlp_status_func = {
   \ 'main': 'CtrlPStatusFunc_1',
   \ 'prog': 'CtrlPStatusFunc_2',
-  \ }
+\ }
 
 function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
   let g:lightline.ctrlp_regex = a:regex
@@ -1073,7 +1062,7 @@ function! CtrlPStatusFunc_2(str)
   return lightline#statusline(0)
 endfunction
 
-function! CtrlPMark()
+function! LightlineCtrlPMark()
   if expand('%:t') =~ 'ControlP'
     call lightline#link('iR'[g:lightline.ctrlp_regex])
     return ''
@@ -1090,40 +1079,3 @@ function! s:syntastic()
   SyntasticCheck
   call lightline#update()
 endfunction
-
-
-"-------------------------------------------------------------------------------
-" My function
-"-------------------------------------------------------------------------------
-function! s:to_fullpath(filename)
-    let name = substitute(fnamemodify(a:filename, ":p"), '\', '/', "g")
-    if filereadable(name)
-        return name
-    else
-        return a:filename
-    endif
-endfunction
-
-function! s:tabwinnr(filename)
-    let filename = s:to_fullpath(a:filename)
-    let list = map(range(1, tabpagenr("$")), "map(tabpagebuflist(v:val), 's:to_fullpath(bufname(v:val)) == filename ? [' . (v:key+1) . ', v:key+1] : []')")
-    let list = filter(eval(join(list, '+')), "!empty(v:val)")
-    return list
-endfunction
-
-function! Tabdrop(filename)
-    let result = s:tabwinnr(a:filename)
-    if empty(result)
-        execute "tabnew" a:filename
-        return
-    endif
-    let [tabnr, winnr] = get(result, 0)
-    execute "tabnext" tabnr
-    execute winnr . "wincmd w"
-endfunction
-
-function! CommandCabbr(abbreviation, expansion)
-  execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
-endfunction
-
-command! -complete=file -nargs=1 Tabdrop call Tabdrop(<q-args>)

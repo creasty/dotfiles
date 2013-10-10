@@ -46,7 +46,6 @@ if [[ ($? -eq 0) && ($(vim --version) == *\+lua\ *) ]]; then
   echo "ok"
 else
   echo "Installing vim..."
-  brew install vim --with-lua --with-perl --with-python --with-ruby # ??
   brew install macvim --with-cscope --with-lua --HEAD
   echo "ok"
 fi

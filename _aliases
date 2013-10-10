@@ -3,6 +3,8 @@
 #-----------------------------------------------
 alias refresh='source ~/.zshrc'
 
+alias ..='cd ..'
+alias ...='cd ../..'
 alias ls='ls -G'
 alias ll='ls -Gl'
 alias la='ls -Ga'
@@ -19,6 +21,12 @@ alias sl='subl -a'
 alias ff='open -a Firefox'
 alias ch='open -a "Google Chrome"'
 alias finder='open -a Finder'
+
+alias ip='ipconfig getifaddr en1'
+alias ipg='curl ifconfig.me'
+
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 
 #  Scripts
