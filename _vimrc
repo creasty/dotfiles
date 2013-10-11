@@ -715,14 +715,14 @@ let g:rubycomplete_include_object_space = 1
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
 " 選択したテキストの移動
-vmap <C-j> <Plug>(Textmanip.move_selection_down)
-vmap <C-k> <Plug>(Textmanip.move_selection_up)
-vmap <C-h> <Plug>(Textmanip.move_selection_left)
-vmap <C-l> <Plug>(Textmanip.move_selection_right)
+vmap <c-j> <Plug>(Textmanip.move_selection_down)
+vmap <c-k> <Plug>(Textmanip.move_selection_up)
+vmap <c-h> <Plug>(Textmanip.move_selection_left)
+vmap <c-l> <Plug>(Textmanip.move_selection_right)
 
 " 行の複製
-vmap <C-u> <Plug>(Textmanip.duplicate_selection_v)
-nmap <C-u> <Plug>(Textmanip.duplicate_selection_n)
+vmap <c-m> <Plug>(Textmanip.duplicate_selection_v)
+nmap mm <Plug>(Textmanip.duplicate_selection_n)
 
 
 "-------------------------------------------------------------------------------
@@ -787,6 +787,9 @@ let g:session_autoload = 0
 let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
+
+ab os OpenSession
+ab cs CloseSession
 
 
 "-------------------------------------------------------------------------------
@@ -912,6 +915,8 @@ let g:indentLine_color_gui = '#1c1c1c'
 " Plugin: Unite
 "-------------------------------------------------------------------------------
 " nmap <c-q> :Unite file_rec/async:!<cr>
+
+ab unr Unite file_rec/async:!
 
 
 "-------------------------------------------------------------------------------
