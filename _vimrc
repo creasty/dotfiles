@@ -99,6 +99,7 @@ NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-cucumber'
+NeoBundle 'slim-template/vim-slim'
 
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/vim-tomorrow-theme'
