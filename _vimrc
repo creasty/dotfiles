@@ -252,9 +252,6 @@ set listchars=tab:▸\ ,trail:˽
 " 印字不可能文字を16進数で表示
 set display=uhex
 
-" 全角スペースの表示
-match ZenkakuSpace /　/
-
 " カレントウィンドウにのみ罫線を引く
 augroup cch
   autocmd! cch
@@ -797,10 +794,14 @@ let g:session_command_aliases = 1
 "-------------------------------------------------------------------------------
 let g:NERDSpaceDelims = 1
 let g:NERDShutUp = 1
-let g:NERDTreeShowHidden=1
+let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
 
-map <C-s> :NERDTreeToggle<CR>
+let g:nerdtree_tabs_open_on_gui_startup = 0
+let g:nerdtree_tabs_startup_cd = 0
+" let g:nerdtree_tabs_open_on_new_tab = 0
+
+map <C-s> :NERDTreeTabsToggle<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -903,9 +904,8 @@ nnoremap <space><space>y :YRShow<CR>
 " Plugin: indent line
 "-------------------------------------------------------------------------------
 let g:indentLine_char = '¦'
-" let g:indentLine_char = '┊'
 let g:indentLine_color_term = 234
-let g:indentLine_color_gui = 'brblack'
+let g:indentLine_color_gui = '#1c1c1c'
 
 
 "-------------------------------------------------------------------------------
@@ -975,18 +975,20 @@ let g:lightline = {
   \ 'component_type': {
     \ 'syntastic': 'error',
   \ },
-  \ '_separator': { 'left': "\u2b80", 'right': "\u2b82" },
-  \ '_subseparator': { 'left': "\u2b81", 'right': "\u2b83" },
   \ 'subseparator': { 'left': "│", 'right': "│" },
 \ }
+
+if has("gui_running")
+  let g:lightline['separator'] = { 'left': "\u2b80", 'right': "\u2b82" }
+  let g:lightline['subseparator'] = { 'left': "\u2b81", 'right': "\u2b83" }
+endif
 
 function! LightlineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
 function! LightlineReadonly()
-  "let icon = "\u2b64"
-  let icon = "!!"
+  let icon = has("gui_running") ? "\u2b64" : "!!"
   return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? icon : ''
 endfunction
 
@@ -1006,8 +1008,7 @@ endfunction
 function! LightlineFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      "let icon = "\u2b60 "
-      let icon = "~ "
+      let icon = has("gui_running") ? "\u2b60 " : "~ "
       let _ = fugitive#head()
       return strlen(_) ? icon._ : ''
     endif

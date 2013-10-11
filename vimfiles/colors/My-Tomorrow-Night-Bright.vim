@@ -4,31 +4,18 @@
 " Hex colour conversion functions borrowed from the theme "Desert256""
 
 " Default GUI Colours
-" 249
 let s:foreground = "b8b8b8"
-" 16
-let s:background = "0d0d0d"
-" 237
+let s:background = "000000"
 let s:selection = "424242"
-" xxx
 let s:line = "2a2a2a"
-" 240
 let s:comment = "666666"
-" 167
 let s:red = "d54e53"
-" 172
 let s:orange = "e78c45"
-" 184
 let s:yellow = "e7c547"
-" 148
 let s:green = "b9ca4a"
-" 73
 let s:aqua = "70c0b1"
-" 110
 let s:blue = "7aa6da"
-" 176
 let s:purple = "c397d8"
-" 59
 let s:window = "4d5057"
 
 set background=dark
@@ -246,12 +233,11 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	endfun
 
 	" Vim Highlighting
-	call <SID>X("Normal", s:foreground, "", "")
-	hi Normal ctermbg=none guibg=none
-	hi LineNr ctermbg=none guibg=none ctermfg=235 guifg=black
-	hi CursorLineNr ctermbg=234 guibg=brblack ctermfg=235 guifg=black
+	call <SID>X("Normal", s:foreground, s:background, "")
+	hi LineNr ctermbg=none gui=none ctermfg=235 guifg=#262626
+	hi CursorLineNr ctermbg=234 guibg=#1c1c1c ctermfg=235 guifg=#262626
 	call <SID>X("NonText", s:selection, "", "")
-	hi SpecialKey ctermfg=234 guifg=brblack
+	hi SpecialKey ctermfg=234 guifg=#1c1c1c
 	call <SID>X("Search", s:background, s:yellow, "")
 	call <SID>X("TabLine", s:foreground, s:background, "reverse")
 	call <SID>X("StatusLine", s:window, s:yellow, "reverse")
@@ -270,8 +256,8 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 		call <SID>X("CursorColumn", "", s:line, "none")
 		call <SID>X("PMenu", s:foreground, s:selection, "none")
 		call <SID>X("PMenuSel", s:foreground, s:selection, "reverse")
-		hi CursorLine ctermbg=234 guibg=brblack gui=none cterm=none
-		hi SignColumn ctermbg=none guibg=none gui=none cterm=none
+		hi CursorLine ctermbg=234 guibg=#1c1c1c gui=none cterm=none
+		hi SignColumn ctermbg=none gui=none cterm=none
 	end
 	if version >= 703
 		call <SID>X("ColorColumn", "", s:line, "none")
@@ -296,7 +282,9 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("Define", s:purple, "", "none")
 	call <SID>X("Include", s:blue, "", "")
 	"call <SID>X("Ignore", "666666", "", "")
-	highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
+
+	" match ZenkakuSpace /　/
+	" call <SID>X("ZenkakuSpace", s:orange, "", "underline")
 
 	" Vim Highlighting
 	call <SID>X("vimCommand", s:red, "", "none")
