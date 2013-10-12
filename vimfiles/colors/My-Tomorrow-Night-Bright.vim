@@ -234,10 +234,10 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 
 	" Vim Highlighting
 	call <SID>X("Normal", s:foreground, s:background, "")
-	hi LineNr ctermbg=none gui=none ctermfg=235 guifg=#262626
-	hi CursorLineNr ctermbg=234 guibg=#1c1c1c ctermfg=235 guifg=#262626
+	call <SID>X("LineNr", s:comment, "", "none")
+	call <SID>X("CursorLineNr", s:comment, s:line, "none")
 	call <SID>X("NonText", s:selection, "", "")
-	hi SpecialKey ctermfg=234 guifg=#1c1c1c
+	call <SID>X("SpecialKey", s:line, "", "")
 	call <SID>X("Search", s:background, s:yellow, "")
 	call <SID>X("TabLine", s:foreground, s:background, "reverse")
 	call <SID>X("StatusLine", s:window, s:yellow, "reverse")
@@ -256,8 +256,8 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 		call <SID>X("CursorColumn", "", s:line, "none")
 		call <SID>X("PMenu", s:foreground, s:selection, "none")
 		call <SID>X("PMenuSel", s:foreground, s:selection, "reverse")
-		hi CursorLine ctermbg=234 guibg=#1c1c1c gui=none cterm=none
-		hi SignColumn ctermbg=none gui=none cterm=none
+		call <SID>X("CursorLine", "", s:line, "none")
+		call <SID>X("SignColumn", "", s:background, "none")
 	end
 	if version >= 703
 		call <SID>X("ColorColumn", "", s:line, "none")
@@ -282,9 +282,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("Define", s:purple, "", "none")
 	call <SID>X("Include", s:blue, "", "")
 	"call <SID>X("Ignore", "666666", "", "")
-
-	" match ZenkakuSpace /　/
-	" call <SID>X("ZenkakuSpace", s:orange, "", "underline")
+	call <SID>X("ZenkakuSpace", "", s:red, "")
 
 	" Vim Highlighting
 	call <SID>X("vimCommand", s:red, "", "none")

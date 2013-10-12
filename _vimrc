@@ -92,6 +92,7 @@ NeoBundle 'kana/vim-altr'
 NeoBundle 't9md/vim-textmanip'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'airblade/vim-rooter'
+NeoBundle 'ecomba/vim-ruby-refactoring'
 
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'claco/jasmine.vim'
@@ -203,6 +204,9 @@ set complete+=k
 " ヤンクした文字は、システムのクリップボードに入れる
 set clipboard=unnamed
 
+" 常に10進数を使う
+set nf=
+
 " IME を無効化
 set imdisable
 
@@ -254,6 +258,9 @@ set listchars=tab:▸\ ,trail:˽
 
 " 印字不可能文字を16進数で表示
 set display=uhex
+
+" 全角スペースを可視化
+match ZenkakuSpace /　/
 
 " カレントウィンドウにのみ罫線を引く
 augroup cch
@@ -431,12 +438,6 @@ filetype plugin on
 " そのファイルタイプにあわせたインデントを利用する
 filetype indent on
 
-" insertモードを抜けるとIMEオフ
-set noimdisable
-set iminsert=0 imsearch=0
-set noimcmdline
-inoremap :set iminsert=0
-
 " yeでそのカーソル位置にある単語をレジスタに追加
 nmap ye ;let @"=expand("")
 
@@ -447,25 +448,26 @@ vnoremap p ;let current_reg = @"gvdi=current_reg
 command! Pt :set paste!
 
 " Emacs のカーソル移動
-inoremap <C-n> <Down>
-inoremap <C-p> <Up>
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
-inoremap <C-a> <Home>
-inoremap <C-e> <End>
-inoremap <C-j> <CR>
-inoremap <C-d> <Del>
-inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>D')
-cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+imap <C-n> <Down>
+imap <C-p> <Up>
+imap <C-b> <Left>
+imap <C-f> <Right>
+imap <C-a> <Home>
+imap <C-e> <End>
+imap <C-j> <CR>
+imap <C-d> <Del>
+imap <silent> <C-h> <C-g>u<C-h>
+imap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
 
 cmap <C-a> <Home>
 cmap <C-b> <Left>
 cmap <C-f> <Right>
 cmap <C-d> <Del>
-map <C-j> <CR>
-map <C-n> <Down>
-map <C-p> <Up>
-inoremap <silent> <C-h> <C-g>u<C-h>
+cmap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+
+nmap <C-j> <CR>
+nmap <C-n> <Down>
+nmap <C-p> <Up>
 
 " 括弧までを消したり置き換えたりする
 " http://vim-users.jp/2011/04/hack214/
@@ -485,8 +487,8 @@ inoremap <silent> <C-y>0 <Esc>ly$<Insert>
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 
-" 保存時に tab をスペースに変換する
-" autocmd BufWritePre * :%s/\t/  /ge
+" 保存時に tab をスペースに変換する (expandtab が設定されているなら)
+autocmd BufWritePre * if &et | exec "%s/\t/  /ge" | endif
 
 " 日時の自動入力
 inoremap ,df strftime('%Y/%m/%d %H:%M:%S')
@@ -888,6 +890,37 @@ nnoremap - :Switch<cr>
 
 
 "-------------------------------------------------------------------------------
+" Plugin: Ruby refactoring
+"-------------------------------------------------------------------------------
+" メソッドに引数を追加する
+nmap <leader>rap  :RAddParameter<cr>
+
+" 一行で書かれた条件文(e.g. "hoge if fuga?" のようなもの)を伝統的な複数行の形式に変換する
+nmap <leader>rcpc :RConvertPostConditional<cr>
+
+" 選択部分を RSpec の "let(:hoge) { fuga }" の形式に切り出す
+nmap <leader>rel  :RExtractLet<cr>
+
+" 選択部分を定数として切り出す
+vmap <leader>rec  :RExtractConstant<cr>
+
+" 選択部分を変数として切り出す
+vmap <leader>relv :RExtractLocalVariable<cr>
+
+" 一時変数を取り除く
+nmap <leader>rit  :RInlineTemp<cr>
+
+" ローカル変数をリネームする
+vmap <leader>rrlv :RRenameLocalVariable<cr>
+
+" インスタンス変数をリネームする
+vmap <leader>rriv :RRenameInstanceVariable<cr>
+
+" 選択部分をメソッドに切り出す
+vmap <leader>rem  :RExtractMethod<cr>
+
+
+"-------------------------------------------------------------------------------
 " Plugin: Endwise
 "-------------------------------------------------------------------------------
 let g:endwise_no_mappings = 1
@@ -907,7 +940,7 @@ nnoremap <space><space>y :YRShow<CR>
 "-------------------------------------------------------------------------------
 let g:indentLine_char = '¦'
 let g:indentLine_color_term = 234
-let g:indentLine_color_gui = '#1c1c1c'
+let g:indentLine_color_gui = '#2a2a2a'
 
 
 "-------------------------------------------------------------------------------

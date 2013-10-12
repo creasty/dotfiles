@@ -4,9 +4,24 @@
     <appname>MACVIM</appname>
     <equal>org.vim.MacVim</equal>
   </appdef>
+
+  <replacementdef>
+    <replacementname>EMACS_MODE_IGNORE_APPS</replacementname>
+    <replacementvalue>
+      ECLIPSE,
+      EMACS,
+      REMOTEDESKTOPCONNECTION,
+      TERMINAL,
+      VI,
+      MACVIM,
+      VIRTUALMACHINE,
+      X11,
+    </replacementvalue>
+  </replacementdef>
+
   <list>
     <item>
-      <name>Leave InsMode with EISUU(MacVim)</name>
+      <name>Leave InsMode with EISUU (MacVim)</name>
       <identifier>private.app_macvim_esc_with_eisuu</identifier>
       <only>MACVIM</only>
       <autogen>
