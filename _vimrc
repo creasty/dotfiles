@@ -24,6 +24,7 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
+NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'itchyny/lightline.vim'
@@ -66,7 +67,6 @@ NeoBundle 'tek/vim-operator-assign'
 NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
-NeoBundle 'tpope/vim-markdown'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
@@ -95,6 +95,7 @@ NeoBundle 'airblade/vim-rooter'
 NeoBundle 'ecomba/vim-ruby-refactoring'
 
 NeoBundle 'tpope/vim-haml'
+NeoBundle 'tpope/vim-markdown'
 NeoBundle 'claco/jasmine.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'tpope/vim-rails'
@@ -755,6 +756,15 @@ let g:user_emmet_settings = {
   \ },
 \ }
 " inoremap <expr> ] searchpair('\[', '', '\]', 'nbW', 'synIDattr(synID(line("."), col("."), 1), "name") =~? "String"') ? ']' : "\<C-n>"
+
+
+"-------------------------------------------------------------------------------
+" Plugin: textobj-multiblock
+"-------------------------------------------------------------------------------
+omap ab <Plug>(textobj-multiblock-a)
+omap ib <Plug>(textobj-multiblock-i)
+vmap ab <Plug>(textobj-multiblock-a)
+vmap ib <Plug>(textobj-multiblock-i)
 
 
 "-------------------------------------------------------------------------------
