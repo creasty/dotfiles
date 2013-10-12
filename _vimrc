@@ -119,16 +119,23 @@ filetype plugin indent on
 "-------------------------------------------------------------------------------
 " Plugin manager: pathogen
 "-------------------------------------------------------------------------------
-filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-set helpfile=$VIMRUNTIME/doc/help.txt
-filetype plugin on
+if has('vim_starting')
+  filetype off
+  call pathogen#runtime_append_all_bundles()
+  call pathogen#helptags()
+  set helpfile=$VIMRUNTIME/doc/help.txt
+  filetype plugin on
+endif
 
 
 "-------------------------------------------------------------------------------
 " Basics
 "-------------------------------------------------------------------------------
+" autocmd が複数登録されないようにリセット
+augroup myvimrc
+  autocmd!
+augroup END
+
 " Vi 互換なし
 set nocompatible
 
@@ -189,18 +196,13 @@ set modelines=0
 
 " コマンド補完を強化
 set wildmenu
-
-" コマンド補完を開始するキー
-"set wildchar=
-
-" リスト表示，最長マッチ
 set wildmode=list:full
 
 " コマンド・検索パターンの履歴数
 set history=1000
 
 " 補完に辞書ファイル追加
-set complete+=k
+set complete& complete+=k
 
 " ヤンクした文字は、システムのクリップボードに入れる
 set clipboard=unnamed
@@ -211,20 +213,20 @@ set nf=
 " IME を無効化
 set imdisable
 
-" Ev/Rvでvimrcの編集と反映
-command Ev edit $MYVIMRC
-command Sv source $MYVIMRC
+" vimrc の編集と反映
+command! EditVimrc edit $MYVIMRC
+command! ReloadVimrc source $MYVIMRC
 
 " C-c と Esc の挙動を同じに
-inoremap <C-c> <esc>
+inoremap <C-c> <ESC>
 
 " Undo/Redo
 nnoremap U :redo<CR>
-inoremap <c-u> <esc>ui
-inoremap <c-s-u> <esc>Ui
+inoremap <C-u> <C-o>ui
+inoremap <C-S-u> <C-o>Ui
 
 " タブページ
-nmap ;; :tabnew<cr>
+nnoremap ;; :tabnew<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -261,11 +263,11 @@ set listchars=tab:▸\ ,trail:˽
 set display=uhex
 
 " 全角スペースを可視化
-match ZenkakuSpace /　/
+autocmd myvimrc VimEnter,WinEnter * match ZenkakuSpace /　/
 
 " カレントウィンドウにのみ罫線を引く
 augroup cch
-  autocmd! cch
+  autocmd!
   autocmd WinLeave * set nocursorline
   autocmd WinEnter,BufRead * set cursorline
 augroup END
@@ -319,7 +321,7 @@ set incsearch
 set hlsearch
 
 " Escの2回押しでハイライト消去
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
+nnoremap <Esc><Esc> :nohlsearch<CR><Esc>
 
 " 選択した文字列を検索
 vnoremap // y/=escape(@", '\\/.*$^~')
@@ -399,13 +401,10 @@ function! AU_ReCheck_FENC()
   endif
 endfunction
 
-autocmd BufReadPost * call AU_ReCheck_FENC()
-
-" 改行コードの自動認識
-set fileformats=unix,dos,mac
+autocmd myvimrc BufReadPost * call AU_ReCheck_FENC()
 
 " cvsの時は文字コードをeuc-jpに設定
-autocmd FileType cvs :set fileencoding=euc-jp
+autocmd myvimrc FileType cvs :set fileencoding=euc-jp
 
 " ワイルドカードで表示するときに優先度を低くする拡張子
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -497,10 +496,10 @@ inoremap ,dd strftime('%Y/%m/%d')
 inoremap ,dt strftime('%H:%M:%S')
 
 " ファイルを開いた時に最後のカーソル位置を再現する
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+autocmd myvimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 " automatically change the current directory
-autocmd BufEnter * silent! lcd %:p:h
+" autocmd myvimrc BufEnter * silent! lcd %:p:h
 
 " 各種エンコーディングで開き直す
 command! -bang -nargs=? Utf8
@@ -517,7 +516,7 @@ command! -count -nargs=1 ContinuousNumber let c = col('.')|for n in range(1, <co
 
 " 自動的にディレクトリを作成する
 " http://vim-users.jp/2011/02/hack202/
-augroup vimrc-auto-mkdir
+augroup vimrc_auto_mkdir
   autocmd!
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
   function! s:auto_mkdir(dir, force)
@@ -531,7 +530,7 @@ augroup vimrc-auto-mkdir
 augroup END
 
 " 閉じタグを補完する
-augroup MyXML
+augroup complete_closing_tag
   autocmd!
   autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
   autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
@@ -548,17 +547,17 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 " Filetype specific
 "-------------------------------------------------------------------------------
 " 拡張子
-au BufNewFile,BufRead *.psgi    set ft=perl
-au BufNewFile,BufRead *.t       set ft=perl
-au BufNewFile,BufRead *.ejs     set ft=html
-au BufNewFile,BufRead *.ep      set ft=html
-au BufNewFile,BufRead *.pde     set ft=processing
-au BufNewFile,BufRead *.erb     set ft=html
-au BufNewFile,BufRead *.tt      set ft=html
-au BufNewFile,BufRead *.tt2     set ft=html
-au BufNewFile,BufRead *.scss    set ft=scss
-au BufNewFile,BufRead Guardfile set ft=ruby
-au BufNewFile,BufRead cpanfile  set ft=perl
+autocmd BufNewFile,BufRead *.psgi    setlocal ft=perl
+autocmd BufNewFile,BufRead *.t       setlocal ft=perl
+autocmd BufNewFile,BufRead *.ejs     setlocal ft=html
+autocmd BufNewFile,BufRead *.ep      setlocal ft=html
+autocmd BufNewFile,BufRead *.pde     setlocal ft=processing
+autocmd BufNewFile,BufRead *.erb     setlocal ft=html
+autocmd BufNewFile,BufRead *.tt      setlocal ft=html
+autocmd BufNewFile,BufRead *.tt2     setlocal ft=html
+autocmd BufNewFile,BufRead *.scss    setlocal ft=scss
+autocmd BufNewFile,BufRead Guardfile setlocal ft=ruby
+autocmd BufNewFile,BufRead cpanfile  setlocal ft=perl
 
 " ソフトタブ
 autocmd FileType yaml   setlocal et
@@ -601,7 +600,7 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#disable_auto_complete = 0
 let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#enable_insert_char_pre = 1
-set completeopt-=preview
+set completeopt& completeopt-=preview
 
 let $DICTDIR = $HOME . '/dotfiles/dict'
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -636,22 +635,25 @@ function! s:my_cr_function()
   return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
 
-inoremap <expr><TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
+inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 
-inoremap <expr><c-f> pumvisible() ? neocomplete#cancel_popup() . "\<right>" : "\<right>"
-inoremap <expr><c-b> pumvisible() ? neocomplete#cancel_popup() . "\<left>" : "\<left>"
-inoremap <expr><c-a> pumvisible() ? neocomplete#cancel_popup() . "\<home>" : "\<home>"
-inoremap <expr><c-e> pumvisible() ? neocomplete#cancel_popup() . "\<end>" : "\<end>"
-inoremap <expr><space> pumvisible() ? neocomplete#cancel_popup() . "\<space>" : "\<space>"
-inoremap <expr><c-c> pumvisible() ? neocomplete#cancel_popup() : "\<esc>"
-inoremap <expr><c-j> pumvisible() ? neocomplete#close_popup() : "\<cr>"
+inoremap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
+inoremap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
+inoremap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<Home>" : "\<Home>"
+inoremap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<End>" : "\<End>"
+inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
+inoremap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<ESC>"
+inoremap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
 
 " Omni completion
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup omni_completion_funcs
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
 
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
@@ -668,9 +670,9 @@ let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 "-------------------------------------------------------------------------------
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
+let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
-imap <expr><TAB> neosnippet#expandable_or_jumpable()
+imap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
   \ : pumvisible()
     \ ? neocomplete#close_popup()
@@ -685,7 +687,7 @@ endif
 " Plugin: SyntaxComplete
 "-------------------------------------------------------------------------------
 if has("autocmd") && exists("+omnifunc")
-  autocmd Filetype *
+  autocmd myvimrc Filetype *
     \ if &omnifunc == "" |
       \ setlocal omnifunc=syntaxcomplete#Complete |
     \ endif
@@ -716,14 +718,14 @@ let g:rubycomplete_include_object_space = 1
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
 " 選択したテキストの移動
-vmap <c-j> <Plug>(Textmanip.move_selection_down)
-vmap <c-k> <Plug>(Textmanip.move_selection_up)
-vmap <c-h> <Plug>(Textmanip.move_selection_left)
-vmap <c-l> <Plug>(Textmanip.move_selection_right)
+vnoremap <C-j> <Plug>(Textmanip.move_selection_down)
+vnoremap <C-k> <Plug>(Textmanip.move_selection_up)
+vnoremap <C-h> <Plug>(Textmanip.move_selection_left)
+vnoremap <C-l> <Plug>(Textmanip.move_selection_right)
 
 " 行の複製
-vmap <c-m> <Plug>(Textmanip.duplicate_selection_v)
-nmap mm <Plug>(Textmanip.duplicate_selection_n)
+vnoremap <C-m> <Plug>(Textmanip.duplicate_selection_v)
+nnoremap mm <Plug>(Textmanip.duplicate_selection_n)
 
 
 "-------------------------------------------------------------------------------
@@ -732,21 +734,21 @@ nmap mm <Plug>(Textmanip.duplicate_selection_n)
 inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> : smartchr#one_of(':', '=>')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-autocmd FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
+autocmd myvimrc FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
 
 
 "-------------------------------------------------------------------------------
 " Plugin: OpenBrowser
 "-------------------------------------------------------------------------------
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
+nnoremap gx <Plug>(openbrowser-smart-search)
+vnoremap gx <Plug>(openbrowser-smart-search)
 
 
 "-------------------------------------------------------------------------------
 " Plugin: Emmet
 "-------------------------------------------------------------------------------
-let g:user_emmet_mode='a'
+let g:user_emmet_mode = 'a'
 let g:user_emmet_leader_key = '<c-m>'
 let g:user_emmet_settings = {
   \ 'lang': 'ja',
@@ -815,7 +817,7 @@ let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_startup_cd = 0
 " let g:nerdtree_tabs_open_on_new_tab = 0
 
-map <C-s> :NERDTreeTabsToggle<CR>
+nnoremap <C-s> :NERDTreeTabsToggle<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -825,14 +827,14 @@ let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json',
 " let g:rooter_use_lcd = 1
 let g:rooter_manual_only = 1
 let g:rooter_change_directory_for_non_project_files = 1
-autocmd BufEnter * :Rooter
+autocmd myvimrc BufEnter * :Rooter
 
 
 "-------------------------------------------------------------------------------
 " Plugin: Alter
 "-------------------------------------------------------------------------------
-nmap <F3> <Plug>(altr-forward)
-nmap <F2> <Plug>(altr-back)
+nnoremap <F3> <Plug>(altr-forward)
+nnoremap <F2> <Plug>(altr-back)
 
 let s:bundle = neobundle#get("vim-altr")
 function! s:bundle.hooks.on_source(bundle)
@@ -855,7 +857,7 @@ let g:multi_cursor_use_default_mapping = 0
 let g:multi_cursor_next_key = 'D'
 " let g:multi_cursor_prev_key = ''
 let g:multi_cursor_skip_key = ',D'
-let g:multi_cursor_quit_key = '<c-c>'
+let g:multi_cursor_quit_key = '<C-c>'
 
 
 "-------------------------------------------------------------------------------
@@ -871,10 +873,10 @@ let g:multi_cursor_quit_key = '<c-c>'
 let g:memolist_memo_suffix = 'md'
 let g:memolist_path = '~/Dropbox/memo'
 
-nnoremap ,mn :MemoNew<cr>
-nnoremap ,mg :MemoGrep<cr>
+nnoremap ,mn :MemoNew<CR>
+nnoremap ,mg :MemoGrep<CR>
 nnoremap ,ml :MemoList<CR>
-nnoremap ,mf :exe "CtrlP" g:memolist_path<cr><f5>
+nnoremap ,mf :exe "CtrlP" g:memolist_path<CR><f5>
 
 
 "-------------------------------------------------------------------------------
@@ -896,53 +898,53 @@ let g:switch_custom_definitions =
     \ ['and', 'or']
   \ ]
 
-nnoremap - :Switch<cr>
+nnoremap - :Switch<CR>
 
 
 "-------------------------------------------------------------------------------
 " Plugin: Ruby refactoring
 "-------------------------------------------------------------------------------
 " メソッドに引数を追加する
-nmap <leader>rap  :RAddParameter<cr>
+nnoremap <Leader>rap :RAddParameter<CR>
 
-" 一行で書かれた条件文(e.g. "hoge if fuga?" のようなもの)を伝統的な複数行の形式に変換する
-nmap <leader>rcpc :RConvertPostConditional<cr>
+" 一行で書かれた条件文を複数行に変換する
+nnoremap <Leader>rcpc :RConvertPostConditional<CR>
 
 " 選択部分を RSpec の "let(:hoge) { fuga }" の形式に切り出す
-nmap <leader>rel  :RExtractLet<cr>
+nnoremap <Leader>rel :RExtractLet<CR>
 
 " 選択部分を定数として切り出す
-vmap <leader>rec  :RExtractConstant<cr>
+vnoremap <Leader>rec :RExtractConstant<CR>
 
 " 選択部分を変数として切り出す
-vmap <leader>relv :RExtractLocalVariable<cr>
+vnoremap <Leader>relv :RExtractLocalVariable<CR>
 
 " 一時変数を取り除く
-nmap <leader>rit  :RInlineTemp<cr>
+nnoremap <Leader>rit :RInlineTemp<CR>
 
 " ローカル変数をリネームする
-vmap <leader>rrlv :RRenameLocalVariable<cr>
+vnoremap <Leader>rrlv :RRenameLocalVariable<CR>
 
 " インスタンス変数をリネームする
-vmap <leader>rriv :RRenameInstanceVariable<cr>
+vnoremap <Leader>rriv :RRenameInstanceVariable<CR>
 
 " 選択部分をメソッドに切り出す
-vmap <leader>rem  :RExtractMethod<cr>
+vnoremap <Leader>rem :RExtractMethod<CR>
 
 
 "-------------------------------------------------------------------------------
 " Plugin: Endwise
 "-------------------------------------------------------------------------------
 let g:endwise_no_mappings = 1
-imap <c-j> <CR><Plug>DiscretionaryEnd
+imap <C-j> <CR><Plug>DiscretionaryEnd
 
 
 "-------------------------------------------------------------------------------
 " Plugin: YankRing
 "-------------------------------------------------------------------------------
-let g:yankring_replace_n_pkey = '<m-p>'
-let g:yankring_replace_n_nkey = '<m-n>'
-nnoremap <space><space>y :YRShow<CR>
+let g:yankring_replace_n_pkey = '<M-p>'
+let g:yankring_replace_n_nkey = '<M-n>'
+nnoremap <Space><Space>y :YRShow<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -1114,17 +1116,16 @@ endfunction
 function! LightlineCtrlPMark()
   if expand('%:t') =~ 'ControlP'
     call lightline#link('iR'[g:lightline.ctrlp_regex])
-    return ''
-  else
-    return ''
   endif
+  return ''
 endfunction
 
 augroup AutoSyntastic
   autocmd!
   autocmd BufWritePost *.c,*.cpp call s:syntastic()
+  function! s:syntastic()
+    SyntasticCheck
+    call lightline#update()
+  endfunction
 augroup END
-function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
-endfunction
+
