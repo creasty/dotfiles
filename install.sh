@@ -39,6 +39,17 @@ else
   echo "ok"
 fi
 
+# install tmux
+echo "Checking tmux..."
+which tmux > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "ok"
+else
+  echo "Installing tmux..."
+  brew install tmux
+  echo "ok"
+fi
+
 # install vim
 echo "Checking vim..."
 which vim > /dev/null 2>&1
@@ -77,6 +88,7 @@ ln -s ~/dotfiles/_gitconfig    ~/.gitconfig
 ln -s ~/dotfiles/_gitignore    ~/.gitignore
 ln -s ~/dotfiles/_railsrc      ~/.railsrc
 ln -s ~/dotfiles/_ackrc        ~/.ackrc
+ln -s ~/dotfiles/_tmux.conf    ~/.tmux.conf
 
 echo "ok"
 

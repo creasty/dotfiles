@@ -203,6 +203,9 @@ set complete+=k
 " ヤンクした文字は、システムのクリップボードに入れる
 set clipboard=unnamed
 
+" IME を無効化
+set imdisable
+
 " Ev/Rvでvimrcの編集と反映
 command Ev edit $MYVIMRC
 command Sv source $MYVIMRC
@@ -264,7 +267,6 @@ set lazyredraw
 
 " 高速ターミナル接続を行う
 set ttyfast
-
 
 
 "-------------------------------------------------------------------------------
@@ -409,7 +411,6 @@ command! Jis Iso2022jp
 command! Sjis Cp932
 
 
-
 "-------------------------------------------------------------------------------
 " Editing
 "-------------------------------------------------------------------------------
@@ -544,34 +545,31 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 " Filetype specific
 "-------------------------------------------------------------------------------
 " 拡張子
-au BufNewFile,BufRead *.psgi       set filetype=perl
-au BufNewFile,BufRead *.t          set filetype=perl
-au BufNewFile,BufRead *.ejs        set filetype=html
-au BufNewFile,BufRead *.ep         set filetype=html
-au BufNewFile,BufRead *.pde        set filetype=processing
-au BufNewFile,BufRead *.erb        set filetype=html
-au BufNewFile,BufRead *.tt         set filetype=html
-au BufNewFile,BufRead *.tt2        set filetype=html
-au BufNewFile,BufRead *.scss       set filetype=scss
-au BufNewFile,BufRead Guardfile    set filetype=ruby
-au BufNewFile,BufRead cpanfile     set filetype=perl
-au BufRead, BufNewFile jquery.*.js set ft=javascript syntax=jquery
+au BufNewFile,BufRead *.psgi    set ft=perl
+au BufNewFile,BufRead *.t       set ft=perl
+au BufNewFile,BufRead *.ejs     set ft=html
+au BufNewFile,BufRead *.ep      set ft=html
+au BufNewFile,BufRead *.pde     set ft=processing
+au BufNewFile,BufRead *.erb     set ft=html
+au BufNewFile,BufRead *.tt      set ft=html
+au BufNewFile,BufRead *.tt2     set ft=html
+au BufNewFile,BufRead *.scss    set ft=scss
+au BufNewFile,BufRead Guardfile set ft=ruby
+au BufNewFile,BufRead cpanfile  set ft=perl
 
 " ソフトタブ
-autocmd FileType yaml       setlocal et
-autocmd FileType diff       setlocal et
-autocmd FileType eruby      setlocal et
-autocmd FileType javascript setlocal et
-autocmd FileType coffee     setlocal et
-autocmd FileType perl       setlocal et
-autocmd FileType ruby       setlocal et
-autocmd FileType haml       setlocal et
-autocmd FileType sh         setlocal et
-autocmd FileType sql        setlocal et
-autocmd FileType vim        setlocal et
-autocmd FileType yaml       setlocal et
-autocmd FileType scala      setlocal et
-autocmd FileType scheme     setlocal et
+autocmd FileType yaml   setlocal et
+autocmd FileType diff   setlocal et
+autocmd FileType eruby  setlocal et
+autocmd FileType coffee setlocal et
+autocmd FileType ruby   setlocal et
+autocmd FileType haml   setlocal et
+autocmd FileType sh     setlocal et
+autocmd FileType sql    setlocal et
+autocmd FileType vim    setlocal et
+autocmd FileType yaml   setlocal et
+autocmd FileType scala  setlocal et
+autocmd FileType scheme setlocal et
 
 " 以下のファイルの時は文字コードをutf-8に設定
 autocmd FileType svn   setlocal fenc=utf-8
@@ -777,6 +775,7 @@ let g:tcommentMapLeader1 = '<C-/>'
 let g:tcommentMapLeader2 = '<Leader>'
 let g:tcommentMapLeaderOp1 = 'gc'
 let g:tcommentMapLeaderOp2 = 'gC'
+let g:tcommentGuessFileType = 1
 
 
 "-------------------------------------------------------------------------------
