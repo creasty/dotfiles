@@ -132,7 +132,7 @@ endif
 " Basics
 "-------------------------------------------------------------------------------
 " autocmd が複数登録されないようにリセット
-augroup myvimrc
+augroup vimrc
   autocmd!
 augroup END
 
@@ -215,7 +215,10 @@ set imdisable
 
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
-command! ReloadVimrc source $MYVIMRC
+autocmd vimrc BufWritePost *vimrc source $MYVIMRC
+if has('gui_running')
+  autocmd vimrc BufWritePost *gvimrc source $MYGVIMRC
+endif
 
 " C-c と Esc の挙動を同じに
 inoremap <C-c> <ESC>
@@ -263,7 +266,7 @@ set listchars=tab:▸\ ,trail:˽
 set display=uhex
 
 " 全角スペースを可視化
-autocmd myvimrc VimEnter,WinEnter * match ZenkakuSpace /　/
+autocmd vimrc VimEnter,WinEnter * match ZenkakuSpace /　/
 
 " カレントウィンドウにのみ罫線を引く
 augroup cch
@@ -321,7 +324,7 @@ set incsearch
 set hlsearch
 
 " Escの2回押しでハイライト消去
-nnoremap <Esc><Esc> :nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
 " 選択した文字列を検索
 vnoremap // y/=escape(@", '\\/.*$^~')
@@ -401,10 +404,7 @@ function! AU_ReCheck_FENC()
   endif
 endfunction
 
-autocmd myvimrc BufReadPost * call AU_ReCheck_FENC()
-
-" cvsの時は文字コードをeuc-jpに設定
-autocmd myvimrc FileType cvs :set fileencoding=euc-jp
+autocmd vimrc BufReadPost * call AU_ReCheck_FENC()
 
 " ワイルドカードで表示するときに優先度を低くする拡張子
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -448,26 +448,26 @@ vnoremap p ;let current_reg = @"gvdi=current_reg
 command! Pt :set paste!
 
 " Emacs のカーソル移動
-imap <C-n> <Down>
-imap <C-p> <Up>
-imap <C-b> <Left>
-imap <C-f> <Right>
-imap <C-a> <Home>
-imap <C-e> <End>
-imap <C-j> <CR>
-imap <C-d> <Del>
-imap <silent> <C-h> <C-g>u<C-h>
-imap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-j> <CR>
+inoremap <C-d> <Del>
+inoremap <silent> <C-h> <C-g>u<C-h>
+inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
 
-cmap <C-a> <Home>
-cmap <C-b> <Left>
-cmap <C-f> <Right>
-cmap <C-d> <Del>
-cmap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <C-d> <Del>
+cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
-nmap <C-j> <CR>
-nmap <C-n> <Down>
-nmap <C-p> <Up>
+nnoremap <C-j> <CR>
+nnoremap <C-n> <Down>
+nnoremap <C-p> <Up>
 
 " 括弧までを消したり置き換えたりする
 " http://vim-users.jp/2011/04/hack214/
@@ -485,10 +485,10 @@ inoremap <silent> <C-y>e <Esc>ly0<Insert>
 inoremap <silent> <C-y>0 <Esc>ly$<Insert>
 
 " 保存時に行末の空白を除去する
-autocmd BufWritePre * :%s/\s\+$//ge
+autocmd vimrc BufWritePre * :%s/\s\+$//ge
 
 " 保存時に tab をスペースに変換する (expandtab が設定されているなら)
-autocmd BufWritePre * if &et | exec "%s/\t/  /ge" | endif
+autocmd vimrc BufWritePre * if &et | exec "%s/\t/  /ge" | endif
 
 " 日時の自動入力
 inoremap ,df strftime('%Y/%m/%d %H:%M:%S')
@@ -496,10 +496,10 @@ inoremap ,dd strftime('%Y/%m/%d')
 inoremap ,dt strftime('%H:%M:%S')
 
 " ファイルを開いた時に最後のカーソル位置を再現する
-autocmd myvimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 " automatically change the current directory
-" autocmd myvimrc BufEnter * silent! lcd %:p:h
+" autocmd vimrc BufEnter * silent! lcd %:p:h
 
 " 各種エンコーディングで開き直す
 command! -bang -nargs=? Utf8
@@ -547,45 +547,58 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 " Filetype specific
 "-------------------------------------------------------------------------------
 " 拡張子
-autocmd BufNewFile,BufRead *.psgi    setlocal ft=perl
-autocmd BufNewFile,BufRead *.t       setlocal ft=perl
-autocmd BufNewFile,BufRead *.ejs     setlocal ft=html
-autocmd BufNewFile,BufRead *.ep      setlocal ft=html
-autocmd BufNewFile,BufRead *.pde     setlocal ft=processing
-autocmd BufNewFile,BufRead *.erb     setlocal ft=html
-autocmd BufNewFile,BufRead *.tt      setlocal ft=html
-autocmd BufNewFile,BufRead *.tt2     setlocal ft=html
-autocmd BufNewFile,BufRead *.scss    setlocal ft=scss
-autocmd BufNewFile,BufRead Guardfile setlocal ft=ruby
-autocmd BufNewFile,BufRead cpanfile  setlocal ft=perl
+augroup extensions
+  autocmd!
+  autocmd BufNewFile,BufRead *.psgi    setlocal ft=perl
+  autocmd BufNewFile,BufRead *.t       setlocal ft=perl
+  autocmd BufNewFile,BufRead *.ejs     setlocal ft=html
+  autocmd BufNewFile,BufRead *.ep      setlocal ft=html
+  autocmd BufNewFile,BufRead *.pde     setlocal ft=processing
+  autocmd BufNewFile,BufRead *.erb     setlocal ft=html
+  autocmd BufNewFile,BufRead *.tt      setlocal ft=html
+  autocmd BufNewFile,BufRead *.tt2     setlocal ft=html
+  autocmd BufNewFile,BufRead *.scss    setlocal ft=scss
+  autocmd BufNewFile,BufRead Guardfile setlocal ft=ruby
+  autocmd BufNewFile,BufRead cpanfile  setlocal ft=perl
+augroup END
 
 " ソフトタブ
-autocmd FileType yaml   setlocal et
-autocmd FileType diff   setlocal et
-autocmd FileType eruby  setlocal et
-autocmd FileType coffee setlocal et
-autocmd FileType ruby   setlocal et
-autocmd FileType haml   setlocal et
-autocmd FileType sh     setlocal et
-autocmd FileType sql    setlocal et
-autocmd FileType vim    setlocal et
-autocmd FileType yaml   setlocal et
-autocmd FileType scala  setlocal et
-autocmd FileType scheme setlocal et
+augroup use_soft_tabs
+  autocmd!
+  autocmd FileType yaml   setlocal et
+  autocmd FileType diff   setlocal et
+  autocmd FileType eruby  setlocal et
+  autocmd FileType coffee setlocal et
+  autocmd FileType ruby   setlocal et
+  autocmd FileType haml   setlocal et
+  autocmd FileType sh     setlocal et
+  autocmd FileType sql    setlocal et
+  autocmd FileType vim    setlocal et
+  autocmd FileType yaml   setlocal et
+  autocmd FileType scala  setlocal et
+  autocmd FileType scheme setlocal et
+augroup END
 
-" 以下のファイルの時は文字コードをutf-8に設定
-autocmd FileType svn   setlocal fenc=utf-8
-autocmd FileType js    setlocal fenc=utf-8
-autocmd FileType css   setlocal fenc=utf-8
-autocmd FileType html  setlocal fenc=utf-8
-autocmd FileType xml   setlocal fenc=utf-8
-autocmd FileType java  setlocal fenc=utf-8
-autocmd FileType scala setlocal fenc=utf-8
-autocmd FileType yml   setlocal fenc=utf-8
+" 文字コードを強制
+augroup force_encordings
+  autocmd!
+  autocmd FileType svn   setlocal fenc=utf-8
+  autocmd FileType js    setlocal fenc=utf-8
+  autocmd FileType css   setlocal fenc=utf-8
+  autocmd FileType html  setlocal fenc=utf-8
+  autocmd FileType xml   setlocal fenc=utf-8
+  autocmd FileType java  setlocal fenc=utf-8
+  autocmd FileType scala setlocal fenc=utf-8
+  autocmd FileType yml   setlocal fenc=utf-8
+  autocmd FileType cvs   setlocal fenc=euc-jp
+augroup END
 
 " ファイルタイプのエリアス
-autocmd FileType js setlocal ft=javascript
-autocmd FileType cs setlocal ft=coffee
+augroup filetype_aliases
+  autocmd!
+  autocmd FileType js setlocal ft=javascript
+  autocmd FileType cs setlocal ft=coffee
+augroup END
 
 
 "-------------------------------------------------------------------------------
@@ -672,7 +685,7 @@ let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
-imap <expr> <TAB> neosnippet#expandable_or_jumpable()
+inoremap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
   \ : pumvisible()
     \ ? neocomplete#close_popup()
@@ -686,12 +699,10 @@ endif
 "-------------------------------------------------------------------------------
 " Plugin: SyntaxComplete
 "-------------------------------------------------------------------------------
-if has("autocmd") && exists("+omnifunc")
-  autocmd myvimrc Filetype *
-    \ if &omnifunc == "" |
-      \ setlocal omnifunc=syntaxcomplete#Complete |
-    \ endif
-endif
+autocmd vimrc Filetype *
+  \ if &omnifunc == "" |
+    \ setlocal omnifunc=syntaxcomplete#Complete |
+  \ endif
 
 
 "-------------------------------------------------------------------------------
@@ -711,7 +722,7 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_include_object = 1
 let g:rubycomplete_include_object_space = 1
 
-" MyAutocmd FileType ruby,eruby setlocal omnifunc=rubycomplete#Complete
+" autocmd vimrc FileType ruby,eruby setlocal omnifunc=rubycomplete#Complete
 
 
 "-------------------------------------------------------------------------------
@@ -734,7 +745,7 @@ nnoremap mm <Plug>(Textmanip.duplicate_selection_n)
 inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> : smartchr#one_of(':', '=>')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-autocmd myvimrc FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
+autocmd vimrc FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
 
 
 "-------------------------------------------------------------------------------
@@ -827,7 +838,7 @@ let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json',
 " let g:rooter_use_lcd = 1
 let g:rooter_manual_only = 1
 let g:rooter_change_directory_for_non_project_files = 1
-autocmd myvimrc BufEnter * :Rooter
+autocmd vimrc BufEnter * :Rooter
 
 
 "-------------------------------------------------------------------------------
@@ -854,9 +865,10 @@ unlet s:bundle
 " Plugin: Multi Cursor
 "-------------------------------------------------------------------------------
 let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_next_key = 'D'
-" let g:multi_cursor_prev_key = ''
-let g:multi_cursor_skip_key = ',D'
+let g:multi_cursor_start_key = ',c'
+let g:multi_cursor_next_key = 'n'
+let g:multi_cursor_prev_key = 'N'
+let g:multi_cursor_skip_key = 'g'
 let g:multi_cursor_quit_key = '<C-c>'
 
 
