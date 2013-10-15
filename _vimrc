@@ -492,9 +492,9 @@ autocmd vimrc BufWritePre * :%s/\s\+$//ge
 autocmd vimrc BufWritePre * if &et | exec "%s/\t/  /ge" | endif
 
 " 日時の自動入力
-inoremap ,df strftime('%Y/%m/%d %H:%M:%S')
-inoremap ,dd strftime('%Y/%m/%d')
-inoremap ,dt strftime('%H:%M:%S')
+inoremap <expr> ~df strftime('%Y/%m/%d %H:%M:%S')
+inoremap <expr> ~dd strftime('%Y/%m/%d')
+inoremap <expr> ~dt strftime('%H:%M:%S')
 
 " ファイルを開いた時に最後のカーソル位置を再現する
 autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -686,7 +686,7 @@ let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
-inoremap <expr> <TAB> neosnippet#expandable_or_jumpable()
+imap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
   \ : pumvisible()
     \ ? neocomplete#close_popup()
