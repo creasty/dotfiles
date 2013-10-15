@@ -690,7 +690,9 @@ imap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
   \ : pumvisible()
     \ ? neocomplete#close_popup()
-    \ : "\<TAB>"
+    \ : emmet#isExpandable()
+        \ ? "\<C-m>,"
+        \ : "\<TAB>"
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
