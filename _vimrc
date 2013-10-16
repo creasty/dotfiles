@@ -217,9 +217,7 @@ set imdisable
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
 autocmd vimrc BufWritePost *vimrc source $MYVIMRC
-if has('gui_running')
-  autocmd vimrc BufWritePost *gvimrc source $MYGVIMRC
-endif
+autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | endif
 
 " C-c と Esc の挙動を同じに
 inoremap <C-c> <ESC>
