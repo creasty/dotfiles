@@ -687,7 +687,7 @@ let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets
 imap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
   \ : pumvisible()
-    \ ? neocomplete#close_popup()
+    \ ? "\<Down>" . neocomplete#close_popup()
     \ : emmet#isExpandable()
         \ ? "\<C-m>,"
         \ : "\<TAB>"
