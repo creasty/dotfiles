@@ -267,18 +267,18 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("Comment", s:comment, "", "")
 	call <SID>X("Todo", s:comment, s:background, "")
 	call <SID>X("Title", s:comment, "", "")
-	call <SID>X("Identifier", s:red, "", "none")
+	call <SID>X("Identifier", s:blue, "", "none")
 	call <SID>X("Statement", s:foreground, "", "")
 	call <SID>X("Conditional", s:foreground, "", "")
 	call <SID>X("Repeat", s:foreground, "", "")
 	call <SID>X("Structure", s:purple, "", "")
 	call <SID>X("Function", s:blue, "", "")
-	call <SID>X("Constant", s:orange, "", "")
+	call <SID>X("Constant", s:yellow, "", "")
 	call <SID>X("String", s:green, "", "")
 	call <SID>X("Special", s:foreground, "", "")
 	call <SID>X("PreProc", s:purple, "", "")
 	call <SID>X("Operator", s:aqua, "", "none")
-	call <SID>X("Type", s:blue, "", "none")
+	call <SID>X("Type", s:yellow, "", "none")
 	call <SID>X("Define", s:purple, "", "none")
 	call <SID>X("Include", s:blue, "", "")
 	"call <SID>X("Ignore", "666666", "", "")
@@ -302,16 +302,21 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("phpMemberSelector", s:foreground, "", "")
 
 	" Ruby Highlighting
-	call <SID>X("rubySymbol", s:green, "", "")
+	call <SID>X("rubySymbol", s:red, "", "")
 	call <SID>X("rubyConstant", s:yellow, "", "")
-	call <SID>X("rubyAttribute", s:blue, "", "")
+	call <SID>X("rubyAttribute", s:foreground, "", "")
 	call <SID>X("rubyInclude", s:blue, "", "")
-	call <SID>X("rubyLocalVariableOrMethod", s:orange, "", "")
-	call <SID>X("rubyCurlyBlock", s:orange, "", "")
+	call <SID>X("rubyLocalVariableOrMethod", s:blue, "", "")
+	call <SID>X("rubyCurlyBlock", s:foreground, "", "")
 	call <SID>X("rubyStringDelimiter", s:green, "", "")
-	call <SID>X("rubyInterpolationDelimiter", s:orange, "", "")
+	call <SID>X("rubyInterpolationDelimiter", s:purple, "", "")
 	call <SID>X("rubyConditional", s:purple, "", "")
 	call <SID>X("rubyRepeat", s:purple, "", "")
+	call <SID>X("rubyControl", s:purple, "", "")
+	call <SID>X("rubyKeyword", s:purple, "", "")
+	call <SID>X("rubyBoolean", s:orange, "", "")
+	call <SID>X("rubyInteger", s:orange, "", "")
+	call <SID>X("rubyAccess", s:purple, "", "")
 
 	" Python Highlighting
 	call <SID>X("pythonInclude", s:purple, "", "")
@@ -324,6 +329,11 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	" CoffeeScript Highlighting
 	call <SID>X("coffeeKeyword", s:purple, "", "")
 	call <SID>X("coffeeConditional", s:purple, "", "")
+	call <SID>X("coffeeEscape", s:purple, "", "")
+	call <SID>X("coffeeObject", s:yellow, "", "")
+	call <SID>X("coffeeObjAssign", s:red, "", "")
+	call <SID>X("coffeeBoolean", s:orange, "", "")
+	call <SID>X("coffeeNumber", s:orange, "", "")
 
 	" JavaScript Highlighting
 	call <SID>X("javaScriptBraces", s:foreground, "", "")
@@ -332,6 +342,9 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("javaScriptRepeat", s:purple, "", "")
 	call <SID>X("javaScriptNumber", s:orange, "", "")
 	call <SID>X("javaScriptMember", s:orange, "", "")
+
+	" HTML Highlighting
+	call <SID>X("cssBoxProp", s:blue, "", "")
 
 	" HTML Highlighting
 	call <SID>X("htmlTag", s:red, "", "")
