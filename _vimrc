@@ -21,30 +21,41 @@ NeoBundle 'Shougo/vimproc', {
     \ 'unix' : 'make -f make_unix.mak',
   \ },
 \ }
+
+" Editing
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'davidoc/taskpaper.vim'
-NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'surround.vim'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-commentary'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'xolox/vim-misc'
-NeoBundle 'xolox/vim-session'
 NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'mattn/multi-vim'
 NeoBundle 'Align'
-NeoBundle 'gitv'
 NeoBundle 'mattn/emmet-vim'
+NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'tyru/operator-html-escape.vim'
+NeoBundle 'tyru/operator-camelize.vim'
+NeoBundle 'tek/vim-operator-assign'
+NeoBundle 'rhysd/vim-operator-evalruby'
+NeoBundle 'pekepeke/vim-operator-tabular'
+NeoBundle 'emonkak/vim-operator-sort'
+NeoBundleLazy 'tmhedberg/matchit.git'
+NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
+  \ 'autoload': {
+  \   'insert': 1,
+  \ }
+\ }
+NeoBundle 'AndrewRadev/switch.vim'
+NeoBundle 'smartchr'
+" NeoBundle 'YankRing.vim'
+NeoBundle 't9md/vim-textmanip'
 NeoBundle 'Shougo/neocomplete'
+NeoBundle 'SyntaxComplete'
+NeoBundleLazy 'ecomba/vim-ruby-refactoring'
+NeoBundleLazy 'rubycomplete.vim'
+NeoBundleLazy 'Rip-Rip/clang_complete'
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'autoload': {
   \   'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
@@ -53,48 +64,40 @@ NeoBundleLazy 'Shougo/neosnippet', {
   \   'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ }
 \ }
-NeoBundle 'SyntaxComplete'
+
+" Utils
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundle 'xolox/vim-misc'
+NeoBundle 'xolox/vim-session'
+NeoBundle 'gitv'
 NeoBundleLazy 'Shougo/vimshell.vim', {
 \   'autoload': { 'commands': ['VimShell'] },
 \   'depends': ['Shougo/vimproc'],
 \ }
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'othree/eregex.vim'
-NeoBundle 'tyru/operator-html-escape.vim'
-NeoBundle 'tyru/operator-camelize.vim'
-NeoBundle 'tek/vim-operator-assign'
-NeoBundle 'rhysd/vim-operator-evalruby'
-NeoBundle 'pekepeke/vim-operator-tabular'
-NeoBundle 'emonkak/vim-operator-sort'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'rking/ag.vim'
-NeoBundle 'tmhedberg/matchit.git'
-NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
-  \ 'autoload': {
-  \   'insert': 1,
-  \ }
-\ }
-NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'Shougo/vinarise.vim'
-NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'AndrewRadev/switch.vim'
-NeoBundle 'closetag.vim'
 NeoBundle 'SearchComplete'
-NeoBundle 'smartchr'
 NeoBundle 'kana/vim-fakeclip.git'
-NeoBundle 'YankRing.vim'
-NeoBundle 'rubycomplete.vim'
-NeoBundle 'Rip-Rip/clang_complete'
-NeoBundle 'kana/vim-altr'
-NeoBundle 't9md/vim-textmanip'
-NeoBundle 'tyru/open-browser.vim'
+" NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
-NeoBundle 'ecomba/vim-ruby-refactoring'
+" NeoBundle 'davidoc/taskpaper.vim'
+NeoBundleLazy 'mattn/benchvimrc-vim'
+
+" Appearance
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
+" Syntax
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'claco/jasmine.vim'
@@ -104,10 +107,11 @@ NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-cucumber'
 NeoBundle 'slim-template/vim-slim'
 
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'chriskempson/vim-tomorrow-theme'
+" Color scheme
+" NeoBundle 'altercation/vim-colors-solarized'
+" NeoBundle 'chriskempson/vim-tomorrow-theme'
 
-" 何故か動かない
+" Something wrong
 " NeoBundle 'thinca/vim-quickrun.git'
 " NeoBundle 'thinca/vim-qfreplace'
 " NeoBundle 'm2ym/rsense'
@@ -208,8 +212,8 @@ set complete& complete+=k
 " ヤンクした文字は、システムのクリップボードに入れる
 set clipboard=unnamed
 
-" 常に10進数を使う
-set nf=
+" インクリメント / デクリメント
+set nf=alpha,hex
 
 " IME を無効化
 set imdisable
@@ -222,10 +226,10 @@ autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | en
 " C-c と Esc の挙動を同じに
 inoremap <C-c> <ESC>
 
-" Undo/Redo
+" Undo / Redo
 nnoremap U :redo<CR>
-inoremap <C-u> <C-o>ui
-inoremap <C-S-u> <C-o>Ui
+inoremap <C-u> <C-o>u
+inoremap <C-S-u> <C-o>U
 
 " タブページ
 nnoremap ;; :tabnew<CR>
@@ -254,8 +258,9 @@ set showmatch
 " 行番号表示
 set number
 
-" カーソル行をハイライト
-set cursorline
+" カーソル行をハイライトしない
+" シンタックスハイライトがクソ遅くなる
+set nocursorline
 
 " 不可視文字の表示
 set list
@@ -265,14 +270,7 @@ set listchars=tab:▸\ ,trail:˽
 set display=uhex
 
 " 全角スペースを可視化
-autocmd vimrc VimEnter,WinEnter * match ZenkakuSpace /　/
-
-" カレントウィンドウにのみ罫線を引く
-augroup cch
-  autocmd!
-  autocmd WinLeave * set nocursorline
-  autocmd WinEnter,BufRead * set cursorline
-augroup END
+match ZenkakuSpace /　/
 
 " コマンド実行中は再描画しない
 set lazyredraw
@@ -813,8 +811,9 @@ let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 
-ab os OpenSession
-ab cs CloseSession
+" ab os OpenSession
+" ab cs CloseSession
+" ab ss SaveSession
 
 
 "-------------------------------------------------------------------------------
@@ -845,21 +844,21 @@ autocmd vimrc BufEnter * :Rooter
 "-------------------------------------------------------------------------------
 " Plugin: Alter
 "-------------------------------------------------------------------------------
-nnoremap <F3> <Plug>(altr-forward)
-nnoremap <F2> <Plug>(altr-back)
-
-let s:bundle = neobundle#get("vim-altr")
-function! s:bundle.hooks.on_source(bundle)
-  " For ruby tdd
-  call altr#define('%.rb', 'spec/%_spec.rb')
-  " For ruby tdd
-  call altr#define('lib/%.rb', 'spec/lib/%_spec.rb', 'spec/%_spec.rb')
-  " For rails tdd
-  call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
-  call altr#define('app/controllers/%.rb', 'spec/controllers/%_spec.rb')
-  call altr#define('app/helpers/%.rb', 'spec/helpers/%_spec.rb')
-endfunction
-unlet s:bundle
+" nnoremap <F3> <Plug>(altr-forward)
+" nnoremap <F2> <Plug>(altr-back)
+"
+" let s:bundle = neobundle#get("vim-altr")
+" function! s:bundle.hooks.on_source(bundle)
+"   " For ruby tdd
+"   call altr#define('%.rb', 'spec/%_spec.rb')
+"   " For ruby tdd
+"   call altr#define('lib/%.rb', 'spec/lib/%_spec.rb', 'spec/%_spec.rb')
+"   " For rails tdd
+"   call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
+"   call altr#define('app/controllers/%.rb', 'spec/controllers/%_spec.rb')
+"   call altr#define('app/helpers/%.rb', 'spec/helpers/%_spec.rb')
+" endfunction
+" unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
@@ -1012,7 +1011,7 @@ nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)
 
 " nmap <Esc><Esc> <Plug>(anzu-clear-search-status)
-autocmd vimrc CursorHold,CursorHoldI,WinLeave,TabLeave * call anzu#clear_search_status()
+" autocmd vimrc CursorHold,CursorHoldI,WinLeave,TabLeave * call anzu#clear_search_status()
 
 
 "-------------------------------------------------------------------------------
@@ -1050,12 +1049,12 @@ let g:lightline = {
   \ 'component_type': {
     \ 'syntastic': 'error',
   \ },
-  \ 'subseparator': { 'left': "│", 'right': "│" },
+  \ 'subseparator': { 'left': '│', 'right': '│' },
 \ }
 
-if has("gui_running")
-  let g:lightline['separator'] = { 'left': "\u2b80", 'right': "\u2b82" }
-  let g:lightline['subseparator'] = { 'left': "\u2b81", 'right': "\u2b83" }
+if has('gui_running')
+  let g:lightline.separator = { 'left': "\u2b80", 'right': "\u2b82" }
+  let g:lightline.subseparator = { 'left': "\u2b81", 'right': "\u2b83" }
 endif
 
 function! LightlineModified()
@@ -1199,5 +1198,5 @@ function! s:get_syn_info()
     \ " guibg: " . linkedSyn.guibg
 endfunction
 
-command! SyntaxInfo call s:get_syn_info()
+command! ScopeInfo call s:get_syn_info()
 
