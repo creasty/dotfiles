@@ -89,7 +89,7 @@ NeoBundle 'kana/vim-fakeclip.git'
 " NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
 " NeoBundle 'davidoc/taskpaper.vim'
-NeoBundleLazy 'mattn/benchvimrc-vim'
+NeoBundle 'thinca/vim-quickrun.git'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -112,7 +112,6 @@ NeoBundle 'slim-template/vim-slim'
 " NeoBundle 'chriskempson/vim-tomorrow-theme'
 
 " Something wrong
-" NeoBundle 'thinca/vim-quickrun.git'
 " NeoBundle 'thinca/vim-qfreplace'
 " NeoBundle 'm2ym/rsense'
 
@@ -127,7 +126,7 @@ filetype plugin indent on
 if has('vim_starting')
   filetype off
   call pathogen#runtime_append_all_bundles()
-  call pathogen#helptags()
+  " call pathogen#helptags()
   set helpfile=$VIMRUNTIME/doc/help.txt
   filetype plugin on
 endif
@@ -150,6 +149,9 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " キーマップリーダー
 let mapleader = ','
+
+" vs のとき右側に分割する
+set splitright
 
 " 全角記号の幅
 set ambiwidth=double
@@ -557,6 +559,7 @@ augroup extensions
   autocmd BufNewFile,BufRead *.scss    setlocal ft=scss
   autocmd BufNewFile,BufRead Guardfile setlocal ft=ruby
   autocmd BufNewFile,BufRead cpanfile  setlocal ft=perl
+  autocmd BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
 augroup END
 
 " ソフトタブ
@@ -965,6 +968,21 @@ nnoremap <Space><Space>y :YRShow<CR>
 let g:indentLine_char = '¦'
 let g:indentLine_color_term = 234
 let g:indentLine_color_gui = '#2a2a2a'
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Quickrun
+"-------------------------------------------------------------------------------
+let g:quickrun_config = {}
+let g:quickrun_config._ = { 'runner': 'vimproc' }
+let g:quickrun_config['ruby.rspec'] = { 'command': 'rspec', 'cmdopt': 'bundle exec', 'exec': '%o %c %s' }
+let g:quickrun_config.markdown = {
+  \ 'outputter': 'null',
+  \ 'command':   'open',
+  \ 'cmdopt':    '-a',
+  \ 'args':      'Marked',
+  \ 'exec':      '%c %o %a %s',
+\ }
 
 
 "-------------------------------------------------------------------------------
