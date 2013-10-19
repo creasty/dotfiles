@@ -484,7 +484,10 @@ inoremap <silent> <C-y>e <Esc>ly0<Insert>
 inoremap <silent> <C-y>0 <Esc>ly$<Insert>
 
 " 保存時に行末の空白を除去する
-autocmd vimrc BufWritePre * :%s/\s\+$//ge
+autocmd vimrc BufWritePre *
+  \ if &ft != 'markdown' |
+    \ :%s/\s\+$//ge |
+  \ endif
 
 " 保存時に tab をスペースに変換する (expandtab が設定されているなら)
 autocmd vimrc BufWritePre * if &et | exec "%s/\t/  /ge" | endif
