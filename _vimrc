@@ -96,6 +96,7 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
+NeoBundle 'skammer/vim-css-color'
 
 " Syntax
 NeoBundle 'tpope/vim-haml'
@@ -734,14 +735,14 @@ let g:rubycomplete_include_object_space = 1
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
 " 選択したテキストの移動
-vnoremap <C-j> <Plug>(Textmanip.move_selection_down)
-vnoremap <C-k> <Plug>(Textmanip.move_selection_up)
-vnoremap <C-h> <Plug>(Textmanip.move_selection_left)
-vnoremap <C-l> <Plug>(Textmanip.move_selection_right)
+xmap <C-j> <Plug>(textmanip-move-down)
+xmap <C-k> <Plug>(textmanip-move-up)
+xmap <C-h> <Plug>(textmanip-move-left)
+xmap <C-l> <Plug>(textmanip-move-right)
 
 " 行の複製
-vnoremap <C-m> <Plug>(Textmanip.duplicate_selection_v)
-nnoremap mm <Plug>(Textmanip.duplicate_selection_n)
+vnoremap <C-m> <Plug>(textmanip-duplicate-down)
+nnoremap mm <Plug>(textmanip-duplicate-down)
 
 
 "-------------------------------------------------------------------------------
