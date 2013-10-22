@@ -84,7 +84,7 @@ NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'Shougo/vinarise.vim'
-NeoBundle 'SearchComplete'
+" NeoBundle 'SearchComplete'
 NeoBundle 'kana/vim-fakeclip.git'
 " NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
@@ -107,6 +107,7 @@ NeoBundle 'tpope/vim-rails'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-cucumber'
 NeoBundle 'slim-template/vim-slim'
+NeoBundle 'cakebaker/scss-syntax.vim'
 
 " Color scheme
 " NeoBundle 'altercation/vim-colors-solarized'
@@ -556,18 +557,23 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 " 拡張子
 augroup extensions
   autocmd!
-  autocmd BufNewFile,BufRead *.psgi    setlocal ft=perl
-  autocmd BufNewFile,BufRead *.t       setlocal ft=perl
-  autocmd BufNewFile,BufRead *.ejs     setlocal ft=html
-  autocmd BufNewFile,BufRead *.ep      setlocal ft=html
-  autocmd BufNewFile,BufRead *.pde     setlocal ft=processing
-  autocmd BufNewFile,BufRead *.erb     setlocal ft=html
-  autocmd BufNewFile,BufRead *.tt      setlocal ft=html
-  autocmd BufNewFile,BufRead *.tt2     setlocal ft=html
-  autocmd BufNewFile,BufRead *.scss    setlocal ft=scss
-  autocmd BufNewFile,BufRead Guardfile setlocal ft=ruby
-  autocmd BufNewFile,BufRead cpanfile  setlocal ft=perl
-  autocmd BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
+  autocmd BufNewFile,BufRead *.psgi      setlocal ft=perl
+  autocmd BufNewFile,BufRead *.t         setlocal ft=perl
+  autocmd BufNewFile,BufRead *.ejs       setlocal ft=html
+  autocmd BufNewFile,BufRead *.ep        setlocal ft=html
+  autocmd BufNewFile,BufRead *.pde       setlocal ft=processing
+  autocmd BufNewFile,BufRead *.erb       setlocal ft=html
+  autocmd BufNewFile,BufRead *.tt        setlocal ft=html
+  autocmd BufNewFile,BufRead *.tt2       setlocal ft=html
+  autocmd BufNewFile,BufRead *.scss      setlocal ft=scss
+  autocmd BufNewFile,BufRead *.html.haml setlocal ft=haml
+  autocmd BufNewFile,BufRead *.html.slim setlocal ft=slim
+  autocmd BufNewFile,BufRead *.html.erb  setlocal ft=html
+  autocmd BufNewFile,BufRead *.css.scss  setlocal ft=scss
+  autocmd BufNewFile,BufRead *.js.coffee setlocal ft=coffee
+  autocmd BufNewFile,BufRead Guardfile   setlocal ft=ruby
+  autocmd BufNewFile,BufRead cpanfile    setlocal ft=perl
+  autocmd BufNewFile,BufRead *_spec.rb   setlocal ft=ruby.rspec
 augroup END
 
 " ソフトタブ
