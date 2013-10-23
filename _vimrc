@@ -1002,16 +1002,14 @@ let g:quickrun_config.markdown = {
 "-------------------------------------------------------------------------------
 " Plugin: Unite
 "-------------------------------------------------------------------------------
-" nmap <c-q> :Unite file_rec/async:!<cr>
-
-ab unr Unite file_rec/async:!
+nmap <c-q> :Unite -buffer-name=files buffer file_mru file_rec/async:! file/new directory/new<CR>
 
 
 "-------------------------------------------------------------------------------
 " Plugin: CtrlP
 "-------------------------------------------------------------------------------
 let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_map = '<c-q>'
+let g:ctrlp_map = ',<c-q>'
 let g:ctrlp_by_filename = 0
 let g:ctrlp_max_height = 10
 let g:ctrlp_switch_buffer = 'et'
@@ -1083,6 +1081,10 @@ let g:lightline = {
   \ },
   \ 'subseparator': { 'left': '│', 'right': '│' },
 \ }
+
+let g:unite_force_overwrite_statusline = 0
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimshell_force_overwrite_statusline = 0
 
 if has('gui_running')
   let g:lightline.separator = { 'left': "\u2b80", 'right': "\u2b82" }
