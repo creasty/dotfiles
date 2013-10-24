@@ -1002,7 +1002,24 @@ let g:quickrun_config.markdown = {
 "-------------------------------------------------------------------------------
 " Plugin: Unite
 "-------------------------------------------------------------------------------
-nmap <c-q> :Unite -buffer-name=files buffer file_mru file_rec/async:! file/new directory/new<CR>
+let g:unite_enable_start_insert = 1
+let g:unite_winheight = 10
+" g:unite_ignore_source_files = []
+
+nnoremap <C-q> :Unite -buffer-name=files file_mru file_rec/async:! file/new directory/new<CR>
+autocmd! vimrc FileType unite call s:unite_my_settings()
+
+function! s:unite_my_settings()
+  nmap <buffer> <C-q> <Plug>(unite_exit)
+  imap <buffer> <C-q> <Plug>(unite_exit)
+
+  let unite = unite#get_current_unite()
+  if unite.buffer_name =~# '^search'
+    nnoremap <silent><buffer><expr> r unite#do_action('replace')
+  else
+    nnoremap <silent><buffer><expr> r unite#do_action('rename')
+  endif
+endfunction
 
 
 "-------------------------------------------------------------------------------
