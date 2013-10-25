@@ -90,6 +90,7 @@ NeoBundle 'kana/vim-fakeclip.git'
 NeoBundle 'airblade/vim-rooter'
 " NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'thinca/vim-quickrun.git'
+NeoBundle 'kana/vim-submode'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -268,13 +269,17 @@ set nocursorline
 
 " 不可視文字の表示
 set list
-set listchars=tab:▸\ ,trail:˽
+" set listchars=tab:▸\ ,trail:˽
+set listchars=tab:▸\ ,
 
 " 印字不可能文字を16進数で表示
 set display=uhex
 
 " 全角スペースを可視化
-match ZenkakuSpace /　/
+autocmd vimrc VimEnter,WinEnter * match ZenkakuSpace /　/
+
+" 行末の \s をハイライト
+autocmd vimrc VimEnter,WinEnter * match TrailingSpace /\s\+$/
 
 " コマンド実行中は再描画しない
 set lazyredraw
@@ -887,6 +892,25 @@ let g:multi_cursor_next_key = 'n'
 let g:multi_cursor_prev_key = 'N'
 let g:multi_cursor_skip_key = 'g'
 let g:multi_cursor_quit_key = '<C-c>'
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Submode
+"-------------------------------------------------------------------------------
+let g:submode_leave_with_key = 1
+
+call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
+call submode#enter_with('winsize', 'n', '', '<C-w><', '<C-w><')
+call submode#enter_with('winsize', 'n', '', '<C-w>+', '<C-w>-')
+call submode#enter_with('winsize', 'n', '', '<C-w>-', '<C-w>+')
+call submode#map('winsize', 'n', '', '>', '<C-w>>')
+call submode#map('winsize', 'n', '', '<', '<C-w><')
+call submode#map('winsize', 'n', '', '+', '<C-w>-')
+call submode#map('winsize', 'n', '', '-', '<C-w>+')
+call submode#enter_with('changetab', 'n', '', 'gt', 'gt')
+call submode#enter_with('changetab', 'n', '', 'gT', 'gT')
+call submode#map('changetab', 'n', '', 't', 'gt')
+call submode#map('changetab', 'n', '', 'T', 'gT')
 
 
 "-------------------------------------------------------------------------------
