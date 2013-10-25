@@ -1004,9 +1004,17 @@ let g:quickrun_config.markdown = {
 "-------------------------------------------------------------------------------
 let g:unite_enable_start_insert = 1
 let g:unite_winheight = 10
-" g:unite_ignore_source_files = []
+let g:unite_enable_ignore_case = 1
+let g:unite_enable_smart_case = 1
+" "let g:unite_ignore_source_files = []
 
-nnoremap <C-q> :Unite -buffer-name=files file_mru file_rec/async:! file/new directory/new<CR>
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+
+nnoremap <C-q> :Unite -buffer-name=files file_rec/async:! file/new directory/new<CR>
 autocmd! vimrc FileType unite call s:unite_my_settings()
 
 function! s:unite_my_settings()

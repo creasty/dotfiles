@@ -23,7 +23,7 @@ else
   sudo echo "\n/usr/local/bin/zsh" >> /etc/shells # TODO: not working
   chpass -s /usr/local/bin/zsh
 fi
-fi [ -d ~/.oh-my-zsh ]; then
+if [ -d ~/.oh-my-zsh ]; then
   echo "Installing oh-my-zsh..."
   curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
 fi
@@ -47,6 +47,17 @@ if [ $? -eq 0 ]; then
 else
   echo "Installing tmux..."
   brew install tmux
+  echo "ok"
+fi
+
+# install ag
+echo "Checking ag..."
+which ag > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "ok"
+else
+  echo "Installing ag..."
+  brew install the_silver_searcher
   echo "ok"
 fi
 

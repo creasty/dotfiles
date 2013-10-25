@@ -5,6 +5,9 @@ set guifont=Monaco:h10
 " maximize window
 set lines=999 columns=9999
 
+" use cui
+set guioptions-=c
+
 " hide menu & toolbars
 set guioptions-=T
 set guioptions-=m
