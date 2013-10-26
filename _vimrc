@@ -44,7 +44,7 @@ NeoBundle 'emonkak/vim-operator-sort'
 NeoBundleLazy 'tmhedberg/matchit.git'
 NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
   \ 'autoload': {
-  \   'insert': 1,
+    \ 'insert': 1,
   \ }
 \ }
 NeoBundle 'AndrewRadev/switch.vim'
@@ -58,31 +58,29 @@ NeoBundleLazy 'rubycomplete.vim'
 NeoBundleLazy 'Rip-Rip/clang_complete'
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'autoload': {
-  \   'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
-  \   'filetypes': 'snippet',
-  \   'insert': 1,
-  \   'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
+    \ 'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
+    \ 'filetypes': 'snippet',
+    \ 'insert': 1,
+    \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ }
 \ }
 
 " Utils
-NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-session'
 NeoBundle 'gitv'
-NeoBundleLazy 'Shougo/vimshell.vim', {
-\   'autoload': { 'commands': ['VimShell'] },
-\   'depends': ['Shougo/vimproc'],
-\ }
 NeoBundle 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/vimshell.vim', {
+  \ 'autoload': { 'commands': ['VimShell'] },
+  \ 'depends': ['Shougo/vimproc'],
+\ }
 NeoBundle 'othree/eregex.vim'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'rking/ag.vim'
 NeoBundle 'Shougo/vinarise.vim'
 " NeoBundle 'SearchComplete'
 NeoBundle 'kana/vim-fakeclip.git'
@@ -109,14 +107,8 @@ NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-cucumber'
 NeoBundle 'slim-template/vim-slim'
 NeoBundle 'cakebaker/scss-syntax.vim'
-
-" Color scheme
-" NeoBundle 'altercation/vim-colors-solarized'
-" NeoBundle 'chriskempson/vim-tomorrow-theme'
-
-" Something wrong
-" NeoBundle 'thinca/vim-qfreplace'
-" NeoBundle 'm2ym/rsense'
+NeoBundle 'msanders/cocoa.vim'
+NeoBundle 'eraserhd/vim-ios'
 
 
 NeoBundleCheck
@@ -237,7 +229,10 @@ inoremap <C-u> <C-o>u
 inoremap <C-S-u> <C-o>U
 
 " タブページ
-nnoremap ;; :tabnew<CR>
+nnoremap <C-w>t :tabnew<CR>
+nnoremap <C-w><C-t> :tabnew<CR>
+inoremap <C-w>t <C-o>:tabnew<CR>
+inoremap <C-w><C-t> <C-o>:tabnew<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -491,6 +486,7 @@ nnoremap x "_x
 nnoremap c "_c
 
 " ヤンク
+nnoremap Y y$
 inoremap <silent> <C-y>e <Esc>ly0<Insert>
 inoremap <silent> <C-y>0 <Esc>ly$<Insert>
 
@@ -525,7 +521,12 @@ command! -bang -nargs=? Euc
 " 矩形選択で連番を付ける: 3co
 nnoremap <silent> co :ContinuousNumber <C-a><CR>
 vnoremap <silent> co :ContinuousNumber <C-a><CR>
-command! -count -nargs=1 ContinuousNumber let c = col('.')|for n in range(1, <count>?<count>-line('.'):1)|exec 'normal! j' . n . <q-args>|call cursor('.', c)|endfor
+command! -count -nargs=1 ContinuousNumber
+    \ let c = col('.') |
+    \ for n in range(1, <count>?<count>-line('.'):1) |
+      \ exec 'normal! j' . n . <q-args> |
+      \ call cursor('.', c) |
+    \ endfor
 
 " 自動的にディレクトリを作成する
 " http://vim-users.jp/2011/02/hack202/
@@ -756,8 +757,8 @@ xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 
 " 行の複製
-vnoremap <C-m> <Plug>(textmanip-duplicate-down)
-nnoremap mm <Plug>(textmanip-duplicate-down)
+vnoremap <C-o> <Plug>(textmanip-duplicate-down)
+nnoremap <C-o> <Plug>(textmanip-duplicate-down)
 
 
 "-------------------------------------------------------------------------------
@@ -789,7 +790,6 @@ let g:user_emmet_settings = {
     \ 'indentation': "\t",
   \ },
 \ }
-" inoremap <expr> ] searchpair('\[', '', '\]', 'nbW', 'synIDattr(synID(line("."), col("."), 1), "name") =~? "String"') ? ']' : "\<C-n>"
 
 
 "-------------------------------------------------------------------------------
@@ -833,9 +833,9 @@ let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 
-" ab os OpenSession
-" ab cs CloseSession
-" ab ss SaveSession
+" cab os OpenSession
+" cab cs CloseSession
+" cab ss SaveSession
 
 
 "-------------------------------------------------------------------------------
@@ -861,26 +861,6 @@ let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json',
 let g:rooter_manual_only = 1
 let g:rooter_change_directory_for_non_project_files = 1
 autocmd vimrc BufEnter * :Rooter
-
-
-"-------------------------------------------------------------------------------
-" Plugin: Alter
-"-------------------------------------------------------------------------------
-" nnoremap <F3> <Plug>(altr-forward)
-" nnoremap <F2> <Plug>(altr-back)
-"
-" let s:bundle = neobundle#get("vim-altr")
-" function! s:bundle.hooks.on_source(bundle)
-"   " For ruby tdd
-"   call altr#define('%.rb', 'spec/%_spec.rb')
-"   " For ruby tdd
-"   call altr#define('lib/%.rb', 'spec/lib/%_spec.rb', 'spec/%_spec.rb')
-"   " For rails tdd
-"   call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
-"   call altr#define('app/controllers/%.rb', 'spec/controllers/%_spec.rb')
-"   call altr#define('app/helpers/%.rb', 'spec/helpers/%_spec.rb')
-" endfunction
-" unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
@@ -911,13 +891,6 @@ call submode#enter_with('changetab', 'n', '', 'gt', 'gt')
 call submode#enter_with('changetab', 'n', '', 'gT', 'gT')
 call submode#map('changetab', 'n', '', 't', 'gt')
 call submode#map('changetab', 'n', '', 'T', 'gT')
-
-
-"-------------------------------------------------------------------------------
-" Plugin: Ag
-"-------------------------------------------------------------------------------
-" nnoremap gg/  :<C-u>Ag <C-R><C-w><CR>
-" vnoremap gg/ y:<C-u>Ag <C-R>"<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -1052,33 +1025,6 @@ function! s:unite_my_settings()
     nnoremap <silent><buffer><expr> r unite#do_action('rename')
   endif
 endfunction
-
-
-"-------------------------------------------------------------------------------
-" Plugin: CtrlP
-"-------------------------------------------------------------------------------
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_map = ',<c-q>'
-let g:ctrlp_by_filename = 0
-let g:ctrlp_max_height = 10
-let g:ctrlp_switch_buffer = 'et'
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_mruf_max = 250
-
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn|build|sass-cache)$',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-\ }
-
-let g:ctrlp_buftag_types = {
-  \ 'go':       '--language-force=go --golang-types=ftv',
-  \ 'coffee':   '--language-force=coffee --coffee-types=cmfvf',
-  \ 'markdown': '--language-force=markdown --markdown-types=hik',
-  \ 'objc':     '--language-force=objc --objc-types=mpci',
-  \ 'rc':       '--language-force=rust --rust-types=fTm',
-\ }
 
 
 "-------------------------------------------------------------------------------
