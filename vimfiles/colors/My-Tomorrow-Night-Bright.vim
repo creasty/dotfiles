@@ -293,6 +293,19 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("cConditional", s:purple, "", "")
   call <SID>X("cRepeat", s:purple, "", "")
   call <SID>X("cSpecial", s:purple, "", "")
+  call <SID>X("cStatement", s:purple, "", "")
+  call <SID>X("cDefine", s:purple, "", "")
+  call <SID>X("cInclude", s:purple, "", "")
+  call <SID>X("cNumber", s:orange, "", "")
+  call <SID>X("cFloat", s:orange, "", "")
+
+  " Objective-C Highlighting
+  call <SID>X("cocoaClass", s:yellow, "", "")
+  call <SID>X("objcSubclass", s:yellow, "", "")
+  call <SID>X("objcMethodColon", s:red, "", "")
+  call <SID>X("objcObjDef", s:purple, "", "")
+  call <SID>X("objcImport", s:purple, "", "")
+  call <SID>X("objcConstant", s:yellow, "", "")
 
   " PHP Highlighting
   call <SID>X("phpVarSelector", s:red, "", "")
@@ -392,6 +405,12 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("htmlH4", s:foreground, "", "")
   call <SID>X("htmlH5", s:foreground, "", "")
   call <SID>X("htmlH6", s:foreground, "", "")
+
+  " XML Highlighting
+  call <SID>X("xmlTag", s:red, "", "")
+  call <SID>X("xmlEndTag", s:red, "", "")
+  call <SID>X("xmlTagName", s:red, "", "")
+  call <SID>X("xmlAttrib", s:red, "", "")
 
   " Markdown Highlighting
   call <SID>X("markdownH1", s:purple, "", "")

@@ -95,7 +95,7 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
-NeoBundle 'skammer/vim-css-color'
+" NeoBundle 'skammer/vim-css-color'
 
 " Syntax
 NeoBundle 'tpope/vim-haml'
