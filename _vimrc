@@ -558,6 +558,40 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 
 
 "-------------------------------------------------------------------------------
+" Sticky shift
+"-------------------------------------------------------------------------------
+inoremap <expr> ; <SID>sticky_func()
+nnoremap <expr> ; <SID>sticky_func()
+cnoremap <expr> ; <SID>sticky_func()
+snoremap <expr> ; <SID>sticky_func()
+
+function! s:sticky_func()
+  let l:sticky_table = {
+    \ ',': '<', '.': '>', '/': '?',
+    \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
+    \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
+    \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
+  \ }
+  let l:special_table = {
+    \ "\<ESC>": "\<ESC>",
+    \ "\<Space>": ';',
+    \ "\<CR>" : ";\<CR>",
+  \ }
+
+  let l:key = getchar()
+  if nr2char(l:key) =~ '\l'
+    return toupper(nr2char(l:key))
+  elseif has_key(l:sticky_table, nr2char(l:key))
+    return l:sticky_table[nr2char(l:key)]
+  elseif has_key(l:special_table, nr2char(l:key))
+    return l:special_table[nr2char(l:key)]
+  else
+    return ''
+  endif
+endfunction
+
+
+"-------------------------------------------------------------------------------
 " Filetype specific
 "-------------------------------------------------------------------------------
 " 拡張子
@@ -616,8 +650,9 @@ augroup END
 " ファイルタイプのエリアス
 augroup filetype_aliases
   autocmd!
-  autocmd FileType js setlocal ft=javascript
-  autocmd FileType cs setlocal ft=coffee
+  autocmd FileType js     setlocal ft=javascript
+  autocmd FileType cs     setlocal ft=coffee
+  autocmd FileType objcpp setlocal ft=objc
 augroup END
 
 

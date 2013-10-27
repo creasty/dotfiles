@@ -306,6 +306,9 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("objcObjDef", s:purple, "", "")
   call <SID>X("objcImport", s:purple, "", "")
   call <SID>X("objcConstant", s:yellow, "", "")
+  call <SID>X("objcSuperclass", s:yellow, "", "")
+  call <SID>X("objcProtocolList", s:aqua, "", "")
+  call <SID>X("objcDirective", s:aqua, "", "")
 
   " PHP Highlighting
   call <SID>X("phpVarSelector", s:red, "", "")
@@ -344,6 +347,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("coffeeKeyword", s:purple, "", "")
   call <SID>X("coffeeRepeat", s:purple, "", "")
   call <SID>X("coffeeConditional", s:purple, "", "")
+  call <SID>X("coffeeStatement", s:purple, "", "")
   call <SID>X("coffeeEscape", s:purple, "", "")
   call <SID>X("coffeeObject", s:yellow, "", "")
   call <SID>X("coffeeObjAssign", s:red, "", "")
@@ -411,6 +415,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("xmlEndTag", s:red, "", "")
   call <SID>X("xmlTagName", s:red, "", "")
   call <SID>X("xmlAttrib", s:red, "", "")
+  call <SID>X("xmlEqual", s:red, "", "")
 
   " Markdown Highlighting
   call <SID>X("markdownH1", s:purple, "", "")
