@@ -286,8 +286,6 @@ set ttyfast
 "-------------------------------------------------------------------------------
 " Tags
 "-------------------------------------------------------------------------------
-" set tags
-
 if has("autochdir")
   " 編集しているファイルのディレクトリに自動で移動
   set autochdir
@@ -331,10 +329,10 @@ nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 vnoremap // y/=escape(@", '\\/.*$^~')
 
 " 選択した文字列を置換
-vnoremap /r "xy;%s/=escape(@x, '\\/.*$^~')//gc
+vnoremap /r "xy:%s/=escape(@x, '\\/.*$^~')//gc
 
 " s*置換後文字列/gでカーソル下のキーワードを置換
-nnoremap s* ':%substitute/\<' . expand('') . '\>/'
+nnoremap s* ':%s/\<' . expand('') . '\>/'
 
 " 検索語が真ん中に来るようにする
 nmap n nzz
@@ -440,10 +438,10 @@ filetype plugin on
 filetype indent on
 
 " yeでそのカーソル位置にある単語をレジスタに追加
-nmap ye ;let @"=expand("")
+nmap ye :let @"=expand("")
 
 " Visualモードでのpで選択範囲をレジスタの内容に置き換える
-vnoremap p ;let current_reg = @"gvdi=current_reg
+vnoremap p :let current_reg = @"gvdi=current_reg
 
 " :Ptでインデントモード切替
 command! Pt :set paste!
@@ -507,6 +505,9 @@ inoremap <expr> ~dt strftime('%H:%M:%S')
 " ファイルを開いた時に最後のカーソル位置を再現する
 autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
+" 前回のマーク情報をリセット
+autocmd BufReadPost * delmarks!
+
 " automatically change the current directory
 " autocmd vimrc BufEnter * silent! lcd %:p:h
 
@@ -560,13 +561,18 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 "-------------------------------------------------------------------------------
 " Sticky shift
 "-------------------------------------------------------------------------------
-inoremap <expr> ; <SID>sticky_func()
 nnoremap <expr> ; <SID>sticky_func()
 cnoremap <expr> ; <SID>sticky_func()
 snoremap <expr> ; <SID>sticky_func()
 
 function! s:sticky_func()
-  let l:sticky_table = {
+  let l:sticky_table_jis = {
+    \ ',': '<', '.': '>', '/': '?',
+    \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
+    \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
+    \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
+  \ }
+  let l:sticky_table_us = {
     \ ',': '<', '.': '>', '/': '?',
     \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
     \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
@@ -581,8 +587,8 @@ function! s:sticky_func()
   let l:key = getchar()
   if nr2char(l:key) =~ '\l'
     return toupper(nr2char(l:key))
-  elseif has_key(l:sticky_table, nr2char(l:key))
-    return l:sticky_table[nr2char(l:key)]
+  elseif has_key(l:sticky_table_jis, nr2char(l:key))
+    return l:sticky_table_jis[nr2char(l:key)]
   elseif has_key(l:special_table, nr2char(l:key))
     return l:special_table[nr2char(l:key)]
   else
@@ -837,6 +843,12 @@ vmap ib <Plug>(textobj-multiblock-i)
 
 
 "-------------------------------------------------------------------------------
+" Plugin: eregex
+"-------------------------------------------------------------------------------
+let g:eregex_default_enable = 0
+
+
+"-------------------------------------------------------------------------------
 " Plugin: surround
 "-------------------------------------------------------------------------------
 nmap ,( csw(
@@ -1046,7 +1058,7 @@ if executable('ag')
   let g:unite_source_grep_recursive_opt = ''
 endif
 
-nnoremap <C-q> :Unite -buffer-name=files file_rec/async:! file/new directory/new<CR>
+nnoremap <C-q> :Unite -buffer-name=files file_rec/async file/new directory/new<CR>
 autocmd! vimrc FileType unite call s:unite_my_settings()
 
 function! s:unite_my_settings()
