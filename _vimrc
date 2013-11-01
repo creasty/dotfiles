@@ -26,6 +26,7 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
+NeoBundle 'kana/vim-altr'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'surround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
@@ -64,6 +65,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
     \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ }
 \ }
+NeoBundle 'Townk/vim-autoclose'
 
 " Utils
 NeoBundle 'tpope/vim-fugitive'
@@ -233,6 +235,8 @@ nnoremap <C-w>t :tabnew<CR>
 nnoremap <C-w><C-t> :tabnew<CR>
 inoremap <C-w>t <C-o>:tabnew<CR>
 inoremap <C-w><C-t> <C-o>:tabnew<CR>
+nnoremap <C-w>c :bd
+inoremap <C-w><C-c> <C-o>:bd<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -485,8 +489,6 @@ nnoremap c "_c
 
 " ヤンク
 nnoremap Y y$
-inoremap <silent> <C-y>e <Esc>ly0<Insert>
-inoremap <silent> <C-y>0 <Esc>ly$<Insert>
 
 " 保存時に行末の空白を除去する
 autocmd vimrc BufWritePre *
@@ -562,6 +564,7 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 " Sticky shift
 "-------------------------------------------------------------------------------
 nnoremap <expr> ; <SID>sticky_func()
+inoremap <expr> ; <SID>sticky_func()
 cnoremap <expr> ; <SID>sticky_func()
 snoremap <expr> ; <SID>sticky_func()
 
@@ -600,28 +603,6 @@ endfunction
 "-------------------------------------------------------------------------------
 " Filetype specific
 "-------------------------------------------------------------------------------
-" 拡張子
-augroup extensions
-  autocmd!
-  autocmd BufNewFile,BufRead *.psgi      setlocal ft=perl
-  autocmd BufNewFile,BufRead *.t         setlocal ft=perl
-  autocmd BufNewFile,BufRead *.ejs       setlocal ft=html
-  autocmd BufNewFile,BufRead *.ep        setlocal ft=html
-  autocmd BufNewFile,BufRead *.pde       setlocal ft=processing
-  autocmd BufNewFile,BufRead *.erb       setlocal ft=html
-  autocmd BufNewFile,BufRead *.tt        setlocal ft=html
-  autocmd BufNewFile,BufRead *.tt2       setlocal ft=html
-  autocmd BufNewFile,BufRead *.scss      setlocal ft=scss
-  autocmd BufNewFile,BufRead *.html.haml setlocal ft=haml
-  autocmd BufNewFile,BufRead *.html.slim setlocal ft=slim
-  autocmd BufNewFile,BufRead *.html.erb  setlocal ft=html
-  autocmd BufNewFile,BufRead *.css.scss  setlocal ft=scss
-  autocmd BufNewFile,BufRead *.js.coffee setlocal ft=coffee
-  autocmd BufNewFile,BufRead Guardfile   setlocal ft=ruby
-  autocmd BufNewFile,BufRead cpanfile    setlocal ft=perl
-  autocmd BufNewFile,BufRead *_spec.rb   setlocal ft=ruby.rspec
-augroup END
-
 " ソフトタブ
 augroup use_soft_tabs
   autocmd!
@@ -704,12 +685,12 @@ let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
+inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
+
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 endfunction
-
-inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 
 inoremap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
 inoremap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
@@ -738,6 +719,19 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
 let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+" let g:clang_use_library = 1
+
 
 "-------------------------------------------------------------------------------
 " Plugin: NeoSnippet
@@ -746,12 +740,12 @@ let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
-imap <expr> <TAB> neosnippet#expandable_or_jumpable()
+inoremap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? "\<Plug>(neosnippet_expand_or_jump)"
   \ : pumvisible()
     \ ? "\<Down>" . neocomplete#close_popup()
     \ : emmet#isExpandable()
-        \ ? "\<C-m>,"
+        \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
         \ : "\<TAB>"
 
 if has('conceal')
@@ -766,14 +760,6 @@ autocmd vimrc Filetype *
   \ if &omnifunc == "" |
     \ setlocal omnifunc=syntaxcomplete#Complete |
   \ endif
-
-
-"-------------------------------------------------------------------------------
-" Plugin: clang_complete
-"-------------------------------------------------------------------------------
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
-" let g:clang_use_library = 1
 
 
 "-------------------------------------------------------------------------------
@@ -806,7 +792,7 @@ nnoremap <C-o> <Plug>(textmanip-duplicate-down)
 " Plugin: Smartchr
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#one_of(', ', ',')
-inoremap <expr> : smartchr#one_of(':', '=>')
+inoremap <expr> : smartchr#one_of(':', '::', '=>')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
 autocmd vimrc FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
 
@@ -822,8 +808,8 @@ vnoremap gx <Plug>(openbrowser-smart-search)
 "-------------------------------------------------------------------------------
 " Plugin: Emmet
 "-------------------------------------------------------------------------------
-let g:user_emmet_mode = 'a'
-let g:user_emmet_leader_key = '<c-m>'
+let g:user_emmet_mode = 'i'
+let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_settings = {
   \ 'lang': 'ja',
   \ 'indentation': '  ',
@@ -972,6 +958,21 @@ let g:switch_custom_definitions =
   \ ]
 
 nnoremap - :Switch<CR>
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Ruby refactoring
+"-------------------------------------------------------------------------------
+nmap ga <Plug>(altr-forward)
+nmap gA <Plug>(altr-back)
+
+" Header files
+call altr#define('%.c', '%.h', '%.m')
+
+" Rails
+call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
+call altr#define('app/controllers/%.rb', 'spec/controllers/%_spec.rb')
+call altr#define('app/helpers/%.rb', 'spec/helpers/%_spec.rb')
 
 
 "-------------------------------------------------------------------------------
