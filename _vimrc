@@ -789,12 +789,6 @@ nnoremap <C-o> <Plug>(textmanip-duplicate-down)
 
 
 "-------------------------------------------------------------------------------
-" Plugin: AutoClose
-"-------------------------------------------------------------------------------
-let g:AutoClosePairs_add = '<>'
-
-
-"-------------------------------------------------------------------------------
 " Plugin: Smartchr
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#one_of(', ', ',')
@@ -1057,7 +1051,12 @@ let g:unite_enable_start_insert = 1
 let g:unite_winheight = 10
 let g:unite_enable_ignore_case = 1
 let g:unite_enable_smart_case = 1
-" "let g:unite_ignore_source_files = []
+" let g:unite_ignore_source_files = []
+
+let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|\.\%(jpe\?g\|png\|gif\|pdf\)$'
+call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
 
 if executable('ag')
   let g:unite_source_grep_command = 'ag'
