@@ -563,10 +563,11 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 "-------------------------------------------------------------------------------
 " Sticky shift
 "-------------------------------------------------------------------------------
-nnoremap <expr> ; <SID>sticky_func()
-inoremap <expr> ; <SID>sticky_func()
-cnoremap <expr> ; <SID>sticky_func()
-snoremap <expr> ; <SID>sticky_func()
+nmap <expr> ; <SID>sticky_func()
+imap <expr> ; <SID>sticky_func()
+vmap <expr> ; <SID>sticky_func()
+cmap <expr> ; <SID>sticky_func()
+smap <expr> ; <SID>sticky_func()
 
 function! s:sticky_func()
   let l:sticky_table_jis = {
@@ -583,8 +584,10 @@ function! s:sticky_func()
   \ }
   let l:special_table = {
     \ "\<ESC>": "\<ESC>",
+    \ "\<C-c>": "\<ESC>",
     \ "\<Space>": ';',
     \ "\<CR>" : ";\<CR>",
+    \ "\<C-j>" : ";\<CR>",
   \ }
 
   let l:key = getchar()
