@@ -565,9 +565,8 @@ command! -nargs=0 Delete call delete(expand('%'))|q!
 "-------------------------------------------------------------------------------
 nmap <expr> ; <SID>sticky_func()
 imap <expr> ; <SID>sticky_func()
-vmap <expr> ; <SID>sticky_func()
 cmap <expr> ; <SID>sticky_func()
-smap <expr> ; <SID>sticky_func()
+vmap <expr> ; <SID>sticky_func()
 
 function! s:sticky_func()
   let l:sticky_table_jis = {
