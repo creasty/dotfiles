@@ -640,9 +640,13 @@ augroup END
 " ファイルタイプのエリアス
 augroup filetype_aliases
   autocmd!
-  autocmd FileType js     setlocal ft=javascript
-  autocmd FileType cs     setlocal ft=coffee
-  autocmd FileType objcpp setlocal ft=objc
+  autocmd FileType js        setf javascript
+  autocmd FileType cs        setf coffee
+  autocmd FileType objcpp    setf objc
+  autocmd FileType scss.css  setf scss
+  autocmd FileType coffee.js setf coffee
+  autocmd FileType slim.html setf slim
+  autocmd FileType haml.html setf haml
 augroup END
 
 
@@ -744,7 +748,7 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
 
 inoremap <expr> <TAB> neosnippet#expandable_or_jumpable()
-  \ ? "\<Plug>(neosnippet_expand_or_jump)"
+  \ ? neosnippet#expand_or_jump_impl()
   \ : pumvisible()
     \ ? "\<Down>" . neocomplete#close_popup()
     \ : emmet#isExpandable()
@@ -1073,6 +1077,9 @@ autocmd! vimrc FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()
   nmap <buffer> <C-q> <Plug>(unite_exit)
   imap <buffer> <C-q> <Plug>(unite_exit)
+  inoremap <C-d> <Del>
+  inoremap <silent> <C-h> <C-g>u<C-h>
+  inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
