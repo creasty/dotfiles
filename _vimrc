@@ -230,13 +230,13 @@ nnoremap U :redo<CR>
 inoremap <C-u> <C-o>u
 inoremap <C-S-u> <C-o>U
 
-" タブページ
+" タブページ / バッファー
 nnoremap <C-w>t :tabnew<CR>
 nnoremap <C-w><C-t> :tabnew<CR>
 inoremap <C-w>t <C-o>:tabnew<CR>
 inoremap <C-w><C-t> <C-o>:tabnew<CR>
-nnoremap <C-w>c :bd
-inoremap <C-w><C-c> <C-o>:bd<CR>
+nmap <C-w>c <Plug>Bclose
+imap <C-w><C-c> <Plug>Bclose
 
 
 "-------------------------------------------------------------------------------
@@ -613,6 +613,8 @@ augroup use_soft_tabs
   autocmd FileType diff   setlocal et
   autocmd FileType eruby  setlocal et
   autocmd FileType coffee setlocal et
+  autocmd FileType scss   setlocal et
+  autocmd FileType sass   setlocal et
   autocmd FileType ruby   setlocal et
   autocmd FileType haml   setlocal et
   autocmd FileType sh     setlocal et
@@ -640,13 +642,13 @@ augroup END
 " ファイルタイプのエリアス
 augroup filetype_aliases
   autocmd!
-  autocmd FileType js        setf javascript
-  autocmd FileType cs        setf coffee
-  autocmd FileType objcpp    setf objc
-  autocmd FileType scss.css  setf scss
-  autocmd FileType coffee.js setf coffee
-  autocmd FileType slim.html setf slim
-  autocmd FileType haml.html setf haml
+  autocmd FileType js        setlocal ft=javascript
+  autocmd FileType cs        setlocal ft=coffee
+  autocmd FileType objcpp    setlocal ft=objc
+  autocmd FileType scss.css  setlocal ft=scss
+  autocmd FileType coffee.js setlocal ft=coffee
+  autocmd FileType slim.html setlocal ft=slim
+  autocmd FileType haml.html setlocal ft=haml
 augroup END
 
 
@@ -862,7 +864,7 @@ let g:tcommentMapLeader2 = '<Leader>'
 let g:tcommentMapLeaderOp1 = 'gc'
 let g:tcommentMapLeaderOp2 = 'gC'
 let g:tcommentGuessFileType = 1
-
+let g:tcommentGuessFileType_scss = 'js'
 
 "-------------------------------------------------------------------------------
 " Plugin: Session
@@ -1060,7 +1062,7 @@ let g:unite_enable_ignore_case = 1
 let g:unite_enable_smart_case = 1
 " let g:unite_ignore_source_files = []
 
-let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|\.\%(jpe\?g\|png\|gif\|pdf\)$'
+let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|\.\%(jpe\?g\|png\|gif\|pdf\)$\|\%(^\|/\)\%(tmp\|cache\)/'
 call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
@@ -1071,15 +1073,19 @@ if executable('ag')
   let g:unite_source_grep_recursive_opt = ''
 endif
 
-nnoremap <C-q> :Unite -buffer-name=files file_rec/async file/new directory/new<CR>
+nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async file/new directory/new<CR>
 autocmd! vimrc FileType unite call s:unite_my_settings()
 
 function! s:unite_my_settings()
   nmap <buffer> <C-q> <Plug>(unite_exit)
   imap <buffer> <C-q> <Plug>(unite_exit)
-  inoremap <C-d> <Del>
-  inoremap <silent> <C-h> <C-g>u<C-h>
-  inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
+  inoremap <buffer> <C-d> <Del>
+  inoremap <buffer> <silent> <C-h> <C-g>u<C-h>
+  imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
+  inoremap <buffer> <C-b> <Left>
+  inoremap <buffer> <C-f> <Right>
+  imap <buffer> <C-a> <Plug>(unite_move_head)
+  inoremap <buffer> <C-e> <End>
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
