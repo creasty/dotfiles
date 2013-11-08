@@ -216,7 +216,7 @@ set imdisable
 
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
-autocmd vimrc BufWritePost *vimrc source $MYVIMRC
+" autocmd vimrc BufWritePost *vimrc source $MYVIMRC
 autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | endif
 
 " Undo / Redo
@@ -626,18 +626,6 @@ augroup force_encordings
   autocmd FileType scala setlocal fenc=utf-8
   autocmd FileType yml   setlocal fenc=utf-8
   autocmd FileType cvs   setlocal fenc=euc-jp
-augroup END
-
-" ファイルタイプのエリアス
-augroup filetype_aliases
-  autocmd!
-  autocmd FileType js        setlocal ft=javascript
-  autocmd FileType cs        setlocal ft=coffee
-  autocmd FileType objcpp    setlocal ft=objc
-  autocmd FileType scss.css  setlocal ft=scss
-  autocmd FileType coffee.js setlocal ft=coffee
-  autocmd FileType slim.html setlocal ft=slim
-  autocmd FileType haml.html setlocal ft=haml
 augroup END
 
 
