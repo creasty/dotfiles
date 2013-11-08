@@ -371,6 +371,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("cssBackgroundProp", s:red, "", "")
   call <SID>X("cssTextProp", s:red, "", "")
   call <SID>X("cssPositioningProp", s:red, "", "")
+  call <SID>X("cssPositioningAttr", s:red, "", "")
   call <SID>X("cssDimensionProp", s:red, "", "")
   call <SID>X("cssTransitionProp", s:red, "", "")
   call <SID>X("cssBorderProp", s:red, "", "")
@@ -379,6 +380,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("cssListProp", s:red, "", "")
   call <SID>X("cssColorProp", s:red, "", "")
   call <SID>X("cssUIProp", s:red, "", "")
+  call <SID>X("cssUIAttr", s:red, "", "")
   call <SID>X("cssFontProp", s:red, "", "")
   call <SID>X("cssTransformProp", s:red, "", "")
   call <SID>X("cssIdentifier", s:red, "", "")
@@ -392,6 +394,13 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("cssAttributeSelector", s:purple, "", "")
   call <SID>X("cssFunctionName", s:aqua, "", "")
   call <SID>X("cssImportant", s:red, "", "")
+
+  " Sass Highlighting
+  call <SID>X("scssIf", s:purple, "", "")
+  call <SID>X("scssElseIf", s:purple, "", "")
+  call <SID>X("scssElse", s:purple, "", "")
+  call <SID>X("scssFor", s:purple, "", "")
+  call <SID>X("scssReturn", s:purple, "", "")
 
   " HTML Highlighting
   call <SID>X("htmlTag", s:red, "", "")
