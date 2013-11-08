@@ -35,7 +35,7 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'Align'
 NeoBundle 'mattn/emmet-vim'
-NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tyru/operator-html-escape.vim'
 NeoBundle 'tyru/operator-camelize.vim'
 NeoBundle 'tek/vim-operator-assign'
@@ -45,11 +45,6 @@ NeoBundle 'emonkak/vim-operator-sort'
 NeoBundleLazy 'tmhedberg/matchit.git'
 NeoBundleLazy "kana/vim-smartinput"
 NeoBundleLazy "cohama/vim-smartinput-endwise"
-" NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
-"   \ 'autoload': {
-"     \ 'insert': 1,
-"   \ }
-" \ }
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'smartchr'
 " NeoBundle 'YankRing.vim'
@@ -88,7 +83,7 @@ NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'Shougo/vinarise.vim'
 " NeoBundle 'SearchComplete'
 NeoBundle 'kana/vim-fakeclip.git'
-" NeoBundle 'kana/vim-altr'
+NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
 " NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'thinca/vim-quickrun.git'
@@ -846,18 +841,21 @@ nmap ," csw"
 
 
 "-------------------------------------------------------------------------------
-" Plugin: tComment
+" Plugin: NerdCommenter
 "-------------------------------------------------------------------------------
-let g:tcommentMapLeader1 = '<C-/>'
-let g:tcommentMapLeader2 = '<Leader>'
-let g:tcommentMapLeaderOp1 = 'gc'
-let g:tcommentMapLeaderOp2 = 'gC'
-let g:tcommentGuessFileType = 1
-let g:tcommentGuessFileType_scss = 'js'
-let g:tcommentGuessFileType_coffee = 'coffee'
-
-call tcomment#DefineType('coffee_inline', '# %s')
-call tcomment#DefineType('coffee_block', '###%s###')
+nmap gcc <leader>cc
+nmap gcn <leader>cn
+nmap gc <leader>c
+nmap gcm <leader>cm
+nmap gci <leader>ci
+nmap gcs <leader>cs
+nmap gcy <leader>cy
+nmap gc$ <leader>c$
+nmap gcA <leader>cA
+nmap gca <leader>ca
+nmap gcl <leader>cl
+nmap gcb <leader>cb
+nmap gcu <leader>cu
 
 
 "-------------------------------------------------------------------------------
