@@ -1,0 +1,10 @@
+tmp/
+cache/
+
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.pdf
+
+

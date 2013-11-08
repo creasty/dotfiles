@@ -43,11 +43,13 @@ NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
 NeoBundleLazy 'tmhedberg/matchit.git'
-NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
-  \ 'autoload': {
-    \ 'insert': 1,
-  \ }
-\ }
+NeoBundleLazy "kana/vim-smartinput"
+NeoBundleLazy "cohama/vim-smartinput-endwise"
+" NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
+"   \ 'autoload': {
+"     \ 'insert': 1,
+"   \ }
+" \ }
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'smartchr'
 " NeoBundle 'YankRing.vim'
@@ -221,9 +223,6 @@ set imdisable
 command! EditVimrc edit $MYVIMRC
 autocmd vimrc BufWritePost *vimrc source $MYVIMRC
 autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | endif
-
-" C-c と Esc の挙動を同じに
-inoremap <C-c> <ESC>
 
 " Undo / Redo
 nnoremap U :redo<CR>
@@ -451,26 +450,27 @@ vnoremap p :let current_reg = @"gvdi=current_reg
 command! Pt :set paste!
 
 " Emacs のカーソル移動
-inoremap <C-n> <Down>
-inoremap <C-p> <Up>
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
-inoremap <C-a> <Home>
-inoremap <C-e> <End>
-inoremap <C-j> <CR>
-inoremap <C-d> <Del>
+imap <C-c> <Esc>
+imap <C-n> <Down>
+imap <C-p> <Up>
+imap <C-b> <Left>
+imap <C-f> <Right>
+imap <C-a> <Home>
+imap <C-e> <End>
+imap <C-j> <CR>
+imap <C-d> <Del>
 inoremap <silent> <C-h> <C-g>u<C-h>
 inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
 
-cnoremap <C-a> <Home>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-cnoremap <C-d> <Del>
+cmap <C-a> <Home>
+cmap <C-b> <Left>
+cmap <C-f> <Right>
+cmap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
-nnoremap <C-j> <CR>
-nnoremap <C-n> <Down>
-nnoremap <C-p> <Up>
+nmap <C-j> <CR>
+nmap <C-n> <Down>
+nmap <C-p> <Up>
 
 " 括弧までを消したり置き換えたりする
 " http://vim-users.jp/2011/04/hack214/
@@ -498,11 +498,6 @@ autocmd vimrc BufWritePre *
 
 " 保存時に tab をスペースに変換する (expandtab が設定されているなら)
 autocmd vimrc BufWritePre * if &et | exec "%s/\t/  /ge" | endif
-
-" 日時の自動入力
-inoremap <expr> ~df strftime('%Y/%m/%d %H:%M:%S')
-inoremap <expr> ~dd strftime('%Y/%m/%d')
-inoremap <expr> ~dt strftime('%H:%M:%S')
 
 " ファイルを開いた時に最後のカーソル位置を再現する
 autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
@@ -695,18 +690,13 @@ let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
 inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-
-inoremap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
-inoremap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-inoremap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<Home>" : "\<Home>"
-inoremap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<End>" : "\<End>"
+imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
+imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
+imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<Home>" : "\<Home>"
+imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<End>" : "\<End>"
 inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
-inoremap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<ESC>"
-inoremap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
+imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
 
 " Omni completion
 augroup omni_completion_funcs
@@ -832,8 +822,8 @@ let g:user_emmet_settings = {
 "-------------------------------------------------------------------------------
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
-vmap ab <Plug>(textobj-multiblock-a)
-vmap ib <Plug>(textobj-multiblock-i)
+" vmap ab <Plug>(textobj-multiblock-a)
+" vmap ib <Plug>(textobj-multiblock-i)
 
 
 "-------------------------------------------------------------------------------
@@ -864,6 +854,11 @@ let g:tcommentMapLeaderOp1 = 'gc'
 let g:tcommentMapLeaderOp2 = 'gC'
 let g:tcommentGuessFileType = 1
 let g:tcommentGuessFileType_scss = 'js'
+let g:tcommentGuessFileType_coffee = 'coffee'
+
+call tcomment#DefineType('coffee_inline', '# %s')
+call tcomment#DefineType('coffee_block', '###%s###')
+
 
 "-------------------------------------------------------------------------------
 " Plugin: Session
@@ -1017,10 +1012,9 @@ vnoremap <Leader>rem :RExtractMethod<CR>
 
 
 "-------------------------------------------------------------------------------
-" Plugin: Endwise
+" Plugin: SmartInput / Endwise
 "-------------------------------------------------------------------------------
-let g:endwise_no_mappings = 1
-imap <C-j> <CR><Plug>DiscretionaryEnd
+call smartinput_endwise#define_default_rules()
 
 
 "-------------------------------------------------------------------------------
@@ -1061,9 +1055,11 @@ let g:unite_enable_start_insert = 1
 let g:unite_winheight = 10
 let g:unite_enable_ignore_case = 1
 let g:unite_enable_smart_case = 1
-" let g:unite_ignore_source_files = []
+let g:unite_source_rec_min_cache_files = 50
+let g:unite_source_rec_max_cache_files = 5000
 
 let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|\.\%(jpe\?g\|png\|gif\|pdf\)$\|\%(^\|/\)\%(tmp\|cache\)/'
+call unite#custom#source('file', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
@@ -1087,6 +1083,7 @@ function! s:unite_my_settings()
   inoremap <buffer> <C-f> <Right>
   imap <buffer> <C-a> <Plug>(unite_move_head)
   inoremap <buffer> <C-e> <End>
+  imap <buffer> <C-j> <Plug>(unite_do_default_action)
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
@@ -1112,13 +1109,17 @@ nmap # <Plug>(anzu-sharp-with-echo)
 "-------------------------------------------------------------------------------
 " Plugin: Lightline
 "-------------------------------------------------------------------------------
+let g:unite_force_overwrite_statusline = 0
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimshell_force_overwrite_statusline = 0
+
 let g:lightline = {
   \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
     \ 'left': [
       \ ['mode', 'paste'],
       \ ['fugitive','filename'],
-      \ ['ctrlpmark', 'anzu']
+      \ ['anzu']
     \ ],
     \ 'right': [
       \ ['syntastic', 'lineinfo', 'percent'],
@@ -1135,7 +1136,6 @@ let g:lightline = {
     \ 'filetype':     'LightlineFiletype',
     \ 'fileencoding': 'LightlineFileencoding',
     \ 'mode':         'LightlineMode',
-    \ 'ctrlpmark':    'LightlineCtrlPMark',
     \ 'anzu':         'anzu#search_status',
   \ },
   \ 'component_expand': {
@@ -1146,10 +1146,6 @@ let g:lightline = {
   \ },
   \ 'subseparator': { 'left': '│', 'right': '│' },
 \ }
-
-let g:unite_force_overwrite_statusline = 0
-let g:vimfiler_force_overwrite_statusline = 0
-let g:vimshell_force_overwrite_statusline = 0
 
 if has('gui_running')
   let g:lightline.separator = { 'left': "\u2b80", 'right': "\u2b82" }
@@ -1213,35 +1209,6 @@ function! LightlineMode()
     \ &ft == 'vimfiler' ? 'VimFiler' :
     \ &ft == 'vimshell' ? 'VimShell' :
     \ winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-let g:lightline.ctrlp_regex = ''
-let g:lightline.ctrlp_prev = ''
-let g:lightline.ctrlp_item = ''
-let g:lightline.ctrlp_next = ''
-
-let g:ctrlp_status_func = {
-  \ 'main': 'CtrlPStatusFunc_1',
-  \ 'prog': 'CtrlPStatusFunc_2',
-\ }
-
-function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-  let g:lightline.ctrlp_regex = a:regex
-  let g:lightline.ctrlp_prev = a:prev
-  let g:lightline.ctrlp_item = a:item
-  let g:lightline.ctrlp_next = a:next
-  return lightline#statusline(0)
-endfunction
-
-function! CtrlPStatusFunc_2(str)
-  return lightline#statusline(0)
-endfunction
-
-function! LightlineCtrlPMark()
-  if expand('%:t') =~ 'ControlP'
-    call lightline#link('iR'[g:lightline.ctrlp_regex])
-  endif
-  return ''
 endfunction
 
 augroup AutoSyntastic
