@@ -7,4 +7,10 @@ cache/
 *.gif
 *.pdf
 
+*.ttf
+*.otf
+*.eot
+*.woff
+*.svg
+*.svgz
 

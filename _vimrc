@@ -719,7 +719,7 @@ let g:clang_auto_select = 0
 "-------------------------------------------------------------------------------
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory = '~/.vim/snippets, ~/.vim/snipmate-snippets/snippets, ~/.vim/snipmate-snippets-rubymotion/snippets'
+let g:neosnippet#snippets_directory = '~/.vim/snippets'
 
 inoremap <expr> <TAB> neosnippet#expandable_or_jumpable()
   \ ? neosnippet#expand_or_jump_impl()
@@ -1044,7 +1044,8 @@ let g:unite_enable_smart_case = 1
 let g:unite_source_rec_min_cache_files = 50
 let g:unite_source_rec_max_cache_files = 5000
 
-let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|\.\%(jpe\?g\|png\|gif\|pdf\)$\|\%(^\|/\)\%(tmp\|cache\)/'
+let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
+  \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\)/'
 call unite#custom#source('file', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
