@@ -225,12 +225,18 @@ inoremap <C-u> <C-o>u
 inoremap <C-S-u> <C-o>U
 
 " タブページ / バッファー
+nmap <C-w><C-t> <C-w>t
 nnoremap <C-w>t :tabnew<CR>
-nnoremap <C-w><C-t> :tabnew<CR>
+
+imap <C-w><C-t> <C-w>t
 inoremap <C-w>t <C-o>:tabnew<CR>
-inoremap <C-w><C-t> <C-o>:tabnew<CR>
-nmap <C-w>c <Plug>Bclose
-imap <C-w><C-c> <Plug>Bclose
+
+nmap <C-w><C-c> <C-w>c
+nmap <C-w>c <Plug>Kwbd
+imap <C-w><C-c> <C-w>c
+imap <C-w>c <Plug>Kwbd
+
+" Insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
 
@@ -545,10 +551,13 @@ augroup complete_closing_tag
 augroup END
 
 " 編集中ファイルのファイル名を変更する
-command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
+command! -nargs=1 -complete=file Rename f <args> | call delete(expand('#'))
 
 " 編集中ファイルのファイル名を変更する
-command! -nargs=0 Delete call delete(expand('%'))|q!
+command! -nargs=0 Delete call delete(expand('%')) | q!
+
+nmap <C-w><C-r> <C-w>r
+nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
 
 
 "-------------------------------------------------------------------------------
