@@ -231,7 +231,7 @@ inoremap <C-w>t <C-o>:tabnew<CR>
 inoremap <C-w><C-t> <C-o>:tabnew<CR>
 nmap <C-w>c <Plug>Bclose
 imap <C-w><C-c> <Plug>Bclose
-cnoremap <C-l> <C-r>=expand('%:p:h') . '/' <CR>
+cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
 
 "-------------------------------------------------------------------------------
@@ -1074,6 +1074,7 @@ function! s:unite_my_settings()
   imap <buffer> <C-j> <Plug>(unite_do_default_action)
   imap <buffer> <C-l> <Plug>(unite_redraw)
   inoremap <buffer> : **/
+  inoremap <buffer> ^ <C-r>=expand('%:h') . '/' <CR>
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
