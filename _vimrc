@@ -214,6 +214,9 @@ set nf=alpha,hex
 " IME を無効化
 set imdisable
 
+" ワイルドカードで表示するときに優先度を低くする拡張子
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
 " autocmd vimrc BufWritePost *vimrc source $MYVIMRC
@@ -235,10 +238,6 @@ nmap <C-w><C-c> <C-w>c
 nmap <C-w>c <Plug>Kwbd
 imap <C-w><C-c> <C-w>c
 imap <C-w>c <Plug>Kwbd
-
-" Insert relative path
-cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
-
 
 "-------------------------------------------------------------------------------
 " Apperance
@@ -410,9 +409,6 @@ endfunction
 
 autocmd vimrc BufReadPost * call AU_ReCheck_FENC()
 
-" ワイルドカードで表示するときに優先度を低くする拡張子
-set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
-
 " 指定文字コードで強制的にファイルを開く
 command! Cp932 edit ++enc=cp932
 command! Eucjp edit ++enc=euc-jp
@@ -508,6 +504,7 @@ autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe
 autocmd BufReadPost * delmarks!
 
 " automatically change the current directory
+" now i use rooter.vim insted
 " autocmd vimrc BufEnter * silent! lcd %:p:h
 
 " 各種エンコーディングで開き直す
@@ -558,6 +555,9 @@ command! -nargs=0 Delete call delete(expand('%')) | q!
 
 nmap <C-w><C-r> <C-w>r
 nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
+
+" Insert relative path
+cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
 
 "-------------------------------------------------------------------------------
@@ -775,8 +775,10 @@ xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 
 " 行の複製
-vnoremap <C-o> <Plug>(textmanip-duplicate-down)
-nnoremap <C-o> <Plug>(textmanip-duplicate-down)
+vmap ,d <Plug>(textmanip-duplicate-down)
+vmap ,D <Plug>(textmanip-duplicate-up)
+nmap ,d <Plug>(textmanip-duplicate-down)
+nmap ,D <Plug>(textmanip-duplicate-up)
 
 
 "-------------------------------------------------------------------------------
@@ -815,8 +817,8 @@ let g:user_emmet_settings = {
 "-------------------------------------------------------------------------------
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
-" vmap ab <Plug>(textobj-multiblock-a)
-" vmap ib <Plug>(textobj-multiblock-i)
+vmap ab <Plug>(textobj-multiblock-a)
+vmap ib <Plug>(textobj-multiblock-i)
 
 
 "-------------------------------------------------------------------------------
@@ -843,7 +845,7 @@ nmap ," csw"
 "-------------------------------------------------------------------------------
 nmap gcc <leader>cc
 nmap gcn <leader>cn
-nmap gc <leader>c
+nmap gc  <leader>c
 nmap gcm <leader>cm
 nmap gci <leader>ci
 nmap gcs <leader>cs
@@ -865,9 +867,9 @@ let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 
-" cab os OpenSession
-" cab cs CloseSession
-" cab ss SaveSession
+cab ops OpenSession
+cab cls CloseSession
+cab svs SaveSession
 
 
 "-------------------------------------------------------------------------------
@@ -880,7 +882,6 @@ let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
 
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_startup_cd = 0
-" let g:nerdtree_tabs_open_on_new_tab = 0
 
 nnoremap <C-s> :NERDTreeTabsToggle<CR>
 
@@ -891,7 +892,8 @@ nnoremap <C-s> :NERDTreeTabsToggle<CR>
 let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot']
 " let g:rooter_use_lcd = 1
 let g:rooter_manual_only = 1
-let g:rooter_change_directory_for_non_project_files = 1
+let g:rooter_change_directory_for_non_project_files = 0
+
 autocmd vimrc BufEnter * :Rooter
 
 
@@ -930,11 +932,13 @@ call submode#map('changetab', 'n', '', 'T', 'gT')
 "-------------------------------------------------------------------------------
 let g:memolist_memo_suffix = 'md'
 let g:memolist_path = '~/Dropbox/memo'
+let g:memolist_unite = 1
+let g:memolist_unite_source = 'file_rec'
+let g:memolist_unite_option = '-auto-preview -start-insert'
 
 nnoremap ,mn :MemoNew<CR>
 nnoremap ,mg :MemoGrep<CR>
 nnoremap ,ml :MemoList<CR>
-nnoremap ,mf :exe "CtrlP" g:memolist_path<CR><f5>
 
 
 "-------------------------------------------------------------------------------
@@ -1118,8 +1122,7 @@ let g:lightline = {
   \ 'active': {
     \ 'left': [
       \ ['mode', 'paste'],
-      \ ['fugitive','filename'],
-      \ ['anzu']
+      \ ['fugitive','filename']
     \ ],
     \ 'right': [
       \ ['syntastic', 'lineinfo', 'percent'],
@@ -1178,8 +1181,11 @@ function! LightlineFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
       let icon = has("gui_running") ? "\u2b60 " : "~ "
-      let _ = fugitive#head()
-      return strlen(_) ? icon._ : ''
+      let branch = fugitive#head()
+      let branch = substitute(branch, '^feature/', 'F/', '')
+      let branch = substitute(branch, '^hotfix/', 'X/', '')
+      let branch = substitute(branch, '^release/', 'R/', '')
+      return strlen(branch) ? icon . branch : ''
     endif
   catch
   endtry
