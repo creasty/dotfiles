@@ -222,11 +222,6 @@ command! EditVimrc edit $MYVIMRC
 " autocmd vimrc BufWritePost *vimrc source $MYVIMRC
 autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | endif
 
-" Undo / Redo
-nnoremap U :redo<CR>
-inoremap <C-u> <C-o>u
-inoremap <C-S-u> <C-o>U
-
 " タブページ / バッファー
 nmap <C-w><C-t> <C-w>t
 nnoremap <C-w>t :tabnew<CR>
@@ -238,6 +233,7 @@ nmap <C-w><C-c> <C-w>c
 nmap <C-w>c <Plug>Kwbd
 imap <C-w><C-c> <C-w>c
 imap <C-w>c <Plug>Kwbd
+
 
 "-------------------------------------------------------------------------------
 " Apperance
@@ -447,10 +443,18 @@ vnoremap p :let current_reg = @"gvdi=current_reg
 " :Ptでインデントモード切替
 command! Pt :set paste!
 
+" jk で見た目通りに移動
+nmap j gj
+nmap k gk
+
 " Emacs のカーソル移動
+nmap <C-j> <CR>
+nmap <C-n> j
+nmap <C-p> k
+
 imap <C-c> <Esc>
-imap <C-n> <Down>
-imap <C-p> <Up>
+imap <C-n> <C-o>j
+imap <C-p> <C-o>k
 imap <C-b> <Left>
 imap <C-f> <Right>
 imap <C-a> <Home>
@@ -465,10 +469,6 @@ cmap <C-b> <Left>
 cmap <C-f> <Right>
 cmap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
-
-nmap <C-j> <CR>
-nmap <C-n> <Down>
-nmap <C-p> <Up>
 
 " 括弧までを消したり置き換えたりする
 " http://vim-users.jp/2011/04/hack214/
@@ -859,6 +859,13 @@ nmap gcu <leader>cu
 
 
 "-------------------------------------------------------------------------------
+" Plugin: EasyMotion
+"-------------------------------------------------------------------------------
+let g:EasyMotion_mapping_f = ',f'
+let g:EasyMotion_mapping_F = ',F'
+
+
+"-------------------------------------------------------------------------------
 " Plugin: Session
 "-------------------------------------------------------------------------------
 let g:session_autosave = 0
@@ -867,9 +874,9 @@ let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 
-cab ops OpenSession
-cab cls CloseSession
-cab svs SaveSession
+nnoremap <Leader>so :OpenSession<Space>
+nnoremap <Leader>sc :CloseSession<CR>
+nnoremap <Leader>sa :SaveSession<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -981,6 +988,12 @@ call altr#define('%.html.slim', '%_smart_phone.html.slim')
 
 
 "-------------------------------------------------------------------------------
+" Plugin: vim rails
+"-------------------------------------------------------------------------------
+nmap gr :R<CR>
+
+
+"-------------------------------------------------------------------------------
 " Plugin: Ruby refactoring
 "-------------------------------------------------------------------------------
 " メソッドに引数を追加する
@@ -1022,15 +1035,17 @@ call smartinput_endwise#define_default_rules()
 "-------------------------------------------------------------------------------
 let g:yankring_replace_n_pkey = '<M-p>'
 let g:yankring_replace_n_nkey = '<M-n>'
+
 nnoremap <Space><Space>y :YRShow<CR>
 
 
 "-------------------------------------------------------------------------------
-" Plugin: indent line
+" Plugin: IndentLine
 "-------------------------------------------------------------------------------
 let g:indentLine_char = '¦'
 let g:indentLine_color_term = 234
 let g:indentLine_color_gui = '#2a2a2a'
+let g:indentLine_indentLevel = 20
 
 
 "-------------------------------------------------------------------------------
