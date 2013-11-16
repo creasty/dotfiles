@@ -167,7 +167,6 @@ set noswapfile
 
 " 編集中でも他のファイルを開けるようにする
 set hidden
-set bufhidden=delete
 
 " バックスペースでなんでも消せるように
 set backspace=indent,eol,start
@@ -249,6 +248,13 @@ function! DeleteHiddenBuffers()
 endfunction
 
 command! DeleteHiddenBuffers :call DeleteHiddenBuffers()
+
+autocmd vimrc BufRead * call s:set_hidden()
+function! s:set_hidden()
+  if empty(&buftype) " most explorer plugins have buftype=nofile
+    setlocal bufhidden=delete
+  endif
+endfunction
 
 
 "-------------------------------------------------------------------------------
