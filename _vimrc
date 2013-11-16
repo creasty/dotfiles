@@ -344,6 +344,9 @@ nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 " Insert Mode になったらハイライトを消す
 autocmd vimrc InsertEnter * :let @/=''
 
+" 前回の検索ハイライトを削除
+autocmd vimrc BufReadPost * :nohlsearch
+
 " 選択した文字列を検索
 vnoremap // y/=escape(@", '\\/.*$^~')
 
@@ -520,7 +523,7 @@ autocmd vimrc BufWritePre * if &et | exec "%s/\t/  /ge" | endif
 autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
 " 前回のマーク情報をリセット
-autocmd BufReadPost * delmarks!
+autocmd vimrc BufReadPost * delmarks!
 
 " automatically change the current directory
 " now i use rooter.vim insted
