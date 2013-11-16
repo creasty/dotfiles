@@ -581,6 +581,21 @@ nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
 " Insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
+" Vim の矩形選択の痒いところに手を届かせる
+" http://labs.timedia.co.jp/2012/10/vim-more-useful-blockwise-insertion.html
+vnoremap <expr> I <SID>force_blockwise_visual('I')
+vnoremap <expr> A <SID>force_blockwise_visual('A')
+
+function! s:force_blockwise_visual(next_key)
+  if mode() ==# 'v'
+    return "\<C-v>" . a:next_key
+  elseif mode() ==# 'V'
+    return "\<C-v>0o$" . a:next_key
+  else mode() ==# "\<C-v>"
+    return a:next_key
+  endif
+endfunction
+
 
 "-------------------------------------------------------------------------------
 " Sticky shift
