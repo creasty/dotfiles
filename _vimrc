@@ -167,6 +167,7 @@ set noswapfile
 
 " 編集中でも他のファイルを開けるようにする
 set hidden
+set bufhidden=delete
 
 " バックスペースでなんでも消せるように
 set backspace=indent,eol,start
@@ -1072,6 +1073,18 @@ let g:quickrun_config.markdown = {
   \ 'args':      'Marked',
   \ 'exec':      '%c %o %a %s',
 \ }
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Fugitive
+"-------------------------------------------------------------------------------
+autocmd vimrc User fugitive
+  \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+  \   nnoremap <buffer> .. :edit %:h<CR> |
+  \ endif
+
+autocmd vimrc BufReadPost fugitive://*
+  \ set bufhidden=delete
 
 
 "-------------------------------------------------------------------------------
