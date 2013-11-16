@@ -12,6 +12,7 @@ alias lla='ls -Gla'
 alias df='df -h'
 alias vi='vim'
 alias v='vim'
+alias mvim='open -a MacVim'
 
 alias ti='titanium'
 alias tree='tree -C'

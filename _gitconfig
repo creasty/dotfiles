@@ -16,7 +16,7 @@
 	tool = vimdiff
 
 [alias]
-	a = add .
+	a = add -A .
 	m = merge --no-ff
 	c = commit -a
 	cm = commit -am
