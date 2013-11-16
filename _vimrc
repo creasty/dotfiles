@@ -225,9 +225,13 @@ autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | en
 " タブページ / バッファー
 nmap <C-w><C-t> <C-w>t
 nnoremap <C-w>t :tabnew<CR>
-
 imap <C-w><C-t> <C-w>t
 inoremap <C-w>t <C-o>:tabnew<CR>
+
+nmap <C-w><C-v> <C-w>v
+nnoremap <C-w>v :vnew<CR>
+imap <C-w><C-v> <C-w>v
+inoremap <C-w>v <C-o>:vnew<CR>
 
 nmap <C-w><C-c> <C-w>c
 nmap <C-w>c <Plug>Kwbd
@@ -324,6 +328,9 @@ set hlsearch
 
 " Escの2回押しでハイライト消去
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+
+" Insert Mode になったらハイライトを消す
+autocmd vimrc InsertEnter * :let @/=''
 
 " 選択した文字列を検索
 vnoremap // y/=escape(@", '\\/.*$^~')
@@ -453,8 +460,8 @@ nmap <C-n> j
 nmap <C-p> k
 
 imap <C-c> <Esc>
-imap <C-n> <C-o>j
-imap <C-p> <C-o>k
+imap <C-n> <Down>
+imap <C-p> <Up>
 imap <C-b> <Left>
 imap <C-f> <Right>
 imap <C-a> <Home>
@@ -568,34 +575,38 @@ imap <expr> ; <SID>sticky_func()
 cmap <expr> ; <SID>sticky_func()
 vmap <expr> ; <SID>sticky_func()
 
-function! s:sticky_func()
-  let l:sticky_table_jis = {
-    \ ',': '<', '.': '>', '/': '?',
-    \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
-    \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
-    \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
-  \ }
-  let l:sticky_table_us = {
-    \ ',': '<', '.': '>', '/': '?',
-    \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
-    \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
-    \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
-  \ }
-  let l:special_table = {
-    \ "\<ESC>": "\<ESC>",
-    \ "\<C-c>": "\<ESC>",
-    \ "\<Space>": ';',
-    \ "\<CR>" : ";\<CR>",
-    \ "\<C-j>" : ";\<CR>",
-  \ }
+" JIS keyboard
+let s:sticky_table = {
+  \ ',': '<', '.': '>', '/': '?',
+  \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
+  \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
+  \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
+\ }
 
+" US keyboard
+" let s:sticky_table = {
+"   \ ',': '<', '.': '>', '/': '?',
+"   \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
+"   \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
+"   \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
+" \ }
+
+let s:sticky_table_special = {
+  \ "\<ESC>": "\<ESC>",
+  \ "\<C-c>": "\<ESC>",
+  \ "\<Space>": ';',
+  \ "\<CR>" : ";\<CR>",
+  \ "\<C-j>" : ";\<CR>",
+\ }
+
+function! s:sticky_func()
   let l:key = getchar()
   if nr2char(l:key) =~ '\l'
     return toupper(nr2char(l:key))
-  elseif has_key(l:sticky_table_jis, nr2char(l:key))
-    return l:sticky_table_jis[nr2char(l:key)]
-  elseif has_key(l:special_table, nr2char(l:key))
-    return l:special_table[nr2char(l:key)]
+  elseif has_key(s:sticky_table, nr2char(l:key))
+    return s:sticky_table[nr2char(l:key)]
+  elseif has_key(s:sticky_table_special, nr2char(l:key))
+    return s:sticky_table_special[nr2char(l:key)]
   else
     return ''
   endif
@@ -876,7 +887,7 @@ let g:session_command_aliases = 1
 
 nnoremap <Leader>so :OpenSession<Space>
 nnoremap <Leader>sc :CloseSession<CR>
-nnoremap <Leader>sa :SaveSession<CR>
+nnoremap <Leader>ss :SaveSession<CR>
 
 
 "-------------------------------------------------------------------------------
