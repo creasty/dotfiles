@@ -247,7 +247,20 @@ function! DeleteHiddenBuffers()
   endfor
 endfunction
 
-command! DeleteHiddenBuffers :call DeleteHiddenBuffers()
+function! DeleteHiddenBuffers2()
+  redir => buffersoutput
+    silent buffers
+  redir END
+  let buflist = split(buffersoutput,"\n")
+  for item in buflist
+    let t = matchlist(item, '\v^\s*(\d+)([^"]*)')
+    if t[2][1] != '#' && t[2][2] != 'a' && t[2][4] != '+'
+      exec 'bdelete ' . t[1]
+    endif
+  endfor
+endfunction
+
+command! DeleteHiddenBuffers :call DeleteHiddenBuffers2()
 
 autocmd vimrc BufRead * call s:set_hidden()
 function! s:set_hidden()
@@ -346,9 +359,6 @@ set hlsearch
 
 " Escの2回押しでハイライト消去
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
-
-" Insert Mode になったらハイライトを消す
-autocmd vimrc InsertEnter * :let @/=''
 
 " 前回の検索ハイライトを削除
 autocmd vimrc BufReadPost * :nohlsearch
