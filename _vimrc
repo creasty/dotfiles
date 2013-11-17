@@ -943,11 +943,25 @@ let g:NERDSpaceDelims = 1
 let g:NERDShutUp = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
+let g:NERDTreeAutoDeleteBuffer = 1
 
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_startup_cd = 0
 
-nnoremap <C-s> :NERDTreeTabsToggle<CR>
+nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
+function! s:NERDTreeToggleOrFocus()
+  let isOpen = 0
+
+  if exists('t:NERDTreeBufName')
+    let isOpen = (bufwinnr(t:NERDTreeBufName) != -1 && bufnr(t:NERDTreeBufName) != bufnr('%'))
+  endif
+
+  if isOpen
+    return ":0wincmd w\<CR>"
+  else
+    return ":NERDTreeTabsToggle\<CR>"
+  endif
+endfun
 
 
 "-------------------------------------------------------------------------------
