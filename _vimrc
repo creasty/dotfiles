@@ -475,9 +475,6 @@ filetype indent on
 " yeでそのカーソル位置にある単語をレジスタに追加
 nmap ye :let @"=expand("")
 
-" Visualモードでのpで選択範囲をレジスタの内容に置き換える
-vnoremap p :let current_reg = @"gvdi=current_reg
-
 " :Ptでインデントモード切替
 command! Pt :set paste!
 
