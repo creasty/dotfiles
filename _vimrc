@@ -220,7 +220,10 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
 " autocmd vimrc BufWritePost *vimrc source $MYVIMRC
-autocmd vimrc BufWritePost *gvimrc if has('gui_running') | source $MYGVIMRC | endif
+autocmd vimrc BufWritePost *gvimrc
+  \ if has('gui_running') |
+    \ source $MYGVIMRC |
+  \ endif
 
 " タブページ / バッファー
 nmap <C-w><C-t> <C-w>t
@@ -306,10 +309,12 @@ set listchars=tab:▸\ ,
 set display=uhex
 
 " 全角スペースを可視化
-autocmd vimrc VimEnter,WinEnter * match ZenkakuSpace /　/
+autocmd vimrc VimEnter,WinEnter *
+  \ match ZenkakuSpace /　/
 
 " 行末の \s をハイライト
-autocmd vimrc VimEnter,WinEnter * match TrailingSpace /\s\+$/
+autocmd vimrc VimEnter,WinEnter *
+  \ match TrailingSpace /\s\+$/
 
 " コマンド実行中は再描画しない
 set lazyredraw
@@ -358,7 +363,7 @@ set incsearch
 set hlsearch
 
 " Escの2回押しでハイライト消去
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+nnoremap <silent> <Space><Space><Space> :nohlsearch<CR><Esc>
 
 " 前回の検索ハイライトを削除
 autocmd vimrc BufReadPost * :nohlsearch
@@ -530,10 +535,16 @@ autocmd vimrc BufWritePre *
   \ endif
 
 " 保存時に tab をスペースに変換する (expandtab が設定されているなら)
-autocmd vimrc BufWritePre * if &et | exec "%s/\t/  /ge" | endif
+autocmd vimrc BufWritePre *
+  \ if &et |
+    \ exec "%s/\t/  /ge" |
+  \ endif
 
 " ファイルを開いた時に最後のカーソル位置を再現する
-autocmd vimrc BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+autocmd vimrc BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \ exe "normal! g`\"" |
+  \ endif
 
 " 前回のマーク情報をリセット
 autocmd vimrc BufReadPost * delmarks!
@@ -576,11 +587,8 @@ augroup vimrc_auto_mkdir
 augroup END
 
 " 閉じタグを補完する
-augroup complete_closing_tag
-  autocmd!
-  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
-  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
-augroup END
+autocmd vimrc Filetype xml,html,xhtml
+  \ inoremap <buffer> </ </<C-x><C-o>
 
 " 編集中ファイルのファイル名を変更する
 command! -nargs=1 -complete=file Rename f <args> | call delete(expand('#'))
@@ -842,7 +850,8 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> : smartchr#one_of(':', '::', '=>')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-autocmd vimrc FileType c inoremap <buffer> <expr> . smartchr#loop('.',  '->')
+autocmd vimrc FileType c
+  \ inoremap <buffer> <expr> . smartchr#loop('.',  '->')
 
 
 "-------------------------------------------------------------------------------
@@ -916,8 +925,10 @@ nmap gcu <leader>cu
 "-------------------------------------------------------------------------------
 " Plugin: EasyMotion
 "-------------------------------------------------------------------------------
-let g:EasyMotion_mapping_f = ',f'
-let g:EasyMotion_mapping_F = ',F'
+let g:EasyMotion_mapping_t = '<Space>t'
+let g:EasyMotion_mapping_T = '<Space>T'
+let g:EasyMotion_mapping_f = '<Space>f'
+let g:EasyMotion_mapping_F = '<Space>F'
 
 
 "-------------------------------------------------------------------------------
@@ -1018,13 +1029,6 @@ nnoremap ,ml :MemoList<CR>
 
 
 "-------------------------------------------------------------------------------
-" Plugin: Align
-"-------------------------------------------------------------------------------
-xnoremap <silent> a: :Alignta 01 :<CR>
-xnoremap al :Alignta<Space>
-
-
-"-------------------------------------------------------------------------------
 " Plugin: Switch
 "-------------------------------------------------------------------------------
 let g:switch_custom_definitions =
@@ -1100,15 +1104,6 @@ call smartinput_endwise#define_default_rules()
 
 
 "-------------------------------------------------------------------------------
-" Plugin: YankRing
-"-------------------------------------------------------------------------------
-let g:yankring_replace_n_pkey = '<M-p>'
-let g:yankring_replace_n_nkey = '<M-n>'
-
-nnoremap <Space><Space>y :YRShow<CR>
-
-
-"-------------------------------------------------------------------------------
 " Plugin: IndentLine
 "-------------------------------------------------------------------------------
 let g:indentLine_char = '¦'
@@ -1169,6 +1164,10 @@ endif
 
 nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
 autocmd! vimrc FileType unite call s:unite_my_settings()
+autocmd! vimrc WinEnter,BufEnter *
+  \ if &ft != 'unite' |
+    \ let g:unite_prev_lcd = expand('%:p:h') |
+  \ endif
 
 function! s:unite_my_settings()
   nmap <buffer> <C-q> <Plug>(unite_exit)
@@ -1183,7 +1182,7 @@ function! s:unite_my_settings()
   imap <buffer> <C-j> <Plug>(unite_do_default_action)
   imap <buffer> <C-l> <Plug>(unite_redraw)
   inoremap <buffer> : **/
-  inoremap <buffer> ^ <C-r>=expand('%:h') . '/' <CR>
+  inoremap <buffer> ^ <C-r>=g:unite_prev_lcd . '/' <CR>
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
@@ -1201,9 +1200,6 @@ nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)
-
-" nmap <Esc><Esc> <Plug>(anzu-clear-search-status)
-" autocmd vimrc CursorHold,CursorHoldI,WinLeave,TabLeave * call anzu#clear_search_status()
 
 
 "-------------------------------------------------------------------------------
