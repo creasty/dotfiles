@@ -977,11 +977,11 @@ endfun
 " Plugin: Rooter
 "-------------------------------------------------------------------------------
 let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot']
-let g:rooter_use_lcd = 1
+" let g:rooter_use_lcd = 1
 let g:rooter_manual_only = 1
 let g:rooter_change_directory_for_non_project_files = 0
 
-autocmd! vimrc WinEnter,BufEnter * :Rooter
+autocmd vimrc BufRead,BufEnter * :Rooter
 
 
 "-------------------------------------------------------------------------------
@@ -1020,7 +1020,7 @@ call submode#map('changetab', 'n', '', 'T', 'gT')
 let g:memolist_memo_suffix = 'md'
 let g:memolist_path = '~/Dropbox/memo'
 let g:memolist_unite = 1
-let g:memolist_unite_source = 'file_rec'
+let g:memolist_unite_source = 'file'
 let g:memolist_unite_option = '-auto-preview -start-insert'
 
 nnoremap ,mn :MemoNew<CR>
