@@ -20,4 +20,5 @@ snippet =rpl
 	= render partial: '${1:partial}', locals: {}
 
 snippet =rpc
-	= render partial: '${1:partial}', collection: @$1
+	= render partial: '${1:partial}', collection: @${2}
+
