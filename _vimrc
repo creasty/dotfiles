@@ -1166,7 +1166,7 @@ nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file file/new direct
 autocmd! vimrc FileType unite call s:unite_my_settings()
 autocmd! vimrc WinEnter,BufEnter *
   \ if &ft != 'unite' |
-    \ let g:unite_prev_lcd = expand('%:p:h') |
+    \ let g:unite_prev_bufpath = expand('%:p:h') |
   \ endif
 
 function! s:unite_my_settings()
@@ -1182,7 +1182,7 @@ function! s:unite_my_settings()
   imap <buffer> <C-j> <Plug>(unite_do_default_action)
   imap <buffer> <C-l> <Plug>(unite_redraw)
   inoremap <buffer> : **/
-  inoremap <buffer> ^ <C-r>=g:unite_prev_lcd . '/' <CR>
+  inoremap <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
