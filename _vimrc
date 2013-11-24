@@ -837,6 +837,13 @@ xmap <C-k> <Plug>(textmanip-move-up)
 xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 
+" ノーマルモードでも動かしたい
+imap <D-h> <C-o>V<C-h><Esc>
+imap <D-j> <C-o>V<C-j><Esc>
+imap <D-k> <C-o>V<C-k><Esc>
+imap <D-l> <C-o>V<C-l><Esc>
+imap <D-d> <C-o>,d
+
 " 行の複製
 vmap ,d <Plug>(textmanip-duplicate-down)
 vmap ,D <Plug>(textmanip-duplicate-up)
@@ -850,8 +857,7 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> : smartchr#one_of(':', '::', '=>')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-autocmd vimrc FileType c
-  \ inoremap <buffer> <expr> . smartchr#loop('.',  '->')
+inoremap <expr> . smartchr#loop('.',  '->', '...')
 
 
 "-------------------------------------------------------------------------------
@@ -940,7 +946,7 @@ let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 
-nnoremap <Leader>so :OpenSession<Space>
+nnoremap gs :OpenSession<Space>
 nnoremap <Leader>sc :CloseSession<CR>
 nnoremap <Leader>ss :SaveSession<CR>
 
