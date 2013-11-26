@@ -794,13 +794,13 @@ let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/.vim/snippets'
 
-inoremap <expr> <TAB> neosnippet#expandable_or_jumpable()
-  \ ? neosnippet#expand_or_jump_impl()
-  \ : pumvisible()
-    \ ? "\<Down>" . neocomplete#close_popup()
-    \ : emmet#isExpandable()
-        \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
-        \ : "\<TAB>"
+inoremap <expr> <TAB> pumvisible()
+  \ ? "\<Down>" . neocomplete#close_popup()
+  \ : neosnippet#expandable_or_jumpable()
+    \ ? neosnippet#expand_or_jump_impl()
+    \ : count(['html', 'css', 'scss', 'xml'], &ft) != 0 && emmet#isExpandable()
+      \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
+      \ : "\<TAB>"
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
