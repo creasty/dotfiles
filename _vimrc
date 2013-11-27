@@ -217,6 +217,9 @@ set imdisable
 " ワイルドカードで表示するときに優先度を低くする拡張子
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 
+" 最後の行がめちゃ長いとき表示されない
+set display& display=lastline
+
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
 " autocmd vimrc BufWritePost *vimrc source $MYVIMRC
@@ -362,8 +365,8 @@ set incsearch
 " 検索文字をハイライト
 set hlsearch
 
-" Escの2回押しでハイライト消去
-nnoremap <silent> <Space><Space><Space> :nohlsearch<CR><Esc>
+" Space の2回押しでハイライト消去
+nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 
 " 前回の検索ハイライトを削除
 autocmd vimrc BufReadPost * :nohlsearch
@@ -493,12 +496,12 @@ nmap <C-n> j
 nmap <C-p> k
 
 imap <C-c> <Esc>
-imap <C-n> <Down>
-imap <C-p> <Up>
+imap <C-n> <C-o>gj
+imap <C-p> <C-o>gk
 imap <C-b> <Left>
 imap <C-f> <Right>
-imap <C-a> <Home>
-imap <C-e> <End>
+imap <C-a> g<Home>
+imap <C-e> g<End>
 imap <C-j> <CR>
 imap <C-d> <Del>
 inoremap <silent> <C-h> <C-g>u<C-h>
@@ -712,7 +715,7 @@ let g:neocomplcache_max_list = 20
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#disable_auto_complete = 0
-let g:neocomplete#enable_auto_select = 0
+let g:neocomplete#enable_auto_select = 1
 let g:neocomplete#enable_insert_char_pre = 1
 set completeopt& completeopt-=preview
 
@@ -748,8 +751,8 @@ inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 
 imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
 imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<Home>" : "\<Home>"
-imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<End>" : "\<End>"
+imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g<Home>" : "\<C-o>g<Home>"
+imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g<End>" : "\<C-o>g<End>"
 inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
 imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
 imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
@@ -794,17 +797,21 @@ let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/.vim/snippets'
 
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
 inoremap <expr> <TAB> pumvisible()
-  \ ? "\<Down>" . neocomplete#close_popup()
+  \ ? neocomplete#close_popup()
   \ : neosnippet#expandable_or_jumpable()
     \ ? neosnippet#expand_or_jump_impl()
     \ : count(['html', 'css', 'scss', 'xml'], &ft) != 0 && emmet#isExpandable()
       \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
       \ : "\<TAB>"
 
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
+" Remove placeholders (hidden markers) before saving
+autocmd vimrc BufWritePre *
+  \ exec '%s/<`\d\+:\?[^>]*`>//ge'
 
 
 "-------------------------------------------------------------------------------
@@ -832,10 +839,10 @@ let g:rubycomplete_include_object_space = 1
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
 " 選択したテキストの移動
-xmap <C-j> <Plug>(textmanip-move-down)
-xmap <C-k> <Plug>(textmanip-move-up)
-xmap <C-h> <Plug>(textmanip-move-left)
-xmap <C-l> <Plug>(textmanip-move-right)
+vmap <C-j> <Plug>(textmanip-move-down)
+vmap <C-k> <Plug>(textmanip-move-up)
+vmap <C-h> <Plug>(textmanip-move-left)
+vmap <C-l> <Plug>(textmanip-move-right)
 
 " ノーマルモードでも動かしたい
 imap <D-h> <C-o>V<C-h><Esc>
@@ -854,10 +861,9 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 "-------------------------------------------------------------------------------
 " Plugin: Smartchr
 "-------------------------------------------------------------------------------
-inoremap <expr> , smartchr#one_of(', ', ',')
-inoremap <expr> : smartchr#one_of(':', '::', '=>')
+inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-inoremap <expr> . smartchr#loop('.',  '->', '...')
+inoremap <expr> - smartchr#loop('-', '->', '=>')
 
 
 "-------------------------------------------------------------------------------
@@ -876,7 +882,7 @@ let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_settings = {
   \ 'lang': 'ja',
   \ 'indentation': '  ',
-  \ 'html' : {
+  \ 'html': {
     \ 'indentation': "\t",
   \ },
 \ }
