@@ -47,7 +47,6 @@ NeoBundleLazy "kana/vim-smartinput"
 NeoBundleLazy "cohama/vim-smartinput-endwise"
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'smartchr'
-" NeoBundle 'YankRing.vim'
 NeoBundle 't9md/vim-textmanip'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'SyntaxComplete'
@@ -78,14 +77,11 @@ NeoBundleLazy 'Shougo/vimshell.vim', {
 \ }
 NeoBundle 'othree/eregex.vim'
 NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'qtmplsel.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'Shougo/vinarise.vim'
-" NeoBundle 'SearchComplete'
 NeoBundle 'kana/vim-fakeclip.git'
 NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
-" NeoBundle 'davidoc/taskpaper.vim'
 NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'kana/vim-submode'
 
@@ -688,6 +684,8 @@ augroup use_soft_tabs
   autocmd FileType yaml   setlocal et
   autocmd FileType scala  setlocal et
   autocmd FileType scheme setlocal et
+
+  autocmd BufNewFile,BufRead *.json setlocal et
 augroup END
 
 " 文字コードを強制
@@ -804,10 +802,12 @@ endif
 inoremap <expr> <TAB> pumvisible()
   \ ? neocomplete#close_popup()
   \ : neosnippet#expandable_or_jumpable()
-    \ ? neosnippet#expand_or_jump_impl()
+    \ ? neosnippet#mappings#expand_or_jump_impl()
     \ : count(['html', 'css', 'scss', 'xml'], &ft) != 0 && emmet#isExpandable()
       \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
       \ : "\<TAB>"
+
+function
 
 " Remove placeholders (hidden markers) before saving
 autocmd vimrc BufWritePre *
@@ -839,10 +839,10 @@ let g:rubycomplete_include_object_space = 1
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
 " 選択したテキストの移動
-vmap <C-j> <Plug>(textmanip-move-down)
-vmap <C-k> <Plug>(textmanip-move-up)
-vmap <C-h> <Plug>(textmanip-move-left)
-vmap <C-l> <Plug>(textmanip-move-right)
+xmap <C-j> <Plug>(textmanip-move-down)
+xmap <C-k> <Plug>(textmanip-move-up)
+xmap <C-h> <Plug>(textmanip-move-left)
+xmap <C-l> <Plug>(textmanip-move-right)
 
 " ノーマルモードでも動かしたい
 imap <D-h> <C-o>V<C-h><Esc>
