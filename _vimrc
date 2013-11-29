@@ -496,8 +496,8 @@ imap <C-n> <C-o>gj
 imap <C-p> <C-o>gk
 imap <C-b> <Left>
 imap <C-f> <Right>
-imap <C-a> g<Home>
-imap <C-e> g<End>
+imap <C-a> <C-o>g0
+imap <C-e> <C-o>g$
 imap <C-j> <CR>
 imap <C-d> <Del>
 inoremap <silent> <C-h> <C-g>u<C-h>
@@ -749,8 +749,8 @@ inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 
 imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
 imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g<Home>" : "\<C-o>g<Home>"
-imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g<End>" : "\<C-o>g<End>"
+imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
+imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
 imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
 imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
 inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
@@ -801,23 +801,34 @@ if has('conceal')
 endif
 
 " Supert tab
-inoremap <expr> <TAB> <SID>super_tab_completion()
+inoremap <expr> <TAB>
+  \ pumvisible()
+    \ ? neocomplete#close_popup()
+    \ : neosnippet#expandable_or_jumpable()
+      \ ? neosnippet#mappings#expand_or_jump_impl()
+      \ : &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+        \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
+        \ : (col('.') - 1) && getline('.')[col('.') - 2] !~ '\s'
+          \ ? "\<C-x><C-o>"
+          \ : "\<TAB>"
 
-function! s:super_tab_completion()
-  let col = col('.') - 1
-
-  if pumvisible()
-    return neocomplete#close_popup()
-  elseif neosnippet#expandable_or_jumpable()
-    return neosnippet#mappings#expand_or_jump_impl()
-  elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
-  elseif !col || getline('.')[col - 1] =~ '\s'
-    return "\<TAB>"
-  else
-    return "\<C-x>\<C-o>"
-  endif
-endfunction
+" inoremap <expr> <TAB> <SID>super_tab_completion()
+"
+" function! s:super_tab_completion()
+"   let c = col('.') - 1
+"
+"   if pumvisible()
+"     return neocomplete#close_popup()
+"   elseif neosnippet#expandable_or_jumpable()
+"     return neosnippet#mappings#expand_or_jump_impl()
+"   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+"     return "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
+"   elseif 0 && c && getline('.')[c - 1] !~ '\s'
+"     return "\<C-x><C-o>"
+"   else
+"     return "\<TAB>"
+"   endif
+" endfunction
 
 " Remove placeholders (hidden markers) before saving
 autocmd vimrc BufWritePre *
