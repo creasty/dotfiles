@@ -262,7 +262,7 @@ function! DeleteHiddenBuffers2()
   endfor
 endfunction
 
-command! DeleteHiddenBuffers :call DeleteHiddenBuffers2()
+command! CleanBuffers :call DeleteHiddenBuffers2()
 
 autocmd vimrc BufRead * call s:set_hidden()
 function! s:set_hidden()
@@ -751,9 +751,10 @@ imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Ri
 imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
 imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g<Home>" : "\<C-o>g<Home>"
 imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g<End>" : "\<C-o>g<End>"
-inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
 imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
 imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
+inoremap <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
 
 " Omni completion
 augroup omni_completion_funcs
@@ -799,15 +800,24 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-inoremap <expr> <TAB> pumvisible()
-  \ ? neocomplete#close_popup()
-  \ : neosnippet#expandable_or_jumpable()
-    \ ? neosnippet#mappings#expand_or_jump_impl()
-    \ : count(['html', 'css', 'scss', 'xml'], &ft) != 0 && emmet#isExpandable()
-      \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
-      \ : "\<TAB>"
+" Supert tab
+inoremap <expr> <TAB> <SID>super_tab_completion()
 
-function
+function! s:super_tab_completion()
+  let col = col('.') - 1
+
+  if pumvisible()
+    return neocomplete#close_popup()
+  elseif neosnippet#expandable_or_jumpable()
+    return neosnippet#mappings#expand_or_jump_impl()
+  elseif count(['html', 'css', 'scss', 'xml'], &ft) != 0 && emmet#isExpandable()
+    return "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
+  elseif !col || getline('.')[col - 1] =~ '\s'
+    return "\<TAB>"
+  else
+    return "\<C-x>\<C-o>"
+  endif
+endfunction
 
 " Remove placeholders (hidden markers) before saving
 autocmd vimrc BufWritePre *
@@ -863,7 +873,10 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-inoremap <expr> - smartchr#loop('-', '->', '=>')
+autocmd vimrc BufRead,BufEnter *
+  \ if &et != 'markdown' |
+    \ inoremap <buffer> <expr> - smartchr#loop('-', '->', '=>') \|
+  \ endif
 
 
 "-------------------------------------------------------------------------------
