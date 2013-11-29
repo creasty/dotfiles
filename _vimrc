@@ -810,7 +810,7 @@ function! s:super_tab_completion()
     return neocomplete#close_popup()
   elseif neosnippet#expandable_or_jumpable()
     return neosnippet#mappings#expand_or_jump_impl()
-  elseif count(['html', 'css', 'scss', 'xml'], &ft) != 0 && emmet#isExpandable()
+  elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
   elseif !col || getline('.')[col - 1] =~ '\s'
     return "\<TAB>"
@@ -873,10 +873,7 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-autocmd vimrc BufRead,BufEnter *
-  \ if &et != 'markdown' |
-    \ inoremap <buffer> <expr> - smartchr#loop('-', '->', '=>') \|
-  \ endif
+inoremap <expr> ^ smartchr#loop('^', '->', '=>')
 
 
 "-------------------------------------------------------------------------------
