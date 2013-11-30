@@ -2,7 +2,6 @@
 "-------------------------------------------------------------------------------
 " Plugin manager: neobundle
 "-------------------------------------------------------------------------------
-set nocompatible
 filetype plugin indent off
 
 if has('vim_starting')
@@ -42,7 +41,7 @@ NeoBundle 'tek/vim-operator-assign'
 NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
-NeoBundleLazy 'tmhedberg/matchit.git'
+NeoBundleLazy 'tmhedberg/matchit'
 NeoBundleLazy "kana/vim-smartinput"
 NeoBundleLazy "cohama/vim-smartinput-endwise"
 NeoBundle 'AndrewRadev/switch.vim'
@@ -79,10 +78,10 @@ NeoBundle 'othree/eregex.vim'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'Shougo/vinarise.vim'
-NeoBundle 'kana/vim-fakeclip.git'
+NeoBundle 'kana/vim-fakeclip'
 NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
-NeoBundle 'thinca/vim-quickrun.git'
+NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'kana/vim-submode'
 
 " Appearance
@@ -129,9 +128,6 @@ endif
 augroup vimrc
   autocmd!
 augroup END
-
-" Vi 互換なし
-set nocompatible
 
 " C-s とかのキーバインディングを有効にする
 silent !stty -ixon > /dev/null 2>/dev/null
@@ -241,15 +237,7 @@ imap <C-w><C-c> <C-w>c
 imap <C-w>c <Plug>Kwbd
 
 " 非表示のバッファを削除
-function! DeleteHiddenBuffers()
-  let tpbl=[]
-  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
-    silent execute 'bwipeout' buf
-  endfor
-endfunction
-
-function! DeleteHiddenBuffers2()
+function! CleanBuffers()
   redir => buffersoutput
     silent buffers
   redir END
@@ -262,7 +250,7 @@ function! DeleteHiddenBuffers2()
   endfor
 endfunction
 
-command! CleanBuffers :call DeleteHiddenBuffers2()
+command! CleanBuffers :call CleanBuffers()
 
 autocmd vimrc BufRead * call s:set_hidden()
 function! s:set_hidden()
@@ -275,13 +263,13 @@ endfunction
 "-------------------------------------------------------------------------------
 " Apperance
 "-------------------------------------------------------------------------------
+" シンタックスハイライト
+syntax enable
+
 " Color scheme
 set background=dark
 set t_Co=256
 colorscheme My-Tomorrow-Night-Bright
-
-" シンタックスハイライト
-syntax enable
 
 " 常にステータスラインを表示
 set laststatus=2
@@ -308,12 +296,12 @@ set listchars=tab:▸\ ,
 set display=uhex
 
 " 全角スペースを可視化
-autocmd vimrc VimEnter,WinEnter *
-  \ match ZenkakuSpace /　/
+autocmd vimrc BufWinEnter,WinEnter *
+  \ call matchadd('ZenkakuSpace', '　')
 
 " 行末の \s をハイライト
-autocmd vimrc VimEnter,WinEnter *
-  \ match TrailingSpace /\s\+$/
+autocmd vimrc BufWinEnter,WinEnter *
+  \ call matchadd('TrailingSpace', '\s\+$')
 
 " コマンド実行中は再描画しない
 set lazyredraw
@@ -374,15 +362,7 @@ vnoremap // y/=escape(@", '\\/.*$^~')
 vnoremap /r "xy:%s/=escape(@x, '\\/.*$^~')//gc
 
 " s*置換後文字列/gでカーソル下のキーワードを置換
-nnoremap s* ':%s/\<' . expand('') . '\>/'
-
-" 検索語が真ん中に来るようにする
-nmap n nzz
-nmap N Nzz
-nmap * *zz
-nmap # #zz
-nmap g* g*zz
-nmap g# g#zz
+nnoremap <expr> s* ':%s/\<' . expand('') . '\>/'
 
 " 検索パターンの入力時に自動エスケープ
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
@@ -448,12 +428,15 @@ endfunction
 autocmd vimrc BufReadPost * call AU_ReCheck_FENC()
 
 " 指定文字コードで強制的にファイルを開く
-command! Cp932 edit ++enc=cp932
-command! Eucjp edit ++enc=euc-jp
-command! Iso2022jp edit ++enc=iso-2022-jp
-command! Utf8 edit ++enc=utf-8
-command! Jis Iso2022jp
-command! Sjis Cp932
+" 各種エンコーディングで開き直す
+command! -bang -nargs=? Utf8
+  \ edit<bang> ++enc=utf-8 <args>
+command! -bang -nargs=? Sjis
+  \ edit<bang> ++enc=cp932 <args>
+command! -bang -nargs=? Jis
+  \ edit<bang> ++enc=iso-2022-jp <args>
+command! -bang -nargs=? Euc
+  \ edit<bang> ++enc=eucjp <args>
 
 
 "-------------------------------------------------------------------------------
@@ -469,15 +452,6 @@ set noexpandtab
 " softtabstop は Tab キー押し下げ時の挿入される空白の量
 " 0 の場合は tabstop と同じ
 set tabstop=2 shiftwidth=2 softtabstop=0
-
-" ファイルタイプの検索を有効にする
-filetype plugin on
-
-" そのファイルタイプにあわせたインデントを利用する
-filetype indent on
-
-" yeでそのカーソル位置にある単語をレジスタに追加
-nmap ye :let @"=expand("")
 
 " :Ptでインデントモード切替
 command! Pt :set paste!
@@ -547,18 +521,6 @@ autocmd vimrc BufReadPost *
 
 " 前回のマーク情報をリセット
 autocmd vimrc BufReadPost * delmarks!
-
-" automatically change the current directory
-" now i use rooter.vim insted
-" autocmd vimrc BufEnter * silent! lcd %:p:h
-
-" 各種エンコーディングで開き直す
-command! -bang -nargs=? Utf8
-  \ edit<bang> ++enc=utf-8 <args>
-command! -bang -nargs=? Sjis
-  \ edit<bang> ++enc=cp932 <args>
-command! -bang -nargs=? Euc
-  \ edit<bang> ++enc=eucjp <args>
 
 " 矩形選択で連番を付ける: 3co
 nnoremap <silent> co :ContinuousNumber <C-a><CR>
@@ -706,7 +668,6 @@ augroup END
 "-------------------------------------------------------------------------------
 " Plugin: NeoComplete
 "-------------------------------------------------------------------------------
-let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplcache_max_list = 20
@@ -794,41 +755,29 @@ let g:clang_auto_select = 0
 "-------------------------------------------------------------------------------
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory = '~/.vim/snippets'
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-" Supert tab
-inoremap <expr> <TAB>
-  \ pumvisible()
-    \ ? neocomplete#close_popup()
-    \ : neosnippet#expandable_or_jumpable()
-      \ ? neosnippet#mappings#expand_or_jump_impl()
-      \ : &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-        \ ? "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
-        \ : (col('.') - 1) && getline('.')[col('.') - 2] !~ '\s'
-          \ ? "\<C-x><C-o>"
-          \ : "\<TAB>"
+" Super tab
+inoremap <expr> <TAB> <SID>super_tab_completion()
 
-" inoremap <expr> <TAB> <SID>super_tab_completion()
-"
-" function! s:super_tab_completion()
-"   let c = col('.') - 1
-"
-"   if pumvisible()
-"     return neocomplete#close_popup()
-"   elseif neosnippet#expandable_or_jumpable()
-"     return neosnippet#mappings#expand_or_jump_impl()
-"   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-"     return "\<C-r>=emmet#expandAbbr(0, '')<Cr><Right>"
-"   elseif 0 && c && getline('.')[c - 1] !~ '\s'
-"     return "\<C-x><C-o>"
-"   else
-"     return "\<TAB>"
-"   endif
-" endfunction
+function! s:super_tab_completion()
+  let c = col('.') - 1
+
+  if pumvisible()
+    return neocomplete#close_popup()
+  elseif neosnippet#expandable_or_jumpable()
+    return neosnippet#mappings#expand_or_jump_impl()
+  elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+    return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
+  elseif 0 && c && getline('.')[c - 1] !~ '\s'
+    return "\<C-x>\<C-o>"
+  else
+    return "\<TAB>"
+  endif
+endfunction
 
 " Remove placeholders (hidden markers) before saving
 autocmd vimrc BufWritePre *
@@ -865,7 +814,7 @@ xmap <C-k> <Plug>(textmanip-move-up)
 xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 
-" ノーマルモードでも動かしたい
+" インサートモードでも動かしたい
 imap <D-h> <C-o>V<C-h><Esc>
 imap <D-j> <C-o>V<C-j><Esc>
 imap <D-k> <C-o>V<C-k><Esc>
@@ -1216,6 +1165,7 @@ function! s:unite_my_settings()
   imap <buffer> <C-l> <Plug>(unite_redraw)
   inoremap <buffer> : **/
   inoremap <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
+  " [TODO] unite#get_current_unite().prev_bufnr
 
   let unite = unite#get_current_unite()
   if unite.buffer_name =~# '^search'
@@ -1227,7 +1177,7 @@ endfunction
 
 
 "-------------------------------------------------------------------------------
-" Plugin: Anz
+" Plugin: Anzu
 "-------------------------------------------------------------------------------
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
