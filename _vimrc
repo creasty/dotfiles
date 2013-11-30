@@ -179,6 +179,9 @@ set modelines=0
 set wildmenu
 set wildmode=list:full
 
+" 高速ターミナル接続を行う
+set ttyfast
+
 " コマンド・検索パターンの履歴数
 set history=1000
 
@@ -196,9 +199,6 @@ set imdisable
 
 " ワイルドカードで表示するときに優先度を低くする拡張子
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
-
-" 最後の行がめちゃ長いとき表示されない
-set display& display=lastline
 
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
@@ -280,8 +280,14 @@ set list
 " set listchars=tab:▸\ ,trail:˽
 set listchars=tab:▸\ ,
 
+" 最後の行がめちゃ長いとき表示されない
+set display& display+=lastline
+
 " 印字不可能文字を16進数で表示
-set display=uhex
+set display+=uhex
+
+" コマンド実行中は再描画しない
+set lazyredraw
 
 " 全角スペースを可視化
 autocmd vimrc BufWinEnter,WinEnter *
@@ -291,31 +297,15 @@ autocmd vimrc BufWinEnter,WinEnter *
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('TrailingSpace', '\s\+$')
 
-" コマンド実行中は再描画しない
-set lazyredraw
-
-" 高速ターミナル接続を行う
-set ttyfast
-
 
 "-------------------------------------------------------------------------------
 " Tags
 "-------------------------------------------------------------------------------
-if has("autochdir")
-  " 編集しているファイルのディレクトリに自動で移動
-  set autochdir
-  set tags=tags;
-else
-  set tags=./tags,./../tags,./*/tags,./../../tags,./../../../tags,./../../../../tags,./../../../../../tags
-endif
+" 移動
+nnoremap tn :tn<CR>
+nnoremap tp :tp<CR>
 
-"「進む」
-nnoremap tn :tn
-
-"「戻る」
-nnoremap tp :tp
-
-"履歴一覧
+" 履歴一覧
 nnoremap tl :tags
 
 
@@ -514,11 +504,11 @@ autocmd vimrc BufReadPost * delmarks!
 nnoremap <silent> co :ContinuousNumber <C-a><CR>
 vnoremap <silent> co :ContinuousNumber <C-a><CR>
 command! -count -nargs=1 ContinuousNumber
-    \ let c = col('.') |
-    \ for n in range(1, <count>?<count>-line('.'):1) |
-      \ exec 'normal! j' . n . <q-args> |
-      \ call cursor('.', c) |
-    \ endfor
+  \ let c = col('.') |
+  \ for n in range(1, <count>?<count>-line('.'):1) |
+    \ exec 'normal! j' . n . <q-args> |
+    \ call cursor('.', c) |
+  \ endfor
 
 " 自動的にディレクトリを作成する
 " http://vim-users.jp/2011/02/hack202/
@@ -760,7 +750,7 @@ function! s:super_tab_completion()
     return neosnippet#mappings#expand_or_jump_impl()
   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
-  elseif 0 && c && getline('.')[c - 1] !~ '\s'
+  elseif c && getline('.')[c - 1] !~ '\s'
     return "\<C-x>\<C-o>"
   else
     return "\<TAB>"
