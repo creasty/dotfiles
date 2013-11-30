@@ -110,18 +110,6 @@ filetype plugin indent on
 
 
 "-------------------------------------------------------------------------------
-" Plugin manager: pathogen
-"-------------------------------------------------------------------------------
-if has('vim_starting')
-  filetype off
-  call pathogen#runtime_append_all_bundles()
-  " call pathogen#helptags()
-  set helpfile=$VIMRUNTIME/doc/help.txt
-  filetype plugin on
-endif
-
-
-"-------------------------------------------------------------------------------
 " Basics
 "-------------------------------------------------------------------------------
 " autocmd が複数登録されないようにリセット
