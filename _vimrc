@@ -119,7 +119,6 @@ augroup END
 
 " C-s とかのキーバインディングを有効にする
 silent !stty -ixon > /dev/null 2>/dev/null
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " キーマップリーダー
 let mapleader = ','
@@ -144,9 +143,6 @@ set autoread
 
 " スワップファイル作らない
 set noswapfile
-
-" 編集中でも他のファイルを開けるようにする
-set hidden
 
 " バックスペースでなんでも消せるように
 set backspace=indent,eol,start
@@ -197,8 +193,9 @@ set nf=alpha,hex
 " IME を無効化
 set imdisable
 
-" ワイルドカードで表示するときに優先度を低くする拡張子
+" ワイルドカード
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+set wildignore& wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " vimrc の編集と反映
 command! EditVimrc edit $MYVIMRC
@@ -277,7 +274,6 @@ set nocursorline
 
 " 不可視文字の表示
 set list
-" set listchars=tab:▸\ ,trail:˽
 set listchars=tab:▸\ ,
 
 " 最後の行がめちゃ長いとき表示されない
@@ -405,7 +401,6 @@ endfunction
 
 autocmd vimrc BufReadPost * call AU_ReCheck_FENC()
 
-" 指定文字コードで強制的にファイルを開く
 " 各種エンコーディングで開き直す
 command! -bang -nargs=? Utf8
   \ edit<bang> ++enc=utf-8 <args>
@@ -439,10 +434,6 @@ nmap j gj
 nmap k gk
 
 " Emacs のカーソル移動
-nmap <C-j> <CR>
-nmap <C-n> j
-nmap <C-p> k
-
 imap <C-c> <Esc>
 imap <C-n> <C-o>gj
 imap <C-p> <C-o>gk
@@ -532,11 +523,11 @@ autocmd vimrc Filetype xml,html,xhtml
 " 編集中ファイルのファイル名を変更する
 command! -nargs=1 -complete=file Rename f <args> | call delete(expand('#'))
 
-" 編集中ファイルのファイル名を変更する
-command! -nargs=0 Delete call delete(expand('%')) | q!
-
 nmap <C-w><C-r> <C-w>r
 nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
+
+" 編集中ファイルを削除する
+command! -nargs=0 Delete call delete(expand('%')) | q!
 
 " Insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
@@ -608,39 +599,22 @@ endfunction
 " Filetype specific
 "-------------------------------------------------------------------------------
 " ソフトタブ
-augroup use_soft_tabs
-  autocmd!
-  autocmd FileType yaml   setlocal et
-  autocmd FileType diff   setlocal et
-  autocmd FileType eruby  setlocal et
-  autocmd FileType coffee setlocal et
-  autocmd FileType scss   setlocal et
-  autocmd FileType sass   setlocal et
-  autocmd FileType ruby   setlocal et
-  autocmd FileType haml   setlocal et
-  autocmd FileType sh     setlocal et
-  autocmd FileType sql    setlocal et
-  autocmd FileType vim    setlocal et
-  autocmd FileType yaml   setlocal et
-  autocmd FileType scala  setlocal et
-  autocmd FileType scheme setlocal et
+autocmd vimrc FileType
+  \ diff,yaml,ruby,eruby,haml,coffee,scss,sass,sh,sql,vim,scala,scheme
+  \ setlocal et
 
-  autocmd BufNewFile,BufRead *.json setlocal et
-augroup END
+autocmd vimrc BufNewFile,BufRead
+  \ *.json
+  \ setlocal et
 
 " 文字コードを強制
-augroup force_encordings
-  autocmd!
-  autocmd FileType svn   setlocal fenc=utf-8
-  autocmd FileType js    setlocal fenc=utf-8
-  autocmd FileType css   setlocal fenc=utf-8
-  autocmd FileType html  setlocal fenc=utf-8
-  autocmd FileType xml   setlocal fenc=utf-8
-  autocmd FileType java  setlocal fenc=utf-8
-  autocmd FileType scala setlocal fenc=utf-8
-  autocmd FileType yml   setlocal fenc=utf-8
-  autocmd FileType cvs   setlocal fenc=euc-jp
-augroup END
+autocmd vimrc FileType
+  \ svn,js,css,html,xml,java,scala,yml
+  \ setlocal fenc=utf-8
+
+autocmd vimrc FileType
+  \ cvs
+  \ setlocal fenc=euc-jp
 
 
 "-------------------------------------------------------------------------------
@@ -696,27 +670,25 @@ inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" :
 inoremap <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
 
 " Omni completion
-augroup omni_completion_funcs
-  autocmd!
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup END
+autocmd vimrc FileType css
+  \ setlocal omnifunc=csscomplete#CompleteCSS
+autocmd vimrc FileType html,markdown
+  \ setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd vimrc FileType javascript
+  \ setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd vimrc FileType python
+  \ setlocal omnifunc=pythoncomplete#Complete
+autocmd vimrc FileType xml
+  \ setlocal omnifunc=xmlcomplete#CompleteTags
 
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
+let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
 let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
+let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
 let g:neocomplete#force_overwrite_completefunc = 1
 let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
 let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
@@ -725,7 +697,7 @@ let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->
 
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
-" let g:clang_use_library = 1
+let g:clang_use_library = 1
 
 
 "-------------------------------------------------------------------------------
@@ -749,11 +721,11 @@ function! s:super_tab_completion()
   elseif neosnippet#expandable_or_jumpable()
     return neosnippet#mappings#expand_or_jump_impl()
   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
+    return '\<C-r>=emmet#expandAbbr(0, "")\<CR>\<Right>'
   elseif c && getline('.')[c - 1] !~ '\s'
-    return "\<C-x>\<C-o>"
+    return '\<C-x>\<C-o>'
   else
-    return "\<TAB>"
+    return '\<TAB>'
   endif
 endfunction
 
@@ -766,7 +738,7 @@ autocmd vimrc BufWritePre *
 " Plugin: SyntaxComplete
 "-------------------------------------------------------------------------------
 autocmd vimrc Filetype *
-  \ if &omnifunc == "" |
+  \ if &omnifunc == '' |
     \ setlocal omnifunc=syntaxcomplete#Complete |
   \ endif
 
@@ -1123,8 +1095,8 @@ if executable('ag')
 endif
 
 nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
-autocmd! vimrc FileType unite call s:unite_my_settings()
-autocmd! vimrc WinEnter,BufEnter *
+autocmd vimrc FileType unite call s:unite_my_settings()
+autocmd vimrc WinEnter,BufEnter *
   \ if &ft != 'unite' |
     \ let g:unite_prev_bufpath = expand('%:p:h') |
   \ endif
@@ -1270,21 +1242,16 @@ function! LightlineMode()
     \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-augroup AutoSyntastic
-  autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
-  function! s:syntastic()
-    SyntasticCheck
-    call lightline#update()
-  endfunction
-augroup END
+autocmd vimrc BufWritePost *
+  \ SyntasticCheck | call lightline#update()
 
 
 "-------------------------------------------------------------------------------
 " Function: SyntaxInfo
 "-------------------------------------------------------------------------------
 function! s:get_syn_id(transparent)
-  let synid = synID(line("."), col("."), 1)
+  let synid = synID(line('.'), col('.'), 1)
+
   if a:transparent
     return synIDtrans(synid)
   else
@@ -1293,34 +1260,38 @@ function! s:get_syn_id(transparent)
 endfunction
 
 function! s:get_syn_attr(synid)
-  let name = synIDattr(a:synid, "name")
-  let ctermfg = synIDattr(a:synid, "fg", "cterm")
-  let ctermbg = synIDattr(a:synid, "bg", "cterm")
-  let guifg = synIDattr(a:synid, "fg", "gui")
-  let guibg = synIDattr(a:synid, "bg", "gui")
+  let name = synIDattr(a:synid, 'name')
+  let ctermfg = synIDattr(a:synid, 'fg', 'cterm')
+  let ctermbg = synIDattr(a:synid, 'bg', 'cterm')
+  let guifg = synIDattr(a:synid, 'fg', 'gui')
+  let guibg = synIDattr(a:synid, 'bg', 'gui')
+
   return {
-    \ "name": name,
-    \ "ctermfg": ctermfg,
-    \ "ctermbg": ctermbg,
-    \ "guifg": guifg,
-    \ "guibg": guibg
+    \ 'name': name,
+    \ 'ctermfg': ctermfg,
+    \ 'ctermbg': ctermbg,
+    \ 'guifg': guifg,
+    \ 'guibg': guibg
   \ }
 endfunction
 
 function! s:get_syn_info()
   let baseSyn = s:get_syn_attr(s:get_syn_id(0))
-  echo "name: " . baseSyn.name .
-    \ " ctermfg: " . baseSyn.ctermfg .
-    \ " ctermbg: " . baseSyn.ctermbg .
-    \ " guifg: " . baseSyn.guifg .
-    \ " guibg: " . baseSyn.guibg
+
+  echo 'name: ' . baseSyn.name .
+    \ ' ctermfg: ' . baseSyn.ctermfg .
+    \ ' ctermbg: ' . baseSyn.ctermbg .
+    \ ' guifg: ' . baseSyn.guifg .
+    \ ' guibg: ' . baseSyn.guibg
+
   let linkedSyn = s:get_syn_attr(s:get_syn_id(1))
-  echo "link to"
-  echo "name: " . linkedSyn.name .
-    \ " ctermfg: " . linkedSyn.ctermfg .
-    \ " ctermbg: " . linkedSyn.ctermbg .
-    \ " guifg: " . linkedSyn.guifg .
-    \ " guibg: " . linkedSyn.guibg
+
+  echo 'link to'
+  echo 'name: ' . linkedSyn.name .
+    \ ' ctermfg: ' . linkedSyn.ctermfg .
+    \ ' ctermbg: ' . linkedSyn.ctermbg .
+    \ ' guifg: ' . linkedSyn.guifg .
+    \ ' guibg: ' . linkedSyn.guibg
 endfunction
 
 command! ScopeInfo call s:get_syn_info()
