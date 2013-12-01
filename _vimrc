@@ -61,6 +61,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
   \ }
 \ }
 NeoBundle 'Townk/vim-autoclose'
+NeoBundle 'deris/vim-rengbang'
 
 " Utils
 NeoBundle 'tpope/vim-fugitive'
