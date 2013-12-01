@@ -123,10 +123,11 @@ cdrt() {
 }
 
 
-#  一定時間以上かかった処理の終了時に通知
+#  Nortify done
 #-----------------------------------------------
 local COMMAND=""
 local COMMAND_TIME=""
+
 precmd() {
   if [ "$COMMAND_TIME" -ne "0" ] ; then
     local d=`date +%s`

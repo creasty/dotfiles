@@ -2,7 +2,7 @@
 augroup custom_filetypes
   autocmd!
 
-  " By extension or basename
+  " by extension or basename
   autocmd BufNewFile,BufRead *.m         setf objc
   autocmd BufNewFile,BufRead *.h         call s:FTheader()
   autocmd BufNewFile,BufRead *.psgi      setf perl
@@ -24,7 +24,7 @@ augroup custom_filetypes
   autocmd BufNewFile,BufRead cpanfile    setf perl
   autocmd BufNewFile,BufRead *_spec.rb   setf ruby.rspec
 
-  " Aliases
+  " aliases
   autocmd FileType js        setlocal ft=javascript
   autocmd FileType cs        setlocal ft=coffee
   autocmd FileType md        setlocal ft=markdown
@@ -34,7 +34,7 @@ augroup custom_filetypes
   autocmd FileType slim.html setlocal ft=slim
   autocmd FileType haml.html setlocal ft=haml
 
-  " Detect if header file is of C or ObjC
+  " detect if header file is of C or ObjC
   func! s:FTheader()
     if match(getline(1, min([line("$"), 200])), '@interface\|@end\|@class\|\#import\|Foundation/') > -1
       setf objc

@@ -112,92 +112,93 @@ filetype plugin indent on
 "-------------------------------------------------------------------------------
 " Basics
 "-------------------------------------------------------------------------------
-" autocmd が複数登録されないようにリセット
+" unregister autocmds
 augroup vimrc
   autocmd!
 augroup END
 
-" C-s とかのキーバインディングを有効にする
-silent !stty -ixon > /dev/null 2>/dev/null
+" make special key bindings like <C-s> work
+silent !stty -ixon > /dev/null 2>&1
 
-" キーマップリーダー
+" use comma as leader
 let mapleader = ','
 
-" vs のとき右側に分割する
+" split to right
 set splitright
 
-" 全角記号の幅
+" use double width to print non-ascii charactors
 set ambiwidth=double
 
-" スクロール時の余白確保
+" line offset when scrolling
 set scrolloff=5
 
-" 一行に長い文章を書いていても自動折り返しをしない
+" no auto line breaking
 set textwidth=0
 
-" バックアップ取らない
+" no backup and swap files
 set nobackup
-
-" 他で書き換えられたら自動で読み直す
-set autoread
-
-" スワップファイル作らない
 set noswapfile
 
-" バックスペースでなんでも消せるように
+" reload when files modified outside of vim
+set autoread
+
+" delete over lines and indents
 set backspace=indent,eol,start
 
-" テキスト整形オプション，マルチバイト系を追加
-set formatoptions=lmoq
+" add multibyte option
+set formatoptions& formatoptions+=lmoq
 
-" ビープをならさない
+" no beeps
 set vb t_vb=
 
-" Explore の初期ディレクトリ
+" initial dir of explorer
 set browsedir=buffer
 
-" カーソルを行頭、行末で止まらないようにする
+" move cursor over lines
 set whichwrap=b,s,h,l,<,>,[,]
 
-" コマンドをステータス行に表示
+" display commands in statusline
 set showcmd
 
-" 現在のモードを表示
-set showmode
+" unnecessary, use lightline
+set noshowmode
 
-" viminfoファイルの設定
-set viminfo='50,<1000,s100,\"50
+" config viminfo
+" remember marks for last 50 files
+" contents of register up to 100 lines each
+" skip register with more than 100 kbytes
+set viminfo='50,<1000,s100
 
-" モードラインは無効
+" disable mode lines
 set modelines=0
 
-" コマンド補完を強化
+" command line completion
 set wildmenu
 set wildmode=list:full
 
-" 高速ターミナル接続を行う
+" fast terminal connection
 set ttyfast
 
-" コマンド・検索パターンの履歴数
+" command history
 set history=1000
 
-" 補完に辞書ファイル追加
+" use dictionaries for completion
 set complete& complete+=k
 
-" ヤンクした文字は、システムのクリップボードに入れる
+" yank use system clipboard
 set clipboard=unnamed
 
-" インクリメント / デクリメント
+" inc/decrement
 set nf=alpha,hex
 
-" IME を無効化
+" disable IME
 set imdisable
 
-" ワイルドカード
+" wildcard settings
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set wildignore& wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
-" vimrc の編集と反映
+" edit and apply vimrc
 command! EditVimrc edit $MYVIMRC
 " autocmd vimrc BufWritePost *vimrc source $MYVIMRC
 autocmd vimrc BufWritePost *gvimrc
@@ -205,7 +206,7 @@ autocmd vimrc BufWritePost *gvimrc
     \ source $MYGVIMRC |
   \ endif
 
-" タブページ / バッファー
+" tab pages / buffers
 nmap <C-w><C-t> <C-w>t
 nnoremap <C-w>t :tabnew<CR>
 imap <C-w><C-t> <C-w>t
@@ -221,7 +222,7 @@ nmap <C-w>c <Plug>Kwbd
 imap <C-w><C-c> <C-w>c
 imap <C-w>c <Plug>Kwbd
 
-" 非表示のバッファを削除
+" clean up hidden buffers
 function! CleanBuffers()
   redir => buffersoutput
     silent buffers
@@ -248,48 +249,45 @@ endfunction
 "-------------------------------------------------------------------------------
 " Apperance
 "-------------------------------------------------------------------------------
-" シンタックスハイライト
-syntax enable
-
-" Color scheme
+" syntax highlight & color scheme
 set background=dark
 set t_Co=256
+syntax enable
 colorscheme My-Tomorrow-Night-Bright
 
-" 常にステータスラインを表示
+" always show statusline
 set laststatus=2
 
-" 常にタブバーを表示
+" always show tabline
 set showtabline=2
 
-" 括弧の対応をハイライト
+" match pairs
 set showmatch
 
-" 行番号表示
+" show line numbers
 set number
 
-" カーソル行をハイライトしない
-" シンタックスハイライトがクソ遅くなる
+" highlighting current line will slow down vim
 set nocursorline
 
-" 不可視文字の表示
+" do not redraw during command
+set lazyredraw
+
+" display very very long line at the end of file
+set display& display+=lastline
+
+" display nonprintable charactors as hex
+set display+=uhex
+
+" show tabs
 set list
 set listchars=tab:▸\ ,
 
-" 最後の行がめちゃ長いとき表示されない
-set display& display+=lastline
-
-" 印字不可能文字を16進数で表示
-set display+=uhex
-
-" コマンド実行中は再描画しない
-set lazyredraw
-
-" 全角スペースを可視化
+" highlight full-width space
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('ZenkakuSpace', '　')
 
-" 行末の \s をハイライト
+" highlight trailing spaces
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('TrailingSpace', '\s\+$')
 
@@ -297,48 +295,46 @@ autocmd vimrc BufWinEnter,WinEnter *
 "-------------------------------------------------------------------------------
 " Tags
 "-------------------------------------------------------------------------------
-" 移動
+" move around
 nnoremap tn :tn<CR>
 nnoremap tp :tp<CR>
 
-" 履歴一覧
+" list of tags
 nnoremap tl :tags
 
 
 "-------------------------------------------------------------------------------
 " Search
 "-------------------------------------------------------------------------------
-" 最後まで検索したら先頭へ戻る
+" cricle search within files
 set wrapscan
 
-" 大文字小文字無視
+" ignore case only if contains upper case
 set ignorecase
-
-" 検索文字列に大文字が含まれている場合は区別して検索する
 set smartcase
 
-" インクリメンタルサーチ
+" incremental search
 set incsearch
 
-" 検索文字をハイライト
+" match highlight
 set hlsearch
 
-" Space の2回押しでハイライト消去
+" dim match highlight by hitting space twice
 nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 
-" 前回の検索ハイライトを削除
+" erase previous match highlight
 autocmd vimrc BufReadPost * :nohlsearch
 
-" 選択した文字列を検索
+" search selection
 vnoremap // y/=escape(@", '\\/.*$^~')
 
-" 選択した文字列を置換
+" replace selection
 vnoremap /r "xy:%s/=escape(@x, '\\/.*$^~')//gc
 
-" s*置換後文字列/gでカーソル下のキーワードを置換
+" replace word under cursor
 nnoremap <expr> s* ':%s/\<' . expand('') . '\>/'
 
-" 検索パターンの入力時に自動エスケープ
+" auto escaping
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 
@@ -350,7 +346,7 @@ set encoding=utf-8
 set fileencodings=ucs_bom,utf8,ucs-2le,ucs-2
 set fileformats=unix,dos,mac
 
-" 文字コードの自動認識
+" auto detection
 if &encoding !=# 'utf-8'
   set encoding=japan
   set fileencoding=japan
@@ -358,16 +354,15 @@ endif
 if has('iconv')
   let s:enc_euc = 'euc-jp'
   let s:enc_jis = 'iso-2022-jp'
-  " iconvがeucJP-msに対応しているかをチェック
+
   if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
     let s:enc_euc = 'eucjp-ms'
     let s:enc_jis = 'iso-2022-jp-3'
-  " iconvがJISX0213に対応しているかをチェック
   elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
     let s:enc_euc = 'euc-jisx0213'
     let s:enc_jis = 'iso-2022-jp-3'
   endif
-  " fileencodingsを構築
+
   if &encoding ==# 'utf-8'
     let s:fileencodings_default = &fileencodings
     let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
@@ -387,12 +382,13 @@ if has('iconv')
       let &fileencodings = &fileencodings .','. s:enc_euc
     endif
   endif
-  " 定数を処分
+
   unlet s:enc_euc
   unlet s:enc_jis
 endif
 
-" 日本語を含まない場合は fileencoding に encoding を使うようにする
+" force &fileencoding to use &encoding
+" when files not contain japanese charactors
 function! AU_ReCheck_FENC()
   if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
     let &fileencoding=&encoding
@@ -401,7 +397,7 @@ endfunction
 
 autocmd vimrc BufReadPost * call AU_ReCheck_FENC()
 
-" 各種エンコーディングで開き直す
+" reopen current buffer with specific encoding
 command! -bang -nargs=? Utf8
   \ edit<bang> ++enc=utf-8 <args>
 command! -bang -nargs=? Sjis
@@ -415,25 +411,24 @@ command! -bang -nargs=? Euc
 "-------------------------------------------------------------------------------
 " Editing
 "-------------------------------------------------------------------------------
-" 自動でインデント
+" indent
 set noautoindent
 set smartindent
 set cindent
 set smarttab
 set noexpandtab
 
-" softtabstop は Tab キー押し下げ時の挿入される空白の量
-" 0 の場合は tabstop と同じ
+" tab with
 set tabstop=2 shiftwidth=2 softtabstop=0
 
-" :Ptでインデントモード切替
+" toggle paste mode
 command! Pt :set paste!
 
-" jk で見た目通りに移動
+" move cursor visually with long lines
 nmap j gj
 nmap k gk
 
-" Emacs のカーソル移動
+" Emacs-like key bindings
 imap <C-c> <Esc>
 imap <C-n> <C-o>gj
 imap <C-p> <C-o>gk
@@ -452,8 +447,7 @@ cmap <C-f> <Right>
 cmap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
-" 括弧までを消したり置き換えたりする
-" http://vim-users.jp/2011/04/hack214/
+" shortcuts for till ...
 vnoremap ( t(
 vnoremap ) t)
 vnoremap ] t]
@@ -463,35 +457,35 @@ onoremap ) t)
 onoremap ] t]
 onoremap [ t[
 
-" 削除したものをレジスタに保存しないようにする
+" do not store to register with x, c
 nnoremap x "_x
 nnoremap c "_c
 
-" ヤンク
+" why are you left out??
 nnoremap Y y$
 
-" 保存時に行末の空白を除去する
+" remove trailing spaces before saving
 autocmd vimrc BufWritePre *
   \ if &ft != 'markdown' |
     \ :%s/\s\+$//ge |
   \ endif
 
-" 保存時に tab をスペースに変換する (expandtab が設定されているなら)
+" convert tabs to soft tabs if expandtab is set
 autocmd vimrc BufWritePre *
   \ if &et |
     \ exec "%s/\t/  /ge" |
   \ endif
 
-" ファイルを開いた時に最後のカーソル位置を再現する
+" back to the last line I edited
 autocmd vimrc BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \ exe "normal! g`\"" |
   \ endif
 
-" 前回のマーク情報をリセット
+" reset previous marks
 autocmd vimrc BufReadPost * delmarks!
 
-" 矩形選択で連番を付ける: 3co
+" numbering selection in visual-block mode
 nnoremap <silent> co :ContinuousNumber <C-a><CR>
 vnoremap <silent> co :ContinuousNumber <C-a><CR>
 command! -count -nargs=1 ContinuousNumber
@@ -501,38 +495,36 @@ command! -count -nargs=1 ContinuousNumber
     \ call cursor('.', c) |
   \ endfor
 
-" 自動的にディレクトリを作成する
-" http://vim-users.jp/2011/02/hack202/
-augroup vimrc_auto_mkdir
-  autocmd!
-  autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-  function! s:auto_mkdir(dir, force)
-    if !isdirectory(a:dir) && (
-      \ a:force ||
-      \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$'
-    \ )
-      call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-    endif
-  endfunction
-augroup END
+" create directories if not exist
+autocmd vimrc BufWritePre *
+ \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 
-" 閉じタグを補完する
+function! s:auto_mkdir(dir, force)
+  if !isdirectory(a:dir) && (
+    \ a:force ||
+    \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$'
+  \ )
+    call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+  endif
+endfunction
+
+" complete closing tags
 autocmd vimrc Filetype xml,html,xhtml
   \ inoremap <buffer> </ </<C-x><C-o>
 
-" 編集中ファイルのファイル名を変更する
+" rename current file
 command! -nargs=1 -complete=file Rename f <args> | call delete(expand('#'))
 
 nmap <C-w><C-r> <C-w>r
 nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
 
-" 編集中ファイルを削除する
+" delete current file
 command! -nargs=0 Delete call delete(expand('%')) | q!
 
-" Insert relative path
+" insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
-" 全ての選択モードで I, A を動作させる
+" use I, A for all visual modes
 vnoremap <expr> I <SID>force_blockwise_visual('I')
 vnoremap <expr> A <SID>force_blockwise_visual('A')
 
@@ -598,7 +590,7 @@ endfunction
 "-------------------------------------------------------------------------------
 " Filetype specific
 "-------------------------------------------------------------------------------
-" ソフトタブ
+" force soft tab
 autocmd vimrc FileType
   \ diff,yaml,ruby,eruby,haml,coffee,scss,sass,sh,sql,vim,scala,scheme
   \ setlocal et
@@ -607,7 +599,7 @@ autocmd vimrc BufNewFile,BufRead
   \ *.json
   \ setlocal et
 
-" 文字コードを強制
+" force encoding
 autocmd vimrc FileType
   \ svn,js,css,html,xml,java,scala,yml
   \ setlocal fenc=utf-8
@@ -645,42 +637,15 @@ let g:neocomplete#sources#dictionary#dictionaries = {
   \ 'scala':      $DICTDIR . '/scala.dict',
 \ }
 
-if !exists('g:neocomplete#keyword_patterns')
-  let g:neocomplete#keyword_patterns = {}
-endif
-
-" キャッシュしないファイル名
 let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
-
-" 自動補完を行わないバッファ名
 let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
 
+" keyword patterns
+let g:neocomplete#keyword_patterns = get(g:, 'neocomplete#keyword_patterns', {})
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
-inoremap <expr> <TAB> pumvisible() ? neocomplete#close_popup() : "\<TAB>"
-
-imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
-imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
-imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
-imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
-imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
-inoremap <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
-
-" Omni completion
-autocmd vimrc FileType css
-  \ setlocal omnifunc=csscomplete#CompleteCSS
-autocmd vimrc FileType html,markdown
-  \ setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd vimrc FileType javascript
-  \ setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd vimrc FileType python
-  \ setlocal omnifunc=pythoncomplete#Complete
-autocmd vimrc FileType xml
-  \ setlocal omnifunc=xmlcomplete#CompleteTags
-
+" input patterns
 let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
@@ -699,6 +664,28 @@ let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
 let g:clang_use_library = 1
 
+" cancel or accept
+imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
+imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
+imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
+imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
+imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
+imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
+inoremap <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
+
+" omni completion
+autocmd vimrc FileType css
+  \ setlocal omnifunc=csscomplete#CompleteCSS
+autocmd vimrc FileType html,markdown
+  \ setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd vimrc FileType javascript
+  \ setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd vimrc FileType python
+  \ setlocal omnifunc=pythoncomplete#Complete
+autocmd vimrc FileType xml
+  \ setlocal omnifunc=xmlcomplete#CompleteTags
+
 
 "-------------------------------------------------------------------------------
 " Plugin: NeoSnippet
@@ -710,7 +697,7 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-" Super tab
+" super tab completion
 inoremap <expr> <TAB> <SID>super_tab_completion()
 
 function! s:super_tab_completion()
@@ -721,15 +708,15 @@ function! s:super_tab_completion()
   elseif neosnippet#expandable_or_jumpable()
     return neosnippet#mappings#expand_or_jump_impl()
   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return '\<C-r>=emmet#expandAbbr(0, "")\<CR>\<Right>'
+    return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
   elseif c && getline('.')[c - 1] !~ '\s'
-    return '\<C-x>\<C-o>'
+    return "\<C-x>\<C-o>"
   else
-    return '\<TAB>'
+    return "\<TAB>"
   endif
 endfunction
 
-" Remove placeholders (hidden markers) before saving
+" remove placeholders (hidden markers) before saving
 autocmd vimrc BufWritePre *
   \ exec '%s/<`\d\+:\?[^>]*`>//ge'
 
@@ -758,20 +745,20 @@ let g:rubycomplete_include_object_space = 1
 "-------------------------------------------------------------------------------
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
-" 選択したテキストの移動
+" move selection
 xmap <C-j> <Plug>(textmanip-move-down)
 xmap <C-k> <Plug>(textmanip-move-up)
 xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 
-" インサートモードでも動かしたい
+" move current line in insert mode
 imap <D-h> <C-o>V<C-h><Esc>
 imap <D-j> <C-o>V<C-j><Esc>
 imap <D-k> <C-o>V<C-k><Esc>
 imap <D-l> <C-o>V<C-l><Esc>
 imap <D-d> <C-o>,d
 
-" 行の複製
+" duplicate line
 vmap ,d <Plug>(textmanip-duplicate-down)
 vmap ,D <Plug>(textmanip-duplicate-up)
 nmap ,d <Plug>(textmanip-duplicate-down)
@@ -789,7 +776,9 @@ inoremap <expr> ^ smartchr#loop('^', '->', '=>')
 "-------------------------------------------------------------------------------
 " Plugin: OpenBrowser
 "-------------------------------------------------------------------------------
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
+" disable netrw's gx mapping.
+let g:netrw_nogx = 1
+
 nnoremap gx <Plug>(openbrowser-smart-search)
 vnoremap gx <Plug>(openbrowser-smart-search)
 
@@ -1001,32 +990,15 @@ nmap gr :R<CR>
 "-------------------------------------------------------------------------------
 " Plugin: Ruby refactoring
 "-------------------------------------------------------------------------------
-" メソッドに引数を追加する
-nnoremap <Leader>rap :RAddParameter<CR>
-
-" 一行で書かれた条件文を複数行に変換する
+nnoremap <Leader>rap  :RAddParameter<CR>
 nnoremap <Leader>rcpc :RConvertPostConditional<CR>
-
-" 選択部分を RSpec の "let(:hoge) { fuga }" の形式に切り出す
-nnoremap <Leader>rel :RExtractLet<CR>
-
-" 選択部分を定数として切り出す
-vnoremap <Leader>rec :RExtractConstant<CR>
-
-" 選択部分を変数として切り出す
+nnoremap <Leader>rel  :RExtractLet<CR>
+vnoremap <Leader>rec  :RExtractConstant<CR>
 vnoremap <Leader>relv :RExtractLocalVariable<CR>
-
-" 一時変数を取り除く
-nnoremap <Leader>rit :RInlineTemp<CR>
-
-" ローカル変数をリネームする
+nnoremap <Leader>rit  :RInlineTemp<CR>
 vnoremap <Leader>rrlv :RRenameLocalVariable<CR>
-
-" インスタンス変数をリネームする
 vnoremap <Leader>rriv :RRenameInstanceVariable<CR>
-
-" 選択部分をメソッドに切り出す
-vnoremap <Leader>rem :RExtractMethod<CR>
+vnoremap <Leader>rem  :RExtractMethod<CR>
 
 
 "-------------------------------------------------------------------------------
