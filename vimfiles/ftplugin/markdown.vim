@@ -8,7 +8,7 @@ function! s:title_line(char)
   let char = a:char
 
   if l && c == 1
-    let size = strlen(getline(l))
+    let size = strwidth(getline(l))
 
     if size == 0 && a:char == '-'
       let size = 40

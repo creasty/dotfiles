@@ -2,15 +2,12 @@
 "-------------------------------------------------------------------------------
 " Plugin manager: neobundle
 "-------------------------------------------------------------------------------
-filetype plugin indent off
-
 if has('vim_starting')
   set runtimepath+=~/dotfiles/neobundle.vim/
   call neobundle#rc(expand('~/dotfiles/vimfiles/bundle/'))
 endif
 
 NeoBundleFetch 'Shougo/neobundle.vim'
-
 
 NeoBundle 'Shougo/vimproc', {
   \ 'build' : {
@@ -95,7 +92,6 @@ NeoBundle 'osyo-manga/vim-anzu'
 " Syntax
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'tpope/vim-markdown'
-" NeoBundle 'jtratner/vim-flavored-markdown'
 NeoBundle 'claco/jasmine.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'tpope/vim-rails'
@@ -107,8 +103,8 @@ NeoBundle 'msanders/cocoa.vim'
 NeoBundle 'eraserhd/vim-ios'
 
 
-NeoBundleCheck
 filetype plugin indent on
+NeoBundleCheck
 
 
 "-------------------------------------------------------------------------------
@@ -274,6 +270,9 @@ set nocursorline
 
 " do not redraw during command
 set lazyredraw
+
+" limit syntax highlighting
+set synmaxcol=1000
 
 " display very very long line at the end of file
 set display& display+=lastline
