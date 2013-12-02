@@ -95,6 +95,7 @@ NeoBundle 'osyo-manga/vim-anzu'
 " Syntax
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'tpope/vim-markdown'
+" NeoBundle 'jtratner/vim-flavored-markdown'
 NeoBundle 'claco/jasmine.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'tpope/vim-rails'
@@ -1075,6 +1076,8 @@ autocmd vimrc WinEnter,BufEnter *
   \ endif
 
 function! s:unite_my_settings()
+  call clearmatches()
+
   nmap <buffer> <C-q> <Plug>(unite_exit)
   imap <buffer> <C-q> <Plug>(unite_exit)
   inoremap <buffer> <C-d> <Del>
