@@ -465,6 +465,9 @@ nnoremap c "_c
 " why are you left out??
 nnoremap Y y$
 
+" selecting paated text
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
 " remove trailing spaces before saving
 autocmd vimrc BufWritePre *
   \ if &ft != 'markdown' |
@@ -741,6 +744,14 @@ let g:rubycomplete_include_object = 1
 let g:rubycomplete_include_object_space = 1
 
 " autocmd vimrc FileType ruby,eruby setlocal omnifunc=rubycomplete#Complete
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Syntastic
+"-------------------------------------------------------------------------------
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (#%w)}'
 
 
 "-------------------------------------------------------------------------------
@@ -1217,7 +1228,8 @@ function! LightlineMode()
     \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-autocmd vimrc BufWritePost *
+autocmd vimrc BufWritePost
+  \ *.c,*.cpp,*.coffee,*.rb
   \ SyntasticCheck | call lightline#update()
 
 

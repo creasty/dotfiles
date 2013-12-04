@@ -5,6 +5,9 @@ set guifont=Monaco:h10
 " maximize window
 set lines=999 columns=9999
 
+" reset guioption
+set guioptions&
+
 " use cui
 set guioptions-=c
 
@@ -18,6 +21,9 @@ set guioptions-=l
 set guioptions-=b
 set guioptions-=L
 set guioptions-=R
+
+" disable gui tabline
+set guioptions-=e
 
 " Disable mouse
 set mouse=

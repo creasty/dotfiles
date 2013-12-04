@@ -1,0 +1,6 @@
+
+if [ -d ${HOME}/.rbenv  ]; then
+  export PATH=$PATH:$HOME/.rvm/bin:$HOME/.rbenv/shims
+  eval "$(rbenv init -)"
+fi
+
