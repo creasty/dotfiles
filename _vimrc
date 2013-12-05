@@ -282,7 +282,8 @@ set display+=uhex
 
 " show tabs
 set list
-set listchars=tab:▸\ ,
+" set listchars=tab:▸\ ,
+set listchars=tab:¦\ ,nbsp:∘,extends:»,precedes:«,
 
 " highlight full-width space
 autocmd vimrc BufWinEnter,WinEnter *
@@ -1022,7 +1023,9 @@ call smartinput_endwise#define_default_rules()
 "-------------------------------------------------------------------------------
 " Plugin: IndentLine
 "-------------------------------------------------------------------------------
-let g:indentLine_char = '¦'
+let g:indentLine_char = '⁞'
+let g:indentLine_first_char = '⁞'
+let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_color_term = 234
 let g:indentLine_color_gui = '#2a2a2a'
 let g:indentLine_indentLevel = 20
@@ -1158,7 +1161,7 @@ let g:lightline = {
   \ 'component_type': {
     \ 'syntastic': 'error',
   \ },
-  \ 'subseparator': { 'left': '│', 'right': '│' },
+  \ 'subseparator': { 'left': '|', 'right': '|' },
 \ }
 
 if has('gui_running')
