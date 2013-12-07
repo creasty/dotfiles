@@ -405,13 +405,13 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("scssReturn", s:purple, "", "")
 
   " HTML Highlighting
-  call <SID>X("htmlTag", s:red, "", "")
-  call <SID>X("htmlEndTag", s:red, "", "")
-  call <SID>X("htmlTagName", s:red, "", "")
-  call <SID>X("htmlSpecialTagName", s:red, "", "")
-  call <SID>X("htmlTagN", s:red, "", "")
+  call <SID>X("htmlTag", s:comment, "", "")
+  call <SID>X("htmlEndTag", s:comment, "", "")
+  call <SID>X("htmlTagName", s:orange, "", "")
+  call <SID>X("htmlSpecialTagName", s:orange, "", "")
+  call <SID>X("htmlTagN", s:orange, "", "")
   call <SID>X("htmlArg", s:red, "", "")
-  call <SID>X("htmlScriptTag", s:red, "", "")
+  call <SID>X("htmlScriptTag", s:orange, "", "")
   call <SID>X("htmlLink", s:blue, "", "underline")
   call <SID>X("htmlTitle", s:foreground, "", "")
   call <SID>X("htmlH1", s:foreground, "", "")
@@ -422,11 +422,11 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
   call <SID>X("htmlH6", s:foreground, "", "")
 
   " XML Highlighting
-  call <SID>X("xmlTag", s:red, "", "")
-  call <SID>X("xmlEndTag", s:red, "", "")
-  call <SID>X("xmlTagName", s:red, "", "")
+  call <SID>X("xmlTag", s:comment, "", "")
+  call <SID>X("xmlEndTag", s:comment, "", "")
+  call <SID>X("xmlTagName", s:orange, "", "")
   call <SID>X("xmlAttrib", s:red, "", "")
-  call <SID>X("xmlEqual", s:red, "", "")
+  call <SID>X("xmlEqual", s:comment, "", "")
 
   " Markdown Highlighting
   call <SID>X("markdownH1", s:purple, "", "")
