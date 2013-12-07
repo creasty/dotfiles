@@ -285,7 +285,7 @@ set list
 set listchars=tab:¦\ ,nbsp:∘,extends:❯,precedes:❮
 
 " show wrap line break
-set showbreak=↪
+set showbreak=❮
 
 " highlight full-width space
 autocmd vimrc BufWinEnter,WinEnter *
