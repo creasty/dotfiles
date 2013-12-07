@@ -25,7 +25,10 @@ set guioptions-=R
 " disable gui tabline
 set guioptions-=e
 
-" Disable mouse
+" hide mouse after chars typed
+set mousehide
+
+" disable mouse
 set mouse=
 
 nmap <ScrollWheelUp> <nop>

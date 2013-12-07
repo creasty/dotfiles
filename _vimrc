@@ -251,7 +251,7 @@ endfunction
 set background=dark
 set t_Co=256
 syntax enable
-colorscheme My-Tomorrow-Night-Bright
+colorscheme CreastyVim
 
 " always show statusline
 set laststatus=2
@@ -280,10 +280,12 @@ set display& display+=lastline
 " display nonprintable charactors as hex
 set display+=uhex
 
-" show tabs
+" show hidden charactors
 set list
-" set listchars=tab:▸\ ,
-set listchars=tab:¦\ ,nbsp:∘,extends:»,precedes:«,
+set listchars=tab:¦\ ,nbsp:∘,extends:❯,precedes:❮
+
+" show wrap line break
+set showbreak=↪
 
 " highlight full-width space
 autocmd vimrc BufWinEnter,WinEnter *
@@ -465,6 +467,13 @@ nnoremap c "_c
 
 " why are you left out??
 nnoremap Y y$
+
+" keep the cursor in place while joining lines
+nnoremap J mzJ`z
+
+" reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
 
 " selecting paated text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
