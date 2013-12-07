@@ -102,7 +102,6 @@ NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'msanders/cocoa.vim'
 NeoBundle 'eraserhd/vim-ios'
 
-
 filetype plugin indent on
 NeoBundleCheck
 
@@ -251,7 +250,7 @@ endfunction
 set background=dark
 set t_Co=256
 syntax enable
-colorscheme CreastyVim
+colorscheme CreastyCode
 
 " always show statusline
 set laststatus=2
