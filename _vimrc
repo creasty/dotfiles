@@ -678,14 +678,14 @@ let g:clang_auto_select = 0
 let g:clang_use_library = 1
 
 " cancel or accept
-imap <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
-imap <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-imap <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
-imap <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
-imap <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
-imap <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-inoremap <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
-inoremap <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
+imap <silent> <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
+imap <silent> <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
+imap <silent> <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
+imap <silent> <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
+imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
+imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+inoremap <silent> <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
+inoremap <silent> <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
 
 " omni completion
 autocmd vimrc FileType css

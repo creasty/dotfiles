@@ -12,7 +12,7 @@ let s:green      = 'b5bd68'
 let s:aqua       = '8abeb7'
 let s:blue       = '81a2be'
 let s:purple     = 'b294bb'
-let s:window     = '303030'
+let s:window     = '262626'
 
 set background=dark
 hi clear
