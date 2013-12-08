@@ -2,17 +2,17 @@
 " Default GUI Colours
 let s:foreground = 'b8b8b8'
 let s:background = '000000'
-let s:selection = '424242'
-let s:line = '2a2a2a'
-let s:comment = '666666'
-let s:red = 'cc6666'
-let s:orange = 'de935f'
-let s:yellow = 'f0c674'
-let s:green = 'b5bd68'
-let s:aqua = '8abeb7'
-let s:blue = '81a2be'
-let s:purple = 'b294bb'
-let s:window = '4d5057'
+let s:selection  = '424242'
+let s:line       = '2a2a2a'
+let s:comment    = '666666'
+let s:red        = 'cc6666'
+let s:orange     = 'de935f'
+let s:yellow     = 'f0c674'
+let s:green      = 'b5bd68'
+let s:aqua       = '8abeb7'
+let s:blue       = '81a2be'
+let s:purple     = 'b294bb'
+let s:window     = '303030'
 
 set background=dark
 hi clear

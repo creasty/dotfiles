@@ -1140,6 +1140,7 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
 let g:lightline = {
+  \ 'colorscheme': 'creastycode',
   \ 'mode_map': { 'c': 'NORMAL' },
   \ 'active': {
     \ 'left': [

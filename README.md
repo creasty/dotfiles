@@ -10,8 +10,8 @@ Update
 	$ ~/dotfiles/update.sh
 
 
-Features
-========
+Screenshots of my Vim
+=====================
 
 ![](./screenshots/01.png)
 ![](./screenshots/02.png)
