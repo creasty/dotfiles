@@ -18,8 +18,8 @@ if [ $? -eq 0 ]; then
   echo "ok"
 else
   echo "Installing zsh..."
-  brew install zsh
-  sudo mv /etc/zshenv /etc/zprofile
+  brew install zsh --disable-etcdir zsh
+  sudo mv /etc/zshenv /etc/_zshenv
   sudo echo "\n/usr/local/bin/zsh" >> /etc/shells # TODO: not working
   chpass -s /usr/local/bin/zsh
 fi

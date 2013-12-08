@@ -1,26 +1,4 @@
 
-#  Env
-#-----------------------------------------------
-export PATH=/usr/local/bin:$PATH
-export PATH=/usr/local/heroku/bin:$PATH
-export PATH=$PATH:$HOME/.npm/node_modules/bin
-export PATH=$PATH:/opt/local/bin
-
-export LANG=ja_JP.UTF-8
-export EDITOR=vim
-
-if [ -f ~/.aliases ]; then
-  source ~/.aliases
-fi
-
-if [ -d ${HOME}/.rbenv  ]; then
-  export PATH=$PATH:$HOME/.rvm/bin:$HOME/.rbenv/shims
-  eval "$(rbenv init -)"
-fi
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-
 #  Base
 #-----------------------------------------------
 # load math functions
