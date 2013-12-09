@@ -1111,7 +1111,7 @@ function! s:unite_my_settings()
   imap <buffer> <C-j> <Plug>(unite_do_default_action)
   imap <buffer> <C-l> <Plug>(unite_redraw)
   inoremap <buffer> : **/
-  inoremap <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
+  inoremap <silent> <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
   " [TODO] unite#get_current_unite().prev_bufnr
 
   let unite = unite#get_current_unite()
