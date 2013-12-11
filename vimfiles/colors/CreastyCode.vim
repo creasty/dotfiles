@@ -408,7 +408,7 @@ if has('gui_running') || &t_Co == 88 || &t_Co == 256
   call <SID>X('htmlSpecialTagName', s:orange, '', '')
   call <SID>X('htmlTagN', s:orange, '', '')
   call <SID>X('htmlArg', s:red, '', '')
-  call <SID>X('htmlScriptTag', s:orange, '', '')
+  call <SID>X('htmlScriptTag', s:comment, '', '')
   call <SID>X('htmlLink', s:blue, '', 'underline')
   call <SID>X('htmlTitle', s:foreground, '', '')
   call <SID>X('htmlH1', s:foreground, '', '')
