@@ -760,7 +760,12 @@ let g:rubycomplete_include_object_space = 1
 "-------------------------------------------------------------------------------
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_style_warning_symbol = '⚠'
 let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (#%w)}'
+
+let g:syntastic_coffee_checkers = ['coffee', 'coffeelint']
+let g:syntastic_coffee_coffeelint_args = '-f ~/dotfiles/_coffeelintrc'
 
 
 "-------------------------------------------------------------------------------
@@ -1241,7 +1246,7 @@ function! LightlineMode()
 endfunction
 
 autocmd vimrc BufWritePost
-  \ *.c,*.cpp,*.coffee,*.rb
+  \ *.c,*.cpp,*.coffee,*.rb,*.scss
   \ SyntasticCheck | call lightline#update()
 
 

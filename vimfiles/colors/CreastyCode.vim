@@ -245,6 +245,7 @@ if has('gui_running') || &t_Co == 88 || &t_Co == 256
   call <SID>X('MoreMsg', s:green, '', '')
   call <SID>X('Question', s:green, '', '')
   call <SID>X('ErrorMsg', s:background, s:red, '')
+  call <SID>X('Error', s:background, s:red, '')
   call <SID>X('WarningMsg', s:red, '', '')
   call <SID>X('MatchParen', '', s:selection, '')
   call <SID>X('Folded', s:comment, s:background, '')
