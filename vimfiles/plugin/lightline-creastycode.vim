@@ -12,7 +12,7 @@ let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': 
 let s:p.normal.left = [ ['gray0', s:green, 'bold'], ['gray8', 'gray2'] ]
 let s:p.normal.middle = [ [ 'gray6', 'gray1' ] ]
 let s:p.normal.right = [ ['gray4', 'gray9'], ['gray8', 'gray2'], ['gray6', 'gray1'] ]
-let s:p.normal.error = [ [ 'white', s:red ] ]
+let s:p.normal.error = [ [ 'gray0', s:red ] ]
 let s:p.normal.warning = [ [ 'gray0', s:yellow ] ]
 
 let s:p.inactive.right = [ ['gray1', 'gray5'], ['gray5', 'gray2'], ['gray4', 'gray0'] ]

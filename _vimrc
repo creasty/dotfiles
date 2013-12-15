@@ -762,9 +762,9 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (#%w)}'
+let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (%w)}'
 
-let g:syntastic_coffee_checkers = ['coffee', 'coffeelint']
+let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
 let g:syntastic_coffee_coffeelint_args = '-f ~/dotfiles/_coffeelintrc'
 
 
@@ -998,6 +998,9 @@ nmap gA <Plug>(altr-back)
 
 " Header files
 call altr#define('%.c', '%.h', '%.m')
+
+" Jasmine
+call altr#define('src/%.coffee', 'spec/%_spec.coffee')
 
 " Rails
 call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
@@ -1245,9 +1248,7 @@ function! LightlineMode()
     \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
-autocmd vimrc BufWritePost
-  \ *.c,*.cpp,*.coffee,*.rb,*.scss
-  \ SyntasticCheck | call lightline#update()
+autocmd vimrc BufWritePost * call lightline#update()
 
 
 "-------------------------------------------------------------------------------
