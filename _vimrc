@@ -24,11 +24,11 @@ NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-altr'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
+NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'Align'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -59,6 +59,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
 \ }
 NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'deris/vim-rengbang'
+NeoBundle 'terryma/vim-expand-region'
 
 " Utils
 NeoBundle 'tpope/vim-fugitive'
@@ -81,6 +82,7 @@ NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'kana/vim-submode'
+NeoBundle 'osyo-manga/vim-over'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -929,17 +931,6 @@ let g:rooter_manual_only = 1
 let g:rooter_change_directory_for_non_project_files = 0
 
 autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter * :Rooter
-
-
-"-------------------------------------------------------------------------------
-" Plugin: Multi Cursor
-"-------------------------------------------------------------------------------
-let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_start_key = ',c'
-let g:multi_cursor_next_key = 'n'
-let g:multi_cursor_prev_key = 'N'
-let g:multi_cursor_skip_key = 'g'
-let g:multi_cursor_quit_key = '<C-c>'
 
 
 "-------------------------------------------------------------------------------
