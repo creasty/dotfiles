@@ -22,7 +22,6 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
-NeoBundle 'kana/vim-altr'
 NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
@@ -36,14 +35,18 @@ NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
 NeoBundleLazy 'tmhedberg/matchit'
-NeoBundleLazy "kana/vim-smartinput"
-NeoBundleLazy "cohama/vim-smartinput-endwise"
+NeoBundleLazy 'kana/vim-smartinput'
+NeoBundleLazy 'cohama/vim-smartinput-endwise'
+NeoBundleLazy 'ecomba/vim-ruby-refactoring'
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'smartchr'
 NeoBundle 't9md/vim-textmanip'
+NeoBundle 'Townk/vim-autoclose'
+NeoBundle 'deris/vim-rengbang'
+NeoBundle 'terryma/vim-expand-region'
+
+" Completion
 NeoBundle 'Shougo/neocomplete'
-NeoBundleLazy 'ecomba/vim-ruby-refactoring'
-NeoBundleLazy 'rubycomplete.vim'
 NeoBundleLazy 'Rip-Rip/clang_complete'
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'autoload': {
@@ -53,9 +56,6 @@ NeoBundleLazy 'Shougo/neosnippet', {
     \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ }
 \ }
-NeoBundle 'Townk/vim-autoclose'
-NeoBundle 'deris/vim-rengbang'
-NeoBundle 'terryma/vim-expand-region'
 
 " Utils
 NeoBundle 'tpope/vim-fugitive'
@@ -133,6 +133,9 @@ set noswapfile
 
 " reload when files modified outside of vim
 set autoread
+
+" always use old engine
+set regexpengine=1
 
 " delete over lines and indents
 set backspace=indent,eol,start
@@ -266,7 +269,7 @@ set nocursorline
 set lazyredraw
 
 " limit syntax highlighting
-set synmaxcol=1000
+set synmaxcol=500
 
 " display very very long line at the end of file
 set display& display+=lastline
@@ -308,7 +311,8 @@ nnoremap tl :tags<CR>
 set wrapscan
 
 " ignore case only if contains upper case
-set ignorecase set smartcase
+set ignorecase
+set smartcase
 
 " incremental search
 set incsearch
@@ -725,18 +729,6 @@ autocmd vimrc BufWritePre *
 
 
 "-------------------------------------------------------------------------------
-" Plugin: Ruby complete
-"-------------------------------------------------------------------------------
-let g:rubycomplete_rails = 1
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_include_object = 1
-let g:rubycomplete_include_object_space = 1
-
-" autocmd vimrc FileType ruby,eruby setlocal omnifunc=rubycomplete#Complete
-
-
-"-------------------------------------------------------------------------------
 " Plugin: Syntastic
 "-------------------------------------------------------------------------------
 let g:syntastic_error_symbol = '✗'
@@ -1005,6 +997,11 @@ let g:indentLine_indentLevel = 20
 "-------------------------------------------------------------------------------
 " Plugin: Over
 "-------------------------------------------------------------------------------
+let g:over_command_line_key_mappings = {
+  \ "\<C-c>": "\<Esc>",
+  \ "\<C-j>": "\<CR>",
+\ }
+
 cnoremap <expr> :
   \ (getcmdtype() == ':' && getcmdpos() == 1) ? "OverCommandLine\<CR>%s/" : ':'
 
