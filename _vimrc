@@ -23,7 +23,6 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-altr'
-NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'coderifous/textobj-word-column.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
@@ -31,10 +30,8 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Align'
 NeoBundle 'mattn/emmet-vim'
-NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tyru/operator-html-escape.vim'
 NeoBundle 'tyru/operator-camelize.vim'
-NeoBundle 'tek/vim-operator-assign'
 NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
@@ -45,7 +42,6 @@ NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'smartchr'
 NeoBundle 't9md/vim-textmanip'
 NeoBundle 'Shougo/neocomplete'
-NeoBundle 'SyntaxComplete'
 NeoBundleLazy 'ecomba/vim-ruby-refactoring'
 NeoBundleLazy 'rubycomplete.vim'
 NeoBundleLazy 'Rip-Rip/clang_complete'
@@ -67,13 +63,11 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-session'
-NeoBundle 'gitv'
 NeoBundle 'Shougo/unite.vim'
 NeoBundleLazy 'Shougo/vimshell.vim', {
   \ 'autoload': { 'commands': ['VimShell'] },
   \ 'depends': ['Shougo/vimproc'],
 \ }
-NeoBundle 'othree/eregex.vim'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'Shougo/vinarise.vim'
@@ -89,12 +83,10 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
-" NeoBundle 'skammer/vim-css-color'
 
 " Syntax
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'tpope/vim-markdown'
-NeoBundle 'claco/jasmine.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'vim-ruby/vim-ruby'
@@ -103,6 +95,7 @@ NeoBundle 'slim-template/vim-slim'
 NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'msanders/cocoa.vim'
 NeoBundle 'eraserhd/vim-ios'
+" NeoBundle 'skammer/vim-css-color'
 
 filetype plugin indent on
 NeoBundleCheck
@@ -305,7 +298,7 @@ nnoremap tn :tn<CR>
 nnoremap tp :tp<CR>
 
 " list of tags
-nnoremap tl :tags
+nnoremap tl :tags<CR>
 
 
 "-------------------------------------------------------------------------------
@@ -315,8 +308,7 @@ nnoremap tl :tags
 set wrapscan
 
 " ignore case only if contains upper case
-set ignorecase
-set smartcase
+set ignorecase set smartcase
 
 " incremental search
 set incsearch
@@ -523,12 +515,8 @@ function! s:auto_mkdir(dir, force)
   endif
 endfunction
 
-" complete closing tags
-autocmd vimrc Filetype xml,html,xhtml
-  \ inoremap <buffer> </ </<C-x><C-o>
-
 " rename current file
-command! -nargs=1 -complete=file Rename f <args> | call delete(expand('#'))
+command! -nargs=1 -complete=file Rename w <args> | call delete(expand('#'))
 
 nmap <C-w><C-r> <C-w>r
 nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
@@ -737,15 +725,6 @@ autocmd vimrc BufWritePre *
 
 
 "-------------------------------------------------------------------------------
-" Plugin: SyntaxComplete
-"-------------------------------------------------------------------------------
-autocmd vimrc Filetype *
-  \ if &omnifunc == '' |
-    \ setlocal omnifunc=syntaxcomplete#Complete |
-  \ endif
-
-
-"-------------------------------------------------------------------------------
 " Plugin: Ruby complete
 "-------------------------------------------------------------------------------
 let g:rubycomplete_rails = 1
@@ -823,21 +802,6 @@ let g:user_emmet_settings = {
     \ 'indentation': "\t",
   \ },
 \ }
-
-
-"-------------------------------------------------------------------------------
-" Plugin: textobj-multiblock
-"-------------------------------------------------------------------------------
-omap ab <Plug>(textobj-multiblock-a)
-omap ib <Plug>(textobj-multiblock-i)
-vmap ab <Plug>(textobj-multiblock-a)
-vmap ib <Plug>(textobj-multiblock-i)
-
-
-"-------------------------------------------------------------------------------
-" Plugin: eregex
-"-------------------------------------------------------------------------------
-let g:eregex_default_enable = 0
 
 
 "-------------------------------------------------------------------------------
@@ -1034,7 +998,7 @@ let g:indentLine_char = '⁞'
 let g:indentLine_first_char = '⁞'
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_color_term = 234
-let g:indentLine_color_gui = '#2a2a2a'
+let g:indentLine_color_gui = '#222222'
 let g:indentLine_indentLevel = 20
 
 
@@ -1042,7 +1006,7 @@ let g:indentLine_indentLevel = 20
 " Plugin: Over
 "-------------------------------------------------------------------------------
 cnoremap <expr> :
-  \ (getcmdtype() == ':' && getcmdpos() == 1) ? "OverCommandLine\<CR>" : ':'
+  \ (getcmdtype() == ':' && getcmdpos() == 1) ? "OverCommandLine\<CR>%s/" : ':'
 
 
 "-------------------------------------------------------------------------------

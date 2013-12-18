@@ -9,7 +9,7 @@ set lines=999 columns=9999
 set guioptions&
 
 " use cui
-set guioptions-=c
+set guioptions+=c
 
 " hide menu & toolbars
 set guioptions-=T
