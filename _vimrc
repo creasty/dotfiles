@@ -82,6 +82,7 @@ NeoBundle 'airblade/vim-rooter'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'rizzatti/funcoo.vim'
 NeoBundle 'rizzatti/dash.vim'
 
 " Appearance
