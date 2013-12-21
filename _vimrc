@@ -37,7 +37,9 @@ NeoBundle 'emonkak/vim-operator-sort'
 NeoBundleLazy 'tmhedberg/matchit'
 NeoBundleLazy 'kana/vim-smartinput'
 NeoBundleLazy 'cohama/vim-smartinput-endwise'
-NeoBundleLazy 'ecomba/vim-ruby-refactoring'
+NeoBundleLazy 'ecomba/vim-ruby-refactoring',  {
+  \ 'autoload': { 'filetypes': ['ruby'] }
+\ }
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'smartchr'
 NeoBundle 't9md/vim-textmanip'
@@ -46,9 +48,10 @@ NeoBundle 'deris/vim-rengbang'
 NeoBundle 'terryma/vim-expand-region'
 
 " Completion
-NeoBundle 'Shougo/neocomplete'
+NeoBundleLazy 'Shougo/neocomplete'
 NeoBundleLazy 'Rip-Rip/clang_complete'
 NeoBundleLazy 'Shougo/neosnippet', {
+  \ 'depends': ['Shougo/neocomplete'],
   \ 'autoload': {
     \ 'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
     \ 'filetypes': 'snippet',
@@ -58,12 +61,14 @@ NeoBundleLazy 'Shougo/neosnippet', {
 \ }
 
 " Utils
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundleLazy 'tpope/vim-fugitive'
+NeoBundleLazy 'scrooloose/nerdtree'
+NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
+  \ 'depends': ['scrooloose/nerdtree'],
+\ }
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-session'
-NeoBundle 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/unite.vim'
 NeoBundleLazy 'Shougo/vimshell.vim', {
   \ 'autoload': { 'commands': ['VimShell'] },
   \ 'depends': ['Shougo/vimproc'],
@@ -86,16 +91,37 @@ NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
 " Syntax
-NeoBundle 'tpope/vim-haml'
-NeoBundle 'tpope/vim-markdown'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-cucumber'
-NeoBundle 'slim-template/vim-slim'
-NeoBundle 'cakebaker/scss-syntax.vim'
-NeoBundle 'msanders/cocoa.vim'
-NeoBundle 'eraserhd/vim-ios'
+NeoBundleLazy 'tpope/vim-haml',  {
+  \ 'autoload': { 'filetypes': ['haml'] }
+\ }
+NeoBundleLazy 'tpope/vim-markdown',  {
+  \ 'autoload': { 'filetypes': ['markdown'] }
+\ }
+NeoBundleLazy 'kchmck/vim-coffee-script',  {
+  \ 'autoload': { 'filetypes': ['coffee'] }
+\ }
+NeoBundleLazy 'tpope/vim-rails',  {
+  \ 'autoload': { 'filetypes': ['ruby'] }
+\ }
+NeoBundleLazy 'vim-ruby/vim-ruby',  {
+  \ 'autoload': { 'filetypes': ['ruby'] }
+\ }
+NeoBundleLazy 'tpope/vim-cucumber',  {
+  \ 'autoload': { 'filetypes': ['cucumber.ruby'] }
+\ }
+NeoBundleLazy 'slim-template/vim-slim',  {
+  \ 'autoload': { 'filetypes': ['slim'] }
+\ }
+NeoBundleLazy 'cakebaker/scss-syntax.vim',  {
+  \ 'autoload': { 'filetypes': ['scss'] }
+\ }
+NeoBundleLazy 'msanders/cocoa.vim',  {
+  \ 'autoload': { 'filetypes': ['objc'] }
+\ }
+NeoBundleLazy 'eraserhd/vim-ios',  {
+  \ 'autoload': { 'filetypes': ['objc'] }
+\ }
+
 " NeoBundle 'skammer/vim-css-color'
 
 filetype plugin indent on
@@ -620,113 +646,121 @@ autocmd vimrc FileType
 "-------------------------------------------------------------------------------
 " Plugin: NeoComplete
 "-------------------------------------------------------------------------------
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplcache_max_list = 20
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-let g:neocomplete#disable_auto_complete = 0
-let g:neocomplete#enable_auto_select = 1
-let g:neocomplete#enable_insert_char_pre = 1
-set completeopt& completeopt-=preview
+let s:bundle = neobundle#get('neocomplete')
+function! s:bundle.hooks.on_source(bundle)
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplcache_max_list = 20
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+  let g:neocomplete#disable_auto_complete = 0
+  let g:neocomplete#enable_auto_select = 1
+  let g:neocomplete#enable_insert_char_pre = 1
+  set completeopt& completeopt-=preview
 
-let $DICTDIR = $HOME . '/dotfiles/dict'
-let g:neocomplete#sources#dictionary#dictionaries = {
-  \ 'default':    '',
-  \ 'vimshell':   $HOME . '/.vimshell_hist',
-  \ 'ruby':       $DICTDIR . '/ruby.dict',
-  \ 'java':       $DICTDIR . '/java.dict',
-  \ 'javascript': $DICTDIR . '/javascript.dict',
-  \ 'coffee':     $DICTDIR . '/javascript.dict',
-  \ 'html':       $DICTDIR . '/html.dict',
-  \ 'php':        $DICTDIR . '/php.dict',
-  \ 'objc':       $DICTDIR . '/objc.dict',
-  \ 'perl':       $DICTDIR . '/perl.dict',
-  \ 'scala':      $DICTDIR . '/scala.dict',
-\ }
+  let $DICTDIR = $HOME . '/dotfiles/dict'
+  let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default':    '',
+    \ 'vimshell':   $HOME . '/.vimshell_hist',
+    \ 'ruby':       $DICTDIR . '/ruby.dict',
+    \ 'java':       $DICTDIR . '/java.dict',
+    \ 'javascript': $DICTDIR . '/javascript.dict',
+    \ 'coffee':     $DICTDIR . '/javascript.dict',
+    \ 'html':       $DICTDIR . '/html.dict',
+    \ 'php':        $DICTDIR . '/php.dict',
+    \ 'objc':       $DICTDIR . '/objc.dict',
+    \ 'perl':       $DICTDIR . '/perl.dict',
+    \ 'scala':      $DICTDIR . '/scala.dict',
+  \ }
 
-let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
-let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
+  let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
+  let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
 
-" keyword patterns
-let g:neocomplete#keyword_patterns = get(g:, 'neocomplete#keyword_patterns', {})
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
+  " keyword patterns
+  let g:neocomplete#keyword_patterns = get(g:, 'neocomplete#keyword_patterns', {})
+  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+  let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
-" input patterns
-let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
-let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
-let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+  " input patterns
+  let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
+  let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+  let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+  let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+  let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
+  let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
-let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
-let g:neocomplete#force_overwrite_completefunc = 1
-let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+  let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
+  let g:neocomplete#force_overwrite_completefunc = 1
+  let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+  let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+  let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+  let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
-let g:clang_use_library = 1
+  let g:clang_complete_auto = 0
+  let g:clang_auto_select = 0
+  let g:clang_use_library = 1
 
-" cancel or accept
-imap <silent> <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
-imap <silent> <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-imap <silent> <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
-imap <silent> <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
-imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
-imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-inoremap <silent> <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
-inoremap <silent> <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
+  " cancel or accept
+  imap <silent> <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
+  imap <silent> <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
+  imap <silent> <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
+  imap <silent> <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
+  imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
+  imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  inoremap <silent> <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
+  inoremap <silent> <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
 
-" omni completion
-autocmd vimrc FileType css
-  \ setlocal omnifunc=csscomplete#CompleteCSS
-autocmd vimrc FileType html,markdown
-  \ setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd vimrc FileType javascript
-  \ setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd vimrc FileType python
-  \ setlocal omnifunc=pythoncomplete#Complete
-autocmd vimrc FileType xml
-  \ setlocal omnifunc=xmlcomplete#CompleteTags
+  " omni completion
+  autocmd vimrc FileType css
+    \ setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd vimrc FileType html,markdown
+    \ setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd vimrc FileType javascript
+    \ setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd vimrc FileType python
+    \ setlocal omnifunc=pythoncomplete#Complete
+  autocmd vimrc FileType xml
+    \ setlocal omnifunc=xmlcomplete#CompleteTags
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
 " Plugin: NeoSnippet
 "-------------------------------------------------------------------------------
-let g:neosnippet#disable_select_mode_mappings = 0
-let g:neosnippet#enable_snipmate_compatibility = 1
+let s:bundle = neobundle#get('neosnippet')
+function! s:bundle.hooks.on_source(bundle)
+  let g:neosnippet#disable_select_mode_mappings = 0
+  let g:neosnippet#enable_snipmate_compatibility = 1
 
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
-" super tab completion
-inoremap <expr> <TAB> <SID>super_tab_completion()
-
-function! s:super_tab_completion()
-  let c = col('.') - 1
-
-  if pumvisible()
-    return neocomplete#close_popup()
-  elseif neosnippet#expandable_or_jumpable()
-    return neosnippet#mappings#expand_or_jump_impl()
-  elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
-  elseif c && getline('.')[c - 1] !~ '\s'
-    return "\<C-x>\<C-o>"
-  else
-    return "\<TAB>"
+  if has('conceal')
+    set conceallevel=2 concealcursor=i
   endif
-endfunction
 
-" remove placeholders (hidden markers) before saving
-autocmd vimrc BufWritePre *
-  \ exec '%s/<`\d\+:\?[^>]*`>//ge'
+  " super tab completion
+  inoremap <expr> <TAB> <SID>super_tab_completion()
+
+  function! s:super_tab_completion()
+    let c = col('.') - 1
+
+    if pumvisible()
+      return neocomplete#close_popup()
+    elseif neosnippet#expandable_or_jumpable()
+      return neosnippet#mappings#expand_or_jump_impl()
+    elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+      return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
+    elseif c && getline('.')[c - 1] !~ '\s'
+      return "\<C-x>\<C-o>"
+    else
+      return "\<TAB>"
+    endif
+  endfunction
+
+  " remove placeholders (hidden markers) before saving
+  autocmd vimrc BufWritePre *
+    \ exec '%s/<`\d\+:\?[^>]*`>//ge'
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
@@ -854,29 +888,33 @@ nnoremap <Leader>ss :SaveSession<CR>
 "-------------------------------------------------------------------------------
 " Plugin: NERD Tree
 "-------------------------------------------------------------------------------
-let g:NERDSpaceDelims = 1
-let g:NERDShutUp = 1
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
-let g:NERDTreeAutoDeleteBuffer = 1
+let s:bundle = neobundle#get('vim-nerdtree-tabs')
+function! s:bundle.hooks.on_source(bundle)
+  let g:NERDSpaceDelims = 1
+  let g:NERDShutUp = 1
+  let g:NERDTreeShowHidden = 1
+  let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
+  let g:NERDTreeAutoDeleteBuffer = 1
 
-let g:nerdtree_tabs_open_on_gui_startup = 0
-let g:nerdtree_tabs_startup_cd = 0
+  let g:nerdtree_tabs_open_on_gui_startup = 0
+  let g:nerdtree_tabs_startup_cd = 0
 
-nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
-function! s:NERDTreeToggleOrFocus()
-  let isOpen = 0
+  nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
+  function! s:NERDTreeToggleOrFocus()
+    let isOpen = 0
 
-  if exists('t:NERDTreeBufName')
-    let isOpen = (bufwinnr(t:NERDTreeBufName) != -1 && bufnr(t:NERDTreeBufName) != bufnr('%'))
-  endif
+    if exists('t:NERDTreeBufName')
+      let isOpen = (bufwinnr(t:NERDTreeBufName) != -1 && bufnr(t:NERDTreeBufName) != bufnr('%'))
+    endif
 
-  if isOpen
-    return ":0wincmd w\<CR>"
-  else
-    return ":NERDTreeTabsToggle\<CR>"
-  endif
-endfun
+    if isOpen
+      return ":0wincmd w\<CR>"
+    else
+      return ":NERDTreeTabsToggle\<CR>"
+    endif
+  endfun
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
@@ -1025,70 +1063,78 @@ let g:quickrun_config.markdown = {
 "-------------------------------------------------------------------------------
 " Plugin: Fugitive
 "-------------------------------------------------------------------------------
-autocmd vimrc User fugitive
-  \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-  \   nnoremap <buffer> .. :edit %:h<CR> |
-  \ endif
+let s:bundle = neobundle#get('vim-fugitive')
+function! s:bundle.hooks.on_source(bundle)
+  autocmd vimrc User fugitive
+    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+    \   nnoremap <buffer> .. :edit %:h<CR> |
+    \ endif
 
-autocmd vimrc BufReadPost fugitive://*
-  \ set bufhidden=delete
+  autocmd vimrc BufReadPost fugitive://*
+    \ set bufhidden=delete
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
 " Plugin: Unite
 "-------------------------------------------------------------------------------
-let g:unite_enable_start_insert = 1
-let g:unite_winheight = 10
-let g:unite_enable_ignore_case = 1
-let g:unite_enable_smart_case = 1
-let g:unite_source_rec_min_cache_files = 50
-let g:unite_source_rec_max_cache_files = 5000
+let s:bundle = neobundle#get('unite.vim')
+function! s:bundle.hooks.on_source(bundle)
+  let g:unite_enable_start_insert = 1
+  let g:unite_winheight = 10
+  let g:unite_enable_ignore_case = 1
+  let g:unite_enable_smart_case = 1
+  let g:unite_source_rec_min_cache_files = 50
+  let g:unite_source_rec_max_cache_files = 5000
 
-let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
-  \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\)/'
-call unite#custom#source('file', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
+  let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
+    \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\)/'
+  call unite#custom#source('file', 'ignore_pattern', s:file_rec_ignore_pattern)
+  call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+  call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+  call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
 
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-
-nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
-autocmd vimrc FileType unite call s:unite_my_settings()
-autocmd vimrc WinEnter,BufEnter *
-  \ if &ft != 'unite' |
-    \ let g:unite_prev_bufpath = expand('%:p:h') |
-  \ endif
-
-function! s:unite_my_settings()
-  call clearmatches()
-
-  nmap <buffer> <C-q> <Plug>(unite_exit)
-  imap <buffer> <C-q> <Plug>(unite_exit)
-  inoremap <buffer> <C-d> <Del>
-  inoremap <buffer> <silent> <C-h> <C-g>u<C-h>
-  imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
-  inoremap <buffer> <C-b> <Left>
-  inoremap <buffer> <C-f> <Right>
-  imap <buffer> <C-a> <Plug>(unite_move_head)
-  inoremap <buffer> <C-e> <End>
-  imap <buffer> <C-j> <Plug>(unite_do_default_action)
-  imap <buffer> <C-l> <Plug>(unite_redraw)
-  inoremap <buffer> : **/
-  inoremap <silent> <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
-  " [TODO] unite#get_current_unite().prev_bufnr
-
-  let unite = unite#get_current_unite()
-  if unite.buffer_name =~# '^search'
-    nnoremap <silent><buffer><expr> r unite#do_action('replace')
-  else
-    nnoremap <silent><buffer><expr> r unite#do_action('rename')
+  if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_recursive_opt = ''
   endif
+
+  nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
+  autocmd vimrc FileType unite call s:unite_my_settings()
+  autocmd vimrc WinEnter,BufEnter *
+    \ if &ft != 'unite' |
+      \ let g:unite_prev_bufpath = expand('%:p:h') |
+    \ endif
+
+  function! s:unite_my_settings()
+    call clearmatches()
+
+    nmap <buffer> <C-q> <Plug>(unite_exit)
+    imap <buffer> <C-q> <Plug>(unite_exit)
+    inoremap <buffer> <C-d> <Del>
+    inoremap <buffer> <silent> <C-h> <C-g>u<C-h>
+    imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
+    inoremap <buffer> <C-b> <Left>
+    inoremap <buffer> <C-f> <Right>
+    imap <buffer> <C-a> <Plug>(unite_move_head)
+    inoremap <buffer> <C-e> <End>
+    imap <buffer> <C-j> <Plug>(unite_do_default_action)
+    imap <buffer> <C-l> <Plug>(unite_redraw)
+    inoremap <buffer> : **/
+    inoremap <silent> <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
+    " [TODO] unite#get_current_unite().prev_bufnr
+
+    let unite = unite#get_current_unite()
+    if unite.buffer_name =~# '^search'
+      nnoremap <silent><buffer><expr> r unite#do_action('replace')
+    else
+      nnoremap <silent><buffer><expr> r unite#do_action('rename')
+    endif
+  endfunction
 endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
