@@ -23,20 +23,34 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'coderifous/textobj-word-column.vim'
-NeoBundle 'surround.vim'
+NeoBundleLazy 'surround.vim', {
+  \ 'autoload': { 'insert': 1 },
+\ }
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/syntastic'
+NeoBundleLazy 'scrooloose/syntastic', {
+  \ 'autoload': { 'insert': 1 },
+\ }
 NeoBundle 'Align'
-NeoBundle 'mattn/emmet-vim'
+NeoBundle 'mattn/emmet-vim', {
+  \ 'autoload': {
+    \ 'insert': 1,
+    \ 'function_prefix': 'emmet',
+  \ },
+\ }
 NeoBundle 'tyru/operator-html-escape.vim'
 NeoBundle 'tyru/operator-camelize.vim'
 NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
-NeoBundleLazy 'tmhedberg/matchit'
-NeoBundleLazy 'kana/vim-smartinput'
-NeoBundleLazy 'cohama/vim-smartinput-endwise'
+NeoBundle 'tmhedberg/matchit'
+NeoBundleLazy 'kana/vim-smartinput', {
+  \ 'autoload': { 'insert': 1 },
+\ }
+NeoBundleLazy 'cohama/vim-smartinput-endwise', {
+  \ 'depends': ['kana/vim-smartinput'],
+  \ 'autoload': { 'insert': 1 },
+\ }
 NeoBundleLazy 'ecomba/vim-ruby-refactoring',  {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
@@ -48,8 +62,14 @@ NeoBundle 'deris/vim-rengbang'
 NeoBundle 'terryma/vim-expand-region'
 
 " Completion
-NeoBundleLazy 'Shougo/neocomplete'
-NeoBundleLazy 'Rip-Rip/clang_complete'
+NeoBundleLazy 'Shougo/neocomplete', {
+  \ 'autoload': { 'insert': 1 },
+\ }
+NeoBundleLazy 'Rip-Rip/clang_complete', {
+  \ 'autoload': {
+    \ 'filetypes': ['clang', 'objc'],
+  \ },
+\ }
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'depends': ['Shougo/neocomplete'],
   \ 'autoload': {
@@ -57,21 +77,24 @@ NeoBundleLazy 'Shougo/neosnippet', {
     \ 'filetypes': 'snippet',
     \ 'insert': 1,
     \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
-  \ }
+  \ },
 \ }
 
 " Utils
-NeoBundleLazy 'tpope/vim-fugitive'
-NeoBundleLazy 'scrooloose/nerdtree'
-NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
-  \ 'depends': ['scrooloose/nerdtree'],
+NeoBundleLazy 'mattn/benchvimrc-vim', {
+  \ 'autoload': { 'commands': ['BenchVimrc'] },
 \ }
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-session'
-NeoBundleLazy 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/unite.vim', {
+  \ 'autoload': { 'commands': ['Unite'] },
+\ }
 NeoBundleLazy 'Shougo/vimshell.vim', {
-  \ 'autoload': { 'commands': ['VimShell'] },
   \ 'depends': ['Shougo/vimproc'],
+  \ 'autoload': { 'commands': ['VimShell'] },
 \ }
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'glidenote/memolist.vim'
@@ -138,7 +161,9 @@ augroup vimrc
 augroup END
 
 " make special key bindings like <C-s> work
-silent !stty -ixon > /dev/null 2>&1
+if !has('gui_running')
+  silent !stty -ixon > /dev/null 2>&1
+endif
 
 " use comma as leader
 let mapleader = ','
@@ -355,13 +380,13 @@ nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 autocmd vimrc BufReadPost * :nohlsearch
 
 " search selection
-vnoremap // y/=escape(@", '\\/.*$^~')
+vnoremap // /<C-r>=escape(@", '\\/.*$^~')<CR>
 
 " replace selection
-vnoremap /r "xy:%s/=escape(@x, '\\/.*$^~')//gc
+vnoremap /r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
-nnoremap <expr> s* ':%s/\<' . expand('') . '\>/'
+nnoremap <expr> s* ':%s/\<' . expand('<cword>') . '\>/'
 
 " auto escaping
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
@@ -418,13 +443,10 @@ endif
 
 " force &fileencoding to use &encoding
 " when files not contain japanese charactors
-function! AU_ReCheck_FENC()
-  if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
-    let &fileencoding=&encoding
-  endif
-endfunction
-
-autocmd vimrc BufReadPost * call AU_ReCheck_FENC()
+autocmd vimrc BufReadPost *
+  \ if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0 |
+    \ let &fileencoding = &encoding |
+  \ endif
 
 " reopen current buffer with specific encoding
 command! -bang -nargs=? Utf8
@@ -729,39 +751,35 @@ unlet s:bundle
 "-------------------------------------------------------------------------------
 " Plugin: NeoSnippet
 "-------------------------------------------------------------------------------
-let s:bundle = neobundle#get('neosnippet')
-function! s:bundle.hooks.on_source(bundle)
-  let g:neosnippet#disable_select_mode_mappings = 0
-  let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#disable_select_mode_mappings = 0
+let g:neosnippet#enable_snipmate_compatibility = 1
 
-  if has('conceal')
-    set conceallevel=2 concealcursor=i
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" super tab completion
+inoremap <expr> <TAB> <SID>SuperTabCompletion()
+
+function! s:SuperTabCompletion()
+  let c = col('.') - 1
+
+  if pumvisible()
+    return neocomplete#close_popup()
+  elseif neosnippet#expandable_or_jumpable()
+    return neosnippet#mappings#expand_or_jump_impl()
+  elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+    return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
+  elseif c && getline('.')[c - 1] !~ '\s'
+    return "\<C-x>\<C-o>"
+  else
+    return "\<TAB>"
   endif
-
-  " super tab completion
-  inoremap <expr> <TAB> <SID>super_tab_completion()
-
-  function! s:super_tab_completion()
-    let c = col('.') - 1
-
-    if pumvisible()
-      return neocomplete#close_popup()
-    elseif neosnippet#expandable_or_jumpable()
-      return neosnippet#mappings#expand_or_jump_impl()
-    elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-      return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
-    elseif c && getline('.')[c - 1] !~ '\s'
-      return "\<C-x>\<C-o>"
-    else
-      return "\<TAB>"
-    endif
-  endfunction
-
-  " remove placeholders (hidden markers) before saving
-  autocmd vimrc BufWritePre *
-    \ exec '%s/<`\d\+:\?[^>]*`>//ge'
 endfunction
-unlet s:bundle
+
+" remove placeholders (hidden markers) before saving
+autocmd vimrc BufWritePre *
+  \ exec '%s/<`\d\+:\?[^>]*`>//ge'
 
 
 "-------------------------------------------------------------------------------
@@ -889,33 +907,30 @@ nnoremap <Leader>ss :SaveSession<CR>
 "-------------------------------------------------------------------------------
 " Plugin: NERD Tree
 "-------------------------------------------------------------------------------
-let s:bundle = neobundle#get('vim-nerdtree-tabs')
-function! s:bundle.hooks.on_source(bundle)
-  let g:NERDSpaceDelims = 1
-  let g:NERDShutUp = 1
-  let g:NERDTreeShowHidden = 1
-  let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
-  let g:NERDTreeAutoDeleteBuffer = 1
+let g:NERDSpaceDelims = 1
+let g:NERDShutUp = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
+let g:NERDTreeAutoDeleteBuffer = 1
 
-  let g:nerdtree_tabs_open_on_gui_startup = 0
-  let g:nerdtree_tabs_startup_cd = 0
+let g:nerdtree_tabs_open_on_gui_startup = 0
+let g:nerdtree_tabs_startup_cd = 0
 
-  nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
-  function! s:NERDTreeToggleOrFocus()
-    let isOpen = 0
+nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
 
-    if exists('t:NERDTreeBufName')
-      let isOpen = (bufwinnr(t:NERDTreeBufName) != -1 && bufnr(t:NERDTreeBufName) != bufnr('%'))
-    endif
+function! s:NERDTreeToggleOrFocus()
+  let isOpen = 0
 
-    if isOpen
-      return ":0wincmd w\<CR>"
-    else
-      return ":NERDTreeTabsToggle\<CR>"
-    endif
-  endfun
+  if exists('t:NERDTreeBufName')
+    let isOpen = (bufwinnr(t:NERDTreeBufName) != -1 && bufnr(t:NERDTreeBufName) != bufnr('%'))
+  endif
+
+  if isOpen
+    return ":0wincmd w\<CR>"
+  else
+    return ":NERDTreeTabsToggle\<CR>"
+  endif
 endfunction
-unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
@@ -1020,18 +1035,26 @@ vnoremap <Leader>rem  :RExtractMethod<CR>
 "-------------------------------------------------------------------------------
 " Plugin: SmartInput / Endwise
 "-------------------------------------------------------------------------------
-call smartinput_endwise#define_default_rules()
+let s:bundle = neobundle#get('vim-smartinput-endwise')
+function! s:bundle.hooks.on_source(bundle)
+  call smartinput_endwise#define_default_rules()
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
 " Plugin: IndentLine
 "-------------------------------------------------------------------------------
-let g:indentLine_char = '⁞'
-let g:indentLine_first_char = '⁞'
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_color_term = 234
-let g:indentLine_color_gui = '#222222'
-let g:indentLine_indentLevel = 20
+if has('gui_running')
+  let g:indentLine_char = '⁞'
+  let g:indentLine_first_char = '⁞'
+  let g:indentLine_showFirstIndentLevel = 1
+  let g:indentLine_color_term = 234
+  let g:indentLine_color_gui = '#222222'
+  let g:indentLine_indentLevel = 20
+else
+  let g:indentLine_enabled = 0
+endif
 
 
 "-------------------------------------------------------------------------------
@@ -1102,7 +1125,6 @@ function! s:bundle.hooks.on_source(bundle)
     let g:unite_source_grep_recursive_opt = ''
   endif
 
-  nnoremap <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
   autocmd vimrc FileType unite call s:unite_my_settings()
   autocmd vimrc WinEnter,BufEnter *
     \ if &ft != 'unite' |
@@ -1136,6 +1158,8 @@ function! s:bundle.hooks.on_source(bundle)
   endfunction
 endfunction
 unlet s:bundle
+
+nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
 
 
 "-------------------------------------------------------------------------------
