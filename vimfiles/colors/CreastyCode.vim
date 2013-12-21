@@ -260,27 +260,47 @@ if has('gui_running') || &t_Co == 88 || &t_Co == 256
   if version >= 703
     call <SID>X('ColorColumn', '', s:line, 'none')
   end
+
   call <SID>X('SyntasticErrorSign', s:red, '', '')
   call <SID>X('SyntasticWarningSign', s:yellow, '', '')
 
   " Standard Highlighting
   call <SID>X('Comment', s:comment, '', '')
-  call <SID>X('Todo', s:comment, s:background, '')
-  call <SID>X('Title', s:comment, '', '')
-  call <SID>X('Identifier', s:blue, '', 'none')
-  call <SID>X('Statement', s:foreground, '', '')
-  call <SID>X('Conditional', s:foreground, '', '')
-  call <SID>X('Repeat', s:foreground, '', '')
-  call <SID>X('Structure', s:purple, '', '')
-  call <SID>X('Function', s:blue, '', '')
+
   call <SID>X('Constant', s:yellow, '', '')
   call <SID>X('String', s:green, '', '')
-  call <SID>X('Special', s:foreground, '', '')
-  call <SID>X('PreProc', s:purple, '', '')
+  call <SID>X('Character', s:yellow, '', '')
+  call <SID>X('Number', s:orange, '', '')
+  call <SID>X('Boolean', s:orange, '', '')
+  call <SID>X('Float', s:orange, '', '')
+
+  call <SID>X('Identifier', s:blue, '', 'none')
+  call <SID>X('Function', s:blue, '', '')
+
+  call <SID>X('Statement', s:purple, '', '')
+  call <SID>X('Conditional', s:purple, '', '')
+  call <SID>X('Repeat', s:purple, '', '')
+  call <SID>X('Label', s:purple, '', '')
   call <SID>X('Operator', s:aqua, '', 'none')
-  call <SID>X('Type', s:yellow, '', 'none')
-  call <SID>X('Define', s:purple, '', 'none')
+  call <SID>X('Keyword', s:purple, '', '')
+  call <SID>X('Exception', s:purple, '', '')
+
+  call <SID>X('PreProc', s:purple, '', '')
   call <SID>X('Include', s:blue, '', '')
+  call <SID>X('Define', s:purple, '', 'none')
+  call <SID>X('Macro', s:purple, '', '')
+  call <SID>X('PreCondit', s:purple, '', '')
+
+  call <SID>X('Type', s:yellow, '', 'none')
+  call <SID>X('Structure', s:purple, '', '')
+  call <SID>X('StorageClass', s:purple, '', '')
+  call <SID>X('Typedef', s:purple, '', '')
+
+  call <SID>X('Special', s:foreground, '', '')
+  call <SID>X('SpecialComment', s:green, '', '')
+  call <SID>X('Todo', s:background, s:green, '')
+  call <SID>X('Title', s:foreground, '', '')
+
   call <SID>X('ZenkakuSpace', '', s:red, '')
   call <SID>X('TrailingSpace', '', s:line, '')
 

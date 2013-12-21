@@ -77,6 +77,7 @@ NeoBundle 'airblade/vim-rooter'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'rizzatti/dash.vim'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -134,8 +135,8 @@ set noswapfile
 " reload when files modified outside of vim
 set autoread
 
-" always use old engine
-set regexpengine=1
+" always use new engine
+set regexpengine=2
 
 " delete over lines and indents
 set backspace=indent,eol,start
@@ -830,10 +831,10 @@ nmap gcu <leader>cu
 "-------------------------------------------------------------------------------
 " Plugin: EasyMotion
 "-------------------------------------------------------------------------------
-let g:EasyMotion_mapping_t = '<Space>t'
-let g:EasyMotion_mapping_T = '<Space>T'
-let g:EasyMotion_mapping_f = '<Space>f'
-let g:EasyMotion_mapping_F = '<Space>F'
+let g:EasyMotion_leader_key = '<Space>'
+let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
+
+hi EasyMotionTarget guibg=#f0c674 guifg=#000000
 
 
 "-------------------------------------------------------------------------------
@@ -914,8 +915,8 @@ call submode#map('changetab', 'n', '', 'T', 'gT')
 let g:memolist_memo_suffix = 'md'
 let g:memolist_path = '~/Dropbox/memo'
 let g:memolist_unite = 1
-let g:memolist_unite_source = 'file'
-let g:memolist_unite_option = '-auto-preview -start-insert'
+let g:memolist_unite_source = 'file_rec'
+let g:memolist_unite_option = '-start-insert'
 
 nnoremap ,mn :MemoNew<CR>
 nnoremap ,mg :MemoGrep<CR>
