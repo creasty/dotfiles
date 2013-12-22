@@ -317,7 +317,7 @@ call CreastyCode('Typedef', 'purple', '', '')
 
 call CreastyCode('Special', 'foreground', '', '')
 call CreastyCode('SpecialComment', 'green', '', '')
-call CreastyCode('Todo', 'background', 'foreground', '')
+call CreastyCode('Todo', 'background', 'comment', '')
 call CreastyCode('Title', 'foreground', '', '')
 
 

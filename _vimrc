@@ -572,7 +572,7 @@ function! s:auto_mkdir(dir, force)
 endfunction
 
 " rename current file
-command! -nargs=1 -complete=file Rename w <args> | call delete(expand('#'))
+command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
 nmap <C-w><C-r> <C-w>r
 nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>

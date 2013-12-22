@@ -10,10 +10,6 @@ function! s:title_line(char)
   if l && c == 1
     let size = strwidth(getline(l))
 
-    if size == 0 && a:char == '-'
-      let size = 40
-    endif
-
     while size > 1
       let char = char . a:char
       let size -= 1
