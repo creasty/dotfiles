@@ -338,10 +338,12 @@ set listchars=tab:¦\ ,nbsp:∘,extends:❯,precedes:❮
 set showbreak=❮
 
 " highlight full-width space
+call CreastyCode('ZenkakuSpace', '', 'red', '')
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('ZenkakuSpace', '　')
 
 " highlight trailing spaces
+call CreastyCode('TrailingSpace', '', 'line', '')
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('TrailingSpace', '\s\+$')
 
@@ -794,6 +796,9 @@ let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (%w)}'
 let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
 let g:syntastic_coffee_coffeelint_args = '-f ~/dotfiles/_coffeelintrc'
 
+call CreastyCode('SyntasticErrorSign', 'red', '', '')
+call CreastyCode('SyntasticWarningSign', 'yellow', '', '')
+
 
 "-------------------------------------------------------------------------------
 " Plugin: TextManip
@@ -887,7 +892,7 @@ nmap gcu <leader>cu
 let g:EasyMotion_leader_key = '<Space>'
 let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
-hi EasyMotionTarget guibg=#f0c674 guifg=#000000
+call CreastyCode('EasyMotionTarget', 'background', 'yellow', '')
 
 
 "-------------------------------------------------------------------------------

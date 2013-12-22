@@ -1,11 +1,11 @@
 
-let s:red        = '#cc6666'
-let s:orange     = '#de935f'
-let s:yellow     = '#f0c674'
-let s:green      = '#b5bd68'
-let s:aqua       = '#8abeb7'
-let s:blue       = '#81a2be'
-let s:purple     = '#b294bb'
+let s:red    = '#cc6666'
+let s:orange = '#de935f'
+let s:yellow = '#f0c674'
+let s:green  = '#b5bd68'
+let s:aqua   = '#8abeb7'
+let s:blue   = '#81a2be'
+let s:purple = '#b294bb'
 
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
 
