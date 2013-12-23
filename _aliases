@@ -5,6 +5,8 @@ alias refresh='source ~/.zshrc'
 
 alias ..='cd ..'
 alias ...='cd ../..'
+alias dt='cd ~/Desktop'
+alias p="cd ~/projects"
 alias ls='ls -G'
 alias ll='ls -Gl'
 alias la='ls -Ga'
@@ -14,6 +16,7 @@ alias vi='vim'
 alias v='vim'
 alias mvim='open -a MacVim'
 
+alias g="git"
 alias ti='titanium'
 alias tree='tree -C'
 
@@ -25,6 +28,7 @@ alias finder='open -a Finder'
 
 alias ip='ipconfig getifaddr en1'
 alias ipg='curl ifconfig.me'
+alias whois='whois -h whois-servers.net'
 
 alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""

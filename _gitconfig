@@ -20,13 +20,18 @@
 	m = merge --no-ff
 	c = commit -a
 	cm = commit -am
+	# !git add -A && git commit -av
 	ca = commit --amend
-	k = checkout
+	k = checkout -B
 	km = checkout master
 	s = status -s
 	b = branch
 	l = log -1 HEAD
 	g = log --oneline --graph
+
+	tags = tag -l
+	branches = branch -a
+	remotes = remote -v
 
 	f = flow
 	fs = flow feature start
@@ -54,6 +59,9 @@
 	aum = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
 	dum =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
 	em = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
+
+	# Remove branches that have already been merged with master
+  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
 [url "https://"]
 	insteadOf = git://
