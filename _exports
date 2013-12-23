@@ -1,0 +1,9 @@
+
+export LANG=ja_JP.UTF-8
+export EDITOR=vim
+
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/heroku/bin:$PATH
+export PATH=$PATH:$HOME/.npm/node_modules/bin
+export PATH=$PATH:/opt/local/bin
+

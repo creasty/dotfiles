@@ -4,7 +4,7 @@
 "-------------------------------------------------------------------------------
 if has('vim_starting')
   set runtimepath+=~/dotfiles/neobundle.vim/
-  call neobundle#rc(expand('~/dotfiles/vimfiles/bundle/'))
+  call neobundle#rc(expand('~/dotfiles/_vim/bundle/'))
 endif
 
 NeoBundleFetch 'Shougo/neobundle.vim'

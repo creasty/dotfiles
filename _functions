@@ -1,0 +1,59 @@
+
+#  Create a new directory and enter it
+#-----------------------------------------------
+mkd() {
+  mkdir -p "$@" && cd "$@"
+}
+
+
+#  Create a data URL from a file
+#-----------------------------------------------
+dataurl() {
+  local mimeType=$(file -b --mime-type "$1")
+  if [[ $mimeType == text/* ]]; then
+    mimeType="${mimeType};charset=utf-8"
+  fi
+  echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
+}
+
+
+#  Add reminder (OS X 10.8)
+#-----------------------------------------------
+remind() {
+  local text
+  if [ -t 0 ]; then
+    text="$1" # argument
+  else
+    text=$(cat) # pipe
+  fi
+  osascript >/dev/null <<EOF
+tell application "Reminders"
+  tell the default list
+    make new reminder with properties {name:"$text"}
+  end tell
+end tell
+EOF
+}
+
+
+#  Change network location setting
+#-----------------------------------------------
+chloc() {
+  MSG=`scselect | egrep -i "\($1" | cut -c 4- | cut -f 1 | head -n 1 | xargs scselect | sed -E 's/.+ \((.+)\)/Location changed to \1/'`
+
+  if [ "$MSG" = "" ]; then
+    growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "Unable to change location" Error
+  else
+    growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$MSG" Location changed
+  fi
+}
+
+
+#  Project root (.git dir)
+#-----------------------------------------------
+cdrt() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `git rev-parse --show-toplevel`
+  fi
+}
+

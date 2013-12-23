@@ -67,28 +67,6 @@ GIT_PS1_SHOWUPSTREAM=1
 PROMPT='%{$fg[blue]%}%c%{$reset_color%}%{$fg[yellow]%}$(__git_ps1)%{$reset_color%} %(!,#,$) '
 
 
-#  Change network location setting
-#-----------------------------------------------
-chloc() {
-  MSG=`scselect | egrep -i "\($1" | cut -c 4- | cut -f 1 | head -n 1 | xargs scselect | sed -E 's/.+ \((.+)\)/Location changed to \1/'`
-
-  if [ "$MSG" = "" ]; then
-    growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "Unable to change location" Error
-  else
-    growlnotify -a /System/Library/PreferencePanes/Network.prefPane -m "$MSG" Location changed
-  fi
-}
-
-
-#  Project root (.git dir)
-#-----------------------------------------------
-cdrt() {
-  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    cd `git rev-parse --show-toplevel`
-  fi
-}
-
-
 #  Nortify done
 #-----------------------------------------------
 local COMMAND=""
