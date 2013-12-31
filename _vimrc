@@ -43,6 +43,7 @@ NeoBundle 'tyru/operator-camelize.vim'
 NeoBundle 'rhysd/vim-operator-evalruby'
 NeoBundle 'pekepeke/vim-operator-tabular'
 NeoBundle 'emonkak/vim-operator-sort'
+NeoBundle 'kana/vim-operator-replace'
 NeoBundle 'tmhedberg/matchit'
 NeoBundleLazy 'kana/vim-smartinput', {
   \ 'autoload': { 'insert': 1 },
@@ -80,6 +81,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
   \ },
 \ }
 
+
 " Utils
 NeoBundleLazy 'mattn/benchvimrc-vim', {
   \ 'autoload': { 'commands': ['BenchVimrc'] },
@@ -107,6 +109,8 @@ NeoBundle 'kana/vim-submode'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'rizzatti/funcoo.vim'
 NeoBundle 'rizzatti/dash.vim'
+NeoBundle 'Shougo/context_filetype.vim'
+NeoBundle 'osyo-manga/vim-precious'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -322,7 +326,7 @@ set nocursorline
 set lazyredraw
 
 " limit syntax highlighting
-set synmaxcol=500
+set synmaxcol=128
 
 " display very very long line at the end of file
 set display& display+=lastline
@@ -832,6 +836,12 @@ inoremap <expr> ^ smartchr#loop('^', '->', '=>')
 
 
 "-------------------------------------------------------------------------------
+" Plugin: Operator replace
+"-------------------------------------------------------------------------------
+map R <Plug>(operator-replace)
+
+
+"-------------------------------------------------------------------------------
 " Plugin: OpenBrowser
 "-------------------------------------------------------------------------------
 " disable netrw's gx mapping.
@@ -871,19 +881,11 @@ nmap ," csw"
 "-------------------------------------------------------------------------------
 " Plugin: NerdCommenter
 "-------------------------------------------------------------------------------
-nmap gcc <leader>cc
-nmap gcn <leader>cn
-nmap gc  <leader>c
-nmap gcm <leader>cm
-nmap gci <leader>ci
+nmap gcc <leader>c<Space>
 nmap gcs <leader>cs
 nmap gcy <leader>cy
 nmap gc$ <leader>c$
 nmap gcA <leader>cA
-nmap gca <leader>ca
-nmap gcl <leader>cl
-nmap gcb <leader>cb
-nmap gcu <leader>cu
 
 
 "-------------------------------------------------------------------------------
