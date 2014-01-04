@@ -152,6 +152,7 @@ NeoBundleLazy 'eraserhd/vim-ios',  {
 
 " NeoBundle 'skammer/vim-css-color'
 
+filetype off
 filetype plugin indent on
 NeoBundleCheck
 
@@ -516,7 +517,9 @@ onoremap [ t[
 
 " do not store to register with x, c
 nnoremap x "_x
+nnoremap X "_X
 nnoremap c "_c
+nnoremap C "_C
 
 " why are you left out??
 nnoremap Y y$
@@ -1052,15 +1055,18 @@ unlet s:bundle
 "-------------------------------------------------------------------------------
 " Plugin: IndentLine
 "-------------------------------------------------------------------------------
+let g:indentLine_enabled = 0
+
 if has('gui_running')
+  " syntax highlight not working
+  " with some indent-based languages (e.g., haml)
+  " let g:indentLine_enabled = 1
   let g:indentLine_char = '⁞'
   let g:indentLine_first_char = '⁞'
   let g:indentLine_showFirstIndentLevel = 1
   let g:indentLine_color_term = 234
   let g:indentLine_color_gui = '#222222'
   let g:indentLine_indentLevel = 20
-else
-  let g:indentLine_enabled = 0
 endif
 
 
