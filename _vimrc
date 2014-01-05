@@ -1,6 +1,6 @@
 
 "-------------------------------------------------------------------------------
-" Plugin manager: neobundle
+" Plugins
 "-------------------------------------------------------------------------------
 if has('vim_starting')
   set runtimepath+=~/dotfiles/neobundle.vim/
@@ -23,9 +23,7 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'coderifous/textobj-word-column.vim'
-NeoBundleLazy 'surround.vim', {
-  \ 'autoload': { 'insert': 1 },
-\ }
+NeoBundle 'surround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundleLazy 'scrooloose/syntastic', {
@@ -81,7 +79,6 @@ NeoBundleLazy 'Shougo/neosnippet', {
   \ },
 \ }
 
-
 " Utils
 NeoBundleLazy 'mattn/benchvimrc-vim', {
   \ 'autoload': { 'commands': ['BenchVimrc'] },
@@ -99,20 +96,32 @@ NeoBundleLazy 'Shougo/vimshell.vim', {
   \ 'autoload': { 'commands': ['VimShell'] },
 \ }
 NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'Shougo/vinarise.vim'
+NeoBundle 'glidenote/memolist.vim', {
+  \ 'autoload': { 'commands': ['MemoNew', 'MemoList', 'MemoGrep'] }
+\ }
+NeoBundleLazy 'Shougo/vinarise.vim', {
+  \ 'autoload': { 'commands': ['Vinarise', 'VinariseDump'] },
+\ }
 NeoBundle 'kana/vim-fakeclip'
 NeoBundle 'kana/vim-altr'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'osyo-manga/vim-over'
-NeoBundle 'rizzatti/funcoo.vim'
-NeoBundle 'rizzatti/dash.vim'
+NeoBundleLazy 'rizzatti/funcoo.vim'
+NeoBundleLazy 'rizzatti/dash.vim', {
+  \ 'depends': ['rizzatti/funcoo.vim'],
+  \ 'autoload': { 'commands': ['Dash'] },
+\ }
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'osyo-manga/vim-precious'
-NeoBundle 'koron/codic-vim'
-NeoBundle 'rhysd/unite-codic.vim'
+NeoBundleLazy 'koron/codic-vim', {
+  \ 'autoload': { 'commands': ['Codic'] },
+\ }
+NeoBundleLazy 'rhysd/unite-codic.vim', {
+  \ 'depends': ['Shougo/unite.vim', 'koron/codic-vim'],
+  \ 'autoload': { 'unite_sources': ['codic'] },
+\ }
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -247,6 +256,9 @@ set nf=alpha,hex
 
 " disable IME
 set imdisable
+
+" use Blowfish algorithm
+set cryptmethod=blowfish
 
 " wildcard settings
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -532,7 +544,7 @@ nnoremap J mzJ`z
 vnoremap < <gv
 vnoremap > >gv
 
-" selecting paated text
+" reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " remove trailing spaces before saving

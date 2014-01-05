@@ -505,6 +505,7 @@ call CreastyCode('xmlEqual', 'comment', '', '')
 "-------------------------------------------------------------------------------
 " Highlighting: Markdown
 "-------------------------------------------------------------------------------
+call CreastyCode('markdownHeadingDelimiter', 'purple', '', '')
 call CreastyCode('markdownH1', 'purple', '', '')
 call CreastyCode('markdownH2', 'purple', '', '')
 call CreastyCode('markdownH3', 'purple', '', '')
