@@ -254,30 +254,26 @@ set wildignore& wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " edit and apply vimrc
 command! EditVimrc edit $MYVIMRC
-autocmd vimrc BufWritePost *vimrc source $MYVIMRC
-autocmd vimrc BufWritePost *gvimrc
+
+autocmd vimrc BufWritePost *vimrc
+  \ source $MYVIMRC |
   \ if has('gui_running') |
     \ source $MYGVIMRC |
-  \ endif
+  \ endif |
+  \ doautocmd User VimrcReloadPost
 
 " tab pages / buffers
 nmap <C-w><C-t> <C-w>t
 nnoremap <C-w>t :tabnew<CR>
-imap <C-w><C-t> <C-w>t
-inoremap <C-w>t <C-o>:tabnew<CR>
 
 nmap <C-w><C-v> <C-w>v
 nnoremap <C-w>v :vnew<CR>
-imap <C-w><C-v> <C-w>v
-inoremap <C-w>v <C-o>:vnew<CR>
 
 nmap <C-w><C-c> <C-w>c
 nmap <C-w>c <Plug>Kwbd
-imap <C-w><C-c> <C-w>c
-imap <C-w>c <Plug>Kwbd
 
 " clean up hidden buffers
-function! CleanBuffers()
+function! s:clean_buffers()
   redir => buffersoutput
     silent buffers
   redir END
@@ -290,9 +286,9 @@ function! CleanBuffers()
   endfor
 endfunction
 
-command! CleanBuffers :call CleanBuffers()
+command! CleanBuffers :call <SID>clean_buffers()
 
-autocmd vimrc BufRead * call s:set_hidden()
+autocmd vimrc BufRead * call <SID>set_hidden()
 function! s:set_hidden()
   if empty(&buftype) " most explorer plugins have buftype=nofile
     setlocal bufhidden=delete
@@ -488,22 +484,22 @@ nmap j gj
 nmap k gk
 
 " Emacs-like key bindings
-imap <C-c> <Esc>
-imap <C-n> <C-o>gj
-imap <C-p> <C-o>gk
-imap <C-b> <Left>
-imap <C-f> <Right>
-imap <C-a> <C-o>g0
-imap <C-e> <C-o>g$
 imap <C-j> <CR>
-imap <C-d> <Del>
+imap <C-c> <Esc>
+inoremap <C-n> <C-o>gj
+inoremap <C-p> <C-o>gk
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <C-a> <C-o>g0
+inoremap <C-e> <C-o>g$
+inoremap <C-d> <Del>
 inoremap <silent> <C-h> <C-g>u<C-h>
 inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
 
-cmap <C-a> <Home>
-cmap <C-b> <Left>
-cmap <C-f> <Right>
-cmap <C-d> <Del>
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
 " shortcuts for till ...
@@ -521,6 +517,10 @@ nnoremap x "_x
 nnoremap X "_X
 nnoremap c "_c
 nnoremap C "_C
+
+" undo
+inoremap <C-u> <C-g>u<C-u>
+inoremap <C-w> <C-g>u<C-w>
 
 " why are you left out??
 nnoremap Y y$
@@ -769,7 +769,7 @@ if has('conceal')
 endif
 
 " super tab completion
-inoremap <expr> <TAB> <SID>SuperTabCompletion()
+inoremap <silent> <expr> <TAB> <SID>SuperTabCompletion()
 
 function! s:SuperTabCompletion()
   let c = col('.') - 1
@@ -777,11 +777,11 @@ function! s:SuperTabCompletion()
   if pumvisible()
     return neocomplete#close_popup()
   elseif neosnippet#expandable_or_jumpable()
-    return neosnippet#mappings#expand_or_jump_impl()
+    return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
+    return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
   elseif c && getline('.')[c - 1] !~ '\s'
-    return "\<C-x>\<C-o>"
+    return neocomplete#start_manual_complete()
   else
     return "\<TAB>"
   endif
@@ -1298,6 +1298,12 @@ function! LightlineMode()
 endfunction
 
 autocmd vimrc BufWritePost * call lightline#update()
+
+autocmd vimrc User VimrcReloadPost call <SID>refresh_lightline()
+function! s:refresh_lightline()
+  call lightline#disable()
+  call lightline#enable()
+endfunction
 
 
 "-------------------------------------------------------------------------------
