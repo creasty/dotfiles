@@ -111,6 +111,8 @@ NeoBundle 'rizzatti/funcoo.vim'
 NeoBundle 'rizzatti/dash.vim'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'osyo-manga/vim-precious'
+NeoBundle 'koron/codic-vim'
+NeoBundle 'rhysd/unite-codic.vim'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -150,7 +152,6 @@ NeoBundleLazy 'eraserhd/vim-ios',  {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
 
-" NeoBundle 'skammer/vim-css-color'
 
 filetype off
 filetype plugin indent on
@@ -253,7 +254,7 @@ set wildignore& wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " edit and apply vimrc
 command! EditVimrc edit $MYVIMRC
-" autocmd vimrc BufWritePost *vimrc source $MYVIMRC
+autocmd vimrc BufWritePost *vimrc source $MYVIMRC
 autocmd vimrc BufWritePost *gvimrc
   \ if has('gui_running') |
     \ source $MYGVIMRC |
@@ -280,7 +281,7 @@ function! CleanBuffers()
   redir => buffersoutput
     silent buffers
   redir END
-  let buflist = split(buffersoutput,"\n")
+  let buflist = split(buffersoutput, "\n")
   for item in buflist
     let t = matchlist(item, '\v^\s*(\d+)([^"]*)')
     if t[2][1] != '#' && t[2][2] != 'a' && t[2][4] != '+'
