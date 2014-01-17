@@ -84,6 +84,7 @@ NeoBundleLazy 'mattn/benchvimrc-vim', {
   \ 'autoload': { 'commands': ['BenchVimrc'] },
 \ }
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-repeat'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'xolox/vim-misc'
@@ -263,6 +264,12 @@ set cryptmethod=blowfish
 " wildcard settings
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set wildignore& wildignore+=*/tmp/*,*.so,*.swp,*.zip
+
+" nice window title
+set title titlestring=
+set titlestring+=#%n " buffer number
+set titlestring+=\ -\ %t%m%r%h%w " file name and flags
+set titlestring+=\ (%{substitute(expand('%:p:h'),\ $HOME,\ '~',\ '')}) " path
 
 " edit and apply vimrc
 command! EditVimrc edit $MYVIMRC
@@ -514,15 +521,12 @@ cnoremap <C-f> <Right>
 cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
-" shortcuts for till ...
-vnoremap ( t(
-vnoremap ) t)
-vnoremap ] t]
-vnoremap [ t[
-onoremap ( t(
-onoremap ) t)
-onoremap ] t]
-onoremap [ t[
+" auto wrap
+vnoremap ( S(
+vnoremap { S{
+vnoremap [ S[
+vnoremap " S"
+vnoremap ' S'
 
 " do not store to register with x, c
 nnoremap x "_x
@@ -580,13 +584,10 @@ command! -count -nargs=1 ContinuousNumber
 
 " create directories if not exist
 autocmd vimrc BufWritePre *
- \ call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+ \ call s:auto_mkdir(expand('<afile>:p:h'))
 
-function! s:auto_mkdir(dir, force)
-  if !isdirectory(a:dir) && (
-    \ a:force ||
-    \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$'
-  \ )
+function! s:auto_mkdir(dir)
+  if !isdirectory(a:dir)
     call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
   endif
 endfunction
@@ -598,7 +599,7 @@ nmap <C-w><C-r> <C-w>r
 nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
 
 " delete current file
-command! -nargs=0 Delete call delete(expand('%')) | q!
+command! -nargs=0 Delete call delete(expand('%')) | enew!
 
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
@@ -645,8 +646,8 @@ let s:sticky_table = {
 " \ }
 
 let s:sticky_table_special = {
-  \ "\<ESC>": "\<ESC>",
-  \ "\<C-c>": "\<ESC>",
+  \ "\<Esc>": "",
+  \ "\<C-c>": "",
   \ "\<Space>": ';',
   \ "\<CR>" : ";\<CR>",
   \ "\<C-j>" : ";\<CR>",
