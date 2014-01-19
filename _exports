@@ -7,3 +7,5 @@ export PATH=/usr/local/heroku/bin:$PATH
 export PATH=$PATH:$HOME/.npm/node_modules/bin
 export PATH=$PATH:/opt/local/bin
 
+export PATH=$PATH:/Applications/TeXLive/Library/texlive/2013/bin/x86_64-darwin
+
