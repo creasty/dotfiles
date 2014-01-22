@@ -23,6 +23,7 @@ NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'coderifous/textobj-word-column.vim'
+NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'surround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -880,6 +881,26 @@ let g:user_emmet_settings = {
     \ 'indentation': "\t",
   \ },
 \ }
+
+
+"-------------------------------------------------------------------------------
+" Plugin: Multiblock
+"-------------------------------------------------------------------------------
+omap ab <Plug>(textobj-multiblock-a)
+omap ib <Plug>(textobj-multiblock-i)
+xmap ab <Plug>(textobj-multiblock-a)
+xmap ib <Plug>(textobj-multiblock-i)
+
+let g:textobj_multiblock_blocks = [
+  \ [ '(', ')' ],
+  \ [ '[', ']' ],
+  \ [ '{', '}' ],
+  \ [ '<', '>' ],
+  \ [ '"', '"' ],
+  \ [ "'", "'" ],
+  \ [ '「', '」' ],
+  \ [ '（', '）' ],
+\ ]
 
 
 "-------------------------------------------------------------------------------
