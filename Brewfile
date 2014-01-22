@@ -2,6 +2,9 @@
 update
 upgrade
 
+brew tap phinze/homebrew-cask
+
+install brew-cask
 install eot-utils
 install fontconfig
 install fontforge
