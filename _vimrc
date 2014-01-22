@@ -573,8 +573,8 @@ autocmd vimrc BufReadPost *
 autocmd vimrc BufReadPost * delmarks!
 
 " numbering selection in visual-block mode
-nnoremap <silent> co :ContinuousNumber <C-a><CR>
-vnoremap <silent> co :ContinuousNumber <C-a><CR>
+nnoremap <silent> N :ContinuousNumber <C-a><CR>
+vnoremap <silent> N :ContinuousNumber <C-a><CR>
 command! -count -nargs=1 ContinuousNumber
   \ let c = col('.') |
   \ for n in range(1, <count>?<count>-line('.'):1) |
