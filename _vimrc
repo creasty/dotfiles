@@ -549,6 +549,11 @@ nnoremap J mzJ`z
 vnoremap < <gv
 vnoremap > >gv
 
+" easy key
+noremap <Space>h ^
+noremap <Space>l $
+noremap <Space>m %
+
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -574,8 +579,8 @@ autocmd vimrc BufReadPost *
 autocmd vimrc BufReadPost * delmarks!
 
 " numbering selection in visual-block mode
-nnoremap <silent> N :ContinuousNumber <C-a><CR>
-vnoremap <silent> N :ContinuousNumber <C-a><CR>
+nnoremap <silent> sc :ContinuousNumber <C-a><CR>
+vnoremap <silent> sc :ContinuousNumber <C-a><CR>
 command! -count -nargs=1 ContinuousNumber
   \ let c = col('.') |
   \ for n in range(1, <count>?<count>-line('.'):1) |
