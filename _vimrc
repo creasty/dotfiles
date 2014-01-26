@@ -289,30 +289,22 @@ nnoremap <C-w>t :tabnew<CR>
 nmap <C-w><C-v> <C-w>v
 nnoremap <C-w>v :vnew<CR>
 
-nmap <C-w><C-c> <C-w>c
-nmap <C-w>c <Plug>Kwbd
-
 " clean up hidden buffers
+command! CleanBuffers :call <SID>clean_buffers()
+
 function! s:clean_buffers()
   redir => buffersoutput
     silent buffers
   redir END
+
   let buflist = split(buffersoutput, "\n")
+
   for item in buflist
     let t = matchlist(item, '\v^\s*(\d+)([^"]*)')
     if t[2][1] != '#' && t[2][2] != 'a' && t[2][4] != '+'
       exec 'bdelete ' . t[1]
     endif
   endfor
-endfunction
-
-command! CleanBuffers :call <SID>clean_buffers()
-
-autocmd vimrc BufRead * call <SID>set_hidden()
-function! s:set_hidden()
-  if empty(&buftype) " most explorer plugins have buftype=nofile
-    setlocal bufhidden=delete
-  endif
 endfunction
 
 
