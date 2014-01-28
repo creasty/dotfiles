@@ -53,5 +53,27 @@ install xz
 install zlib
 install zsh --disable-etcdir
 
+cask install anvil
+cask install dropbox
+cask install firefox
+cask install flip4mac
+cask install google-chrome
+cask install google-chrome-canary
+cask install handbrake
+cask install imagealpha
+cask install imageoptim
+cask install iterm2
+cask install keyremap4macbook
+cask install sequel-pro
+cask install skype
+cask install sophos-antivirus
+cask install sublime-text
+cask install the-unarchiver
+cask install transmission
+cask install truecrypt
+cask install vagrant
+cask install virtualbox
+cask install xtrafinder
+
 cleanup
 
