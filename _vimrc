@@ -814,6 +814,7 @@ let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (%w)}'
 
 let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
 let g:syntastic_coffee_coffeelint_args = '-f ~/dotfiles/_coffeelintrc'
+let g:syntastic_tex_checkers = ['lacheck']
 
 call CreastyCode('SyntasticErrorSign', 'red', '', '')
 call CreastyCode('SyntasticWarningSign', 'yellow', '', '')
