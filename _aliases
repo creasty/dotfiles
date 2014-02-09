@@ -15,6 +15,7 @@ alias df='df -h'
 alias vi='vim'
 alias v='vim'
 alias mvim='open -a MacVim'
+alias :q='exit'
 
 alias g="git"
 alias ti='titanium'
