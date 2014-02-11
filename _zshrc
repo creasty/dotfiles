@@ -64,7 +64,9 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM=1
 
-PROMPT='%{$fg[blue]%}%c%{$reset_color%}%{$fg[yellow]%}$(__git_ps1)%{$reset_color%} %(!,#,$) '
+PROMPT='%{$fg[blue]%}%c ⮁ %{$reset_color%}\
+%{$fg[yellow]%}$(__git_ps1 "%s ⮁ ")%{$reset_color%}\
+%{$fg[white]%}%(!,#,$)%{$reset_color%} '
 
 
 #  Nortify done
