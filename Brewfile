@@ -2,7 +2,7 @@
 update
 upgrade
 
-brew tap phinze/homebrew-cask
+tap phinze/homebrew-cask
 
 install brew-cask
 install eot-utils

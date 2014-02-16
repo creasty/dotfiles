@@ -10,11 +10,11 @@ else
   echo "ok"
 fi
 
-cd ~/dotfiles/setups
+cd ~/dotfiles
 
 # install commands
-source install.sh
+source setups/install.sh
 
 # create symbolic links
-source link.sh
+source setups/link.sh
 
