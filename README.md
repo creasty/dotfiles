@@ -1,19 +1,27 @@
-Bootstrap
-=========
+dotfiles
+========
 
-	$ curl https://raw.github.com/creasty/dotfiles/master/bootstrap.sh | sh
+Home sweet home
+
+
+Bootstrap
+---------
+
+```sh
+$ curl https://raw.github.com/creasty/dotfiles/master/bootstrap.sh | sh
+```
 
 
 Update
-======
+------
 
-	$ ~/dotfiles/update.sh
+```sh
+$ ~/dotfiles/update.sh
+```
 
 
-Screenshots of my Vim
-=====================
+My Vim
+------
 
-![](./screenshots/01.png)
-![](./screenshots/02.png)
-![](./screenshots/03.png)
+![](./screenshots.png)
 
