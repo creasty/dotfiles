@@ -23,5 +23,5 @@ $ ~/dotfiles/update.sh
 My Vim
 ------
 
-![](./screenshots.png)
+![](./screenshot.png)
 
