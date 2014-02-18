@@ -30,7 +30,9 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundleLazy 'scrooloose/syntastic', {
   \ 'autoload': { 'insert': 1 },
 \ }
-NeoBundle 'Align'
+NeoBundleLazy 'Align', {
+  \ 'autoload': { 'commands': ['Align'] }
+\ }
 NeoBundle 'mattn/emmet-vim', {
   \ 'autoload': {
     \ 'insert': 1,
@@ -124,6 +126,10 @@ NeoBundleLazy 'rhysd/unite-codic.vim', {
   \ 'depends': ['Shougo/unite.vim', 'koron/codic-vim'],
   \ 'autoload': { 'unite_sources': ['codic'] },
 \ }
+NeoBundleLazy 'jaxbot/github-issues.vim', {
+  \ 'autoload': { 'commands': ['Gissues'] },
+\ }
+}
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -752,7 +758,7 @@ function! s:bundle.hooks.on_source(bundle)
   imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
   imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
   inoremap <silent> <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
-  inoremap <silent> <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u<C-h>"
+  inoremap <silent> <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u\<C-h>"
 
   " omni completion
   autocmd vimrc FileType css
@@ -918,10 +924,15 @@ nmap ," csw"
 " Plugin: NerdCommenter
 "-------------------------------------------------------------------------------
 nmap gcc <leader>c<Space>
+vmap gcc <leader>cm
 nmap gcs <leader>cs
+vmap gcs <leader>cs
 nmap gcy <leader>cy
-nmap gc$ <leader>c$
+vmap gcy <leader>cy
+nmap gcI <leader>c$
+vmap gcI <leader>c$
 nmap gcA <leader>cA
+vmap gcA <leader>cA
 
 
 "-------------------------------------------------------------------------------
