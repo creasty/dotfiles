@@ -14,19 +14,24 @@
 
 [merge]
 	tool = vimdiff
+	ff = false
 
 [alias]
 	a = add -A .
-	m = merge --no-ff
+	m = merge
+	mf = merge FETCH_HEAD
 	c = commit -a
 	cm = commit -am
 	# !git add -A && git commit -av
 	ca = commit --amend
-	k = checkout -B
+	cane = commit --amend --no-edit
+	k = checkout
+	kb = checkout -B
 	km = checkout master
 	s = status -s
 	b = branch
-	l = log -1 HEAD
+	l = log
+	ll = log -1 HEAD
 	g = log --oneline --graph
 
 	tags = tag -l
