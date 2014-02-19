@@ -129,7 +129,6 @@ NeoBundleLazy 'rhysd/unite-codic.vim', {
 NeoBundleLazy 'jaxbot/github-issues.vim', {
   \ 'autoload': { 'commands': ['Gissues'] },
 \ }
-}
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -264,6 +263,33 @@ set nf=alpha,hex
 
 " disable IME
 set imdisable
+
+" folding
+set foldmethod=indent
+set fillchars="fold:"
+set foldlevel=20
+set foldlevelstart=20
+set foldtext=CustomFoldText()
+
+function! CustomFoldText()
+  let fs = v:foldstart
+
+  while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+  endwhile
+
+  if fs > v:foldend
+    let line = getline(v:foldstart)
+  else
+    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
+
+  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+
+  let lineCounter = ' (' . (1 + v:foldend - v:foldstart) . ')'
+  let expansion = repeat(' ', w - strwidth(lineCounter . line))
+
+  return line . expansion . lineCounter
+endfunction
 
 " use Blowfish algorithm
 set cryptmethod=blowfish

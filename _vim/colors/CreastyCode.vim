@@ -319,6 +319,7 @@ call CreastyCode('Special', 'foreground', '', '')
 call CreastyCode('SpecialComment', 'green', '', '')
 call CreastyCode('Todo', 'background', 'comment', '')
 call CreastyCode('Title', 'foreground', '', '')
+call CreastyCode('Folded', 'comment', '', 'underline')
 
 
 "-------------------------------------------------------------------------------
