@@ -60,6 +60,11 @@ plugins=(
 source ~/.oh-my-zsh/oh-my-zsh.sh
 
 
+#  Direnv
+#-----------------------------------------------
+eval "$(direnv hook zsh)"
+
+
 #  Apperance
 #-----------------------------------------------
 # set terminal title including current directory
