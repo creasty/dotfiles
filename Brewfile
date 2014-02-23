@@ -40,6 +40,7 @@ install pcre
 install phantomjs
 install php55
 install pkg-config
+install q
 install rbenv
 install readline
 install ruby-build
