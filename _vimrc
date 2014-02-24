@@ -967,7 +967,7 @@ vmap gcA <leader>cA
 let g:EasyMotion_leader_key = '<Space>'
 let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
-call CreastyCode('EasyMotionTarget', 'background', 'yellow', '')
+call CreastyCode('EasyMotionTarget', 'yellow', 'yellowd', 'underline')
 
 
 "-------------------------------------------------------------------------------

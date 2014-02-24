@@ -235,6 +235,7 @@ let g:creasty_code_palette = {
   \ 'red':        'cc6666',
   \ 'orange':     'de935f',
   \ 'yellow':     'f0c674',
+  \ 'yellowd':    '5c4c2c',
   \ 'green':      'b5bd68',
   \ 'aqua':       '8abeb7',
   \ 'blue':       '81a2be',
@@ -251,7 +252,7 @@ call CreastyCode('LineNr', 'comment', '', 'none')
 call CreastyCode('CursorLineNr', 'comment', 'line', 'none')
 call CreastyCode('NonText', 'selection', '', '')
 call CreastyCode('SpecialKey', 'line', '', '')
-call CreastyCode('Search', 'background', 'yellow', '')
+call CreastyCode('Search', 'yellow', 'yellowd', 'underline')
 call CreastyCode('TabLine', 'foreground', 'background', 'reverse')
 call CreastyCode('StatusLine', 'window', 'yellow', 'reverse')
 call CreastyCode('StatusLineNC', 'window', 'foreground', 'reverse')
