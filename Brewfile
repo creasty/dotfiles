@@ -5,6 +5,7 @@ upgrade
 tap phinze/homebrew-cask
 
 install brew-cask
+install clisp
 install direnv
 install eot-utils
 install fontconfig
@@ -33,6 +34,7 @@ install lua
 install macvim --HEAD --with-cscope --with-lua --override-system-vi
 install mercurial
 install mysql
+install ngrep
 install node
 install openssl
 install optipng
