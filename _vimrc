@@ -171,6 +171,7 @@ NeoBundleLazy 'eraserhd/vim-ios',  {
 
 filetype off
 filetype plugin indent on
+
 NeoBundleCheck
 
 
@@ -519,6 +520,10 @@ set noexpandtab
 
 " tab with
 set tabstop=2 shiftwidth=2 softtabstop=0
+set shiftround
+
+" virtualedit with freedom
+set virtualedit& virtualedit+=block
 
 " toggle paste mode
 command! Pt :set paste!
@@ -649,6 +654,13 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
+
+" file detect on read / save
+autocmd vimrc BufWritePost,BufReadPost,BufEnter *
+  \ if &l:filetype ==# '' || exists('b:ftdetect') |
+    \ unlet! b:ftdetect |
+    \ filetype detect |
+  \ endif
 
 
 "-------------------------------------------------------------------------------
