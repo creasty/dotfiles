@@ -10,11 +10,11 @@ endif
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'Shougo/vimproc', {
-  \ 'build' : {
-    \ 'windows' : 'make -f make_mingw32.mak',
-    \ 'cygwin' : 'make -f make_cygwin.mak',
-    \ 'mac' : 'make -f make_mac.mak',
-    \ 'unix' : 'make -f make_unix.mak',
+  \ 'build': {
+    \ 'windows': 'make -f make_mingw32.mak',
+    \ 'cygwin': 'make -f make_cygwin.mak',
+    \ 'mac': 'make -f make_mac.mak',
+    \ 'unix': 'make -f make_unix.mak',
   \ },
 \ }
 
@@ -144,7 +144,7 @@ NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
-" Syntax
+" Language
 NeoBundleLazy 'tpope/vim-haml', {
   \ 'autoload': { 'filetypes': ['haml'] }
 \ }
@@ -185,7 +185,6 @@ NeoBundleLazy 'kana/vim-filetype-haskell', {
   \ 'autoload': { 'filetypes': ['haskell'] }
 \ }
 
-filetype off
 filetype plugin indent on
 
 NeoBundleCheck
@@ -532,9 +531,7 @@ set noautoindent
 set smartindent
 set cindent
 set smarttab
-set noexpandtab
-
-" tab with
+set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=0
 set shiftround
 
@@ -723,28 +720,6 @@ function! s:sticky_func()
     return ''
   endif
 endfunction
-
-
-"-------------------------------------------------------------------------------
-" Filetype specific
-"-------------------------------------------------------------------------------
-" force soft tab
-autocmd vimrc FileType
-  \ diff,yaml,ruby,eruby,haml,coffee,scss,sass,sh,sql,vim,scala,scheme
-  \ setlocal et
-
-autocmd vimrc BufNewFile,BufRead
-  \ *.json
-  \ setlocal et
-
-" force encoding
-autocmd vimrc FileType
-  \ svn,js,css,html,xml,java,scala,yml
-  \ setlocal fenc=utf-8
-
-autocmd vimrc FileType
-  \ cvs
-  \ setlocal fenc=euc-jp
 
 
 "-------------------------------------------------------------------------------
