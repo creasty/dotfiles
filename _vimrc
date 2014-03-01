@@ -95,6 +95,14 @@ NeoBundle 'xolox/vim-session'
 NeoBundleLazy 'Shougo/unite.vim', {
   \ 'autoload': { 'commands': ['Unite'] },
 \ }
+NeoBundleLazy 'h1mesuke/unite-outline', {
+  \ 'depends': ['Shougo/unite.vim'],
+  \ 'autoload': { 'unite_sources': ['outline'] },
+\ }
+NeoBundleLazy 'tsukkee/unite-tag', {
+  \ 'depends': ['Shougo/unite.vim'],
+  \ 'autoload': { 'unite_sources': ['outline'] },
+\ }
 NeoBundleLazy 'Shougo/vimshell.vim', {
   \ 'depends': ['Shougo/vimproc'],
   \ 'autoload': { 'commands': ['VimShell'] },
@@ -137,37 +145,45 @@ NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
 " Syntax
-NeoBundleLazy 'tpope/vim-haml',  {
+NeoBundleLazy 'tpope/vim-haml', {
   \ 'autoload': { 'filetypes': ['haml'] }
 \ }
-NeoBundleLazy 'tpope/vim-markdown',  {
+NeoBundleLazy 'tpope/vim-markdown', {
   \ 'autoload': { 'filetypes': ['markdown'] }
 \ }
-NeoBundleLazy 'kchmck/vim-coffee-script',  {
+NeoBundleLazy 'kchmck/vim-coffee-script', {
   \ 'autoload': { 'filetypes': ['coffee'] }
 \ }
-NeoBundleLazy 'tpope/vim-rails',  {
+NeoBundleLazy 'tpope/vim-rails', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
-NeoBundleLazy 'vim-ruby/vim-ruby',  {
+NeoBundleLazy 'vim-ruby/vim-ruby', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
-NeoBundleLazy 'tpope/vim-cucumber',  {
+NeoBundleLazy 'tpope/vim-cucumber', {
   \ 'autoload': { 'filetypes': ['cucumber.ruby'] }
 \ }
-NeoBundleLazy 'slim-template/vim-slim',  {
+NeoBundleLazy 'slim-template/vim-slim', {
   \ 'autoload': { 'filetypes': ['slim'] }
 \ }
-NeoBundleLazy 'cakebaker/scss-syntax.vim',  {
+NeoBundleLazy 'cakebaker/scss-syntax.vim', {
   \ 'autoload': { 'filetypes': ['scss'] }
 \ }
-NeoBundleLazy 'msanders/cocoa.vim',  {
+NeoBundleLazy 'msanders/cocoa.vim', {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
-NeoBundleLazy 'eraserhd/vim-ios',  {
+NeoBundleLazy 'eraserhd/vim-ios', {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
-
+NeoBundleLazy 'yuroyoro/vim-scala', {
+  \ 'autoload': { 'filetypes': ['scala'] }
+\ }
+NeoBundleLazy 'jondistad/vimclojure', {
+  \ 'autoload': { 'filetypes': ['clojure'] }
+\ }
+NeoBundleLazy 'kana/vim-filetype-haskell', {
+  \ 'autoload': { 'filetypes': ['haskell'] }
+\ }
 
 filetype off
 filetype plugin indent on
