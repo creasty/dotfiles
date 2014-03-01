@@ -171,6 +171,7 @@ NeoBundleLazy 'eraserhd/vim-ios',  {
 
 filetype off
 filetype plugin indent on
+
 NeoBundleCheck
 
 
@@ -519,6 +520,10 @@ set noexpandtab
 
 " tab with
 set tabstop=2 shiftwidth=2 softtabstop=0
+set shiftround
+
+" virtualedit with freedom
+set virtualedit& virtualedit+=block
 
 " toggle paste mode
 command! Pt :set paste!
@@ -649,6 +654,13 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
+
+" file detect on read / save
+autocmd vimrc BufWritePost,BufReadPost,BufEnter *
+  \ if &l:filetype ==# '' || exists('b:ftdetect') |
+    \ unlet! b:ftdetect |
+    \ filetype detect |
+  \ endif
 
 
 "-------------------------------------------------------------------------------
@@ -1231,20 +1243,21 @@ function! s:bundle.hooks.on_source(bundle)
   function! s:unite_my_settings()
     call clearmatches()
 
-    nmap <buffer> <C-q> <Plug>(unite_exit)
-    imap <buffer> <C-q> <Plug>(unite_exit)
+    imap <buffer> <C-h> <BS>
     inoremap <buffer> <C-d> <Del>
-    inoremap <buffer> <silent> <C-h> <C-g>u<C-h>
-    imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
     inoremap <buffer> <C-b> <Left>
     inoremap <buffer> <C-f> <Right>
-    imap <buffer> <C-a> <Plug>(unite_move_head)
     inoremap <buffer> <C-e> <End>
+
+    " [TODO] unite#get_current_unite().prev_bufnr
+    inoremap <silent> <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
+
+    nmap <buffer> <C-q> <Plug>(unite_exit)
+    imap <buffer> <C-q> <Plug>(unite_exit)
+    imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
+    imap <buffer> <C-a> <Plug>(unite_move_head)
     imap <buffer> <C-j> <Plug>(unite_do_default_action)
     imap <buffer> <C-l> <Plug>(unite_redraw)
-    inoremap <buffer> : **/
-    inoremap <silent> <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
-    " [TODO] unite#get_current_unite().prev_bufnr
 
     let unite = unite#get_current_unite()
     if unite.buffer_name =~# '^search'

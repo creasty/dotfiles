@@ -8,9 +8,6 @@ git pull origin master
 # brew
 brew bundle
 
-# macports
-sh setups/macports.sh
-
 # npm
 sh setups/npm.sh
 
