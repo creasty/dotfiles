@@ -10,11 +10,11 @@ endif
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'Shougo/vimproc', {
-  \ 'build' : {
-    \ 'windows' : 'make -f make_mingw32.mak',
-    \ 'cygwin' : 'make -f make_cygwin.mak',
-    \ 'mac' : 'make -f make_mac.mak',
-    \ 'unix' : 'make -f make_unix.mak',
+  \ 'build': {
+    \ 'windows': 'make -f make_mingw32.mak',
+    \ 'cygwin': 'make -f make_cygwin.mak',
+    \ 'mac': 'make -f make_mac.mak',
+    \ 'unix': 'make -f make_unix.mak',
   \ },
 \ }
 
@@ -95,6 +95,14 @@ NeoBundle 'xolox/vim-session'
 NeoBundleLazy 'Shougo/unite.vim', {
   \ 'autoload': { 'commands': ['Unite'] },
 \ }
+NeoBundleLazy 'h1mesuke/unite-outline', {
+  \ 'depends': ['Shougo/unite.vim'],
+  \ 'autoload': { 'unite_sources': ['outline'] },
+\ }
+NeoBundleLazy 'tsukkee/unite-tag', {
+  \ 'depends': ['Shougo/unite.vim'],
+  \ 'autoload': { 'unite_sources': ['outline'] },
+\ }
 NeoBundleLazy 'Shougo/vimshell.vim', {
   \ 'depends': ['Shougo/vimproc'],
   \ 'autoload': { 'commands': ['VimShell'] },
@@ -136,40 +144,47 @@ NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
-" Syntax
-NeoBundleLazy 'tpope/vim-haml',  {
+" Language
+NeoBundleLazy 'tpope/vim-haml', {
   \ 'autoload': { 'filetypes': ['haml'] }
 \ }
-NeoBundleLazy 'tpope/vim-markdown',  {
+NeoBundleLazy 'tpope/vim-markdown', {
   \ 'autoload': { 'filetypes': ['markdown'] }
 \ }
-NeoBundleLazy 'kchmck/vim-coffee-script',  {
+NeoBundleLazy 'kchmck/vim-coffee-script', {
   \ 'autoload': { 'filetypes': ['coffee'] }
 \ }
-NeoBundleLazy 'tpope/vim-rails',  {
+NeoBundleLazy 'tpope/vim-rails', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
-NeoBundleLazy 'vim-ruby/vim-ruby',  {
+NeoBundleLazy 'vim-ruby/vim-ruby', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
-NeoBundleLazy 'tpope/vim-cucumber',  {
+NeoBundleLazy 'tpope/vim-cucumber', {
   \ 'autoload': { 'filetypes': ['cucumber.ruby'] }
 \ }
-NeoBundleLazy 'slim-template/vim-slim',  {
+NeoBundleLazy 'slim-template/vim-slim', {
   \ 'autoload': { 'filetypes': ['slim'] }
 \ }
-NeoBundleLazy 'cakebaker/scss-syntax.vim',  {
+NeoBundleLazy 'cakebaker/scss-syntax.vim', {
   \ 'autoload': { 'filetypes': ['scss'] }
 \ }
-NeoBundleLazy 'msanders/cocoa.vim',  {
+NeoBundleLazy 'msanders/cocoa.vim', {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
-NeoBundleLazy 'eraserhd/vim-ios',  {
+NeoBundleLazy 'eraserhd/vim-ios', {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
+NeoBundleLazy 'yuroyoro/vim-scala', {
+  \ 'autoload': { 'filetypes': ['scala'] }
+\ }
+NeoBundleLazy 'jondistad/vimclojure', {
+  \ 'autoload': { 'filetypes': ['clojure'] }
+\ }
+NeoBundleLazy 'kana/vim-filetype-haskell', {
+  \ 'autoload': { 'filetypes': ['haskell'] }
+\ }
 
-
-filetype off
 filetype plugin indent on
 
 NeoBundleCheck
@@ -516,9 +531,7 @@ set noautoindent
 set smartindent
 set cindent
 set smarttab
-set noexpandtab
-
-" tab with
+set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=0
 set shiftround
 
@@ -707,28 +720,6 @@ function! s:sticky_func()
     return ''
   endif
 endfunction
-
-
-"-------------------------------------------------------------------------------
-" Filetype specific
-"-------------------------------------------------------------------------------
-" force soft tab
-autocmd vimrc FileType
-  \ diff,yaml,ruby,eruby,haml,coffee,scss,sass,sh,sql,vim,scala,scheme
-  \ setlocal et
-
-autocmd vimrc BufNewFile,BufRead
-  \ *.json
-  \ setlocal et
-
-" force encoding
-autocmd vimrc FileType
-  \ svn,js,css,html,xml,java,scala,yml
-  \ setlocal fenc=utf-8
-
-autocmd vimrc FileType
-  \ cvs
-  \ setlocal fenc=euc-jp
 
 
 "-------------------------------------------------------------------------------

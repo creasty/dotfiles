@@ -41,10 +41,12 @@
 	f = flow
 	fs = flow feature start
 	ff = flow feature finish
+	fl = flow feature list
 	rs = flow release start
 	rf = flow release finish
 	xs = flow hotfix start
 	xf = flow hotfix finish
+	xl = flow hotfix list
 
 	res  = reset --soft HEAD
 	res1 = reset --soft HEAD~
@@ -60,10 +62,10 @@
 	reh5 = reset --hard HEAD~~~~~
 
 	e = "!f() { git status -s | cut -b 4- | grep -v '\\/$' | uniq ; }; vim `f`"
-	eum = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
-	aum = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
-	dum =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
-	em = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
+	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
+	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	delete-unmerged =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
+	modified = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
 
 	# Remove branches that have already been merged with master
   dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"

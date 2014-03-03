@@ -1,0 +1,3 @@
+
+setlocal fenc=euc-jp
+
