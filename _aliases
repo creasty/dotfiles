@@ -71,7 +71,9 @@ alias rs5='bundle exec rails s -p 3005'
 
 #  Git
 #-----------------------------------------------
-alias gsy = "git a && git cm && git pl && git pu"
+gsy() {
+  git a && git cm "$1" && git pl && git pu
+}
 
 
 #  Extractors (zsh only)
