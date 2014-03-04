@@ -1,75 +1,78 @@
 [user]
-	name = Yuki Iwanaga
-	email = yuki@creasty.com
+  name = Yuki Iwanaga
+  email = yuki@creasty.com
 
 [github]
-	user = creasty
+  user = creasty
 
 [core]
-	editor = /usr/local/bin/vim
-	excludesfile = ~/.gitignore
+  editor = /usr/local/bin/vim
+  excludesfile = ~/.gitignore
 
 [color]
-	ui = true
+  ui = true
 
 [merge]
-	tool = vimdiff
-	ff = false
+  tool = vimdiff
+  ff = false
 
 [alias]
-	a = add -A .
-	m = merge
-	mf = merge FETCH_HEAD
-	c = commit -a
-	cm = commit -am
-	# !git add -A && git commit -av
-	ca = commit --amend
-	cane = commit --amend --no-edit
-	k = checkout
-	kb = checkout -B
-	km = checkout master
-	s = status -s
-	b = branch
-	l = log
-	ll = log -1 HEAD
-	g = log --oneline --graph
+  a = add -A .
+  m = merge
+  mf = merge FETCH_HEAD
+  c = commit -a
+  cm = commit -am
+  # !git add -A && git commit -av
+  ca = commit --amend
+  cane = commit --amend --no-edit
+  k = checkout
+  kb = checkout -B
+  km = checkout master
+  s = status -s
+  b = branch
+  l = log
+  ll = log -1 HEAD
+  g = log --oneline --graph
 
-	tags = tag -l
-	branches = branch -a
-	remotes = remote -v
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
 
-	f = flow
-	fs = flow feature start
-	ff = flow feature finish
-	fl = flow feature list
-	rs = flow release start
-	rf = flow release finish
-	xs = flow hotfix start
-	xf = flow hotfix finish
-	xl = flow hotfix list
+  f = flow
+  fs = flow feature start
+  ff = flow feature finish
+  fl = flow feature list
+  rs = flow release start
+  rf = flow release finish
+  xs = flow hotfix start
+  xf = flow hotfix finish
+  xl = flow hotfix list
 
-	res  = reset --soft HEAD
-	res1 = reset --soft HEAD~
-	res2 = reset --soft HEAD~~
-	res3 = reset --soft HEAD~~~
-	res4 = reset --soft HEAD~~~~
-	res5 = reset --soft HEAD~~~~~
-	reh  = reset --hard HEAD
-	reh1 = reset --hard HEAD~
-	reh2 = reset --hard HEAD~~
-	reh3 = reset --hard HEAD~~~
-	reh4 = reset --hard HEAD~~~~
-	reh5 = reset --hard HEAD~~~~~
+  res  = reset --soft HEAD
+  res1 = reset --soft HEAD~
+  res2 = reset --soft HEAD~~
+  res3 = reset --soft HEAD~~~
+  res4 = reset --soft HEAD~~~~
+  res5 = reset --soft HEAD~~~~~
+  reh  = reset --hard HEAD
+  reh1 = reset --hard HEAD~
+  reh2 = reset --hard HEAD~~
+  reh3 = reset --hard HEAD~~~
+  reh4 = reset --hard HEAD~~~~
+  reh5 = reset --hard HEAD~~~~~
 
-	e = "!f() { git status -s | cut -b 4- | grep -v '\\/$' | uniq ; }; vim `f`"
-	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
-	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
-	delete-unmerged =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
-	modified = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
+  pl = "!f() { git symbolic-ref --short HEAD ; }; git pull origin `f`"
+  pu = "!f() { git symbolic-ref --short HEAD ; }; git push origin `f`"
 
-	# Remove branches that have already been merged with master
+  e = "!f() { git status -s | cut -b 4- | grep -v '\\/$' | uniq ; }; vim `f`"
+  edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
+  add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+  delete-unmerged =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
+  modified = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
+
+  # Remove branches that have already been merged with master
   dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
 [url "https://"]
-	insteadOf = git://
+  insteadOf = git://
 

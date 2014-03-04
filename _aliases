@@ -71,11 +71,7 @@ alias rs5='bundle exec rails s -p 3005'
 
 #  Git
 #-----------------------------------------------
-branch() {
-	echo "$(git branch | awk '/\*/ { print $2 }')"
-}
-alias gpl='git pull origin $(branch)'
-alias gpu='git push origin $(branch)'
+alias gsy = "git a && git cm && git pl && git pu"
 
 
 #  Extractors (zsh only)
