@@ -6,6 +6,41 @@ mkd() {
 }
 
 
+#  Project root (.git dir)
+#-----------------------------------------------
+cdrt() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `git rev-parse --show-toplevel`
+  fi
+}
+
+
+#  Git sync
+#-----------------------------------------------
+gsy() {
+  git a && git cm "$1" && git pl && git pu
+}
+
+
+#  Extractors (zsh only)
+#-----------------------------------------------
+extract() {
+  case $1 in
+    *.tar.gz|*.tgz)  tar xzvf $1;;
+    *.tar.xz)        tar Jxvf $1;;
+    *.zip)           unzip $1;;
+    *.lzh)           lha e $1;;
+    *.tar.bz2|*.tbz) tar xjvf $1;;
+    *.tar.Z)         tar zxvf $1;;
+    *.gz)            gzip -dc $1;;
+    *.bz2)           bzip2 -dc $1;;
+    *.Z)             uncompress $1;;
+    *.tar)           tar xvf $1;;
+    *.arj)           unarj $1;;
+  esac
+}
+
+
 #  Create a data URL from a file
 #-----------------------------------------------
 dataurl() {
@@ -48,12 +83,4 @@ chloc() {
   fi
 }
 
-
-#  Project root (.git dir)
-#-----------------------------------------------
-cdrt() {
-  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    cd `git rev-parse --show-toplevel`
-  fi
-}
 

@@ -7,32 +7,41 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias dt='cd ~/Desktop'
 alias p="cd ~/projects"
+
 alias ls='ls -G'
 alias ll='ls -Gl'
 alias la='ls -Ga'
 alias lla='ls -Gla'
+alias tree='tree -C'
 alias df='df -h'
-alias vi='vim'
-alias v='vim'
-alias mvim='open -a MacVim'
-alias :q='exit'
 
+alias vi='vim'
 alias g="git"
 alias ti='titanium'
-alias tree='tree -C'
+alias :q='exit'
 
-alias hosts='vi /etc/hosts'
-alias sl='subl -a'
+
+#  Applications
+#-----------------------------------------------
+alias v='open -a MacVim'
 alias ff='open -a Firefox'
 alias ch='open -a "Google Chrome"'
 alias finder='open -a Finder'
 
+
+#  Networks
+#-----------------------------------------------
+alias hosts='vi /etc/hosts'
 alias ip='ipconfig getifaddr en1'
 alias ipg='curl ifconfig.me'
 alias whois='whois -h whois-servers.net'
 
 alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
+
+#  Servers
+#-----------------------------------------------
 alias pyserver="python -m SimpleHTTPServer"
 alias nserver="http-server -p"
 
@@ -44,13 +53,6 @@ alias aart='java -jar ~/dotfiles/scripts/AsciiArt/jitac.jar'
 alias webkit2png='python ~/dotfiles/scripts/webkit2png.py -F -d -D ~/Desktop/'
 alias webkit2evernote='webkit2png -C -W 1920 -H 1200 --clipwidth=960 --clipheight=600 -s 0.5 -D ~/Desktop/ -d'
 alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348 -s 0.5 -D ~/Desktop/ -d'
-
-
-#  XAMPP Apache
-#-----------------------------------------------
-alias svr='sudo xampp start'
-alias svrr='sudo xampp restart'
-alias svrs='sudo xampp stop'
 
 
 #  Ruby / Rails
@@ -69,32 +71,4 @@ alias rs2='bundle exec rails s -p 3002'
 alias rs3='bundle exec rails s -p 3003'
 alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
-
-
-#  Git
-#-----------------------------------------------
-gsy() {
-  git a && git cm "$1" && git pl && git pu
-}
-
-
-#  Extractors (zsh only)
-#-----------------------------------------------
-extract() {
-  case $1 in
-    *.tar.gz|*.tgz)  tar xzvf $1;;
-    *.tar.xz)        tar Jxvf $1;;
-    *.zip)           unzip $1;;
-    *.lzh)           lha e $1;;
-    *.tar.bz2|*.tbz) tar xjvf $1;;
-    *.tar.Z)         tar zxvf $1;;
-    *.gz)            gzip -dc $1;;
-    *.bz2)           bzip2 -dc $1;;
-    *.Z)             uncompress $1;;
-    *.tar)           tar xvf $1;;
-    *.arj)           unarj $1;;
-  esac
-}
-
-alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
