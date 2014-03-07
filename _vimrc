@@ -585,7 +585,7 @@ inoremap <C-w> <C-g>u<C-w>
 nnoremap Y y$
 
 " keep the cursor in place while joining lines
-nnoremap J mzJ`z
+nnoremap J mzJ`zmz
 
 " split lines: inverse of J
 nnoremap <silent> <Space>J ylpr<Enter>
@@ -604,8 +604,8 @@ noremap <Space>l $
 noremap <Space>m %
 
 " insert blank lines without going into insert mode
-nmap <Space>o o<ESC>k
-nmap <Space>O O<ESC>j
+nmap <Space>o mzo<ESC>`zmz
+nmap <Space>O mzO<ESC>`zmz
 
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
