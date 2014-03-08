@@ -384,7 +384,7 @@ set nocursorline
 set lazyredraw
 
 " limit syntax highlighting
-set synmaxcol=128
+set synmaxcol=1024
 
 " display very very long line at the end of file
 set display& display+=lastline
@@ -552,7 +552,7 @@ inoremap <C-n> <C-o>gj
 inoremap <C-p> <C-o>gk
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
-inoremap <C-a> <C-o>g0
+inoremap <expr> <C-a> (col('.') == 2) ? "\<Left>" : "\<C-o>g0"
 inoremap <C-e> <C-o>g$
 inoremap <C-d> <Del>
 inoremap <silent> <C-h> <C-g>u<C-h>
@@ -585,19 +585,36 @@ inoremap <C-w> <C-g>u<C-w>
 nnoremap Y y$
 
 " keep the cursor in place while joining lines
-nnoremap J mzJ`z
+nnoremap J mzJ`zmz
+
+" split lines: inverse of J
+nnoremap <silent> <Space>J ylpr<Enter>
 
 " reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
+
+" use sane regexes
+nnoremap / /\v
+vnoremap / /\v
 
 " easy key
 noremap <Space>h ^
 noremap <Space>l $
 noremap <Space>m %
 
+" insert blank lines without going into insert mode
+nmap <Space>o mzo<ESC>`zmz
+nmap <Space>O mzO<ESC>`zmz
+
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" select all
+map <Space>a ggVG
+
+" repeat the last recorded macro
+map Q @@
 
 " remove trailing spaces before saving
 autocmd vimrc BufWritePre *
@@ -818,15 +835,13 @@ endif
 inoremap <silent> <expr> <TAB> <SID>SuperTabCompletion()
 
 function! s:SuperTabCompletion()
-  let c = col('.') - 1
-
   if pumvisible()
     return neocomplete#close_popup()
   elseif neosnippet#expandable_or_jumpable()
     return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
   elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
-  elseif c && getline('.')[c - 1] !~ '\s'
+  elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
     return neocomplete#start_manual_complete()
   else
     return "\<TAB>"
