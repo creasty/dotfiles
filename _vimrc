@@ -137,6 +137,7 @@ NeoBundleLazy 'rhysd/unite-codic.vim', {
 NeoBundleLazy 'jaxbot/github-issues.vim', {
   \ 'autoload': { 'commands': ['Gissues'] },
 \ }
+NeoBundle 'vim-auto-save'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -280,6 +281,9 @@ set nf=alpha,hex
 " disable IME
 set imdisable
 
+" hidden buffers
+set hidden
+
 " folding
 set foldmethod=indent
 set fillchars="fold:"
@@ -384,7 +388,7 @@ set nocursorline
 set lazyredraw
 
 " limit syntax highlighting
-set synmaxcol=1024
+set synmaxcol=512
 
 " display very very long line at the end of file
 set display& display+=lastline
@@ -868,6 +872,12 @@ let g:syntastic_tex_checkers = ['lacheck']
 
 call CreastyCode('SyntasticErrorSign', 'red', '', '')
 call CreastyCode('SyntasticWarningSign', 'yellow', '', '')
+
+
+"-------------------------------------------------------------------------------
+" Plugin: TextManip
+"-------------------------------------------------------------------------------
+let g:auto_save = 1
 
 
 "-------------------------------------------------------------------------------
