@@ -59,6 +59,7 @@ plugins=(
 
 source ~/.oh-my-zsh/oh-my-zsh.sh
 
+
 #  Fish shell like syntax highlighting
 #-----------------------------------------------
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
@@ -89,6 +90,21 @@ ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=green
 ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
 ZSH_HIGHLIGHT_STYLES[assign]=fg=blue
+
+
+#  Type ahead auto suggestion
+#-----------------------------------------------
+source ~/dotfiles/zsh/zsh-autosuggestions/autosuggestions.zsh
+
+AUTOSUGGESTION_HIGHLIGHT_COLOR=fg=white
+AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
+
+zle-line-init() {
+  zle autosuggest-start
+}
+zle -N zle-line-init
+
+bindkey '^T' autosuggest-toggle
 
 
 #  Direnv
