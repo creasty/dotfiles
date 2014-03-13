@@ -542,6 +542,12 @@ set shiftround
 " virtualedit with freedom
 set virtualedit& virtualedit+=block
 
+" don't insert the current comment leader on leading lines
+set formatoptions-=ro
+
+" remove a comment leader when joining lines
+set formatoptions+=j
+
 " toggle paste mode
 command! Pt :set paste!
 
