@@ -574,6 +574,9 @@ cnoremap <C-f> <Right>
 cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
+" paste
+inoremap <C-v> <C-r><C-p>*
+
 " auto wrap
 vnoremap ( S(
 vnoremap { S{
@@ -1186,8 +1189,18 @@ let g:over_command_line_key_mappings = {
   \ "\<C-j>": "\<CR>",
 \ }
 
-cnoremap <expr> :
-  \ (getcmdtype() == ':' && getcmdpos() == 1) ? "OverCommandLine\<CR>%s/" : ':'
+cnoremap <expr> / <SID>MyOverCommandLine()
+
+function! s:MyOverCommandLine()
+  let line = getcmdline()
+  let isVisualMode = (line =~ "^'<,'>")
+
+  if getcmdtype() == ':' && getcmdpos() == (isVisualMode ? 6 : 1)
+    return "OverCommandLine\<CR>" . (isVisualMode ? '' : '%') . 's/'
+  else
+    return '/'
+  endif
+endfunction
 
 
 "-------------------------------------------------------------------------------
