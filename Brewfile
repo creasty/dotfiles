@@ -17,6 +17,7 @@ install ghostscript
 install git
 install git-flow
 install graphviz
+install hub
 install imagemagick
 install jbig2dec
 install jpeg
