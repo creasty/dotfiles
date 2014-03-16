@@ -576,6 +576,7 @@ cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
 " paste
 inoremap <C-v> <C-r><C-p>*
+cnoremap <C-v> <C-r>"
 
 " auto wrap
 vnoremap ( S(
@@ -1015,6 +1016,10 @@ let g:session_autoload = 0
 let g:session_default_to_last = 0
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
+
+set sessionoptions-=blank
+set sessionoptions-=help
+set sessionoptions-=options
 
 nnoremap gs :OpenSession<Space>
 nnoremap <Leader>sc :CloseSession<CR>
