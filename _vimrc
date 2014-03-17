@@ -683,6 +683,19 @@ command! -nargs=0 Delete call delete(expand('%')) | enew!
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
+" edit relative
+cnoremap <expr> e <SID>EditRelative()
+
+function! s:EditRelative()
+  let line = getcmdline()
+
+  if getcmdtype() == ':' && line =~ "^e$"
+    return " \<C-r>=expand('%:h') . '/' \<CR>"
+  else
+    return 'e'
+  endif
+endfunction
+
 " use I, A for all visual modes
 vnoremap <expr> I <SID>force_blockwise_visual('I')
 vnoremap <expr> A <SID>force_blockwise_visual('A')
