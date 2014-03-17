@@ -94,17 +94,17 @@ ZSH_HIGHLIGHT_STYLES[assign]=fg=blue
 
 #  Type ahead auto suggestion
 #-----------------------------------------------
-source ~/dotfiles/zsh/zsh-autosuggestions/autosuggestions.zsh
-
-AUTOSUGGESTION_HIGHLIGHT_COLOR=fg=white
-AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
-
-zle-line-init() {
-  zle autosuggest-start
-}
-zle -N zle-line-init
-
-bindkey '^T' autosuggest-toggle
+# source ~/dotfiles/zsh/zsh-autosuggestions/autosuggestions.zsh
+#
+# AUTOSUGGESTION_HIGHLIGHT_COLOR=fg=white
+# AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
+#
+# zle-line-init() {
+#   zle autosuggest-start
+# }
+# zle -N zle-line-init
+#
+# bindkey '^T' autosuggest-toggle
 
 
 #  Direnv
