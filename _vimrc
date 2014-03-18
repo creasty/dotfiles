@@ -618,8 +618,8 @@ nnoremap <Space>l $
 nnoremap <Space>m %
 
 " insert blank lines without going into insert mode
-nmap <Space>o mzo`zmz
-nmap <Space>O mzO`zmz
+nmap <Space>o mzo<ESC>`zmz
+nmap <Space>O mzO<ESC>`zmz
 
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
