@@ -33,6 +33,7 @@ NeoBundleLazy 'scrooloose/syntastic', {
 NeoBundleLazy 'Align', {
   \ 'autoload': { 'commands': ['Align'] }
 \ }
+" NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'mattn/emmet-vim', {
   \ 'autoload': {
     \ 'insert': 1,
@@ -62,6 +63,8 @@ NeoBundle 't9md/vim-textmanip'
 NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'deris/vim-rengbang'
 NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'sickill/vim-pasta'
+NeoBundle 'tpope/vim-speeddating'
 
 " Completion
 NeoBundleLazy 'Shougo/neocomplete', {
