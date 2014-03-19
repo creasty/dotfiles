@@ -29,6 +29,7 @@
   kb = checkout -B
   km = checkout master
   s = status -s
+  d = diff
   b = branch
   l = log
   ll = log -1 HEAD
