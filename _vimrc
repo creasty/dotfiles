@@ -140,6 +140,12 @@ NeoBundleLazy 'jaxbot/github-issues.vim', {
   \ 'autoload': { 'commands': ['Gissues'] },
 \ }
 NeoBundle 'vim-auto-save'
+NeoBundleLazy 'thinca/vim-qfreplace', {
+  \ 'autoload': { 'commands': ['Qfreplace'] },
+\ }
+NeoBundleLazy 'rking/ag.vim', {
+  \ 'autoload': { 'commands': ['Ag'] },
+\ }
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'

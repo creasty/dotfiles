@@ -3,6 +3,7 @@ update
 upgrade
 
 tap phinze/homebrew-cask
+tap laurent22/massren
 
 install brew-cask
 install clisp
@@ -33,6 +34,7 @@ install libxslt
 install libyaml
 install lua
 install macvim --HEAD --with-cscope --with-lua --override-system-vi
+install massren
 install mercurial
 install mysql
 install ngrep

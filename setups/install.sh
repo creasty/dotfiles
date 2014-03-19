@@ -11,6 +11,8 @@ fi
 brew tap phinze/homebrew-cask
 brew install brew-cask
 
+massren --config editor vim
+
 # rvm
 which rvm > /dev/null 2>&1
 if [ $? -ne 0 ]; then
