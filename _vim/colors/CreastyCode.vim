@@ -268,6 +268,7 @@ call CreastyCode('WarningMsg', 'red', '', '')
 call CreastyCode('MatchParen', '', 'selection', '')
 call CreastyCode('Folded', 'comment', 'background', '')
 call CreastyCode('FoldColumn', '', 'background', '')
+call CreastyCode('WildMenu', 'background', 'yellow', '')
 
 if version >= 700
   call CreastyCode('CursorColumn', '', 'line', 'none')
