@@ -30,10 +30,9 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundleLazy 'scrooloose/syntastic', {
   \ 'autoload': { 'insert': 1 },
 \ }
-NeoBundleLazy 'Align', {
-  \ 'autoload': { 'commands': ['Align'] }
+NeoBundleLazy 'junegunn/vim-easy-align', {
+  \ 'autoload': { 'commands': ['EasyAlign'] }
 \ }
-" NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'mattn/emmet-vim', {
   \ 'autoload': {
     \ 'insert': 1,
@@ -1191,6 +1190,12 @@ if has('gui_running')
   let g:indentLine_color_gui = '#222222'
   let g:indentLine_indentLevel = 20
 endif
+
+
+"-------------------------------------------------------------------------------
+" Plugin: EasyAlign
+"-------------------------------------------------------------------------------
+vnoremap <silent> L :EasyAlign<cr>
 
 
 "-------------------------------------------------------------------------------
