@@ -30,8 +30,8 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundleLazy 'scrooloose/syntastic', {
   \ 'autoload': { 'insert': 1 },
 \ }
-NeoBundleLazy 'Align', {
-  \ 'autoload': { 'commands': ['Align'] }
+NeoBundleLazy 'junegunn/vim-easy-align', {
+  \ 'autoload': { 'commands': ['EasyAlign'] }
 \ }
 NeoBundle 'mattn/emmet-vim', {
   \ 'autoload': {
@@ -62,6 +62,8 @@ NeoBundle 't9md/vim-textmanip'
 NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'deris/vim-rengbang'
 NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'sickill/vim-pasta'
+NeoBundle 'tpope/vim-speeddating'
 
 " Completion
 NeoBundleLazy 'Shougo/neocomplete', {
@@ -138,6 +140,12 @@ NeoBundleLazy 'jaxbot/github-issues.vim', {
   \ 'autoload': { 'commands': ['Gissues'] },
 \ }
 NeoBundle 'vim-auto-save'
+NeoBundleLazy 'thinca/vim-qfreplace', {
+  \ 'autoload': { 'commands': ['Qfreplace'] },
+\ }
+NeoBundleLazy 'rking/ag.vim', {
+  \ 'autoload': { 'commands': ['Ag'] },
+\ }
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -613,9 +621,9 @@ nnoremap / /\v
 vnoremap / /\v
 
 " easy key
-noremap <Space>h ^
-noremap <Space>l $
-noremap <Space>m %
+nnoremap <Space>h ^
+nnoremap <Space>l $
+nnoremap <Space>m %
 
 " insert blank lines without going into insert mode
 nmap <Space>o mzo<ESC>`zmz
@@ -671,17 +679,21 @@ function! s:auto_mkdir(dir)
   endif
 endfunction
 
-" rename current file
-command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
-
-nmap <C-w><C-r> <C-w>r
-nnoremap <C-w>r :Rename <C-r>=expand('%:p')<CR>
-
 " delete current file
 command! -nargs=0 Delete call delete(expand('%')) | enew!
 
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
+
+" edit relative
+cnoremap <expr> e
+  \ (getcmdtype() == ':' && getcmdline() =~ '^e$\C') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
+
+" rename
+cnoremap <expr> r
+  \ (getcmdtype() == ':' && getcmdline() =~ '^e$\C') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
+
+command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
 " use I, A for all visual modes
 vnoremap <expr> I <SID>force_blockwise_visual('I')
@@ -1187,6 +1199,12 @@ endif
 
 
 "-------------------------------------------------------------------------------
+" Plugin: EasyAlign
+"-------------------------------------------------------------------------------
+vnoremap <silent> L :EasyAlign<cr>
+
+
+"-------------------------------------------------------------------------------
 " Plugin: Over
 "-------------------------------------------------------------------------------
 let g:over_command_line_key_mappings = {
@@ -1275,10 +1293,6 @@ function! s:bundle.hooks.on_source(bundle)
   endif
 
   autocmd vimrc FileType unite call s:unite_my_settings()
-  autocmd vimrc WinEnter,BufEnter *
-    \ if &ft != 'unite' |
-      \ let g:unite_prev_bufpath = expand('%:p:h') |
-    \ endif
 
   function! s:unite_my_settings()
     call clearmatches()
@@ -1289,8 +1303,8 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <buffer> <C-f> <Right>
     inoremap <buffer> <C-e> <End>
 
-    " [TODO] unite#get_current_unite().prev_bufnr
-    inoremap <silent> <buffer> ^ <C-r>=g:unite_prev_bufpath . '/' <CR>
+    inoremap <expr> <silent> <buffer> ^
+      \ expand('#' . unite#get_current_unite().prev_bufnr . ':h') . '/'
 
     nmap <buffer> <C-q> <Plug>(unite_exit)
     imap <buffer> <C-q> <Plug>(unite_exit)
@@ -1309,7 +1323,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
-nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file file/new directory/new<CR>
+nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async file/new directory/new<CR>
 
 
 "-------------------------------------------------------------------------------
