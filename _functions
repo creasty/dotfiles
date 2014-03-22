@@ -22,6 +22,19 @@ gsy() {
 }
 
 
+#  SSH
+#-----------------------------------------------
+sshc() {
+  cp ~/.ssh/_config ~/.ssh/config
+  cat ~/.ssh/hosts/* >> ~/.ssh/config
+
+  [ -n "$1" -a -e "$1" ] && ssh $1
+}
+
+_sshc_comp=(`ls ~/.ssh/hosts`)
+compctl -k _sshc_comp sshc
+
+
 #  Extractors (zsh only)
 #-----------------------------------------------
 extract() {
