@@ -1278,6 +1278,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:unite_enable_smart_case = 1
   let g:unite_source_rec_min_cache_files = 50
   let g:unite_source_rec_max_cache_files = 5000
+  let g:unite_source_history_yank_enable = 1
 
   let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
     \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\)/'
@@ -1306,8 +1307,8 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <expr> <silent> <buffer> ^
       \ expand('#' . unite#get_current_unite().prev_bufnr . ':h') . '/'
 
-    nmap <buffer> <C-q> <Plug>(unite_exit)
-    imap <buffer> <C-q> <Plug>(unite_exit)
+    nmap <buffer> <C-q> <Plug>(unite_all_exit)
+    imap <buffer> <C-q> <Plug>(unite_all_exit)
     imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
     imap <buffer> <C-a> <Plug>(unite_move_head)
     imap <buffer> <C-j> <Plug>(unite_do_default_action)
@@ -1324,6 +1325,8 @@ endfunction
 unlet s:bundle
 
 nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async file/new directory/new<CR>
+inoremap <silent> <C-x><C-v> <C-o>:Unite -hide-source-names history/yank<CR>
+nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
 
 
 "-------------------------------------------------------------------------------
