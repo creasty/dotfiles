@@ -3,33 +3,34 @@ snippet #
 abbr    # Title
 	#=== ${1}
 	#==============================================================================================
-	${2}
 
 snippet ##
 abbr    # Sub title
 	#  ${1}
 	#-----------------------------------------------
-	${2}
+
+snippet ###
+	###
+	# ${1}
+	###
 
 snippet /*
 abbr    /* Title
 	/*=== ${1}
 	==============================================================================================*/
-	${2}
 
 snippet //
 abbr    /* Sub title
-	/*	${1}
+	/*  ${1}
 	-----------------------------------------------*/
-	${2}
 
-
-# doc
-snippet sd
+snippet /**
 	/**
 	 * ${1}
 	 */
 
+
+# docs
 snippet @pa
 	@params {${1:type}} ${2:var} - ${3:description}
 
@@ -48,3 +49,4 @@ snippet time..
 # text
 snippet lorem
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
