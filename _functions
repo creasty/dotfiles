@@ -15,11 +15,38 @@ cdrt() {
 }
 
 
+#  Development directory
+#-----------------------------------------------
+cdd() {
+  if [ $# -gt 0 ]; then
+    cd "$HOME/Develop/$1"
+  else
+    cd ~/Develop
+  fi
+}
+
+_cdd_comp=(`ls ~/Develop`)
+compctl -k _cdd_comp cdd
+
+
 #  Git sync
 #-----------------------------------------------
 gsy() {
   git a && git cm "$1" && git pl && git pu
 }
+
+
+#  SSH
+#-----------------------------------------------
+sshc() {
+  cp ~/.ssh/_config ~/.ssh/config
+  cat ~/.ssh/hosts/* >> ~/.ssh/config
+
+  [ $# -gt 0 ] && ssh $1
+}
+
+_sshc_comp=(`ls ~/.ssh/hosts`)
+compctl -k _sshc_comp sshc
 
 
 #  Extractors (zsh only)
