@@ -1297,6 +1297,8 @@ function! s:bundle.hooks.on_source(bundle)
   autocmd vimrc FileType unite call s:unite_my_settings()
 
   function! s:unite_my_settings()
+    let unite = unite#get_current_unite()
+
     call clearmatches()
 
     imap <buffer> <C-h> <BS>
@@ -1306,7 +1308,7 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <buffer> <C-e> <End>
 
     inoremap <expr> <silent> <buffer> ^
-      \ expand('#' . unite#get_current_unite().prev_bufnr . ':h') . '/'
+      \ expand('#' . unite.prev_bufnr . ':h') . '/'
 
     nmap <buffer> <C-q> <Plug>(unite_exit)
     imap <buffer> <C-q> <Plug>(unite_exit)
@@ -1315,7 +1317,6 @@ function! s:bundle.hooks.on_source(bundle)
     imap <buffer> <C-j> <Plug>(unite_do_default_action)
     imap <buffer> <C-l> <Plug>(unite_redraw)
 
-    let unite = unite#get_current_unite()
     if unite.buffer_name =~# '^search'
       nnoremap <silent><buffer><expr> r unite#do_action('replace')
     else
@@ -1326,8 +1327,8 @@ endfunction
 unlet s:bundle
 
 nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async file/new directory/new<CR>
-inoremap <silent> <C-x><C-v> <C-o>:Unite -hide-source-names history/yank<CR>
 nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
+imap <silent> <C-x><C-v> <C-o><Space>p
 
 
 "-------------------------------------------------------------------------------
