@@ -687,11 +687,11 @@ cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
 " edit relative
 cnoremap <expr> e
-  \ (getcmdtype() == ':' && getcmdline() =~ '^e$\C') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
+  \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
 
 " rename
 cnoremap <expr> r
-  \ (getcmdtype() == ':' && getcmdline() =~ '^e$\C') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
+  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
@@ -1215,14 +1215,15 @@ let g:over_command_line_key_mappings = {
 cnoremap <expr> / <SID>MyOverCommandLine()
 
 function! s:MyOverCommandLine()
-  let line = getcmdline()
-  let isVisualMode = (line =~ "^'<,'>")
+  let line = getcmdtype() . getcmdline()
 
-  if getcmdtype() == ':' && getcmdpos() == (isVisualMode ? 6 : 1)
-    return "OverCommandLine\<CR>" . (isVisualMode ? '' : '%') . 's/'
-  else
-    return '/'
+  if line == ':'
+    return "OverCommandLine\<CR>%s/"
+  elseif line == ":'<,'>"
+    return "OverCommandLine\<CR>s/"
   endif
+
+  return '/'
 endfunction
 
 
