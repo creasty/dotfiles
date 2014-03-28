@@ -1249,7 +1249,10 @@ let g:quickrun_config['markdown'] = {
 
 let g:quickrun_config['javascript'] = { 'command': 'node' }
 
-let g:quickrun_config['coffee'] = { 'command': 'coffee', 'exec': ['%c -cb %s'] }
+let g:quickrun_config['coffee'] = {
+  \ 'command' : 'coffee',
+  \ 'exec' : ['%c -cbp %s | node'],
+\ }
 
 
 "-------------------------------------------------------------------------------
