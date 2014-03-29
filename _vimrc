@@ -687,11 +687,11 @@ cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
 " edit relative
 cnoremap <expr> e
-  \ (getcmdtype() == ':' && getcmdline() =~ '^e$\C') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
+  \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
 
 " rename
 cnoremap <expr> r
-  \ (getcmdtype() == ':' && getcmdline() =~ '^e$\C') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
+  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
@@ -1215,14 +1215,15 @@ let g:over_command_line_key_mappings = {
 cnoremap <expr> / <SID>MyOverCommandLine()
 
 function! s:MyOverCommandLine()
-  let line = getcmdline()
-  let isVisualMode = (line =~ "^'<,'>")
+  let line = getcmdtype() . getcmdline()
 
-  if getcmdtype() == ':' && getcmdpos() == (isVisualMode ? 6 : 1)
-    return "OverCommandLine\<CR>" . (isVisualMode ? '' : '%') . 's/'
-  else
-    return '/'
+  if line == ':'
+    return "OverCommandLine\<CR>%s/"
+  elseif line == ":'<,'>"
+    return "OverCommandLine\<CR>s/"
   endif
+
+  return '/'
 endfunction
 
 
@@ -1248,7 +1249,10 @@ let g:quickrun_config['markdown'] = {
 
 let g:quickrun_config['javascript'] = { 'command': 'node' }
 
-let g:quickrun_config['coffee'] = { 'command': 'coffee', 'exec': ['%c -cb %s'] }
+let g:quickrun_config['coffee'] = {
+  \ 'command' : 'coffee',
+  \ 'exec' : ['%c -cbp %s | node'],
+\ }
 
 
 "-------------------------------------------------------------------------------
@@ -1296,6 +1300,8 @@ function! s:bundle.hooks.on_source(bundle)
   autocmd vimrc FileType unite call s:unite_my_settings()
 
   function! s:unite_my_settings()
+    let unite = unite#get_current_unite()
+
     call clearmatches()
 
     imap <buffer> <C-h> <BS>
@@ -1305,16 +1311,15 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <buffer> <C-e> <End>
 
     inoremap <expr> <silent> <buffer> ^
-      \ expand('#' . unite#get_current_unite().prev_bufnr . ':h') . '/'
+      \ expand('#' . unite.prev_bufnr . ':h') . '/'
 
-    nmap <buffer> <C-q> <Plug>(unite_all_exit)
-    imap <buffer> <C-q> <Plug>(unite_all_exit)
+    nmap <buffer> <C-q> <Plug>(unite_exit)
+    imap <buffer> <C-q> <Plug>(unite_exit)
     imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
     imap <buffer> <C-a> <Plug>(unite_move_head)
     imap <buffer> <C-j> <Plug>(unite_do_default_action)
     imap <buffer> <C-l> <Plug>(unite_redraw)
 
-    let unite = unite#get_current_unite()
     if unite.buffer_name =~# '^search'
       nnoremap <silent><buffer><expr> r unite#do_action('replace')
     else
@@ -1325,8 +1330,8 @@ endfunction
 unlet s:bundle
 
 nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async file/new directory/new<CR>
-inoremap <silent> <C-x><C-v> <C-o>:Unite -hide-source-names history/yank<CR>
 nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
+imap <silent> <C-x><C-v> <C-o><Space>p
 
 
 "-------------------------------------------------------------------------------

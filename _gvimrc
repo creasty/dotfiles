@@ -44,6 +44,9 @@ nmap <ScrollWheelRight> <nop>
 nmap <S-ScrollWheelRight> <nop>
 nmap <C-ScrollWheelRight> <nop>
 
+" use option as meta key
+set macmeta
+
 " make tabs more readable
 set guitablabel=%N\ %t%M
 
