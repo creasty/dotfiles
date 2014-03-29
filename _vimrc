@@ -149,7 +149,7 @@ NeoBundleLazy 'rking/ag.vim', {
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
@@ -1181,21 +1181,18 @@ unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
-" Plugin: IndentLine
+" Plugin: IndentGuides
 "-------------------------------------------------------------------------------
-let g:indentLine_enabled = 0
-
 if has('gui_running')
-  " syntax highlight not working
-  " with some indent-based languages (e.g., haml)
-  " let g:indentLine_enabled = 1
-  let g:indentLine_char = '⁞'
-  let g:indentLine_first_char = '⁞'
-  let g:indentLine_showFirstIndentLevel = 1
-  let g:indentLine_color_term = 234
-  let g:indentLine_color_gui = '#222222'
-  let g:indentLine_indentLevel = 20
-endif
+  let g:indent_guides_enable_on_vim_startup = 1
+  let g:indent_guides_guide_size = 1
+  let g:indent_guides_space_guides = 1
+  let g:indent_guides_auto_colors = 0
+  let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
+
+  call CreastyCode('IndentGuidesOdd', '', 'black', '')
+  call CreastyCode('IndentGuidesEven', '', 'black', '')
+end
 
 
 "-------------------------------------------------------------------------------
@@ -1221,9 +1218,9 @@ function! s:MyOverCommandLine()
     return "OverCommandLine\<CR>%s/"
   elseif line == ":'<,'>"
     return "OverCommandLine\<CR>s/"
+  else
+    return '/'
   endif
-
-  return '/'
 endfunction
 
 
