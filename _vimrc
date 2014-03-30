@@ -911,13 +911,6 @@ xmap <C-k> <Plug>(textmanip-move-up)
 xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
 
-" move current line in insert mode
-imap <D-h> <C-o>V<C-h><Esc>
-imap <D-j> <C-o>V<C-j><Esc>
-imap <D-k> <C-o>V<C-k><Esc>
-imap <D-l> <C-o>V<C-l><Esc>
-imap <D-d> <C-o>,d
-
 " duplicate line
 vmap ,d <Plug>(textmanip-duplicate-down)
 vmap ,D <Plug>(textmanip-duplicate-up)
@@ -1217,7 +1210,7 @@ function! s:MyOverCommandLine()
   if line == ':'
     return "OverCommandLine\<CR>%s/"
   elseif line == ":'<,'>"
-    return "OverCommandLine\<CR>s/"
+    return "OverCommandLine\<CR>\<C-u>'<,'>s/"
   else
     return '/'
   endif
