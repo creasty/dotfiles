@@ -134,6 +134,9 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
+# Don't create desktop
+defaults write com.apple.finder CreateDesktop -bool false
+
 
 ###############################################################################
 # Dock, Dashboard, and hot corners                                            #
