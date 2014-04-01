@@ -200,6 +200,22 @@ NeoBundleCheck
 
 
 "-------------------------------------------------------------------------------
+" Variables
+"-------------------------------------------------------------------------------
+" computer-depend
+let g:hostname = substitute(hostname(), '[^\w.]', '', '')
+let s:host_vimrc = $HOME . '/dotfiles/_vim/computers/' . g:hostname
+
+if filereadable(s:host_vimrc)
+  execute 'source ' . s:host_vimrc
+endif
+
+" keyboard layout
+let g:us_keyboard_layout = has('mac')
+  \ && system('defaults read com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID') =~ '^com.apple.keylayout.US'
+
+
+"-------------------------------------------------------------------------------
 " Basics
 "-------------------------------------------------------------------------------
 " unregister autocmds
@@ -559,6 +575,12 @@ set formatoptions+=j
 " toggle paste mode
 command! Pt :set paste!
 
+" make it easier with us keyboard layout
+if g:us_keyboard_layout
+  nnoremap ; :
+  nnoremap : ;
+endif
+
 " move cursor visually with long lines
 nmap j gj
 nmap k gk
@@ -722,26 +744,27 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
 "-------------------------------------------------------------------------------
 " Sticky shift
 "-------------------------------------------------------------------------------
-nmap <expr> ; <SID>sticky_func()
-imap <expr> ; <SID>sticky_func()
-cmap <expr> ; <SID>sticky_func()
-vmap <expr> ; <SID>sticky_func()
+if g:us_keyboard_layout
+  let s:sticky_table = {
+    \ ',': '<', '.': '>', '/': '?',
+    \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
+    \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
+    \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
+  \ }
+else
+  let s:sticky_table = {
+    \ ',': '<', '.': '>', '/': '?',
+    \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
+    \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
+    \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
+  \ }
 
-" JIS keyboard
-let s:sticky_table = {
-  \ ',': '<', '.': '>', '/': '?',
-  \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
-  \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
-  \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
-\ }
+  nmap <expr> ; <SID>sticky_func(s:sticky_table)
+  imap <expr> ; <SID>sticky_func(s:sticky_table)
+  cmap <expr> ; <SID>sticky_func(s:sticky_table)
+  vmap <expr> ; <SID>sticky_func(s:sticky_table)
+endif
 
-" US keyboard
-" let s:sticky_table = {
-"   \ ',': '<', '.': '>', '/': '?',
-"   \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
-"   \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
-"   \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
-" \ }
 
 let s:sticky_table_special = {
   \ "\<Esc>": "",
@@ -751,12 +774,12 @@ let s:sticky_table_special = {
   \ "\<C-j>" : ";\<CR>",
 \ }
 
-function! s:sticky_func()
+function! s:sticky_func(sticky_table)
   let l:key = getchar()
   if nr2char(l:key) =~ '\l'
     return toupper(nr2char(l:key))
-  elseif has_key(s:sticky_table, nr2char(l:key))
-    return s:sticky_table[nr2char(l:key)]
+  elseif has_key(a:sticky_table, nr2char(l:key))
+    return a:sticky_table[nr2char(l:key)]
   elseif has_key(s:sticky_table_special, nr2char(l:key))
     return s:sticky_table_special[nr2char(l:key)]
   else
