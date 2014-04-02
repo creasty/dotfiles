@@ -1224,6 +1224,7 @@ let g:over_command_line_key_mappings = {
   \ "\<C-c>": "\<Esc>",
   \ "\<C-j>": "\<CR>",
 \ }
+let g:over#command_line#paste_escape_chars = '\\/.*$^~'
 
 cnoremap <expr> / <SID>MyOverCommandLine()
 
