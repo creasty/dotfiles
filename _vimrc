@@ -606,7 +606,7 @@ cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
 " paste
 inoremap <C-v> <C-r><C-p>*
-cnoremap <C-v> <C-r>"
+cnoremap <C-v> <C-r>*
 
 " auto wrap
 vnoremap ( S(
@@ -629,10 +629,10 @@ inoremap <C-w> <C-g>u<C-w>
 nnoremap Y y$
 
 " keep the cursor in place while joining lines
-nnoremap J mzJ`zmz
+nnoremap J mZJ`ZmZ
 
 " split lines: inverse of J
-nnoremap <silent> <Space>J ylpr<Enter>
+nnoremap <silent> K ylpr<Enter>
 
 " reselect visual block after indent/outdent
 vnoremap < <gv
@@ -648,8 +648,8 @@ nnoremap <Space>l $
 nnoremap <Space>m %
 
 " insert blank lines without going into insert mode
-nmap <Space>o mzo<ESC>`zmz
-nmap <Space>O mzO<ESC>`zmz
+nnoremap <Space>o mZo<Esc>`ZmZ
+nnoremap <Space>O mZO<Esc>`ZmZ
 
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
@@ -739,53 +739,6 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
     \ unlet! b:ftdetect |
     \ filetype detect |
   \ endif
-
-
-"-------------------------------------------------------------------------------
-" Sticky shift
-"-------------------------------------------------------------------------------
-if g:us_keyboard_layout
-  let s:sticky_table = {
-    \ ',': '<', '.': '>', '/': '?',
-    \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
-    \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
-    \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
-  \ }
-else
-  let s:sticky_table = {
-    \ ',': '<', '.': '>', '/': '?',
-    \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
-    \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
-    \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
-  \ }
-
-  nmap <expr> ; <SID>sticky_func(s:sticky_table)
-  imap <expr> ; <SID>sticky_func(s:sticky_table)
-  cmap <expr> ; <SID>sticky_func(s:sticky_table)
-  vmap <expr> ; <SID>sticky_func(s:sticky_table)
-endif
-
-
-let s:sticky_table_special = {
-  \ "\<Esc>": "",
-  \ "\<C-c>": "",
-  \ "\<Space>": ';',
-  \ "\<CR>" : ";\<CR>",
-  \ "\<C-j>" : ";\<CR>",
-\ }
-
-function! s:sticky_func(sticky_table)
-  let l:key = getchar()
-  if nr2char(l:key) =~ '\l'
-    return toupper(nr2char(l:key))
-  elseif has_key(a:sticky_table, nr2char(l:key))
-    return a:sticky_table[nr2char(l:key)]
-  elseif has_key(s:sticky_table_special, nr2char(l:key))
-    return s:sticky_table_special[nr2char(l:key)]
-  else
-    return ''
-  endif
-endfunction
 
 
 "-------------------------------------------------------------------------------
@@ -1194,6 +1147,13 @@ function! s:bundle.hooks.on_source(bundle)
   call smartinput_endwise#define_default_rules()
 endfunction
 unlet s:bundle
+
+
+"-------------------------------------------------------------------------------
+" Plugin: IndentGuides
+"-------------------------------------------------------------------------------
+" hide upper case marks
+let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyz'
 
 
 "-------------------------------------------------------------------------------
