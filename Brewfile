@@ -27,7 +27,7 @@ install jpeg
 install jq
 install lua
 install macvim --HEAD --with-cscope --with-lua --override-system-vi
-install massren
+install massren && massren --config editor vim
 install mercurial
 install mysql
 install ngrep

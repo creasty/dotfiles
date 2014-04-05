@@ -1093,7 +1093,8 @@ let g:switch_custom_definitions =
     \ ['on', 'off'],
     \ ['it', 'specify'],
     \ ['describe', 'context'],
-    \ ['and', 'or']
+    \ ['and', 'or'],
+    \ ['if', 'unless']
   \ ]
 
 nnoremap - :Switch<CR>
