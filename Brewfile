@@ -43,6 +43,7 @@ install the_silver_searcher
 install tree
 install webkit2png
 install wget --enable-iri
+install zsh
 
 cask install alfred
 cask install dropbox

@@ -899,7 +899,12 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
-inoremap <expr> ^ smartchr#loop('^', '->', '=>')
+
+if g:us_keyboard_layout
+  inoremap <expr> > smartchr#loop('>', '->', '=>')
+else
+  inoremap <expr> ^ smartchr#loop('^', '->', '=>')
+endif
 
 
 "-------------------------------------------------------------------------------
