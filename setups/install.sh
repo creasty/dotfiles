@@ -10,15 +10,12 @@ if [ $? -ne 0 ]; then
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 fi
 
-# brew cask
-brew tap phinze/homebrew-cask
-brew install brew-cask
 brew bundle
 
 
 #  Node packages
 #-----------------------------------------------
-sh setups/npm.sh
+sh setups/node_packages.sh
 
 
 #  RVM
@@ -49,16 +46,12 @@ fi
 
 #  Change login shell
 #-----------------------------------------------
-if [ $ZSH_NAME ]; then
-  sudo mv /etc/zshenv /etc/_zshenv
-  # TODO: not working
-  # sudo echo "\n/usr/local/bin/zsh" >> /etc/shells
+if ! [ $ZSH_NAME ]; then
+  sudo -s
+  mv /etc/zshenv /etc/_zshenv
+  echo "\n/usr/local/bin/zsh" >> /etc/shells
+  exit
   chpass -s /usr/local/bin/zsh
 fi
-
-
-#  OSX
-#-----------------------------------------------
-sh setups/osx.sh
 
 

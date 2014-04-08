@@ -1,12 +1,17 @@
 
+# update homebrew
 update
+
+# upgrade already-installed packages
 upgrade
 
-tap phinze/homebrew-cask
-tap laurent22/massren
-brew tap homebrew/dupes
-brew tap josegonzalez/php
+# add repositories
+tap phinze/homebrew-cask || true
+tap laurent22/massren || true
+tap homebrew/dupes || true
+tap josegonzalez/php || true
 
+# install brew-packages
 install brew-cask
 install clisp
 install direnv
@@ -36,6 +41,7 @@ install optipng
 install pcre
 install phantomjs
 install php55
+install python3
 install q
 install rbenv
 install sqlite
@@ -45,11 +51,13 @@ install webkit2png
 install wget --enable-iri
 install zsh
 
+# install cask-packages
 cask install alfred
 cask install dropbox
 cask install firefox
 cask install flip4mac
 cask install google-chrome
+cask install growlnotify
 cask install imagealpha
 cask install imageoptim
 cask install iterm2
@@ -64,5 +72,6 @@ cask install vagrant
 cask install virtualbox
 cask install xtrafinder
 
+# remove outdated versions from the cellar
 cleanup
 
