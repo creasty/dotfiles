@@ -13,11 +13,6 @@ fi
 brew bundle
 
 
-#  Node packages
-#-----------------------------------------------
-sh setups/node_packages.sh
-
-
 #  RVM
 #-----------------------------------------------
 which rvm > /dev/null 2>&1
@@ -31,11 +26,6 @@ rvm install 1.9.3
 rvm install 2.1.0
 
 
-#  Gem
-#-----------------------------------------------
-bundle
-
-
 #  Pow
 #-----------------------------------------------
 which pow > /dev/null 2>&1
@@ -44,14 +34,13 @@ if [ $? -ne 0 ]; then
 fi
 
 
-#  Change login shell
+#  Node packages
 #-----------------------------------------------
-if ! [ $ZSH_NAME ]; then
-  sudo -s
-  mv /etc/zshenv /etc/_zshenv
-  echo "\n/usr/local/bin/zsh" >> /etc/shells
-  exit
-  chpass -s /usr/local/bin/zsh
-fi
+npm i -g
+
+
+#  Gem
+#-----------------------------------------------
+bundle
 
 

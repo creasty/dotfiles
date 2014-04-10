@@ -1,0 +1,29 @@
+{
+  "name": "dotfiles",
+  "description": "home sweet home",
+  "version": "1.0.0",
+  "type": "git",
+  "author": "creasty",
+  "url": "http://github.com/creasty/dotfiles",
+  "main": "bootstrap.sh",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/creasty/dotfiles.git"
+  },
+  "dependencies": {
+    "bower": "*",
+    "cheerio": "*",
+    "coffee-script": "*",
+    "coffeelint": "*",
+    "growl": "*",
+    "grunt-cli": "*",
+    "http-server": "*",
+    "markdown": "*",
+    "md2html": "*",
+    "mocha": "*",
+    "uglify-js": "*",
+    "underscore": "*",
+    "yeoman-generator": "*",
+    "yo": "*"
+  }
+}
