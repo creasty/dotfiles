@@ -743,12 +743,11 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
 " automatically change input source
 if executable('osascript')
   let s:keycode_jis_eisuu = 102
-  let s:force_alphanumeric_input_command = "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
-
-  inoremap <silent> <Esc> <Esc>:call system(s:force_alphanumeric_input_command)<CR>
+  let g:force_alphanumeric_input_command =
+    \ "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
 
   autocmd vimrc FocusGained *
-    \ call system(s:force_alphanumeric_input_command)
+    \ call system(g:force_alphanumeric_input_command)
 endif
 
 
@@ -839,6 +838,9 @@ unlet s:bundle
 "-------------------------------------------------------------------------------
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#disable_runtime_snippets = {
+  \ '_' : 1,
+\ }
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
