@@ -13,6 +13,7 @@ tap josegonzalez/php || true
 
 # install brew-packages
 install brew-cask
+install chrome-cli
 install clisp
 install direnv
 install eot-utils

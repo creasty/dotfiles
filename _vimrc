@@ -740,6 +740,17 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
     \ filetype detect |
   \ endif
 
+" automatically change input source
+if executable('osascript')
+  let s:keycode_jis_eisuu = 102
+  let s:force_alphanumeric_input_command = "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
+
+  inoremap <silent> <Esc> <Esc>:call system(s:force_alphanumeric_input_command)<CR>
+
+  autocmd vimrc FocusGained *
+    \ call system(s:force_alphanumeric_input_command)
+endif
+
 
 "-------------------------------------------------------------------------------
 " Plugin: NeoComplete
