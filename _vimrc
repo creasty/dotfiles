@@ -74,6 +74,7 @@ NeoBundleLazy 'Rip-Rip/clang_complete', {
     \ 'filetypes': ['clang', 'objc'],
   \ },
 \ }
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'depends': ['Shougo/neocomplete'],
   \ 'autoload': {
@@ -579,6 +580,9 @@ command! Pt :set paste!
 if g:us_keyboard_layout
   nnoremap ; :
   nnoremap : ;
+
+  " jump mark
+  nnoremap \  `
 endif
 
 " move cursor visually with long lines
@@ -838,9 +842,6 @@ unlet s:bundle
 "-------------------------------------------------------------------------------
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#disable_runtime_snippets = {
-  \ '_' : 1,
-\ }
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
@@ -913,11 +914,40 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
 
-if g:us_keyboard_layout
-  inoremap <expr> > smartchr#loop('>', '->', '=>')
-else
-  inoremap <expr> ^ smartchr#loop('^', '->', '=>')
-endif
+inoremap <expr> =
+  \ search('[*!&\|+\-<>?.]\%#', 'bcn')
+    \ ? '= '
+    \ : smartchr#loop(' = ', ' == ', ' === ')
+
+autocmd vimrc FileType c,cpp
+  \ inoremap <buffer> <expr> . smartchr#loop('.', '->', '...')
+
+autocmd vimrc FileType coffee
+  \ inoremap <buffer> <expr> ; smartchr#loop(';', '->', '=>')
+
+autocmd vimrc FileType perl,php
+  \ inoremap <buffer> <expr> . smartchr#loop('.', '->', ' . ')
+
+autocmd vimrc FileType vim
+  \ inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..', '...')
+
+autocmd FileType haskell
+  \ inoremap <buffer> <expr> + smartchr#loop('+', ' ++ ')
+  \ | inoremap <buffer> <expr> - smartchr#loop('-', ' -> ', ' <- ')
+  \ | inoremap <buffer> <expr> $ smartchr#loop(' $ ', '$')
+  \ | inoremap <buffer> <expr> \ smartchr#loop('\ ', '\')
+  \ | inoremap <buffer> <expr> : smartchr#loop(':', ' :: ', ' : ')
+  \ | inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..')
+
+autocmd FileType scala
+  \ inoremap <buffer> <expr> - smartchr#loop('-', ' -> ', ' <- ')
+  \ | inoremap <buffer> <expr> = smartchr#loop(' = ', '=', ' => ')
+  \ | inoremap <buffer> <expr> : smartchr#loop(': ', ':', ' :: ')
+  \ | inoremap <buffer> <expr> . smartchr#loop('.', ' => ')
+
+autocmd FileType eruby
+  \ inoremap <buffer> <expr> > smartchr#loop('>', '%>')
+  \ | inoremap <buffer> <expr> < smartchr#loop('<', '<%', '<%=')
 
 
 "-------------------------------------------------------------------------------
