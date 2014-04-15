@@ -74,7 +74,6 @@ NeoBundleLazy 'Rip-Rip/clang_complete', {
     \ 'filetypes': ['clang', 'objc'],
   \ },
 \ }
-NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'depends': ['Shougo/neocomplete'],
   \ 'autoload': {
@@ -842,6 +841,10 @@ unlet s:bundle
 "-------------------------------------------------------------------------------
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory = '~/dotfiles/_vim/snippets/'
+let g:neosnippet#disable_runtime_snippets = {
+  \ '_' : 1,
+\ }
 
 if has('conceal')
   set conceallevel=2 concealcursor=i

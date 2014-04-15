@@ -48,6 +48,7 @@ install rbenv
 install sqlite
 install the_silver_searcher
 install tree
+install w3m
 install webkit2png
 install wget --enable-iri
 install zsh
