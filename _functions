@@ -111,3 +111,38 @@ chloc() {
 }
 
 
+#  Use recycle bin
+#-----------------------------------------------
+TRASHDIR=~/.trash
+
+del () {
+  local path
+  for path in "$@"; do
+    # ignore any arguments
+    if [[ "$path" = -* ]]; then
+      echo "del doesn't understand any arguments. Should use /bin/rm."
+      return
+    else
+      # create trash if necessary
+      if [ ! -d $TRASHDIR ]; then
+        /bin/mkdir -p $TRASHDIR
+      fi
+
+      local dst=${path##*/}
+      # append the time if necessary
+      while [ -e $TRASHDIR"/$dst" ]; do
+        dst="$dst "$(date +%H-%M-%S)
+      done
+      /bin/mv "$path" $TRASHDIR/"$dst"
+    fi
+  done
+}
+
+# never use rm
+alias rm="del"
+
+# empty trash
+alias trash-look="ls -al $TRASHDIR/ 2> /dev/null"
+alias trash-clean="/bin/rm -R -f $TRASHDIR/*"
+alias clean=trash-clean
+

@@ -4,9 +4,6 @@
 # load math functions
 zmodload -i zsh/mathfunc
 
-# print japanese chars
-setopt print_eight_bit
-
 # completion
 fpath=($HOME/dotfiles/zsh-completions/src $fpath)
 autoload -Uz compinit
@@ -21,17 +18,45 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
+# emacs like keybind
+bindkey -e
+
+
+#  Options
+#-----------------------------------------------
+# print japanese chars
+setopt print_eight_bit
+
 # command correct edition before each completion attempt
 # setopt correct
 
 # auto directory pushd that you can get dirs list by cd -[tab]
 setopt auto_pushd
 
-# no beep sound when complete list displayed
+# no beep sound
 setopt nolistbeep
+setopt no_beep
 
-# emacs like keybind
-bindkey -e
+# range expansion
+setopt brace_ccl
+
+# do not create new history for the same command as last one
+setopt hist_ignore_dups
+
+# trim extra blanks
+setopt hist_reduce_blanks
+
+# ignore commands begin with spaces
+setopt hist_ignore_space
+
+# trailling slash for directory
+setopt mark_dirs
+
+# do not add duplication to directory stack
+setopt pushd_ignore_dups
+
+# complete pairs
+setopt auto_param_keys
 
 
 #  Oh my zsh
