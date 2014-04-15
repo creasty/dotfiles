@@ -581,10 +581,9 @@ command! Pt :set paste!
 " make it easier with us keyboard layout
 if g:us_keyboard_layout
   nnoremap ; :
+  vnoremap ; :
   nnoremap : ;
-
-  " jump mark
-  nnoremap \  `
+  vnoremap : ;
 endif
 
 " move cursor visually with long lines
@@ -758,6 +757,45 @@ endif
 
 
 "-------------------------------------------------------------------------------
+" Sticky shift
+"-------------------------------------------------------------------------------
+imap <expr> ; <SID>sticky_func(';')
+cmap <expr> ; <SID>sticky_func(';')
+
+if g:us_keyboard_layout
+  " US keyboard
+  let s:sticky_table = {
+    \ ',': '<', '.': '>', '/': '?',
+    \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
+    \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
+    \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
+  \ }
+else
+  " JIS keyboard
+  let s:sticky_table = {
+    \ ',': '<', '.': '>', '/': '?',
+    \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
+    \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
+    \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
+  \ }
+endif
+
+function! s:sticky_func(sticky_key)
+  let l:key = nr2char(getchar())
+
+  if l:key =~ '\l'
+    return toupper(l:key)
+  elseif has_key(s:sticky_table, l:key)
+    return s:sticky_table[l:key]
+  elseif l:key == "\<Space>"
+    return a:sticky_key
+  else
+    return l:key
+  endif
+endfunction
+
+
+"-------------------------------------------------------------------------------
 " Plugin: NeoComplete
 "-------------------------------------------------------------------------------
 let s:bundle = neobundle#get('neocomplete')
@@ -927,9 +965,6 @@ inoremap <expr> =
 
 autocmd vimrc FileType c,cpp
   \ inoremap <buffer> <expr> . smartchr#loop('.', '->', '...')
-
-autocmd vimrc FileType coffee
-  \ inoremap <buffer> <expr> ; smartchr#loop(';', '->', '=>')
 
 autocmd vimrc FileType perl,php
   \ inoremap <buffer> <expr> . smartchr#loop('.', '->', ' . ')
