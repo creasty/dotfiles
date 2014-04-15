@@ -146,6 +146,9 @@ NeoBundleLazy 'thinca/vim-qfreplace', {
 NeoBundleLazy 'rking/ag.vim', {
   \ 'autoload': { 'commands': ['Ag'] },
 \ }
+NeoBundleLazy 'yuratomo/w3m.vim', {
+  \ 'autoload': { 'commands': ['W3m'] },
+\ }
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
