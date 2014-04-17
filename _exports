@@ -12,3 +12,5 @@ export PATH=$PATH:/Applications/TeXLive/Library/texlive/2013/bin/x86_64-darwin
 # no need to edit merge commit message, bitch
 export GIT_MERGE_AUTOEDIT='no'
 
+export NODE_PATH=/usr/local/lib/node_modules
+
