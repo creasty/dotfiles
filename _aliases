@@ -25,7 +25,6 @@ alias :q='exit'
 #-----------------------------------------------
 alias v='open -a MacVim'
 alias ff='open -a Firefox'
-alias ch='open -a "Google Chrome"'
 alias finder='open -a Finder'
 
 

@@ -573,7 +573,9 @@ set virtualedit& virtualedit+=block
 set formatoptions-=ro
 
 " remove a comment leader when joining lines
-set formatoptions+=j
+if has('gui_running')
+  set formatoptions+=j
+endif
 
 " toggle paste mode
 command! Pt :set paste!
@@ -1240,7 +1242,7 @@ unlet s:bundle
 
 
 "-------------------------------------------------------------------------------
-" Plugin: IndentGuides
+" Plugin: Sigunature
 "-------------------------------------------------------------------------------
 " hide upper case marks
 let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyz'
@@ -1256,8 +1258,8 @@ if has('gui_running')
   let g:indent_guides_auto_colors = 0
   let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
-  call CreastyCode('IndentGuidesOdd', '', 'black', '')
-  call CreastyCode('IndentGuidesEven', '', 'black', '')
+  call CreastyCode('IndentGuidesOdd', 'background', 'black', '')
+  call CreastyCode('IndentGuidesEven', 'background', 'black', '')
 end
 
 

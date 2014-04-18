@@ -13,8 +13,10 @@
   "dependencies": {
     "bower": "*",
     "cheerio": "*",
+    "chrome-remote-interface": "*",
     "coffee-script": "*",
     "coffeelint": "*",
+    "crconsole": "*",
     "growl": "*",
     "grunt-cli": "*",
     "http-server": "*",

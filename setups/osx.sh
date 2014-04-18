@@ -103,6 +103,9 @@ chflags nohidden ~/Library
 # don't create desktop
 defaults write com.apple.finder CreateDesktop -bool false
 
+# display line numbers and wrap text
+defaults write org.n8gray.QLColorCode extraHLFlags '-l -W'
+
 
 #  Dock
 #-----------------------------------------------
