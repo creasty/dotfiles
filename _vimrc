@@ -149,6 +149,9 @@ NeoBundleLazy 'rking/ag.vim', {
 NeoBundleLazy 'yuratomo/w3m.vim', {
   \ 'autoload': { 'commands': ['W3m'] },
 \ }
+NeoBundleLazy 'mattn/httpstatus-vim', {
+\ 'autoload': { 'commands': ['HttpStatus'] },
+\ }
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
