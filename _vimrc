@@ -64,6 +64,7 @@ NeoBundle 'deris/vim-rengbang'
 NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'sickill/vim-pasta'
 NeoBundle 'tpope/vim-speeddating'
+NeoBundle 'terryma/vim-multiple-cursors'
 
 " Completion
 NeoBundleLazy 'Shougo/neocomplete', {
@@ -175,6 +176,9 @@ NeoBundleLazy 'tpope/vim-rails', {
 NeoBundleLazy 'vim-ruby/vim-ruby', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
+NeoBundleLazy 'todesking/ruby_hl_lvar.vim', {
+  \ 'autoload': { 'filetypes': ['ruby'] }
+\ }
 NeoBundleLazy 'tpope/vim-cucumber', {
   \ 'autoload': { 'filetypes': ['cucumber.ruby'] }
 \ }
@@ -216,10 +220,6 @@ if filereadable(s:host_vimrc)
   execute 'source ' . s:host_vimrc
 endif
 
-" keyboard layout
-let g:us_keyboard_layout = has('mac')
-  \ && system('defaults read com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID') =~ '^com.apple.keylayout.US'
-
 
 "-------------------------------------------------------------------------------
 " Basics
@@ -255,9 +255,6 @@ set noswapfile
 
 " reload when files modified outside of vim
 set autoread
-
-" always use new engine
-set regexpengine=2
 
 " delete over lines and indents
 set backspace=indent,eol,start
@@ -583,14 +580,6 @@ endif
 " toggle paste mode
 command! Pt :set paste!
 
-" make it easier with us keyboard layout
-if g:us_keyboard_layout
-  nnoremap ; :
-  vnoremap ; :
-  nnoremap : ;
-  vnoremap : ;
-endif
-
 " move cursor visually with long lines
 nmap j gj
 nmap k gk
@@ -762,45 +751,6 @@ endif
 
 
 "-------------------------------------------------------------------------------
-" Sticky shift
-"-------------------------------------------------------------------------------
-imap <expr> ; <SID>sticky_func(';')
-cmap <expr> ; <SID>sticky_func(';')
-
-if g:us_keyboard_layout
-  " US keyboard
-  let s:sticky_table = {
-    \ ',': '<', '.': '>', '/': '?',
-    \ '1': '!', '2': '@', '3': '#', '4': '$', '5': '%',
-    \ '6': '^', '7': '&', '8': '*', '9': '(', '0': ')', '-': '_', '=': '+',
-    \ ';': ':', '[': '{', ']': '}', '`': '~', "'": "\"", '\': '|',
-  \ }
-else
-  " JIS keyboard
-  let s:sticky_table = {
-    \ ',': '<', '.': '>', '/': '?',
-    \ '1': '!', '2': '"', '3': '#', '4': '$', '5': '%',
-    \ '6': '&', '7': "'", '8': '(', '9': ')', '0': '0', '-': '=', '^': '~',
-    \ ';': '+', '[': '{', ']': '}', '@': '`', ':': '*', '\': '|',
-  \ }
-endif
-
-function! s:sticky_func(sticky_key)
-  let l:key = nr2char(getchar())
-
-  if l:key =~ '\l'
-    return toupper(l:key)
-  elseif has_key(s:sticky_table, l:key)
-    return s:sticky_table[l:key]
-  elseif l:key == "\<Space>"
-    return a:sticky_key
-  else
-    return l:key
-  endif
-endfunction
-
-
-"-------------------------------------------------------------------------------
 " Plugin: NeoComplete
 "-------------------------------------------------------------------------------
 let s:bundle = neobundle#get('neocomplete')
@@ -888,9 +838,7 @@ unlet s:bundle
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/dotfiles/_vim/snippets/'
-let g:neosnippet#disable_runtime_snippets = {
-  \ '_' : 1,
-\ }
+let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
 
 if has('conceal')
   set conceallevel=2 concealcursor=i
@@ -904,7 +852,7 @@ function! s:SuperTabCompletion()
     return neocomplete#close_popup()
   elseif neosnippet#expandable_or_jumpable()
     return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
-  elseif &ft =~ 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+  elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
   elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
     return neocomplete#start_manual_complete()
@@ -942,6 +890,17 @@ let g:auto_save = 1
 
 
 "-------------------------------------------------------------------------------
+" Plugin: Multiple Cursors
+"-------------------------------------------------------------------------------
+let g:multi_cursor_use_default_mapping = 0
+let g:multi_cursor_start_key = '<C-x><C-m>'
+let g:multi_cursor_next_key = '<C-n>'
+let g:multi_cursor_prev_key = '<C-p>'
+let g:multi_cursor_skip_key = '<C-x>'
+let g:multi_cursor_quit_key = '<C-c>'
+
+
+"-------------------------------------------------------------------------------
 " Plugin: TextManip
 "-------------------------------------------------------------------------------
 " move selection
@@ -961,7 +920,7 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 " Plugin: Smartchr
 "-------------------------------------------------------------------------------
 inoremap <expr> , smartchr#loop(', ', ',')
-inoremap <expr> { smartchr#one_of('{', '#{', '{{{')
+inoremap <buffer> <expr> ; smartchr#one_of(';', ';<cr>')
 
 inoremap <expr> =
   \ search('[*!&\|+\-<>?.]\%#', 'bcn')
@@ -977,7 +936,7 @@ autocmd vimrc FileType perl,php
 autocmd vimrc FileType vim
   \ inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..', '...')
 
-autocmd FileType haskell
+autocmd vimrc FileType haskell
   \ inoremap <buffer> <expr> + smartchr#loop('+', ' ++ ')
   \ | inoremap <buffer> <expr> - smartchr#loop('-', ' -> ', ' <- ')
   \ | inoremap <buffer> <expr> $ smartchr#loop(' $ ', '$')
@@ -985,13 +944,13 @@ autocmd FileType haskell
   \ | inoremap <buffer> <expr> : smartchr#loop(':', ' :: ', ' : ')
   \ | inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..')
 
-autocmd FileType scala
+autocmd vimrc FileType scala
   \ inoremap <buffer> <expr> - smartchr#loop('-', ' -> ', ' <- ')
   \ | inoremap <buffer> <expr> = smartchr#loop(' = ', '=', ' => ')
   \ | inoremap <buffer> <expr> : smartchr#loop(': ', ':', ' :: ')
   \ | inoremap <buffer> <expr> . smartchr#loop('.', ' => ')
 
-autocmd FileType eruby
+autocmd vimrc FileType eruby
   \ inoremap <buffer> <expr> > smartchr#loop('>', '%>')
   \ | inoremap <buffer> <expr> < smartchr#loop('<', '<%', '<%=')
 

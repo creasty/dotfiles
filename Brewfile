@@ -74,6 +74,9 @@ cask install vagrant
 cask install virtualbox
 cask install xtrafinder
 
+# for alfred
+cask alfred link
+
 # remove outdated versions from the cellar
 cleanup
 
