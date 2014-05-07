@@ -129,7 +129,7 @@ chloc() {
 #-----------------------------------------------
 TRASHDIR=~/.trash
 
-del () {
+del() {
   local path
   for path in "$@"; do
     # ignore any arguments
@@ -159,4 +159,11 @@ alias rm="del"
 alias trash-look="ls -al $TRASHDIR/ 2> /dev/null"
 alias trash-clean="/bin/rm -R -f $TRASHDIR/*"
 alias clean=trash-clean
+
+
+#  Change iTerm's tab title
+#-----------------------------------------------
+title() {
+  echo -ne "\033]0;"$*"\007"
+}
 

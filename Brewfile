@@ -47,6 +47,7 @@ install q
 install rbenv
 install sqlite
 install the_silver_searcher
+install tmux
 install tree
 install w3m
 install webkit2png
