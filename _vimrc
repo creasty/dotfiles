@@ -308,8 +308,8 @@ set nf=alpha,hex
 " disable IME
 set imdisable
 
-" hidden buffers
-set hidden
+" nohidden buffers
+set nohidden
 
 " folding
 set foldmethod=indent
