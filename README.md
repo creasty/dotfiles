@@ -11,9 +11,3 @@ Bootstrap
 $ curl https://raw.github.com/creasty/dotfiles/master/bootstrap.sh | sh
 ```
 
-
-My Vim
-------
-
-![](./screenshot.png)
-
