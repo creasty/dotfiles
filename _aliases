@@ -58,12 +58,17 @@ alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348
 #-----------------------------------------------
 alias b='bundle'
 alias be='bundle exec'
-alias rru='bundle exec rake routes'
+alias r='bundle exec rails'
+alias rk='bundle exec rake'
+
+alias rru='bundle rake routes'
+
 alias rdbc='bundle exec rake db:create'
 alias rdbm='bundle exec rake db:migrate'
 alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
-alias r='bundle exec rails'
+alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
+
 alias rs='bundle exec rails s'
 alias rs1='bundle exec rails s -p 3001'
 alias rs2='bundle exec rails s -p 3002'
