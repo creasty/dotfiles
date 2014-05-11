@@ -922,11 +922,6 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <buffer> <expr> ; smartchr#one_of(';', ';<cr>')
 
-inoremap <expr> =
-  \ search('[*!&\|+\-<>?.]\%#', 'bcn')
-    \ ? '= '
-    \ : smartchr#loop(' = ', ' == ', ' === ')
-
 autocmd vimrc FileType c,cpp
   \ inoremap <buffer> <expr> . smartchr#loop('.', '->', '...')
 
