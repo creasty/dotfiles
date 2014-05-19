@@ -61,7 +61,7 @@ alias be='bundle exec'
 alias r='bundle exec rails'
 alias rk='bundle exec rake'
 
-alias rru='bundle rake routes'
+alias rru='bundle exec rake routes'
 
 alias rdbc='bundle exec rake db:create'
 alias rdbm='bundle exec rake db:migrate'

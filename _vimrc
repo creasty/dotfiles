@@ -487,6 +487,12 @@ nnoremap <expr> s* ':%s/\<' . expand('<cword>') . '\>/'
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 
+" ag
+if executable('ag')
+  set grepprg=ag\ --nogroup\ -iS
+  set grepformat=%f:%l:%m
+endif
+
 
 "-------------------------------------------------------------------------------
 " Encoding
@@ -1304,7 +1310,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:unite_enable_ignore_case = 1
   let g:unite_enable_smart_case = 1
   let g:unite_source_rec_min_cache_files = 50
-  let g:unite_source_rec_max_cache_files = 5000
+  let g:unite_source_rec_max_cache_files = 30000
   let g:unite_source_history_yank_enable = 1
 
   let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
