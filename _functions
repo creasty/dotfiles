@@ -54,7 +54,7 @@ gsy() {
 sshc() {
   _files -W ~/.ssh/hosts 2> /dev/null && return 0
 
-  cat ~/.ssh/hosts/* >> ~/.ssh/config
+  cat ~/.ssh/hosts/* > ~/.ssh/config
 
   [ $# -gt 0 ] && ssh $1
 }
