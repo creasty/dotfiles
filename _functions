@@ -32,14 +32,14 @@ cdrt() {
 #  Development directory
 #-----------------------------------------------
 cdd() {
-  _files -W ~/Develop 2> /dev/null && return 0
-
   if [ $# -gt 0 ]; then
     cd "$HOME/Develop/$1"
   else
     cd ~/Develop
   fi
 }
+
+compctl -f -W ~/Develop cdd
 
 
 #  Git sync
@@ -52,12 +52,12 @@ gsy() {
 #  SSH
 #-----------------------------------------------
 sshc() {
-  _files -W ~/.ssh/hosts 2> /dev/null && return 0
-
   cat ~/.ssh/hosts/* > ~/.ssh/config
 
   [ $# -gt 0 ] && ssh $1
 }
+
+compctl -f -W ~/.ssh/hosts sshc
 
 
 #  Extractors (zsh only)
