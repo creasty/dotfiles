@@ -47,6 +47,7 @@ install q
 install rbenv
 install sqlite
 install the_silver_searcher
+install tig
 install tmux
 install tree
 install w3m
@@ -55,16 +56,20 @@ install wget --enable-iri
 install zsh
 
 # install cask-packages
+cask install adobe-creative-cloud
 cask install alfred
 cask install dropbox
 cask install firefox
 cask install flip4mac
 cask install google-chrome
+cask install google-hangouts
+cask install google-japanese-ime
 cask install growlnotify
 cask install imagealpha
 cask install imageoptim
 cask install iterm2
 cask install keyremap4macbook
+cask install ngrok
 cask install pckeyboardhack
 cask install sequel-pro
 cask install skype
