@@ -425,7 +425,7 @@ set display+=uhex
 
 " show hidden charactors
 set list
-set listchars=tab:¦\ ,nbsp:∘,extends:❯,precedes:❮
+set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 
 " show wrap line break
 set showbreak=❮
@@ -980,9 +980,6 @@ let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_settings = {
   \ 'lang': 'ja',
   \ 'indentation': '  ',
-  \ 'html': {
-    \ 'indentation': "\t",
-  \ },
 \ }
 
 
@@ -1221,8 +1218,8 @@ if has('gui_running')
   let g:indent_guides_auto_colors = 0
   let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
-  call CreastyCode('IndentGuidesOdd', 'background', 'black', '')
-  call CreastyCode('IndentGuidesEven', 'background', 'black', '')
+  call CreastyCode('IndentGuidesOdd', 'black', 'black', '')
+  call CreastyCode('IndentGuidesEven', 'black2', 'black2', '')
 end
 
 

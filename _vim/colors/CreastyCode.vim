@@ -241,7 +241,8 @@ let g:creasty_code_palette = {
   \ 'blue':       '81a2be',
   \ 'purple':     'b294bb',
   \ 'window':     '262626',
-  \ 'black':      '161616',
+  \ 'black':      '131313',
+  \ 'black2':     '191919',
 \ }
 
 
