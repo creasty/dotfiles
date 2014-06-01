@@ -20,6 +20,9 @@ alias g="git"
 alias ti='titanium'
 alias :q='exit'
 
+alias pbc='pbcopy'
+alias pbp='pbpaste'
+
 
 #  Applications
 #-----------------------------------------------
@@ -75,4 +78,22 @@ alias rs2='bundle exec rails s -p 3002'
 alias rs3='bundle exec rails s -p 3003'
 alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
+
+
+#  Make
+#-----------------------------------------------
+alias m='make'
+alias mi='make install'
+alias mc='make clean'
+
+
+#  tmux
+#-----------------------------------------------
+alias tm='tmux'
+alias tma='tmux attach'
+alias tma0='tmux attach -t 0'
+alias tma1='tmux attach -t 1'
+alias tma2='tmux attach -t 2'
+alias tml='tmux list-sessions'
+
 
