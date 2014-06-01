@@ -23,7 +23,8 @@ fi
 rvm get head
 rvm get latest
 rvm install 1.9.3
-rvm install 2.1.0
+rvm install 2.1.1
+rvm use --default 2.1.1
 
 
 #  Pow

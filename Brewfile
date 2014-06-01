@@ -46,6 +46,7 @@ install php55
 install python3
 install q
 install rbenv
+install reattach-to-user-namespace
 install sqlite
 install the_silver_searcher
 install tig
