@@ -15,6 +15,7 @@ tap josegonzalez/php || true
 install brew-cask
 install chrome-cli
 install clisp
+install ctags
 install direnv
 install eot-utils
 install fontconfig
