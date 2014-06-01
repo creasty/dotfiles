@@ -712,11 +712,15 @@ command! -nargs=0 Delete call delete(expand('%')) | enew!
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
-" edit relative
+" edit relative :ee
 cnoremap <expr> e
   \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
 
-" rename
+" home directory :eh
+cnoremap <expr> h
+  \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
+
+" rename :er
 cnoremap <expr> r
   \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
 
