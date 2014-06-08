@@ -42,6 +42,12 @@ npm i -g
 
 #  Gem
 #-----------------------------------------------
-bundle
-
+gem install awesome_print
+gem install fancy_irb
+gem install git-issue
+gem install hirb
+gem install interactive_editor
+gem install powder
+gem install rails
+gem install synx
 

@@ -10,12 +10,14 @@ tap phinze/homebrew-cask || true
 tap laurent22/massren || true
 tap homebrew/dupes || true
 tap josegonzalez/php || true
+tap supermomonga/homebrew-splhack
 
 # install brew-packages
 install brew-cask
 install chrome-cli
 install clisp
 install ctags
+install ctags-objc-ja --HEAD --enable-japanese-support
 install direnv
 install eot-utils
 install fontconfig
@@ -84,6 +86,9 @@ cask install xtrafinder
 
 # for alfred
 cask alfred link
+
+# applications
+# linkapps
 
 # remove outdated versions from the cellar
 cleanup

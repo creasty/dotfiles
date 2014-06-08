@@ -84,6 +84,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
     \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ },
 \ }
+NeoBundle 'osyo-manga/vim-stargate'
 
 " Utils
 NeoBundleLazy 'mattn/benchvimrc-vim', {
@@ -151,8 +152,9 @@ NeoBundleLazy 'yuratomo/w3m.vim', {
   \ 'autoload': { 'commands': ['W3m'] },
 \ }
 NeoBundleLazy 'mattn/httpstatus-vim', {
-\ 'autoload': { 'commands': ['HttpStatus'] },
+  \ 'autoload': { 'commands': ['HttpStatus'] },
 \ }
+NeoBundle 'majutsushi/tagbar'
 
 " Appearance
 NeoBundle 'itchyny/lightline.vim'
@@ -203,6 +205,9 @@ NeoBundleLazy 'jondistad/vimclojure', {
 NeoBundleLazy 'kana/vim-filetype-haskell', {
   \ 'autoload': { 'filetypes': ['haskell'] }
 \ }
+" NeoBundleLazy 'toyamarinyon/vim-swift', {
+"   \ 'autoload': { 'filetypes': ['swift'] }
+" \ }
 
 filetype plugin indent on
 
@@ -1315,7 +1320,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:unite_source_history_yank_enable = 1
 
   let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
-    \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\)/'
+    \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\|public\/system\)/'
   call unite#custom#source('file', 'ignore_pattern', s:file_rec_ignore_pattern)
   call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
   call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
@@ -1431,7 +1436,7 @@ endfunction
 function! LightlineFilename()
   let fname = expand('%:t')
   return fname == 'ControlP' ? g:lightline.ctrlp_item :
-    \ fname == '__Tagbar__' ? g:lightline.fname :
+    \ fname == '__Tagbar__' ? 'Tagbar' :
     \ fname =~ '__Gundo\|NERD_tree' ? '' :
     \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
     \ &ft == 'unite' ? unite#get_status_string() :
