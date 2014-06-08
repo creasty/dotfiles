@@ -13,6 +13,7 @@ tap josegonzalez/php || true
 tap supermomonga/homebrew-splhack
 
 # install brew-packages
+install ansible
 install brew-cask
 install chrome-cli
 install clisp
