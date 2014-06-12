@@ -1,7 +1,6 @@
 
-"-------------------------------------------------------------------------------
-" Plugins
-"-------------------------------------------------------------------------------
+"=== Plugins
+"==============================================================================================
 if has('vim_starting')
   set runtimepath+=~/dotfiles/neobundle.vim/
   call neobundle#rc(expand('~/dotfiles/_vim/bundle/'))
@@ -18,7 +17,8 @@ NeoBundle 'Shougo/vimproc', {
   \ },
 \ }
 
-" Editing
+"  Editing
+"-----------------------------------------------
 NeoBundle 'kana/vim-operator-user'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'kana/vim-textobj-indent'
@@ -66,7 +66,8 @@ NeoBundle 'sickill/vim-pasta'
 NeoBundle 'tpope/vim-speeddating'
 NeoBundle 'terryma/vim-multiple-cursors'
 
-" Completion
+"  Completion
+"-----------------------------------------------
 NeoBundleLazy 'Shougo/neocomplete', {
   \ 'autoload': { 'insert': 1 },
 \ }
@@ -86,7 +87,8 @@ NeoBundleLazy 'Shougo/neosnippet', {
 \ }
 NeoBundle 'osyo-manga/vim-stargate'
 
-" Utils
+"  Utils
+"-----------------------------------------------
 NeoBundleLazy 'mattn/benchvimrc-vim', {
   \ 'autoload': { 'commands': ['BenchVimrc'] },
 \ }
@@ -156,13 +158,15 @@ NeoBundleLazy 'mattn/httpstatus-vim', {
 \ }
 NeoBundle 'majutsushi/tagbar'
 
-" Appearance
+"  Appearance
+"-----------------------------------------------
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'osyo-manga/vim-anzu'
 
-" Language
+"  Language
+"-----------------------------------------------
 NeoBundleLazy 'tpope/vim-haml', {
   \ 'autoload': { 'filetypes': ['haml'] }
 \ }
@@ -214,21 +218,70 @@ filetype plugin indent on
 NeoBundleCheck
 
 
-"-------------------------------------------------------------------------------
-" Variables
-"-------------------------------------------------------------------------------
-" computer-depend
-let g:hostname = substitute(hostname(), '[^\w.]', '', '')
-let s:host_vimrc = $HOME . '/dotfiles/_vim/computers/' . g:hostname
+"=== Encoding
+"==============================================================================================
+set encoding=utf-8
+set fileencodings=ucs_bom,utf8,ucs-2le,ucs-2
+set fileformats=unix,dos,mac
 
-if filereadable(s:host_vimrc)
-  execute 'source ' . s:host_vimrc
+" auto detection
+if &encoding !=# 'utf-8'
+  set encoding=japan
+  set fileencoding=japan
+endif
+if has('iconv')
+  let s:enc_euc = 'euc-jp'
+  let s:enc_jis = 'iso-2022-jp'
+
+  if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
+    let s:enc_euc = 'eucjp-ms'
+    let s:enc_jis = 'iso-2022-jp-3'
+  elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+    let s:enc_euc = 'euc-jisx0213'
+    let s:enc_jis = 'iso-2022-jp-3'
+  endif
+
+  if &encoding ==# 'utf-8'
+    let s:fileencodings_default = &fileencodings
+    let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
+    let &fileencodings = s:fileencodings_default .','. &fileencodings
+    unlet s:fileencodings_default
+  else
+    let &fileencodings = &fileencodings .','. s:enc_jis
+    set fileencodings+=utf-8,ucs-2le,ucs-2
+    if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
+      set fileencodings+=cp932
+      set fileencodings-=euc-jp
+      set fileencodings-=euc-jisx0213
+      set fileencodings-=eucjp-ms
+      let &encoding = s:enc_euc
+      let &fileencoding = s:enc_euc
+    else
+      let &fileencodings = &fileencodings .','. s:enc_euc
+    endif
+  endif
+
+  unlet s:enc_euc
+  unlet s:enc_jis
 endif
 
+" force &fileencoding to use &encoding
+" when files not contain japanese charactors
+augroup AutoDetectEncording
+  autocmd! BufReadPost *
+    \ if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0 |
+      \ let &fileencoding = &encoding |
+    \ endif
+augroup END
 
-"-------------------------------------------------------------------------------
-" Basics
-"-------------------------------------------------------------------------------
+
+"=== Variables
+"==============================================================================================
+let g:hostname = substitute(hostname(), '[^\w.]', '', '')
+
+
+"=== Basics
+"==============================================================================================
 " unregister autocmds
 augroup vimrc
   autocmd!
@@ -316,33 +369,6 @@ set imdisable
 " nohidden buffers
 set nohidden
 
-" folding
-set foldmethod=indent
-set fillchars="fold:"
-set foldlevel=20
-set foldlevelstart=20
-set foldtext=CustomFoldText()
-
-function! CustomFoldText()
-  let fs = v:foldstart
-
-  while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
-  endwhile
-
-  if fs > v:foldend
-    let line = getline(v:foldstart)
-  else
-    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
-  endif
-
-  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-
-  let lineCounter = ' (' . (1 + v:foldend - v:foldstart) . ')'
-  let expansion = repeat(' ', w - strwidth(lineCounter . line))
-
-  return line . expansion . lineCounter
-endfunction
-
 " use Blowfish algorithm
 set cryptmethod=blowfish
 
@@ -356,45 +382,9 @@ set titlestring+=#%n " buffer number
 set titlestring+=\ -\ %t%m%r%h%w " file name and flags
 set titlestring+=\ (%{substitute(expand('%:p:h'),\ $HOME,\ '~',\ '')}) " path
 
-" edit and apply vimrc
-command! EditVimrc edit $MYVIMRC
 
-autocmd vimrc BufWritePost *vimrc
-  \ source $MYVIMRC |
-  \ if has('gui_running') |
-    \ source $MYGVIMRC |
-  \ endif |
-  \ doautocmd User VimrcReloadPost
-
-" tab pages / buffers
-nmap <C-w><C-t> <C-w>t
-nnoremap <C-w>t :tabnew<CR>
-
-nmap <C-w><C-v> <C-w>v
-nnoremap <C-w>v :vnew<CR>
-
-" clean up hidden buffers
-command! CleanBuffers :call <SID>clean_buffers()
-
-function! s:clean_buffers()
-  redir => buffersoutput
-    silent buffers
-  redir END
-
-  let buflist = split(buffersoutput, "\n")
-
-  for item in buflist
-    let t = matchlist(item, '\v^\s*(\d+)([^"]*)')
-    if t[2][1] != '#' && t[2][2] != 'a' && t[2][4] != '+'
-      exec 'bdelete ' . t[1]
-    endif
-  endfor
-endfunction
-
-
-"-------------------------------------------------------------------------------
-" Apperance
-"-------------------------------------------------------------------------------
+"=== Apperance
+"==============================================================================================
 " syntax highlight & color scheme
 set background=dark
 set t_Co=256
@@ -435,6 +425,38 @@ set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 " show wrap line break
 set showbreak=❮
 
+
+"  Folding
+"-----------------------------------------------
+set foldmethod=indent
+set fillchars="fold:"
+set foldlevel=20
+set foldlevelstart=20
+set foldtext=CustomFoldText()
+
+function! CustomFoldText()
+  let fs = v:foldstart
+
+  while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+  endwhile
+
+  if fs > v:foldend
+    let line = getline(v:foldstart)
+  else
+    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
+
+  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+
+  let lineCounter = ' (' . (1 + v:foldend - v:foldstart) . ')'
+  let expansion = repeat(' ', w - strwidth(lineCounter . line))
+
+  return line . expansion . lineCounter
+endfunction
+
+
+"  Custom highlight
+"-----------------------------------------------
 " highlight full-width space
 call CreastyCode('ZenkakuSpace', '', 'red', '')
 autocmd vimrc BufWinEnter,WinEnter *
@@ -446,20 +468,8 @@ autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('TrailingSpace', '\s\+$')
 
 
-"-------------------------------------------------------------------------------
-" Tags
-"-------------------------------------------------------------------------------
-" move around
-nnoremap tn :tn<CR>
-nnoremap tp :tp<CR>
-
-" list of tags
-nnoremap tl :tags<CR>
-
-
-"-------------------------------------------------------------------------------
-" Search
-"-------------------------------------------------------------------------------
+"=== Search
+"==============================================================================================
 " cricle search within files
 set wrapscan
 
@@ -499,75 +509,8 @@ if executable('ag')
 endif
 
 
-"-------------------------------------------------------------------------------
-" Encoding
-"-------------------------------------------------------------------------------
-set encoding=utf-8
-set fileencodings=ucs_bom,utf8,ucs-2le,ucs-2
-set fileformats=unix,dos,mac
-
-" auto detection
-if &encoding !=# 'utf-8'
-  set encoding=japan
-  set fileencoding=japan
-endif
-if has('iconv')
-  let s:enc_euc = 'euc-jp'
-  let s:enc_jis = 'iso-2022-jp'
-
-  if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
-    let s:enc_euc = 'eucjp-ms'
-    let s:enc_jis = 'iso-2022-jp-3'
-  elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-    let s:enc_euc = 'euc-jisx0213'
-    let s:enc_jis = 'iso-2022-jp-3'
-  endif
-
-  if &encoding ==# 'utf-8'
-    let s:fileencodings_default = &fileencodings
-    let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
-    let &fileencodings = s:fileencodings_default .','. &fileencodings
-    unlet s:fileencodings_default
-  else
-    let &fileencodings = &fileencodings .','. s:enc_jis
-    set fileencodings+=utf-8,ucs-2le,ucs-2
-    if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
-      set fileencodings+=cp932
-      set fileencodings-=euc-jp
-      set fileencodings-=euc-jisx0213
-      set fileencodings-=eucjp-ms
-      let &encoding = s:enc_euc
-      let &fileencoding = s:enc_euc
-    else
-      let &fileencodings = &fileencodings .','. s:enc_euc
-    endif
-  endif
-
-  unlet s:enc_euc
-  unlet s:enc_jis
-endif
-
-" force &fileencoding to use &encoding
-" when files not contain japanese charactors
-autocmd vimrc BufReadPost *
-  \ if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0 |
-    \ let &fileencoding = &encoding |
-  \ endif
-
-" reopen current buffer with specific encoding
-command! -bang -nargs=? Utf8
-  \ edit<bang> ++enc=utf-8 <args>
-command! -bang -nargs=? Sjis
-  \ edit<bang> ++enc=cp932 <args>
-command! -bang -nargs=? Jis
-  \ edit<bang> ++enc=iso-2022-jp <args>
-command! -bang -nargs=? Euc
-  \ edit<bang> ++enc=eucjp <args>
-
-
-"-------------------------------------------------------------------------------
-" Editing
-"-------------------------------------------------------------------------------
+"=== Editing
+"==============================================================================================
 " indent
 set noautoindent
 set smartindent
@@ -587,6 +530,16 @@ set formatoptions-=ro
 if has('gui_running')
   set formatoptions+=j
 endif
+
+" edit and apply vimrc
+command! EditVimrc edit $MYVIMRC
+
+autocmd vimrc BufWritePost *vimrc
+  \ source $MYVIMRC |
+  \ if has('gui_running') |
+    \ source $MYGVIMRC |
+  \ endif |
+  \ doautocmd User VimrcReloadPost
 
 " toggle paste mode
 command! Pt :set paste!
@@ -670,6 +623,18 @@ map <Space>a ggVG
 " repeat the last recorded macro
 map Q @@
 
+" tags
+nnoremap tn :tn<CR>
+nnoremap tp :tp<CR>
+nnoremap tl :tags<CR>
+
+" tab pages / buffers
+nmap <C-w><C-t> <C-w>t
+nnoremap <C-w>t :tabnew<CR>
+
+nmap <C-w><C-v> <C-w>v
+nnoremap <C-w>v :vnew<CR>
+
 " remove trailing spaces before saving
 autocmd vimrc BufWritePre *
   \ if &ft != 'markdown' |
@@ -700,36 +665,6 @@ command! -count -nargs=1 ContinuousNumber
     \ exec 'normal! j' . n . <q-args> |
     \ call cursor('.', c) |
   \ endfor
-
-" create directories if not exist
-autocmd vimrc BufWritePre *
- \ call s:auto_mkdir(expand('<afile>:p:h'))
-
-function! s:auto_mkdir(dir)
-  if !isdirectory(a:dir)
-    call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-  endif
-endfunction
-
-" delete current file
-command! -nargs=0 Delete call delete(expand('%')) | enew!
-
-" insert relative path
-cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
-
-" edit relative :ee
-cnoremap <expr> e
-  \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
-
-" home directory :eh
-cnoremap <expr> h
-  \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
-
-" rename :er
-cnoremap <expr> r
-  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
-
-command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
 " use I, A for all visual modes
 vnoremap <expr> I <SID>force_blockwise_visual('I')
@@ -765,9 +700,69 @@ if executable('osascript')
 endif
 
 
-"-------------------------------------------------------------------------------
-" Plugin: NeoComplete
-"-------------------------------------------------------------------------------
+"=== Utils
+"==============================================================================================
+" reopen current buffer with specific encoding
+command! -bang -nargs=? Utf8
+  \ edit<bang> ++enc=utf-8 <args>
+command! -bang -nargs=? Sjis
+  \ edit<bang> ++enc=cp932 <args>
+command! -bang -nargs=? Jis
+  \ edit<bang> ++enc=iso-2022-jp <args>
+command! -bang -nargs=? Euc
+  \ edit<bang> ++enc=eucjp <args>
+
+" clean up hidden buffers
+command! CleanBuffers :call <SID>clean_buffers()
+
+function! s:clean_buffers()
+  redir => buffersoutput
+    silent buffers
+  redir END
+
+  let buflist = split(buffersoutput, "\n")
+
+  for item in buflist
+    let t = matchlist(item, '\v^\s*(\d+)([^"]*)')
+    if t[2][1] != '#' && t[2][2] != 'a' && t[2][4] != '+'
+      exec 'bdelete ' . t[1]
+    endif
+  endfor
+endfunction
+
+" create directories if not exist
+autocmd vimrc BufWritePre *
+ \ call s:auto_mkdir(expand('<afile>:p:h'))
+
+function! s:auto_mkdir(dir)
+  if !isdirectory(a:dir)
+    call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+  endif
+endfunction
+
+" delete current file
+command! -nargs=0 Delete call delete(expand('%')) | enew!
+
+" insert relative path
+cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
+
+" edit relative :ee
+cnoremap <expr> e
+  \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
+
+" home directory :eh
+cnoremap <expr> h
+  \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
+
+" rename :er
+cnoremap <expr> r
+  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
+
+command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
+
+
+"=== Plugin: NeoComplete
+"==============================================================================================
 let s:bundle = neobundle#get('neocomplete')
 function! s:bundle.hooks.on_source(bundle)
   let g:neocomplete#enable_at_startup = 1
@@ -847,9 +842,8 @@ endfunction
 unlet s:bundle
 
 
-"-------------------------------------------------------------------------------
-" Plugin: NeoSnippet
-"-------------------------------------------------------------------------------
+"=== Plugin: NeoSnippet
+"==============================================================================================
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory = '~/dotfiles/_vim/snippets/'
@@ -881,9 +875,8 @@ autocmd vimrc BufWritePre *
   \ exec '%s/<`\d\+:\?[^>]*`>//ge'
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Syntastic
-"-------------------------------------------------------------------------------
+"=== Plugin: Syntastic
+"==============================================================================================
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_style_error_symbol = '✗'
@@ -898,15 +891,13 @@ call CreastyCode('SyntasticErrorSign', 'red', '', '')
 call CreastyCode('SyntasticWarningSign', 'yellow', '', '')
 
 
-"-------------------------------------------------------------------------------
-" Plugin: TextManip
-"-------------------------------------------------------------------------------
+"=== Plugin: Auto save
+"==============================================================================================
 let g:auto_save = 1
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Multiple Cursors
-"-------------------------------------------------------------------------------
+"=== Plugin: Multiple Cursors
+"==============================================================================================
 let g:multi_cursor_use_default_mapping = 0
 let g:multi_cursor_start_key = '<C-x><C-m>'
 let g:multi_cursor_next_key = '<C-n>'
@@ -915,9 +906,8 @@ let g:multi_cursor_skip_key = '<C-x>'
 let g:multi_cursor_quit_key = '<C-c>'
 
 
-"-------------------------------------------------------------------------------
-" Plugin: TextManip
-"-------------------------------------------------------------------------------
+"=== Plugin: TextManip
+"==============================================================================================
 " move selection
 xmap <C-j> <Plug>(textmanip-move-down)
 xmap <C-k> <Plug>(textmanip-move-up)
@@ -931,9 +921,8 @@ nmap ,d <Plug>(textmanip-duplicate-down)
 nmap ,D <Plug>(textmanip-duplicate-up)
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Smartchr
-"-------------------------------------------------------------------------------
+"=== Plugin: Smartchr
+"==============================================================================================
 inoremap <expr> , smartchr#loop(', ', ',')
 inoremap <buffer> <expr> ; smartchr#one_of(';', ';<cr>')
 
@@ -965,15 +954,13 @@ autocmd vimrc FileType eruby
   \ | inoremap <buffer> <expr> < smartchr#loop('<', '<%', '<%=')
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Operator replace
-"-------------------------------------------------------------------------------
+"=== Plugin: Operator replace
+"==============================================================================================
 map R <Plug>(operator-replace)
 
 
-"-------------------------------------------------------------------------------
-" Plugin: OpenBrowser
-"-------------------------------------------------------------------------------
+"=== Plugin: OpenBrowser
+"==============================================================================================
 " disable netrw's gx mapping.
 let g:netrw_nogx = 1
 
@@ -981,9 +968,8 @@ nnoremap gx <Plug>(openbrowser-smart-search)
 vnoremap gx <Plug>(openbrowser-smart-search)
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Emmet
-"-------------------------------------------------------------------------------
+"=== Plugin: Emmet
+"==============================================================================================
 let g:user_emmet_mode = 'i'
 let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_settings = {
@@ -992,9 +978,8 @@ let g:user_emmet_settings = {
 \ }
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Multiblock
-"-------------------------------------------------------------------------------
+"=== Plugin: Multiblock
+"==============================================================================================
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
 xmap ab <Plug>(textobj-multiblock-a)
@@ -1012,9 +997,8 @@ let g:textobj_multiblock_blocks = [
 \ ]
 
 
-"-------------------------------------------------------------------------------
-" Plugin: surround
-"-------------------------------------------------------------------------------
+"=== Plugin: surround
+"==============================================================================================
 nmap ,( csw(
 nmap ,) csw)
 nmap ,{ csw{
@@ -1025,9 +1009,8 @@ nmap ,' csw'
 nmap ," csw"
 
 
-"-------------------------------------------------------------------------------
-" Plugin: NerdCommenter
-"-------------------------------------------------------------------------------
+"=== Plugin: NerdCommenter
+"==============================================================================================
 nmap gcc <leader>c<Space>
 vmap gcc <leader>cm
 nmap gcs <leader>cs
@@ -1040,18 +1023,16 @@ nmap gcA <leader>cA
 vmap gcA <leader>cA
 
 
-"-------------------------------------------------------------------------------
-" Plugin: EasyMotion
-"-------------------------------------------------------------------------------
+"=== Plugin: EasyMotion
+"==============================================================================================
 let g:EasyMotion_leader_key = '<Space>'
 let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
 call CreastyCode('EasyMotionTarget', 'yellow', 'yellowd', 'underline')
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Session
-"-------------------------------------------------------------------------------
+"=== Plugin: Session
+"==============================================================================================
 let g:session_autosave = 0
 let g:session_autoload = 0
 let g:session_default_to_last = 0
@@ -1067,9 +1048,8 @@ nnoremap <Leader>sc :CloseSession<CR>
 nnoremap <Leader>ss :SaveSession<CR>
 
 
-"-------------------------------------------------------------------------------
-" Plugin: NERD Tree
-"-------------------------------------------------------------------------------
+"=== Plugin: NERD Tree
+"==============================================================================================
 let g:NERDSpaceDelims = 1
 let g:NERDShutUp = 1
 let g:NERDTreeShowHidden = 1
@@ -1096,9 +1076,8 @@ function! s:NERDTreeToggleOrFocus()
 endfunction
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Rooter
-"-------------------------------------------------------------------------------
+"=== Plugin: Rooter
+"==============================================================================================
 let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot', '*.xcodeproj']
 " let g:rooter_use_lcd = 1
 let g:rooter_manual_only = 1
@@ -1107,9 +1086,8 @@ let g:rooter_change_directory_for_non_project_files = 0
 autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter * :Rooter
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Submode
-"-------------------------------------------------------------------------------
+"=== Plugin: Submode
+"==============================================================================================
 let g:submode_leave_with_key = 1
 
 call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
@@ -1130,9 +1108,8 @@ call submode#enter_with('macro', 'n', '', '@@', '@@')
 call submode#map('macro', 'n', '', '@', '@@')
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Memo List
-"-------------------------------------------------------------------------------
+"=== Plugin: Memo List
+"==============================================================================================
 let g:memolist_memo_suffix = 'md'
 let g:memolist_path = '~/Dropbox/memo'
 let g:memolist_unite = 1
@@ -1144,9 +1121,8 @@ nnoremap ,mg :MemoGrep<CR>
 nnoremap ,ml :MemoList<CR>
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Switch
-"-------------------------------------------------------------------------------
+"=== Plugin: Switch
+"==============================================================================================
 let g:switch_custom_definitions =
   \ [
     \ ['public', 'protected', 'private'],
@@ -1160,9 +1136,8 @@ let g:switch_custom_definitions =
 nnoremap - :Switch<CR>
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Altr
-"-------------------------------------------------------------------------------
+"=== Plugin: Altr
+"==============================================================================================
 nmap ga <Plug>(altr-forward)
 nmap gA <Plug>(altr-back)
 
@@ -1180,15 +1155,13 @@ call altr#define('%.html.haml', '%_smart_phone.html.haml')
 call altr#define('%.html.slim', '%_smart_phone.html.slim')
 
 
-"-------------------------------------------------------------------------------
-" Plugin: vim rails
-"-------------------------------------------------------------------------------
+"=== Plugin: vim rails
+"==============================================================================================
 nmap gr :R<CR>
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Ruby refactoring
-"-------------------------------------------------------------------------------
+"=== Plugin: Ruby refactoring
+"==============================================================================================
 nnoremap <Leader>rap  :RAddParameter<CR>
 nnoremap <Leader>rcpc :RConvertPostConditional<CR>
 nnoremap <Leader>rel  :RExtractLet<CR>
@@ -1200,9 +1173,8 @@ vnoremap <Leader>rriv :RRenameInstanceVariable<CR>
 vnoremap <Leader>rem  :RExtractMethod<CR>
 
 
-"-------------------------------------------------------------------------------
-" Plugin: SmartInput / Endwise
-"-------------------------------------------------------------------------------
+"=== Plugin: SmartInput / Endwise
+"==============================================================================================
 let s:bundle = neobundle#get('vim-smartinput-endwise')
 function! s:bundle.hooks.on_source(bundle)
   call smartinput_endwise#define_default_rules()
@@ -1210,16 +1182,14 @@ endfunction
 unlet s:bundle
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Sigunature
-"-------------------------------------------------------------------------------
+"=== Plugin: Sigunature
+"==============================================================================================
 " hide upper case marks
 let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyz'
 
 
-"-------------------------------------------------------------------------------
-" Plugin: IndentGuides
-"-------------------------------------------------------------------------------
+"=== Plugin: IndentGuides
+"==============================================================================================
 if has('gui_running')
   let g:indent_guides_enable_on_vim_startup = 1
   let g:indent_guides_guide_size = 1
@@ -1232,15 +1202,13 @@ if has('gui_running')
 end
 
 
-"-------------------------------------------------------------------------------
-" Plugin: EasyAlign
-"-------------------------------------------------------------------------------
+"=== Plugin: EasyAlign
+"==============================================================================================
 vnoremap <silent> L :EasyAlign<cr>
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Over
-"-------------------------------------------------------------------------------
+"=== Plugin: Over
+"==============================================================================================
 let g:over_command_line_key_mappings = {
   \ "\<C-c>": "\<Esc>",
   \ "\<C-j>": "\<CR>",
@@ -1262,9 +1230,8 @@ function! s:MyOverCommandLine()
 endfunction
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Quickrun
-"-------------------------------------------------------------------------------
+"=== Plugin: Quickrun
+"==============================================================================================
 let g:quickrun_config = {}
 let g:quickrun_config['_'] = {
   \ 'runner': 'vimproc',
@@ -1290,9 +1257,8 @@ let g:quickrun_config['coffee'] = {
 \ }
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Fugitive
-"-------------------------------------------------------------------------------
+"=== Plugin: Fugitive
+"==============================================================================================
 let s:bundle = neobundle#get('vim-fugitive')
 function! s:bundle.hooks.on_source(bundle)
   autocmd vimrc User fugitive
@@ -1306,9 +1272,8 @@ endfunction
 unlet s:bundle
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Unite
-"-------------------------------------------------------------------------------
+"=== Plugin: Unite
+"==============================================================================================
 let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
   let g:unite_enable_start_insert = 1
@@ -1369,18 +1334,16 @@ nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
 imap <silent> <C-x><C-v> <C-o><Space>p
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Anzu
-"-------------------------------------------------------------------------------
+"=== Plugin: Anzu
+"==============================================================================================
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)
 
 
-"-------------------------------------------------------------------------------
-" Plugin: Lightline
-"-------------------------------------------------------------------------------
+"=== Plugin: Lightline
+"==============================================================================================
 let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
@@ -1495,9 +1458,8 @@ function! s:refresh_lightline()
 endfunction
 
 
-"-------------------------------------------------------------------------------
-" Function: SyntaxInfo
-"-------------------------------------------------------------------------------
+"=== SyntaxInfo
+"==============================================================================================
 function! s:get_syn_id(transparent)
   let synid = synID(line('.'), col('.'), 1)
 
@@ -1544,4 +1506,13 @@ function! s:get_syn_info()
 endfunction
 
 command! ScopeInfo call s:get_syn_info()
+
+
+"=== Computer depend settings
+"==============================================================================================
+let s:host_vimrc = $HOME . '/dotfiles/_vim/computers/' . g:hostname
+
+if filereadable(s:host_vimrc)
+  execute 'source ' . s:host_vimrc
+endif
 

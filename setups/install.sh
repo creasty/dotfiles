@@ -51,3 +51,10 @@ gem install powder
 gem install rails
 gem install synx
 
+
+#  Vagrant
+#-----------------------------------------------
+# vagrant box add centos64-6.5.3 https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box
+# vagrant box add ubuntu64lts-12.04.1 http://dl.dropbox.com/u/1537815/precise64.box
+# vagrant plugin install sahara
+

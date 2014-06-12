@@ -6,7 +6,6 @@ alias refresh='source ~/.zshrc'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias dt='cd ~/Desktop'
-alias p="cd ~/projects"
 
 alias ls='ls -G'
 alias ll='ls -Gl'
@@ -26,9 +25,12 @@ alias pbp='pbpaste'
 
 #  Applications
 #-----------------------------------------------
-alias v='open -a MacVim'
+alias mvim='open -a MacVim'
 alias ff='open -a Firefox'
 alias finder='open -a Finder'
+alias v='vagrant'
+alias an='ansible'
+alias anp='ansible-playbook'
 
 
 #  Networks
