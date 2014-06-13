@@ -1121,17 +1121,25 @@ nnoremap ,mg :MemoGrep<CR>
 nnoremap ,ml :MemoList<CR>
 
 
+"=== Plugin: Precious
+"==============================================================================================
+let g:precious_enable_switchers = {
+  \ '*':        { 'setfiletype': 0 },
+  \ 'html':     { 'setfiletype': 1 },
+  \ 'markdown': { 'setfiletype': 1 },
+\ }
+
+
 "=== Plugin: Switch
 "==============================================================================================
-let g:switch_custom_definitions =
-  \ [
-    \ ['public', 'protected', 'private'],
-    \ ['on', 'off'],
-    \ ['it', 'specify'],
-    \ ['describe', 'context'],
-    \ ['and', 'or'],
-    \ ['if', 'unless']
-  \ ]
+let g:switch_custom_definitions = [
+  \ ['public', 'protected', 'private'],
+  \ ['on', 'off'],
+  \ ['it', 'specify'],
+  \ ['describe', 'context'],
+  \ ['and', 'or'],
+  \ ['if', 'unless']
+\ ]
 
 nnoremap - :Switch<CR>
 
