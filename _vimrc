@@ -699,6 +699,9 @@ if executable('osascript')
     \ call system(g:force_alphanumeric_input_command)
 endif
 
+" w!! to write a file as sudo
+cmap w!! w !sudo tee % >/dev/null
+
 
 "=== Utils
 "==============================================================================================
@@ -995,6 +998,114 @@ let g:textobj_multiblock_blocks = [
   \ [ '「', '」' ],
   \ [ '（', '）' ],
 \ ]
+
+
+"=== Next text object
+"==============================================================================================
+onoremap <silent> an :<C-u>call <SID>NextTextObject('a', '/')<CR>
+xnoremap <silent> an :<C-u>call <SID>NextTextObject('a', '/')<CR>
+onoremap <silent> in :<C-u>call <SID>NextTextObject('i', '/')<CR>
+xnoremap <silent> in :<C-u>call <SID>NextTextObject('i', '/')<CR>
+
+onoremap <silent> al :<C-u>call <SID>NextTextObject('a', '?')<CR>
+xnoremap <silent> al :<C-u>call <SID>NextTextObject('a', '?')<CR>
+onoremap <silent> il :<C-u>call <SID>NextTextObject('i', '?')<CR>
+xnoremap <silent> il :<C-u>call <SID>NextTextObject('i', '?')<CR>
+
+" Stolen from Steve Losh
+" https://github.com/sjl/dotfiles/blob/master/vim/vimrc#L1380
+function! s:NextTextObject(motion, dir)
+  let c = nr2char(getchar())
+  let d = ''
+
+  if c ==# "p" || c ==# "(" || c ==# ")"
+    let c = "("
+  elseif c ==# "b" || c ==# "{" || c ==# "}"
+    let c = "{"
+  elseif c ==# "r" || c ==# "[" || c ==# "]"
+    let c = "["
+  elseif c ==# 's' || c ==# "'"
+    let c = "'"
+  elseif c ==# 'd' || c ==# '"'
+    let c = '"'
+  else
+    return
+  endif
+
+  " Find the next opening-whatever.
+  execute "normal! " . a:dir . c . "\<cr>"
+
+  if a:motion ==# 'a'
+    " If we're doing an 'around' method, we just need to select around it
+    " and we can bail out to Vim.
+    execute "normal! va" . c
+  else
+    " Otherwise we're looking at an 'inside' motion.  Unfortunately these
+    " get tricky when you're dealing with an empty set of delimiters because
+    " Vim does the wrong thing when you say vi(.
+
+    let open = ''
+    let close = ''
+
+    if c ==# "("
+      let open = "("
+      let close = ")"
+    elseif c ==# "{"
+      let open = "{"
+      let close = "}"
+    elseif c ==# "["
+      let open = "\\["
+      let close = "\\]"
+    elseif c ==# "'"
+      let open = "'"
+      let close = "'"
+    elseif c ==# '"'
+      let open = '"'
+      let close = '"'
+    endif
+
+    " We'll start at the current delimiter.
+    let start_pos = getpos('.')
+    let start_l = start_pos[1]
+    let start_c = start_pos[2]
+
+    " Then we'll find it's matching end delimiter.
+    if c ==# "'" || c ==# '"'
+      " searchpairpos() doesn't work for quotes, because fuck me.
+      let end_pos = searchpos(open)
+    else
+      let end_pos = searchpairpos(open, '', close)
+    endif
+
+    let end_l = end_pos[0]
+    let end_c = end_pos[1]
+
+    call setpos('.', start_pos)
+
+    if start_l == end_l && start_c == (end_c - 1)
+      " We're in an empty set of delimiters.  We'll append an "x"
+      " character and select that so most Vim commands will do something
+      " sane.  v is gonna be weird, and so is y.  Oh well.
+      execute "normal! ax\<esc>\<left>"
+      execute "normal! vi" . c
+    elseif start_l == end_l && start_c == (end_c - 2)
+      " We're on a set of delimiters that contain a single, non-newline
+      " character.  We can just select that and we're done.
+      execute "normal! vi" . c
+    else
+      " Otherwise these delimiters contain something.  But we're still not
+      " sure Vim's gonna work, because if they contain nothing but
+      " newlines Vim still does the wrong thing.  So we'll manually select
+      " the guts ourselves.
+      let whichwrap = &whichwrap
+      set whichwrap+=h,l
+
+      execute "normal! va" . c . "hol"
+
+      let &whichwrap = whichwrap
+    endif
+  endif
+endfunction
 
 
 "=== Plugin: surround
