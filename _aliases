@@ -13,6 +13,7 @@ alias la='ls -Ga'
 alias lla='ls -Gla'
 alias tree='tree -C'
 alias df='df -h'
+alias tf='tail -f'
 
 alias vi='vim'
 alias g="git"
@@ -21,6 +22,15 @@ alias :q='exit'
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
+
+
+#  Global
+#-----------------------------------------------
+alias -g C='| wc -cl'
+alias -g H='| head'
+alias -g L='| less'
+alias -g S='| sort'
+alias -g G='| grep'
 
 
 #  Applications
