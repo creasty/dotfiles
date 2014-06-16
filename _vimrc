@@ -1004,19 +1004,19 @@ let g:textobj_multiblock_blocks = [
 \ ]
 
 
-"=== Next/last text object
+"=== Next/last text-object
 "==============================================================================================
-" din'  -- delete in next single quotes
+" dins  -- delete in next single quotes
 "   foo = bar('spam')
 "   C
 "   foo = bar('')
 "             C
-" canb  -- change around next parens
+" canp  -- change around next parens
 "   foo = bar('spam')
 "   C
 "   foo = bar
 "            C
-" vin"  -- select inside next double quotes
+" vind  -- select inside next double quotes
 "   print "hello ", name
 "    C
 "   print "hello ", name
@@ -1128,10 +1128,10 @@ function! s:NextTextObject(motion, dir)
 endfunction
 
 
-"=== Next number
+"=== Number text-object
 "==============================================================================================
-" margin-top: 200px; -> daN -> margin-top: px;
-"              ^                          ^
+" margin-top: 200px; -> dam -> margin-top: px;
+" ^                                       ^
 " TODO: Handle floats.
 
 onoremap <silent> m  :<C-u>call <SID>NumberTextObject(0)<CR>
