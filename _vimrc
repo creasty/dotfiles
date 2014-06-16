@@ -483,8 +483,8 @@ set incsearch
 " match highlight
 set hlsearch
 
-" dim match highlight by hitting space twice
-nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
+" dim match highlight
+nnoremap <silent> // :nohlsearch<CR><Esc>
 
 " erase previous match highlight
 autocmd vimrc BufReadPost * :nohlsearch
@@ -699,8 +699,8 @@ if executable('osascript')
     \ call system(g:force_alphanumeric_input_command)
 endif
 
-" w!! to write a file as sudo
-cmap w!! w !sudo tee % >/dev/null
+" sort lines inside block
+nnoremap <leader>Sb ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
 
 "=== Utils
@@ -760,6 +760,10 @@ cnoremap <expr> h
 " rename :er
 cnoremap <expr> r
   \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
+
+" w!! to write a file as sudo
+cnoremap <expr> !
+  \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
@@ -1000,8 +1004,24 @@ let g:textobj_multiblock_blocks = [
 \ ]
 
 
-"=== Next text object
+"=== Next/last text object
 "==============================================================================================
+" din'  -- delete in next single quotes
+"   foo = bar('spam')
+"   C
+"   foo = bar('')
+"             C
+" canb  -- change around next parens
+"   foo = bar('spam')
+"   C
+"   foo = bar
+"            C
+" vin"  -- select inside next double quotes
+"   print "hello ", name
+"    C
+"   print "hello ", name
+"          VVVVVV
+
 onoremap <silent> an :<C-u>call <SID>NextTextObject('a', '/')<CR>
 xnoremap <silent> an :<C-u>call <SID>NextTextObject('a', '/')<CR>
 onoremap <silent> in :<C-u>call <SID>NextTextObject('i', '/')<CR>
@@ -1104,6 +1124,46 @@ function! s:NextTextObject(motion, dir)
 
       let &whichwrap = whichwrap
     endif
+  endif
+endfunction
+
+
+"=== Next number
+"==============================================================================================
+" margin-top: 200px; -> daN -> margin-top: px;
+"              ^                          ^
+" TODO: Handle floats.
+
+onoremap m :<c-u>call <SID>NumberTextObject(0)<cr>
+xnoremap m :<c-u>call <SID>NumberTextObject(0)<cr>
+onoremap am :<c-u>call <SID>NumberTextObject(1)<cr>
+xnoremap am :<c-u>call <SID>NumberTextObject(1)<cr>
+onoremap im :<c-u>call <SID>NumberTextObject(1)<cr>
+xnoremap im :<c-u>call <SID>NumberTextObject(1)<cr>
+
+function! s:NumberTextObject(whole)
+  let num = '\v[0-9]'
+
+  " If the current char isn't a number, walk forward.
+  while getline('.')[col('.') - 1] !~# num
+    normal! l
+  endwhile
+
+  " Now that we're on a number, start selecting it.
+  normal! v
+
+  " If the char after the cursor is a number, select it.
+  while getline('.')[col('.')] =~# num
+    normal! l
+  endwhile
+
+  " If we want an entire word, flip the select point and walk.
+  if a:whole
+    normal! o
+
+    while col('.') > 1 && getline('.')[col('.') - 2] =~# num
+      normal! h
+    endwhile
   endif
 endfunction
 
