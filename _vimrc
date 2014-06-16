@@ -550,7 +550,7 @@ nmap k gk
 
 " Emacs-like key bindings
 imap <C-j> <CR>
-imap <C-c> <Esc>
+map <C-c> <Esc>
 inoremap <C-n> <C-o>gj
 inoremap <C-p> <C-o>gk
 inoremap <C-b> <Left>
@@ -623,6 +623,9 @@ map <Space>a ggVG
 " repeat the last recorded macro
 map Q @@
 
+" sort lines inside block
+nnoremap <leader>sor ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
+
 " tags
 nnoremap tn :tn<CR>
 nnoremap tp :tp<CR>
@@ -681,26 +684,6 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
-
-" file detect on read / save
-autocmd vimrc BufWritePost,BufReadPost,BufEnter *
-  \ if &l:filetype ==# '' || exists('b:ftdetect') |
-    \ unlet! b:ftdetect |
-    \ filetype detect |
-  \ endif
-
-" automatically change input source
-if executable('osascript')
-  let s:keycode_jis_eisuu = 102
-  let g:force_alphanumeric_input_command =
-    \ "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
-
-  autocmd vimrc FocusGained *
-    \ call system(g:force_alphanumeric_input_command)
-endif
-
-" sort lines inside block
-nnoremap <leader>Sb ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
 
 "=== Utils
@@ -766,6 +749,23 @@ cnoremap <expr> !
   \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
+
+" file detect on read / save
+autocmd vimrc BufWritePost,BufReadPost,BufEnter *
+  \ if &l:filetype ==# '' || exists('b:ftdetect') |
+    \ unlet! b:ftdetect |
+    \ filetype detect |
+  \ endif
+
+" automatically change input source
+if executable('osascript')
+  let s:keycode_jis_eisuu = 102
+  let g:force_alphanumeric_input_command =
+    \ "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
+
+  autocmd vimrc FocusGained *
+    \ call system(g:force_alphanumeric_input_command)
+endif
 
 
 "=== Plugin: NeoComplete
@@ -1134,12 +1134,12 @@ endfunction
 "              ^                          ^
 " TODO: Handle floats.
 
-onoremap m :<c-u>call <SID>NumberTextObject(0)<cr>
-xnoremap m :<c-u>call <SID>NumberTextObject(0)<cr>
-onoremap am :<c-u>call <SID>NumberTextObject(1)<cr>
-xnoremap am :<c-u>call <SID>NumberTextObject(1)<cr>
-onoremap im :<c-u>call <SID>NumberTextObject(1)<cr>
-xnoremap im :<c-u>call <SID>NumberTextObject(1)<cr>
+onoremap <silent> m  :<C-u>call <SID>NumberTextObject(0)<CR>
+xnoremap <silent> m  :<C-u>call <SID>NumberTextObject(0)<CR>
+onoremap <silent> am :<C-u>call <SID>NumberTextObject(1)<CR>
+xnoremap <silent> am :<C-u>call <SID>NumberTextObject(1)<CR>
+onoremap <silent> im :<C-u>call <SID>NumberTextObject(1)<CR>
+xnoremap <silent> im :<C-u>call <SID>NumberTextObject(1)<CR>
 
 function! s:NumberTextObject(whole)
   let num = '\v[0-9]'
