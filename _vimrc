@@ -458,7 +458,7 @@ endfunction
 "  Custom highlight
 "-----------------------------------------------
 " highlight full-width space
-call CreastyCode('ZenkakuSpace', '', 'red', '')
+call CreastyCode('ZenkakuSpace', '', 'dark_red', '')
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('ZenkakuSpace', '　')
 
@@ -546,7 +546,9 @@ command! Pt :set paste!
 
 " move cursor visually with long lines
 nmap j gj
+vmap j gj
 nmap k gk
+vmap k gk
 
 " Emacs-like key bindings
 imap <C-j> <CR>
@@ -1199,7 +1201,7 @@ vmap gcA <leader>cA
 let g:EasyMotion_leader_key = '<Space>'
 let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
-call CreastyCode('EasyMotionTarget', 'yellow', 'yellowd', 'underline')
+call CreastyCode('EasyMotionTarget', 'yellow', 'dark_yellow', 'underline')
 
 
 "=== Plugin: Session

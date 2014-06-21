@@ -224,24 +224,61 @@ endfun
 
 "=== Color palette
 "==============================================================================================
-let g:creasty_code_palette = {
-  \ 'foreground': 'b8b8b8',
-  \ 'background': '000000',
-  \ 'selection':  '424242',
-  \ 'line':       '2a2a2a',
-  \ 'comment':    '666666',
-  \ 'red':        'cc6666',
-  \ 'orange':     'de935f',
-  \ 'yellow':     'f0c674',
-  \ 'yellowd':    '5c4c2c',
-  \ 'green':      'b5bd68',
-  \ 'aqua':       '8abeb7',
-  \ 'blue':       '81a2be',
-  \ 'purple':     'b294bb',
-  \ 'window':     '262626',
-  \ 'black':      '131313',
-  \ 'black2':     '191919',
-\ }
+if has('gui_running')
+  let g:creasty_code_palette = {
+    \ 'foreground':  'aaaaaa',
+    \ 'comment':     '666666',
+    \ 'selection':   '424242',
+    \ 'line':        '2a2a2a',
+    \ 'window':      '262626',
+    \ 'black2':      '191919',
+    \ 'black':       '131313',
+    \ 'background':  '000000',
+    \
+    \ 'red':         'ae7071',
+    \ 'orange':      'bb8d6f',
+    \ 'yellow':      'cdb384',
+    \ 'green':       'a3a371',
+    \ 'aqua':        '8baaa5',
+    \ 'blue':        '8397a8',
+    \ 'purple':      '9d90a8',
+    \
+    \ 'dark_red':    '503131',
+    \ 'dark_orange': '563f2f',
+    \ 'dark_yellow': '5f5138',
+    \ 'dark_green':  '4c4b30',
+    \ 'dark_aqua':   '3c4e4b',
+    \ 'dark_blue':   '39444d',
+    \ 'dark_purple': '47404d',
+  \ }
+else
+  let g:creasty_code_palette = {
+    \ 'foreground':  'b8b8b8',
+    \ 'comment':     '666666',
+    \ 'selection':   '424242',
+    \ 'line':        '2a2a2a',
+    \ 'window':      '262626',
+    \ 'black2':      '191919',
+    \ 'black':       '131313',
+    \ 'background':  '000000',
+    \
+    \ 'red':         'cc6666',
+    \ 'orange':      'de935f',
+    \ 'yellow':      'f0c674',
+    \ 'green':       'b5bd68',
+    \ 'aqua':        '8abeb7',
+    \ 'blue':        '81a2be',
+    \ 'purple':      'b294bb',
+    \
+    \ 'dark_red':    '262626',
+    \ 'dark_orange': '262626',
+    \ 'dark_yellow': '262626',
+    \ 'dark_green':  '262626',
+    \ 'dark_aqua':   '262626',
+    \ 'dark_blue':   '262626',
+    \ 'dark_purple': '262626',
+  \ }
+endif
 
 
 "=== Highlighting: Vim
@@ -251,7 +288,7 @@ call CreastyCode('LineNr', 'comment', '', 'none')
 call CreastyCode('CursorLineNr', 'comment', 'line', 'none')
 call CreastyCode('NonText', 'selection', '', '')
 call CreastyCode('SpecialKey', 'line', '', '')
-call CreastyCode('Search', 'yellow', 'yellowd', 'underline')
+call CreastyCode('Search', 'yellow', 'dark_yellow', 'underline')
 call CreastyCode('TabLine', 'foreground', 'background', 'reverse')
 call CreastyCode('StatusLine', 'window', 'yellow', 'reverse')
 call CreastyCode('StatusLineNC', 'window', 'foreground', 'reverse')
@@ -512,7 +549,7 @@ call CreastyCode('markdownUrl', 'comment', '', '')
 
 "=== Highlighting: Diff
 "==============================================================================================
-call CreastyCode('diffAdded', 'green', '', '')
-call CreastyCode('diffRemoved', 'red', '', '')
+call CreastyCode('diffAdded', 'green', 'dark_green', '')
+call CreastyCode('diffRemoved', 'red', 'dark_red', '')
 
 

@@ -1,11 +1,21 @@
 
-let s:red    = '#cc6666'
-let s:orange = '#de935f'
-let s:yellow = '#f0c674'
-let s:green  = '#b5bd68'
-let s:aqua   = '#8abeb7'
-let s:blue   = '#81a2be'
-let s:purple = '#b294bb'
+if has('gui_running')
+  let s:red    = '#ae7071'
+  let s:orange = '#bb8d6f'
+  let s:yellow = '#cdb384'
+  let s:green  = '#a3a371'
+  let s:aqua   = '#8baaa5'
+  let s:blue   = '#8397a8'
+  let s:purple = '#9d90a8'
+else
+  let s:red    = '#cc6666'
+  let s:orange = '#de935f'
+  let s:yellow = '#f0c674'
+  let s:green  = '#b5bd68'
+  let s:aqua   = '#8abeb7'
+  let s:blue   = '#81a2be'
+  let s:purple = '#b294bb'
+endif
 
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
 
