@@ -1510,7 +1510,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
-nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async file/new directory/new<CR>
+nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async<CR>
 nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
 imap <silent> <C-x><C-v> <C-o><Space>p
 

@@ -11,6 +11,7 @@ tap laurent22/massren || true
 tap homebrew/dupes || true
 tap josegonzalez/php || true
 tap supermomonga/homebrew-splhack || true
+tap peco/peco || true
 
 # install brew-packages
 install ansible
@@ -43,6 +44,7 @@ install mysql
 install ngrep
 install node
 install optipng
+install peco
 install pcre
 install phantomjs
 install php55

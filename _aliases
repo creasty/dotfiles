@@ -23,6 +23,9 @@ alias :q='exit'
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 
+alias peco="peco --rcfile=$HOME/.pecorc"
+alias o='git ls-files | peco | xargs open'
+
 
 #  Global
 #-----------------------------------------------

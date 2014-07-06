@@ -1,0 +1,14 @@
+{
+  "Prompt": ">",
+  "Keymap": {
+    "C-j": "peco.Finish",
+    "C-l": "peco.ToggleSelectionAndSelectNext"
+  },
+  "Style": {
+    "Basic": ["on_default", "default"],
+    "SavedSelection": ["on_white", "default"],
+    "Selected": ["on_white", "default"],
+    "Query": ["on_default", "yellow"],
+    "Matched": ["on_default", "yellow"]
+  }
+}
