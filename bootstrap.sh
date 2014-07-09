@@ -21,3 +21,6 @@ source setups/shell.sh
 # setup osx
 source setups/osx.sh
 
+# setup applications
+source setups/app.sh
+
