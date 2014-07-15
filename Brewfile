@@ -75,7 +75,7 @@ cask install growlnotify
 cask install imagealpha
 cask install imageoptim
 cask install iterm2
-cask install keyremap4macbook
+cask install karabiner
 cask install ngrok
 cask install pckeyboardhack
 cask install sequel-pro
