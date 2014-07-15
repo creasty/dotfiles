@@ -77,7 +77,7 @@ cask install imageoptim
 cask install iterm2
 cask install karabiner
 cask install ngrok
-cask install pckeyboardhack
+cask install seil
 cask install sequel-pro
 cask install skype
 cask install sophos-antivirus-home-edition
