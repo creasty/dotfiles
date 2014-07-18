@@ -1325,8 +1325,8 @@ nmap gA <Plug>(altr-back)
 " Header files
 call altr#define('%.c', '%.h', '%.m')
 
-" Jasmine
-call altr#define('src/%.coffee', 'spec/%_spec.coffee')
+" Jasmine / Karma
+call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
 
 " Rails
 call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
