@@ -40,5 +40,27 @@
         KeyCode::BRACKET_LEFT, VK_CONTROL, KeyCode::JIS_EISUU
       </autogen>
     </item>
+
+    <item>
+      <name>'l' key to EISUU</name>
+      <identifier>private.l_key_eisuu</identifier>
+      <inputsource_only>JAPANESE</inputsource_only>
+      <autogen>
+        --KeyToKey--
+        KeyCode::L,
+        KeyCode::JIS_EISUU
+      </autogen>
+    </item>
+
+    <item>
+      <name>Ctrl-; to KANA</name>
+      <identifier>private.ctrl_semicolon_kana</identifier>
+      <inputsource_only>ENGLISH</inputsource_only>
+      <autogen>
+        --KeyToKey--
+        KeyCode::SEMICOLON,
+        KeyCode::JIS_KANA
+      </autogen>
+    </item>
   </list>
 </root>
