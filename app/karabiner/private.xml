@@ -58,7 +58,7 @@
       <inputsource_only>ENGLISH</inputsource_only>
       <autogen>
         --KeyToKey--
-        KeyCode::SEMICOLON,
+        KeyCode::SEMICOLON, VK_CONTROL,
         KeyCode::JIS_KANA
       </autogen>
     </item>
