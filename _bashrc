@@ -21,7 +21,7 @@ branch() {
 
 #  Prompt
 #-----------------------------------------------
-source ~/.git-prompt.sh
+source ~/dotfiles/bin/git-prompt.sh
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1

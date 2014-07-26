@@ -8,6 +8,6 @@ Bootstrap
 ---------
 
 ```sh
-$ curl https://raw.github.com/creasty/dotfiles/master/bootstrap.sh | sh
+$ curl https://raw.github.com/creasty/dotfiles/master/bootstrap | sh
 ```
 

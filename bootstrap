@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if ! [ -d ~/dotfiles/.git ]; then
+  echo "Cloning repo..."
+  cd ~
+  git clone --recursive git@github.com:creasty/dotfiles.git
+fi
+
+source script/install
+source script/link
+source script/shell
+source script/osx
+source script/app

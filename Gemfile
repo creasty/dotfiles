@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'awesome_print'
+gem 'fancy_irb'
+gem 'git-issue'
+gem 'hirb'
+gem 'interactive_editor'
+gem 'powder'
+gem 'rails'
+gem 'synx'

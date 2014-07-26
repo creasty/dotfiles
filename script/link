@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # symbolic links
 echo "Creating symbolic links..."

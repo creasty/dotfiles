@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #  Change login shell
 #-----------------------------------------------
@@ -9,5 +9,4 @@ if ! [ $ZSH_NAME ]; then
   exit
   chpass -s /usr/local/bin/zsh
 fi
-
 
