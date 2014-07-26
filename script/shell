@@ -1,12 +1,11 @@
 #!/bin/bash
 
-#  Change login shell
-#-----------------------------------------------
 if ! [ $ZSH_NAME ]; then
-  sudo -s
-  mv /etc/zshenv /etc/_zshenv
-  echo "\n/usr/local/bin/zsh" >> /etc/shells
-  exit
-  chpass -s /usr/local/bin/zsh
-fi
+  echo "Change login shell..."
 
+  sudo mv /etc/zshenv /etc/_zshenv
+  echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+  chpass -s /usr/local/bin/zsh
+
+  echo "ok"
+fi
