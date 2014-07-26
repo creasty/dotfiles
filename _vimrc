@@ -2,7 +2,7 @@
 "=== Plugins
 "==============================================================================================
 if has('vim_starting')
-  set runtimepath+=~/dotfiles/neobundle.vim/
+  set runtimepath+=~/dotfiles/_vim/bundle/neobundle.vim/
   call neobundle#rc(expand('~/dotfiles/_vim/bundle/'))
 endif
 

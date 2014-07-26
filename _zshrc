@@ -1,11 +1,38 @@
 
+#  Oh my zsh
+#-----------------------------------------------
+ZSH=$HOME/.oh-my-zsh
+ZSH_CUSTOM=$HOME/.zsh
+ZSH_THEME="robbyrussell"
+
+plugins=(
+  brew
+  bundler
+  gem
+  git
+  git-flow
+  npm
+  pod
+  pow
+  powder
+  rails
+  rbenv
+  ruby
+  linux
+  osx
+  zsh-syntax-highlighting
+)
+
+source ~/.oh-my-zsh/oh-my-zsh.sh
+
+
 #  Base
 #-----------------------------------------------
 # load math functions
 zmodload -i zsh/mathfunc
 
 # completion
-fpath=($HOME/dotfiles/zsh-completions/src $fpath)
+fpath=($ZSH_CUSTOM/zsh-completions/src $fpath)
 autoload -Uz compinit
 compinit
 
@@ -59,36 +86,9 @@ setopt pushd_ignore_dups
 setopt auto_param_keys
 
 
-#  Oh my zsh
-#-----------------------------------------------
-ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="robbyrussell"
-
-plugins=(
-  brew
-  bundler
-  gem
-  git
-  git-flow
-  npm
-  pod
-  pow
-  powder
-  rails
-  rbenv
-  ruby
-  linux
-  osx
-)
-
-source ~/.oh-my-zsh/oh-my-zsh.sh
-
-
 #  Fish shell like syntax highlighting
 #-----------------------------------------------
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-source ~/dotfiles/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 ZSH_HIGHLIGHT_STYLES[default]=none
 ZSH_HIGHLIGHT_STYLES[unknown-token]=none
@@ -118,8 +118,6 @@ ZSH_HIGHLIGHT_STYLES[assign]=fg=yellow
 
 #  Type ahead auto suggestion
 #-----------------------------------------------
-# source ~/dotfiles/zsh/zsh-autosuggestions/autosuggestions.zsh
-#
 # AUTOSUGGESTION_HIGHLIGHT_COLOR=fg=white
 # AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
 #

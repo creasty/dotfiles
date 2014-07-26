@@ -1,6 +1,12 @@
-[submodule "neobundle.vim"]
-	path = neobundle.vim
+[submodule "_zsh/plugins/zsh-syntax-highlighting"]
+	path = _zsh/plugins/zsh-syntax-highlighting
+	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "_zsh/plugins/zsh-autosuggestions"]
+	path = _zsh/plugins/zsh-autosuggestions
+	url = git://github.com/tarruda/zsh-autosuggestions.git
+[submodule "_zsh/zsh-completions"]
+	path = _zsh/zsh-completions
+	url = git://github.com/zsh-users/zsh-completions.git
+[submodule "_vim/bundle/neobundle.vim"]
+	path = _vim/bundle/neobundle.vim
 	url = https://github.com/Shougo/neobundle.vim.git
-[submodule "zsh-completions"]
-	path = zsh-completions
-	url = https://github.com/zsh-users/zsh-completions.git
