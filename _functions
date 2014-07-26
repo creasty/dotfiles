@@ -42,6 +42,32 @@ cdd() {
 compctl -f -W ~/Develop cdd
 
 
+#  cd to active Finder's directory
+#-----------------------------------------------
+cdf() {
+  target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
+
+  if [ "$target" != "" ]; then
+    cd "$target"
+    pwd
+  fi
+}
+
+
+#  Fuzzy cd-ing
+#-----------------------------------------------
+jj() {
+  if [ $1 ]; then
+    JUMPDIR=$(find . -type d -maxdepth 1 | grep $1 | tail -1)
+
+    if [[ -d $JUMPDIR && -n $JUMPDIR ]]; then
+      cd $JUMPDIR
+      pwd
+    fi
+  fi
+}
+
+
 #  Git sync
 #-----------------------------------------------
 gsy() {
@@ -158,9 +184,9 @@ alias trash-clean="/bin/rm -R -f $TRASHDIR/*"
 alias clean=trash-clean
 
 
-#  Change iTerm's tab title
+#  Fuzzy search & open in vim
 #-----------------------------------------------
-title() {
-  echo -ne "\033]0;"$*"\007"
+function agvim () {
+  vim $(ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
 }
 
