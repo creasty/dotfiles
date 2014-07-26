@@ -6,8 +6,8 @@ if ! [ -d ~/dotfiles/.git ]; then
   git clone --recursive git@github.com:creasty/dotfiles.git
 fi
 
-source script/install
-source script/link
-source script/shell
-source script/osx
-source script/app
+source ~/dotfiles/script/install
+source ~/dotfiles/script/link
+source ~/dotfiles/script/shell
+source ~/dotfiles/script/osx
+source ~/dotfiles/script/app
