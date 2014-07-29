@@ -626,6 +626,9 @@ map <Space>a ggVG
 " repeat the last recorded macro
 map Q @@
 
+" avoid suicide
+nnoremap ZQ <Nop>
+
 " sort lines inside block
 nnoremap <leader>sor ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
@@ -1444,6 +1447,7 @@ autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter * :Rooter
 "==============================================================================================
 let g:submode_leave_with_key = 1
 
+" window size
 call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
 call submode#map('winsize', 'n', '', '>', '<C-w>>')
 call submode#enter_with('winsize', 'n', '', '<C-w><', '<C-w><')
@@ -1453,13 +1457,32 @@ call submode#map('winsize', 'n', '', '-', '<C-w>+')
 call submode#enter_with('winsize', 'n', '', '<C-w>-', '<C-w>+')
 call submode#map('winsize', 'n', '', '+', '<C-w>-')
 
+" tabpage
 call submode#enter_with('changetab', 'n', '', 'gt', 'gt')
 call submode#map('changetab', 'n', '', 't', 'gt')
 call submode#enter_with('changetab', 'n', '', 'gT', 'gT')
 call submode#map('changetab', 'n', '', 'T', 'gT')
 
+" macro
 call submode#enter_with('macro', 'n', '', '@@', '@@')
 call submode#map('macro', 'n', '', '@', '@@')
+
+" move to next/previous fold
+call submode#enter_with('move-to-fold', 'n', '', 'zj', 'zj')
+call submode#map('move-to-fold', 'n', '', 'j', 'zj')
+call submode#enter_with('move-to-fold', 'n', '', 'zk', 'zk')
+call submode#map('move-to-fold', 'n', '', 'k', 'zk')
+
+" better undo with x-es
+function! s:my_x()
+  undojoin
+  normal! "_x
+endfunction
+
+noremap <silent> <Plug>(my-x) :<C-u>call <SID>my_x()<CR>
+
+call submode#enter_with('my_x', 'n', '', 'x', '"_x')
+call submode#map('my_x', 'n', 'r', 'x', '<Plug>(my-x)')
 
 
 "=== Plugin: Memo List
