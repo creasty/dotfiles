@@ -6,8 +6,10 @@ if has('vim_starting')
   call neobundle#rc(expand('~/dotfiles/_vim/bundle/'))
 endif
 
+" package manager
 NeoBundleFetch 'Shougo/neobundle.vim'
 
+" asynchronous execution plugin
 NeoBundle 'Shougo/vimproc', {
   \ 'build': {
     \ 'windows': 'make -f make_mingw32.mak',
@@ -19,63 +21,92 @@ NeoBundle 'Shougo/vimproc', {
 
 "  Editing
 "-----------------------------------------------
+" define your own operator easily
 NeoBundle 'kana/vim-operator-user'
+" create your own text objects
 NeoBundle 'kana/vim-textobj-user'
+" text objects for indented blocks of lines
 NeoBundle 'kana/vim-textobj-indent'
+" adds text-objects for word-based columns
 NeoBundle 'coderifous/textobj-word-column.vim'
+" text objects for multiple types of parentheses
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
+" deleting, changing, and adding surroundings
 NeoBundle 'surround.vim'
+" f/t motions to highlight all possible choices
 NeoBundle 'Lokaltog/vim-easymotion'
+" commenting code
 NeoBundle 'scrooloose/nerdcommenter'
+" syntax checking on the fly has never been so pimp
 NeoBundleLazy 'scrooloose/syntastic', {
   \ 'autoload': { 'insert': 1 },
 \ }
+" a simple, easy-to-use Vim alignment plugin
 NeoBundleLazy 'junegunn/vim-easy-align', {
   \ 'autoload': { 'commands': ['EasyAlign'] }
 \ }
+" emmet for vim: HTML and CSS hi-speed coding
 NeoBundle 'mattn/emmet-vim', {
   \ 'autoload': {
     \ 'insert': 1,
     \ 'function_prefix': 'emmet',
   \ },
 \ }
+" operator to escape HTML entities
 NeoBundle 'tyru/operator-html-escape.vim'
+" operator to camelize/decamelize a specified text
 NeoBundle 'tyru/operator-camelize.vim'
+" operator to evaluate a text object using Ruby
 NeoBundle 'rhysd/vim-operator-evalruby'
-NeoBundle 'pekepeke/vim-operator-tabular'
-NeoBundle 'emonkak/vim-operator-sort'
+" operator to replace text with register content
 NeoBundle 'kana/vim-operator-replace'
+" extended % matching
 NeoBundle 'tmhedberg/matchit'
+" provide smart input assistant
 NeoBundleLazy 'kana/vim-smartinput', {
   \ 'autoload': { 'insert': 1 },
 \ }
+" extension of vim-smartinput to provide the feature of vim-endwise
 NeoBundleLazy 'cohama/vim-smartinput-endwise', {
   \ 'depends': ['kana/vim-smartinput'],
   \ 'autoload': { 'insert': 1 },
 \ }
+" refactoring tool for Ruby in vim
 NeoBundleLazy 'ecomba/vim-ruby-refactoring',  {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
+" switch segments of text with predefined replacements
 NeoBundle 'AndrewRadev/switch.vim'
+" insert several candidates with a single key
 NeoBundle 'smartchr'
+" maniplate selected text easily
 NeoBundle 't9md/vim-textmanip'
+" automatically insert closing-pair and put the cursor between them
 NeoBundle 'Townk/vim-autoclose'
+" sequencial numbering with pattern
 NeoBundle 'deris/vim-rengbang'
+" incremental visual selection
 NeoBundle 'terryma/vim-expand-region'
+" pasting with indentation adjusted to paste destination
 NeoBundle 'sickill/vim-pasta'
+" use CTRL-A/CTRL-X to increment dates, times, and more
 NeoBundle 'tpope/vim-speeddating'
+" true Sublime Text multiple selection in Vim
 NeoBundle 'terryma/vim-multiple-cursors'
 
 "  Completion
 "-----------------------------------------------
+" next generation of auto completion framework
 NeoBundleLazy 'Shougo/neocomplete', {
   \ 'autoload': { 'insert': 1 },
 \ }
+" accurately completing C and C++ code
 NeoBundleLazy 'Rip-Rip/clang_complete', {
   \ 'autoload': {
     \ 'filetypes': ['clang', 'objc'],
   \ },
 \ }
+" adds snippet support
 NeoBundleLazy 'Shougo/neosnippet', {
   \ 'depends': ['Shougo/neocomplete'],
   \ 'autoload': {
@@ -85,130 +116,184 @@ NeoBundleLazy 'Shougo/neosnippet', {
     \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
   \ },
 \ }
+" insert #include<>
 NeoBundle 'osyo-manga/vim-stargate'
 
 "  Utils
 "-----------------------------------------------
+" make benchmark result of your vimrc
 NeoBundleLazy 'mattn/benchvimrc-vim', {
   \ 'autoload': { 'commands': ['BenchVimrc'] },
 \ }
+" a Git wrapper so awesome
 NeoBundle 'tpope/vim-fugitive'
+" enable repeating supported plugin maps with dot
 NeoBundle 'tpope/vim-repeat'
+" a tree explorer
 NeoBundle 'scrooloose/nerdtree'
+" making NERDTree feel like a true panel, independent of tabs
 NeoBundle 'jistr/vim-nerdtree-tabs'
+" miscellaneous auto-load Vim scripts (dependency of vim-session)
 NeoBundle 'xolox/vim-misc'
+" extended session management
 NeoBundle 'xolox/vim-session'
+" unite and create user interfaces
 NeoBundleLazy 'Shougo/unite.vim', {
   \ 'autoload': { 'commands': ['Unite'] },
 \ }
+" outline source for unite.vim
 NeoBundleLazy 'h1mesuke/unite-outline', {
   \ 'depends': ['Shougo/unite.vim'],
   \ 'autoload': { 'unite_sources': ['outline'] },
 \ }
+" tags source for unite.vim
 NeoBundleLazy 'tsukkee/unite-tag', {
   \ 'depends': ['Shougo/unite.vim'],
   \ 'autoload': { 'unite_sources': ['outline'] },
 \ }
+" powerful shell implemented by Vim script
 NeoBundleLazy 'Shougo/vimshell.vim', {
   \ 'depends': ['Shougo/vimproc'],
   \ 'autoload': { 'commands': ['VimShell'] },
 \ }
+" open URI with browser
 NeoBundle 'tyru/open-browser.vim'
+" simple memo plugin
 NeoBundle 'glidenote/memolist.vim', {
   \ 'autoload': { 'commands': ['MemoNew', 'MemoList', 'MemoGrep'] }
 \ }
+" hex editing system
 NeoBundleLazy 'Shougo/vinarise.vim', {
   \ 'autoload': { 'commands': ['Vinarise', 'VinariseDump'] },
 \ }
+" pseudo clipboard register
 NeoBundle 'kana/vim-fakeclip'
+" switch to the missing file without interaction
 NeoBundle 'kana/vim-altr'
+" change working directory to project root
 NeoBundle 'airblade/vim-rooter'
+" run commands quickly
 NeoBundle 'thinca/vim-quickrun'
+" create your own submodes
 NeoBundle 'kana/vim-submode'
+" substitute preview
 NeoBundle 'osyo-manga/vim-over'
+" functional Object Oriented VimL (dependency of dash.vim)
 NeoBundleLazy 'rizzatti/funcoo.vim'
+" launch queries for Dash.app
 NeoBundleLazy 'rizzatti/dash.vim', {
   \ 'depends': ['rizzatti/funcoo.vim'],
   \ 'autoload': { 'commands': ['Dash'] },
 \ }
+" context filetype library
 NeoBundle 'Shougo/context_filetype.vim'
+" switch filetype by context around cursor
 NeoBundle 'osyo-manga/vim-precious'
+" lookup Codic
 NeoBundleLazy 'koron/codic-vim', {
   \ 'autoload': { 'commands': ['Codic'] },
 \ }
+" unite.vim source for codic-vim
 NeoBundleLazy 'rhysd/unite-codic.vim', {
   \ 'depends': ['Shougo/unite.vim', 'koron/codic-vim'],
   \ 'autoload': { 'unite_sources': ['codic'] },
 \ }
+" github issue lookup
 NeoBundleLazy 'jaxbot/github-issues.vim', {
   \ 'autoload': { 'commands': ['Gissues'] },
 \ }
+" automatically save changes to disk
 NeoBundle 'vim-auto-save'
+" perform the replacement in quickfix
 NeoBundleLazy 'thinca/vim-qfreplace', {
   \ 'autoload': { 'commands': ['Qfreplace'] },
 \ }
+" command for the_silver_searcher
 NeoBundleLazy 'rking/ag.vim', {
   \ 'autoload': { 'commands': ['Ag'] },
 \ }
+" w3m plugin
 NeoBundleLazy 'yuratomo/w3m.vim', {
   \ 'autoload': { 'commands': ['W3m'] },
 \ }
+" list and lookup http status code
 NeoBundleLazy 'mattn/httpstatus-vim', {
   \ 'autoload': { 'commands': ['HttpStatus'] },
 \ }
+" display tags of a file ordered by scope
 NeoBundle 'majutsushi/tagbar'
 
 "  Appearance
 "-----------------------------------------------
+" a light and configurable statusline/tabline
 NeoBundle 'itchyny/lightline.vim'
+" visually displaying indent levels
 NeoBundle 'nathanaelkane/vim-indent-guides'
+" toggle, display and navigate marks
 NeoBundle 'kshenoy/vim-signature'
+" search status
 NeoBundle 'osyo-manga/vim-anzu'
 
 "  Language
 "-----------------------------------------------
+" syntax highlight for Haml
 NeoBundleLazy 'tpope/vim-haml', {
   \ 'autoload': { 'filetypes': ['haml'] }
 \ }
+" syntax highlight for Markdown
 NeoBundleLazy 'tpope/vim-markdown', {
   \ 'autoload': { 'filetypes': ['markdown'] }
 \ }
+" syntax highlight for CoffeeScript
 NeoBundleLazy 'kchmck/vim-coffee-script', {
   \ 'autoload': { 'filetypes': ['coffee'] }
 \ }
+" working with Ruby on Rails applications
 NeoBundleLazy 'tpope/vim-rails', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
+" syntax highlight for Ruby
 NeoBundleLazy 'vim-ruby/vim-ruby', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
+" highlight Ruby local variables
 NeoBundleLazy 'todesking/ruby_hl_lvar.vim', {
   \ 'autoload': { 'filetypes': ['ruby'] }
 \ }
+" syntax highlight for Cucumber
 NeoBundleLazy 'tpope/vim-cucumber', {
   \ 'autoload': { 'filetypes': ['cucumber.ruby'] }
 \ }
+" syntax highlight for Slim
 NeoBundleLazy 'slim-template/vim-slim', {
   \ 'autoload': { 'filetypes': ['slim'] }
 \ }
+" syntax highlight for SCSS
 NeoBundleLazy 'cakebaker/scss-syntax.vim', {
   \ 'autoload': { 'filetypes': ['scss'] }
 \ }
+" plugin for Cocoa/Objective-C development
 NeoBundleLazy 'msanders/cocoa.vim', {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
+" plugin for iOS development
 NeoBundleLazy 'eraserhd/vim-ios', {
   \ 'autoload': { 'filetypes': ['objc'] }
 \ }
+" syntax highlight for Scala
 NeoBundleLazy 'yuroyoro/vim-scala', {
   \ 'autoload': { 'filetypes': ['scala'] }
 \ }
+" syntax highlight for Clojure
 NeoBundleLazy 'jondistad/vimclojure', {
   \ 'autoload': { 'filetypes': ['clojure'] }
 \ }
+" syntax highlight for Haskell
 NeoBundleLazy 'kana/vim-filetype-haskell', {
   \ 'autoload': { 'filetypes': ['haskell'] }
 \ }
+" syntax highlight for Swift
+" use local fork
 " NeoBundleLazy 'toyamarinyon/vim-swift', {
 "   \ 'autoload': { 'filetypes': ['swift'] }
 " \ }
