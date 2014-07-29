@@ -1082,9 +1082,25 @@ let s:rules = {
 for [char, rule] in items(s:rules)
   call smartinput#map_to_trigger('i', char, char, char)
 
+  let uchar = substitute(char, '<Bar>', '|', '')
+
   call smartinput#define_rule({
     \ 'char':  char,
-    \ 'at':    '\(\w\|' . substitute(char, '<Bar>', '|', '') . '\s\?\)\%#',
+    \ 'at':    '\(\w\|[?!]\)\%#',
+    \ 'input': ' ' . char . ' ',
+    \ 'mode':  'i',
+  \ })
+
+  call smartinput#define_rule({
+    \ 'char':  char,
+    \ 'at':    '\(\w\|[?!]\) \%#',
+    \ 'input': char . ' ',
+    \ 'mode':  'i',
+  \ })
+
+  call smartinput#define_rule({
+    \ 'char':  char,
+    \ 'at':    '\(\w\|[?!]\)\s*' . uchar . '\+\s\?\%#',
     \ 'input': '<C-r>=' . rule . '<CR>',
     \ 'mode':  'i',
   \ })
@@ -1106,7 +1122,7 @@ call smartinput#define_rule({
 
 "  Space around operators
 "-----------------------------------------------
-for op in ['+', '-', '/', '*', '=', '?', '%']
+for op in ['+', '-', '/', '*', '=', '%']
   let eop = escape(op, '*')
 
   call smartinput#map_to_trigger('i', op, op, op)
@@ -1175,7 +1191,7 @@ endfor
 call smartinput#define_rule({
   \ 'char':     '%',
   \ 'at':       '<\%#',
-  \ 'input':    '%  %<Left><Left>'
+  \ 'input':    '%  %<Left><Left>',
   \ 'mode':     'i',
   \ 'filetype': ['eruby'],
 \ })
