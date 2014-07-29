@@ -3,9 +3,10 @@ augroup custom_filetypes
 
   "  Remap
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.m   setf objc
-  autocmd BufNewFile,BufRead *.md  setf markdown
-  autocmd BufNewFile,BufRead *.pde setf processing
+  autocmd BufNewFile,BufRead *.m      setf objc
+  autocmd BufNewFile,BufRead *.md     setf markdown
+  autocmd BufNewFile,BufRead *.pde    setf processing
+  autocmd BufNewFile,BufRead *.coffee setf coffee  " wtf?
 
   autocmd FileType objcpp setlocal ft=objc
 
