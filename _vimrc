@@ -277,6 +277,7 @@ augroup END
 
 "=== Variables
 "==============================================================================================
+let g:dotfiles_path = $HOME . '/dotfiles'
 let g:hostname = substitute(hostname(), '[^\w.]', '', '')
 
 
@@ -784,7 +785,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:neocomplete#enable_insert_char_pre = 1
   set completeopt& completeopt-=preview
 
-  let $DICTDIR = $HOME . '/dotfiles/dict'
+  let $DICTDIR = g:dotfiles_path . '/dict'
   let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default':    '',
     \ 'vimshell':   $HOME . '/.vimshell_hist',
@@ -854,7 +855,7 @@ unlet s:bundle
 "==============================================================================================
 let g:neosnippet#disable_select_mode_mappings = 0
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory = '~/dotfiles/_vim/snippets/'
+let g:neosnippet#snippets_directory = g:dotfiles_path . '/_vim/snippets/'
 let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
 
 if has('conceal')
@@ -892,7 +893,7 @@ let g:syntastic_style_warning_symbol = '⚠'
 let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (%w)}'
 
 let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
-let g:syntastic_coffee_coffeelint_args = '-f ~/dotfiles/_coffeelintrc'
+let g:syntastic_coffee_coffeelint_args = '-f ' . g:dotfiles_path . '/_coffeelintrc'
 let g:syntastic_tex_checkers = ['lacheck']
 
 call CreastyCode('SyntasticErrorSign', 'red', '', '')
@@ -967,6 +968,24 @@ unlet s:bundle
 
 "=== SmartInput
 "==============================================================================================
+"  Disable SmartInput inside string literal
+"-----------------------------------------------
+function! s:disable_smartinput_inside_string(char)
+  call smartinput#define_rule({
+    \ 'char':  a:char,
+    \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
+    \ 'input': a:char,
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  a:char,
+    \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
+    \ 'input': a:char,
+    \ 'mode':  'i',
+  \ })
+endfunction
+
+
 "  Base
 "-----------------------------------------------
 let s:rules = {
@@ -986,6 +1005,8 @@ for [char, rule] in items(s:rules)
     \ 'input': '<C-R>=' . rule . '<CR>',
     \ 'mode':  'i',
   \ })
+
+  call s:disable_smartinput_inside_string(char)
 endfor
 
 unlet s:rules
@@ -1014,9 +1035,9 @@ call smartinput#define_rule({
 \ })
 
 
-"  Arithmetic operators
+"  Space around operators
 "-----------------------------------------------
-for op in ['+', '-', '/', '*', '=']
+for op in ['+', '-', '/', '*', '=', '?']
   let eop = escape(op, '*')
 
   call smartinput#map_to_trigger('i', op, op, op)
@@ -1051,23 +1072,25 @@ for op in ['+', '-', '/', '*', '=']
     \ 'input': op,
     \ 'mode':  'i',
   \ })
+
+  call s:disable_smartinput_inside_string(op)
 endfor
 
 " compound assignment operator
 call smartinput#define_rule({
   \ 'char':  '=',
-  \ 'at':    '\s[&+-/<>|]\%#',
+  \ 'at':    '\s[&|?+-/<>]\%#',
   \ 'input': '= ',
   \ 'mode':  'i',
 \ })
 call smartinput#define_rule({
   \ 'char':  '=',
-  \ 'at':    '[&+-/<>|]\s\%#',
+  \ 'at':    '[&|?+-/<>]\s\%#',
   \ 'input': '<BS>= ',
   \ 'mode':  'i',
 \ })
 
-" file path
+" slash as non arithmetic operators
 call smartinput#define_rule({
   \ 'char':  '/',
   \ 'at':    '\(^\|\S\)/\S[^/]*\%#',
@@ -1086,36 +1109,38 @@ call smartinput#define_rule({
 "-----------------------------------------------
 call smartinput#map_to_trigger('i', '<BS>', '<BS>', '<BS>')
 
+" delete whole pair
 call smartinput#define_rule({
   \ 'char':  '<BS>',
   \ 'at':    '(\s*)\%#',
-  \ 'input': '<C-O>dF(<BS>',
+  \ 'input': '<C-o>dF(<BS>',
   \ 'mode':  'i',
 \ })
 call smartinput#define_rule({
   \ 'char':  '<BS>',
   \ 'at':    '{\s*}\%#',
-  \ 'input': '<C-O>dF{<BS>',
+  \ 'input': '<C-o>dF{<BS>',
   \ 'mode':  'i',
 \ })
 call smartinput#define_rule({
   \ 'char':  '<BS>',
   \ 'at':    '<\s*>\%#',
-  \ 'input': '<C-O>dF<<BS>',
+  \ 'input': '<C-o>dF<<BS>',
   \ 'mode':  'i',
 \ })
 call smartinput#define_rule({
   \ 'char':  '<BS>',
   \ 'at':    '\[\s*\]\%#',
-  \ 'input': '<C-O>dF[<BS>',
+  \ 'input': '<C-o>dF[<BS>',
   \ 'mode':  'i',
 \ })
 
-for op in ['<', '>', '+', '-', '/', '&', '%', '\*', '|']
+" delete with spaces around
+for op in ['<', '>', '+', '-', '/', '[&|]\{1,2\}', '%', '\*', '?', '\([&|]\{1,2\}\|[?+-/<>]\)=']
   call smartinput#define_rule({
     \ 'char':  '<BS>',
     \ 'at':    '\s' . op . '\s\%#',
-    \ 'input': '<BS><BS><BS>',
+    \ 'input': '<C-o>dF<Space><BS>',
     \ 'mode':  'i',
   \ })
 endfor
@@ -1192,8 +1217,6 @@ xnoremap <silent> al :<C-u>call <SID>NextTextObject('a', '?')<CR>
 onoremap <silent> il :<C-u>call <SID>NextTextObject('i', '?')<CR>
 xnoremap <silent> il :<C-u>call <SID>NextTextObject('i', '?')<CR>
 
-" Stolen from Steve Losh
-" https://github.com/sjl/dotfiles/blob/master/vim/vimrc#L1380
 function! s:NextTextObject(motion, dir)
   let c = nr2char(getchar())
   let d = ''
@@ -1844,9 +1867,8 @@ command! ScopeInfo call s:get_syn_info()
 
 "=== Computer depend settings
 "==============================================================================================
-let s:host_vimrc = $HOME . '/dotfiles/_vim/computers/' . g:hostname
+let s:host_vimrc = g:dotfiles_path . '/_vim/computers/' . g:hostname
 
 if filereadable(s:host_vimrc)
   execute 'source ' . s:host_vimrc
 endif
-
