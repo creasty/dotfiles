@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cp ~/dotfiles/font/* ~/Library/Fonts
+
