@@ -1094,14 +1094,6 @@ endfor
 
 unlet s:rules
 
-" html tag
-call smartinput#define_rule({
-  \ 'char':  '>',
-  \ 'at':    ' < \%#',
-  \ 'input': '<BS><BS><BS><><Left>',
-  \ 'mode':  'i',
-\ })
-
 " ruby block
 call smartinput#define_rule({
   \ 'char':     '<Bar>',
