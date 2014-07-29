@@ -560,7 +560,7 @@ inoremap <C-f> <Right>
 inoremap <expr> <C-a> (col('.') == 2) ? "\<Left>" : "\<C-o>g0"
 inoremap <C-e> <C-o>g$
 inoremap <C-d> <Del>
-inoremap <silent> <C-h> <C-g>u<C-h>
+" inoremap <C-h> <C-g>u<C-h>
 inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
 
 cnoremap <C-a> <Home>
@@ -834,7 +834,6 @@ function! s:bundle.hooks.on_source(bundle)
   imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
   imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
   inoremap <silent> <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
-  inoremap <silent> <expr> <C-h> pumvisible() ? neocomplete#cancel_popup() : "\<C-g>u\<C-h>"
 
   " omni completion
   autocmd vimrc FileType css
@@ -933,7 +932,6 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 "=== Plugin: Smartchr
 "==============================================================================================
 inoremap <expr> , smartchr#loop(', ', ',')
-inoremap <buffer> <expr> ; smartchr#one_of(';', ';<cr>')
 
 autocmd vimrc FileType c,cpp
   \ inoremap <buffer> <expr> . smartchr#loop('.', '->', '...')
@@ -945,22 +943,182 @@ autocmd vimrc FileType vim
   \ inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..', '...')
 
 autocmd vimrc FileType haskell
-  \ inoremap <buffer> <expr> + smartchr#loop('+', ' ++ ')
-  \ | inoremap <buffer> <expr> - smartchr#loop('-', ' -> ', ' <- ')
-  \ | inoremap <buffer> <expr> $ smartchr#loop(' $ ', '$')
-  \ | inoremap <buffer> <expr> \ smartchr#loop('\ ', '\')
+  \ inoremap <buffer> <expr> $ smartchr#loop(' $ ', '$')
   \ | inoremap <buffer> <expr> : smartchr#loop(':', ' :: ', ' : ')
   \ | inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..')
 
 autocmd vimrc FileType scala
-  \ inoremap <buffer> <expr> - smartchr#loop('-', ' -> ', ' <- ')
-  \ | inoremap <buffer> <expr> = smartchr#loop(' = ', '=', ' => ')
-  \ | inoremap <buffer> <expr> : smartchr#loop(': ', ':', ' :: ')
+  \ inoremap <buffer> <expr> : smartchr#loop(': ', ':', ' :: ')
   \ | inoremap <buffer> <expr> . smartchr#loop('.', ' => ')
 
 autocmd vimrc FileType eruby
   \ inoremap <buffer> <expr> > smartchr#loop('>', '%>')
   \ | inoremap <buffer> <expr> < smartchr#loop('<', '<%', '<%=')
+
+
+"=== Plugin: SmartInput / Endwise
+"==============================================================================================
+let s:bundle = neobundle#get('vim-smartinput-endwise')
+function! s:bundle.hooks.on_source(bundle)
+  call smartinput_endwise#define_default_rules()
+endfunction
+unlet s:bundle
+
+
+"=== SmartInput
+"==============================================================================================
+"  Base
+"-----------------------------------------------
+let s:rules = {
+  \ '<':     "smartchr#loop(' < ', ' << ', '<')",
+  \ '>':     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')",
+  \ '%':     "smartchr#loop(' % ', '%')",
+  \ '&':     "smartchr#loop(' & ', ' && ', '&')",
+  \ '<Bar>': "smartchr#loop(' | ', ' || ', '|')",
+\ }
+
+for [char, rule] in items(s:rules)
+  call smartinput#map_to_trigger('i', char, char, char)
+
+  call smartinput#define_rule({
+    \ 'char':  char,
+    \ 'at':    '\%#',
+    \ 'input': '<C-R>=' . rule . '<CR>',
+    \ 'mode':  'i',
+  \ })
+endfor
+
+unlet s:rules
+
+
+"  Grater than
+"-----------------------------------------------
+" html tag
+call smartinput#define_rule({
+  \ 'char':  '>',
+  \ 'at':    ' < \%#',
+  \ 'input': '<BS><BS><BS><><Left>',
+  \ 'mode':  'i',
+\ })
+
+
+"  Bar
+"-----------------------------------------------
+" ruby block
+call smartinput#define_rule({
+  \ 'char':     '<Bar>',
+  \ 'at':       '\({\|do\)\s*\%#',
+  \ 'input':    '<Bar><Bar><Left>',
+  \ 'mode':     'i',
+  \ 'filetype': ['ruby'],
+\ })
+
+
+"  Arithmetic operators
+"-----------------------------------------------
+for op in ['+', '-', '/', '*', '=']
+  let eop = escape(op, '*')
+
+  call smartinput#map_to_trigger('i', op, op, op)
+
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    '\%#',
+    \ 'input': ' ' . op . ' ',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    '\s' . eop . '\%#',
+    \ 'input': op . ' ',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    eop . '\s\%#',
+    \ 'input': '<BS>' . op . ' ',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    eop . '\%#',
+    \ 'input': op,
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    '^\s*\%#',
+    \ 'input': op,
+    \ 'mode':  'i',
+  \ })
+endfor
+
+" compound assignment operator
+call smartinput#define_rule({
+  \ 'char':  '=',
+  \ 'at':    '\s[&+-/<>|]\%#',
+  \ 'input': '= ',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '=',
+  \ 'at':    '[&+-/<>|]\s\%#',
+  \ 'input': '<BS>= ',
+  \ 'mode':  'i',
+\ })
+
+" file path
+call smartinput#define_rule({
+  \ 'char':  '/',
+  \ 'at':    '\(^\|\S\)/\S[^/]*\%#',
+  \ 'input': '/',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '/',
+  \ 'at':    '\W\%#',
+  \ 'input': '/',
+  \ 'mode':  'i',
+\ })
+
+
+"  Backspace
+"-----------------------------------------------
+call smartinput#map_to_trigger('i', '<BS>', '<BS>', '<BS>')
+
+call smartinput#define_rule({
+  \ 'char':  '<BS>',
+  \ 'at':    '(\s*)\%#',
+  \ 'input': '<C-O>dF(<BS>',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '<BS>',
+  \ 'at':    '{\s*}\%#',
+  \ 'input': '<C-O>dF{<BS>',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '<BS>',
+  \ 'at':    '<\s*>\%#',
+  \ 'input': '<C-O>dF<<BS>',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '<BS>',
+  \ 'at':    '\[\s*\]\%#',
+  \ 'input': '<C-O>dF[<BS>',
+  \ 'mode':  'i',
+\ })
+
+for op in ['<', '>', '+', '-', '/', '&', '%', '\*', '|']
+  call smartinput#define_rule({
+    \ 'char':  '<BS>',
+    \ 'at':    '\s' . op . '\s\%#',
+    \ 'input': '<BS><BS><BS>',
+    \ 'mode':  'i',
+  \ })
+endfor
 
 
 "=== Plugin: Operator replace
@@ -1311,10 +1469,14 @@ let g:switch_custom_definitions = [
   \ ['it', 'specify'],
   \ ['describe', 'context'],
   \ ['and', 'or'],
-  \ ['if', 'unless']
+  \ ['if', 'unless'],
+  \ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+  \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
+  \ ['日', '土', '金', '木', '水', '火', '月'],
+  \ ['NeoBundle', 'NeoBundleLazy', 'NeoBundleDisable'],
 \ ]
 
-nnoremap - :Switch<CR>
+nnoremap <silent> - :Switch<CR>
 
 
 "=== Plugin: Altr
@@ -1352,15 +1514,6 @@ nnoremap <Leader>rit  :RInlineTemp<CR>
 vnoremap <Leader>rrlv :RRenameLocalVariable<CR>
 vnoremap <Leader>rriv :RRenameInstanceVariable<CR>
 vnoremap <Leader>rem  :RExtractMethod<CR>
-
-
-"=== Plugin: SmartInput / Endwise
-"==============================================================================================
-let s:bundle = neobundle#get('vim-smartinput-endwise')
-function! s:bundle.hooks.on_source(bundle)
-  call smartinput_endwise#define_default_rules()
-endfunction
-unlet s:bundle
 
 
 "=== Plugin: Sigunature
