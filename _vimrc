@@ -1040,10 +1040,6 @@ autocmd vimrc FileType scala
   \ inoremap <buffer> <expr> : smartchr#loop(': ', ':', ' :: ')
   \ | inoremap <buffer> <expr> . smartchr#loop('.', ' => ')
 
-autocmd vimrc FileType eruby
-  \ inoremap <buffer> <expr> > smartchr#loop('>', '%>')
-  \ | inoremap <buffer> <expr> < smartchr#loop('<', '<%', '<%=')
-
 
 "=== Plugin: SmartInput / Endwise
 "==============================================================================================
@@ -1074,12 +1070,11 @@ function! s:disable_smartinput_inside_string(char)
 endfunction
 
 
-"  Base
+"  Looping with Smartchr
 "-----------------------------------------------
 let s:rules = {
   \ '<':     "smartchr#loop(' < ', ' << ', '<')",
   \ '>':     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')",
-  \ '%':     "smartchr#loop(' % ', '%')",
   \ '&':     "smartchr#loop(' & ', ' && ', '&')",
   \ '<Bar>': "smartchr#loop(' | ', ' || ', '|')",
 \ }
@@ -1090,7 +1085,7 @@ for [char, rule] in items(s:rules)
   call smartinput#define_rule({
     \ 'char':  char,
     \ 'at':    '\%#',
-    \ 'input': '<C-R>=' . rule . '<CR>',
+    \ 'input': '<C-r>=' . rule . '<CR>',
     \ 'mode':  'i',
   \ })
 
@@ -1099,9 +1094,6 @@ endfor
 
 unlet s:rules
 
-
-"  Grater than
-"-----------------------------------------------
 " html tag
 call smartinput#define_rule({
   \ 'char':  '>',
@@ -1110,9 +1102,6 @@ call smartinput#define_rule({
   \ 'mode':  'i',
 \ })
 
-
-"  Bar
-"-----------------------------------------------
 " ruby block
 call smartinput#define_rule({
   \ 'char':     '<Bar>',
@@ -1125,20 +1114,20 @@ call smartinput#define_rule({
 
 "  Space around operators
 "-----------------------------------------------
-for op in ['+', '-', '/', '*', '=', '?']
+for op in ['+', '-', '/', '*', '=', '?', '%']
   let eop = escape(op, '*')
 
   call smartinput#map_to_trigger('i', op, op, op)
 
   call smartinput#define_rule({
     \ 'char':  op,
-    \ 'at':    '\%#',
+    \ 'at':    '\w\%#',
     \ 'input': ' ' . op . ' ',
     \ 'mode':  'i',
   \ })
   call smartinput#define_rule({
     \ 'char':  op,
-    \ 'at':    '\s' . eop . '\%#',
+    \ 'at':    '\(^\|\w\)\s' . eop . '\%#',
     \ 'input': op . ' ',
     \ 'mode':  'i',
   \ })
@@ -1146,18 +1135,6 @@ for op in ['+', '-', '/', '*', '=', '?']
     \ 'char':  op,
     \ 'at':    eop . '\s\%#',
     \ 'input': '<BS>' . op . ' ',
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    eop . '\%#',
-    \ 'input': op,
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    '^\s*\%#',
-    \ 'input': op,
     \ 'mode':  'i',
   \ })
 
@@ -1185,11 +1162,37 @@ call smartinput#define_rule({
   \ 'input': '/',
   \ 'mode':  'i',
 \ })
+
+" decrement/increment operators
+for op in ['+', '-']
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    '\(^\|\s\)' . op . '\s\%#',
+    \ 'input': '<BS><BS><BS>' . op . op,
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    '\(^\|[^' . op . ']\)' . op . op . '\%#',
+    \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
+    \ 'mode':  'i',
+  \ })
+endfor
+
+" erb
 call smartinput#define_rule({
-  \ 'char':  '/',
-  \ 'at':    '\W\%#',
-  \ 'input': '/',
-  \ 'mode':  'i',
+  \ 'char':     '%',
+  \ 'at':       '<\%#',
+  \ 'input':    '%  %<Left><Left>'
+  \ 'mode':     'i',
+  \ 'filetype': ['eruby'],
+\ })
+call smartinput#define_rule({
+  \ 'char':     '%',
+  \ 'at':       '<%[=-]\? \%#',
+  \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['eruby'],
 \ })
 
 
@@ -1224,7 +1227,7 @@ call smartinput#define_rule({
 \ })
 
 " delete with spaces around
-for op in ['<', '>', '+', '-', '/', '[&|]\{1,2\}', '%', '\*', '?', '\([&|]\{1,2\}\|[?+-/<>]\)=']
+for op in ['+', '-', '\*', '/', '%', '?', '[&|<>]\{1,2}', '>>>', '\([&|<>]\{1,2}\|[?+-\*/%]\)=']
   call smartinput#define_rule({
     \ 'char':  '<BS>',
     \ 'at':    '\s' . op . '\s\%#',
