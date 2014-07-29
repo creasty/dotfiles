@@ -1084,7 +1084,7 @@ for [char, rule] in items(s:rules)
 
   call smartinput#define_rule({
     \ 'char':  char,
-    \ 'at':    '\(\w\|' . char . '\s\?\)\%#',
+    \ 'at':    '\(\w\|' . substitute(char, '<Bar>', '|', '') . '\s\?\)\%#',
     \ 'input': '<C-r>=' . rule . '<CR>',
     \ 'mode':  'i',
   \ })
