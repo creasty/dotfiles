@@ -170,8 +170,6 @@ NeoBundleLazy 'Shougo/vinarise.vim', {
 NeoBundle 'kana/vim-fakeclip'
 " switch to the missing file without interaction
 NeoBundle 'kana/vim-altr'
-" change working directory to project root
-NeoBundle 'airblade/vim-rooter'
 " run commands quickly
 NeoBundle 'thinca/vim-quickrun'
 " create your own submodes
@@ -467,6 +465,9 @@ set title titlestring=
 set titlestring+=#%n " buffer number
 set titlestring+=\ -\ %t%m%r%h%w " file name and flags
 set titlestring+=\ (%{substitute(expand('%:p:h'),\ $HOME,\ '~',\ '')}) " path
+
+" find file with suffixes
+set suffixesadd& suffixesadd+=.js,.coffee,.swift,.scss
 
 
 "=== Apperance
@@ -856,6 +857,131 @@ if executable('osascript')
 
   autocmd vimrc FocusGained *
     \ call system(g:force_alphanumeric_input_command)
+endif
+
+
+"=== Project root directory
+"==============================================================================================
+if exists('+autochdir')
+  set noautochdir
+endif
+
+let g:current_root_directory = ''
+
+let s:root_patterns = [
+  \ '.git',
+  \ '.git/',
+  \ 'Rakefile',
+  \ 'Gemfile',
+  \ 'package.json',
+  \ '.vimprojectroot',
+  \ '*.xcodeproj'
+\ ]
+
+function! s:get_root_directory()
+  let dir_current_file = fnameescape(expand('%:p:h'))
+
+  for pattern in s:root_patterns
+    if stridx(pattern, '/') != -1
+      let match = finddir(pattern, dir_current_file . ';')
+
+      if !empty(match)
+        return fnamemodify(match, ':p:h:h')
+      endif
+    else
+      let match = findfile(pattern, dir_current_file . ';')
+
+      if !empty(match)
+        return fnamemodify(match, ':p:h')
+      endif
+    endif
+  endfor
+
+  return ''
+endfunction
+
+function! s:can_change_directory()
+  return match(expand('%:p'), '^\w\+://.*') == -1 && empty(&buftype)
+endfunction
+
+function! s:change_directory(dir)
+  let edir = fnameescape(a:dir)
+
+  exec 'setlocal path-=' . edir
+  let g:current_root_directory = a:dir
+  exec 'setlocal path+=' . edir
+
+  exec 'cd ' . edir
+endfunction
+
+function! s:change_to_root_directory()
+  if !s:can_change_directory()
+    return
+  endif
+
+  let dir = s:get_root_directory()
+
+  if empty(dir)
+    " change directory for non project files
+    " let dir = expand('%:p:h')
+    return
+  endif
+
+  call s:change_directory(dir)
+endfunction
+
+autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter *
+  \ call <SID>change_to_root_directory()
+
+
+"=== Image tags
+"==============================================================================================
+if executable('identify')
+  let s:image_tag_template = {
+    \ 'html': '<img src="%p" width="%w" height="%h" alt="">',
+  \ }
+
+  function! s:get_image_size(file)
+    let result = system('identify -format "%w %h" "' . fnameescape(a:file) . '"')
+
+    if v:shell_error == '0'
+      return result
+    else
+      return ''
+    endif
+  endfunction
+
+  " FIXME: not working
+  function! s:insert_image_tag(file)
+    let size = s:get_image_size(a:file)
+
+    if empty(size)
+      return
+    endif
+
+    let dim = split(size)
+
+    echo dim
+    echo &filetype
+
+    if empty(&filetype)
+      let template = s:image_tag_template['*']
+    else
+      let template = s:image_tag_template[&filetype]
+    endif
+
+    if !template
+      return
+    endif
+
+    let template = substitute(template, '%p', a:file)
+    let template = substitute(template, '%w', dim[0])
+    let template = substitute(template, '%h', dim[1])
+
+    normal! 'i' . template . "\<ESC>"
+  endfunction
+
+  command! -nargs=1 -complete=file ImageTagInsert call <SID>insert_image_tag(<f-args>)
 endif
 
 
@@ -1527,16 +1653,6 @@ function! s:NERDTreeToggleOrFocus()
     return ":NERDTreeTabsToggle\<CR>"
   endif
 endfunction
-
-
-"=== Plugin: Rooter
-"==============================================================================================
-let g:rooter_patterns = ['.git', '.git/', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot', '*.xcodeproj']
-" let g:rooter_use_lcd = 1
-let g:rooter_manual_only = 1
-let g:rooter_change_directory_for_non_project_files = 0
-
-autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter * :Rooter
 
 
 "=== Plugin: Submode
