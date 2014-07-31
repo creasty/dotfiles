@@ -6,9 +6,11 @@ if ! [ -d ~/dotfiles/.git ]; then
   git clone --recursive git@github.com:creasty/dotfiles.git
 fi
 
-source ~/dotfiles/script/install
-source ~/dotfiles/script/link
-source ~/dotfiles/script/shell
-source ~/dotfiles/script/app
-source ~/dotfiles/script/font
-source ~/dotfiles/script/osx
+cd ~/dotfiles
+
+sh ./script/install
+sh ./script/link
+sh ./script/shell
+sh ./script/app
+sh ./script/font
+sh ./script/osx

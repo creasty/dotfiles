@@ -14,78 +14,78 @@ tap supermomonga/homebrew-splhack || true
 tap peco/peco || true
 
 # install brew-packages
-install ansible
-install brew-cask
-install chrome-cli
-install clisp
-install ctags
-install ctags-objc-ja --HEAD --enable-japanese-support
-install direnv
-install eot-utils
-install fontconfig
-install fontforge
-install freetype
-install gdbm
-install gettext
-install ghostscript
-install git
-install git-flow
-install graphviz
-install hub
-install imagemagick
-install jbig2dec
-install jpeg
-install jq
-install lua
-install macvim --HEAD --with-cscope --with-lua --override-system-vi
-install massren && massren --config editor vim
-install mercurial
-install mysql
-install ngrep
-install node
-install optipng
-install peco
-install pcre
-install phantomjs
-install php55
-install python3
-install q
-install rbenv
-install reattach-to-user-namespace
-install sqlite
-install the_silver_searcher
-install tig
-install tmux
-install tree
-install w3m
-install webkit2png
-install wget --enable-iri
-install zsh
+install ansible || true
+install brew-cask || true
+install chrome-cli || true
+install clisp || true
+install ctags || true
+install ctags-objc-ja --HEAD --enable-japanese-support || true
+install direnv || true
+install eot-utils || true
+install fontconfig || true
+install fontforge || true
+install freetype || true
+install gdbm || true
+install gettext || true
+install ghostscript || true
+install git || true
+install git-flow || true
+install graphviz || true
+install hub || true
+install imagemagick || true
+install jbig2dec || true
+install jpeg || true
+install jq || true
+install lua || true
+install macvim --HEAD --with-cscope --with-lua --override-system-vi || true
+install massren && massren --config editor vim || true
+install mercurial || true
+install mysql || true
+install ngrep || true
+install node || true
+install optipng || true
+install peco || true
+install pcre || true
+install phantomjs || true
+install php55 || true
+install python3 || true
+install q || true
+install rbenv || true
+install reattach-to-user-namespace || true
+install sqlite || true
+install the_silver_searcher || true
+install tig || true
+install tmux || true
+install tree || true
+install w3m || true
+install webkit2png || true
+install wget --enable-iri || true
+install zsh || true
 
 # install cask-packages
-cask install adobe-creative-cloud
-cask install alfred
-cask install dropbox
-cask install firefox
-cask install flip4mac
-cask install google-chrome
-cask install google-hangouts
-cask install google-japanese-ime
-cask install growlnotify
-cask install imagealpha
-cask install imageoptim
-cask install iterm2
-cask install karabiner
-cask install ngrok
-cask install seil
-cask install sequel-pro
-cask install skype
-cask install sophos-antivirus-home-edition
-cask install transmission
-cask install truecrypt
-cask install vagrant
-cask install virtualbox
-cask install xtrafinder
+cask install adobe-creative-cloud || true
+cask install alfred || true
+cask install dropbox || true
+cask install firefox || true
+cask install flip4mac || true
+cask install google-chrome || true
+cask install google-hangouts || true
+cask install google-japanese-ime || true
+cask install growlnotify || true
+cask install imagealpha || true
+cask install imageoptim || true
+cask install iterm2 || true
+cask install karabiner || true
+cask install ngrok || true
+cask install seil || true
+cask install sequel-pro || true
+cask install skype || true
+cask install sophos-antivirus-home-edition || true
+cask install transmission || true
+cask install truecrypt || true
+cask install vagrant || true
+cask install virtualbox || true
+cask install xtrafinder || true
 
 # for alfred
 cask alfred link
