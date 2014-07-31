@@ -1,13 +1,6 @@
-
 for file in ~/.{exports,aliases,functions,extra}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
 
-if [ -d ${HOME}/.rbenv  ]; then
-  export PATH=$PATH:$HOME/.rvm/bin:$HOME/.rbenv/shims
-  eval "$(rbenv init -)"
-fi
-
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
