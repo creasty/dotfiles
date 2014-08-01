@@ -93,6 +93,14 @@ NeoBundle 'sickill/vim-pasta'
 NeoBundle 'tpope/vim-speeddating'
 " true Sublime Text multiple selection in Vim
 NeoBundle 'terryma/vim-multiple-cursors'
+" toggle ruby's postfix notations of if/unless/while/until
+NeoBundleLazy 'Qureana/backend_if', {
+  \ 'autoload': {
+    \ 'filetypes': ['ruby'],
+    \ 'commands': ['ToggleStatement'],
+  \ },
+\ }
+
 
 "  Completion
 "-----------------------------------------------
@@ -1772,6 +1780,12 @@ nnoremap <Leader>rit  :RInlineTemp<CR>
 vnoremap <Leader>rrlv :RRenameLocalVariable<CR>
 vnoremap <Leader>rriv :RRenameInstanceVariable<CR>
 vnoremap <Leader>rem  :RExtractMethod<CR>
+
+
+"=== Plugin: backend_if
+"==============================================================================================
+autocmd vimrc FileType ruby
+  \ nnoremap <Leader>ts :ToggleStatement<CR>
 
 
 "=== Plugin: Sigunature
