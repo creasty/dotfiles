@@ -303,6 +303,11 @@ NeoBundleLazy 'kana/vim-filetype-haskell', {
 " NeoBundleLazy 'toyamarinyon/vim-swift', {
 "   \ 'autoload': { 'filetypes': ['swift'] }
 " \ }
+" go development plugin
+NeoBundleLazy 'fatih/vim-go', {
+  \ 'autoload': { 'filetypes': ['go'] }
+\ }
+
 
 filetype plugin indent on
 
@@ -1786,6 +1791,18 @@ vnoremap <Leader>rem  :RExtractMethod<CR>
 "==============================================================================================
 autocmd vimrc FileType ruby
   \ nnoremap <Leader>ts :ToggleStatement<CR>
+
+
+"=== Plugin: vim-go
+"==============================================================================================
+let s:bundle = neobundle#get('vim-go')
+function! s:bundle.hooks.on_source(bundle)
+  let g:go_auto_type_info = 0
+  let g:go_disable_autoinstall = 1
+  let g:go_snippet_engine = 'neosnippet'
+  let g:go_fmt_autosave = 0
+endfunction
+unlet s:bundle
 
 
 "=== Plugin: Sigunature
