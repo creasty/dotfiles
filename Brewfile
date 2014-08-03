@@ -1,4 +1,3 @@
-
 # update homebrew
 update
 
@@ -13,6 +12,32 @@ tap laurent22/massren || true
 tap peco/peco || true
 tap phinze/homebrew-cask || true
 tap supermomonga/homebrew-splhack || true
+
+# install cask-packages
+cask install adobe-creative-cloud || true
+cask install alfred || true
+cask install dropbox || true
+cask install firefox || true
+cask install flip4mac || true
+cask install google-chrome || true
+cask install google-hangouts || true
+cask install google-japanese-ime || true
+cask install growlnotify || true
+cask install imagealpha || true
+cask install imageoptim || true
+cask install iterm2 || true
+cask install karabiner || true
+cask install ngrok || true
+cask install seil || true
+cask install sequel-pro || true
+cask install skype || true
+cask install sophos-antivirus-home-edition || true
+cask install transmission || true
+cask install truecrypt || true
+cask install vagrant || true
+cask install virtualbox || true
+cask install xquartz || true
+cask install xtrafinder || true
 
 # install brew-packages
 install ansible || true
@@ -65,32 +90,6 @@ install webkit2png || true
 install wget --enable-iri || true
 install zsh || true
 
-# install cask-packages
-cask install adobe-creative-cloud || true
-cask install alfred || true
-cask install dropbox || true
-cask install firefox || true
-cask install flip4mac || true
-cask install google-chrome || true
-cask install google-hangouts || true
-cask install google-japanese-ime || true
-cask install growlnotify || true
-cask install imagealpha || true
-cask install imageoptim || true
-cask install iterm2 || true
-cask install karabiner || true
-cask install ngrok || true
-cask install seil || true
-cask install sequel-pro || true
-cask install skype || true
-cask install sophos-antivirus-home-edition || true
-cask install transmission || true
-cask install truecrypt || true
-cask install vagrant || true
-cask install virtualbox || true
-cask install xquartz || true
-cask install xtrafinder || true
-
 # for alfred
 cask alfred link
 
@@ -99,4 +98,3 @@ cask alfred link
 
 # remove outdated versions from the cellar
 cleanup
-
