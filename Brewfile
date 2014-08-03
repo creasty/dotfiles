@@ -6,12 +6,13 @@ update
 upgrade
 
 # add repositories
-tap phinze/homebrew-cask || true
-tap laurent22/massren || true
 tap homebrew/dupes || true
+tap homebrew/science || true
 tap josegonzalez/php || true
-tap supermomonga/homebrew-splhack || true
+tap laurent22/massren || true
 tap peco/peco || true
+tap phinze/homebrew-cask || true
+tap supermomonga/homebrew-splhack || true
 
 # install brew-packages
 install ansible || true
@@ -30,6 +31,7 @@ install gettext || true
 install ghostscript || true
 install git || true
 install git-flow || true
+install go || true
 install graphviz || true
 install hub || true
 install imagemagick || true
@@ -44,12 +46,13 @@ install mysql || true
 install ngrep || true
 install node || true
 install optipng || true
-install peco || true
 install pcre || true
+install peco || true
 install phantomjs || true
 install php55 || true
 install python3 || true
 install q || true
+install r || true
 install rbenv || true
 install reattach-to-user-namespace || true
 install sqlite || true
@@ -85,6 +88,7 @@ cask install transmission || true
 cask install truecrypt || true
 cask install vagrant || true
 cask install virtualbox || true
+cask install xquartz || true
 cask install xtrafinder || true
 
 # for alfred

@@ -226,14 +226,14 @@ endfun
 "==============================================================================================
 if has('gui_running')
   let g:creasty_code_palette = {
-    \ 'foreground':  'aaaaaa',
+    \ 'foreground':  'a0a0a0',
     \ 'comment':     '666666',
     \ 'selection':   '424242',
     \ 'line':        '2a2a2a',
     \ 'window':      '262626',
-    \ 'black2':      '191919',
-    \ 'black':       '131313',
-    \ 'background':  '000000',
+    \ 'black2':      '222222',
+    \ 'black':       '191919',
+    \ 'background':  '111111',
     \
     \ 'red':         'ae7071',
     \ 'orange':      'bb8d6f',
@@ -367,186 +367,185 @@ call CreastyCode('vimCommentTitle', 'green', '', '')
 
 "=== Highlighting: C
 "==============================================================================================
-call CreastyCode('cType', 'yellow', '', '')
-call CreastyCode('cStorageClass', 'purple', '', '')
 call CreastyCode('cConditional', 'purple', '', '')
+call CreastyCode('cDefine', 'purple', '', '')
+call CreastyCode('cFloat', 'orange', '', '')
+call CreastyCode('cInclude', 'purple', '', '')
+call CreastyCode('cNumber', 'orange', '', '')
 call CreastyCode('cRepeat', 'purple', '', '')
 call CreastyCode('cSpecial', 'purple', '', '')
 call CreastyCode('cStatement', 'purple', '', '')
-call CreastyCode('cDefine', 'purple', '', '')
-call CreastyCode('cInclude', 'purple', '', '')
-call CreastyCode('cNumber', 'orange', '', '')
-call CreastyCode('cFloat', 'orange', '', '')
+call CreastyCode('cStorageClass', 'purple', '', '')
+call CreastyCode('cType', 'yellow', '', '')
 
 
 "=== Highlighting: Objective-C
 "==============================================================================================
 call CreastyCode('cocoaClass', 'yellow', '', '')
-call CreastyCode('objcSubclass', 'yellow', '', '')
+call CreastyCode('objcConstant', 'yellow', '', '')
+call CreastyCode('objcDirective', 'aqua', '', '')
+call CreastyCode('objcImport', 'purple', '', '')
 call CreastyCode('objcMethodColon', 'red', '', '')
 call CreastyCode('objcObjDef', 'purple', '', '')
-call CreastyCode('objcImport', 'purple', '', '')
-call CreastyCode('objcConstant', 'yellow', '', '')
-call CreastyCode('objcSuperclass', 'yellow', '', '')
 call CreastyCode('objcProtocolList', 'aqua', '', '')
-call CreastyCode('objcDirective', 'aqua', '', '')
+call CreastyCode('objcSubclass', 'yellow', '', '')
+call CreastyCode('objcSuperclass', 'yellow', '', '')
 
 
 "=== Highlighting: PHP
 "==============================================================================================
-call CreastyCode('phpVarSelector', 'red', '', '')
-call CreastyCode('phpKeyword', 'purple', '', '')
-call CreastyCode('phpRepeat', 'purple', '', '')
 call CreastyCode('phpConditional', 'purple', '', '')
-call CreastyCode('phpStatement', 'purple', '', '')
+call CreastyCode('phpKeyword', 'purple', '', '')
 call CreastyCode('phpMemberSelector', 'foreground', '', '')
+call CreastyCode('phpRepeat', 'purple', '', '')
+call CreastyCode('phpStatement', 'purple', '', '')
+call CreastyCode('phpVarSelector', 'red', '', '')
 
 
 "=== Highlighting: Ruby
 "==============================================================================================
-call CreastyCode('rubySymbol', 'red', '', '')
-call CreastyCode('rubyConstant', 'yellow', '', '')
-call CreastyCode('rubyAttribute', 'foreground', '', '')
-call CreastyCode('rubyInclude', 'blue', '', '')
-call CreastyCode('rubyLocalVariableOrMethod', 'blue', '', '')
-call CreastyCode('rubyCurlyBlock', 'foreground', '', '')
-call CreastyCode('rubyStringDelimiter', 'green', '', '')
-call CreastyCode('rubyInterpolationDelimiter', 'purple', '', '')
-call CreastyCode('rubyConditional', 'purple', '', '')
-call CreastyCode('rubyRepeat', 'purple', '', '')
-call CreastyCode('rubyRegexp', 'aqua', '', '')
-call CreastyCode('rubyRegexpDelimiter', 'aqua', '', '')
-call CreastyCode('rubyRegexpAnchor', 'green', '', '')
-call CreastyCode('rubyControl', 'purple', '', '')
-call CreastyCode('rubyKeyword', 'purple', '', '')
-call CreastyCode('rubyBoolean', 'orange', '', '')
-call CreastyCode('rubyInteger', 'orange', '', '')
 call CreastyCode('rubyAccess', 'purple', '', '')
+call CreastyCode('rubyAttribute', 'foreground', '', '')
+call CreastyCode('rubyBoolean', 'orange', '', '')
+call CreastyCode('rubyConditional', 'purple', '', '')
+call CreastyCode('rubyConstant', 'yellow', '', '')
+call CreastyCode('rubyControl', 'purple', '', '')
+call CreastyCode('rubyCurlyBlock', 'foreground', '', '')
+call CreastyCode('rubyInclude', 'blue', '', '')
+call CreastyCode('rubyInteger', 'orange', '', '')
+call CreastyCode('rubyInterpolationDelimiter', 'purple', '', '')
+call CreastyCode('rubyKeyword', 'purple', '', '')
+call CreastyCode('rubyLocalVariableOrMethod', 'blue', '', '')
+call CreastyCode('rubyRegexp', 'aqua', '', '')
+call CreastyCode('rubyRegexpAnchor', 'green', '', '')
+call CreastyCode('rubyRegexpDelimiter', 'aqua', '', '')
+call CreastyCode('rubyRepeat', 'purple', '', '')
+call CreastyCode('rubyStringDelimiter', 'green', '', '')
+call CreastyCode('rubySymbol', 'red', '', '')
 
 
 "=== Highlighting: Python
 "==============================================================================================
-call CreastyCode('pythonInclude', 'purple', '', '')
-call CreastyCode('pythonStatement', 'purple', '', '')
 call CreastyCode('pythonConditional', 'purple', '', '')
-call CreastyCode('pythonRepeat', 'purple', '', '')
 call CreastyCode('pythonException', 'purple', '', '')
 call CreastyCode('pythonFunction', 'blue', '', '')
+call CreastyCode('pythonInclude', 'purple', '', '')
+call CreastyCode('pythonRepeat', 'purple', '', '')
+call CreastyCode('pythonStatement', 'purple', '', '')
 
 
 "=== Highlighting: CoffeeScript
 "==============================================================================================
-call CreastyCode('coffeeKeyword', 'purple', '', '')
-call CreastyCode('coffeeRepeat', 'purple', '', '')
-call CreastyCode('coffeeConditional', 'purple', '', '')
-call CreastyCode('coffeeStatement', 'purple', '', '')
-call CreastyCode('coffeeException', 'purple', '', '')
-call CreastyCode('coffeeEscape', 'purple', '', '')
-call CreastyCode('coffeeObject', 'yellow', '', '')
-call CreastyCode('coffeeObjAssign', 'red', '', '')
 call CreastyCode('coffeeBoolean', 'orange', '', '')
+call CreastyCode('coffeeConditional', 'purple', '', '')
+call CreastyCode('coffeeEscape', 'purple', '', '')
+call CreastyCode('coffeeException', 'purple', '', '')
+call CreastyCode('coffeeKeyword', 'purple', '', '')
 call CreastyCode('coffeeNumber', 'orange', '', '')
+call CreastyCode('coffeeObjAssign', 'red', '', '')
+call CreastyCode('coffeeObject', 'yellow', '', '')
+call CreastyCode('coffeeRepeat', 'purple', '', '')
+call CreastyCode('coffeeStatement', 'purple', '', '')
 
 
 "=== Highlighting: JavaScript
 "==============================================================================================
-call CreastyCode('javaScriptBraces', 'foreground', '', '')
-call CreastyCode('javaScriptFunction', 'purple', '', '')
-call CreastyCode('javaScriptStatement', 'purple', '', '')
-call CreastyCode('javaScriptSpecial', 'purple', '', '')
-call CreastyCode('javaScriptConditional', 'purple', '', '')
-call CreastyCode('javaScriptRepeat', 'purple', '', '')
 call CreastyCode('javaScriptBoolean', 'orange', '', '')
-call CreastyCode('javaScriptNumber', 'orange', '', '')
+call CreastyCode('javaScriptBraces', 'foreground', '', '')
+call CreastyCode('javaScriptConditional', 'purple', '', '')
+call CreastyCode('javaScriptFunction', 'purple', '', '')
 call CreastyCode('javaScriptMember', 'foreground', '', '')
+call CreastyCode('javaScriptNumber', 'orange', '', '')
+call CreastyCode('javaScriptRepeat', 'purple', '', '')
+call CreastyCode('javaScriptSpecial', 'purple', '', '')
+call CreastyCode('javaScriptStatement', 'purple', '', '')
 
 
 "=== Highlighting: CSS
 "==============================================================================================
-call CreastyCode('javaScriptBraces', 'foreground', '', '')
-call CreastyCode('cssBraces', 'foreground', '', '')
-call CreastyCode('cssBoxProp', 'red', '', '')
+call CreastyCode('cssAttributeSelector', 'purple', '', '')
 call CreastyCode('cssBackgroundProp', 'red', '', '')
-call CreastyCode('cssTextProp', 'red', '', '')
-call CreastyCode('cssPositioningProp', 'red', '', '')
-call CreastyCode('cssPositioningAttr', 'red', '', '')
-call CreastyCode('cssDimensionProp', 'red', '', '')
-call CreastyCode('cssTransitionProp', 'red', '', '')
 call CreastyCode('cssBorderProp', 'red', '', '')
-call CreastyCode('cssFlexibleBoxProp', 'red', '', '')
-call CreastyCode('cssPageProp', 'red', '', '')
-call CreastyCode('cssListProp', 'red', '', '')
-call CreastyCode('cssColorProp', 'red', '', '')
-call CreastyCode('cssUIProp', 'red', '', '')
-call CreastyCode('cssUIAttr', 'red', '', '')
-call CreastyCode('cssFontProp', 'red', '', '')
-call CreastyCode('cssTransformProp', 'red', '', '')
-call CreastyCode('cssIdentifier', 'red', '', '')
+call CreastyCode('cssBoxProp', 'red', '', '')
+call CreastyCode('cssBraces', 'foreground', '', '')
 call CreastyCode('cssClassName', 'blue', '', '')
 call CreastyCode('cssColor', 'orange', '', '')
+call CreastyCode('cssColorProp', 'red', '', '')
+call CreastyCode('cssDimensionProp', 'red', '', '')
+call CreastyCode('cssFlexibleBoxProp', 'red', '', '')
+call CreastyCode('cssFontProp', 'red', '', '')
+call CreastyCode('cssFunctionName', 'aqua', '', '')
+call CreastyCode('cssIdentifier', 'red', '', '')
+call CreastyCode('cssImportant', 'red', '', '')
+call CreastyCode('cssListProp', 'red', '', '')
+call CreastyCode('cssPageProp', 'red', '', '')
+call CreastyCode('cssPositioningAttr', 'red', '', '')
+call CreastyCode('cssPositioningProp', 'red', '', '')
+call CreastyCode('cssTextProp', 'red', '', '')
+call CreastyCode('cssTransformProp', 'red', '', '')
+call CreastyCode('cssTransitionProp', 'red', '', '')
+call CreastyCode('cssUIAttr', 'red', '', '')
+call CreastyCode('cssUIProp', 'red', '', '')
+call CreastyCode('cssUnitDecorators', 'foreground', '', '')
 call CreastyCode('cssValueAngle', 'orange', '', '')
-call CreastyCode('cssValueTime', 'orange', '', '')
 call CreastyCode('cssValueLength', 'orange', '', '')
 call CreastyCode('cssValueNumber', 'orange', '', '')
-call CreastyCode('cssUnitDecorators', 'foreground', '', '')
-call CreastyCode('cssAttributeSelector', 'purple', '', '')
-call CreastyCode('cssFunctionName', 'aqua', '', '')
-call CreastyCode('cssImportant', 'red', '', '')
+call CreastyCode('cssValueTime', 'orange', '', '')
 
 
 "=== Highlighting: SCSS
 "==============================================================================================
-call CreastyCode('scssIf', 'purple', '', '')
-call CreastyCode('scssElseIf', 'purple', '', '')
 call CreastyCode('scssElse', 'purple', '', '')
+call CreastyCode('scssElseIf', 'purple', '', '')
 call CreastyCode('scssFor', 'purple', '', '')
+call CreastyCode('scssIf', 'purple', '', '')
 call CreastyCode('scssReturn', 'purple', '', '')
 
 
 "=== Highlighting: HTML
 "==============================================================================================
-call CreastyCode('htmlTag', 'comment', '', '')
-call CreastyCode('htmlEndTag', 'comment', '', '')
-call CreastyCode('htmlTagName', 'orange', '', '')
-call CreastyCode('htmlSpecialTagName', 'orange', '', '')
-call CreastyCode('htmlTagN', 'orange', '', '')
 call CreastyCode('htmlArg', 'red', '', '')
-call CreastyCode('htmlScriptTag', 'comment', '', '')
-call CreastyCode('htmlLink', 'blue', '', 'underline')
-call CreastyCode('htmlTitle', 'foreground', '', '')
+call CreastyCode('htmlEndTag', 'comment', '', '')
 call CreastyCode('htmlH1', 'foreground', '', '')
 call CreastyCode('htmlH2', 'foreground', '', '')
 call CreastyCode('htmlH3', 'foreground', '', '')
 call CreastyCode('htmlH4', 'foreground', '', '')
 call CreastyCode('htmlH5', 'foreground', '', '')
 call CreastyCode('htmlH6', 'foreground', '', '')
+call CreastyCode('htmlLink', 'blue', '', 'underline')
+call CreastyCode('htmlScriptTag', 'comment', '', '')
+call CreastyCode('htmlSpecialTagName', 'orange', '', '')
+call CreastyCode('htmlTag', 'comment', '', '')
+call CreastyCode('htmlTagN', 'orange', '', '')
+call CreastyCode('htmlTagName', 'orange', '', '')
+call CreastyCode('htmlTitle', 'foreground', '', '')
 
 
 "=== Highlighting: XML
 "==============================================================================================
-call CreastyCode('xmlTag', 'comment', '', '')
-call CreastyCode('xmlEndTag', 'comment', '', '')
-call CreastyCode('xmlTagName', 'orange', '', '')
 call CreastyCode('xmlAttrib', 'red', '', '')
+call CreastyCode('xmlEndTag', 'comment', '', '')
 call CreastyCode('xmlEqual', 'comment', '', '')
+call CreastyCode('xmlTag', 'comment', '', '')
+call CreastyCode('xmlTagName', 'orange', '', '')
 
 
 "=== Highlighting: Markdown
 "==============================================================================================
-call CreastyCode('markdownHeadingDelimiter', 'purple', '', '')
+call CreastyCode('markdownBold', 'red', '', '')
+call CreastyCode('markdownCode', 'green', '', '')
+call CreastyCode('markdownCodeBlock', 'green', '', '')
 call CreastyCode('markdownH1', 'purple', '', '')
 call CreastyCode('markdownH2', 'purple', '', '')
 call CreastyCode('markdownH3', 'purple', '', '')
 call CreastyCode('markdownH4', 'purple', '', '')
 call CreastyCode('markdownH5', 'purple', '', '')
 call CreastyCode('markdownH6', 'purple', '', '')
-call CreastyCode('markdownLineBreak', '', 'blue', '')
-call CreastyCode('markdownBold', 'red', '', '')
+call CreastyCode('markdownHeadingDelimiter', 'purple', '', '')
 call CreastyCode('markdownItalic', 'red', '', '')
+call CreastyCode('markdownLineBreak', '', 'blue', '')
 call CreastyCode('markdownListMarker', 'orange', '', '')
 call CreastyCode('markdownOrderedListMarker', 'orange', '', '')
-call CreastyCode('markdownCode', 'green', '', '')
-call CreastyCode('markdownCodeBlock', 'green', '', '')
 call CreastyCode('markdownUrl', 'comment', '', '')
 
 
@@ -554,5 +553,4 @@ call CreastyCode('markdownUrl', 'comment', '', '')
 "==============================================================================================
 call CreastyCode('diffAdded', 'green', 'dark_green', '')
 call CreastyCode('diffRemoved', 'red', 'dark_red', '')
-
 
