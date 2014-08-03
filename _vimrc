@@ -298,11 +298,6 @@ NeoBundleLazy 'jondistad/vimclojure', {
 NeoBundleLazy 'kana/vim-filetype-haskell', {
   \ 'autoload': { 'filetypes': ['haskell'] }
 \ }
-" syntax highlight for Swift
-" use local fork
-" NeoBundleLazy 'toyamarinyon/vim-swift', {
-"   \ 'autoload': { 'filetypes': ['swift'] }
-" \ }
 " go development plugin
 NeoBundleLazy 'fatih/vim-go', {
   \ 'autoload': { 'filetypes': ['go'] }
@@ -1012,19 +1007,20 @@ function! s:bundle.hooks.on_source(bundle)
   let g:neocomplete#enable_insert_char_pre = 1
   set completeopt& completeopt-=preview
 
-  let $DICTDIR = g:dotfiles_path . '/dict'
+  let dictdir = g:dotfiles_path . '/dict'
   let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default':    '',
     \ 'vimshell':   $HOME . '/.vimshell_hist',
-    \ 'ruby':       $DICTDIR . '/ruby.dict',
-    \ 'java':       $DICTDIR . '/java.dict',
-    \ 'javascript': $DICTDIR . '/javascript.dict',
-    \ 'coffee':     $DICTDIR . '/javascript.dict',
-    \ 'html':       $DICTDIR . '/html.dict',
-    \ 'php':        $DICTDIR . '/php.dict',
-    \ 'objc':       $DICTDIR . '/objc.dict',
-    \ 'perl':       $DICTDIR . '/perl.dict',
-    \ 'scala':      $DICTDIR . '/scala.dict',
+    \ 'ruby':       dictdir . '/ruby.dict',
+    \ 'java':       dictdir . '/java.dict',
+    \ 'javascript': dictdir . '/javascript.dict',
+    \ 'coffee':     dictdir . '/javascript.dict',
+    \ 'html':       dictdir . '/html.dict',
+    \ 'php':        dictdir . '/php.dict',
+    \ 'objc':       dictdir . '/objc.dict',
+    \ 'swift':      dictdir . '/swift.dict',
+    \ 'perl':       dictdir . '/perl.dict',
+    \ 'scala':      dictdir . '/scala.dict',
   \ }
 
   let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
