@@ -1793,10 +1793,14 @@ autocmd vimrc FileType ruby
 "==============================================================================================
 let s:bundle = neobundle#get('vim-go')
 function! s:bundle.hooks.on_source(bundle)
+  let g:loaded_gocode = 1  " disable fucking slow completion
   let g:go_auto_type_info = 0
   let g:go_disable_autoinstall = 1
   let g:go_snippet_engine = 'neosnippet'
   let g:go_fmt_autosave = 0
+
+  autocmd vimrc FileType go
+    \ setlocal et
 endfunction
 unlet s:bundle
 
