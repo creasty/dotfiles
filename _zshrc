@@ -48,6 +48,9 @@ SAVEHIST=100000
 # emacs like keybind
 bindkey -e
 
+# disable r command so that I can use r-lang one
+disable r
+
 
 #  Options
 #-----------------------------------------------
