@@ -1417,11 +1417,17 @@ call smartinput#define_rule({
 "-----------------------------------------------
 call smartinput#map_to_trigger('i', '<C-t>', '<C-t>', '<C-t>')
 
-" toggle spaces around
+" delete spaces around
 call smartinput#define_rule({
   \ 'char':  '<C-t>',
   \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
-  \ 'input': '<C-o>F<Space><Delete><C-o>f<Space><Delete>',
+  \ 'input': '<Esc>bhxf<Space>cl',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '<C-t>',
+  \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
+  \ 'input': '<Space><Esc>bhxf<Space>cl',
   \ 'mode':  'i',
 \ })
 
@@ -1460,6 +1466,13 @@ call smartinput#define_rule({
 "  C-w
 "-----------------------------------------------
 call smartinput#map_to_trigger('i', '<C-w>', '<C-w>', '<C-w>')
+
+call smartinput#define_rule({
+  \ 'char':  '<C-w>',
+  \ 'at':    '\%#',
+  \ 'input': '<C-w>',
+  \ 'mode':  'i',
+\ })
 
 " delete with spaces around
 call smartinput#define_rule({
