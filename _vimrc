@@ -993,6 +993,56 @@ if executable('identify')
 endif
 
 
+"=== SyntaxInfo
+"==============================================================================================
+function! s:get_syn_id(transparent)
+  let synid = synID(line('.'), col('.'), 1)
+
+  if a:transparent
+    return synIDtrans(synid)
+  else
+    return synid
+  endif
+endfunction
+
+function! s:get_syn_attr(synid)
+  let name = synIDattr(a:synid, 'name')
+  let ctermfg = synIDattr(a:synid, 'fg', 'cterm')
+  let ctermbg = synIDattr(a:synid, 'bg', 'cterm')
+  let guifg = synIDattr(a:synid, 'fg', 'gui')
+  let guibg = synIDattr(a:synid, 'bg', 'gui')
+
+  return {
+    \ 'name': name,
+    \ 'ctermfg': ctermfg,
+    \ 'ctermbg': ctermbg,
+    \ 'guifg': guifg,
+    \ 'guibg': guibg
+  \ }
+endfunction
+
+function! s:get_syn_info()
+  let baseSyn = s:get_syn_attr(s:get_syn_id(0))
+
+  echo 'name: ' . baseSyn.name .
+    \ ' ctermfg: ' . baseSyn.ctermfg .
+    \ ' ctermbg: ' . baseSyn.ctermbg .
+    \ ' guifg: ' . baseSyn.guifg .
+    \ ' guibg: ' . baseSyn.guibg
+
+  let linkedSyn = s:get_syn_attr(s:get_syn_id(1))
+
+  echo 'link to'
+  echo 'name: ' . linkedSyn.name .
+    \ ' ctermfg: ' . linkedSyn.ctermfg .
+    \ ' ctermbg: ' . linkedSyn.ctermbg .
+    \ ' guifg: ' . linkedSyn.guifg .
+    \ ' guibg: ' . linkedSyn.guibg
+endfunction
+
+command! ScopeInfo call <SID>get_syn_info()
+
+
 "=== Plugin: NeoComplete
 "==============================================================================================
 let s:bundle = neobundle#get('neocomplete')
@@ -1157,24 +1207,6 @@ nmap ,D <Plug>(textmanip-duplicate-up)
 "==============================================================================================
 inoremap <expr> , smartchr#loop(', ', ',')
 
-autocmd vimrc FileType c,cpp
-  \ inoremap <buffer> <expr> . smartchr#loop('.', '->', '...')
-
-autocmd vimrc FileType perl,php
-  \ inoremap <buffer> <expr> . smartchr#loop('.', '->', ' . ')
-
-autocmd vimrc FileType vim
-  \ inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..', '...')
-
-autocmd vimrc FileType haskell
-  \ inoremap <buffer> <expr> $ smartchr#loop(' $ ', '$')
-  \ | inoremap <buffer> <expr> : smartchr#loop(':', ' :: ', ' : ')
-  \ | inoremap <buffer> <expr> . smartchr#loop('.', ' . ', '..')
-
-autocmd vimrc FileType scala
-  \ inoremap <buffer> <expr> : smartchr#loop(': ', ':', ' :: ')
-  \ | inoremap <buffer> <expr> . smartchr#loop('.', ' => ')
-
 
 "=== Plugin: SmartInput / Endwise
 "==============================================================================================
@@ -1187,6 +1219,10 @@ unlet s:bundle
 
 "=== SmartInput
 "==============================================================================================
+let s:smart_input_indent = "^\(\t\|  \)*"
+let s:smart_input_op = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
+
+
 "  Disable SmartInput inside string literal
 "-----------------------------------------------
 function! s:disable_smartinput_inside_string(char)
@@ -1208,10 +1244,10 @@ endfunction
 "  Looping with Smartchr
 "-----------------------------------------------
 let s:rules = {
-  \ '<':     "smartchr#loop(' < ', ' << ', '<')",
-  \ '>':     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')",
-  \ '&':     "smartchr#loop(' & ', ' && ', '&')",
-  \ '<Bar>': "smartchr#loop(' | ', ' || ', '|')",
+  \ '<':     "smartchr#loop('<', '<<')",
+  \ '>':     "smartchr#loop('>', '>>', '>>>')",
+  \ '&':     "smartchr#loop('&', '&&')",
+  \ '<Bar>': "smartchr#loop('|', '||')",
 \ }
 
 for [char, rule] in items(s:rules)
@@ -1221,22 +1257,26 @@ for [char, rule] in items(s:rules)
 
   call smartinput#define_rule({
     \ 'char':  char,
-    \ 'at':    '\(\w\|[?!]\)\%#',
+    \ 'at':    '\%#',
     \ 'input': ' ' . char . ' ',
     \ 'mode':  'i',
   \ })
-
   call smartinput#define_rule({
     \ 'char':  char,
-    \ 'at':    '\(\w\|[?!]\) \%#',
+    \ 'at':    s:smart_input_indent . '\%#',
     \ 'input': char . ' ',
     \ 'mode':  'i',
   \ })
-
   call smartinput#define_rule({
     \ 'char':  char,
-    \ 'at':    '\(\w\|[?!]\)\s*' . uchar . '\+\s\?\%#',
-    \ 'input': '<C-r>=' . rule . '<CR>',
+    \ 'at':    '\S \%#',
+    \ 'input': char . ' ',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  char,
+    \ 'at':    uchar . ' \%#',
+    \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
     \ 'mode':  'i',
   \ })
 
@@ -1270,13 +1310,13 @@ for op in ['+', '-', '/', '*', '=', '%']
   \ })
   call smartinput#define_rule({
     \ 'char':  op,
-    \ 'at':    '\(^\|\w\)\s' . eop . '\%#',
+    \ 'at':    '\(^\|\w\) ' . eop . '\%#',
     \ 'input': op . ' ',
     \ 'mode':  'i',
   \ })
   call smartinput#define_rule({
     \ 'char':  op,
-    \ 'at':    eop . '\s\%#',
+    \ 'at':    eop . ' \%#',
     \ 'input': '<BS>' . op . ' ',
     \ 'mode':  'i',
   \ })
@@ -1293,7 +1333,7 @@ call smartinput#define_rule({
 \ })
 call smartinput#define_rule({
   \ 'char':  '=',
-  \ 'at':    '[&|?+-/<>]\s\%#',
+  \ 'at':    '[&|?+-/<>] \%#',
   \ 'input': '<BS>= ',
   \ 'mode':  'i',
 \ })
@@ -1310,13 +1350,19 @@ call smartinput#define_rule({
 for op in ['+', '-']
   call smartinput#define_rule({
     \ 'char':  op,
-    \ 'at':    '\(^\|\s\)' . op . '\s\%#',
+    \ 'at':    ' ' . op . ' \%#',
     \ 'input': '<BS><BS><BS>' . op . op,
     \ 'mode':  'i',
   \ })
   call smartinput#define_rule({
     \ 'char':  op,
-    \ 'at':    '\(^\|[^' . op . ']\)' . op . op . '\%#',
+    \ 'at':    s:smart_input_indent . op . ' \%#',
+    \ 'input': op,
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  op,
+    \ 'at':    '\w' . op . op . '\%#',
     \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
     \ 'mode':  'i',
   \ })
@@ -1336,6 +1382,47 @@ call smartinput#define_rule({
   \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
   \ 'mode':     'i',
   \ 'filetype': ['eruby'],
+\ })
+
+" left arrow (go)
+call smartinput#define_rule({
+  \ 'char':     '-',
+  \ 'at':       '< \%#',
+  \ 'input':    '<BS>-<Space>',
+  \ 'mode':     'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':     '-',
+  \ 'at':       '<\%#',
+  \ 'input':    '-<Space>',
+  \ 'mode':     'i',
+\ })
+
+" right arrow
+call smartinput#define_rule({
+  \ 'char':     '>',
+  \ 'at':       '- \%#',
+  \ 'input':    '<BS>><Space>',
+  \ 'mode':     'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':     '>',
+  \ 'at':       '-\%#',
+  \ 'input':    '><Space>',
+  \ 'mode':     'i',
+\ })
+
+
+"  C-t
+"-----------------------------------------------
+call smartinput#map_to_trigger('i', '<C-t>', '<C-t>', '<C-t>')
+
+" toggle spaces around
+call smartinput#define_rule({
+  \ 'char':  '<C-t>',
+  \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
+  \ 'input': '<C-o>F<Space><Delete><C-o>f<Space><Delete>',
+  \ 'mode':  'i',
 \ })
 
 
@@ -1369,15 +1456,72 @@ call smartinput#define_rule({
   \ 'mode':  'i',
 \ })
 
+
+"  C-w
+"-----------------------------------------------
+call smartinput#map_to_trigger('i', '<C-w>', '<C-w>', '<C-w>')
+
 " delete with spaces around
-for op in ['+', '-', '\*', '/', '%', '?', '[&|<>]\{1,2}', '>>>', '\([&|<>]\{1,2}\|[?+-\*/%]\)=']
-  call smartinput#define_rule({
-    \ 'char':  '<BS>',
-    \ 'at':    '\s' . op . '\s\%#',
-    \ 'input': '<C-o>dF<Space><BS>',
-    \ 'mode':  'i',
-  \ })
-endfor
+call smartinput#define_rule({
+  \ 'char':  '<C-w>',
+  \ 'at':    ' ' . s:smart_input_op . '=\? \%#',
+  \ 'input': '<C-o>dF<Space><BS>',
+  \ 'mode':  'i',
+\ })
+call smartinput#define_rule({
+  \ 'char':  '<C-w>',
+  \ 'at':    ' =\{1,3} \%#',
+  \ 'input': '<C-o>dF<Space><BS>',
+  \ 'mode':  'i',
+\ })
+
+
+"  Dot
+"-----------------------------------------------
+call smartinput#map_to_trigger('i', '.', '.', '.')
+
+call smartinput#define_rule({
+  \ 'char':     '.',
+  \ 'at':       '\w\%#',
+  \ 'input':    "<C-r>=smartchr#loop('.', '->', '...')<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['c', 'cpp'],
+\ })
+call smartinput#define_rule({
+  \ 'char':     '.',
+  \ 'at':       '\w\%#',
+  \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['perl', 'php'],
+\ })
+call smartinput#define_rule({
+  \ 'char':     '.',
+  \ 'at':       '\w\s*\%#',
+  \ 'input':    "<C-r>=smartchr#loop('.', '=>')<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['scala'],
+\ })
+
+
+"  Go 'chan'
+"-----------------------------------------------
+call smartinput#map_to_trigger('i', 'n', 'n', 'n')
+
+call smartinput#define_rule({
+  \ 'char':     'n',
+  \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
+  \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['go'],
+\ })
+
+call smartinput#define_rule({
+  \ 'char':     'n',
+  \ 'at':       '<-\%#',
+  \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['go'],
+\ })
 
 
 "=== Plugin: Operator replace
@@ -2079,56 +2223,6 @@ function! s:refresh_lightline()
   call lightline#disable()
   call lightline#enable()
 endfunction
-
-
-"=== SyntaxInfo
-"==============================================================================================
-function! s:get_syn_id(transparent)
-  let synid = synID(line('.'), col('.'), 1)
-
-  if a:transparent
-    return synIDtrans(synid)
-  else
-    return synid
-  endif
-endfunction
-
-function! s:get_syn_attr(synid)
-  let name = synIDattr(a:synid, 'name')
-  let ctermfg = synIDattr(a:synid, 'fg', 'cterm')
-  let ctermbg = synIDattr(a:synid, 'bg', 'cterm')
-  let guifg = synIDattr(a:synid, 'fg', 'gui')
-  let guibg = synIDattr(a:synid, 'bg', 'gui')
-
-  return {
-    \ 'name': name,
-    \ 'ctermfg': ctermfg,
-    \ 'ctermbg': ctermbg,
-    \ 'guifg': guifg,
-    \ 'guibg': guibg
-  \ }
-endfunction
-
-function! s:get_syn_info()
-  let baseSyn = s:get_syn_attr(s:get_syn_id(0))
-
-  echo 'name: ' . baseSyn.name .
-    \ ' ctermfg: ' . baseSyn.ctermfg .
-    \ ' ctermbg: ' . baseSyn.ctermbg .
-    \ ' guifg: ' . baseSyn.guifg .
-    \ ' guibg: ' . baseSyn.guibg
-
-  let linkedSyn = s:get_syn_attr(s:get_syn_id(1))
-
-  echo 'link to'
-  echo 'name: ' . linkedSyn.name .
-    \ ' ctermfg: ' . linkedSyn.ctermfg .
-    \ ' ctermbg: ' . linkedSyn.ctermbg .
-    \ ' guifg: ' . linkedSyn.guifg .
-    \ ' guibg: ' . linkedSyn.guibg
-endfunction
-
-command! ScopeInfo call s:get_syn_info()
 
 
 "=== Computer depend settings
