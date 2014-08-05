@@ -1,3 +1,14 @@
+"
+"      V         V  I   M         M   R R R R R     C C C C
+"       V       V   I   M M     M M   R        R   C       C
+"        V     V    I   M  M   M  M   R       R   C
+"         V   V     I   M   M M   M   R R R R     C
+"          V V      I   M    M    M   R       R    C       C
+"           V       I   M         M   R        R    C C C C
+"
+" @author creasty <yuki@creasty.com>
+" @url https://github.com/creasty/dotfiles
+"
 
 "=== Plugins
 "==============================================================================================
@@ -64,11 +75,11 @@ NeoBundle 'kana/vim-operator-replace'
 NeoBundle 'tmhedberg/matchit'
 " provide smart input assistant
 NeoBundleLazy 'kana/vim-smartinput', {
+  \ 'depends': ['smartchr'],
   \ 'autoload': { 'insert': 1 },
 \ }
-" extension of vim-smartinput to provide the feature of vim-endwise
-NeoBundleLazy 'cohama/vim-smartinput-endwise', {
-  \ 'depends': ['kana/vim-smartinput'],
+" insert several candidates with a single key
+NeoBundleLazy 'smartchr', {
   \ 'autoload': { 'insert': 1 },
 \ }
 " refactoring tool for Ruby in vim
@@ -77,8 +88,6 @@ NeoBundleLazy 'ecomba/vim-ruby-refactoring',  {
 \ }
 " switch segments of text with predefined replacements
 NeoBundle 'AndrewRadev/switch.vim'
-" insert several candidates with a single key
-NeoBundle 'smartchr'
 " maniplate selected text easily
 NeoBundle 't9md/vim-textmanip'
 " automatically insert closing-pair and put the cursor between them
@@ -366,19 +375,39 @@ augroup AutoDetectEncording
 augroup END
 
 
-"=== Variables
+"=== Warhead
 "==============================================================================================
-let g:dotfiles_path = $HOME . '/dotfiles'
-let g:hostname = substitute(hostname(), '[^\w.]', '', '')
-
-
-"=== Basics
-"==============================================================================================
-" unregister autocmds
+"  Unregister autocmds
+"-----------------------------------------------
 augroup vimrc
   autocmd!
 augroup END
 
+
+"  Variables
+"-----------------------------------------------
+let g:dotfiles_path = $HOME . '/dotfiles'
+let g:hostname = substitute(hostname(), '[^\w.]', '', '')
+
+
+"  Local vimrc (computer depends)
+"-----------------------------------------------
+autocmd vimrc User VimrcLoadPre call <SID>load_local_vimrc('pre')
+autocmd vimrc User VimrcLoadPost call <SID>load_local_vimrc('post')
+
+function! s:load_local_vimrc(hook)
+  let file = g:dotfiles_path . '/_vim/locals/' . g:hostname . '.' . a:hook
+
+  if filereadable(file)
+    execute 'source ' . file
+  endif
+endfunction
+
+doautocmd User VimrcLoadPre
+
+
+"=== Basics
+"==============================================================================================
 " make special key bindings like <C-s> work
 if !has('gui_running')
   silent !stty -ixon > /dev/null 2>&1
@@ -867,6 +896,9 @@ if executable('osascript')
     \ call system(g:force_alphanumeric_input_command)
 endif
 
+" inspect syntax
+command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
+
 
 "=== Project root directory
 "==============================================================================================
@@ -991,56 +1023,6 @@ if executable('identify')
 
   command! -nargs=1 -complete=file ImageTagInsert call <SID>insert_image_tag(<f-args>)
 endif
-
-
-"=== SyntaxInfo
-"==============================================================================================
-function! s:get_syn_id(transparent)
-  let synid = synID(line('.'), col('.'), 1)
-
-  if a:transparent
-    return synIDtrans(synid)
-  else
-    return synid
-  endif
-endfunction
-
-function! s:get_syn_attr(synid)
-  let name = synIDattr(a:synid, 'name')
-  let ctermfg = synIDattr(a:synid, 'fg', 'cterm')
-  let ctermbg = synIDattr(a:synid, 'bg', 'cterm')
-  let guifg = synIDattr(a:synid, 'fg', 'gui')
-  let guibg = synIDattr(a:synid, 'bg', 'gui')
-
-  return {
-    \ 'name': name,
-    \ 'ctermfg': ctermfg,
-    \ 'ctermbg': ctermbg,
-    \ 'guifg': guifg,
-    \ 'guibg': guibg
-  \ }
-endfunction
-
-function! s:get_syn_info()
-  let baseSyn = s:get_syn_attr(s:get_syn_id(0))
-
-  echo 'name: ' . baseSyn.name .
-    \ ' ctermfg: ' . baseSyn.ctermfg .
-    \ ' ctermbg: ' . baseSyn.ctermbg .
-    \ ' guifg: ' . baseSyn.guifg .
-    \ ' guibg: ' . baseSyn.guibg
-
-  let linkedSyn = s:get_syn_attr(s:get_syn_id(1))
-
-  echo 'link to'
-  echo 'name: ' . linkedSyn.name .
-    \ ' ctermfg: ' . linkedSyn.ctermfg .
-    \ ' ctermbg: ' . linkedSyn.ctermbg .
-    \ ' guifg: ' . linkedSyn.guifg .
-    \ ' guibg: ' . linkedSyn.guibg
-endfunction
-
-command! ScopeInfo call <SID>get_syn_info()
 
 
 "=== Plugin: NeoComplete
@@ -1203,376 +1185,463 @@ nmap ,d <Plug>(textmanip-duplicate-down)
 nmap ,D <Plug>(textmanip-duplicate-up)
 
 
-"=== Plugin: Smartchr
+"=== Plugin: SmartInput / Smartchr
 "==============================================================================================
-inoremap <expr> , smartchr#loop(', ', ',')
-
-
-"=== Plugin: SmartInput / Endwise
-"==============================================================================================
-let s:bundle = neobundle#get('vim-smartinput-endwise')
+let s:bundle = neobundle#get('vim-smartinput')
 function! s:bundle.hooks.on_source(bundle)
-  call smartinput_endwise#define_default_rules()
+
+  let indents = "^\(\t\|  \)*"
+  let opx = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
+  let cr_key = '<C-r>=neocomplete#close_popup()<CR><CR>'
+
+
+  "  Comma
+  "-----------------------------------------------
+  inoremap <expr> , smartchr#loop(', ', ',')
+
+
+  "  Disable SmartInput inside string literal
+  "-----------------------------------------------
+  function! s:disable_smartinput_inside_string(char)
+    call smartinput#define_rule({
+      \ 'char':  a:char,
+      \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
+      \ 'input': a:char,
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  a:char,
+      \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
+      \ 'input': a:char,
+      \ 'mode':  'i',
+    \ })
+  endfunction
+
+
+  "  CR
+  "-----------------------------------------------
+  call smartinput#define_rule({
+    \ 'char':  '<CR>',
+    \ 'at':    '\%#',
+    \ 'input': cr_key,
+    \ 'mode':  'i',
+  \ })
+
+
+  "  do-end pair
+  "-----------------------------------------------
+  " vim
+  for at in ['fu', 'fun', 'func', 'funct', 'functi', 'functio', 'function', 'if', 'wh', 'whi', 'whil', 'while', 'for', 'try']
+    call smartinput#define_rule({
+      \ 'char':     '<CR>',
+      \ 'at':       '^\s*' . at . '\>.*\%#',
+      \ 'input':    cr_key . 'end' . at . '<Esc>O',
+      \ 'mode':     'i',
+      \ 'filetype': ['vim'],
+    \ })
+  endfor
+  unlet at
+
+  " ruby
+  for at in [
+      \ '^\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+      \ '^\s*\%(begin\)\s*\%#',
+      \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
+    \ ]
+
+    call smartinput#define_rule({
+      \ 'char':     '<CR>',
+      \ 'at':       at,
+      \ 'input':    cr_key . 'end<Esc>O',
+      \ 'mode':     'i',
+      \ 'filetype': ['ruby'],
+    \ })
+  endfor
+
+  call smartinput#define_rule({
+    \ 'char':     '<CR>',
+    \ 'at':       '\<\%(if\|unless\)\>.*\%#',
+    \ 'input':    cr_key . 'end<Esc>O',
+    \ 'filetype': ['ruby'],
+    \ 'syntax':   ['rubyConditionalExpression']
+  \ })
+
+  " shell
+  let s:rules = {
+    \ '^\s*if\>.*\%#':             'fi',
+    \ '^\s*case\>.*\%#':           'esac',
+    \ '\%(^\s*#.*\)\@<!do\>.*\%#': 'done',
+  \ }
+
+  for [at, end_word] in items(s:rules)
+    call smartinput#define_rule({
+      \ 'char':     '<CR>',
+      \ 'at':       at,
+      \ 'input':    cr_key . end_word . '<Esc>O',
+      \ 'filetype': ['sh', 'zsh'],
+    \ })
+  endfor
+
+  unlet at
+  unlet end_word
+  unlet s:rules
+
+
+  "  Looping with Smartchr
+  "-----------------------------------------------
+  let s:rules = {
+    \ '<':     "smartchr#loop('<', '<<')",
+    \ '>':     "smartchr#loop('>', '>>', '>>>')",
+    \ '&':     "smartchr#loop('&', '&&')",
+    \ '<Bar>': "smartchr#loop('|', '||')",
+  \ }
+
+  for [char, rule] in items(s:rules)
+    call smartinput#map_to_trigger('i', char, char, char)
+
+    let uchar = substitute(char, '<Bar>', '|', '')
+
+    call smartinput#define_rule({
+      \ 'char':  char,
+      \ 'at':    '\%#',
+      \ 'input': ' ' . char . ' ',
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  char,
+      \ 'at':    indents . '\%#',
+      \ 'input': char . ' ',
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  char,
+      \ 'at':    '\S \%#',
+      \ 'input': char . ' ',
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  char,
+      \ 'at':    uchar . ' \%#',
+      \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
+      \ 'mode':  'i',
+    \ })
+
+    call s:disable_smartinput_inside_string(char)
+  endfor
+
+  unlet char
+  unlet rule
+  unlet s:rules
+
+  " ruby block
+  call smartinput#define_rule({
+    \ 'char':     '<Bar>',
+    \ 'at':       '\({\|do\)\s*\%#',
+    \ 'input':    '<Bar><Bar><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['ruby'],
+  \ })
+
+
+  "  Space around operators
+  "-----------------------------------------------
+  for op in ['+', '-', '/', '*', '=', '%']
+    let eop = escape(op, '*')
+
+    call smartinput#map_to_trigger('i', op, op, op)
+
+    call smartinput#define_rule({
+      \ 'char':  op,
+      \ 'at':    '\w\%#',
+      \ 'input': ' ' . op . ' ',
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  op,
+      \ 'at':    '\(^\|\w\) ' . eop . '\%#',
+      \ 'input': op . ' ',
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  op,
+      \ 'at':    eop . ' \%#',
+      \ 'input': '<BS>' . op . ' ',
+      \ 'mode':  'i',
+    \ })
+
+    call s:disable_smartinput_inside_string(op)
+  endfor
+  unlet op
+
+  " compound assignment operator
+  call smartinput#define_rule({
+    \ 'char':  '=',
+    \ 'at':    '\s[&|?+-/<>]\%#',
+    \ 'input': '= ',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  '=',
+    \ 'at':    '[&|?+-/<>] \%#',
+    \ 'input': '<BS>= ',
+    \ 'mode':  'i',
+  \ })
+
+  " slash as non arithmetic operators
+  call smartinput#define_rule({
+    \ 'char':  '/',
+    \ 'at':    '\(^\|\S\)/\S[^/]*\%#',
+    \ 'input': '/',
+    \ 'mode':  'i',
+  \ })
+
+  " decrement/increment operators
+  for op in ['+', '-']
+    call smartinput#define_rule({
+      \ 'char':  op,
+      \ 'at':    ' ' . op . ' \%#',
+      \ 'input': '<BS><BS><BS>' . op . op,
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  op,
+      \ 'at':    indents . op . ' \%#',
+      \ 'input': op,
+      \ 'mode':  'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':  op,
+      \ 'at':    '\w' . op . op . '\%#',
+      \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
+      \ 'mode':  'i',
+    \ })
+  endfor
+  unlet op
+
+  " erb
+  call smartinput#define_rule({
+    \ 'char':     '%',
+    \ 'at':       '<\%#',
+    \ 'input':    '%  %<Left><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['eruby'],
+  \ })
+  call smartinput#define_rule({
+    \ 'char':     '%',
+    \ 'at':       '<%[=-]\? \%#',
+    \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['eruby'],
+  \ })
+
+  " left arrow (go)
+  call smartinput#define_rule({
+    \ 'char':     '-',
+    \ 'at':       '< \%#',
+    \ 'input':    '<BS>-<Space>',
+    \ 'mode':     'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':     '-',
+    \ 'at':       '<\%#',
+    \ 'input':    '-<Space>',
+    \ 'mode':     'i',
+  \ })
+
+  " right arrow
+  call smartinput#define_rule({
+    \ 'char':     '>',
+    \ 'at':       '[-=] \%#',
+    \ 'input':    '<BS>><Space>',
+    \ 'mode':     'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':     '>',
+    \ 'at':       '[-=]\%#',
+    \ 'input':    '><Space>',
+    \ 'mode':     'i',
+  \ })
+
+
+  "  left parenthes
+  "-----------------------------------------------
+  call smartinput#map_to_trigger('i', '(', '(', '(')
+
+  " ruby lambda
+  " FIXME: not working
+  call smartinput#define_rule({
+    \ 'char':     '(',
+    \ 'at':       '-> \%#',
+    \ 'input':    '<BS>()<Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['ruby'],
+  \ })
+
+
+  "  C-t
+  "-----------------------------------------------
+  call smartinput#map_to_trigger('i', '<C-t>', '<C-t>', '<C-t>')
+
+  " delete spaces around
+  call smartinput#define_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
+    \ 'input': '<Esc>bhxf<Space>cl',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
+    \ 'input': '<Space><Esc>bhxf<Space>cl',
+    \ 'mode':  'i',
+  \ })
+
+
+  "  Backspace
+  "-----------------------------------------------
+  call smartinput#map_to_trigger('i', '<BS>', '<BS>', '<BS>')
+
+  " delete whole pair
+  call smartinput#define_rule({
+    \ 'char':  '<BS>',
+    \ 'at':    '(\s*)\%#',
+    \ 'input': '<C-o>dF(<BS>',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  '<BS>',
+    \ 'at':    '{\s*}\%#',
+    \ 'input': '<C-o>dF{<BS>',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  '<BS>',
+    \ 'at':    '<\s*>\%#',
+    \ 'input': '<C-o>dF<<BS>',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  '<BS>',
+    \ 'at':    '\[\s*\]\%#',
+    \ 'input': '<C-o>dF[<BS>',
+    \ 'mode':  'i',
+  \ })
+
+
+  "  C-w
+  "-----------------------------------------------
+  call smartinput#map_to_trigger('i', '<C-w>', '<C-w>', '<C-w>')
+
+  call smartinput#define_rule({
+    \ 'char':  '<C-w>',
+    \ 'at':    '\%#',
+    \ 'input': '<C-w>',
+    \ 'mode':  'i',
+  \ })
+
+  " delete with spaces around
+  call smartinput#define_rule({
+    \ 'char':  '<C-w>',
+    \ 'at':    ' ' . opx . '=\? \%#',
+    \ 'input': '<C-o>dF<Space><BS>',
+    \ 'mode':  'i',
+  \ })
+  call smartinput#define_rule({
+    \ 'char':  '<C-w>',
+    \ 'at':    ' =\{1,3} \%#',
+    \ 'input': '<C-o>dF<Space><BS>',
+    \ 'mode':  'i',
+  \ })
+
+
+  "  Dot
+  "-----------------------------------------------
+  call smartinput#map_to_trigger('i', '.', '.', '.')
+
+  call smartinput#define_rule({
+    \ 'char':     '.',
+    \ 'at':       '\w\%#',
+    \ 'input':    "<C-r>=smartchr#loop('.', '->', '...')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['c', 'cpp'],
+  \ })
+  call smartinput#define_rule({
+    \ 'char':     '.',
+    \ 'at':       '\w\%#',
+    \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['perl', 'php'],
+  \ })
+  call smartinput#define_rule({
+    \ 'char':     '.',
+    \ 'at':       '\w\s*\%#',
+    \ 'input':    "<C-r>=smartchr#loop('.', '=>')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['scala'],
+  \ })
+
+
+  "  Go 'chan'
+  "-----------------------------------------------
+  call smartinput#map_to_trigger('i', 'n', 'n', 'n')
+
+  call smartinput#define_rule({
+    \ 'char':     'n',
+    \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
+    \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['go'],
+  \ })
+
+  call smartinput#define_rule({
+    \ 'char':     'n',
+    \ 'at':       '<-\%#',
+    \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['go'],
+  \ })
+
+
+  "  Markdown title
+  "-----------------------------------------------
+  for d in ['-', '=']
+    call smartinput#define_rule({
+      \ 'char':     d,
+      \ 'at':       '^\n\%#',
+      \ 'input':    d,
+      \ 'mode':     'i',
+      \ 'filetype': ['markdown'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     d,
+      \ 'at':       '^\%#',
+      \ 'input':    "<C-r>=" . smartinput#sid() . "markdown_title_line('" . d . "')<CR>",
+      \ 'mode':     'i',
+      \ 'filetype': ['markdown'],
+    \ })
+  endfor
+  unlet d
+
+  call smartinput#define_rule({
+    \ 'char':     '-',
+    \ 'at':       '^-\%#',
+    \ 'input':    "<C-r>=repeat('-', 80)<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['markdown'],
+  \ })
+
+  function! s:markdown_title_line(char)
+    let text = getline(line('.') - 1)
+
+    if text =~ '^\s*[-=]\s'
+      return a:char . ' '
+    else
+      return repeat(a:char, strwidth(text))
+    endif
+  endfunction
+
 endfunction
 unlet s:bundle
-
-
-"=== SmartInput
-"==============================================================================================
-let s:smart_input_indent = "^\(\t\|  \)*"
-let s:smart_input_op = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
-
-
-"  Disable SmartInput inside string literal
-"-----------------------------------------------
-function! s:disable_smartinput_inside_string(char)
-  call smartinput#define_rule({
-    \ 'char':  a:char,
-    \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
-    \ 'input': a:char,
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  a:char,
-    \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
-    \ 'input': a:char,
-    \ 'mode':  'i',
-  \ })
-endfunction
-
-
-"  Looping with Smartchr
-"-----------------------------------------------
-let s:rules = {
-  \ '<':     "smartchr#loop('<', '<<')",
-  \ '>':     "smartchr#loop('>', '>>', '>>>')",
-  \ '&':     "smartchr#loop('&', '&&')",
-  \ '<Bar>': "smartchr#loop('|', '||')",
-\ }
-
-for [char, rule] in items(s:rules)
-  call smartinput#map_to_trigger('i', char, char, char)
-
-  let uchar = substitute(char, '<Bar>', '|', '')
-
-  call smartinput#define_rule({
-    \ 'char':  char,
-    \ 'at':    '\%#',
-    \ 'input': ' ' . char . ' ',
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  char,
-    \ 'at':    s:smart_input_indent . '\%#',
-    \ 'input': char . ' ',
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  char,
-    \ 'at':    '\S \%#',
-    \ 'input': char . ' ',
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  char,
-    \ 'at':    uchar . ' \%#',
-    \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
-    \ 'mode':  'i',
-  \ })
-
-  call s:disable_smartinput_inside_string(char)
-endfor
-
-unlet s:rules
-
-" ruby block
-call smartinput#define_rule({
-  \ 'char':     '<Bar>',
-  \ 'at':       '\({\|do\)\s*\%#',
-  \ 'input':    '<Bar><Bar><Left>',
-  \ 'mode':     'i',
-  \ 'filetype': ['ruby'],
-\ })
-
-
-"  Space around operators
-"-----------------------------------------------
-for op in ['+', '-', '/', '*', '=', '%']
-  let eop = escape(op, '*')
-
-  call smartinput#map_to_trigger('i', op, op, op)
-
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    '\w\%#',
-    \ 'input': ' ' . op . ' ',
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    '\(^\|\w\) ' . eop . '\%#',
-    \ 'input': op . ' ',
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    eop . ' \%#',
-    \ 'input': '<BS>' . op . ' ',
-    \ 'mode':  'i',
-  \ })
-
-  call s:disable_smartinput_inside_string(op)
-endfor
-
-" compound assignment operator
-call smartinput#define_rule({
-  \ 'char':  '=',
-  \ 'at':    '\s[&|?+-/<>]\%#',
-  \ 'input': '= ',
-  \ 'mode':  'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':  '=',
-  \ 'at':    '[&|?+-/<>] \%#',
-  \ 'input': '<BS>= ',
-  \ 'mode':  'i',
-\ })
-
-" slash as non arithmetic operators
-call smartinput#define_rule({
-  \ 'char':  '/',
-  \ 'at':    '\(^\|\S\)/\S[^/]*\%#',
-  \ 'input': '/',
-  \ 'mode':  'i',
-\ })
-
-" decrement/increment operators
-for op in ['+', '-']
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    ' ' . op . ' \%#',
-    \ 'input': '<BS><BS><BS>' . op . op,
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    s:smart_input_indent . op . ' \%#',
-    \ 'input': op,
-    \ 'mode':  'i',
-  \ })
-  call smartinput#define_rule({
-    \ 'char':  op,
-    \ 'at':    '\w' . op . op . '\%#',
-    \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
-    \ 'mode':  'i',
-  \ })
-endfor
-
-" erb
-call smartinput#define_rule({
-  \ 'char':     '%',
-  \ 'at':       '<\%#',
-  \ 'input':    '%  %<Left><Left>',
-  \ 'mode':     'i',
-  \ 'filetype': ['eruby'],
-\ })
-call smartinput#define_rule({
-  \ 'char':     '%',
-  \ 'at':       '<%[=-]\? \%#',
-  \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['eruby'],
-\ })
-
-" left arrow (go)
-call smartinput#define_rule({
-  \ 'char':     '-',
-  \ 'at':       '< \%#',
-  \ 'input':    '<BS>-<Space>',
-  \ 'mode':     'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':     '-',
-  \ 'at':       '<\%#',
-  \ 'input':    '-<Space>',
-  \ 'mode':     'i',
-\ })
-
-" right arrow
-call smartinput#define_rule({
-  \ 'char':     '>',
-  \ 'at':       '- \%#',
-  \ 'input':    '<BS>><Space>',
-  \ 'mode':     'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':     '>',
-  \ 'at':       '-\%#',
-  \ 'input':    '><Space>',
-  \ 'mode':     'i',
-\ })
-
-
-"  C-t
-"-----------------------------------------------
-call smartinput#map_to_trigger('i', '<C-t>', '<C-t>', '<C-t>')
-
-" delete spaces around
-call smartinput#define_rule({
-  \ 'char':  '<C-t>',
-  \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
-  \ 'input': '<Esc>bhxf<Space>cl',
-  \ 'mode':  'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':  '<C-t>',
-  \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
-  \ 'input': '<Space><Esc>bhxf<Space>cl',
-  \ 'mode':  'i',
-\ })
-
-
-"  Backspace
-"-----------------------------------------------
-call smartinput#map_to_trigger('i', '<BS>', '<BS>', '<BS>')
-
-" delete whole pair
-call smartinput#define_rule({
-  \ 'char':  '<BS>',
-  \ 'at':    '(\s*)\%#',
-  \ 'input': '<C-o>dF(<BS>',
-  \ 'mode':  'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':  '<BS>',
-  \ 'at':    '{\s*}\%#',
-  \ 'input': '<C-o>dF{<BS>',
-  \ 'mode':  'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':  '<BS>',
-  \ 'at':    '<\s*>\%#',
-  \ 'input': '<C-o>dF<<BS>',
-  \ 'mode':  'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':  '<BS>',
-  \ 'at':    '\[\s*\]\%#',
-  \ 'input': '<C-o>dF[<BS>',
-  \ 'mode':  'i',
-\ })
-
-
-"  C-w
-"-----------------------------------------------
-call smartinput#map_to_trigger('i', '<C-w>', '<C-w>', '<C-w>')
-
-call smartinput#define_rule({
-  \ 'char':  '<C-w>',
-  \ 'at':    '\%#',
-  \ 'input': '<C-w>',
-  \ 'mode':  'i',
-\ })
-
-" delete with spaces around
-call smartinput#define_rule({
-  \ 'char':  '<C-w>',
-  \ 'at':    ' ' . s:smart_input_op . '=\? \%#',
-  \ 'input': '<C-o>dF<Space><BS>',
-  \ 'mode':  'i',
-\ })
-call smartinput#define_rule({
-  \ 'char':  '<C-w>',
-  \ 'at':    ' =\{1,3} \%#',
-  \ 'input': '<C-o>dF<Space><BS>',
-  \ 'mode':  'i',
-\ })
-
-
-"  Dot
-"-----------------------------------------------
-call smartinput#map_to_trigger('i', '.', '.', '.')
-
-call smartinput#define_rule({
-  \ 'char':     '.',
-  \ 'at':       '\w\%#',
-  \ 'input':    "<C-r>=smartchr#loop('.', '->', '...')<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['c', 'cpp'],
-\ })
-call smartinput#define_rule({
-  \ 'char':     '.',
-  \ 'at':       '\w\%#',
-  \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['perl', 'php'],
-\ })
-call smartinput#define_rule({
-  \ 'char':     '.',
-  \ 'at':       '\w\s*\%#',
-  \ 'input':    "<C-r>=smartchr#loop('.', '=>')<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['scala'],
-\ })
-
-
-"  Go 'chan'
-"-----------------------------------------------
-call smartinput#map_to_trigger('i', 'n', 'n', 'n')
-
-call smartinput#define_rule({
-  \ 'char':     'n',
-  \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
-  \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['go'],
-\ })
-
-call smartinput#define_rule({
-  \ 'char':     'n',
-  \ 'at':       '<-\%#',
-  \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['go'],
-\ })
-
-
-"  Markdown title
-"-----------------------------------------------
-for d in ['-', '=']
-  call smartinput#define_rule({
-    \ 'char':     d,
-    \ 'at':       '^\n\%#',
-    \ 'input':    d,
-    \ 'mode':     'i',
-    \ 'filetype': ['markdown'],
-  \ })
-  call smartinput#define_rule({
-    \ 'char':     d,
-    \ 'at':       '^\%#',
-    \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
-    \ 'mode':     'i',
-    \ 'filetype': ['markdown'],
-  \ })
-endfor
-
-call smartinput#define_rule({
-  \ 'char':     '-',
-  \ 'at':       '^-\%#',
-  \ 'input':    "<C-r>=repeat('-', 80)<CR>",
-  \ 'mode':     'i',
-  \ 'filetype': ['markdown'],
-\ })
-
-function! MarkdownTitleLine(char)
-  let text = getline(line('.') - 1)
-
-  if text =~ '^\s*[-=]\s'
-    return a:char . ' '
-  else
-    return repeat(a:char, strwidth(text))
-  endif
-endfunction
 
 
 "=== Plugin: Operator replace
@@ -2276,10 +2345,7 @@ function! s:refresh_lightline()
 endfunction
 
 
-"=== Computer depend settings
-"==============================================================================================
-let s:host_vimrc = g:dotfiles_path . '/_vim/computers/' . g:hostname
-
-if filereadable(s:host_vimrc)
-  execute 'source ' . s:host_vimrc
-endif
+" ---------------------------------------------------------------------------------------------
+"                                             END
+" ---------------------------------------------------------------------------------------------
+doautocmd User VimrcLoadPost
