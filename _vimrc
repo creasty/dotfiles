@@ -1524,6 +1524,44 @@ call smartinput#define_rule({
 \ })
 
 
+"  Markdown title
+"-----------------------------------------------
+for d in ['-', '=']
+  call smartinput#define_rule({
+    \ 'char':     d,
+    \ 'at':       '^\n\%#',
+    \ 'input':    d,
+    \ 'mode':     'i',
+    \ 'filetype': ['markdown'],
+  \ })
+  call smartinput#define_rule({
+    \ 'char':     d,
+    \ 'at':       '^\%#',
+    \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['markdown'],
+  \ })
+endfor
+
+call smartinput#define_rule({
+  \ 'char':     '-',
+  \ 'at':       '^-\%#',
+  \ 'input':    "<C-r>=repeat('-', 80)<CR>",
+  \ 'mode':     'i',
+  \ 'filetype': ['markdown'],
+\ })
+
+function! MarkdownTitleLine(char)
+  let text = getline(line('.') - 1)
+
+  if text =~ '^\s*[-=]\s'
+    return a:char . ' '
+  else
+    return repeat(a:char, strwidth(text))
+  endif
+endfunction
+
+
 "=== Plugin: Operator replace
 "==============================================================================================
 map R <Plug>(operator-replace)
