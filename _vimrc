@@ -1,300 +1,318 @@
+"----------------------------------------------------------------------------------------------
 "
-"      V         V  I I I   M         M   R R R R R     C C C C
-"       V       V     I     M M     M M   R        R   C       C
-"        V     V      I     M  M   M  M   R       R   C
-"         V   V       I     M   M M   M   R R R R     C
-"          V V        I     M    M    M   R       R    C       C
-"           V       I I I   M         M   R        R    C C C C
+"
+"              _/      _/      _/_/_/       _/      _/       _/_/_/          _/_/_/
+"             _/      _/        _/         _/_/  _/_/       _/    _/      _/
+"            _/      _/        _/         _/  _/  _/       _/_/_/        _/
+"             _/  _/          _/         _/      _/       _/    _/      _/
+"              _/          _/_/_/       _/      _/       _/    _/        _/_/_/
+"
 "
 " @author creasty <yuki@creasty.com>
 " @url https://github.com/creasty/dotfiles
 "
+"----------------------------------------------------------------------------------------------
+
+
+let g:dotfiles_path = $HOME . '/dotfiles'
+
 
 "=== Plugins
 "==============================================================================================
 if has('vim_starting')
-  set runtimepath+=~/dotfiles/_vim/bundle/neobundle.vim/
-  call neobundle#rc(expand('~/dotfiles/_vim/bundle/'))
+  exec 'set runtimepath+=' . g:dotfiles_path . '/_vim/bundle/neobundle.vim/'
 endif
+
+call neobundle#begin(g:dotfiles_path . '/_vim/bundle/')
 
 " package manager
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" asynchronous execution plugin
-NeoBundle 'Shougo/vimproc', {
-  \ 'build': {
-    \ 'windows': 'make -f make_mingw32.mak',
-    \ 'cygwin': 'make -f make_cygwin.mak',
-    \ 'mac': 'make -f make_mac.mak',
-    \ 'unix': 'make -f make_unix.mak',
-  \ },
-\ }
+let g:neobundle#log_filename = g:dotfiles_path . '/_vim/bundle/.neobundle/neobundle.log'
+let g:neobundle#install_max_processes = 4
+let g:neobundle#install_process_timeout = 180
+let g:neobundle#types#git#enable_submodule = 0
 
+if neobundle#has_cache()
+  NeoBundleLoadCache
+else
+  " asynchronous execution plugin
+  NeoBundle 'Shougo/vimproc', {
+    \ 'build': {
+      \ 'windows': 'make -f make_mingw32.mak',
+      \ 'cygwin': 'make -f make_cygwin.mak',
+      \ 'mac': 'make -f make_mac.mak',
+      \ 'unix': 'make -f make_unix.mak',
+    \ },
+  \ }
 
-"  Editing
-"-----------------------------------------------
-" define your own operator easily
-NeoBundleLazy 'kana/vim-operator-user'
 
-" create your own text objects
-NeoBundleLazy 'kana/vim-textobj-user'
+  "  Editing
+  "-----------------------------------------------
+  " define your own operator easily
+  NeoBundleLazy 'kana/vim-operator-user'
 
-" text objects for indented blocks of lines
-NeoBundle 'kana/vim-textobj-indent', { 'depends': ['kana/vim-textobj-user'] }
+  " create your own text objects
+  NeoBundleLazy 'kana/vim-textobj-user'
 
-" adds text-objects for word-based columns
-NeoBundle 'coderifous/textobj-word-column.vim'
+  " text objects for indented blocks of lines
+  NeoBundle 'kana/vim-textobj-indent', { 'depends': ['kana/vim-textobj-user'] }
 
-" text objects for multiple types of parentheses
-NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends': ['kana/vim-textobj-user'] }
+  " adds text-objects for word-based columns
+  NeoBundle 'coderifous/textobj-word-column.vim'
 
-" deleting, changing, and adding surroundings
-NeoBundle 'surround.vim'
+  " text objects for multiple types of parentheses
+  NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends': ['kana/vim-textobj-user'] }
 
-" f/t motions to highlight all possible choices
-NeoBundle 'Lokaltog/vim-easymotion'
+  " deleting, changing, and adding surroundings
+  NeoBundle 'surround.vim'
 
-" commenting code
-NeoBundle 'scrooloose/nerdcommenter'
+  " f/t motions to highlight all possible choices
+  NeoBundle 'Lokaltog/vim-easymotion'
 
-" syntax checking on the fly has never been so pimp
-NeoBundleLazy 'scrooloose/syntastic'
+  " commenting code
+  NeoBundle 'scrooloose/nerdcommenter'
 
-" a simple, easy-to-use Vim alignment plugin
-NeoBundleLazy 'junegunn/vim-easy-align'
+  " syntax checking on the fly has never been so pimp
+  NeoBundleLazy 'scrooloose/syntastic'
 
-" emmet for vim: HTML and CSS hi-speed coding
-NeoBundleLazy 'mattn/emmet-vim'
+  " a simple, easy-to-use Vim alignment plugin
+  NeoBundleLazy 'junegunn/vim-easy-align'
 
-" operator to escape HTML entities
-NeoBundleLazy 'tyru/operator-html-escape.vim', { 'depends': ['kana/vim-operator-user'] }
+  " emmet for vim: HTML and CSS hi-speed coding
+  NeoBundleLazy 'mattn/emmet-vim'
 
-" operator to camelize/decamelize a specified text
-NeoBundleLazy 'tyru/operator-camelize.vim', { 'depends': ['kana/vim-operator-user'] }
+  " operator to escape HTML entities
+  NeoBundleLazy 'tyru/operator-html-escape.vim', { 'depends': ['kana/vim-operator-user'] }
 
-" operator to evaluate a text object using Ruby
-NeoBundleLazy 'rhysd/vim-operator-evalruby', { 'depends': ['kana/vim-operator-user'] }
+  " operator to camelize/decamelize a specified text
+  NeoBundleLazy 'tyru/operator-camelize.vim', { 'depends': ['kana/vim-operator-user'] }
 
-" operator to replace text with register content
-NeoBundleLazy 'kana/vim-operator-replace', { 'depends': ['kana/vim-operator-user'] }
+  " operator to evaluate a text object using Ruby
+  NeoBundleLazy 'rhysd/vim-operator-evalruby', { 'depends': ['kana/vim-operator-user'] }
 
-" extended % matching
-NeoBundle 'tmhedberg/matchit'
+  " operator to replace text with register content
+  NeoBundleLazy 'kana/vim-operator-replace', { 'depends': ['kana/vim-operator-user'] }
 
-" insert several candidates with a single key
-NeoBundleLazy 'smartchr'
+  " extended % matching
+  NeoBundle 'tmhedberg/matchit'
 
-" provide smart input assistant
-NeoBundleLazy 'kana/vim-smartinput', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
+  " insert several candidates with a single key
+  NeoBundleLazy 'smartchr'
 
-" refactoring tool for Ruby in vim
-NeoBundleLazy 'ecomba/vim-ruby-refactoring'
+  " provide smart input assistant
+  NeoBundleLazy 'kana/vim-smartinput', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
 
-" switch segments of text with predefined replacements
-NeoBundleLazy 'AndrewRadev/switch.vim'
+  " refactoring tool for Ruby in vim
+  NeoBundleLazy 'ecomba/vim-ruby-refactoring'
 
-" maniplate selected text easily
-NeoBundleLazy 't9md/vim-textmanip'
+  " switch segments of text with predefined replacements
+  NeoBundleLazy 'AndrewRadev/switch.vim'
 
-" automatically insert closing-pair and put the cursor between them
-NeoBundleLazy 'Townk/vim-autoclose'
+  " maniplate selected text easily
+  NeoBundleLazy 't9md/vim-textmanip'
 
-" sequencial numbering with pattern
-NeoBundleLazy 'deris/vim-rengbang'
+  " automatically insert closing-pair and put the cursor between them
+  NeoBundleLazy 'Townk/vim-autoclose'
 
-" incremental visual selection
-NeoBundleLazy 'terryma/vim-expand-region'
+  " sequencial numbering with pattern
+  NeoBundleLazy 'deris/vim-rengbang'
 
-" pasting with indentation adjusted to paste destination
-NeoBundle 'sickill/vim-pasta'
+  " incremental visual selection
+  NeoBundleLazy 'terryma/vim-expand-region'
 
-" use CTRL-A/CTRL-X to increment dates, times, and more
-NeoBundle 'tpope/vim-speeddating'
+  " pasting with indentation adjusted to paste destination
+  NeoBundle 'sickill/vim-pasta'
 
-" true Sublime Text multiple selection in Vim
-NeoBundleLazy 'terryma/vim-multiple-cursors'
+  " use CTRL-A/CTRL-X to increment dates, times, and more
+  NeoBundle 'tpope/vim-speeddating'
 
-" toggle ruby's postfix notations of if/unless/while/until
-NeoBundleLazy 'Qureana/backend_if'
+  " true Sublime Text multiple selection in Vim
+  NeoBundleLazy 'terryma/vim-multiple-cursors'
 
-" highlight Ruby local variables
-NeoBundleLazy 'todesking/ruby_hl_lvar.vim'
+  " toggle ruby's postfix notations of if/unless/while/until
+  NeoBundleLazy 'Qureana/backend_if'
 
+  " highlight Ruby local variables
+  NeoBundleLazy 'todesking/ruby_hl_lvar.vim'
 
-"  Completion
-"-----------------------------------------------
-" next generation of auto completion framework
-NeoBundleLazy 'Shougo/neocomplete'
 
-" accurately completing C and C++ code
-NeoBundleLazy 'Rip-Rip/clang_complete'
+  "  Completion
+  "-----------------------------------------------
+  " next generation of auto completion framework
+  NeoBundleLazy 'Shougo/neocomplete'
 
-" adds snippet support
-NeoBundleLazy 'Shougo/neosnippet', { 'depends': ['Shougo/neocomplete', 'mattn/emmet-vim'] }
+  " accurately completing C and C++ code
+  NeoBundleLazy 'Rip-Rip/clang_complete'
 
-" insert #include<>
-NeoBundleLazy 'osyo-manga/vim-stargate'
+  " adds snippet support
+  NeoBundleLazy 'Shougo/neosnippet', { 'depends': ['Shougo/neocomplete', 'mattn/emmet-vim'] }
 
+  " insert #include<>
+  NeoBundleLazy 'osyo-manga/vim-stargate'
 
-"  Utils
-"-----------------------------------------------
-" make benchmark result of your vimrc
-NeoBundleLazy 'mattn/benchvimrc-vim'
 
-" a Git wrapper so awesome
-NeoBundle 'tpope/vim-fugitive'
+  "  Utils
+  "-----------------------------------------------
+  " make benchmark result of your vimrc
+  NeoBundleLazy 'mattn/benchvimrc-vim'
 
-" enable repeating supported plugin maps with dot
-NeoBundle 'tpope/vim-repeat'
+  " a Git wrapper so awesome
+  NeoBundle 'tpope/vim-fugitive'
 
-" a tree explorer
-NeoBundleLazy 'scrooloose/nerdtree'
+  " enable repeating supported plugin maps with dot
+  NeoBundle 'tpope/vim-repeat'
 
-" making NERDTree feel like a true panel, independent of tabs
-NeoBundle 'jistr/vim-nerdtree-tabs', { 'depends': ['scrooloose/nerdtree'] }
+  " a tree explorer
+  NeoBundleLazy 'scrooloose/nerdtree'
 
-" miscellaneous auto-load Vim scripts (dependency of vim-session)
-NeoBundleLazy 'xolox/vim-misc'
+  " making NERDTree feel like a true panel, independent of tabs
+  NeoBundle 'jistr/vim-nerdtree-tabs', { 'depends': ['scrooloose/nerdtree'] }
 
-" extended session management
-NeoBundle 'xolox/vim-session', { 'depends': ['xolox/vim-misc'] }
+  " miscellaneous auto-load Vim scripts (dependency of vim-session)
+  NeoBundleLazy 'xolox/vim-misc'
 
-" unite and create user interfaces
-NeoBundleLazy 'Shougo/unite.vim'
+  " extended session management
+  NeoBundle 'xolox/vim-session', { 'depends': ['xolox/vim-misc'] }
 
-" outline source for unite.vim
-NeoBundleLazy 'h1mesuke/unite-outline', { 'depends': ['Shougo/unite.vim'] }
+  " unite and create user interfaces
+  NeoBundleLazy 'Shougo/unite.vim'
 
-" tags source for unite.vim
-NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
+  " outline source for unite.vim
+  NeoBundleLazy 'h1mesuke/unite-outline', { 'depends': ['Shougo/unite.vim'] }
 
-" open URI with browser
-NeoBundleLazy 'tyru/open-browser.vim'
+  " tags source for unite.vim
+  NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
 
-" simple memo plugin
-NeoBundle 'glidenote/memolist.vim', { 'depends': ['Shougo/unite.vim'] }
+  " open URI with browser
+  NeoBundleLazy 'tyru/open-browser.vim'
 
-" hex editing system
-NeoBundleLazy 'Shougo/vinarise.vim'
+  " simple memo plugin
+  NeoBundle 'glidenote/memolist.vim', { 'depends': ['Shougo/unite.vim'] }
 
-" pseudo clipboard register
-NeoBundleLazy 'kana/vim-fakeclip'
+  " hex editing system
+  NeoBundleLazy 'Shougo/vinarise.vim'
 
-" switch to the missing file without interaction
-NeoBundleLazy 'kana/vim-altr'
+  " pseudo clipboard register
+  NeoBundleLazy 'kana/vim-fakeclip'
 
-" run commands quickly
-NeoBundleLazy 'thinca/vim-quickrun'
+  " switch to the missing file without interaction
+  NeoBundleLazy 'kana/vim-altr'
 
-" create your own submodes
-NeoBundle 'kana/vim-submode'
+  " run commands quickly
+  NeoBundleLazy 'thinca/vim-quickrun'
 
-" substitute preview
-NeoBundle 'osyo-manga/vim-over'
+  " create your own submodes
+  NeoBundle 'kana/vim-submode'
 
-" functional Object Oriented VimL (dependency of dash.vim)
-NeoBundleLazy 'rizzatti/funcoo.vim'
+  " substitute preview
+  NeoBundle 'osyo-manga/vim-over'
 
-" launch queries for Dash.app
-NeoBundleLazy 'rizzatti/dash.vim', { 'depends': ['rizzatti/funcoo.vim'] }
+  " functional Object Oriented VimL (dependency of dash.vim)
+  NeoBundleLazy 'rizzatti/funcoo.vim'
 
-" context filetype library
-NeoBundleLazy 'Shougo/context_filetype.vim'
+  " launch queries for Dash.app
+  NeoBundleLazy 'rizzatti/dash.vim', { 'depends': ['rizzatti/funcoo.vim'] }
 
-" switch filetype by context around cursor
-NeoBundleLazy 'osyo-manga/vim-precious', { 'depends': ['Shougo/context_filetype.vim'] }
+  " context filetype library
+  NeoBundleLazy 'Shougo/context_filetype.vim'
 
-" lookup Codic
-NeoBundleLazy 'koron/codic-vim'
+  " switch filetype by context around cursor
+  NeoBundleLazy 'osyo-manga/vim-precious', { 'depends': ['Shougo/context_filetype.vim'] }
 
-" unite.vim source for codic-vim
-NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends': ['Shougo/unite.vim', 'koron/codic-vim'] }
+  " lookup Codic
+  NeoBundleLazy 'koron/codic-vim'
 
-" github issue lookup
-NeoBundleLazy 'jaxbot/github-issues.vim'
+  " unite.vim source for codic-vim
+  NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends': ['Shougo/unite.vim', 'koron/codic-vim'] }
 
-" automatically save changes to disk
-NeoBundle 'vim-auto-save'
+  " github issue lookup
+  NeoBundleLazy 'jaxbot/github-issues.vim'
 
-" perform the replacement in quickfix
-NeoBundleLazy 'thinca/vim-qfreplace'
+  " automatically save changes to disk
+  NeoBundle 'vim-auto-save'
 
-" command for the_silver_searcher
-NeoBundleLazy 'rking/ag.vim'
+  " perform the replacement in quickfix
+  NeoBundleLazy 'thinca/vim-qfreplace'
 
-" w3m plugin
-NeoBundleLazy 'yuratomo/w3m.vim'
+  " command for the_silver_searcher
+  NeoBundleLazy 'rking/ag.vim'
 
-" list and lookup http status code
-NeoBundleLazy 'mattn/httpstatus-vim'
+  " w3m plugin
+  NeoBundleLazy 'yuratomo/w3m.vim'
 
-" display tags of a file ordered by scope
-NeoBundleLazy 'majutsushi/tagbar'
+  " list and lookup http status code
+  NeoBundleLazy 'mattn/httpstatus-vim'
 
+  " display tags of a file ordered by scope
+  NeoBundleLazy 'majutsushi/tagbar'
 
-"  Appearance
-"-----------------------------------------------
-" a light and configurable statusline/tabline
-NeoBundle 'itchyny/lightline.vim'
 
-" visually displaying indent levels
-NeoBundle 'nathanaelkane/vim-indent-guides'
+  "  Appearance
+  "-----------------------------------------------
+  " a light and configurable statusline/tabline
+  NeoBundle 'itchyny/lightline.vim'
 
-" toggle, display and navigate marks
-NeoBundle 'kshenoy/vim-signature'
+  " visually displaying indent levels
+  NeoBundle 'nathanaelkane/vim-indent-guides'
 
-" search status
-NeoBundle 'osyo-manga/vim-anzu'
+  " toggle, display and navigate marks
+  NeoBundle 'kshenoy/vim-signature'
 
+  " search status
+  NeoBundle 'osyo-manga/vim-anzu'
 
-"  Language
-"-----------------------------------------------
-" syntax highlight for Haml
-NeoBundleLazy 'tpope/vim-haml'
 
-" syntax highlight for Markdown
-NeoBundleLazy 'tpope/vim-markdown'
+  "  Language
+  "-----------------------------------------------
+  " syntax highlight for Haml
+  NeoBundleLazy 'tpope/vim-haml'
 
-" syntax highlight for CoffeeScript
-NeoBundleLazy 'kchmck/vim-coffee-script'
+  " syntax highlight for Markdown
+  NeoBundleLazy 'tpope/vim-markdown'
 
-" syntax highlight for Ruby
-NeoBundleLazy 'vim-ruby/vim-ruby'
+  " syntax highlight for CoffeeScript
+  NeoBundleLazy 'kchmck/vim-coffee-script'
 
-" working with Ruby on Rails applications
-NeoBundleLazy 'tpope/vim-rails'
+  " syntax highlight for Ruby
+  NeoBundleLazy 'vim-ruby/vim-ruby'
 
-" syntax highlight for Cucumber
-NeoBundleLazy 'tpope/vim-cucumber'
+  " working with Ruby on Rails applications
+  NeoBundleLazy 'tpope/vim-rails'
 
-" syntax highlight for Slim
-NeoBundleLazy 'slim-template/vim-slim'
+  " syntax highlight for Cucumber
+  NeoBundleLazy 'tpope/vim-cucumber'
 
-" syntax highlight for SCSS
-NeoBundleLazy 'cakebaker/scss-syntax.vim'
+  " syntax highlight for Slim
+  NeoBundleLazy 'slim-template/vim-slim'
 
-" plugin for Cocoa/Objective-C development
-NeoBundleLazy 'msanders/cocoa.vim'
+  " syntax highlight for SCSS
+  NeoBundleLazy 'cakebaker/scss-syntax.vim'
 
-" plugin for iOS development
-NeoBundleLazy 'eraserhd/vim-ios'
+  " plugin for Cocoa/Objective-C development
+  NeoBundleLazy 'msanders/cocoa.vim'
 
-" syntax highlight for Scala
-NeoBundleLazy 'yuroyoro/vim-scala'
+  " plugin for iOS development
+  NeoBundleLazy 'eraserhd/vim-ios'
 
-" syntax highlight for Clojure
-NeoBundleLazy 'jondistad/vimclojure'
+  " syntax highlight for Scala
+  NeoBundleLazy 'yuroyoro/vim-scala'
 
-" syntax highlight for Haskell
-NeoBundleLazy 'kana/vim-filetype-haskell'
+  " syntax highlight for Clojure
+  NeoBundleLazy 'jondistad/vimclojure'
 
-" go development plugin
-NeoBundleLazy 'fatih/vim-go'
+  " syntax highlight for Haskell
+  NeoBundleLazy 'kana/vim-filetype-haskell'
 
+  " go development plugin
+  NeoBundleLazy 'fatih/vim-go'
+
+  NeoBundleSaveCache
+endif
+
+call neobundle#end()
 
 filetype plugin indent on
-
-NeoBundleCheck
 
 
 "=== Encoding
@@ -356,23 +374,12 @@ augroup END
 
 "=== Warhead
 "==============================================================================================
-"  Unregister autocmds
-"-----------------------------------------------
-augroup vimrc
-  autocmd!
+augroup VimrcLoadHooks
+  autocmd! User VimrcLoadPre call <SID>load_local_vimrc('pre')
+  autocmd! User VimrcLoadPost call <SID>load_local_vimrc('post')
 augroup END
 
-
-"  Variables
-"-----------------------------------------------
-let g:dotfiles_path = $HOME . '/dotfiles'
 let g:hostname = substitute(hostname(), '[^\w.]', '', '')
-
-
-"  Local vimrc (computer depends)
-"-----------------------------------------------
-autocmd vimrc User VimrcLoadPre call <SID>load_local_vimrc('pre')
-autocmd vimrc User VimrcLoadPost call <SID>load_local_vimrc('post')
 
 function! s:load_local_vimrc(hook)
   let file = g:dotfiles_path . '/_vim/locals/' . g:hostname . '.' . a:hook
@@ -387,6 +394,11 @@ doautocmd User VimrcLoadPre
 
 "=== Basics
 "==============================================================================================
+" Unregister autocmds
+augroup vimrc
+  autocmd!
+augroup END
+
 " make special key bindings like <C-s> work
 if !has('gui_running')
   silent !stty -ixon > /dev/null 2>&1
@@ -2057,7 +2069,7 @@ if neobundle#tap('neocomplete')
     let g:neocomplete#enable_insert_char_pre = 1
     set completeopt& completeopt-=preview
 
-    let dictdir = g:dotfiles_path . '/dict'
+    let dictdir = g:dotfiles_path . '/_vim/dict'
     let g:neocomplete#sources#dictionary#dictionaries = {
       \ 'default':    '',
       \ 'vimshell':   $HOME . '/.vimshell_hist',
