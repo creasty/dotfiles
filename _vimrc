@@ -88,9 +88,7 @@ NeoBundleLazy 'smartchr'
 NeoBundleLazy 'kana/vim-smartinput', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
 
 " refactoring tool for Ruby in vim
-NeoBundleLazy 'ecomba/vim-ruby-refactoring', {
-  \ 'autoload': { 'filetypes': ['ruby'] }
-\ }
+NeoBundleLazy 'ecomba/vim-ruby-refactoring'
 
 " switch segments of text with predefined replacements
 NeoBundleLazy 'AndrewRadev/switch.vim'
@@ -150,16 +148,16 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 
 " a tree explorer
-NeoBundle 'scrooloose/nerdtree'
+NeoBundleLazy 'scrooloose/nerdtree'
 
 " making NERDTree feel like a true panel, independent of tabs
-NeoBundleLazy 'jistr/vim-nerdtree-tabs', { 'depends': ['scrooloose/nerdtree'] }
+NeoBundle 'jistr/vim-nerdtree-tabs', { 'depends': ['scrooloose/nerdtree'] }
 
 " miscellaneous auto-load Vim scripts (dependency of vim-session)
 NeoBundleLazy 'xolox/vim-misc'
 
 " extended session management
-NeoBundleLazy 'xolox/vim-session', { 'depends': ['xolox/vim-misc'] }
+NeoBundle 'xolox/vim-session', { 'depends': ['xolox/vim-misc'] }
 
 " unite and create user interfaces
 NeoBundleLazy 'Shougo/unite.vim'
@@ -1240,9 +1238,6 @@ if neobundle#tap('nerdcommenter')
     \ }
   \ })
 
-  function! neobundle#tapped.hooks.on_source(bundle)
-
-  endfunction
   nmap gcc <Leader>c<Space>
   vmap gcc <Leader>cm
   nmap gcs <Leader>cs
@@ -1545,7 +1540,7 @@ if neobundle#tap('vim-smartinput')
       \ })
       call smartinput#define_rule({
         \ 'char':  char,
-        \ 'at':    uchar . ' \%#',
+        \ 'at':    '[' . uchar . '] \%#',
         \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
         \ 'mode':  'i',
       \ })
@@ -1994,14 +1989,14 @@ if neobundle#tap('vim-multiple-cursors')
   call neobundle#config({
     \ 'autoload': {
       \ 'mappings': [
-        \ ['n', '<C-x><C-m>'],
+        \ ['n', '<Space><C-m>'],
       \ ],
     \ }
   \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:multi_cursor_use_default_mapping = 0
-    let g:multi_cursor_start_key = '<C-x><C-m>'
+    let g:multi_cursor_start_key = '<Space><C-m>'
     let g:multi_cursor_next_key = '<C-n>'
     let g:multi_cursor_prev_key = '<C-p>'
     let g:multi_cursor_skip_key = '<C-x>'
@@ -2222,15 +2217,13 @@ endif
 "=== Plugin: vim-fugitive
 "==============================================================================================
 if neobundle#tap('vim-fugitive')
-  function! neobundle#tapped.hooks.on_source(bundle)
-    autocmd vimrc User fugitive
-      \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-      \   nnoremap <buffer> .. :edit %:h<CR> |
-      \ endif
+  autocmd vimrc User fugitive
+    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+    \   nnoremap <buffer> .. :edit %:h<CR> |
+    \ endif
 
-    autocmd vimrc BufReadPost fugitive://*
-      \ set bufhidden=delete
-  endfunction
+  autocmd vimrc BufReadPost fugitive://*
+    \ set bufhidden=delete
 
   call neobundle#untap()
 endif
@@ -2248,7 +2241,7 @@ endif
 if neobundle#tap('nerdtree')
   call neobundle#config({
     \ 'autoload': {
-      \ 'commands': ['NERDTreeTabsToggle'],
+      \ 'on_source': ['vim-nerdtree-tabs'],
     \ }
   \ })
 
@@ -2258,10 +2251,17 @@ if neobundle#tap('nerdtree')
     let g:NERDTreeShowHidden = 1
     let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
     let g:NERDTreeAutoDeleteBuffer = 1
-
-    let g:nerdtree_tabs_open_on_gui_startup = 0
-    let g:nerdtree_tabs_startup_cd = 0
   endfunction
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-nerdtree-tabs
+"==============================================================================================
+if neobundle#tap('vim-nerdtree-tabs')
+  let g:nerdtree_tabs_open_on_gui_startup = 0
+  let g:nerdtree_tabs_startup_cd = 0
 
   nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
 
@@ -2286,19 +2286,11 @@ endif
 "=== Plugin: vim-session
 "==============================================================================================
 if neobundle#tap('vim-session')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['OpenSession', 'CloseSession', 'SaveSession'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:session_autosave = 0
-    let g:session_autoload = 0
-    let g:session_default_to_last = 0
-    let g:session_default_overwrite = 1
-    let g:session_command_aliases = 1
-  endfunction
+  let g:session_autosave = 0
+  let g:session_autoload = 0
+  let g:session_default_to_last = 0
+  let g:session_default_overwrite = 1
+  let g:session_command_aliases = 1
 
   set sessionoptions-=blank
   set sessionoptions-=help
@@ -2516,7 +2508,7 @@ endif
 if neobundle#tap('vim-quickrun')
   call neobundle#config({
     \ 'autoload': {
-      \ 'mappings': '<Plug>(quickrun',
+      \ 'mappings': '<Plug>(quickrun)',
     \ }
   \ })
 
@@ -2545,6 +2537,8 @@ if neobundle#tap('vim-quickrun')
       \ 'exec' : ['%c -cbp %s | node'],
     \ }
   endfunction
+
+  nmap <Leader>r <Plug>(quickrun)
 
   call neobundle#untap()
 endif
