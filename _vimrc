@@ -20,7 +20,7 @@ let g:dotfiles_path = $HOME . '/dotfiles'
 "=== Plugins
 "==============================================================================================
 if has('vim_starting')
-  exec 'set runtimepath+=' . g:dotfiles_path . '/_vim/bundle/neobundle.vim/'
+  let &g:rtp .= ',' . g:dotfiles_path . '/_vim/bundle/neobundle.vim/'
 endif
 
 call neobundle#begin(g:dotfiles_path . '/_vim/bundle/')
@@ -365,7 +365,8 @@ endif
 " force &fileencoding to use &encoding
 " when files not contain japanese charactors
 augroup AutoDetectEncording
-  autocmd! BufReadPost *
+  autocmd!
+  autocmd BufReadPost *
     \ if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0 |
       \ let &fileencoding = &encoding |
     \ endif
@@ -375,8 +376,9 @@ augroup END
 "=== Load hooks
 "==============================================================================================
 augroup VimrcLoadHooks
-  autocmd! User VimrcLoadPre call <SID>load_local_vimrc('pre')
-  autocmd! User VimrcLoadPost call <SID>load_local_vimrc('post')
+  autocmd!
+  autocmd User VimrcLoadPre call <SID>load_local_vimrc('pre')
+  autocmd User VimrcLoadPost call <SID>load_local_vimrc('post')
 augroup END
 
 let g:hostname = substitute(hostname(), '[^\w.]', '', '')
