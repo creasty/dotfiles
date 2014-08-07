@@ -372,7 +372,7 @@ augroup AutoDetectEncording
 augroup END
 
 
-"=== Warhead
+"=== Load hooks
 "==============================================================================================
 augroup VimrcLoadHooks
   autocmd! User VimrcLoadPre call <SID>load_local_vimrc('pre')
@@ -394,7 +394,7 @@ doautocmd User VimrcLoadPre
 
 "=== Basics
 "==============================================================================================
-" Unregister autocmds
+" unregister autocmds
 augroup vimrc
   autocmd!
 augroup END
@@ -777,7 +777,7 @@ autocmd vimrc BufReadPost *
   \ endif
 
 " reset previous marks
-autocmd vimrc BufReadPost * delmarks!
+" autocmd vimrc BufReadPost * delmarks!
 
 " numbering selection in visual-block mode
 nnoremap <silent> sc :ContinuousNumber <C-a><CR>
@@ -1337,7 +1337,8 @@ if neobundle#tap('operator-html-escape.vim')
     \ }
   \ })
 
-  " TODO: cofigure mappings
+  vmap HE <Plug>(operator-html-escape)
+  vmap HU <Plug>(operator-html-unescape)
 
   call neobundle#untap()
 endif
@@ -1356,7 +1357,7 @@ if neobundle#tap('operator-camelize.vim')
     \ }
   \ })
 
-  " TODO: cofigure mappings
+  vmap C <Plug>(operator-camelize-toggle)
 
   call neobundle#untap()
 endif
@@ -1488,6 +1489,7 @@ if neobundle#tap('vim-smartinput')
         \ 'filetype': ['ruby'],
       \ })
     endfor
+    unlet at
 
     call smartinput#define_rule({
       \ 'char':     '<CR>',
@@ -1498,13 +1500,13 @@ if neobundle#tap('vim-smartinput')
     \ })
 
     " shell
-    let s:rules = {
+    let rules = {
       \ '^\s*if\>.*\%#':             'fi',
       \ '^\s*case\>.*\%#':           'esac',
       \ '\%(^\s*#.*\)\@<!do\>.*\%#': 'done',
     \ }
 
-    for [at, end_word] in items(s:rules)
+    for [at, end_word] in items(rules)
       call smartinput#define_rule({
         \ 'char':     '<CR>',
         \ 'at':       at,
@@ -1515,19 +1517,19 @@ if neobundle#tap('vim-smartinput')
 
     unlet at
     unlet end_word
-    unlet s:rules
+    unlet rules
 
 
     "  Looping with Smartchr
     "-----------------------------------------------
-    let s:rules = {
+    let rules = {
       \ '<':     "smartchr#loop('<', '<<')",
       \ '>':     "smartchr#loop('>', '>>', '>>>')",
       \ '&':     "smartchr#loop('&', '&&')",
       \ '<Bar>': "smartchr#loop('|', '||')",
     \ }
 
-    for [char, rule] in items(s:rules)
+    for [char, rule] in items(rules)
       call smartinput#map_to_trigger('i', char, char, char)
 
       let uchar = substitute(char, '<Bar>', '|', '')
@@ -1561,8 +1563,9 @@ if neobundle#tap('vim-smartinput')
     endfor
 
     unlet char
+    unlet uchar
     unlet rule
-    unlet s:rules
+    unlet rules
 
     " ruby block
     call smartinput#define_rule({
@@ -1603,6 +1606,7 @@ if neobundle#tap('vim-smartinput')
       call s:disable_smartinput_inside_string(op)
     endfor
     unlet op
+    unlet eop
 
     " compound assignment operator
     call smartinput#define_rule({
