@@ -984,7 +984,6 @@ if executable('identify')
     endif
   endfunction
 
-  " FIXME: not working
   function! s:insert_image_tag(file)
     let size = s:get_image_size(a:file)
 
@@ -994,24 +993,18 @@ if executable('identify')
 
     let dim = split(size)
 
-    echo dim
-    echo &filetype
+    let template = s:image_tag_template['html']
 
-    if empty(&filetype)
-      let template = s:image_tag_template['*']
-    else
+    if has_key(s:image_tag_template, &filetype)
       let template = s:image_tag_template[&filetype]
     endif
 
-    if !template
-      return
-    endif
+    " FIXME
+    let template = substitute(template, '%p', a:file, '')
+    let template = substitute(template, '%w', dim[0], '')
+    let template = substitute(template, '%h', dim[1], '')
 
-    let template = substitute(template, '%p', a:file)
-    let template = substitute(template, '%w', dim[0])
-    let template = substitute(template, '%h', dim[1])
-
-    normal! 'i' . template . "\<ESC>"
+    exec 'normal! a' . template . "\<ESC>"
   endfunction
 
   command! -nargs=1 -complete=file ImageTagInsert call <SID>insert_image_tag(<f-args>)
@@ -1852,7 +1845,7 @@ if neobundle#tap('vim-smartinput')
       call smartinput#define_rule({
         \ 'char':     d,
         \ 'at':       '^\%#',
-        \ 'input':    "<C-r>=" . smartinput#sid() . "markdown_title_line('" . d . "')<CR>",
+        \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
         \ 'mode':     'i',
         \ 'filetype': ['markdown'],
       \ })
@@ -1867,16 +1860,16 @@ if neobundle#tap('vim-smartinput')
       \ 'filetype': ['markdown'],
     \ })
 
-    function! s:markdown_title_line(char)
-      let text = getline(line('.') - 1)
+  endfunction
 
-      if text =~ '^\s*[-=]\s'
-        return a:char . ' '
-      else
-        return repeat(a:char, strwidth(text))
-      endif
-    endfunction
+  function! MarkdownTitleLine(char)
+    let text = getline(line('.') - 1)
 
+    if text =~ '^\(\t\|  \)*[-=]\s'
+      return a:char . ' '
+    else
+      return repeat(a:char, strwidth(text))
+    endif
   endfunction
 
   call neobundle#untap()
