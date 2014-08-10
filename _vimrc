@@ -745,6 +745,9 @@ map Q @@
 " avoid suicide
 nnoremap ZQ <Nop>
 
+" useless and annoying
+vnoremap K <Nop>
+
 " sort lines inside block
 nnoremap <leader>sor ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 
@@ -1422,7 +1425,7 @@ if neobundle#tap('vim-smartinput')
   \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
-    let indents = "^\(\t\|  \)*"
+    let indents = "^\(\t\|  \)\+"
     let opx = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
     let cr_key = '<C-r>=neocomplete#close_popup()<CR><CR>'
 
@@ -1472,6 +1475,7 @@ if neobundle#tap('vim-smartinput')
     " ruby
     for at in [
         \ '^\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+        \ '^\s*\(public\|protected\|private\)\s\+def\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
         \ '^\s*\%(begin\)\s*\%#',
         \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
       \ ]
@@ -1531,14 +1535,20 @@ if neobundle#tap('vim-smartinput')
 
       call smartinput#define_rule({
         \ 'char':  char,
-        \ 'at':    '\%#',
+        \ 'at':    '\S\%#',
         \ 'input': ' ' . char . ' ',
         \ 'mode':  'i',
       \ })
       call smartinput#define_rule({
         \ 'char':  char,
-        \ 'at':    indents . '\%#',
+        \ 'at':    '^\s*\%#',
         \ 'input': char . ' ',
+        \ 'mode':  'i',
+      \ })
+      call smartinput#define_rule({
+        \ 'char':  char,
+        \ 'at':    '^\s*\%# ',
+        \ 'input': char,
         \ 'mode':  'i',
       \ })
       call smartinput#define_rule({
@@ -1549,8 +1559,20 @@ if neobundle#tap('vim-smartinput')
       \ })
       call smartinput#define_rule({
         \ 'char':  char,
-        \ 'at':    '[' . uchar . '] \%#',
+        \ 'at':    '\S \%# ',
+        \ 'input': char,
+        \ 'mode':  'i',
+      \ })
+      call smartinput#define_rule({
+        \ 'char':  char,
+        \ 'at':    '\(...\)\?' . uchar . ' \%#',
         \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
+        \ 'mode':  'i',
+      \ })
+      call smartinput#define_rule({
+        \ 'char':  char,
+        \ 'at':    '\(...\)\?' . uchar . ' \%# ',
+        \ 'input': '<BS><C-r>=' . rule . '<CR>',
         \ 'mode':  'i',
       \ })
 
@@ -1758,32 +1780,6 @@ if neobundle#tap('vim-smartinput')
     \ })
 
 
-    "  C-w
-    "-----------------------------------------------
-    call smartinput#map_to_trigger('i', '<C-w>', '<C-w>', '<C-w>')
-
-    call smartinput#define_rule({
-      \ 'char':  '<C-w>',
-      \ 'at':    '\%#',
-      \ 'input': '<C-w>',
-      \ 'mode':  'i',
-    \ })
-
-    " delete with spaces around
-    call smartinput#define_rule({
-      \ 'char':  '<C-w>',
-      \ 'at':    ' ' . opx . '=\? \%#',
-      \ 'input': '<C-o>dF<Space><BS>',
-      \ 'mode':  'i',
-    \ })
-    call smartinput#define_rule({
-      \ 'char':  '<C-w>',
-      \ 'at':    ' =\{1,3} \%#',
-      \ 'input': '<C-o>dF<Space><BS>',
-      \ 'mode':  'i',
-    \ })
-
-
     "  Dot
     "-----------------------------------------------
     call smartinput#map_to_trigger('i', '.', '.', '.')
@@ -1939,16 +1935,16 @@ if neobundle#tap('vim-textmanip')
   \ })
 
   " move selection
-  xmap <C-j> <Plug>(textmanip-move-down)
-  xmap <C-k> <Plug>(textmanip-move-up)
-  xmap <C-h> <Plug>(textmanip-move-left)
-  xmap <C-l> <Plug>(textmanip-move-right)
+  vmap <C-j> <Plug>(textmanip-move-down)
+  vmap <C-k> <Plug>(textmanip-move-up)
+  vmap <C-h> <Plug>(textmanip-move-left)
+  vmap <C-l> <Plug>(textmanip-move-right)
 
   " duplicate line
-  vmap ,d <Plug>(textmanip-duplicate-down)
-  vmap ,D <Plug>(textmanip-duplicate-up)
-  nmap ,d <Plug>(textmanip-duplicate-down)
-  nmap ,D <Plug>(textmanip-duplicate-up)
+  vmap <Space><C-j> <Plug>(textmanip-duplicate-down)
+  vmap <Space><C-k> <Plug>(textmanip-duplicate-up)
+  vmap <Space><C-h> <Plug>(textmanip-duplicate-left)
+  vmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 
   call neobundle#untap()
 endif
