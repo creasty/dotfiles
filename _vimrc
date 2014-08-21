@@ -585,6 +585,23 @@ autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('TrailingSpace', '\s\+$')
 
 
+"  Sign column
+"-----------------------------------------------
+" make sign column always visible
+sign define mydummy
+
+autocmd vimrc BufEnter * call <SID>add_dummy_sign()
+
+function! s:add_dummy_sign()
+  let bufnr = bufnr('')
+
+  if !getbufvar(bufnr, 'my_dummy_sign')
+    exec 'sign place 9999 line=1 name=mydummy buffer=' . bufnr
+    call setbufvar(bufnr, 'my_dummy_sign', 1)
+  endif
+endfunction
+
+
 "=== Search
 "==============================================================================================
 " cricle search within files
