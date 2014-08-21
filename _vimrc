@@ -902,7 +902,7 @@ if exists('+autochdir')
   set noautochdir
 endif
 
-let g:current_root_directory = ''
+let b:current_root_directory = '.'
 
 let s:root_patterns = [
   \ '.git',
@@ -944,10 +944,10 @@ function! s:change_directory(dir)
   let edir = fnameescape(a:dir)
 
   exec 'setlocal path-=' . edir
-  let g:current_root_directory = a:dir
+  let b:current_root_directory = a:dir
   exec 'setlocal path+=' . edir
 
-  exec 'cd ' . edir
+  exec 'lcd ' . edir
 endfunction
 
 function! s:change_to_root_directory()
@@ -2329,12 +2329,14 @@ if neobundle#tap('unite.vim')
     let g:unite_source_rec_max_cache_files = 30000
     let g:unite_source_history_yank_enable = 1
 
-    let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
+    let l:ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
       \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\|public\/system\)/'
-    call unite#custom#source('file', 'ignore_pattern', s:file_rec_ignore_pattern)
-    call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-    call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
-    call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
+
+    call unite#custom#source('file', 'ignore_pattern', l:ignore_pattern)
+    call unite#custom#source('file_rec', 'ignore_pattern', l:ignore_pattern)
+    call unite#custom#source('file_rec/async', 'ignore_pattern', l:ignore_pattern)
+    call unite#custom#source('file_rec/git', 'ignore_pattern', l:ignore_pattern)
+    call unite#custom#source('grep', 'ignore_pattern', l:ignore_pattern)
 
     if executable('ag')
       let g:unite_source_grep_command = 'ag'
@@ -2374,7 +2376,15 @@ if neobundle#tap('unite.vim')
 
   endfunction
 
-  nnoremap <silent> <C-q> :Unite -hide-source-names -buffer-name=files file_rec/async<CR>
+  function! s:dispatch_unite_file_rec_async_or_git()
+    if isdirectory(b:current_root_directory . '/.git')
+      Unite -hide-source-names -buffer-name=files file_rec/git
+    else
+      Unite -hide-source-names -buffer-name=files file_rec/async
+    endif
+  endfunction
+
+  nnoremap <silent> <C-q> :<C-u>call <SID>dispatch_unite_file_rec_async_or_git()<CR>
   nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
   imap <silent> <C-x><C-v> <C-o><Space>p
 
