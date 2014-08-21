@@ -2394,7 +2394,7 @@ if neobundle#tap('unite.vim')
   endfunction
 
   function! s:dispatch_unite_file_rec_async_or_git()
-    if isdirectory(b:current_root_directory . '/.git')
+    if isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
       Unite -hide-source-names -buffer-name=files file_rec/git
     else
       Unite -hide-source-names -buffer-name=files file_rec/async
@@ -2402,6 +2402,7 @@ if neobundle#tap('unite.vim')
   endfunction
 
   nnoremap <silent> <C-q> :<C-u>call <SID>dispatch_unite_file_rec_async_or_git()<CR>
+  nnoremap <silent> <Space><C-q>a :Unite -hide-source-names -buffer-name=files file_rec/async<CR>
   nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
   imap <silent> <C-x><C-v> <C-o><Space>p
 
