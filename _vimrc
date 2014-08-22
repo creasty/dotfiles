@@ -2236,7 +2236,7 @@ if neobundle#tap('neosnippet')
       elseif neosnippet#expandable_or_jumpable()
         return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
       elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
-        return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>\<Right>"
+        return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
       elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
         return neocomplete#start_manual_complete()
       else
