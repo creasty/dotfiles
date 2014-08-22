@@ -1462,6 +1462,13 @@ if neobundle#tap('vim-smartinput')
         \ 'input': a:char,
         \ 'mode':  'i',
       \ })
+      call smartinput#define_rule({
+        \ 'char':  a:char,
+        \ 'at':    '\%#',
+        \ 'input': a:char,
+        \ 'mode':  'i',
+        \ 'syntax': ['String']
+      \ })
     endfunction
 
 
@@ -1600,6 +1607,34 @@ if neobundle#tap('vim-smartinput')
     unlet uchar
     unlet rule
     unlet rules
+
+    " html tag, sql not
+    call smartinput#define_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(.....\)\?<\%#',
+      \ 'input':    '>',
+      \ 'mode':     'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(.....\)\?< \%#',
+      \ 'input':    '<BS>><Space>',
+      \ 'mode':     'i',
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(.....\)\?<\%#',
+      \ 'input':    '><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'markdown', 'eruby', 'slim']
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(.....\)\?< \%#',
+      \ 'input':    '<BS>><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'markdown', 'eruby', 'slim']
+    \ })
 
     " ruby block
     call smartinput#define_rule({
