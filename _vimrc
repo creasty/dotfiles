@@ -1609,6 +1609,13 @@ if neobundle#tap('vim-smartinput')
       \ 'mode':     'i',
       \ 'filetype': ['ruby'],
     \ })
+    call smartinput#define_rule({
+      \ 'char':     '<Bar>',
+      \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
+      \ 'input':    '<Right>',
+      \ 'mode':     'i',
+      \ 'filetype': ['ruby'],
+    \ })
 
 
     "  Space around operators
