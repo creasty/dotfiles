@@ -1737,10 +1737,9 @@ if neobundle#tap('vim-smartinput')
     call smartinput#map_to_trigger('i', '(', '(', '(')
 
     " ruby lambda
-    " FIXME: not working
     call smartinput#define_rule({
       \ 'char':     '(',
-      \ 'at':       '-> \%#',
+      \ 'at':       '\(....\)\?-> \%#',
       \ 'input':    '<BS>()<Left>',
       \ 'mode':     'i',
       \ 'filetype': ['ruby'],
