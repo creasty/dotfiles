@@ -52,7 +52,7 @@ cdh() {
   fi
 }
 
-compctl -f -W ~ cdd
+compctl -f -W ~ cdh
 
 
 #  cd to active Finder's directory
@@ -84,8 +84,10 @@ jj() {
 #  Git sync
 #-----------------------------------------------
 gsy() {
-  git a || true
+  echo "==> add"
+  git a -v || true
 
+  echo "==> commit"
   if [ $# -gt 0 ]; then
     git cm "$1"
   else
@@ -93,7 +95,9 @@ gsy() {
   fi
 
   if [ $? -eq 0 ]; then
+    echo "==> pull"
     git pl || true
+    echo "==> push"
     git pu
   fi
 }
