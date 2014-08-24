@@ -540,7 +540,7 @@ set list
 set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 
 " show wrap line break
-set showbreak=❮
+let &showbreak = '❮❮  '
 
 
 "  Folding
@@ -2228,9 +2228,9 @@ if neobundle#tap('neosnippet')
     let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
 
     " super tab completion
-    inoremap <silent> <expr> <TAB> <SID>SuperTabCompletion()
+    inoremap <silent> <expr> <TAB> <SID>super_tab_completion()
 
-    function! s:SuperTabCompletion()
+    function! s:super_tab_completion()
       if pumvisible()
         return neocomplete#close_popup()
       elseif neosnippet#expandable_or_jumpable()

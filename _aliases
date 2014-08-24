@@ -16,7 +16,7 @@ alias df='df -h'
 alias tf='tail -f'
 
 alias vi='vim'
-alias g="git"
+alias g='git'
 alias ti='titanium'
 alias :q='exit'
 
@@ -112,5 +112,4 @@ alias tma0='tmux attach -t 0'
 alias tma1='tmux attach -t 1'
 alias tma2='tmux attach -t 2'
 alias tml='tmux list-sessions'
-
 

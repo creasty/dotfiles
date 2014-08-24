@@ -42,6 +42,19 @@ cdd() {
 compctl -f -W ~/Develop cdd
 
 
+#  Home directory
+#-----------------------------------------------
+cdh() {
+  if [ $# -gt 0 ]; then
+    cd "$HOME/$1"
+  else
+    cd ~
+  fi
+}
+
+compctl -f -W ~ cdd
+
+
 #  cd to active Finder's directory
 #-----------------------------------------------
 cdf() {
@@ -71,7 +84,18 @@ jj() {
 #  Git sync
 #-----------------------------------------------
 gsy() {
-  git a && git cm "$1" && git pl && git pu
+  git a || true
+
+  if [ $# -gt 0 ]; then
+    git cm "$1"
+  else
+    git c
+  fi
+
+  if [ $? -eq 0 ]; then
+    git pl || true
+    git pu
+  fi
 }
 
 
@@ -176,7 +200,7 @@ del() {
 }
 
 # never use rm
-alias rm="del"
+# alias rm="del"
 
 # empty trash
 alias trash-look="ls -al $TRASHDIR/ 2> /dev/null"
