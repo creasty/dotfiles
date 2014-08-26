@@ -62,14 +62,14 @@
   reh4 = reset --hard HEAD~~~~
   reh5 = reset --hard HEAD~~~~~
 
-  pl = "!f() { git symbolic-ref --short HEAD ; }; git pull origin `f`"
-  pu = "!f() { git symbolic-ref --short HEAD ; }; git push origin `f`"
+  pl = "!git pull origin `git symbolic-ref --short HEAD`"
+  pu = "!git push origin `git symbolic-ref --short HEAD`"
 
-  e = "!f() { git status -s | cut -b 4- | grep -v '\\/$' | uniq ; }; vim `f`"
-  edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
-  add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
-  delete-unmerged =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
-  modified = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
+  e = "!vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`"
+  edit-unmerged = "!vim `git ls-files --unmerged | cut -f2 | sort -u`"
+  add-unmerged = "!git add `git ls-files --unmerged | cut -f2 | sort -u`"
+  delete-unmerged =  "!git rm `git ls-files --deleted | cut -f2 | sort -u`"
+  modified = "!git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -"
 
   sy = "!git_sync"
 
