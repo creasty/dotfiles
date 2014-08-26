@@ -18,8 +18,8 @@ fi
 
 if [ $? -eq 0 ]; then
   section 'pull'
-  git pl || true
+  git plc || true
 
   section 'push'
-  git pu
+  git puc
 fi
