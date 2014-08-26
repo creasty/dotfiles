@@ -16,13 +16,15 @@
   tool = vimdiff
   ff = false
 
+[push]
+  default = current
+
 [alias]
   a = add -A .
   m = merge
   mf = merge FETCH_HEAD
   c = commit -a
   cm = commit -am
-  # !git add -A && git commit -av
   ca = commit --amend
   cane = commit --amend --no-edit
   k = checkout
@@ -34,6 +36,8 @@
   l = log
   ll = log -1 HEAD
   g = log --oneline --graph
+
+  num-commits = "!git log --all --oneline | wc -l"
 
   tags = tag -l
   branches = branch -a
@@ -62,8 +66,9 @@
   reh4 = reset --hard HEAD~~~~
   reh5 = reset --hard HEAD~~~~~
 
-  pl = "!git pull origin `git symbolic-ref --short HEAD`"
-  pu = "!git push origin `git symbolic-ref --short HEAD`"
+  bb = "!git symbolic-ref --short HEAD"
+  pl = pull
+  pu = push
 
   e = "!vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`"
   edit-unmerged = "!vim `git ls-files --unmerged | cut -f2 | sort -u`"
@@ -81,4 +86,3 @@
 
 [issue]
   type = github
-
