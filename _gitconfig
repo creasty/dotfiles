@@ -71,6 +71,8 @@
   delete-unmerged =  "!f() { git ls-files --deleted | cut -f2 | sort -u ; }; git rm `f`"
   modified = "!f() { git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' - ;}; f"
 
+  sy = "!git_sync"
+
   # Remove branches that have already been merged with master
   dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 

@@ -1,0 +1,25 @@
+#!/usr/local/bin/zsh
+
+autoload colors && colors
+
+section() {
+  echo "${fg_no_bold[yellow]}==> $1$reset_color"
+}
+
+section 'add'
+git a -v || true
+
+section 'commit'
+if [ $# -gt 0 ]; then
+  git cm "$1"
+else
+  git c
+fi
+
+if [ $? -eq 0 ]; then
+  section 'pull'
+  git pl || true
+
+  section 'push'
+  git pu
+fi

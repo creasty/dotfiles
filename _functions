@@ -81,28 +81,6 @@ jj() {
 }
 
 
-#  Git sync
-#-----------------------------------------------
-gsy() {
-  echo "==> add"
-  git a -v || true
-
-  echo "==> commit"
-  if [ $# -gt 0 ]; then
-    git cm "$1"
-  else
-    git c
-  fi
-
-  if [ $? -eq 0 ]; then
-    echo "==> pull"
-    git pl || true
-    echo "==> push"
-    git pu
-  fi
-}
-
-
 #  SSH
 #-----------------------------------------------
 sshc() {
