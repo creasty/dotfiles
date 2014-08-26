@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# one of `networksetup -listallnetworkservices`
+NETWORKSERVICE=Wi-Fi
+
+PORT=3113
+HOST=localhost
+HOST_PORT=8888
+
+SSH=proxy_exp1
+
+
+sudo echo ''
+
+proxy_on() {
+  echo '==> Turn proxy on'
+  sudo networksetup -setwebproxy $NETWORKSERVICE $HOST $PORT
+  sudo networksetup -setsecurewebproxy $NETWORKSERVICE $HOST $PORT
+
+  echo '==> Connect to proxy server'
+  ssh -L $PORT:$HOST:$HOST_PORT -N $SSH
+}
+
+proxy_off() {
+  echo '==> Turn proxy off'
+  sudo networksetup -setwebproxystate $NETWORKSERVICE off
+  sudo networksetup -setsecurewebproxystate $NETWORKSERVICE off
+}
+
+control_c() {
+  echo '==> Exiting'
+  proxy_off
+  exit $?
+}
+
+trap control_c INT
+
+if [[ $1 = 'on' || $1 = '' ]]; then
+  proxy_on
+elif [[ $1 = 'off' ]]; then
+  proxy_off
+fi
