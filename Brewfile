@@ -13,6 +13,9 @@ tap peco/peco || true
 tap phinze/homebrew-cask || true
 tap supermomonga/homebrew-splhack || true
 
+# cask
+install brew-cask || true
+
 # install cask-packages
 cask install adobe-creative-cloud || true
 cask install alfred || true
@@ -41,7 +44,7 @@ cask install xtrafinder || true
 
 # install brew-packages
 install ansible || true
-install brew-cask || true
+install cabal-install || true
 install chrome-cli || true
 install clisp || true
 install ctags || true
@@ -53,11 +56,13 @@ install fontforge || true
 install freetype || true
 install gdbm || true
 install gettext || true
+install ghc || true
 install ghostscript || true
 install git || true
 install git-flow || true
 install go || true
 install graphviz || true
+install haskell-platform || true
 install hub || true
 install imagemagick || true
 install jbig2dec || true
@@ -77,7 +82,7 @@ install phantomjs || true
 install php55 || true
 install python3 || true
 install q || true
-install r || true
+install r || true  # require xquartz to be installed
 install rbenv || true
 install reattach-to-user-namespace || true
 install sqlite || true

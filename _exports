@@ -6,6 +6,7 @@ export PATH=$PATH:/opt/local/bin
 export PATH=$PATH:$HOME/.rvm/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:$HOME/.npm/node_modules/bin
+export PATH=$PATH:$HOME/.cabal/bin
 export PATH=$PATH:$HOME/dotfiles/bin
 export PATH=$PATH:/Applications/TeXLive/Library/texlive/2013/bin/x86_64-darwin
 

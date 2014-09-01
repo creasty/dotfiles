@@ -53,3 +53,10 @@ bundle
 #  R
 #-----------------------------------------------
 r -f packages.r
+
+
+#  Haskell
+#-----------------------------------------------
+cabal update
+cabal install cabal-install
+cabal install erd
