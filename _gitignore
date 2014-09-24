@@ -3,3 +3,4 @@ Thumb.db
 *.log
 .tags
 .vimprojectroot
+vendor/bundle

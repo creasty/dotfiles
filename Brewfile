@@ -86,6 +86,8 @@ brew install python3 || true
 brew install q || true
 brew install r || true  # require xquartz to be installed
 brew install rbenv || true
+brew install ruby-build || true
+brew install rbenv-gem-rehash || true
 brew install reattach-to-user-namespace || true
 brew install sqlite || true
 brew install sshrc || true

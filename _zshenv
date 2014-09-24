@@ -3,4 +3,4 @@ for file in ~/.{exports,aliases,functions,extra}; do
 done
 unset file
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+eval "$(rbenv init -)"

@@ -2,6 +2,7 @@
 
 cd ~/dotfiles
 
+
 #  Homebrew
 #-----------------------------------------------
 which brew > /dev/null 2>&1
@@ -12,18 +13,10 @@ fi
 sh ./Brewfile
 
 
-#  RVM
+#  rbenv
 #-----------------------------------------------
-which rvm > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-  curl -L get.rvm.io | bash -s stable
-fi
-
-rvm get head
-rvm get latest
-rvm install 1.9.3
-rvm install 2.1.1
-rvm use --default 2.1.1
+rbenv install 2.1.1
+rbenv global 2.1.1
 
 
 #  Pow
