@@ -84,12 +84,12 @@ jj() {
 #  SSH
 #-----------------------------------------------
 sshc() {
-  cat ~/.ssh/hosts/* > ~/.ssh/config
+  cat ~/.ssh/config.d/* > ~/.ssh/config
 
-  [ $# -gt 0 ] && ssh $1
+  [ $# -gt 0 ] && sshrc $1
 }
 
-compctl -f -W ~/.ssh/hosts sshc
+compctl -f -W ~/.ssh/config.d sshc
 
 
 #  Extractors (zsh only)

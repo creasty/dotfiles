@@ -1,0 +1,14 @@
+#  Create a new directory and enter it
+#-----------------------------------------------
+mkd() {
+  mkdir -p "$@" && cd "$@"
+}
+
+
+#  Project root (.git dir)
+#-----------------------------------------------
+cdrt() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `git rev-parse --show-toplevel`
+  fi
+}

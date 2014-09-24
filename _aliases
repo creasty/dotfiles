@@ -28,8 +28,6 @@ alias o='git ls-files | peco | xargs open'
 
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
 
-alias erd="$HOME/.cabal/bin/erd"
-
 
 #  Global
 #-----------------------------------------------

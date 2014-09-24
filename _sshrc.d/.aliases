@@ -1,0 +1,46 @@
+#  General
+#-----------------------------------------------
+alias ..='cd ..'
+alias ...='cd ../..'
+
+alias ls='ls -G'
+alias ll='ls -Gl'
+alias la='ls -Ga'
+alias lla='ls -Gla'
+alias tree='tree -C'
+alias df='df -h'
+alias tf='tail -f'
+
+alias vi='vim'
+alias g='git'
+alias :q='exit'
+
+
+#  Ruby / Rails
+#-----------------------------------------------
+alias b='bundle'
+alias be='bundle exec'
+alias ra='bundle exec rails'
+alias rk='bundle exec rake'
+
+alias rru='bundle exec rake routes'
+
+alias rdbc='bundle exec rake db:create'
+alias rdbm='bundle exec rake db:migrate'
+alias rdbr='bundle exec rake db:reset'
+alias rdbs='bundle exec rake db:setup'
+alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
+
+alias rs='bundle exec rails s'
+alias rs1='bundle exec rails s -p 3001'
+alias rs2='bundle exec rails s -p 3002'
+alias rs3='bundle exec rails s -p 3003'
+alias rs4='bundle exec rails s -p 3004'
+alias rs5='bundle exec rails s -p 3005'
+
+
+#  Make
+#-----------------------------------------------
+alias m='make'
+alias mi='make install'
+alias mc='make clean'

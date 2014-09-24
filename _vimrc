@@ -886,11 +886,11 @@ cnoremap <expr> h
 cnoremap <expr> r
   \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
 
+command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
+
 " w!! to write a file as sudo
 cnoremap <expr> !
   \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
-
-command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
 " file detect on read / save
 autocmd vimrc BufWritePost,BufReadPost,BufEnter *

@@ -1,105 +1,108 @@
+#!/bin/bash
+
 # update homebrew
-update
+brew update
 
 # upgrade already-installed packages
-upgrade
+brew upgrade
 
 # add repositories
-tap homebrew/dupes || true
-tap homebrew/science || true
-tap josegonzalez/php || true
-tap laurent22/massren || true
-tap peco/peco || true
-tap phinze/homebrew-cask || true
-tap supermomonga/homebrew-splhack || true
+brew tap homebrew/dupes || true
+brew tap homebrew/science || true
+brew tap josegonzalez/php || true
+brew tap laurent22/massren || true
+brew tap peco/peco || true
+brew tap phinze/homebrew-cask || true
+brew tap supermomonga/homebrew-splhack || true
 
 # cask
-install brew-cask || true
+brew install brew-cask || true
 
 # install cask-packages
-cask install adobe-creative-cloud || true
-cask install alfred || true
-cask install dropbox || true
-cask install firefox || true
-cask install flip4mac || true
-cask install google-chrome || true
-cask install google-hangouts || true
-cask install google-japanese-ime || true
-cask install growlnotify || true
-cask install imagealpha || true
-cask install imageoptim || true
-cask install iterm2 || true
-cask install karabiner || true
-cask install ngrok || true
-cask install seil || true
-cask install sequel-pro || true
-cask install skype || true
-cask install sophos-antivirus-home-edition || true
-cask install transmission || true
-cask install truecrypt || true
-cask install vagrant || true
-cask install virtualbox || true
-cask install xquartz || true
-cask install xtrafinder || true
+brew cask install adobe-creative-cloud || true
+brew cask install alfred || true
+brew cask install dropbox || true
+brew cask install firefox || true
+brew cask install flip4mac || true
+brew cask install google-chrome || true
+brew cask install google-hangouts || true
+brew cask install google-japanese-ime || true
+brew cask install growlnotify || true
+brew cask install imagealpha || true
+brew cask install imageoptim || true
+brew cask install iterm2 || true
+brew cask install karabiner || true
+brew cask install ngrok || true
+brew cask install seil || true
+brew cask install sequel-pro || true
+brew cask install skype || true
+brew cask install sophos-antivirus-home-edition || true
+brew cask install transmission || true
+brew cask install truecrypt || true
+brew cask install vagrant || true
+brew cask install virtualbox || true
+brew cask install xquartz || true
+brew cask install xtrafinder || true
 
 # install brew-packages
-install ansible || true
-install cabal-install || true
-install chrome-cli || true
-install clisp || true
-install ctags || true
-install ctags-objc-ja --HEAD --enable-japanese-support || true
-install direnv || true
-install eot-utils || true
-install fontconfig || true
-install fontforge || true
-install freetype || true
-install gdbm || true
-install gettext || true
-install ghc || true
-install ghostscript || true
-install git || true
-install git-flow || true
-install go || true
-install graphviz || true
-install haskell-platform || true
-install hub || true
-install imagemagick || true
-install jbig2dec || true
-install jpeg || true
-install jq || true
-install lua || true
-install macvim --HEAD --with-cscope --with-lua --override-system-vi || true
-install massren && massren --config editor vim || true
-install mercurial || true
-install mysql || true
-install ngrep || true
-install node || true
-install optipng || true
-install pcre || true
-install peco || true
-install phantomjs || true
-install php55 || true
-install python3 || true
-install q || true
-install r || true  # require xquartz to be installed
-install rbenv || true
-install reattach-to-user-namespace || true
-install sqlite || true
-install the_silver_searcher || true
-install tig || true
-install tmux || true
-install tree || true
-install w3m || true
-install webkit2png || true
-install wget --enable-iri || true
-install zsh || true
+brew install ansible || true
+brew install cabal-install || true
+brew install chrome-cli || true
+brew install clisp || true
+brew install ctags || true
+brew install ctags-objc-ja --HEAD --enable-japanese-support || true
+brew install direnv || true
+brew install eot-utils || true
+brew install fontconfig || true
+brew install fontforge || true
+brew install freetype || true
+brew install gdbm || true
+brew install gettext || true
+brew install ghc || true
+brew install ghostscript || true
+brew install git || true
+brew install git-flow || true
+brew install go || true
+brew install graphviz || true
+brew install haskell-platform || true
+brew install hub || true
+brew install imagemagick || true
+brew install jbig2dec || true
+brew install jpeg || true
+brew install jq || true
+brew install lua || true
+brew install macvim --HEAD --with-cscope --with-lua --override-system-vi || true
+brew install massren && massren --config editor vim || true
+brew install mercurial || true
+brew install mysql || true
+brew install ngrep || true
+brew install node || true
+brew install optipng || true
+brew install pcre || true
+brew install peco || true
+brew install phantomjs || true
+brew install php55 || true
+brew install python3 || true
+brew install q || true
+brew install r || true  # require xquartz to be installed
+brew install rbenv || true
+brew install reattach-to-user-namespace || true
+brew install sqlite || true
+brew install sshrc || true
+brew install the_silver_searcher || true
+brew install tig || true
+brew install tmux || true
+brew install tree || true
+brew install w3m || true
+brew install webkit2png || true
+brew install wget --enable-iri || true
+brew install zsh || true
 
 # for alfred
-cask alfred link
+brew cask alfred link
 
 # applications
-# linkapps
+# brew linkapps
 
 # remove outdated versions from the cellar
-cleanup
+brew cleanup
