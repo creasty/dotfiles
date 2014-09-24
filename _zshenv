@@ -4,3 +4,4 @@ done
 unset file
 
 eval "$(rbenv init -)"
+eval "$(gh alias -s)"
