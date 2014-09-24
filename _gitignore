@@ -4,3 +4,4 @@ Thumb.db
 .tags
 .vimprojectroot
 vendor/bundle
+.bundle
