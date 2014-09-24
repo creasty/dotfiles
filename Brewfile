@@ -65,6 +65,7 @@ brew install git-flow || true
 brew install go || true
 brew install graphviz || true
 brew install haskell-platform || true
+brew install httpie || true
 brew install hub || true
 brew install imagemagick || true
 brew install jbig2dec || true
