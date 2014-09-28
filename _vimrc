@@ -890,7 +890,7 @@ command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
 " w!! to write a file as sudo
 cnoremap <expr> !
-  \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
+  \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>!sudo tee % >/dev/null" : '!'
 
 " file detect on read / save
 autocmd vimrc BufWritePost,BufReadPost,BufEnter *
