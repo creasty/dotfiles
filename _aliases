@@ -50,12 +50,12 @@ alias anp='ansible-playbook'
 #  Networks
 #-----------------------------------------------
 alias hosts='vi /etc/hosts'
-alias ip='ipconfig getifaddr en1'
-alias ipg='curl ifconfig.me'
+alias ip='ipconfig getifaddr en0 || ipconfig getifaddr en1'
+alias ipg='dig +short myip.opendns.com @resolver1.opendns.com'
 alias whois='whois -h whois-servers.net'
 
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 
 #  Servers
