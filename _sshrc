@@ -1,4 +1,6 @@
-for file in $SSHHOME/.sshrc.d/.{exports,aliases,functions,extra}; do
-  [ -r "$file" ] && [ -f "$file" ] && source "$file"
-done
-unset file
+if [ -n "$SSHHOME" ]; then
+  for file in $SSHHOME/.sshrc.d/.{exports,aliases,functions,extra}; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file"
+  done
+  unset file
+fi
