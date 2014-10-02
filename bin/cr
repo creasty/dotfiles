@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Chrome remote console
+
+crconsole
+
+if [ $? -eq 1 ]; then
+  killall 'Google Chrome'
+  open -ga "Google Chrome" --args -remote-debugging-port=9222
+  sleep 1
+  crconsole
+fi

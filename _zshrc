@@ -150,7 +150,7 @@ esac
 
 #  Prompt
 #-----------------------------------------------
-source ~/dotfiles/bin/git-prompt.sh
+source $ZSH_CUSTOM/git-prompt.sh
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -159,7 +159,6 @@ GIT_PS1_SHOWUPSTREAM=1
 PROMPT='%F{blue}%c%f\
 %F{white}$(__git_ps1 " %s")%f\
 %F{blue} ❯ %f'
-# %(!,#,$)
 
 
 #  Nortify done
