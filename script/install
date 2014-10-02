@@ -46,3 +46,16 @@ r -f packages.r
 cabal update
 cabal install cabal-install
 cabal install erd
+
+
+#  Lua
+#-----------------------------------------------
+luarocks install md5
+luarocks install stdlib
+luarocks install lgi
+luarocks install lpeg
+luarocks install luaexpat
+luarocks install inspect
+luarocks install luaepnf
+luarocks install luarepl
+luarocks install cassowary

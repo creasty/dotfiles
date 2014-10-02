@@ -73,6 +73,8 @@ brew install jbig2dec || true
 brew install jpeg || true
 brew install jq || true
 brew install lua || true
+brew install luarocks || true
+brew install luajit || true
 brew install macvim --HEAD --with-cscope --with-lua --override-system-vi || true
 brew install massren && massren --config editor vim || true
 brew install mercurial || true
