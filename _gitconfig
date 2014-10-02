@@ -66,8 +66,8 @@
   reh4 = reset --hard HEAD~~~~
   reh5 = reset --hard HEAD~~~~~
 
-  pl = pull
-  pu = push
+  pl = pull origin
+  pu = push origin
   plc = "!git pull origin `git symbolic-ref --short HEAD`"
   puc = "!git push origin `git symbolic-ref --short HEAD`"
 
@@ -76,8 +76,6 @@
   add-unmerged = "!git add `git ls-files --unmerged | cut -f2 | sort -u`"
   delete-unmerged =  "!git rm `git ls-files --deleted | cut -f2 | sort -u`"
   modified = "!git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -"
-
-  sy = "!git_sync"
 
   # Remove branches that have already been merged with master
   dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
