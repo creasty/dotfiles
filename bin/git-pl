@@ -5,13 +5,10 @@ DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
 source ~/dotfiles/script/helpers.sh
 
-CMD=''
-
 if [ $# -ge 2 ]; then
-  CMD="git pull ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
+  subsection "git pull ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
+  git pull ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}
 else
-  CMD="git pull $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
+  subsection "git pull $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
+  git pull $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}
 fi
-
-subsection "$CMD"
-exec "$CMD"

@@ -6,13 +6,9 @@ DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 source ~/dotfiles/script/helpers.sh
 
 if [ $# -ge 2 ]; then
-  CMD="git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
-
-  subsection "$CMD"
-  exec "$CMD"
+  subsection "git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
+  git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}
 else
-  CMD="git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
-
-  subsection "$CMD"
-  exec "$CMD"
+  subsection "git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
+  git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}
 fi
