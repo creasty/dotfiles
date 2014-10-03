@@ -4,7 +4,7 @@ source ~/dotfiles/script/helpers.sh
 
 PROJECT_NAME="$(basename `pwd`)"
 
-ID="$PROJECT_NAME-$(echo $PROJECT_NAME | md5 | cut -c -8)"
+ID="$PROJECT_NAME-$(echo $PROJECT_NAME | md5 | head -c 8)"
 PORT=${2:-3000}
 SUBDOMAIN="$ID-$PORT"
 
