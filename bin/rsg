@@ -1,15 +1,12 @@
 #!/bin/bash
 
+source ~/dotfiles/script/helpers.sh
+
 PROJECT_NAME="$(basename `pwd`)"
 
 ID="$PROJECT_NAME-$(echo $PROJECT_NAME | md5 | cut -c -8)"
 PORT=${2:-3000}
 SUBDOMAIN="$ID-$PORT"
-
-section() {
-  printf "\e[33m==> $1\e[0m\n"
-}
-
 
 section "Starting ngrok"
 ngrok -log=stdout -subdomain=$SUBDOMAIN $PORT > /dev/null &

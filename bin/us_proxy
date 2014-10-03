@@ -1,6 +1,9 @@
 #!/bin/bash
 
+source ~/dotfiles/script/helpers.sh
+
 # one of `networksetup -listallnetworkservices`
+
 NETWORKSERVICE=Wi-Fi
 
 PORT=3113
@@ -13,22 +16,22 @@ SSH=proxy_exp1
 sudo echo ''
 
 proxy_on() {
-  echo '==> Turn proxy on'
+  section 'Turn proxy on'
   sudo networksetup -setwebproxy $NETWORKSERVICE $HOST $PORT
   sudo networksetup -setsecurewebproxy $NETWORKSERVICE $HOST $PORT
 
-  echo '==> Connect to proxy server'
+  section 'Connect to proxy server'
   ssh -L $PORT:$HOST:$HOST_PORT -N $SSH
 }
 
 proxy_off() {
-  echo '==> Turn proxy off'
+  section 'Turn proxy off'
   sudo networksetup -setwebproxystate $NETWORKSERVICE off
   sudo networksetup -setsecurewebproxystate $NETWORKSERVICE off
 }
 
 control_c() {
-  echo '==> Exiting'
+  section 'Exiting'
   proxy_off
   exit $?
 }

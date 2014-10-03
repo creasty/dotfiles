@@ -3,13 +3,16 @@
 DEFAULT_REMOTE=origin
 DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
-show_and_run() {
-  echo "--  $@"
-  exec $@
-}
+source ~/dotfiles/script/helpers.sh
 
 if [ $# -ge 2 ]; then
-  show_and_run "git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
+  CMD="git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
+
+  subsection "$CMD"
+  exec "$CMD"
 else
-  show_and_run "git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
+  CMD="git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
+
+  subsection "$CMD"
+  exec "$CMD"
 fi
