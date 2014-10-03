@@ -66,11 +66,6 @@
   reh4 = reset --hard HEAD~~~~
   reh5 = reset --hard HEAD~~~~~
 
-  pl = pull origin
-  pu = push origin
-  plc = "!git pull origin `git symbolic-ref --short HEAD`"
-  puc = "!git push origin `git symbolic-ref --short HEAD`"
-
   e = "!vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`"
   edit-unmerged = "!vim `git ls-files --unmerged | cut -f2 | sort -u`"
   add-unmerged = "!git add `git ls-files --unmerged | cut -f2 | sort -u`"

@@ -1,9 +1,7 @@
-#!/usr/local/bin/zsh
-
-autoload colors && colors
+#!/bin/bash
 
 section() {
-  echo "${fg_no_bold[yellow]}==> $1$reset_color"
+  printf "\e[33m==> $1\e[0m\n"
 }
 
 section 'add'
@@ -18,8 +16,8 @@ fi
 
 if [ $? -eq 0 ]; then
   section 'pull'
-  git plc || true
+  git pl || true
 
   section 'push'
-  git puc
+  git pu
 fi

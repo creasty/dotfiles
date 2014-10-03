@@ -8,9 +8,9 @@ fi
 
 cd ~/dotfiles
 
-sh ./script/install
-sh ./script/link
-sh ./script/shell
-sh ./script/app
-sh ./script/font
-sh ./script/osx
+sh ./bootstrap.d/install
+sh ./bootstrap.d/link
+sh ./bootstrap.d/shell
+sh ./bootstrap.d/app
+sh ./bootstrap.d/font
+sh ./bootstrap.d/osx
