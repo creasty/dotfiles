@@ -3,7 +3,6 @@
 source ~/dotfiles/script/helpers.sh
 
 # one of `networksetup -listallnetworkservices`
-
 NETWORKSERVICE=Wi-Fi
 
 PORT=3113
