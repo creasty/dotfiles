@@ -3,8 +3,13 @@
 DEFAULT_REMOTE=origin
 DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
+show_and_run() {
+  echo "--  $@"
+  exec $@
+}
+
 if [ $# -ge 2 ]; then
-  git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}
+  show_and_run "git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
 else
-  git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}
+  show_and_run "git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
 fi
