@@ -108,7 +108,7 @@ brew install zsh || true
 brew cask alfred link
 
 # applications
-# brew linkapps
+brew linkapps
 
 # remove outdated versions from the cellar
 brew cleanup
