@@ -1621,20 +1621,6 @@ if neobundle#tap('vim-smartinput')
       \ 'input':    '<BS>><Space>',
       \ 'mode':     'i',
     \ })
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(.....\)\?<\%#',
-      \ 'input':    '><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'markdown', 'eruby', 'slim']
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(.....\)\?< \%#',
-      \ 'input':    '<BS>><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'markdown', 'eruby', 'slim']
-    \ })
 
     " ruby block
     call smartinput#define_rule({
@@ -1745,6 +1731,57 @@ if neobundle#tap('vim-smartinput')
       \ 'filetype': ['eruby'],
     \ })
 
+    " html
+    call smartinput#define_rule({
+      \ 'char':     '<',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '<><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(........\)\?\%#>',
+      \ 'input':    '<Right>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '=',
+      \ 'at':       '\(........\)\?<.\+\%#',
+      \ 'input':    '=""<Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '/',
+      \ 'at':       '\(........\)\?<\%#>',
+      \ 'input':    '/<C-x><C-o><BS><ESC>a',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '&',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '&;<Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '-',
+      \ 'at':       '\(........\)\?<\%#>',
+      \ 'input':    '!--  --<Left><Left><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim'],
+    \ })
+
     " left arrow (go)
     call smartinput#define_rule({
       \ 'char':     '-',
@@ -1781,7 +1818,7 @@ if neobundle#tap('vim-smartinput')
     " ruby lambda
     call smartinput#define_rule({
       \ 'char':     '(',
-      \ 'at':       '\(....\)\?-> \%#',
+      \ 'at':       '\(........\)\?-> \%#',
       \ 'input':    '<BS>()<Left>',
       \ 'mode':     'i',
       \ 'filetype': ['ruby'],
