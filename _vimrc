@@ -540,7 +540,7 @@ set list
 set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 
 " show wrap line break
-let &showbreak = '❮❮  '
+let &showbreak = '❮'
 
 
 "  Folding

@@ -3,7 +3,7 @@
 source ~/dotfiles/script/helpers.sh
 
 section 'add'
-git a -v || true
+git a || true
 
 section 'commit'
 if [ $# -gt 0 ]; then

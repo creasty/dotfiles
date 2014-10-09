@@ -20,13 +20,13 @@
   default = current
 
 [alias]
-  a = "!git add -A `git rev-parse --show-toplevel`"
+  a = "!git add -A -v `git rev-parse --show-toplevel`"
   m = merge
   mf = merge FETCH_HEAD
-  c = commit -a
-  cm = commit -am
-  ca = commit --amend
-  cane = commit --amend --no-edit
+  c = commit
+  cm = "!git a && git commit -m"
+  ca = "!git a && git commit --amend"
+  cane = "!git a && git commit --amend --no-edit"
   k = checkout
   kb = checkout -B
   km = checkout master
