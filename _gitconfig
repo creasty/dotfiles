@@ -1,12 +1,12 @@
 [user]
-  name = Yuki Iwanaga
+  name  = Yuki Iwanaga
   email = yuki@creasty.com
 
 [github]
   user = creasty
 
 [core]
-  editor = /usr/local/bin/vim
+  editor       = /usr/local/bin/vim
   excludesfile = ~/.gitignore
 
 [color]
@@ -14,36 +14,42 @@
 
 [merge]
   tool = vimdiff
-  ff = false
+  ff   = false
 
 [push]
   default = current
 
 [alias]
-  a = "!git add -A -v `git rev-parse --show-toplevel`"
-  m = merge
-  mf = merge FETCH_HEAD
-  c = commit
-  cm = "!git a && git commit -m"
-  ca = "!git a && git commit --amend"
-  cane = "!git a && git commit --amend --no-edit"
-  k = checkout
-  kb = checkout -B
-  km = checkout master
-  s = status -s
-  d = diff
-  b = branch
-  l = log
-  ll = log -1 HEAD
-  g = log --oneline --graph
+  a    = "!git add -A -v `git rev-parse --show-toplevel`"
+  m    = merge
+  mf   = merge FETCH_HEAD
+  c    = commit
+  cm   = "!git a && git c -m"
+  ca   = "!git a && git c --amend"
+  cane = "!git a && git c --amend --no-edit"
+  k    = checkout
+  kb   = checkout -B
+  km   = checkout master
+  s    = status -s
+  d    = diff --diff-filter=M
+  dc   = diff --diff-filter=M --cached
+  sd   = "!git s && git d"
+  sdc  = "!git s && git dc"
+  b    = branch
+  t    = tag
+  l    = log
+  ll   = log -1 HEAD
+  g    = log --oneline --graph
+  r    = revert
+  st   = stash
+  sp   = stash pop
 
-  num-commits = "!git log --all --oneline | wc -l"
-
-  tags = tag -l
+  tags     = tag -l
   branches = branch -a
-  remotes = remote -v
+  remotes  = remote -v
 
-  f = flow
+  f  = flow
+  fi = flow init
   fs = flow feature start
   ff = flow feature finish
   fl = flow feature list
@@ -66,14 +72,18 @@
   reh4 = reset --hard HEAD~~~~
   reh5 = reset --hard HEAD~~~~~
 
-  e = "!vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`"
-  edit-unmerged = "!vim `git ls-files --unmerged | cut -f2 | sort -u`"
-  add-unmerged = "!git add `git ls-files --unmerged | cut -f2 | sort -u`"
-  delete-unmerged =  "!git rm `git ls-files --deleted | cut -f2 | sort -u`"
-  modified = "!git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -"
+  edit-modified   = "!vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`"
+  edit-unmerged   = "!vim `git ls-files --unmerged | cut -f2 | sort -u`"
+  add-unmerged    = "!git add `git ls-files --unmerged | cut -f2 | sort -u`"
+  delete-unmerged = "!git rm `git ls-files --deleted | cut -f2 | sort -u`"
+  modified        = "!git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -"
 
   # Remove branches that have already been merged with master
   dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+  num-commits = "!git log --all --oneline | wc -l"
+
+  reload-config = "!git config -l > /dev/null"
 
 [url "https://"]
   insteadOf = git://
