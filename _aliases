@@ -50,13 +50,18 @@ alias -s rb='ruby'
 alias -s py='python'
 alias -s hs='runhaskell'
 alias -s php='php -f'
+alias -s js='node'
+alias -s coffee='coffee'
+alias -s go='go run'
 alias -s {gif,jpg,jpeg,png,bmp}='display'
 
 _run_c() {
-  gcc $1
+  local file="$1"
+  local out="${1/\.c/}"
   shift
-  ./a.out $@
-  rm -f ./a.out
+
+  gcc -o $out $file && $out $@
+  # rm -f $out
 }
 alias -s c='_run_c'
 
