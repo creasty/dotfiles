@@ -30,11 +30,44 @@ alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
 
 #  Global
 #-----------------------------------------------
-alias -g C='| wc -cl'
+alias -g A='| awk'
+alias -g C='| cat'
+alias -g D='| sed'
+alias -g E='> /dev/null 2>&1'
+alias -g G='| grep'
 alias -g H='| head'
 alias -g L='| less'
+alias -g N='> /dev/null'
 alias -g S='| sort'
-alias -g G='| grep'
+alias -g W='| wc'
+alias -g X='| xargs'
+
+
+#  Suffix
+#-----------------------------------------------
+alias -s txt='cat'
+alias -s rb='ruby'
+alias -s py='python'
+alias -s hs='runhaskell'
+alias -s php='php -f'
+alias -s {gif,jpg,jpeg,png,bmp}='display'
+
+_run_c() {
+  gcc $1
+  shift
+  ./a.out $@
+  rm -f ./a.out
+}
+alias -s c='_run_c'
+
+_run_java() {
+  className=$1
+  className=${className%.java}
+  javac $1
+  shift
+  java $className $@
+}
+alias -s java='_run_java'
 
 
 #  Applications
