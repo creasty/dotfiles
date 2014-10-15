@@ -618,7 +618,7 @@ set incsearch
 set hlsearch
 
 " dim match highlight
-nnoremap <silent> // :nohlsearch<CR><Esc>
+nnoremap <silent> <Space>/ :nohlsearch<CR><Esc>
 
 " erase previous match highlight
 autocmd vimrc BufReadPost * :nohlsearch
@@ -1715,71 +1715,79 @@ if neobundle#tap('vim-smartinput')
     endfor
     unlet op
 
-    " erb
-    call smartinput#define_rule({
-      \ 'char':     '%',
-      \ 'at':       '<\%#',
-      \ 'input':    '%  %<Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['eruby'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '%',
-      \ 'at':       '<%[=-]\? \%#',
-      \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['eruby'],
-    \ })
-
     " html
     call smartinput#define_rule({
       \ 'char':     '<',
       \ 'at':       '\(........\)\?\%#',
       \ 'input':    '<><Left>',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
     \ })
     call smartinput#define_rule({
       \ 'char':     '>',
       \ 'at':       '\(........\)\?\%#',
       \ 'input':    '>',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
     \ })
     call smartinput#define_rule({
       \ 'char':     '>',
       \ 'at':       '\(........\)\?\%#>',
       \ 'input':    '<Right>',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
     \ })
     call smartinput#define_rule({
       \ 'char':     '=',
       \ 'at':       '\(........\)\?<.\+\%#',
       \ 'input':    '=""<Left>',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
     \ })
     call smartinput#define_rule({
       \ 'char':     '/',
       \ 'at':       '\(........\)\?<\%#>',
       \ 'input':    '/<C-x><C-o><BS><ESC>a',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
     \ })
     call smartinput#define_rule({
       \ 'char':     '&',
       \ 'at':       '\(........\)\?\%#',
       \ 'input':    '&;<Left>',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
     \ })
     call smartinput#define_rule({
       \ 'char':     '-',
       \ 'at':       '\(........\)\?<\%#>',
       \ 'input':    '!--  --<Left><Left><Left>',
       \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim'],
+      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '%',
+      \ 'at':       '\(........\)\?<\%#',
+      \ 'input':    '%  %<Left><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'ejs', 'eruby'],
+    \ })
+    call smartinput#define_rule({
+      \ 'char':     '%',
+      \ 'at':       '\(........\)\?<%[=-]\? \%#',
+      \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'ejs', 'eruby'],
+    \ })
+
+    " php
+    call smartinput#map_to_trigger('i', '?', '?', '?')
+    call smartinput#define_rule({
+      \ 'char':     '?',
+      \ 'at':       '\(........\)\?<\%#',
+      \ 'input':    '?php  ?<Left><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['php'],
     \ })
 
     " left arrow (go)
