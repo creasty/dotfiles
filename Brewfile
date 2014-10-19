@@ -48,6 +48,7 @@ brew cask install xtrafinder || true
 brew install ansible || true
 brew install cabal-install || true
 brew install chrome-cli || true
+brew install clib || true
 brew install clisp || true
 brew install ctags || true
 brew install ctags-objc-ja --HEAD --enable-japanese-support || true
