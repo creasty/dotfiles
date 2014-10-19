@@ -3,6 +3,7 @@ augroup custom_filetypes
 
   "  Remap
   "-----------------------------------------------
+  autocmd BufNewFile,BufRead *.er     setf conf
   autocmd BufNewFile,BufRead *.m      setf objc
   autocmd BufNewFile,BufRead *.md     setf markdown
   autocmd BufNewFile,BufRead *.pde    setf processing
