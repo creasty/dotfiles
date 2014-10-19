@@ -680,7 +680,12 @@ function! MyStatusLine(w, cw)
   let s .= '#' . bufnr
 
   let s .= ' '
-  let s .= bufname
+  if active || bufname == '[No Name]'
+    let s .= bufname
+  else
+    let head = fnamemodify(bufname(bufnr), ':h:t')
+    let s .= (empty(head) || head == '.' ? '' : head . '/') . bufname
+  endif
 
   let flag = ''
   let flag .= getbufvar(bufnr, '&readonly') ? s:powerline_font_chars['lock'][s:status_line_rich_icon] : ''
@@ -704,22 +709,24 @@ function! MyStatusLine(w, cw)
   " space
   let s .= '%='
 
-  " file type & encoding
-  let s .= ' '
-  let s .= (s:status_line_rich_icon ? s:powerline_font_chars['ft'] . ' ' : '')
-    \ . (empty(&ft) ? 'plain' : &ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
-  let s .= ' '
+  if active
+    " file type & encoding
+    let s .= ' '
+    let s .= (s:status_line_rich_icon ? s:powerline_font_chars['ft'] . ' ' : '')
+      \ . (empty(&ft) ? 'plain' : &ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
+    let s .= ' '
 
-  " cursor
-  let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
-  let s .= '%l:%c ∙ %p%%'
-  let s .= ' %#StatusLine#'
+    " cursor
+    let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
+    let s .= '%l:%c ∙ %p%%'
+    let s .= ' %#StatusLine#'
 
-  " syntastic
-  if active && enough_width && exists('*SyntasticStatuslineFlag')
-    let synerr = SyntasticStatuslineFlag()
-    if !empty(synerr)
-      let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
+    " syntastic
+    if enough_width && exists('*SyntasticStatuslineFlag')
+      let synerr = SyntasticStatuslineFlag()
+      if !empty(synerr)
+        let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
+      endif
     endif
   endif
 
