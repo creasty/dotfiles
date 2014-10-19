@@ -850,11 +850,16 @@ vmap k gk
 " fast key strokes in insert mode
 function! s:inorm_on(key)
   set eventignore+=InsertLeave,InsertEnter
+
   return a:key
 endfunction
+
 function! s:inorm_off()
   set eventignore-=InsertLeave,InsertEnter
-  return "\<Left>\<Right>" | " Workaround for missing screen update.
+
+  " workaround for missing screen update by noop keys
+  " \<Left>\<Right> destructs info of a previous cursor's column
+  return "\<C-r>\<Esc>"
 endfunction
 
 inoremap <expr> <Plug>InormOff <SID>inorm_off()
