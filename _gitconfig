@@ -30,6 +30,7 @@
   k    = checkout
   kb   = checkout -B
   km   = checkout master
+  w    = show --diff-filter=M
   s    = status -s
   d    = diff --diff-filter=M
   dc   = diff --diff-filter=M --cached
@@ -40,13 +41,10 @@
   l    = log
   ll   = log -1 HEAD
   g    = log --oneline --graph
-  r    = revert
+  r    = remote
+  v    = revert
   st   = stash
   sp   = stash pop
-
-  tags     = tag -l
-  branches = branch -a
-  remotes  = remote -v
 
   f  = flow
   fi = flow init
@@ -59,13 +57,15 @@
   xf = flow hotfix finish
   xl = flow hotfix list
 
-  res  = reset --soft HEAD
+  res  = reset --soft
+  res0 = reset --soft HEAD
   res1 = reset --soft HEAD~
   res2 = reset --soft HEAD~~
   res3 = reset --soft HEAD~~~
   res4 = reset --soft HEAD~~~~
   res5 = reset --soft HEAD~~~~~
-  reh  = reset --hard HEAD
+  reh  = reset --hard
+  reh0 = reset --hard HEAD
   reh1 = reset --hard HEAD~
   reh2 = reset --hard HEAD~~
   reh3 = reset --hard HEAD~~~
