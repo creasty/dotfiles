@@ -1088,6 +1088,10 @@ cnoremap <expr> e
 cnoremap <expr> h
   \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
 
+" edit buffer :eb
+cnoremap <expr> b
+  \ (getcmdtype() . getcmdline() == ':e') ? ' #' : 'b'
+
 " rename :er
 cnoremap <expr> r
   \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
