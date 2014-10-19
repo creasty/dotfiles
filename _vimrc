@@ -613,12 +613,12 @@ function! MyTabLine()
     let buflist = tabpagebuflist(tabnr)
     let bufnr = buflist[winnr - 1]
     let bufname = fnamemodify(bufname(bufnr), ':t')
-    " let tabn = tabpagewinnr(tabnr, '$')
 
     let s .= '%' . tabnr . 'T'
-    let s .= (tabnr == current ? '%#TabLineSel#' : '%#TabLine#')
+    let s .= (tabnr == current ? '%#TabLineNrSel#' : '%#TabLineNr#')
     let s .= ' ' . tabnr
-    " . (tabn > 1 ? ':' . tabn : '')
+    let s .= '%#TabLine#'
+    let s .= (tabnr == current ? '%#TabLineSel#' : '%#TabLine#')
 
     let s .= empty(bufname) ? ' [No Name] ' : ' ' . bufname . ' '
     if getbufvar(bufnr, "&mod")
@@ -630,6 +630,9 @@ function! MyTabLine()
   return s
 endfunction
 
+call CreastyCode('TabLineNr', 'selection', 'window', '')
+call CreastyCode('TabLineNrSel', 'comment', 'foreground', '')
+
 
 "  Statusline
 "-----------------------------------------------
@@ -640,13 +643,12 @@ let s:powerline_font_chars = {
   \ 'subr':   ['>', "\u2b83"],
   \ 'lock':   ['!', "\u2b64"],
   \ 'branch': ['~', "\u2b60"],
+  \ 'ft':     "\u2b62\u2b63",
 \ }
 
-let s:rich = has('gui_running')
+let s:status_line_rich_icon = 1 " has('gui_running')
 
-" set statusline=%!MyStatusLine()
-
-function! s:RefreshStatusLine()
+function! s:refresh_statusline()
   let cw = winnr()
 
   for nr in range(1, winnr('$'))
@@ -654,12 +656,10 @@ function! s:RefreshStatusLine()
   endfor
 endfunction
 
-autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>RefreshStatusLine()
+autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
 
 function! MyStatusLine(w, cw)
   let s = ''
-
-  " winwidth(0) > 70
 
   let bufnr = winbufnr(a:w)
   let bufname = fnamemodify(bufname(bufnr), ':t')
@@ -675,37 +675,44 @@ function! MyStatusLine(w, cw)
     \ &ft == 'unite' ? unite#get_status_string() :
     \ bufname
 
-  " git branch & file
-  let s .= '%#StatusLineEdge' . (active ? 'Active' : '') . '# '
+  " file name
+  let s .= '%#StatusLineLeft' . (active ? 'Active' : '') . '# '
   let s .= '#' . bufnr
+
+  let s .= ' '
+  let s .= bufname
+
+  let flag = ''
+  let flag .= getbufvar(bufnr, '&readonly') ? s:powerline_font_chars['lock'][s:status_line_rich_icon] : ''
+  let flag .= getbufvar(bufnr, '&mod') ? '+' : ''
+
+  if !empty(flag)
+    let s .= ' ' . flag
+  endif
+
+  let s .= ' %#StatusLine#'
 
   if active && enough_width && bufname !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
     let branch = fugitive#head()
 
     if !empty(branch)
       let branch = substitute(branch, '^\([fhr]\)\(eature\|otfix\|elease\)/', '\1/', '')
-      let s .= ' ' . s:powerline_font_chars['branch'][s:rich] . ' ' . branch
-      let s .= ' ' . s:powerline_font_chars['subl'][s:rich]
+      let s .= ' ' . s:powerline_font_chars['branch'][s:status_line_rich_icon] . ' ' . branch
     endif
   endif
-
-  let s .= getbufvar(bufnr, '&readonly') ? ' ' . s:powerline_font_chars['lock'][s:rich] : ''
-  let s .= ' '
-  let s .= bufname . (getbufvar(bufnr, '&mod') ? '+' : '')
-
-  let s .= ' %#StatusLine#'
 
   " space
   let s .= '%='
 
   " file type & encoding
   let s .= ' '
-  let s .= (empty(&ft) ? 'plain' : &ft) . ' | ' . (empty(&fenc) ? 'utf-8' : &fenc)
+  let s .= (s:status_line_rich_icon ? s:powerline_font_chars['ft'] . ' ' : '')
+    \ . (empty(&ft) ? 'plain' : &ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
   let s .= ' '
 
   " cursor
-  let s .= '%#StatusLineEdge' . (active ? 'Active' : '') . '# '
-  let s .= '%l:%c %p%%'
+  let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
+  let s .= '%l:%c ∙ %p%%'
   let s .= ' %#StatusLine#'
 
   " syntastic
@@ -719,38 +726,37 @@ function! MyStatusLine(w, cw)
   return s
 endfunction
 
-call CreastyCode('StatusLineEdge', 'window', 'comment', '')
-call CreastyCode('StatusLineEdgeActive', 'window', 'foreground', '')
+call CreastyCode('StatusLineLeft', 'background', 'selection', '')
+call CreastyCode('StatusLineLeftActive', 'background', 'green', '')
+call CreastyCode('StatusLineRight', 'background', 'selection', '')
+call CreastyCode('StatusLineRightActive', 'window', 'foreground', '')
 call CreastyCode('StatusLineError', 'background', 'red', '')
 
+let s:prev_status_line_mode = 'n'
 
-"  Cursor
-"-----------------------------------------------
-let s:prev_cursor_color = 'foreground'
+function! s:change_status_line_for_mode(m)
+  if s:prev_status_line_mode == a:m
+    return
+  endif
+  let s:prev_status_line_mode = a:m
 
-function! s:change_cursor_for_mode(m)
   let color =
     \ a:m == 'i' ? 'blue' :
     \ a:m =~# "^[vV\<C-v>]" ? 'orange' :
     \ a:m == 'r' ? 'purple' :
-    \ 'foreground'
+    \ 'green'
 
-  if s:prev_cursor_color == color
-    return
-  endif
-  let s:prev_cursor_color = color
-
-  call CreastyCode('Cursor', '', color, '')
+  call CreastyCode('StatusLineLeftActive', '', color, '')
 
   return ''
 endfunction
 
-autocmd vimrc InsertEnter,InsertChange * call <SID>change_cursor_for_mode(v:insertmode)
-autocmd vimrc InsertLeave,CursorHold * call <SID>change_cursor_for_mode(mode())
+autocmd vimrc InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
+autocmd vimrc InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
 
-nnoremap <expr> v <SID>change_cursor_for_mode('v') . 'v'
-nnoremap <expr> V <SID>change_cursor_for_mode('V') . 'V'
-nnoremap <expr> <C-v> <SID>change_cursor_for_mode("\<C-v>") . "\<C-v>"
+nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
+nnoremap <expr> V <SID>change_status_line_for_mode('V') . 'V'
+nnoremap <expr> <C-v> <SID>change_status_line_for_mode("\<C-v>") . "\<C-v>"
 
 
 "=== Search
