@@ -46,7 +46,6 @@ else
     \ },
   \ }
 
-
   "  Editing
   "-----------------------------------------------
   " define your own operator easily
@@ -848,18 +847,35 @@ vmap j gj
 nmap k gk
 vmap k gk
 
+" fast key strokes in insert mode
+function! s:inorm_on(key)
+  set eventignore+=InsertLeave,InsertEnter
+  return a:key
+endfunction
+function! s:inorm_off()
+  set eventignore-=InsertLeave,InsertEnter
+  return "\<Left>\<Right>" | " Workaround for missing screen update.
+endfunction
+
+inoremap <expr> <Plug>InormOff <SID>inorm_off()
+
 " Emacs-like key bindings
-imap <C-j> <CR>
+inoremap <expr> <Plug>EmacsDown <SID>inorm_on("\<C-o>gj")
+inoremap <expr> <Plug>EmacsUp <SID>inorm_on("\<C-o>gk")
+inoremap <expr> <Plug>EmacsBOL <SID>inorm_on((col('.') == 2) ? "\<Left>" : "\<C-o>g0")
+inoremap <expr> <Plug>EmacsEOL <SID>inorm_on("\<C-o>g$")
+inoremap <expr> <Plug>EmacsKill <SID>inorm_on("\<C-g>u" . (col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$'))
+
 map <C-c> <Esc>
-inoremap <C-n> <C-o>gj
-inoremap <C-p> <C-o>gk
+imap <C-j> <CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
-inoremap <expr> <C-a> (col('.') == 2) ? "\<Left>" : "\<C-o>g0"
-inoremap <C-e> <C-o>g$
 inoremap <C-d> <Del>
-" inoremap <C-h> <C-g>u<C-h>
-inoremap <expr> <C-k> "\<C-g>u".(col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$')
+imap <C-p> <Plug>EmacsUp<Plug>InormOff
+imap <C-n> <Plug>EmacsDown<Plug>InormOff
+imap <C-a> <Plug>EmacsBOL<Plug>InormOff
+imap <C-e> <Plug>EmacsEOL<Plug>InormOff
+imap <C-k> <Plug>EmacsKill<Plug>InormOff
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -2375,13 +2391,13 @@ if neobundle#tap('neocomplete')
     let g:clang_use_library = 1
 
     " cancel or accept
-    imap <silent> <expr> <C-f> pumvisible() ? neocomplete#cancel_popup() . "\<Right>" : "\<Right>"
-    imap <silent> <expr> <C-b> pumvisible() ? neocomplete#cancel_popup() . "\<Left>" : "\<Left>"
-    imap <silent> <expr> <C-a> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g0" : "\<C-o>g0"
-    imap <silent> <expr> <C-e> pumvisible() ? neocomplete#cancel_popup() . "\<C-o>g$" : "\<C-o>g$"
+    imap <silent> <expr> <C-f> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Right>"
+    imap <silent> <expr> <C-b> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Left>"
+    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>EmacsBOL\<Plug>InormOff"
+    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>EmacsEOL\<Plug>InormOff"
     imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    inoremap <silent> <expr> <Space> pumvisible() ? neocomplete#cancel_popup() . "\<Space>" : "\<Space>"
+    inoremap <silent> <expr> <Space> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Space>"
 
     " omni completion
     autocmd vimrc FileType css
