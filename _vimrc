@@ -250,9 +250,6 @@ else
 
   "  Appearance
   "-----------------------------------------------
-  " a light and configurable statusline/tabline
-  NeoBundle 'itchyny/lightline.vim'
-
   " visually displaying indent levels
   NeoBundle 'nathanaelkane/vim-indent-guides'
 
@@ -602,6 +599,158 @@ function! s:add_dummy_sign()
 endfunction
 
 
+"  Tabline
+"-----------------------------------------------
+set tabline=%!MyTabLine()
+
+function! MyTabLine()
+  let s = ''
+
+  for i in range(tabpagenr('$'))
+    let tabnr = i + 1 " range() starts at 0
+    let winnr = tabpagewinnr(tabnr)
+    let buflist = tabpagebuflist(tabnr)
+    let bufnr = buflist[winnr - 1]
+    let bufname = fnamemodify(bufname(bufnr), ':t')
+    let tabn = tabpagewinnr(tabnr, '$')
+
+    let s .= '%' . tabnr . 'T'
+    let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
+    let s .= ' ' . tabnr . (tabn > 1 ? ':' . tabn : '')
+
+    let s .= empty(bufname) ? ' [No Name] ' : ' ' . bufname . ' '
+    if getbufvar(bufnr, "&mod")
+      let s .= '+ '
+    endif
+  endfor
+
+  let s .= '%#TabLineFill#'
+  return s
+endfunction
+
+
+"  Statusline
+"-----------------------------------------------
+let s:powerline_font_chars = {
+  \ 'sepl':   ['>', "\u2b80"],
+  \ 'sepr':   ['<', "\u2b82"],
+  \ 'subl':   ['>', "\u2b81"],
+  \ 'subr':   ['>', "\u2b83"],
+  \ 'lock':   ['!', "\u2b64"],
+  \ 'branch': ['~', "\u2b60"],
+\ }
+
+let s:rich = has('gui_running')
+
+" set statusline=%!MyStatusLine()
+
+function! s:RefreshStatusLine()
+  let cw = winnr()
+
+  for nr in range(1, winnr('$'))
+    call setwinvar(nr, '&statusline', '%!MyStatusLine(' . nr . ', ' . cw . ')')
+  endfor
+endfunction
+
+autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>RefreshStatusLine()
+
+function! MyStatusLine(w, cw)
+  let s = ''
+
+  " winwidth(0) > 70
+
+  let bufnr = winbufnr(a:w)
+  let bufname = fnamemodify(bufname(bufnr), ':t')
+  let bufmodified = getbufvar(bufnr, '&mod')
+  let active = (a:w == a:cw)
+  let enough_width = (winwidth(a:w) > 70)
+
+  let bufname =
+    \ empty(bufname) ? '[No Name]' :
+    \ bufname == '__Tagbar__' ? 'Tagbar' :
+    \ bufname =~ '__Gundo\|NERD_tree' ? '' :
+    \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+    \ &ft == 'unite' ? unite#get_status_string() :
+    \ bufname
+
+  " git branch & file
+  let s .= '%#StatusLineEdge' . (active ? 'Active' : '') . '# '
+  let s .= '#' . bufnr
+
+  if active && enough_width && bufname !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+    let branch = fugitive#head()
+
+    if !empty(branch)
+      let branch = substitute(branch, '^\([fhr]\)\(eature\|otfix\|elease\)/', '\1/', '')
+      let s .= ' ' . s:powerline_font_chars['branch'][s:rich] . ' ' . branch
+      let s .= ' ' . s:powerline_font_chars['subl'][s:rich]
+    endif
+  endif
+
+  let s .= getbufvar(bufnr, '&readonly') ? ' ' . s:powerline_font_chars['lock'][s:rich] : ''
+  let s .= ' '
+  let s .= bufname . (getbufvar(bufnr, '&mod') ? '+' : '')
+
+  let s .= ' %#StatusLine#'
+
+  " space
+  let s .= '%='
+
+  " file type & encoding
+  let s .= ' '
+  let s .= (empty(&ft) ? 'plain' : &ft) . ' | ' . (empty(&fenc) ? 'utf-8' : &fenc)
+  let s .= ' '
+
+  " cursor
+  let s .= '%#StatusLineEdge' . (active ? 'Active' : '') . '# '
+  let s .= '%l:%c %p%%'
+  let s .= ' %#StatusLine#'
+
+  " syntastic
+  if active && enough_width && exists('*SyntasticStatuslineFlag')
+    let synerr = SyntasticStatuslineFlag()
+    if !empty(synerr)
+      let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
+    endif
+  endif
+
+  return s
+endfunction
+
+call CreastyCode('StatusLineEdge', 'window', 'comment', '')
+call CreastyCode('StatusLineEdgeActive', 'window', 'foreground', '')
+call CreastyCode('StatusLineError', 'background', 'red', '')
+
+
+"  Cursor
+"-----------------------------------------------
+let s:prev_cursor_color = 'foreground'
+
+function! s:change_cursor_for_mode(m)
+  let color =
+    \ a:m == 'i' ? 'blue' :
+    \ a:m =~# "^[vV\<C-v>]" ? 'orange' :
+    \ a:m == 'r' ? 'purple' :
+    \ 'foreground'
+
+  if s:prev_cursor_color == color
+    return
+  endif
+  let s:prev_cursor_color = color
+
+  call CreastyCode('Cursor', '', color, '')
+
+  return ''
+endfunction
+
+autocmd vimrc InsertEnter,InsertChange * call <SID>change_cursor_for_mode(v:insertmode)
+autocmd vimrc InsertLeave,CursorHold * call <SID>change_cursor_for_mode(mode())
+
+nnoremap <expr> v <SID>change_cursor_for_mode('v') . 'v'
+nnoremap <expr> V <SID>change_cursor_for_mode('V') . 'V'
+nnoremap <expr> <C-v> <SID>change_cursor_for_mode("\<C-v>") . "\<C-v>"
+
+
 "=== Search
 "==============================================================================================
 " cricle search within files
@@ -618,7 +767,7 @@ set incsearch
 set hlsearch
 
 " dim match highlight
-nnoremap <silent> <Space>/ :nohlsearch<CR><Esc>
+nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 
 " erase previous match highlight
 autocmd vimrc BufReadPost * :nohlsearch
@@ -1292,7 +1441,7 @@ if neobundle#tap('syntastic')
     let g:syntastic_warning_symbol = '⚠'
     let g:syntastic_style_error_symbol = '✗'
     let g:syntastic_style_warning_symbol = '⚠'
-    let g:syntastic_stl_format = '%E{✗ %fe (%e)}%B{, }%W{⚠ %fw (%w)}'
+    let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
 
     let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
     let g:syntastic_coffee_coffeelint_args = '-f ' . g:dotfiles_path . '/_coffeelintrc'
@@ -2897,126 +3046,6 @@ if neobundle#tap('tagbar')
 endif
 
 
-"=== Plugin: lightline.vim
-"==============================================================================================
-if neobundle#tap('lightline.vim')
-  let g:unite_force_overwrite_statusline = 0
-  let g:vimfiler_force_overwrite_statusline = 0
-  let g:vimshell_force_overwrite_statusline = 0
-
-  let g:lightline = {
-    \ 'colorscheme': 'creastycode',
-    \ 'mode_map': { 'c': 'NORMAL' },
-    \ 'active': {
-      \ 'left': [
-        \ ['mode', 'paste'],
-        \ ['fugitive','filename']
-      \ ],
-      \ 'right': [
-        \ ['syntastic', 'lineinfo', 'percent'],
-        \ ['filetype'],
-        \ ['fileencoding']
-      \ ]
-    \ },
-    \ 'component_function': {
-      \ 'modified':     'LightlineModified',
-      \ 'readonly':     'LightlineReadonly',
-      \ 'fugitive':     'LightlineFugitive',
-      \ 'filename':     'LightlineFilename',
-      \ 'fileformat':   'LightlineFileformat',
-      \ 'filetype':     'LightlineFiletype',
-      \ 'fileencoding': 'LightlineFileencoding',
-      \ 'mode':         'LightlineMode',
-      \ 'anzu':         'anzu#search_status',
-    \ },
-    \ 'component_expand': {
-      \ 'syntastic': 'SyntasticStatuslineFlag',
-    \ },
-    \ 'component_type': {
-      \ 'syntastic': 'error',
-    \ },
-    \ 'subseparator': { 'left': '|', 'right': '|' },
-  \ }
-
-  if has('gui_running')
-    let g:lightline.separator = { 'left': "\u2b80", 'right': "\u2b82" }
-    let g:lightline.subseparator = { 'left': "\u2b81", 'right': "\u2b83" }
-  endif
-
-  function! LightlineModified()
-    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-  endfunction
-
-  function! LightlineReadonly()
-    let icon = has("gui_running") ? "\u2b64" : "!!"
-    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? icon : ''
-  endfunction
-
-  function! LightlineFilename()
-    let fname = expand('%:t')
-    return fname == 'ControlP' ? g:lightline.ctrlp_item :
-      \ fname == '__Tagbar__' ? 'Tagbar' :
-      \ fname =~ '__Gundo\|NERD_tree' ? '' :
-      \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-      \ &ft == 'unite' ? unite#get_status_string() :
-      \ &ft == 'vimshell' ? vimshell#get_status_string() :
-      \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
-      \ ('' != fname ? fname : '[No Name]') .
-      \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
-  endfunction
-
-  function! LightlineFugitive()
-    try
-      if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-        let icon = has("gui_running") ? "\u2b60 " : "~ "
-        let branch = fugitive#head()
-        let branch = substitute(branch, '^feature/', 'F/', '')
-        let branch = substitute(branch, '^hotfix/', 'X/', '')
-        let branch = substitute(branch, '^release/', 'R/', '')
-        return strlen(branch) ? icon . branch : ''
-      endif
-    catch
-    endtry
-    return ''
-  endfunction
-
-  function! LightlineFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
-  endfunction
-
-  function! LightlineFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'plain') : ''
-  endfunction
-
-  function! LightlineFileencoding()
-    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-  endfunction
-
-  function! LightlineMode()
-    let fname = expand('%:t')
-    return fname == '__Tagbar__' ? 'Tagbar' :
-      \ fname == 'ControlP' ? 'CtrlP' :
-      \ fname == '__Gundo__' ? 'Gundo' :
-      \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-      \ fname =~ 'NERD_tree' ? 'NERDTree' :
-      \ &ft == 'unite' ? 'Unite' :
-      \ &ft == 'vimfiler' ? 'VimFiler' :
-      \ &ft == 'vimshell' ? 'VimShell' :
-      \ winwidth(0) > 60 ? lightline#mode() : ''
-  endfunction
-
-  autocmd vimrc BufWritePost * call lightline#update()
-
-  autocmd vimrc User VimrcReloadPost call <SID>refresh_lightline()
-  function! s:refresh_lightline()
-    call lightline#disable()
-    call lightline#enable()
-  endfunction
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: vim-indent-guides
 "==============================================================================================
 if has('gui_running') && neobundle#tap('vim-indent-guides')
@@ -3026,8 +3055,8 @@ if has('gui_running') && neobundle#tap('vim-indent-guides')
   let g:indent_guides_auto_colors = 0
   let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
-  call CreastyCode('IndentGuidesOdd', 'black', 'black', '')
-  call CreastyCode('IndentGuidesEven', 'black2', 'black2', '')
+  hi IndentGuidesOdd guifg=#1c1c1c ctermfg=234 guibg=#1c1c1c ctermbg=234
+  hi IndentGuidesEven guifg=#222222 ctermfg=235 guibg=#222222 ctermbg=235
 
   call neobundle#untap()
 endif

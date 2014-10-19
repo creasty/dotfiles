@@ -1,4 +1,3 @@
-
 set background=dark
 hi clear
 syntax reset
@@ -10,275 +9,48 @@ if !has('gui_running') && &t_Co != 88 && &t_Co != 256
 endif
 
 
-"=== Utils
+"=== Color palette
 "==============================================================================================
-" Returns an approximate grey index for the given grey level
-fun! <SID>grey_number(x)
-  if &t_Co == 88
-    if a:x < 23
-      return 0
-    elseif a:x < 69
-      return 1
-    elseif a:x < 103
-      return 2
-    elseif a:x < 127
-      return 3
-    elseif a:x < 150
-      return 4
-    elseif a:x < 173
-      return 5
-    elseif a:x < 196
-      return 6
-    elseif a:x < 219
-      return 7
-    elseif a:x < 243
-      return 8
-    else
-      return 9
-    endif
-  else
-    if a:x < 14
-      return 0
-    else
-      let l:n = (a:x - 8) / 10
-      let l:m = (a:x - 8) % 10
-      if l:m < 5
-        return l:n
-      else
-        return l:n + 1
-      endif
-    endif
-  endif
-endfun
+let g:creasty_code_palette = {
+  \ 'foreground':  ['a0a0a0', 248],
+  \ 'comment':     ['666666', 241],
+  \ 'selection':   ['424242', 238],
+  \ 'line':        ['2a2a2a', 236],
+  \ 'window':      ['262626', 235],
+  \ 'background':  ['121212', 232],
+  \
+  \ 'orange':      ['bb8d6f', 137],
+  \
+  \ 'red':         ['ae7071', 1],
+  \ 'green':       ['a3a371', 2],
+  \ 'yellow':      ['cdb384', 3],
+  \ 'blue':        ['8397a8', 4],
+  \ 'purple':      ['9d90a8', 5],
+  \ 'aqua':        ['8baaa5', 6],
+  \
+  \ 'dark_red':    ['503131', 9],
+  \ 'dark_green':  ['4c4b30', 10],
+  \ 'dark_yellow': ['5f5138', 11],
+  \ 'dark_blue':   ['39444d', 12],
+  \ 'dark_purple': ['47404d', 13],
+  \ 'dark_aqua':   ['3c4e4b', 14],
+\ }
 
-" Returns the actual grey level represented by the grey index
-fun! <SID>grey_level(n)
-  if &t_Co == 88
-    if a:n == 0
-      return 0
-    elseif a:n == 1
-      return 46
-    elseif a:n == 2
-      return 92
-    elseif a:n == 3
-      return 115
-    elseif a:n == 4
-      return 139
-    elseif a:n == 5
-      return 162
-    elseif a:n == 6
-      return 185
-    elseif a:n == 7
-      return 208
-    elseif a:n == 8
-      return 231
-    else
-      return 255
-    endif
-  else
-    if a:n == 0
-      return 0
-    else
-      return 8 + (a:n * 10)
-    endif
-  endif
-endfun
+" use this command to show all cterm codes
+" for c in {000..255}; do echo -n "\e[38;5;${c}m ■$c"; [ $(($c % 16)) -eq 15 ] && echo; done; echo
 
-" Returns the palette index for the given grey index
-fun! <SID>grey_colour(n)
-  if &t_Co == 88
-    if a:n == 0
-      return 16
-    elseif a:n == 9
-      return 79
-    else
-      return 79 + a:n
-    endif
-  else
-    if a:n == 0
-      return 16
-    elseif a:n == 25
-      return 231
-    else
-      return 231 + a:n
-    endif
-  endif
-endfun
-
-" Returns an approximate colour index for the given colour level
-fun! <SID>rgb_number(x)
-  if &t_Co == 88
-    if a:x < 69
-      return 0
-    elseif a:x < 172
-      return 1
-    elseif a:x < 230
-      return 2
-    else
-      return 3
-    endif
-  else
-    if a:x < 75
-      return 0
-    else
-      let l:n = (a:x - 55) / 40
-      let l:m = (a:x - 55) % 40
-      if l:m < 20
-        return l:n
-      else
-        return l:n + 1
-      endif
-    endif
-  endif
-endfun
-
-" Returns the actual colour level for the given colour index
-fun! <SID>rgb_level(n)
-  if &t_Co == 88
-    if a:n == 0
-      return 0
-    elseif a:n == 1
-      return 139
-    elseif a:n == 2
-      return 205
-    else
-      return 255
-    endif
-  else
-    if a:n == 0
-      return 0
-    else
-      return 55 + (a:n * 40)
-    endif
-  endif
-endfun
-
-" Returns the palette index for the given R/G/B colour indices
-fun! <SID>rgb_colour(x, y, z)
-  if &t_Co == 88
-    return 16 + (a:x * 16) + (a:y * 4) + a:z
-  else
-    return 16 + (a:x * 36) + (a:y * 6) + a:z
-  endif
-endfun
-
-" Returns the palette index to approximate the given R/G/B colour levels
-fun! <SID>colour(r, g, b)
-  " Get the closest grey
-  let l:gx = <SID>grey_number(a:r)
-  let l:gy = <SID>grey_number(a:g)
-  let l:gz = <SID>grey_number(a:b)
-
-  " Get the closest colour
-  let l:x = <SID>rgb_number(a:r)
-  let l:y = <SID>rgb_number(a:g)
-  let l:z = <SID>rgb_number(a:b)
-
-  if l:gx == l:gy && l:gy == l:gz
-    " There are two possibilities
-    let l:dgr = <SID>grey_level(l:gx) - a:r
-    let l:dgg = <SID>grey_level(l:gy) - a:g
-    let l:dgb = <SID>grey_level(l:gz) - a:b
-    let l:dgrey = (l:dgr * l:dgr) + (l:dgg * l:dgg) + (l:dgb * l:dgb)
-    let l:dr = <SID>rgb_level(l:gx) - a:r
-    let l:dg = <SID>rgb_level(l:gy) - a:g
-    let l:db = <SID>rgb_level(l:gz) - a:b
-    let l:drgb = (l:dr * l:dr) + (l:dg * l:dg) + (l:db * l:db)
-    if l:dgrey < l:drgb
-      " Use the grey
-      return <SID>grey_colour(l:gx)
-    else
-      " Use the colour
-      return <SID>rgb_colour(l:x, l:y, l:z)
-    endif
-  else
-    " Only one possibility
-    return <SID>rgb_colour(l:x, l:y, l:z)
-  endif
-endfun
-
-" Returns the palette index to approximate the 'rrggbb' hex string
-fun! <SID>rgb(rgb)
-  let l:r = ('0x' . strpart(a:rgb, 0, 2)) + 0
-  let l:g = ('0x' . strpart(a:rgb, 2, 2)) + 0
-  let l:b = ('0x' . strpart(a:rgb, 4, 2)) + 0
-
-  return <SID>colour(l:r, l:g, l:b)
-endfun
-
-" Sets the highlighting for the given group
+" sets the highlighting for the given group
 fun! CreastyCode(group, fg, bg, attr)
-  let p = g:creasty_code_palette
-
   if a:fg != ''
-    exec 'hi ' . a:group . ' guifg=#' . p[a:fg] . ' ctermfg=' . <SID>rgb(p[a:fg])
+    exec 'hi ' . a:group . ' guifg=#' . g:creasty_code_palette[a:fg][0] . ' ctermfg=' . g:creasty_code_palette[a:fg][1]
   endif
   if a:bg != ''
-    exec 'hi ' . a:group . ' guibg=#' . p[a:bg] . ' ctermbg=' . <SID>rgb(p[a:bg])
+    exec 'hi ' . a:group . ' guibg=#' . g:creasty_code_palette[a:bg][0] . ' ctermbg=' . g:creasty_code_palette[a:bg][1]
   endif
   if a:attr != ''
     exec 'hi ' . a:group . ' gui=' . a:attr . ' cterm=' . a:attr
   endif
 endfun
-
-
-"=== Color palette
-"==============================================================================================
-if has('gui_running')
-  let g:creasty_code_palette = {
-    \ 'foreground':  'a0a0a0',
-    \ 'comment':     '666666',
-    \ 'selection':   '424242',
-    \ 'line':        '2a2a2a',
-    \ 'window':      '262626',
-    \ 'black2':      '222222',
-    \ 'black':       '191919',
-    \ 'background':  '111111',
-    \
-    \ 'red':         'ae7071',
-    \ 'orange':      'bb8d6f',
-    \ 'yellow':      'cdb384',
-    \ 'green':       'a3a371',
-    \ 'aqua':        '8baaa5',
-    \ 'blue':        '8397a8',
-    \ 'purple':      '9d90a8',
-    \
-    \ 'dark_red':    '503131',
-    \ 'dark_orange': '563f2f',
-    \ 'dark_yellow': '5f5138',
-    \ 'dark_green':  '4c4b30',
-    \ 'dark_aqua':   '3c4e4b',
-    \ 'dark_blue':   '39444d',
-    \ 'dark_purple': '47404d',
-  \ }
-else
-  let g:creasty_code_palette = {
-    \ 'foreground':  'b8b8b8',
-    \ 'comment':     '666666',
-    \ 'selection':   '424242',
-    \ 'line':        '2a2a2a',
-    \ 'window':      '262626',
-    \ 'black2':      '191919',
-    \ 'black':       '131313',
-    \ 'background':  '000000',
-    \
-    \ 'red':         'cc6666',
-    \ 'orange':      'de935f',
-    \ 'yellow':      'f0c674',
-    \ 'green':       'b5bd68',
-    \ 'aqua':        '8abeb7',
-    \ 'blue':        '81a2be',
-    \ 'purple':      'b294bb',
-    \
-    \ 'dark_red':    '262626',
-    \ 'dark_orange': '262626',
-    \ 'dark_yellow': '262626',
-    \ 'dark_green':  '262626',
-    \ 'dark_aqua':   '262626',
-    \ 'dark_blue':   '262626',
-    \ 'dark_purple': '262626',
-  \ }
-endif
 
 
 "=== Highlighting: Vim
@@ -289,9 +61,11 @@ call CreastyCode('CursorLineNr', 'comment', 'line', 'none')
 call CreastyCode('NonText', 'selection', '', '')
 call CreastyCode('SpecialKey', 'line', '', '')
 call CreastyCode('Search', 'yellow', 'dark_yellow', 'underline')
-call CreastyCode('TabLine', 'foreground', 'background', 'reverse')
-call CreastyCode('StatusLine', 'window', 'yellow', 'reverse')
-call CreastyCode('StatusLineNC', 'window', 'foreground', 'reverse')
+call CreastyCode('TabLine', 'window', 'comment', 'reverse')
+call CreastyCode('TabLineFill', 'window', 'comment', 'reverse')
+call CreastyCode('TabLineSel', 'window', 'foreground', '')
+call CreastyCode('StatusLine', 'window', 'comment', 'reverse')
+call CreastyCode('StatusLineNC', 'window', 'window', '')
 call CreastyCode('VertSplit', 'window', 'window', 'none')
 call CreastyCode('Visual', '', 'selection', '')
 call CreastyCode('Directory', 'blue', '', '')
