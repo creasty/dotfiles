@@ -605,6 +605,7 @@ set tabline=%!MyTabLine()
 
 function! MyTabLine()
   let s = ''
+  let current = tabpagenr()
 
   for i in range(tabpagenr('$'))
     let tabnr = i + 1 " range() starts at 0
@@ -612,11 +613,12 @@ function! MyTabLine()
     let buflist = tabpagebuflist(tabnr)
     let bufnr = buflist[winnr - 1]
     let bufname = fnamemodify(bufname(bufnr), ':t')
-    let tabn = tabpagewinnr(tabnr, '$')
+    " let tabn = tabpagewinnr(tabnr, '$')
 
     let s .= '%' . tabnr . 'T'
-    let s .= (tabnr == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#')
-    let s .= ' ' . tabnr . (tabn > 1 ? ':' . tabn : '')
+    let s .= (tabnr == current ? '%#TabLineSel#' : '%#TabLine#')
+    let s .= ' ' . tabnr
+    " . (tabn > 1 ? ':' . tabn : '')
 
     let s .= empty(bufname) ? ' [No Name] ' : ' ' . bufname . ' '
     if getbufvar(bufnr, "&mod")
