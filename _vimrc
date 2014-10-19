@@ -661,28 +661,45 @@ function! MyStatusLine(w, cw)
   let s = ''
 
   let bufnr = winbufnr(a:w)
-  let bufname = fnamemodify(bufname(bufnr), ':t')
+  let _bufname = bufname(bufnr)
   let bufmodified = getbufvar(bufnr, '&mod')
   let active = (a:w == a:cw)
-  let enough_width = (winwidth(a:w) > 70)
+  let width = winwidth(a:w)
+  let ft = getbufvar(bufnr, '&ft')
+  let enough_width = (width > 70)
 
-  let bufname =
-    \ empty(bufname) ? '[No Name]' :
-    \ bufname == '__Tagbar__' ? 'Tagbar' :
-    \ bufname =~ '__Gundo\|NERD_tree' ? '' :
-    \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-    \ &ft == 'unite' ? unite#get_status_string() :
-    \ bufname
+  let bufname = fnamemodify(_bufname, ':t')
+  let is_file = 1
+
+  if empty(_bufname)
+    let bufname = '[No Name]'
+    let is_file = 0
+  elseif _bufname == '__Tagbar__'
+    let bufname = 'Tagbar'
+    let is_file = 0
+  elseif _bufname =~ '__Gundo\|NERD_tree' || ft == 'nerdtree'
+    let bufname = 'File'
+    let is_file = 0
+  elseif ft == 'unite'
+    let bufname = 'Unite'
+    let is_file = 0
+  elseif ft == 'help'
+    let bufname = 'Help'
+    let is_file = 0
+  endif
 
   " file name
   let s .= '%#StatusLineLeft' . (active ? 'Active' : '') . '# '
-  let s .= '#' . bufnr
 
-  let s .= ' '
-  if active || bufname == '[No Name]'
+  if is_file
+    let s .= '#' . bufnr
+    let s .= ' '
+  endif
+
+  if active || !is_file
     let s .= bufname
   else
-    let head = fnamemodify(bufname(bufnr), ':h:t')
+    let head = fnamemodify(_bufname, ':h:t')
     let s .= (empty(head) || head == '.' ? '' : head . '/') . bufname
   endif
 
@@ -696,7 +713,11 @@ function! MyStatusLine(w, cw)
 
   let s .= ' %#StatusLine#'
 
-  if active && enough_width && bufname !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+  if active && ft == 'unite'
+    let s .= ' ' . unite#get_status_string()
+  endif
+
+  if active && is_file && enough_width
     let branch = fugitive#head()
 
     if !empty(branch)
@@ -708,7 +729,7 @@ function! MyStatusLine(w, cw)
   " space
   let s .= '%='
 
-  if active
+  if active && is_file && enough_width
     " file type & encoding
     let s .= ' '
     let s .= (s:status_line_rich_icon ? s:powerline_font_chars['ft'] . ' ' : '')
@@ -721,7 +742,7 @@ function! MyStatusLine(w, cw)
     let s .= ' %#StatusLine#'
 
     " syntastic
-    if enough_width && exists('*SyntasticStatuslineFlag')
+    if exists('*SyntasticStatuslineFlag')
       let synerr = SyntasticStatuslineFlag()
       if !empty(synerr)
         let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
@@ -732,7 +753,7 @@ function! MyStatusLine(w, cw)
   return s
 endfunction
 
-call CreastyCode('StatusLineLeft', 'background', 'selection', '')
+call CreastyCode('StatusLineLeft', 'selection', 'window', '')
 call CreastyCode('StatusLineLeftActive', 'background', 'green', '')
 call CreastyCode('StatusLineRight', 'background', 'selection', '')
 call CreastyCode('StatusLineRightActive', 'window', 'foreground', '')
@@ -2613,6 +2634,7 @@ if neobundle#tap('unite.vim')
   \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
+    let g:unite_force_overwrite_statusline = 0
     let g:unite_enable_start_insert = 1
     let g:unite_winheight = 10
     let g:unite_enable_ignore_case = 1
