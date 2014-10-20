@@ -616,7 +616,7 @@ function! MyTabLine()
     let s .= '%' . tabnr . 'T'
     let s .= (tabnr == current ? '%#TabLineNrSel#' : '%#TabLineNr#')
     let s .= ' ' . tabnr
-    let s .= '%#TabLine#'
+    let s .= '%#TabLineFill#'
     let s .= (tabnr == current ? '%#TabLineSel#' : '%#TabLine#')
 
     let s .= empty(bufname) ? ' [No Name] ' : ' ' . bufname . ' '
@@ -668,24 +668,18 @@ function! MyStatusLine(w, cw)
   let ft = getbufvar(bufnr, '&ft')
   let enough_width = (width > 70)
 
-  let bufname = fnamemodify(_bufname, ':t')
-  let is_file = 1
+  let bufname =
+    \ empty(_bufname) ? '[No Name]' :
+    \ _bufname == '__Tagbar__' ? 'Tagbar' :
+    \ _bufname =~ '__Gundo\|NERD_tree' || ft == 'nerdtree' ? 'File' :
+    \ ft == 'unite' ? 'Unite' :
+    \ ft == 'help' ? 'Help' :
+    \ ''
 
-  if empty(_bufname)
-    let bufname = '[No Name]'
-    let is_file = 0
-  elseif _bufname == '__Tagbar__'
-    let bufname = 'Tagbar'
-    let is_file = 0
-  elseif _bufname =~ '__Gundo\|NERD_tree' || ft == 'nerdtree'
-    let bufname = 'File'
-    let is_file = 0
-  elseif ft == 'unite'
-    let bufname = 'Unite'
-    let is_file = 0
-  elseif ft == 'help'
-    let bufname = 'Help'
-    let is_file = 0
+  let is_file = empty(bufname)
+
+  if is_file
+    let bufname = fnamemodify(_bufname, ':t')
   endif
 
   " file name
@@ -769,7 +763,7 @@ function! s:change_status_line_for_mode(m)
 
   let color =
     \ a:m == 'i' ? 'blue' :
-    \ a:m =~# "^[vV\<C-v>]" ? 'orange' :
+    \ a:m == 'v' ? 'orange' :
     \ a:m == 'r' ? 'purple' :
     \ 'green'
 
@@ -782,8 +776,8 @@ autocmd vimrc InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v
 autocmd vimrc InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
 
 nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
-nnoremap <expr> V <SID>change_status_line_for_mode('V') . 'V'
-nnoremap <expr> <C-v> <SID>change_status_line_for_mode("\<C-v>") . "\<C-v>"
+nnoremap <expr> V <SID>change_status_line_for_mode('v') . 'V'
+nnoremap <expr> <C-v> <SID>change_status_line_for_mode('v') . "\<C-v>"
 
 
 "=== Search
@@ -908,6 +902,10 @@ cnoremap <C-b> <Left>
 cnoremap <C-f> <Right>
 cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
+
+" indent/outdent
+inoremap <S-Tab> <C-d>
+inoremap <C-Tab> <C-t>
 
 " paste
 inoremap <C-v> <C-r><C-p>*
@@ -2046,6 +2044,22 @@ if neobundle#tap('vim-smartinput')
     "  C-t
     "-----------------------------------------------
     call smartinput#map_to_trigger('i', '<C-t>', '<C-t>', '<C-t>')
+
+    " nop
+    call smartinput#define_rule({
+      \ 'char':  '<C-t>',
+      \ 'at':    '\%#',
+      \ 'input': '',
+      \ 'mode':  'i',
+    \ })
+
+    " transpose charactors before/after cursor
+    call smartinput#define_rule({
+      \ 'char':  '<C-t>',
+      \ 'at':    '\(...........\)\?\w\%#\w',
+      \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
+      \ 'mode':  'i',
+    \ })
 
     " delete spaces around
     call smartinput#define_rule({
