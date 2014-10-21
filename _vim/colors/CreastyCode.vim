@@ -41,19 +41,25 @@ let g:creasty_code_palette = {
 
 " sets the highlighting for the given group
 fun! CreastyCode(group, fg, bg, attr)
+  let options = ''
+
   if a:fg != ''
-    exec 'hi ' . a:group . ' guifg=#' . g:creasty_code_palette[a:fg][0] . ' ctermfg=' . g:creasty_code_palette[a:fg][1]
+    let fg = g:creasty_code_palette[a:fg]
+    let options .= ' guifg=#' . fg[0] . ' ctermfg=' . fg[1]
   endif
   if a:bg != ''
-    exec 'hi ' . a:group . ' guibg=#' . g:creasty_code_palette[a:bg][0] . ' ctermbg=' . g:creasty_code_palette[a:bg][1]
+    let bg = g:creasty_code_palette[a:bg]
+    let options .= ' guibg=#' . bg[0] . ' ctermbg=' . bg[1]
   endif
   if a:attr != ''
-    exec 'hi ' . a:group . ' gui=' . a:attr . ' cterm=' . a:attr
+    let options .= ' gui=' . a:attr . ' cterm=' . a:attr
   endif
+
+  exec 'hi' a:group options
 endfun
 
 
-"=== Highlighting: Vim
+"=== Vim
 "==============================================================================================
 call CreastyCode('Normal', 'foreground', 'background', '')
 call CreastyCode('LineNr', 'comment', '', 'none')
@@ -93,7 +99,7 @@ if version >= 703
 end
 
 
-"=== Highlighting: Standard
+"=== Standard
 "==============================================================================================
 call CreastyCode('Comment', 'comment', '', '')
 
@@ -133,13 +139,13 @@ call CreastyCode('Title', 'foreground', '', '')
 call CreastyCode('Folded', 'comment', '', 'underline')
 
 
-"=== Highlighting: VimScript
+"=== VimScript
 "==============================================================================================
 call CreastyCode('vimCommand', 'red', '', 'none')
 call CreastyCode('vimCommentTitle', 'green', '', '')
 
 
-"=== Highlighting: C
+"=== C
 "==============================================================================================
 call CreastyCode('cConditional', 'purple', '', '')
 call CreastyCode('cDefine', 'purple', '', '')
@@ -153,7 +159,7 @@ call CreastyCode('cStorageClass', 'purple', '', '')
 call CreastyCode('cType', 'yellow', '', '')
 
 
-"=== Highlighting: Objective-C
+"=== Objective-C
 "==============================================================================================
 call CreastyCode('cocoaClass', 'yellow', '', '')
 call CreastyCode('objcConstant', 'yellow', '', '')
@@ -166,7 +172,7 @@ call CreastyCode('objcSubclass', 'yellow', '', '')
 call CreastyCode('objcSuperclass', 'yellow', '', '')
 
 
-"=== Highlighting: PHP
+"=== PHP
 "==============================================================================================
 call CreastyCode('phpConditional', 'purple', '', '')
 call CreastyCode('phpKeyword', 'purple', '', '')
@@ -176,7 +182,7 @@ call CreastyCode('phpStatement', 'purple', '', '')
 call CreastyCode('phpVarSelector', 'red', '', '')
 
 
-"=== Highlighting: Ruby
+"=== Ruby
 "==============================================================================================
 call CreastyCode('rubyAccess', 'purple', '', '')
 call CreastyCode('rubyAttribute', 'foreground', '', '')
@@ -198,7 +204,7 @@ call CreastyCode('rubyStringDelimiter', 'green', '', '')
 call CreastyCode('rubySymbol', 'red', '', '')
 
 
-"=== Highlighting: Python
+"=== Python
 "==============================================================================================
 call CreastyCode('pythonConditional', 'purple', '', '')
 call CreastyCode('pythonException', 'purple', '', '')
@@ -208,7 +214,7 @@ call CreastyCode('pythonRepeat', 'purple', '', '')
 call CreastyCode('pythonStatement', 'purple', '', '')
 
 
-"=== Highlighting: CoffeeScript
+"=== CoffeeScript
 "==============================================================================================
 call CreastyCode('coffeeBoolean', 'orange', '', '')
 call CreastyCode('coffeeConditional', 'purple', '', '')
@@ -222,7 +228,7 @@ call CreastyCode('coffeeRepeat', 'purple', '', '')
 call CreastyCode('coffeeStatement', 'purple', '', '')
 
 
-"=== Highlighting: JavaScript
+"=== JavaScript
 "==============================================================================================
 call CreastyCode('javaScriptBoolean', 'orange', '', '')
 call CreastyCode('javaScriptBraces', 'foreground', '', '')
@@ -235,7 +241,7 @@ call CreastyCode('javaScriptSpecial', 'purple', '', '')
 call CreastyCode('javaScriptStatement', 'purple', '', '')
 
 
-"=== Highlighting: CSS
+"=== CSS
 "==============================================================================================
 call CreastyCode('cssAttributeSelector', 'purple', '', '')
 call CreastyCode('cssBackgroundProp', 'red', '', '')
@@ -267,7 +273,7 @@ call CreastyCode('cssValueNumber', 'orange', '', '')
 call CreastyCode('cssValueTime', 'orange', '', '')
 
 
-"=== Highlighting: SCSS
+"=== SCSS
 "==============================================================================================
 call CreastyCode('scssElse', 'purple', '', '')
 call CreastyCode('scssElseIf', 'purple', '', '')
@@ -276,7 +282,7 @@ call CreastyCode('scssIf', 'purple', '', '')
 call CreastyCode('scssReturn', 'purple', '', '')
 
 
-"=== Highlighting: HTML
+"=== HTML
 "==============================================================================================
 call CreastyCode('htmlArg', 'red', '', '')
 call CreastyCode('htmlEndTag', 'comment', '', '')
@@ -295,7 +301,7 @@ call CreastyCode('htmlTagName', 'orange', '', '')
 call CreastyCode('htmlTitle', 'foreground', '', '')
 
 
-"=== Highlighting: XML
+"=== XML
 "==============================================================================================
 call CreastyCode('xmlAttrib', 'red', '', '')
 call CreastyCode('xmlEndTag', 'comment', '', '')
@@ -304,7 +310,7 @@ call CreastyCode('xmlTag', 'comment', '', '')
 call CreastyCode('xmlTagName', 'orange', '', '')
 
 
-"=== Highlighting: Markdown
+"=== Markdown
 "==============================================================================================
 call CreastyCode('markdownBold', 'red', '', '')
 call CreastyCode('markdownCode', 'green', '', '')
@@ -323,7 +329,7 @@ call CreastyCode('markdownOrderedListMarker', 'orange', '', '')
 call CreastyCode('markdownUrl', 'comment', '', '')
 
 
-"=== Highlighting: Diff
+"=== Diff
 "==============================================================================================
 call CreastyCode('diffAdded', 'green', 'dark_green', '')
 call CreastyCode('diffRemoved', 'red', 'dark_red', '')
