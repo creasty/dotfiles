@@ -19,14 +19,14 @@ let g:creasty_code_palette = {
   \ 'window':      ['262626', 235],
   \ 'background':  ['121212', 232],
   \
-  \ 'orange':      ['bb8d6f', 137],
+  \ 'orange':      ['bc8d6d', 137],
   \
-  \ 'red':         ['ae7071', 1],
-  \ 'green':       ['a3a371', 2],
-  \ 'yellow':      ['cdb384', 3],
-  \ 'blue':        ['8397a8', 4],
-  \ 'purple':      ['9d90a8', 5],
-  \ 'aqua':        ['8baaa5', 6],
+  \ 'red':         ['af7070', 1],
+  \ 'green':       ['a3a46f', 2],
+  \ 'yellow':      ['ceb481', 3],
+  \ 'blue':        ['8397a9', 4],
+  \ 'purple':      ['9d91a9', 5],
+  \ 'aqua':        ['8aaaa5', 6],
   \
   \ 'dark_red':    ['503131', 9],
   \ 'dark_green':  ['4c4b30', 10],

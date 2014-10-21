@@ -863,10 +863,10 @@ nmap k gk
 vmap k gk
 
 " fast key strokes in insert mode
-function! s:inorm_on(key)
+function! s:inorm_on()
   set eventignore+=InsertLeave,InsertEnter
 
-  return a:key
+  return ''
 endfunction
 
 function! s:inorm_off()
@@ -877,25 +877,26 @@ function! s:inorm_off()
   return "\<C-r>\<Esc>"
 endfunction
 
-inoremap <expr> <Plug>InormOff <SID>inorm_off()
+inoremap <expr> <Plug>(InormOn) <SID>inorm_on()
+inoremap <expr> <Plug>(InormOff) <SID>inorm_off()
 
 " Emacs-like key bindings
-inoremap <expr> <Plug>EmacsDown <SID>inorm_on("\<C-o>gj")
-inoremap <expr> <Plug>EmacsUp <SID>inorm_on("\<C-o>gk")
-inoremap <expr> <Plug>EmacsBOL <SID>inorm_on((col('.') == 2) ? "\<Left>" : "\<C-o>g0")
-inoremap <expr> <Plug>EmacsEOL <SID>inorm_on("\<C-o>g$")
-inoremap <expr> <Plug>EmacsKill <SID>inorm_on("\<C-g>u" . (col('.') == col('$') ? '<C-o>gJ' : '<C-o>d$'))
+inoremap <Plug>(EmacsDown) <C-o>gj
+inoremap <Plug>(EmacsUp) <C-o>gk
+inoremap <Plug>(EmacsEOL) <C-o>g$
+inoremap <expr> <Plug>(EmacsBOL) (col('.') == 2) ? "\<Left>" : "\<C-o>g0"
+inoremap <expr> <Plug>(EmacsKill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-o>d$"
 
 map <C-c> <Esc>
 imap <C-j> <CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
-imap <C-p> <Plug>EmacsUp<Plug>InormOff
-imap <C-n> <Plug>EmacsDown<Plug>InormOff
-imap <C-a> <Plug>EmacsBOL<Plug>InormOff
-imap <C-e> <Plug>EmacsEOL<Plug>InormOff
-imap <C-k> <Plug>EmacsKill<Plug>InormOff
+imap <C-p> <Plug>(InormOn)<Plug>(EmacsUp)<Plug>(InormOff)
+imap <C-n> <Plug>(InormOn)<Plug>(EmacsDown)<Plug>(InormOff)
+imap <C-a> <Plug>(InormOn)<Plug>(EmacsBOL)<Plug>(InormOff)
+imap <C-e> <Plug>(InormOn)<Plug>(EmacsEOL)<Plug>(InormOff)
+imap <C-k> <Plug>(InormOn)<Plug>(EmacsKill)<Plug>(InormOff)
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -2441,8 +2442,8 @@ if neobundle#tap('neocomplete')
     " cancel or accept
     imap <silent> <expr> <C-f> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Right>"
     imap <silent> <expr> <C-b> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Left>"
-    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>EmacsBOL\<Plug>InormOff"
-    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>EmacsEOL\<Plug>InormOff"
+    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(InormOn)\<Plug>(EmacsBOL)\<Plug>(InormOff)"
+    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(InormOn)\<Plug>(EmacsEOL)\<Plug>(InormOff)"
     imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
     inoremap <silent> <expr> <Space> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Space>"
