@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "${#1}" -lt 3 ]; then
+  echo "identifier must be at least 3 charactors"
+  return
+fi
+
+list="$(ps aux | grep "$1" | grep -v grep)"
+
+echo "$list"
+
+echo
+
+echo -n "Are you sure to kill all these processes? [yN] "
+read response
+
+if [[ $response =~ ^[yY]$ ]]; then
+  echo "$list" | awk '{ print $2 }' | xargs kill -9
+  echo "done"
+else
+  echo "canceled"
+fi
