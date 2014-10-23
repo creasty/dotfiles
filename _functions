@@ -35,6 +35,53 @@ sshc() {
 compctl -f -W ~/.ssh/config.d sshc
 
 
+#  Peco cd
+#-----------------------------------------------
+pd() {
+  local DIR_TMP=""
+  local DIR_PATH="$1"
+
+  while true; do
+    DIR_TMP=$(ls -1aF $DIR_PATH | sed -e 's/@$/\//' | grep / | peco)
+
+    if [ "$DIR_TMP" = "./" ]; then
+      cd "$DIR_PATH"
+      return
+    elif [ "$DIR_TMP" = "" ]; then
+      return
+    else
+      DIR_PATH="${DIR_PATH}${DIR_TMP}"
+    fi
+  done
+}
+
+
+#  grepkill
+#-----------------------------------------------
+grepkill() {
+  if [ "${#1}" -lt 3 ]; then
+    echo "identifier must be at least 3 charactors"
+    return
+  fi
+
+  local list="$(ps aux | grep "$1" | grep -v grep)"
+
+  echo "$list"
+
+  echo
+
+  echo -n "Are you sure to kill all these processes? [yN] "
+  read RESPONSE
+
+  if [[ $RESPONSE =~ ^[yY]$ ]]; then
+    echo "$list" | awk '{print $2}' | xargs kill -9
+    echo "done"
+  else
+    echo "canceled"
+  fi
+}
+
+
 #  Use recycle bin
 #-----------------------------------------------
 TRASHDIR=~/.trash
