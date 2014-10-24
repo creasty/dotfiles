@@ -795,6 +795,9 @@ set incsearch
 " match highlight
 set hlsearch
 
+" make regex a little easier to type
+" set magic
+
 " dim match highlight
 nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 
@@ -856,6 +859,12 @@ autocmd vimrc BufWritePost *vimrc
 " toggle paste mode
 command! Pt :set paste!
 
+" pay respect to vim
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+
 " move cursor visually with long lines
 nmap j gj
 vmap j gj
@@ -912,12 +921,15 @@ inoremap <C-Tab> <C-t>
 inoremap <C-v> <C-r><C-p>*
 cnoremap <C-v> <C-r>*
 
+inoremap <C-\> <C-v>
+cnoremap <C-\> <C-v>
+
 " auto wrap
-vnoremap ( S(
-vnoremap { S{
-vnoremap [ S[
-vnoremap " S"
-vnoremap ' S'
+vnoremap <Leader>( S(
+vnoremap <Leader>{ S{
+vnoremap <Leader>[ S[
+vnoremap <Leader>" S"
+vnoremap <Leader>' S'
 
 " do not store to register with x, c
 nnoremap x "_x
@@ -947,8 +959,8 @@ nnoremap / /\v
 vnoremap / /\v
 
 " easy key
-nnoremap <Space>h ^
-nnoremap <Space>l $
+nnoremap <Space>h g^
+nnoremap <Space>l g$
 nnoremap <Space>m %
 
 " insert blank lines without going into insert mode
@@ -1106,7 +1118,7 @@ cnoremap <expr> n
   \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>NextFile" : 'n'
 
 " edit a next file in the same directory
-command! NextFile call <SID>next_file(expand('%:p'))
+command! -nargs=0 NextFile call <SID>next_file(expand('%:p'))
 
 function! s:next_file(path)
   let basename = fnamemodify(a:path, ':t')
