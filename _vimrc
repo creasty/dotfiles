@@ -2900,42 +2900,61 @@ endif
 if neobundle#tap('vim-submode')
   let g:submode_leave_with_key = 1
 
-  " window size
+  "  Window resizing
+  "-----------------------------------------------
   call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
-  call submode#map('winsize', 'n', '', '>', '<C-w>>')
+  call submode#map(       'winsize', 'n', '', '>',      '<C-w>>')
   call submode#enter_with('winsize', 'n', '', '<C-w><', '<C-w><')
-  call submode#map('winsize', 'n', '', '<', '<C-w><')
+  call submode#map(       'winsize', 'n', '', '<',      '<C-w><')
   call submode#enter_with('winsize', 'n', '', '<C-w>+', '<C-w>-')
-  call submode#map('winsize', 'n', '', '-', '<C-w>+')
+  call submode#map(       'winsize', 'n', '', '-',      '<C-w>+')
   call submode#enter_with('winsize', 'n', '', '<C-w>-', '<C-w>+')
-  call submode#map('winsize', 'n', '', '+', '<C-w>-')
+  call submode#map(       'winsize', 'n', '', '+',      '<C-w>-')
 
-  " tabpage
+
+  "  Tabpage navigation
+  "-----------------------------------------------
   call submode#enter_with('changetab', 'n', '', 'gt', 'gt')
-  call submode#map('changetab', 'n', '', 't', 'gt')
+  call submode#map(       'changetab', 'n', '', 't',  'gt')
   call submode#enter_with('changetab', 'n', '', 'gT', 'gT')
-  call submode#map('changetab', 'n', '', 'T', 'gT')
+  call submode#map(       'changetab', 'n', '', 'T',  'gT')
 
-  " macro
+
+  "  Macro
+  "-----------------------------------------------
   call submode#enter_with('macro', 'n', '', '@@', '@@')
-  call submode#map('macro', 'n', '', '@', '@@')
+  call submode#map(       'macro', 'n', '', '@',  '@@')
 
-  " move to next/previous fold
+
+  "  Fold navigation
+  "-----------------------------------------------
   call submode#enter_with('move-to-fold', 'n', '', 'zj', 'zj')
-  call submode#map('move-to-fold', 'n', '', 'j', 'zj')
+  call submode#map(       'move-to-fold', 'n', '', 'j',  'zj')
   call submode#enter_with('move-to-fold', 'n', '', 'zk', 'zk')
-  call submode#map('move-to-fold', 'n', '', 'k', 'zk')
+  call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
 
-  " better undo with x-es
-  function! s:my_x()
+
+  "  Better undo
+  "-----------------------------------------------
+  function! s:better_undo(key)
     undojoin
-    normal! "_x
+    exec 'normal!' a:key
   endfunction
 
-  noremap <silent> <Plug>(my-x) :<C-u>call <SID>my_x()<CR>
+  noremap <silent> <Plug>(my-x) :<C-u>call <SID>better_undo('"_x')<CR>
+  call submode#enter_with('my_x', 'n', '',  'x', '"_x')
+  call submode#map(       'my_x', 'n', 'r', 'x', '<Plug>(my-x)')
 
-  call submode#enter_with('my_x', 'n', '', 'x', '"_x')
-  call submode#map('my_x', 'n', 'r', 'x', '<Plug>(my-x)')
+  " FIXME
+  noremap <silent> <Plug>(my-ca) :<C-u>call <SID>better_undo('<Plug>SpeedDatingUp')<CR>
+  call submode#enter_with('my_ca', 'n', '',  '<C-a>', '<Plug>SpeedDatingUp')
+  call submode#map(       'my_ca', 'n', 'r', '<C-a>', '<Plug>(my-ca)')
+
+  " FIXME
+  noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<Plug>SpeedDatingDown')<CR>
+  call submode#enter_with('my_cx', 'n', '',  '<C-x>', '<Plug>SpeedDatingDown')
+  call submode#map(       'my_cx', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
+
 
   call neobundle#untap()
 endif
