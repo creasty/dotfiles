@@ -40,7 +40,7 @@ let g:creasty_code_palette = {
 " for c in {000..255}; do echo -n "\e[38;5;${c}m ■$c"; [ $(($c % 16)) -eq 15 ] && echo; done; echo
 
 " sets the highlighting for the given group
-fun! CreastyCode(group, fg, bg, attr)
+function! CreastyCode(group, fg, bg, attr)
   let options = ''
 
   if a:fg != ''
@@ -56,7 +56,7 @@ fun! CreastyCode(group, fg, bg, attr)
   endif
 
   exec 'hi' a:group options
-endfun
+endfunction
 
 
 "=== General
