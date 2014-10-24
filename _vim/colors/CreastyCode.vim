@@ -37,7 +37,7 @@ let g:creasty_code_palette = {
 \ }
 
 " use this command to show all cterm codes
-" for c in {000..255}; do echo -n "\e[38;5;${c}m ■$c"; [ $(($c % 16)) -eq 15 ] && echo; done; echo
+" for c in {0..255}; do printf "\e[48;5;%dm %3d \e[0m" $c $c; [ $(($c % 16)) -eq 15 ] && echo; done
 
 " sets the highlighting for the given group
 function! CreastyCode(group, fg, bg, attr)
