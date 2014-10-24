@@ -1079,6 +1079,10 @@ command! -nargs=0 Delete call delete(expand('%')) | enew!
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
+" w!! to write a file as sudo
+cnoremap <expr> !
+  \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
+
 " edit relative :ee
 cnoremap <expr> e
   \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
@@ -1097,9 +1101,25 @@ cnoremap <expr> r
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
-" w!! to write a file as sudo
-cnoremap <expr> !
-  \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
+" edit next file :en
+cnoremap <expr> n
+  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>NextFile" : 'n'
+
+" edit a next file in the same directory
+command! NextFile call <SID>next_file(expand('%:p'))
+
+function! s:next_file(path)
+  let basename = fnamemodify(a:path, ':t')
+  let directory = fnamemodify(a:path, ':h')
+
+  let files = split(system('ls ' . fnameescape(directory) . ' -aF | grep -v / | sed -e "s/*//"'), "\n")
+  let n = len(files)
+  let idx = index(files, basename)
+
+  let next = directory . '/' . fnameescape(files[(idx + 1) % n])
+
+  exec 'edit' next
+endfunction
 
 " file detect on read / save
 autocmd vimrc BufWritePost,BufReadPost,BufEnter *
@@ -1120,22 +1140,6 @@ endif
 
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
-
-" edit a next file in the same directory
-command! NextFile call <SID>next_file(expand('%:p'))
-
-function! s:next_file(path)
-  let basename = fnamemodify(a:path, ':t')
-  let directory = fnamemodify(a:path, ':h')
-
-  let files = split(system('ls -aF | grep -v / | sed -e "s/*//"'), "\n")
-  let n = len(files)
-  let idx = index(files, basename)
-
-  let next = directory . '/' . fnameescape(files[(idx + 1) % n])
-
-  exec 'edit' next
-endfunction
 
 
 "=== Project root directory
