@@ -1269,6 +1269,26 @@ if executable('identify')
   endfunction
 
   command! -nargs=1 -complete=file ImageTagInsert call <SID>insert_image_tag(<f-args>)
+
+  let s:unite_source = {
+    \ 'name': 'image',
+    \ 'default_action': { 'common': 'insert' },
+  \ }
+  function! s:unite_source.gather_candidates(args, context)
+    let files = [
+      \ { 'path': 'aaa', 'text': '<aaa>' },
+      \ { 'path': 'bbb', 'text': '<bbb>' }
+    \ ]
+
+    return map(files, "{
+      \ 'word':         v:val['path'],
+      \ 'action__text': v:val['text'],
+    \ }")
+  endfunction
+
+  " call unite#define_source(s:unite_source)
+  unlet s:unite_source
+
 endif
 
 
