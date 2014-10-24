@@ -1121,6 +1121,22 @@ endif
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
+" edit a next file in the same directory
+command! NextFile call <SID>next_file(expand('%:p'))
+
+function! s:next_file(path)
+  let basename = fnamemodify(a:path, ':t')
+  let directory = fnamemodify(a:path, ':h')
+
+  let files = split(system('ls -aF | grep -v / | sed -e "s/*//"'), "\n")
+  let n = len(files)
+  let idx = index(files, basename)
+
+  let next = directory . '/' . fnameescape(files[(idx + 1) % n])
+
+  exec 'edit' next
+endfunction
+
 
 "=== Project root directory
 "==============================================================================================
