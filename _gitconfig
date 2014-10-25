@@ -46,6 +46,9 @@
   st   = stash
   sp   = stash pop
 
+  sm  = submodule
+  smu = submodule update --remote
+
   f  = flow
   fi = flow init
   fs = flow feature start
