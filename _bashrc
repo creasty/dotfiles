@@ -32,3 +32,6 @@ PS1='\[\e[34m\]\
 \[\e[00m\]\[\e[33m\]\
 `__git_ps1`\
 \[\e[00m\] \$ \[\e[0m\]'
+
+export NVM_DIR="/Users/ykiwng/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

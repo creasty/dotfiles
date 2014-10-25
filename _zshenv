@@ -5,3 +5,4 @@ unset file
 
 eval "$(rbenv init -)"
 eval "$(gh alias -s)"
+source ~/.nvm/nvm.sh

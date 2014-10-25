@@ -25,6 +25,15 @@ rbenv exec gem install bundler
 bundle
 
 
+#  NVM
+#-----------------------------------------------
+which nvm > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.17.3/install.sh | bash
+fi
+nvm install 0.10
+
+
 #  Node packages
 #-----------------------------------------------
 npm i -g
