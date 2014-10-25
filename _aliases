@@ -28,7 +28,8 @@ alias o='git ls-files | peco | xargs open'
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
 
 alias skey='ssh-keygen -t rsa -P "" -f'
-alias randportn='ruby -e "p rand(1024..65535)"' # 0-1023 / 1024-49151 / 49152-65535
+alias randportn='ruby -e "p rand(1024..65535)"'
+alias randports='ruby -e "p rand(49152..65535)"'
 
 
 #  Global
