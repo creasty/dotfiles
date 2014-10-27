@@ -5,6 +5,11 @@
     <equal>org.vim.MacVim</equal>
   </appdef>
 
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Finder</name>
+    <url type="file">/System/Library/CoreServices/Finder.app</url>
+  </vkopenurldef>
+
   <replacementdef>
     <replacementname>EMACS_MODE_IGNORE_APPS</replacementname>
     <replacementvalue>
@@ -20,6 +25,27 @@
   </replacementdef>
 
   <list>
+    <item>
+      <name>Cmd-' to open finder</name>
+      <identifier>private.open_finder</identifier>
+      <not>FINDER</not>
+      <autogen>
+        __KeyToKey__
+        KeyCode::QUOTE, VK_COMMAND,
+        KeyCode::VK_OPEN_URL_APP_Finder
+      </autogen>
+    </item>
+    <item>
+      <name>Cmd-' to hide finder (in finder)</name>
+      <identifier>private.hide_finder</identifier>
+      <only>FINDER</only>
+      <autogen>
+        __KeyToKey__
+        KeyCode::QUOTE, VK_COMMAND,
+        KeyCode::H, VK_COMMAND
+      </autogen>
+    </item>
+
     <item>
       <name>Leave InsMode with EISUU (MacVim)</name>
       <identifier>private.app_macvim_esc_with_eisuu</identifier>

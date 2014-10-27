@@ -42,7 +42,6 @@ brew cask install truecrypt || true
 brew cask install vagrant || true
 brew cask install virtualbox || true
 brew cask install xquartz || true
-brew cask install xtrafinder || true
 
 # install brew-packages
 brew install ansible || true

@@ -1,11 +1,16 @@
 #!/bin/bash
 
-#  KeyRemap4MacBook setting
+#  Karabiner
 #-----------------------------------------------
 cp ~/dotfiles/app/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
 
 
-#  QuickLook plugins
+#  Automator
+#-----------------------------------------------
+cp ~/dotfiles/app/automator/*.workflow ~/Library/Services/
+
+
+#  QuickLook
 #-----------------------------------------------
 cp ~/dotfiles/app/quick_look/*.qlgenerator /Library/QuickLook/
 
