@@ -39,6 +39,20 @@ defaults write com.apple.CrashReporter DialogType -string 'none'
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
+# keyboard & trackpad
+defaults write com.apple.keyboard.fnState -int 0
+defaults write com.apple.trackpad.scaling -int 3
+defaults write com.apple.springing.delay -float 0.5
+defaults write com.apple.springing.enabled -bool true
+
+# skin
+defaults write NSGlobalDomain AppleAntiAliasingThreshold -int 4
+defaults write NSGlobalDomain AppleAquaColorVariant -int 6
+defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool ture
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
+defaults write NSGlobalDomain AppleInterfaceStyle -string 'Dark'
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
+
 
 #  Input devices
 #-----------------------------------------------
@@ -51,9 +65,10 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
 # set language and text formats
 defaults write NSGlobalDomain AppleLanguages -array 'en' 'ja'
-defaults write NSGlobalDomain AppleLocale -string 'en_US@currency=JPY'
+defaults write NSGlobalDomain AppleLocale -string 'en_JP@currency=JPY'
 defaults write NSGlobalDomain AppleMeasurementUnits -string 'Centimeters'
 defaults write NSGlobalDomain AppleMetricUnits -bool true
+defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
 
 # disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
