@@ -236,7 +236,7 @@ call CreastyCode('htmlTagName', 'orange', '', '')
 "=== xml
 "==============================================================================================
 call CreastyCode('xmlAttrib', 'red', '', '')
-call CreastyCode('xmlEndTag', 'comment', '', '')
+call CreastyCode('xmlEndTag', 'orange', '', '')
 call CreastyCode('xmlEqual', 'comment', '', '')
 call CreastyCode('xmlTag', 'comment', '', '')
 call CreastyCode('xmlTagName', 'orange', '', '')
@@ -264,3 +264,5 @@ call CreastyCode('markdownUrl', 'comment', '', '')
 "==============================================================================================
 call CreastyCode('diffAdded', 'green', 'dark_green', '')
 call CreastyCode('diffRemoved', 'red', 'dark_red', '')
+" call CreastyCode('diffChange', '', '', '')
+call CreastyCode('diffText', 'blue', 'dark_blue', '')

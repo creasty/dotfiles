@@ -824,6 +824,20 @@ if executable('ag')
 endif
 
 
+"=== Diff
+"==============================================================================================
+set diffexpr=MyDiff()
+function! MyDiff()
+  let opt =
+    \ (&diffopt =~ 'iwhite') ? '-b '
+    \ : ''
+
+  call system('git-diff-normal ' . opt . v:fname_in . ' ' . v:fname_new . ' > ' . v:fname_out)
+
+  redraw!
+endfunction
+
+
 "=== Editing
 "==============================================================================================
 " indent

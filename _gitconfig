@@ -16,6 +16,10 @@
   tool = vimdiff
   ff   = false
 
+[diff]
+  tool      = vimdiff
+  algorithm = histogram
+
 [push]
   default = current
 
