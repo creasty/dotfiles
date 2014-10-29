@@ -64,6 +64,7 @@ brew install ghostscript || true
 brew install git || true
 brew install git-flow || true
 brew install go || true
+brew install gpg || true
 brew install graphviz || true
 brew install haskell-platform || true
 brew install httpie || true

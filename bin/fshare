@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# TODO:
+# Encrypt & upload:
+# cat /tmp/hello.txt|gpg -ac -o-|curl -X PUT --upload-file "-" https://transfer.sh/test.txt
+# Download & decrypt:
+# curl https://transfer.sh/1lDau/test.txt|gpg -o- > /tmp/hello.txt
+
+tmpfile=$(mktemp -t transferXXX)
+curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) >> $tmpfile
+cat $tmpfile
+pbcopy < $tmpfile
+rm -f $tmpfile
