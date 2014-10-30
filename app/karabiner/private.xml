@@ -28,7 +28,7 @@
         <not>FINDER</not>
         <autogen>
           __KeyToKey__
-          KeyCode::QUOTE, VK_COMMAND,
+          KeyCode::QUOTE, VK_COMMAND | ModifierFlag::NONE,
           KeyCode::VK_OPEN_URL_APP_Finder
         </autogen>
       </block>
@@ -36,7 +36,7 @@
         <only>FINDER</only>
         <autogen>
           __KeyToKey__
-          KeyCode::QUOTE, VK_COMMAND,
+          KeyCode::QUOTE, VK_COMMAND | ModifierFlag::NONE,
           KeyCode::H, VK_COMMAND
         </autogen>
       </block>
@@ -71,7 +71,7 @@
         <inputsource_only>JAPANESE</inputsource_only>
         <autogen>
           --KeyToKey--
-          KeyCode::SEMICOLON, VK_CONTROL,
+          KeyCode::SEMICOLON, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::JIS_EISUU
         </autogen>
       </block>
@@ -79,7 +79,7 @@
         <inputsource_not>JAPANESE</inputsource_not>
         <autogen>
           --KeyToKey--
-          KeyCode::SEMICOLON, VK_CONTROL,
+          KeyCode::SEMICOLON, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::JIS_KANA
         </autogen>
       </block>
