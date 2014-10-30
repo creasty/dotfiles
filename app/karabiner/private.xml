@@ -21,24 +21,25 @@
 
   <list>
     <item>
-      <name>Cmd-' to open finder</name>
+      <name>Cmd-' to toggle open finder</name>
       <identifier>private.open_finder</identifier>
-      <not>FINDER</not>
-      <autogen>
-        __KeyToKey__
-        KeyCode::QUOTE, VK_COMMAND,
-        KeyCode::VK_OPEN_URL_APP_Finder
-      </autogen>
-    </item>
-    <item>
-      <name>Cmd-' to hide finder (in finder)</name>
-      <identifier>private.hide_finder</identifier>
-      <only>FINDER</only>
-      <autogen>
-        __KeyToKey__
-        KeyCode::QUOTE, VK_COMMAND,
-        KeyCode::H, VK_COMMAND
-      </autogen>
+
+      <block>
+        <not>FINDER</not>
+        <autogen>
+          __KeyToKey__
+          KeyCode::QUOTE, VK_COMMAND,
+          KeyCode::VK_OPEN_URL_APP_Finder
+        </autogen>
+      </block>
+      <block>
+        <only>FINDER</only>
+        <autogen>
+          __KeyToKey__
+          KeyCode::QUOTE, VK_COMMAND,
+          KeyCode::H, VK_COMMAND
+        </autogen>
+      </block>
     </item>
 
     <item>
@@ -63,25 +64,26 @@
     </item>
 
     <item>
-      <name>Ctrl-; to EISUU</name>
-      <identifier>private.ctrl_semicolon_eisuu</identifier>
-      <inputsource_only>JAPANESE</inputsource_only>
-      <autogen>
-        --KeyToKey--
-        KeyCode::SEMICOLON, VK_CONTROL,
-        KeyCode::JIS_EISUU
-      </autogen>
+      <name>Ctrl-; to toggle input source</name>
+      <identifier>private.ctrl_semicolon_toggle_input_source</identifier>
+
+      <block>
+        <inputsource_only>JAPANESE</inputsource_only>
+        <autogen>
+          --KeyToKey--
+          KeyCode::SEMICOLON, VK_CONTROL,
+          KeyCode::JIS_EISUU
+        </autogen>
+      </block>
+      <block>
+        <inputsource_not>JAPANESE</inputsource_not>
+        <autogen>
+          --KeyToKey--
+          KeyCode::SEMICOLON, VK_CONTROL,
+          KeyCode::JIS_KANA
+        </autogen>
+      </block>
     </item>
 
-    <item>
-      <name>Ctrl-; to KANA</name>
-      <identifier>private.ctrl_semicolon_kana</identifier>
-      <inputsource_not>JAPANESE</inputsource_not>
-      <autogen>
-        --KeyToKey--
-        KeyCode::SEMICOLON, VK_CONTROL,
-        KeyCode::JIS_KANA
-      </autogen>
-    </item>
   </list>
 </root>
