@@ -2932,12 +2932,16 @@ if neobundle#tap('vim-quickrun')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:quickrun_config = {}
     let g:quickrun_config['_'] = {
-      \ 'runner': 'vimproc',
-      \ 'outputter/buffer/split': ':botright 15sp',
+      \ 'runner':                        'vimproc',
+      \ 'outputter/buffer/split':        ':botright 15sp',
       \ 'outputter/buffer/running_mark': '',
     \ }
 
-    let g:quickrun_config['ruby.rspec'] = { 'command': 'rspec', 'cmdopt': 'bundle exec', 'exec': '%o %c %s' }
+    let g:quickrun_config['ruby.rspec'] = {
+      \ 'command': 'rspec',
+      \ 'cmdopt':  'bundle exec',
+      \ 'exec':    '%o %c %s',
+    \ }
 
     let g:quickrun_config['markdown'] = {
       \ 'outputter': 'null',
@@ -2947,11 +2951,19 @@ if neobundle#tap('vim-quickrun')
       \ 'exec':      '%c %o %a %s',
     \ }
 
-    let g:quickrun_config['javascript'] = { 'command': 'node' }
+    let g:quickrun_config['javascript'] = {
+      \ 'command': 'node',
+    \ }
 
     let g:quickrun_config['coffee'] = {
-      \ 'command' : 'coffee',
-      \ 'exec' : ['%c -cbp %s | node'],
+      \ 'command': 'coffee',
+      \ 'exec':    ['%c -cbp %s | node'],
+    \ }
+
+    let g:quickrun_config['swift'] = {
+      \ 'command': 'xcrun',
+      \ 'cmdopt':  'swift',
+      \ 'exec':    '%c %o %s',
     \ }
   endfunction
 

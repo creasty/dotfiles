@@ -31,6 +31,7 @@ alias skey='ssh-keygen -t rsa -P "" -f'
 alias randportn='ruby -e "p rand(1024..65535)"'
 alias randports='ruby -e "p rand(49152..65535)"'
 
+alias swift='xcrun swift'
 
 #  Global
 #-----------------------------------------------
@@ -49,14 +50,16 @@ alias -g X='| xargs'
 
 #  Suffix
 #-----------------------------------------------
-alias -s txt='cat'
-alias -s rb='ruby'
-alias -s py='python'
-alias -s hs='runhaskell'
-alias -s php='php -f'
-alias -s js='node'
 alias -s coffee='coffee'
 alias -s go='go run'
+alias -s hs='runhaskell'
+alias -s js='node'
+alias -s php='php -f'
+alias -s py='python'
+alias -s rb='ruby'
+alias -s swift='xcrun swift'
+alias -s txt='cat'
+
 alias -s {gif,jpg,jpeg,png,bmp}='display'
 
 _run_c() {
