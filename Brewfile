@@ -103,6 +103,7 @@ brew install tree || true
 brew install w3m || true
 brew install webkit2png || true
 brew install wget --enable-iri || true
+brew install xctool || true
 brew install zsh || true
 
 # for alfred

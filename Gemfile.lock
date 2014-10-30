@@ -110,6 +110,7 @@ GEM
       CFPropertyList (~> 2.2)
       activesupport (~> 3.0)
       colored (~> 1.2)
+    xcpretty (0.1.7)
 
 PLATFORMS
   ruby
@@ -123,3 +124,4 @@ DEPENDENCIES
   powder
   rails
   synx
+  xcpretty
