@@ -5,11 +5,6 @@
     <equal>org.vim.MacVim</equal>
   </appdef>
 
-  <vkopenurldef>
-    <name>KeyCode::VK_OPEN_URL_APP_Finder</name>
-    <url type="file">/System/Library/CoreServices/Finder.app</url>
-  </vkopenurldef>
-
   <replacementdef>
     <replacementname>EMACS_MODE_IGNORE_APPS</replacementname>
     <replacementvalue>
@@ -68,12 +63,12 @@
     </item>
 
     <item>
-      <name>';' key to EISUU (in JAPANESE input source)</name>
-      <identifier>private.jp_semicolon_eisuu</identifier>
+      <name>Ctrl-; to EISUU</name>
+      <identifier>private.ctrl_semicolon_eisuu</identifier>
       <inputsource_only>JAPANESE</inputsource_only>
       <autogen>
         --KeyToKey--
-        KeyCode::SEMICOLON, ModifierFlag::NONE,
+        KeyCode::SEMICOLON, VK_CONTROL,
         KeyCode::JIS_EISUU
       </autogen>
     </item>
@@ -81,6 +76,7 @@
     <item>
       <name>Ctrl-; to KANA</name>
       <identifier>private.ctrl_semicolon_kana</identifier>
+      <inputsource_not>JAPANESE</inputsource_not>
       <autogen>
         --KeyToKey--
         KeyCode::SEMICOLON, VK_CONTROL,
