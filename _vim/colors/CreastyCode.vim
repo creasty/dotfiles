@@ -104,7 +104,7 @@ end
 call CreastyCode('Comment', 'comment', '', '')
 
 call CreastyCode('Boolean', 'orange', '', '')
-call CreastyCode('Character', 'yellow', '', '')
+call CreastyCode('Character', 'orange', '', '')
 call CreastyCode('Constant', 'yellow', '', '')
 call CreastyCode('Float', 'orange', '', '')
 call CreastyCode('Number', 'orange', '', '')
