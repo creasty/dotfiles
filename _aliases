@@ -31,7 +31,6 @@ alias skey='ssh-keygen -t rsa -P "" -f'
 alias randportn='ruby -e "p rand(1024..65535)"'
 alias randports='ruby -e "p rand(49152..65535)"'
 
-alias swift='xcrun swift'
 
 #  Global
 #-----------------------------------------------
@@ -160,3 +159,15 @@ alias tma0='tmux attach -t 0'
 alias tma1='tmux attach -t 1'
 alias tma2='tmux attach -t 2'
 alias tml='tmux list-sessions'
+
+
+#  Xcode
+#-----------------------------------------------
+# xcodebuild test -scheme foo -destination 'platform=iOS Simulator,name=iPad' | xcpretty -c
+# xctool -scheme foo run-tests -parallelize -sdk iphonesimulator
+
+alias swift='xcrun swift'
+alias swiftc='SDKPATH=$(/usr/bin/env xcrun --show-sdk-path --sdk macosx) xcrun swiftc'
+
+alias xcb='xcodebuild'
+alias xct='xctool'
