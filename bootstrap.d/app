@@ -14,3 +14,4 @@ cp ~/dotfiles/app/automator/*.workflow ~/Library/Services/
 #-----------------------------------------------
 cp ~/dotfiles/app/quick_look/*.qlgenerator /Library/QuickLook/
 
+qlmanage -r
