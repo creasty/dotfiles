@@ -7,6 +7,7 @@ brew update
 brew upgrade
 
 # add repositories
+brew tap caskroom/versions || true
 brew tap homebrew/dupes || true
 brew tap homebrew/science || true
 brew tap josegonzalez/php || true
@@ -31,6 +32,7 @@ brew cask install growlnotify || true
 brew cask install imagealpha || true
 brew cask install imageoptim || true
 brew cask install iterm2 || true
+brew cask install java7 || true
 brew cask install karabiner || true
 brew cask install ngrok || true
 brew cask install seil || true
@@ -70,6 +72,7 @@ brew install haskell-platform || true
 brew install httpie || true
 brew install hub || true
 brew install imagemagick || true
+brew install irssi --with-perl=yes --with-proxy --with-socks || true
 brew install jbig2dec || true
 brew install jpeg || true
 brew install jq || true
@@ -83,6 +86,7 @@ brew install mysql || true
 brew install ngrep || true
 brew install node || true
 brew install optipng || true
+brew install osquery || true
 brew install pcre || true
 brew install peco || true
 brew install phantomjs || true
