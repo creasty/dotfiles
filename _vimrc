@@ -380,7 +380,7 @@ augroup END
 let g:hostname = substitute(hostname(), '[^\w.]', '', '')
 
 function! s:load_local_vimrc(hook)
-  let file = g:dotfiles_path . '/_vim/locals/' . g:hostname . '.' . a:hook
+  let file = g:dotfiles_path . '/_vim/locals/' . g:hostname . '.' . a:hook . '.vim'
 
   if filereadable(file)
     execute 'source ' . file
