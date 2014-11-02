@@ -74,6 +74,11 @@
           KeyCode::SEMICOLON, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::JIS_EISUU
         </autogen>
+        <autogen>
+          --KeyToKey--
+          KeyCode::SEMICOLON, ModifierFlag::NONE,
+          KeyCode::JIS_EISUU
+        </autogen>
       </block>
       <block>
         <inputsource_not>JAPANESE</inputsource_not>
