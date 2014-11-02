@@ -90,7 +90,7 @@ alias v='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
 
-alias maxscreen='screenresolution set 2048x1280x32@0'
+alias maxscreen='screenresolution set 2560x1600x32@0'
 
 
 #  Networks
