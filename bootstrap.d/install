@@ -3,6 +3,11 @@
 cd ~/dotfiles
 
 
+#  Xcode command line tool
+#-----------------------------------------------
+xcode-select --install
+
+
 #  Homebrew
 #-----------------------------------------------
 which brew > /dev/null 2>&1
