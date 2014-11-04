@@ -15,6 +15,7 @@ brew tap laurent22/massren || true
 brew tap peco/peco || true
 brew tap phinze/homebrew-cask || true
 brew tap supermomonga/homebrew-splhack || true
+brew tap creasty/homebrew || true
 
 # cask
 brew install brew-cask || true
