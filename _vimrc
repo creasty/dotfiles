@@ -13,24 +13,86 @@
 "
 "----------------------------------------------------------------------------------------------
 
+"=== Environment
+"==============================================================================================
+" encoding
+set encoding=utf-8
+scriptencoding utf-8
 
-let g:dotfiles_path = $HOME . '/dotfiles'
+" s:env
+function! s:vimrc_environment()
+  let env = {}
+
+  let env.is_starting = has('vim_starting')
+  let env.is_gui = has('gui_running')
+
+  let env.hostname = substitute(hostname(), '[^\w.]', '', '')
+
+  let dotfiles_path = $HOME . '/dotfiles'
+  let vim_path = dotfiles_path . '/_vim'
+
+  let env.path = {
+    \ 'dotfiles':  dotfiles_path,
+    \ 'bundle':    vim_path . '/bundle',
+    \ 'neobundle': vim_path . '/bundle/neobundle.vim',
+    \ 'local':     vim_path . '/locals',
+    \ 'dict':      vim_path . '/dict'
+    \ 'snippets':  vim_path . '/snippets'
+  \ }
+
+  let env.log = {
+    \ 'neobundle': env.path.bundle . '/.neobundle/neobundle.log',
+  \ }
+
+  let env.support = {
+    \ 'ag':        executable('ag'),
+    \ 'identify':  executable('identify'),
+    \ 'osascript': executable('osascript'),
+    \ 'autochdir': exists('+autochdir'),
+  \ }
+
+  return env
+endfunction
+
+let s:env = s:vimrc_environment()
+
+" unregister autocmds
+augroup vimrc
+  autocmd!
+augroup END
+
+
+"=== Load hooks
+"==============================================================================================
+autocmd vimrc User VimrcHookPre call <SID>load_local_vimrc('pre')
+autocmd vimrc User VimrcHookPostPlugin call <SID>load_local_vimrc('post_plugin')
+autocmd vimrc User VimrcHookPost call <SID>load_local_vimrc('post')
+
+function! s:load_local_vimrc(hook)
+  let file = s:env.path.local . '/' . s:env.hostname . '.' . a:hook . '.vim'
+
+  if filereadable(file)
+    execute 'source ' . file
+  endif
+endfunction
+
+doautocmd User VimrcHookPre
 
 
 "=== Plugins
 "==============================================================================================
-if has('vim_starting')
-  let &g:rtp .= ',' . g:dotfiles_path . '/_vim/bundle/neobundle.vim/'
+if s:env.is_starting
+  let &g:rtp .= ',' . s:env.path.neobundle
 endif
 
-call neobundle#begin(g:dotfiles_path . '/_vim/bundle/')
+call neobundle#begin(s:env.path.bundle)
 
 " package manager
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-let g:neobundle#log_filename = g:dotfiles_path . '/_vim/bundle/.neobundle/neobundle.log'
-let g:neobundle#install_max_processes = 4
-let g:neobundle#install_process_timeout = 180
+let g:neobundle#log_filename               = s:env.path.log.neobundle
+let g:neobundle#install_max_processes      = 4
+let g:neobundle#install_process_timeout    = 180
 let g:neobundle#types#git#enable_submodule = 0
 
 if neobundle#has_cache()
@@ -310,6 +372,8 @@ call neobundle#end()
 
 filetype plugin indent on
 
+doautocmd User VimrcHookPostPlugin
+
 
 "=== Encoding
 "==============================================================================================
@@ -322,6 +386,7 @@ if &encoding !=# 'utf-8'
   set encoding=japan
   set fileencoding=japan
 endif
+
 if has('iconv')
   let s:enc_euc = 'euc-jp'
   let s:enc_jis = 'iso-2022-jp'
@@ -369,36 +434,10 @@ augroup AutoDetectEncording
 augroup END
 
 
-"=== Load hooks
-"==============================================================================================
-augroup VimrcLoadHooks
-  autocmd!
-  autocmd User VimrcLoadPre call <SID>load_local_vimrc('pre')
-  autocmd User VimrcLoadPost call <SID>load_local_vimrc('post')
-augroup END
-
-let g:hostname = substitute(hostname(), '[^\w.]', '', '')
-
-function! s:load_local_vimrc(hook)
-  let file = g:dotfiles_path . '/_vim/locals/' . g:hostname . '.' . a:hook . '.vim'
-
-  if filereadable(file)
-    execute 'source ' . file
-  endif
-endfunction
-
-doautocmd User VimrcLoadPre
-
-
 "=== Basics
 "==============================================================================================
-" unregister autocmds
-augroup vimrc
-  autocmd!
-augroup END
-
 " make special key bindings like <C-s> work
-if !has('gui_running')
+if !s:env.is_gui
   silent !stty -ixon > /dev/null 2>&1
 endif
 
@@ -645,7 +684,7 @@ let s:powerline_font_chars = {
   \ 'ft':     "\u2b62\u2b63",
 \ }
 
-let s:status_line_rich_icon = 1 " has('gui_running')
+let s:status_line_rich_icon = 1 " s:env.is_gui
 
 function! s:refresh_statusline()
   let cw = winnr()
@@ -818,7 +857,7 @@ cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 
 " ag
-if executable('ag')
+if s:env.support.ag
   set grepprg=ag\ --nogroup\ -iS
   set grepformat=%f:%l:%m
 endif
@@ -856,7 +895,7 @@ set virtualedit& virtualedit+=block
 set formatoptions-=ro
 
 " remove a comment leader when joining lines
-if has('gui_running')
+if s:env.is_gui
   set formatoptions+=j
 endif
 
@@ -865,7 +904,7 @@ command! EditVimrc edit $MYVIMRC
 
 autocmd vimrc BufWritePost *vimrc
   \ source $MYVIMRC |
-  \ if has('gui_running') |
+  \ if s:env.is_gui |
     \ source $MYGVIMRC |
   \ endif |
   \ doautocmd User VimrcReloadPost
@@ -1155,7 +1194,7 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
   \ endif
 
 " automatically change input source
-if executable('osascript')
+if s:env.support.osascript
   let s:keycode_jis_eisuu = 102
   let g:force_alphanumeric_input_command =
     \ "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
@@ -1170,7 +1209,7 @@ command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans
 
 "=== Project root directory
 "==============================================================================================
-if exists('+autochdir')
+if s:env.support.autochdir
   set noautochdir
 endif
 
@@ -1244,7 +1283,7 @@ autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter *
 
 "=== Image tags
 "==============================================================================================
-if executable('identify')
+if s:env.support.identify
   let s:image_tag_template = {
     \ 'html': '<img src="%p" width="%w" height="%h" alt="">',
   \ }
@@ -1284,25 +1323,28 @@ if executable('identify')
 
   command! -nargs=1 -complete=file ImageTagInsert call <SID>insert_image_tag(<f-args>)
 
-  let s:unite_source = {
-    \ 'name': 'image',
-    \ 'default_action': { 'common': 'insert' },
-  \ }
-  function! s:unite_source.gather_candidates(args, context)
-    let files = [
-      \ { 'path': 'aaa', 'text': '<aaa>' },
-      \ { 'path': 'bbb', 'text': '<bbb>' }
-    \ ]
+  if neobundle#tap('unite.vim')
+    let s:unite_source = {
+      \ 'name': 'image',
+      \ 'default_action': { 'common': 'insert' },
+    \ }
+    function! s:unite_source.gather_candidates(args, context)
+      let files = [
+        \ { 'path': 'aaa', 'text': '<aaa>' },
+        \ { 'path': 'bbb', 'text': '<bbb>' }
+      \ ]
 
-    return map(files, "{
-      \ 'word':         v:val['path'],
-      \ 'action__text': v:val['text'],
-    \ }")
-  endfunction
+      return map(files, "{
+        \ 'word':         v:val['path'],
+        \ 'action__text': v:val['text'],
+      \ }")
+    endfunction
 
-  " call unite#define_source(s:unite_source)
-  unlet s:unite_source
+    " call unite#define_source(s:unite_source)
+    unlet s:unite_source
 
+    call neobundle#untap()
+  endif
 endif
 
 
@@ -1324,17 +1366,17 @@ endif
 "   print "hello ", name
 "          VVVVVV
 
-onoremap <silent> an :<C-u>call <SID>NextTextObject('a', '/')<CR>
-xnoremap <silent> an :<C-u>call <SID>NextTextObject('a', '/')<CR>
-onoremap <silent> in :<C-u>call <SID>NextTextObject('i', '/')<CR>
-xnoremap <silent> in :<C-u>call <SID>NextTextObject('i', '/')<CR>
+onoremap <silent> an :<C-u>call <SID>next_text_object('a', '/')<CR>
+xnoremap <silent> an :<C-u>call <SID>next_text_object('a', '/')<CR>
+onoremap <silent> in :<C-u>call <SID>next_text_object('i', '/')<CR>
+xnoremap <silent> in :<C-u>call <SID>next_text_object('i', '/')<CR>
 
-onoremap <silent> al :<C-u>call <SID>NextTextObject('a', '?')<CR>
-xnoremap <silent> al :<C-u>call <SID>NextTextObject('a', '?')<CR>
-onoremap <silent> il :<C-u>call <SID>NextTextObject('i', '?')<CR>
-xnoremap <silent> il :<C-u>call <SID>NextTextObject('i', '?')<CR>
+onoremap <silent> al :<C-u>call <SID>next_text_object('a', '?')<CR>
+xnoremap <silent> al :<C-u>call <SID>next_text_object('a', '?')<CR>
+onoremap <silent> il :<C-u>call <SID>next_text_object('i', '?')<CR>
+xnoremap <silent> il :<C-u>call <SID>next_text_object('i', '?')<CR>
 
-function! s:NextTextObject(motion, dir)
+function! s:next_text_object(motion, dir)
   let c = nr2char(getchar())
   let d = ''
 
@@ -1434,14 +1476,14 @@ endfunction
 " ^                                       ^
 " TODO: Handle floats.
 
-onoremap <silent> m  :<C-u>call <SID>NumberTextObject(0)<CR>
-xnoremap <silent> m  :<C-u>call <SID>NumberTextObject(0)<CR>
-onoremap <silent> am :<C-u>call <SID>NumberTextObject(1)<CR>
-xnoremap <silent> am :<C-u>call <SID>NumberTextObject(1)<CR>
-onoremap <silent> im :<C-u>call <SID>NumberTextObject(1)<CR>
-xnoremap <silent> im :<C-u>call <SID>NumberTextObject(1)<CR>
+onoremap <silent> m  :<C-u>call <SID>number_text_object(0)<CR>
+xnoremap <silent> m  :<C-u>call <SID>number_text_object(0)<CR>
+onoremap <silent> am :<C-u>call <SID>number_text_object(1)<CR>
+xnoremap <silent> am :<C-u>call <SID>number_text_object(1)<CR>
+onoremap <silent> im :<C-u>call <SID>number_text_object(1)<CR>
+xnoremap <silent> im :<C-u>call <SID>number_text_object(1)<CR>
 
-function! s:NumberTextObject(whole)
+function! s:number_text_object(whole)
   let num = '\v[0-9]'
 
   " If the current char isn't a number, walk forward.
@@ -1570,7 +1612,7 @@ if neobundle#tap('syntastic')
     let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
 
     let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
-    let g:syntastic_coffee_coffeelint_args = '-f ' . g:dotfiles_path . '/_coffeelintrc'
+    let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
     let g:syntastic_tex_checkers = ['lacheck']
 
     call CreastyCode('SyntasticErrorSign', 'red', '', '')
@@ -2467,20 +2509,19 @@ if neobundle#tap('neocomplete')
     let g:neocomplete#enable_insert_char_pre = 1
     set completeopt& completeopt-=preview
 
-    let dictdir = g:dotfiles_path . '/_vim/dict'
     let g:neocomplete#sources#dictionary#dictionaries = {
       \ 'default':    '',
       \ 'vimshell':   $HOME . '/.vimshell_hist',
-      \ 'ruby':       dictdir . '/ruby.dict',
-      \ 'java':       dictdir . '/java.dict',
-      \ 'javascript': dictdir . '/javascript.dict',
-      \ 'coffee':     dictdir . '/javascript.dict',
-      \ 'html':       dictdir . '/html.dict',
-      \ 'php':        dictdir . '/php.dict',
-      \ 'objc':       dictdir . '/objc.dict',
-      \ 'swift':      dictdir . '/swift.dict',
-      \ 'perl':       dictdir . '/perl.dict',
-      \ 'scala':      dictdir . '/scala.dict',
+      \ 'ruby':       s:env.path.dict . '/ruby.dict',
+      \ 'java':       s:env.path.dict . '/java.dict',
+      \ 'javascript': s:env.path.dict . '/javascript.dict',
+      \ 'coffee':     s:env.path.dict . '/javascript.dict',
+      \ 'html':       s:env.path.dict . '/html.dict',
+      \ 'php':        s:env.path.dict . '/php.dict',
+      \ 'objc':       s:env.path.dict . '/objc.dict',
+      \ 'swift':      s:env.path.dict . '/swift.dict',
+      \ 'perl':       s:env.path.dict . '/perl.dict',
+      \ 'scala':      s:env.path.dict . '/scala.dict',
     \ }
 
     let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
@@ -2569,7 +2610,7 @@ if neobundle#tap('neosnippet')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:neosnippet#disable_select_mode_mappings = 0
     let g:neosnippet#enable_snipmate_compatibility = 1
-    let g:neosnippet#snippets_directory = g:dotfiles_path . '/_vim/snippets/'
+    let g:neosnippet#snippets_directory = s:env.path.snippets
     let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
 
     " super tab completion
@@ -2742,7 +2783,7 @@ if neobundle#tap('unite.vim')
     call unite#custom#source('file_rec/git', 'ignore_pattern', l:ignore_pattern)
     call unite#custom#source('grep', 'ignore_pattern', l:ignore_pattern)
 
-    if executable('ag')
+    if s:env.support.ag
       let g:unite_source_grep_command = 'ag'
       let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
       let g:unite_source_grep_recursive_opt = ''
@@ -3231,7 +3272,7 @@ endif
 
 "=== Plugin: vim-indent-guides
 "==============================================================================================
-if has('gui_running') && neobundle#tap('vim-indent-guides')
+if s:env.is_gui && neobundle#tap('vim-indent-guides')
   let g:indent_guides_enable_on_vim_startup = 1
   let g:indent_guides_guide_size = 1
   let g:indent_guides_space_guides = 1
@@ -3444,4 +3485,4 @@ endif
 " ---------------------------------------------------------------------------------------------
 "                                             END
 " ---------------------------------------------------------------------------------------------
-doautocmd User VimrcLoadPost
+doautocmd User VimrcHookPost
