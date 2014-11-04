@@ -2314,6 +2314,11 @@ if neobundle#tap('switch.vim')
       \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
       \ ['日', '土', '金', '木', '水', '火', '月'],
       \ ['NeoBundle', 'NeoBundleLazy', 'NeoBundleDisable'],
+      \ {
+        \ '\(\k\+\)':       '''\1''',
+        \ '''\(.\{-}\)''':  '"\1"',
+        \ '"\(.\{-}\)"':    '\1',
+      \ }
     \ ]
   endfunction
 
