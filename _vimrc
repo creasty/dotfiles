@@ -36,8 +36,8 @@ function! s:vimrc_environment()
     \ 'bundle':    vim_path . '/bundle',
     \ 'neobundle': vim_path . '/bundle/neobundle.vim',
     \ 'local':     vim_path . '/locals',
-    \ 'dict':      vim_path . '/dict'
-    \ 'snippets':  vim_path . '/snippets'
+    \ 'dict':      vim_path . '/dict',
+    \ 'snippets':  vim_path . '/snippets',
   \ }
 
   let env.log = {
