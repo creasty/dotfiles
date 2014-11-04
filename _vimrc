@@ -2368,7 +2368,7 @@ endif
 
 "=== Plugin: vim-rengbang
 "==============================================================================================
-if neobundle#tap('switch.vim')
+if neobundle#tap('vim-rengbang')
   call neobundle#config({
     \ 'autoload': {
       \ 'commands': 'RengBang',
