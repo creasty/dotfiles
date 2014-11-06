@@ -81,7 +81,7 @@ brew install jq || true
 brew install lua || true
 brew install luarocks || true
 brew install luajit || true
-brew install macvim --HEAD --with-cscope --with-lua --override-system-vi || true
+brew install macvim --HEAD --with-cscope --with-luajit --override-system-vi || true
 brew install massren && massren --config editor vim || true
 brew install mercurial || true
 brew install mysql || true
