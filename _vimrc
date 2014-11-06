@@ -2496,8 +2496,8 @@ if neobundle#tap('DrawIt')
     \ },
   \ })
 
-  map <unique> <Leader>di <Plug>DrawItStart
-  map <unique> <Leader>ds <Plug>DrawItStop
+  map <Leader>di <Plug>DrawItStart
+  map <Leader>ds <Plug>DrawItStop
 
   call neobundle#untap()
 endif
