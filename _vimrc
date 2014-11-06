@@ -40,10 +40,6 @@ function! s:vimrc_environment()
     \ 'snippets':  vim_path . '/snippets',
   \ }
 
-  let env.log = {
-    \ 'neobundle': env.path.bundle . '/.neobundle/neobundle.log',
-  \ }
-
   let env.support = {
     \ 'ag':        executable('ag'),
     \ 'identify':  executable('identify'),
@@ -90,7 +86,7 @@ call neobundle#begin(s:env.path.bundle)
 " package manager
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-let g:neobundle#log_filename               = s:env.path.log.neobundle
+let g:neobundle#log_filename               = s:env.path.bundle . '/.neobundle/neobundle.log'
 let g:neobundle#install_max_processes      = 4
 let g:neobundle#install_process_timeout    = 180
 let g:neobundle#types#git#enable_submodule = 0
@@ -196,6 +192,9 @@ else
 
   " highlight Ruby local variables
   NeoBundleLazy 'todesking/ruby_hl_lvar.vim'
+
+  " ascii drawing plugin
+  NeoBundleLazy 'DrawIt'
 
 
   "  Completion
@@ -2483,6 +2482,22 @@ if neobundle#tap('ruby_hl_lvar.vim')
       \ 'filetypes': ['ruby'],
     \ },
   \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: DrawIt
+"==============================================================================================
+if neobundle#tap('DrawIt')
+  call neobundle#config({
+    \ 'autoload': {
+      \ 'mappings': '<Plug>DrawItStart'
+    \ },
+  \ })
+
+  map <unique> <Leader>di <Plug>DrawItStart
+  map <unique> <Leader>ds <Plug>DrawItStop
 
   call neobundle#untap()
 endif

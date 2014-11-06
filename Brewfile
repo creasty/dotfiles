@@ -48,6 +48,7 @@ brew cask install xquartz || true
 
 # install brew-packages
 brew install ansible || true
+brew install binutils || true
 brew install cabal-install || true
 brew install chrome-cli || true
 brew install clib || true
