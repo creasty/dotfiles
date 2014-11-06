@@ -15,7 +15,7 @@ brew tap laurent22/massren || true
 brew tap peco/peco || true
 brew tap phinze/homebrew-cask || true
 brew tap supermomonga/homebrew-splhack || true
-brew tap creasty/homebrew || true
+brew tap creasty/homebrew-creasty || true
 
 # cask
 brew install brew-cask || true
@@ -81,7 +81,8 @@ brew install jq || true
 brew install lua || true
 brew install luarocks || true
 brew install luajit || true
-brew install macvim --HEAD --with-cscope --with-luajit --override-system-vi || true
+brew install macvim --HEAD --with-luajit || true
+brew install vim --HEAD --with-lua --with-luajit || true
 brew install massren && massren --config editor vim || true
 brew install mercurial || true
 brew install mysql || true
