@@ -79,10 +79,9 @@ brew install jbig2dec || true
 brew install jpeg || true
 brew install jq || true
 brew install lua || true
-brew install luarocks || true
 brew install luajit || true
+brew install luarocks || true
 brew install macvim --HEAD --with-luajit || true
-brew install vim --HEAD --with-lua --with-luajit || true
 brew install massren && massren --config editor vim || true
 brew install mercurial || true
 brew install mysql || true
@@ -107,6 +106,7 @@ brew install the_silver_searcher || true
 brew install tig || true
 brew install tmux || true
 brew install tree || true
+brew install vim --HEAD --with-lua --with-luajit || true
 brew install w3m || true
 brew install webkit2png || true
 brew install wget --enable-iri || true
