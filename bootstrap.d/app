@@ -1,17 +1,29 @@
 #!/bin/bash
 
+APP_DIR=~/dotfiles/app
+
+
 #  Karabiner
 #-----------------------------------------------
-cp ~/dotfiles/app/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
+cp $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
 
 
 #  Automator
 #-----------------------------------------------
-cp ~/dotfiles/app/automator/*.workflow ~/Library/Services/
+cp $APP_DIR/automator/*.workflow ~/Library/Services/
 
 
 #  QuickLook
 #-----------------------------------------------
-cp ~/dotfiles/app/quick_look/*.qlgenerator /Library/QuickLook/
+cp $APP_DIR/quick_look/*.qlgenerator /Library/QuickLook/
 
 qlmanage -r
+
+
+#  Launch agent
+#-----------------------------------------------
+# for f in $APP_DIR/launch_agent/*.plist; do
+#   ln -sfv $f ~/Library/LaunchAgents
+#   launchctl load "~/Library/LaunchAgents/$(basename $f)"
+# done
+# unset f
