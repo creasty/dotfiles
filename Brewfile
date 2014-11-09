@@ -8,6 +8,7 @@ brew upgrade
 
 # add repositories
 brew tap caskroom/versions || true
+brew tap creasty/homebrew-creasty || true
 brew tap homebrew/dupes || true
 brew tap homebrew/science || true
 brew tap josegonzalez/php || true
@@ -15,7 +16,6 @@ brew tap laurent22/massren || true
 brew tap peco/peco || true
 brew tap phinze/homebrew-cask || true
 brew tap supermomonga/homebrew-splhack || true
-brew tap creasty/homebrew-creasty || true
 
 # cask
 brew install brew-cask || true

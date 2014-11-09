@@ -73,3 +73,8 @@ luarocks install inspect
 luarocks install luaepnf
 luarocks install luarepl
 luarocks install cassowary
+
+
+#  Python
+#-----------------------------------------------
+pip install howdoi
