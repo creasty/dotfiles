@@ -5,7 +5,7 @@ if [ "${#1}" -lt 3 ]; then
   return
 fi
 
-list="$(ps aux | grep "$1" | grep -v grep)"
+list="$(ps aux | grep "$1" | grep -v grep | grep -v $0)"
 
 echo "$list"
 
