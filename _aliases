@@ -4,7 +4,8 @@ alias refresh='exec $SHELL -l'
 
 alias ..='cd ..'
 alias ...='cd ../..'
-alias dt='cd ~/Desktop'
+alias ....='cd ../../..'
+alias cdk='cd ~/Desktop'
 
 alias ls='ls -G'
 alias ll='ls -Gl'
@@ -122,12 +123,16 @@ alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348
 #  Ruby / Rails
 #-----------------------------------------------
 alias b='bundle'
-alias bi='bundle install --path vendor/bundle'
 alias be='bundle exec'
-alias ra='bundle exec rails'
-alias rk='bundle exec rake'
+alias bi='bundle install --path=vendor/bundle'
 
-alias rru='bundle exec rake routes'
+alias ra='bundle exec rails'
+alias rg='bundle exec rails g'
+alias rgmo='bundle exec rails g model'
+alias rgmi='bundle exec rails g migration'
+
+alias rk='bundle exec rake'
+alias rkr='bundle exec rake routes'
 
 alias rdbc='bundle exec rake db:create'
 alias rdbm='bundle exec rake db:migrate'
