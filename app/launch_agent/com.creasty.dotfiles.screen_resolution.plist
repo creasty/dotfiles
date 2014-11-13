@@ -6,9 +6,10 @@
   <string>com.creasty.dotfiles.screen_resolution</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/ykiwng/dotfiles/bin/screenresolution</string>
-    <string>set</string>
-    <string>2560x1600x32@0</string>
+    <string>/usr/bin/env</string>
+    <string>zsh</string>
+    <string>-c</string>
+    <string>maxscreen</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

@@ -2789,14 +2789,15 @@ if neobundle#tap('unite.vim')
     let g:unite_source_rec_max_cache_files = 30000
     let g:unite_source_history_yank_enable = 1
 
-    let l:ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
-      \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$\|\%(^\|/\)\%(tmp\|cache\|public\/system\)/'
+    let ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
+      \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$'
+      \ . '\|\%(^\|/\)\%(tmp\|cache\|public\/system\|vendor\/bundle\)/'
 
-    call unite#custom#source('file', 'ignore_pattern', l:ignore_pattern)
-    call unite#custom#source('file_rec', 'ignore_pattern', l:ignore_pattern)
-    call unite#custom#source('file_rec/async', 'ignore_pattern', l:ignore_pattern)
-    call unite#custom#source('file_rec/git', 'ignore_pattern', l:ignore_pattern)
-    call unite#custom#source('grep', 'ignore_pattern', l:ignore_pattern)
+    call unite#custom#source('file',           'ignore_pattern', ignore_pattern)
+    call unite#custom#source('file_rec',       'ignore_pattern', ignore_pattern)
+    call unite#custom#source('file_rec/async', 'ignore_pattern', ignore_pattern)
+    call unite#custom#source('file_rec/git',   'ignore_pattern', ignore_pattern)
+    call unite#custom#source('grep',           'ignore_pattern', ignore_pattern)
 
     if s:env.support.ag
       let g:unite_source_grep_command = 'ag'

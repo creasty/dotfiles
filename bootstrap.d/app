@@ -10,20 +10,20 @@ cp $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
 
 #  Automator
 #-----------------------------------------------
-cp $APP_DIR/automator/*.workflow ~/Library/Services/
+cp -r $APP_DIR/automator/*.workflow ~/Library/Services/
 
 
 #  QuickLook
 #-----------------------------------------------
-cp $APP_DIR/quick_look/*.qlgenerator /Library/QuickLook/
+cp -r $APP_DIR/quick_look/*.qlgenerator /Library/QuickLook/
 
 qlmanage -r
 
 
 #  Launch agent
 #-----------------------------------------------
-# for f in $APP_DIR/launch_agent/*.plist; do
-#   ln -sfv $f ~/Library/LaunchAgents
-#   launchctl load "~/Library/LaunchAgents/$(basename $f)"
-# done
-# unset f
+for f in $APP_DIR/launch_agent/*.plist; do
+  ln -sfv $f ~/Library/LaunchAgents
+  launchctl load "$HOME/Library/LaunchAgents/$(basename $f)"
+done
+unset f
