@@ -98,6 +98,7 @@ brew install pstree || true
 brew install python3 || true
 brew install q || true
 brew install r || true  # require xquartz to be installed
+brew install ranger || true
 brew install rbenv || true
 brew install rbenv-gem-rehash || true
 brew install reattach-to-user-namespace || true
