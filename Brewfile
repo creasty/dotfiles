@@ -94,6 +94,7 @@ brew install pcre || true
 brew install peco || true
 brew install phantomjs || true
 brew install php55 || true
+brew install pstree || true
 brew install python3 || true
 brew install q || true
 brew install r || true  # require xquartz to be installed
