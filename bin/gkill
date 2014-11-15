@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+source ~/dotfiles/lib/helpers.sh
+
 if [ "${#1}" -lt 3 ]; then
-  echo "identifier must be at least 3 charactors"
+  echo "Error: identifier must be at least 3 charactors"
   return
 fi
 
@@ -11,12 +13,11 @@ echo "$list"
 
 echo
 
-echo -n "Are you sure to kill all these processes? [yN] "
-read response
+ask_for_confirmation "Are you sure to kill all these processes?"
 
-if [[ $response =~ ^[yY]$ ]]; then
+if answer_is_yes; then
   echo "$list" | awk '{ print $2 }' | xargs kill -9
-  echo "done"
+  echo "Done"
 else
-  echo "canceled"
+  echo "Canceled"
 fi

@@ -113,7 +113,7 @@ alias nserver="http-server -p"
 
 #  Scripts
 #-----------------------------------------------
-alias aart='java -jar ~/dotfiles/script/jitac.jar'
+alias aart='java -jar ~/dotfiles/lib/jitac.jar'
 
 alias webkit2png='webkit2png -F -d -D ~/Desktop/'
 alias webkit2evernote='webkit2png -C -W 1920 -H 1200 --clipwidth=960 --clipheight=600 -s 0.5 -D ~/Desktop/ -d'

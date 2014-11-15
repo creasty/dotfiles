@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+printf "\e[33m"
+echo ""
+printf "\e[0m"
+
+exit
 if ! [ -d ~/dotfiles/.git ]; then
   echo "Cloning repo..."
   cd ~
@@ -8,9 +13,9 @@ fi
 
 cd ~/dotfiles
 
-sh ./bootstrap.d/install
-sh ./bootstrap.d/link
-sh ./bootstrap.d/shell
-sh ./bootstrap.d/app
-sh ./bootstrap.d/font
-sh ./bootstrap.d/osx
+./bootstrap.d/install
+./bootstrap.d/link
+./bootstrap.d/shell
+./bootstrap.d/app
+./bootstrap.d/font
+./bootstrap.d/osx
