@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if ! [ -d ~/dotfiles/.git ]; then
   echo "Cloning repo..."

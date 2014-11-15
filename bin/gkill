@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ "${#1}" -lt 3 ]; then
   echo "identifier must be at least 3 charactors"

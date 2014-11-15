@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DEFAULT_REMOTE=origin
 DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 SRC_DIR="$HOME/dotfiles"
 DEST_DIR="$HOME"

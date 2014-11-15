@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cp ~/dotfiles/font/* ~/Library/Fonts
 
