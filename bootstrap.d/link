@@ -40,19 +40,17 @@ for link in "${LINKS[@]}"; do
     dest="$(echo "$src" | sed 's/^_/./' | tr -d "\n")"
   fi
 
-  echo "$src == $dest"
-
   src="$SRC_DIR/$src"
   dest="$DEST_DIR/$dest"
   dest_dir="$(dirname $dest)"
 
   if [ ! -d "$dest_dir" ]; then
-    # mkdir -p "$dest_dir"
+    mkdir -p "$dest_dir"
     echo "Created directory: $dest_dir"
   fi
 
   if [ ! -L "$dest" ]; then
-    # ln -sf "$src" "$dest"
+    ln -sf "$src" "$dest"
     echo "Linked: $src --> $dest"
   fi
 done
