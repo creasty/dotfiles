@@ -1,47 +1,131 @@
 #!/usr/bin/env bash
 
 cd ~/dotfiles
+source ./lib/helpers.sh
 
 
 #  Xcode command line tool
 #-----------------------------------------------
-xcode-select --install
+init_xcode_clt() {
+  section "Installing Xcode command line tool"
+  xcode-select --install > /dev/null 2>&1
+
+  if [ $? -ne 0 ]; then
+    print_info "Installed"
+  else
+    print_success "OK"
+  fi
+}
+
+init_xcode_clt
 
 
 #  Homebrew
 #-----------------------------------------------
-which brew > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-fi
+init_homebrew() {
+  section "Installing homebrew"
 
-sh ./Brewfile
+  if cmd_exists brew; then
+    print_info "Installed"
+  else
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    print_status $?
+  fi
+
+  section "Installing brew packages"
+  bash < ./Brewfile
+}
+
+init_homebrew
 
 
 #  rbenv
 #-----------------------------------------------
-rbenv install 2.1.1
-rbenv global 2.1.1
+init_rbenv() {
+  ruby_versions=(
+    2.1.1
+    2.1.5
+  )
+  default_version=2.1.5
+
+  installed_ruby_versions="$(rbenv versions --bare)"
+
+  section "Installing ruby"
+
+  subsection "Upgrading ruby-build"
+  brew upgrade ruby-build > /dev/null 2>&1
+  print_success "OK"
+
+  for version in "${ruby_versions[@]}"; do
+    installed="$(echo -n "$installed_ruby_versions" | grep $version)"
+
+    subsection "Ruby v$version"
+
+    if [ "$installed" == "" ]; then
+      rbenv install $version
+      print_status $?
+    else
+      print_info "Installed"
+    fi
+  done
+
+  subsection "Set global ruby to v"
+  rbenv global $version
+  print_status $?
+}
+
+init_rbenv
 
 
 #  Gem
 #-----------------------------------------------
-rbenv exec gem install bundler
-bundle
+init_gem() {
+  section "Installing bundler"
+
+  if cmd_exists bundle; then
+    print_info "Installed"
+  else
+    rbenv exec gem install bundler
+    print_status $?
+  fi
+
+  section "Installing gem packages"
+  bundle
+  print_status $?
+}
+
+init_gem
 
 
 #  NVM
 #-----------------------------------------------
-which nvm > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-  curl https://raw.githubusercontent.com/creationix/nvm/v0.17.3/install.sh | bash
-fi
-nvm install 0.10
+init_nvm() {
+  section "Installing nodejs"
+
+  subsection "Installing nvm"
+  if cmd_exists nvm; then
+    print_info "Installed"
+  else
+    curl https://raw.githubusercontent.com/creationix/nvm/v0.17.3/install.sh | bash
+  fi
+
+  subsection "Installing nvm"
+  nvm install 0.10
+  print_status $?
+}
+
+init_nvm
 
 
 #  Node packages
 #-----------------------------------------------
-npm i -g
+init_npm() {
+  section "Installing nodejs packages"
+
+  npm i -g
+}
+
+init_npm
 
 
 #  Vagrant
@@ -52,29 +136,56 @@ npm i -g
 
 #  R
 #-----------------------------------------------
-r -f packages.r
+init_r() {
+  section "Installing R packages"
+
+  r -f packages.r
+}
+
+init_r
 
 
 #  Haskell
 #-----------------------------------------------
-cabal update
-cabal install cabal-install
-cabal install erd
+init_haskell() {
+  section "Installing Haskell packages"
+
+  subsection "Updating cabal"
+  cabal update
+  print_status $?
+
+  subsection "Installing packages"
+  cabal install cabal-install
+  cabal install erd
+}
+
+init_haskell
 
 
 #  Lua
 #-----------------------------------------------
-luarocks install md5
-luarocks install stdlib
-luarocks install lgi
-luarocks install lpeg
-luarocks install luaexpat
-luarocks install inspect
-luarocks install luaepnf
-luarocks install luarepl
-luarocks install cassowary
+init_lua() {
+  section "Installing Lua packages"
+
+  luarocks install md5
+  luarocks install stdlib
+  luarocks install lgi
+  luarocks install lpeg
+  luarocks install luaexpat
+  luarocks install inspect
+  luarocks install luaepnf
+  luarocks install luarepl
+  luarocks install cassowary
+}
+
+init_lua
 
 
 #  Python
 #-----------------------------------------------
-pip install howdoi
+init_python() {
+  section "Installing Python packages"
+  pip install howdoi
+}
+
+init_python

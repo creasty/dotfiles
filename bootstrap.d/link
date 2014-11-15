@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ~/dotfiles/lib/helpers.sh
+
 SRC_DIR="$HOME/dotfiles"
 DEST_DIR="$HOME"
 
@@ -30,7 +32,7 @@ LINKS=(
 )
 
 
-echo 'Creating symbolic links...'
+section "Creating symbolic links"
 
 for link in "${LINKS[@]}"; do
   src="${link%%:*}"
@@ -46,17 +48,17 @@ for link in "${LINKS[@]}"; do
 
   if [ ! -d "$dest_dir" ]; then
     mkdir -p "$dest_dir"
-    echo "Created directory: $dest_dir"
+    print_info "Created directory `$dest_dir`"
   fi
 
   if [ ! -L "$dest" ]; then
     if [ -f "$dest" ]; then
-      echo "Error: File exists at $dest"
+      print_error "File exists at $dest"
     else
       ln -sf "$src" "$dest"
-      echo "Linked: $src --> $dest"
+      print_info "Linked: $src --> $dest"
     fi
   fi
 done
 
-echo 'ok'
+print_success "OK"

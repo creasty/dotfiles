@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
+source ~/dotfiles/lib/helpers.sh
+
+section "Setting OS X defaults"
+
 # ask for the administrator password upfront
 sudo -v
 
 
 #  General
 #-----------------------------------------------
+subsection "General"
+
 # disable the sound effects on boot
 sudo nvram SystemAudioVolume=' '
 
@@ -53,9 +59,13 @@ defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
 defaults write NSGlobalDomain AppleInterfaceStyle -string 'Dark'
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 
+print_success "Done"
+
 
 #  Input devices
 #-----------------------------------------------
+subsection "Input devices"
+
 # enable full keyboard access for all controls
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
@@ -73,9 +83,13 @@ defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
 # disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
+print_success "Done"
+
 
 #  Screenshots
 #-----------------------------------------------
+subsection "Screenshots"
+
 # Save to the desktop
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
 
@@ -85,9 +99,13 @@ defaults write com.apple.screencapture type -string 'png'
 # disable shadow
 defaults write com.apple.screencapture disable-shadow -bool true
 
+print_success "Done"
+
 
 #  Finder
 #-----------------------------------------------
+subsection "Finder"
+
 # show hidden files by default
 defaults write com.apple.finder AppleShowAllFiles -bool true
 
@@ -121,9 +139,13 @@ defaults write com.apple.finder CreateDesktop -bool false
 # display line numbers and wrap text
 defaults write org.n8gray.QLColorCode extraHLFlags '-l -W'
 
+print_success "Done"
+
 
 #  Dock
 #-----------------------------------------------
+subsection "Dock"
+
 # set the icon size of Dock items to 25 pixels
 defaults write com.apple.dock tilesize -int 25
 
@@ -148,10 +170,15 @@ defaults write com.apple.dock autohide -bool true
 # make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
 
+print_success "Done"
+
 
 #  Kill affected app
 #-----------------------------------------------
+subsection "Restarting affected app"
+
 for app in 'Dock' 'Finder'; do
   killall "${app}" > /dev/null 2>&1
 done
 
+print_success "Done"

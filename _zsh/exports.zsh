@@ -4,7 +4,7 @@ export EDITOR=vim
 export NODE_PATH=/usr/local/lib/node_modules
 export RBENV_ROOT=$HOME/.rbenv
 
-export GOROOT=`go env GOROOT`
+export GOROOT=`/usr/local/bin/go env GOROOT`
 export GOPATH=$HOME/go
 
 export PATH=/usr/local/bin:$PATH

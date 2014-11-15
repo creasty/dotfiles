@@ -2,28 +2,45 @@
 
 APP_DIR=~/dotfiles/app
 
+source ~/dotfiles/lib/helpers.sh
+
 
 #  Karabiner
 #-----------------------------------------------
-cp $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
+section "Setting Karabiner"
+cp -r $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
+print_status $?
 
 
 #  Automator
 #-----------------------------------------------
+section "Setting Automator"
 cp -r $APP_DIR/automator/*.workflow ~/Library/Services/
+print_status $?
 
 
 #  QuickLook
 #-----------------------------------------------
-cp -r $APP_DIR/quick_look/*.qlgenerator /Library/QuickLook/
+section "Setting QuickLook"
 
+subsection "Copying plugins"
+cp -r $APP_DIR/quick_look/*.qlgenerator /Library/QuickLook/
+print_status $?
+
+subsection "Reloading QuickLook"
 qlmanage -r
+print_status $?
 
 
 #  Launch agent
 #-----------------------------------------------
+section "Setting LaunchAgents"
+
 for f in $APP_DIR/launch_agent/*.plist; do
+  subsection "Loading $(basename $f '.plist')"
+
   ln -sfv $f ~/Library/LaunchAgents
   launchctl load "$HOME/Library/LaunchAgents/$(basename $f)"
+  print_status $?
 done
 unset f

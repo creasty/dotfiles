@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
-if ! [ $ZSH_NAME ]; then
-  echo "Change login shell..."
+source ~/dotfiles/lib/helpers.sh
 
-  sudo mv /etc/zshenv /etc/_zshenv
-  echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+section "Change login shell to zsh"
+
+if [ "$SHELL" == "/usr/local/bin/zsh" ]; then
+  print_info "Skipped"
+else
+  [ -f /etc/zshenv ] && sudo mv /etc/zshenv /etc/_zshenv
+
+  if [ "$(cat /etc/shells | grep /usr/local/bin/zsh)" == "" ]; then
+    echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells
+  fi
+
   chpass -s /usr/local/bin/zsh
 
-  echo "ok"
+  print_success "Changed"
 fi

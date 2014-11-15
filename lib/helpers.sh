@@ -45,3 +45,18 @@ print_success() {
 print_info() {
   printf "\e[0;35m[Info]\e[0m $@\n"
 }
+
+print_status() {
+  if [ $1 -eq 0 ]; then
+    print_success "${2:-"OK"}"
+  else
+    print_info "${2:-"Done with error"}"
+  fi
+}
+
+
+#  Utils
+#-----------------------------------------------
+cmd_exists() {
+  command -v "$1" > /dev/null 2>&1 && return 0 || return 1
+}
