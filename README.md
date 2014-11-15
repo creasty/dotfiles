@@ -1,13 +1,17 @@
 dotfiles
 ========
 
-Home sweet home
+**Harder, Better, Faster, Stronger**
+
+> Work it harder  
+> Make it better  
+> Do it faster  
+> Makes me stronger
 
 
 Bootstrap
 ---------
 
 ```sh
-$ curl https://raw.github.com/creasty/dotfiles/master/bootstrap | sh
+$ bash <(curl https://raw.github.com/creasty/dotfiles/master/bootstrap)
 ```
-
