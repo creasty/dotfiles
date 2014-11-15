@@ -50,8 +50,12 @@ for link in "${LINKS[@]}"; do
   fi
 
   if [ ! -L "$dest" ]; then
-    ln -sf "$src" "$dest"
-    echo "Linked: $src --> $dest"
+    if [ -f "$dest" ]; then
+      echo "Error: File exists at $dest"
+    else
+      ln -sf "$src" "$dest"
+      echo "Linked: $src --> $dest"
+    fi
   fi
 done
 
