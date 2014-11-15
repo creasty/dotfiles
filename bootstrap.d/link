@@ -1,16 +1,58 @@
 #!/bin/bash
 
-echo "Creating symbolic links..."
-cd ~
+SRC_DIR="$HOME/dotfiles"
+DEST_DIR="$HOME"
 
-for file in ~/dotfiles/_*; do
-  f=$(basename $file)
-  f="$HOME/${f/_/.}"
+LINKS=(
+  _agignore
+  _ansible.cfg
+  _bash/bash_profile:.bash_profile
+  _bash/bashrc:.bashrc
+  _coffeelintrc
+  _ctags
+  _curlrc
+  _git/gitconfig:.gitconfig
+  _git/gitignore:.gitignore
+  _irbrc
+  _pecorc
+  _railsrc
+  _sshrc/sshrc:.sshrc
+  _sshrc/sshrc.d:.sshrc.d
+  _tmux.conf
+  _vim
+  _vim/vimrc:.vimrc
+  _vim/gvimrc:.gvimrc
+  _zsh
+  _zsh/zshenv:.zshenv
+  _zsh/zshrc:.zshrc
+  _config/ranger/colorschemes
+  _config/ranger/rc.conf
+)
 
-  if [ ! -L "$f" ]; then
-    ln -sf "$file" "$f"
-    echo "Link: $file --> $f"
+
+echo 'Creating symbolic links...'
+
+for link in "${LINKS[@]}"; do
+  src="${link%%:*}"
+  dest="${link#*:}"
+
+  if [ "$dest" = "$src" ]; then
+    dest="$(echo "$src" | sed 's/^_/./' | tr -d "\n")"
+  fi
+
+  src="$SRC_DIR/$src"
+  dest="$DEST_DIR/$dest"
+  dest_dir="$(dirname $dest)"
+
+  if [ ! -d "$dest_dir" ]; then
+    mkdir -p "$dest_dir"
+    echo "Created directory: $dest_dir"
+  fi
+
+  if [ ! -L "$dest" ]; then
+    ln -sf "$src" "$dest"
+    echo "Linked: $src --> $dest"
   fi
 done
 
-echo "ok"
+echo 'ok'
