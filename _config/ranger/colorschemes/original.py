@@ -75,6 +75,7 @@ class Original(ColorScheme):
                 fg = blue
             elif context.tab:
                 if context.good:
+                    fg = black
                     bg = green
             elif context.link:
                 fg = cyan
