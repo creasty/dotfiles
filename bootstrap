@@ -1,21 +1,90 @@
 #!/usr/bin/env bash
 
-printf "\e[33m"
-echo ""
-printf "\e[0m"
+DOTFILES_DIR="$HOME/dotfiles"
 
-exit
-if ! [ -d ~/dotfiles/.git ]; then
-  echo "Cloning repo..."
-  cd ~
-  git clone --recursive git@github.com:creasty/dotfiles.git
-fi
+print_header() {
+  printf "\e[32m"
+  echo '------------------------------------------------------------------'
+  echo '                      __      __  _____ __                        '
+  echo '                 ____/ /___  / /_/ __(_) /__  _____               '
+  echo '                / __  / __ \/ __/ /_/ / / _ \/ ___/               '
+  echo '               / /_/ / /_/ / /_/ __/ / /  __(__  )                '
+  echo '               \__,_/\____/\__/_/ /_/_/\___/____/                 '
+  echo '                                                                  '
+  echo '                Harder, Better, Faster, Stronger                  '
+  echo '                                                                  '
+  echo '                  github.com/creasty/dotfiles                     '
+  echo '                                                                  '
+  echo '------------------------------------------------------------------'
+  printf "\e[0m\n"
+}
 
-cd ~/dotfiles
+clone_or_update_repo() {
+  if ! [ -d $DOTFILES_DIR/.git ]; then
+    echo 'Cloning repo...'
+    git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_DIR
+  else
+    echo 'Updating repo...'
+    cd $DOTFILES_DIR
+    git pull origin master
+  fi
+}
 
-./bootstrap.d/install
-./bootstrap.d/link
-./bootstrap.d/shell
-./bootstrap.d/app
-./bootstrap.d/font
-./bootstrap.d/osx
+compare_versions() {
+  declare -a v1=(${1//./ })
+  declare -a v2=(${2//./ })
+  local i=""
+
+  for (( i=${#v1[@]}; i<${#v2[@]}; i++ )); do
+    v1[i]=0
+  done
+
+  for (( i=0; i<${#v1[@]}; i++ )); do
+    if [[ -z ${v2[i]} ]]; then
+      v2[i]=0
+    fi
+
+    if (( 10#${v1[i]} > 10#${v2[i]} )); then
+      printf ">"
+      return 0;
+    fi
+
+    if (( 10#${v1[i]} < 10#${v2[i]} )); then
+      printf "<"
+      return 0;
+    fi
+  done
+
+  printf "="
+}
+
+check_os() {
+  if [ "$(uname -s)" == "Darwin" ]; then
+    if [ $(compare_versions "$(sw_vers -productVersion)" "10.9") == '<' ]; then
+      echo "Sorry, this script is intended only for OS X 10.9.0+"
+      exit
+    fi
+  else
+    echo "Sorry, this script is intended only for OS X"
+    exit
+  fi
+}
+
+main() {
+  print_header
+
+  check_os
+
+  clone_or_update_repo
+
+  cd $DOTFILES_DIR
+
+  ./bootstrap.d/install
+  ./bootstrap.d/link
+  ./bootstrap.d/shell
+  ./bootstrap.d/app
+  ./bootstrap.d/font
+  ./bootstrap.d/osx
+}
+
+main
