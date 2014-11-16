@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+cat ~/.ssh/config.d/* > ~/.ssh/config
+
+[ $# -gt 0 ] && sshrc $1

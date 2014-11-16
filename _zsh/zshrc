@@ -21,7 +21,7 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-source ~/.oh-my-zsh/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 
 
 #  Base
@@ -31,8 +31,11 @@ zmodload -i zsh/mathfunc
 
 # completion
 fpath=($ZSH_CUSTOM/zsh-completions/src $fpath)
+fpath=($ZSH_CUSTOM/completions $fpath)
 autoload -Uz compinit
 compinit
+
+zstyle ':completion:*:match:*' original only
 
 # history
 setopt share_history
@@ -183,4 +186,3 @@ preexec () {
     COMMAND_TIME=`date +%s`
   fi
 }
-

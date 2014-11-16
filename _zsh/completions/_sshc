@@ -1,0 +1,6 @@
+#compdef sshc
+
+_sshc() {
+  hosts=$(grep -E "Host " $HOME/.ssh/config | grep -v '*' | sed 's/Host //')
+  _arguments ": :($hosts)"
+}
