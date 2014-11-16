@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ~/dotfiles/lib/helpers.sh
+source $DOTFILES_PATH/lib/helpers.sh
 
 section "Setting OS X defaults"
 
@@ -68,10 +68,6 @@ subsection "Input devices"
 
 # enable full keyboard access for all controls
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
-
-# set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 2
-defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
 # set language and text formats
 defaults write NSGlobalDomain AppleLanguages -array 'en' 'ja'

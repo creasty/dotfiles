@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ~/dotfiles/lib/helpers.sh
+source $DOTFILES_PATH/lib/helpers.sh
 
 section "Change login shell to zsh"
 

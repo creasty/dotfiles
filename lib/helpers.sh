@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+DOTFILES_PATH="$HOME/dotfiles"
+
 
 #  Section
 #-----------------------------------------------
@@ -8,7 +10,7 @@ section() {
 }
 
 subsection() {
-  printf "\e[37m--> $1\e[0m\n"
+  printf "\e[37m-->\e[0m \e[33m$1\e[0m\n"
 }
 
 
@@ -43,7 +45,7 @@ print_success() {
 }
 
 print_info() {
-  printf "\e[0;35m[Info]\e[0m $@\n"
+  printf "\e[0;34m[Info]\e[0m $@\n"
 }
 
 print_status() {

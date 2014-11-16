@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cd ~/dotfiles
-source ./lib/helpers.sh
+cd $DOTFILES_PATH
+source $DOTFILES_PATH/lib/helpers.sh
 
 
 #  Xcode command line tool

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ~/dotfiles/lib/helpers.sh
+source "$(dirname $0)/../lib/helpers.sh"
 
 PROJECT_NAME="$(basename `pwd`)"
 

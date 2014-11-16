@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source ~/dotfiles/lib/helpers.sh
+source $DOTFILES_PATH/lib/helpers.sh
 
-SRC_DIR="$HOME/dotfiles"
+SRC_DIR="$DOTFILES_PATH"
 DEST_DIR="$HOME"
 
 LINKS=(

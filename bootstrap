@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-DOTFILES_DIR="$HOME/dotfiles"
+export DOTFILES_PATH="$HOME/dotfiles"
 
 print_header() {
-  printf "\e[32m"
+  printf "\e[34m"
   echo '------------------------------------------------------------------'
   echo '                      __      __  _____ __                        '
   echo '                 ____/ /___  / /_/ __(_) /__  _____               '
@@ -20,12 +20,12 @@ print_header() {
 }
 
 clone_or_update_repo() {
-  if ! [ -d $DOTFILES_DIR/.git ]; then
+  if ! [ -d $DOTFILES_PATH/.git ]; then
     echo 'Cloning repo...'
-    git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_DIR
+    git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_PATH
   else
     echo 'Updating repo...'
-    cd $DOTFILES_DIR
+    cd $DOTFILES_PATH
     git pull origin master
   fi
 }
@@ -46,12 +46,12 @@ compare_versions() {
 
     if (( 10#${v1[i]} > 10#${v2[i]} )); then
       printf ">"
-      return 0;
+      return 0
     fi
 
     if (( 10#${v1[i]} < 10#${v2[i]} )); then
       printf "<"
-      return 0;
+      return 0
     fi
   done
 
@@ -77,14 +77,13 @@ main() {
 
   clone_or_update_repo
 
-  cd $DOTFILES_DIR
+  cd $DOTFILES_PATH
 
-  ./bootstrap.d/install
+  # ./bootstrap.d/install
   ./bootstrap.d/link
   ./bootstrap.d/shell
   ./bootstrap.d/app
-  ./bootstrap.d/font
-  ./bootstrap.d/osx
+  # ./bootstrap.d/osx
 }
 
 main

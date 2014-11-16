@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-source ~/dotfiles/lib/helpers.sh
-
-section "Copying fonts"
-cp -r ~/dotfiles/font/* ~/Library/Fonts
-print_status $?

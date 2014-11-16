@@ -1,6 +1,8 @@
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
 
+export DOTFILES_PATH="$HOME/dotfiles"
+
 export NODE_PATH=/usr/local/lib/node_modules
 export RBENV_ROOT=$HOME/.rbenv
 

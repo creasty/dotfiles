@@ -3,7 +3,7 @@
 DEFAULT_REMOTE=origin
 DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
-source ~/dotfiles/lib/helpers.sh
+source "$(dirname $0)/../lib/helpers.sh"
 
 if [ $# -ge 2 ]; then
   subsection "git pull ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
