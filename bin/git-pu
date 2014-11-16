@@ -4,11 +4,18 @@ DEFAULT_REMOTE=origin
 DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
 if [ $# -ge 2 ]; then
-  REMOTE="${1:-$DEFAULT_REMOTE}"
-  BRANCH="${2:-$DEFAULT_BRANCH}"
+  REMOTE="$1"
+  BRANCH="$2"
 else
+  REMOTE="-"
+  BRANCH="$1"
+fi
+
+if [[ "$REMOTE" =~ ^-?$ ]]; then
   REMOTE="$DEFAULT_REMOTE"
-  BRANCH="${1:-$DEFAULT_BRANCH}"
+fi
+if [[ "$BRANCH" =~ ^-?$ ]]; then
+  BRANCH="$DEFAULT_BRANCH"
 fi
 
 echo "git push $REMOTE $BRANCH"
