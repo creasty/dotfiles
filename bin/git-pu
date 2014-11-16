@@ -3,12 +3,13 @@
 DEFAULT_REMOTE=origin
 DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
-source "$(dirname $0)/../lib/helpers.sh"
-
 if [ $# -ge 2 ]; then
-  subsection "git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}"
-  git push ${1:-$DEFAULT_REMOTE} ${2:-$DEFAULT_BRANCH}
+  REMOTE="${1:-$DEFAULT_REMOTE}"
+  BRANCH="${2:-$DEFAULT_BRANCH}"
 else
-  subsection "git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}"
-  git push $DEFAULT_REMOTE ${1:-$DEFAULT_BRANCH}
+  REMOTE="$DEFAULT_REMOTE"
+  BRANCH="${1:-$DEFAULT_BRANCH}"
 fi
+
+echo "git push $REMOTE $BRANCH"
+git push $REMOTE $BRANCH

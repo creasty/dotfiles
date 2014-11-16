@@ -10,7 +10,7 @@ section() {
 }
 
 subsection() {
-  printf "\e[37m-->\e[0m \e[33m$1\e[0m\n"
+  printf "\e[34m--> $1\e[0m\n"
 }
 
 
