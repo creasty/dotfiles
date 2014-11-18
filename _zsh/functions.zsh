@@ -20,7 +20,7 @@ peco_insert_path() {
   local cmd
 
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    cmd='git ls-files'
+    cmd='git ls-files .'
   else
     cmd='find .'
   fi
