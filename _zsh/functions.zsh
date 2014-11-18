@@ -38,7 +38,6 @@ peco_insert_path() {
   fi
 
   CURSOR=$#BUFFER
-  zle clear-screen
 }
 
 zle -N peco_insert_path
@@ -49,8 +48,6 @@ peco_insert_branch() {
 
   BUFFER="$LBUFFER$branch"
   CURSOR=$#BUFFER
-
-  zle clear-screen
 }
 
 zle -N peco_insert_branch
