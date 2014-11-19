@@ -1,3 +1,0 @@
-export $SSHRC_PATH=$SSHHOME/.sshrc.d
-
-export VIM=$SSHRC_PATH

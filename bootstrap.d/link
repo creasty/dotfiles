@@ -18,8 +18,7 @@ LINKS=(
   _irbrc
   _pecorc
   _railsrc
-  _sshrc/sshrc:.sshrc
-  _sshrc/sshrc.d:.sshrc.d
+  _dotssh
   _tmux.conf
   _vim
   _vim/vimrc:.vimrc

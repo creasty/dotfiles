@@ -16,6 +16,10 @@ cdh() {
 }
 compctl -f -W ~ cdh
 
+mkd() {
+  mkdir -p "$@" && cd "$@"
+}
+
 peco_insert_path() {
   local cmd
 

@@ -1,4 +1,4 @@
-#  General
+#  Aliases
 #-----------------------------------------------
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -11,19 +11,23 @@ alias tree='tree -C'
 alias df='df -h'
 alias tf='tail -f'
 
+# alias vim="vim -u $DOTSSH_PATH/vimrc"
 alias vi='vim'
 alias g='git'
 alias :q='exit'
 
-
-#  Ruby / Rails
-#-----------------------------------------------
+## Rails
 alias b='bundle'
 alias be='bundle exec'
-alias ra='bundle exec rails'
-alias rk='bundle exec rake'
+alias bi='bundle install --path=vendor/bundle'
 
-alias rru='bundle exec rake routes'
+alias ra='bundle exec rails'
+alias rg='bundle exec rails g'
+alias rgmo='bundle exec rails g model'
+alias rgmi='bundle exec rails g migration'
+
+alias rk='bundle exec rake'
+alias rkr='bundle exec rake routes'
 
 alias rdbc='bundle exec rake db:create'
 alias rdbm='bundle exec rake db:migrate'
@@ -31,6 +35,7 @@ alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
 alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
 
+alias rc='bundle exec rails c'
 alias rs='bundle exec rails s'
 alias rs1='bundle exec rails s -p 3001'
 alias rs2='bundle exec rails s -p 3002'
@@ -38,9 +43,23 @@ alias rs3='bundle exec rails s -p 3003'
 alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
 
-
-#  Make
-#-----------------------------------------------
+## Make
 alias m='make'
 alias mi='make install'
 alias mc='make clean'
+
+
+#  Create a new directory and enter it
+#-----------------------------------------------
+mkd() {
+  mkdir -p "$@" && cd "$@"
+}
+
+
+#  Project root (.git dir)
+#-----------------------------------------------
+cdrt() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `git rev-parse --show-toplevel`
+  fi
+}

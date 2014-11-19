@@ -104,7 +104,6 @@ brew install rbenv-gem-rehash || true
 brew install reattach-to-user-namespace || true
 brew install ruby-build || true
 brew install sqlite || true
-brew install sshrc || true
 brew install the_silver_searcher || true
 brew install tig || true
 brew install tmux || true
