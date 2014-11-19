@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-TRASHDIR=~/.trash
+TRASHDIR=~/.Trash
 
 if [ "$1" = "-c" ]; then
-  rm -Rf $TRASHDIR/*
+  rm -rf $TRASHDIR/.*
+  rm -rf $TRASHDIR/*
 elif [ "$1" = "-l" ]; then
   ls -al $TRASHDIR/ 2> /dev/null
 else
