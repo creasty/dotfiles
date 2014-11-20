@@ -15,6 +15,7 @@ dotssh() {
   ssh \
     -MNf \
     -o ControlPath=$sock \
+    -o ControlPersist=10 \
     "$1"
 
   # Transfer my files
