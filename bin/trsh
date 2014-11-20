@@ -3,10 +3,9 @@
 TRASHDIR=~/.Trash
 
 if [ "$1" = "-c" ]; then
-  rm -rf $TRASHDIR/.*
-  rm -rf $TRASHDIR/*
+  rm -rf $TRASHDIR/{*,.[^.]*,..?*}
 elif [ "$1" = "-l" ]; then
-  ls -al $TRASHDIR/ 2> /dev/null
+  ls -Al $TRASHDIR/ 2> /dev/null
 else
   for path in "$@"; do
     # ignore any arguments
