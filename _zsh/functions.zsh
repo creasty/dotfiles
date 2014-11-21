@@ -1,3 +1,5 @@
+#  cd ~/Develop
+#-----------------------------------------------
 cdd() {
   if [ $# -gt 0 ]; then
     cd "$HOME/Develop/$1"
@@ -5,8 +7,12 @@ cdd() {
     cd ~/Develop
   fi
 }
+
 compctl -f -W ~/Develop cdd
 
+
+#  cd ~
+#-----------------------------------------------
 cdh() {
   if [ $# -gt 0 ]; then
     cd "$HOME/$1"
@@ -14,12 +20,28 @@ cdh() {
     cd ~
   fi
 }
+
 compctl -f -W ~ cdh
 
+
+#  cd to the project root
+#-----------------------------------------------
+cdrt() {
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    cd `git rev-parse --show-toplevel`
+  fi
+}
+
+
+#  Make directory and enter to it
+#-----------------------------------------------
 mkd() {
   mkdir -p "$@" && cd "$@"
 }
 
+
+#  Peco insert path
+#-----------------------------------------------
 peco_insert_path() {
   local cmd
 
@@ -47,6 +69,9 @@ peco_insert_path() {
 zle -N peco_insert_path
 bindkey '^q' peco_insert_path
 
+
+#  Peco insert branch
+#-----------------------------------------------
 peco_insert_branch() {
   local branch="$(git branch --color=never | cut -c 3- | peco --rcfile=$HOME/.pecorc)"
 
