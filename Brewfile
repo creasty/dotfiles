@@ -88,6 +88,7 @@ brew install mercurial || true
 brew install mysql || true
 brew install ngrep || true
 brew install node || true
+brew install opencv || true
 brew install optipng || true
 brew install osquery || true
 brew install pcre || true

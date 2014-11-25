@@ -186,6 +186,7 @@ init_lua
 init_python() {
   section "Installing Python packages"
   pip install howdoi
+  pip install numpy
 }
 
 init_python
