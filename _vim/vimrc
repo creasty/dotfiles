@@ -98,9 +98,9 @@ else
   NeoBundle 'Shougo/vimproc', {
     \ 'build': {
       \ 'windows': 'make -f make_mingw32.mak',
-      \ 'cygwin': 'make -f make_cygwin.mak',
-      \ 'mac': 'make -f make_mac.mak',
-      \ 'unix': 'make -f make_unix.mak',
+      \ 'cygwin':  'make -f make_cygwin.mak',
+      \ 'mac':     'make -f make_mac.mak',
+      \ 'unix':    'make -f make_unix.mak',
     \ },
   \ }
 
@@ -158,7 +158,10 @@ else
   NeoBundleLazy 'smartchr'
 
   " provide smart input assistant
-  NeoBundleLazy 'kana/vim-smartinput', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
+  " NeoBundleLazy 'kana/vim-smartinput', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
+
+  " auto close parentheses and repeat by dot
+  NeoBundleLazy 'cohama/lexima.vim', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
 
   " refactoring tool for Ruby in vim
   NeoBundleLazy 'ecomba/vim-ruby-refactoring'
@@ -170,7 +173,7 @@ else
   NeoBundleLazy 't9md/vim-textmanip'
 
   " automatically insert closing-pair and put the cursor between them
-  NeoBundleLazy 'Townk/vim-autoclose'
+  " NeoBundleLazy 'Townk/vim-autoclose'
 
   " sequencial numbering with pattern
   NeoBundleLazy 'deris/vim-rengbang'
@@ -1642,7 +1645,6 @@ if neobundle#tap('emmet-vim')
     \ 'autoload': {
       \ 'insert': 1,
       \ 'function_prefix': 'emmet',
-      \ 'on_source': ['neosnippet'],
     \ }
   \ })
 
@@ -1738,7 +1740,6 @@ if neobundle#tap('smartchr')
     \ 'autoload': {
       \ 'insert': 1,
       \ 'function_prefix': 'smartchr',
-      \ 'on_source': ['vim-smartinput'],
     \ },
   \ })
 
@@ -1750,35 +1751,39 @@ if neobundle#tap('smartchr')
 endif
 
 
-"=== Plugin: vim-smartinput
+"=== Plugin: lexima.vim
 "==============================================================================================
-if neobundle#tap('vim-smartinput')
+if neobundle#tap('lexima.vim')
   call neobundle#config({
     \ 'autoload': { 'insert': 1 },
   \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
+    NeoBundleSource 'smartchr'
+    NeoBundleSource 'neocomplete'
+
+    call lexima#set_default_rules()
+
     let indents = "^\(\t\|  \)\+"
-    let opx = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
-    let cr_key = '<C-r>=neocomplete#close_popup()<CR><CR>'
+    let opx     = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
 
 
-    "  Disable SmartInput inside string literal
+    "  Disable lexima inside string literal
     "-----------------------------------------------
-    function! s:disable_smartinput_inside_string(char)
-      call smartinput#define_rule({
+    function! s:disable_lexima_inside_string(char)
+      call lexima#add_rule({
         \ 'char':  a:char,
         \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
         \ 'input': a:char,
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  a:char,
         \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
         \ 'input': a:char,
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  a:char,
         \ 'at':    '\%#',
         \ 'input': a:char,
@@ -1787,80 +1792,47 @@ if neobundle#tap('vim-smartinput')
       \ })
     endfunction
 
+    function! s:disable_lexima_inside_regexp(char)
+      call lexima#add_rule({
+        \ 'char':  a:char,
+        \ 'at':    '\(...........\)/\S.*\%#.*\S/',
+        \ 'input': a:char,
+        \ 'mode':  'i',
+      \ })
+    endfunction
 
-    "  CR
+
+    "  Quotes
     "-----------------------------------------------
-    call smartinput#define_rule({
-      \ 'char':  '<CR>',
-      \ 'at':    '\%#',
-      \ 'input': cr_key,
-      \ 'mode':  'i',
-    \ })
-
-
-    "  do-end pair
-    "-----------------------------------------------
-    " vim
-    for at in ['fu', 'fun', 'func', 'funct', 'functi', 'functio', 'function', 'if', 'wh', 'whi', 'whil', 'while', 'for', 'try']
-      call smartinput#define_rule({
-        \ 'char':     '<CR>',
-        \ 'at':       '^\s*' . at . '\>.*\%#',
-        \ 'input':    cr_key . 'end' . at . '<Esc>O',
-        \ 'mode':     'i',
-        \ 'filetype': ['vim'],
+    for quote in ['"', "'"]
+      call lexima#add_rule({
+        \ 'char':  quote,
+        \ 'at':    '\(.......\)\?\%#\S',
+        \ 'input': quote,
+        \ 'mode':  'i',
       \ })
-    endfor
-    unlet at
-
-    " ruby
-    for at in [
-        \ '^\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
-        \ '^\s*\(public\|protected\|private\)\s\+def\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
-        \ '^\s*\%(begin\)\s*\%#',
-        \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
-      \ ]
-
-      call smartinput#define_rule({
-        \ 'char':     '<CR>',
-        \ 'at':       at,
-        \ 'input':    cr_key . 'end<Esc>O',
-        \ 'mode':     'i',
-        \ 'filetype': ['ruby'],
+      call lexima#add_rule({
+        \ 'char':  quote,
+        \ 'at':    '\(.......\)\?' . quote . '\%#',
+        \ 'input': quote,
+        \ 'mode':  'i',
       \ })
-    endfor
-    unlet at
-
-    call smartinput#define_rule({
-      \ 'char':     '<CR>',
-      \ 'at':       '\<\%(if\|unless\)\>.*\%#',
-      \ 'input':    cr_key . 'end<Esc>O',
-      \ 'filetype': ['ruby'],
-      \ 'syntax':   ['rubyConditionalExpression']
-    \ })
-
-    " shell
-    let rules = {
-      \ '^\s*if\>.*\%#':             'fi',
-      \ '^\s*case\>.*\%#':           'esac',
-      \ '\%(^\s*#.*\)\@<!do\>.*\%#': 'done',
-    \ }
-
-    for [at, end_word] in items(rules)
-      call smartinput#define_rule({
-        \ 'char':     '<CR>',
-        \ 'at':       at,
-        \ 'input':    cr_key . end_word . '<Esc>O',
-        \ 'filetype': ['sh', 'zsh'],
+      call lexima#add_rule({
+        \ 'char':  quote,
+        \ 'at':    '\(...........\)\?\%#' . quote,
+        \ 'input': '<Right>',
+        \ 'mode':  'i',
       \ })
+
+      call s:disable_lexima_inside_regexp(quote)
     endfor
 
-    unlet at
-    unlet end_word
-    unlet rules
+    unlet quote
 
 
-    "  Looping with Smartchr
+    "  Operators
     "-----------------------------------------------
+    " looping with Smartchr
     let rules = {
       \ '<':     "smartchr#loop('<', '<<')",
       \ '>':     "smartchr#loop('>', '>>', '>>>')",
@@ -1869,54 +1841,53 @@ if neobundle#tap('vim-smartinput')
     \ }
 
     for [char, rule] in items(rules)
-      call smartinput#map_to_trigger('i', char, char, char)
-
       let uchar = substitute(char, '<Bar>', '|', '')
 
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '\S\%#',
         \ 'input': ' ' . char . ' ',
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '^\s*\%#',
         \ 'input': char . ' ',
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '^\s*\%# ',
         \ 'input': char,
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '\S \%#',
         \ 'input': char . ' ',
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '\S \%# ',
         \ 'input': char,
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '\(...\)\?' . uchar . ' \%#',
         \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  char,
         \ 'at':    '\(...\)\?' . uchar . ' \%# ',
         \ 'input': '<BS><C-r>=' . rule . '<CR>',
         \ 'mode':  'i',
       \ })
 
-      call s:disable_smartinput_inside_string(char)
+      call s:disable_lexima_inside_string(char)
+      call s:disable_lexima_inside_regexp(char)
     endfor
 
     unlet char
@@ -1924,76 +1895,43 @@ if neobundle#tap('vim-smartinput')
     unlet rule
     unlet rules
 
-    " html tag, sql not
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(.....\)\?<\%#',
-      \ 'input':    '>',
-      \ 'mode':     'i',
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(.....\)\?< \%#',
-      \ 'input':    '<BS>><Space>',
-      \ 'mode':     'i',
-    \ })
-
-    " ruby block
-    call smartinput#define_rule({
-      \ 'char':     '<Bar>',
-      \ 'at':       '\({\|do\)\s*\%#',
-      \ 'input':    '<Bar><Bar><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['ruby'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '<Bar>',
-      \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
-      \ 'input':    '<Right>',
-      \ 'mode':     'i',
-      \ 'filetype': ['ruby'],
-    \ })
-
-
-    "  Space around operators
-    "-----------------------------------------------
+    " space around
     for op in ['+', '-', '/', '*', '=', '%']
       let eop = escape(op, '*')
 
-      call smartinput#map_to_trigger('i', op, op, op)
-
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  op,
         \ 'at':    '\w\%#',
         \ 'input': ' ' . op . ' ',
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  op,
         \ 'at':    '\(^\|\w\) ' . eop . '\%#',
         \ 'input': op . ' ',
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  op,
         \ 'at':    eop . ' \%#',
         \ 'input': '<BS>' . op . ' ',
         \ 'mode':  'i',
       \ })
 
-      call s:disable_smartinput_inside_string(op)
+      call s:disable_lexima_inside_string(op)
+      call s:disable_lexima_inside_regexp(op)
     endfor
     unlet op
     unlet eop
 
     " compound assignment operator
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '=',
       \ 'at':    '\s[&|?+-/<>]\%#',
       \ 'input': '= ',
       \ 'mode':  'i',
     \ })
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '=',
       \ 'at':    '[&|?+-/<>] \%#',
       \ 'input': '<BS>= ',
@@ -2001,28 +1939,41 @@ if neobundle#tap('vim-smartinput')
     \ })
 
     " slash as non arithmetic operators
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '/',
-      \ 'at':    '\(^\|\S\)/\S[^/]*\%#',
+      \ 'at':    '\S/\S[^/]*\%#',
       \ 'input': '/',
       \ 'mode':  'i',
     \ })
+    call lexima#add_rule({
+      \ 'char':  '/',
+      \ 'at':    '^\s*\%#',
+      \ 'input': '/',
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  '/',
+      \ 'at':    '^\s*/.*\%#',
+      \ 'input': '/',
+      \ 'mode':  'i',
+    \ })
+    call s:disable_lexima_inside_regexp('/')
 
     " decrement/increment operators
     for op in ['+', '-']
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  op,
         \ 'at':    ' ' . op . ' \%#',
         \ 'input': '<BS><BS><BS>' . op . op,
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  op,
         \ 'at':    indents . op . ' \%#',
         \ 'input': op,
         \ 'mode':  'i',
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':  op,
         \ 'at':    '\w' . op . op . '\%#',
         \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
@@ -2031,130 +1982,11 @@ if neobundle#tap('vim-smartinput')
     endfor
     unlet op
 
-    " html
-    call smartinput#define_rule({
-      \ 'char':     '<',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '<><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(........\)\?\%#>',
-      \ 'input':    '<Right>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '=',
-      \ 'at':       '\(........\)\?<.\+\%#',
-      \ 'input':    '=""<Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '/',
-      \ 'at':       '\(........\)\?<\%#>',
-      \ 'input':    '/<C-x><C-o><BS><ESC>a',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '&',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '&;<Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '-',
-      \ 'at':       '\(........\)\?<\%#>',
-      \ 'input':    '!--  --<Left><Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '%',
-      \ 'at':       '\(........\)\?<\%#',
-      \ 'input':    '%  %<Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'ejs', 'eruby'],
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '%',
-      \ 'at':       '\(........\)\?<%[=-]\? \%#',
-      \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'ejs', 'eruby'],
-    \ })
-
-    " php
-    call smartinput#map_to_trigger('i', '?', '?', '?')
-    call smartinput#define_rule({
-      \ 'char':     '?',
-      \ 'at':       '\(........\)\?<\%#',
-      \ 'input':    '?php  ?<Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['php'],
-    \ })
-
-    " left arrow (go)
-    call smartinput#define_rule({
-      \ 'char':     '-',
-      \ 'at':       '< \%#',
-      \ 'input':    '<BS>-<Space>',
-      \ 'mode':     'i',
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '-',
-      \ 'at':       '<\%#',
-      \ 'input':    '-<Space>',
-      \ 'mode':     'i',
-    \ })
-
-    " right arrow
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '[-=] \%#',
-      \ 'input':    '<BS>><Space>',
-      \ 'mode':     'i',
-    \ })
-    call smartinput#define_rule({
-      \ 'char':     '>',
-      \ 'at':       '[-=]\%#',
-      \ 'input':    '><Space>',
-      \ 'mode':     'i',
-    \ })
-
-
-    "  left parenthes
-    "-----------------------------------------------
-    call smartinput#map_to_trigger('i', '(', '(', '(')
-
-    " ruby lambda
-    call smartinput#define_rule({
-      \ 'char':     '(',
-      \ 'at':       '\(........\)\?-> \%#',
-      \ 'input':    '<BS>()<Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['ruby'],
-    \ })
-
 
     "  C-t
     "-----------------------------------------------
-    call smartinput#map_to_trigger('i', '<C-t>', '<C-t>', '<C-t>')
-
     " nop
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<C-t>',
       \ 'at':    '\%#',
       \ 'input': '',
@@ -2162,7 +1994,7 @@ if neobundle#tap('vim-smartinput')
     \ })
 
     " transpose charactors before/after cursor
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<C-t>',
       \ 'at':    '\(...........\)\?\w\%#\w',
       \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
@@ -2170,13 +2002,13 @@ if neobundle#tap('vim-smartinput')
     \ })
 
     " delete spaces around
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<C-t>',
       \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
       \ 'input': '<Esc>bhxf<Space>cl',
       \ 'mode':  'i',
     \ })
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<C-t>',
       \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
       \ 'input': '<Space><Esc>bhxf<Space>cl',
@@ -2186,28 +2018,26 @@ if neobundle#tap('vim-smartinput')
 
     "  Backspace
     "-----------------------------------------------
-    call smartinput#map_to_trigger('i', '<BS>', '<BS>', '<BS>')
-
     " delete whole pair
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<BS>',
       \ 'at':    '(\s*)\%#',
       \ 'input': '<C-o>dF(<BS>',
       \ 'mode':  'i',
     \ })
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<BS>',
       \ 'at':    '{\s*}\%#',
       \ 'input': '<C-o>dF{<BS>',
       \ 'mode':  'i',
     \ })
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<BS>',
       \ 'at':    '<\s*>\%#',
       \ 'input': '<C-o>dF<<BS>',
       \ 'mode':  'i',
     \ })
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':  '<BS>',
       \ 'at':    '\[\s*\]\%#',
       \ 'input': '<C-o>dF[<BS>',
@@ -2215,38 +2045,259 @@ if neobundle#tap('vim-smartinput')
     \ })
 
 
-    "  Dot
+    "  Vim
     "-----------------------------------------------
-    call smartinput#map_to_trigger('i', '.', '.', '.')
+    " do-end pair
+    for at in ['fu', 'fun', 'func', 'funct', 'functi', 'functio', 'function', 'if', 'wh', 'whi', 'whil', 'while', 'for', 'try']
+      call lexima#add_rule({
+        \ 'char':     '<CR>',
+        \ 'at':       '^\s*' . at . '\>.*\%#',
+        \ 'input':    '<CR>end' . at . '<Esc>O',
+        \ 'mode':     'i',
+        \ 'filetype': ['vim'],
+      \ })
+    endfor
+    unlet at
 
-    call smartinput#define_rule({
-      \ 'char':     '.',
-      \ 'at':       '\w\%#',
-      \ 'input':    "<C-r>=smartchr#loop('.', '->', '...')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['c', 'cpp'],
+
+    "  Ruby
+    "-----------------------------------------------
+    " do-end pair
+    for at in [
+        \ '^\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+        \ '^\s*\(public\|protected\|private\)\s\+def\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+        \ '^\s*\%(begin\)\s*\%#',
+        \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
+      \ ]
+
+      call lexima#add_rule({
+        \ 'char':     '<CR>',
+        \ 'at':       at,
+        \ 'input':    '<CR>end<Esc>O',
+        \ 'mode':     'i',
+        \ 'filetype': ['ruby'],
+      \ })
+    endfor
+    unlet at
+
+    call lexima#add_rule({
+      \ 'char':     '<CR>',
+      \ 'at':       '\<\%(if\|unless\)\>.*\%#',
+      \ 'input':    '<CR>end<Esc>O',
+      \ 'filetype': ['ruby'],
+      \ 'syntax':   ['rubyConditionalExpression']
     \ })
-    call smartinput#define_rule({
+
+    " block
+    call lexima#add_rule({
+      \ 'char':     '<Bar>',
+      \ 'at':       '\({\|do\)\s*\%#',
+      \ 'input':    '<Bar><Bar><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['ruby'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Bar>',
+      \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
+      \ 'input':    '<Right>',
+      \ 'mode':     'i',
+      \ 'filetype': ['ruby'],
+    \ })
+
+    " lambda
+    call lexima#add_rule({
+      \ 'char':     '(',
+      \ 'at':       '\(........\)\?-> \%#',
+      \ 'input':    '<BS>()<Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['ruby'],
+    \ })
+
+
+    "  Shell
+    "-----------------------------------------------
+    " do-end pair
+    let rules = {
+      \ '^\s*if\>.*\%#':             'fi',
+      \ '^\s*case\>.*\%#':           'esac',
+      \ '\%(^\s*#.*\)\@<!do\>.*\%#': 'done',
+    \ }
+
+    for [at, end_word] in items(rules)
+      call lexima#add_rule({
+        \ 'char':     '<CR>',
+        \ 'at':       at,
+        \ 'input':    '<CR>' . end_word . '<Esc>O',
+        \ 'filetype': ['sh', 'zsh'],
+      \ })
+    endfor
+
+    unlet at
+    unlet end_word
+    unlet rules
+
+
+    "  Html
+    "-----------------------------------------------
+    " tag
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(.....\)\?<\%#',
+      \ 'input':    '>',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '<><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(........\)\?\%#>',
+      \ 'input':    '<Right>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '=',
+      \ 'at':       '\(........\)\?<.\+\%#',
+      \ 'input':    '=""<Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '/',
+      \ 'at':       '\(........\)\?<\%#>',
+      \ 'input':    '/<C-x><C-o><BS><ESC>a',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '&',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '&;<Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '-',
+      \ 'at':       '\(........\)\?<\%#>',
+      \ 'input':    '!--  --<Left><Left><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '%',
+      \ 'at':       '\(........\)\?<\%#',
+      \ 'input':    '%  %<Left><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'ejs', 'eruby'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '%',
+      \ 'at':       '\(........\)\?<%[=-]\? \%#',
+      \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'ejs', 'eruby'],
+    \ })
+
+
+    "  PHP
+    "-----------------------------------------------
+    " <?php
+    call lexima#add_rule({
+      \ 'char':     '?',
+      \ 'at':       '\(........\)\?<\%#',
+      \ 'input':    '?php  ?<Left><Left>',
+      \ 'mode':     'i',
+      \ 'filetype': ['php'],
+    \ })
+
+    " left arrow (go)
+    call lexima#add_rule({
+      \ 'char':     '-',
+      \ 'at':       '< \%#',
+      \ 'input':    '<BS>-<Space>',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '-',
+      \ 'at':       '<\%#',
+      \ 'input':    '-<Space>',
+      \ 'mode':     'i',
+    \ })
+
+    " right arrow
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '[-=] \%#',
+      \ 'input':    '<BS>><Space>',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '[-=]\%#',
+      \ 'input':    '><Space>',
+      \ 'mode':     'i',
+    \ })
+
+    " member
+    call lexima#add_rule({
       \ 'char':     '.',
-      \ 'at':       '\w\%#',
+      \ 'at':       '\w\(\|\.\|->\)\%#',
       \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
       \ 'mode':     'i',
       \ 'filetype': ['perl', 'php'],
     \ })
-    call smartinput#define_rule({
+
+
+    "  SQL
+    "-----------------------------------------------
+    " not <>
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(.....\)\?< \%#',
+      \ 'input':    '<BS>><Space>',
+      \ 'mode':     'i',
+    \ })
+
+
+    "  C
+    "-----------------------------------------------
+    " member
+    call lexima#add_rule({
       \ 'char':     '.',
-      \ 'at':       '\w\s*\%#',
+      \ 'at':       '\w\(\|\.\+\|->\)\%#',
+      \ 'input':    "<C-r>=smartchr#loop('.', '->', '...')<CR>",
+      \ 'mode':     'i',
+      \ 'filetype': ['c', 'cpp'],
+    \ })
+
+
+    "  Scala
+    "-----------------------------------------------
+    call lexima#add_rule({
+      \ 'char':     '.',
+      \ 'at':       '\w\s*\(\|\.\|=>\)\%#',
       \ 'input':    "<C-r>=smartchr#loop('.', '=>')<CR>",
       \ 'mode':     'i',
       \ 'filetype': ['scala'],
     \ })
 
 
-    "  Go 'chan'
+    "  Go
     "-----------------------------------------------
-    call smartinput#map_to_trigger('i', 'n', 'n', 'n')
-
-    call smartinput#define_rule({
+    " chan
+    call lexima#add_rule({
       \ 'char':     'n',
       \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
       \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
@@ -2254,7 +2305,7 @@ if neobundle#tap('vim-smartinput')
       \ 'filetype': ['go'],
     \ })
 
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':     'n',
       \ 'at':       '<-\%#',
       \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
@@ -2263,17 +2314,18 @@ if neobundle#tap('vim-smartinput')
     \ })
 
 
-    "  Markdown title
+    "  Markdown
     "-----------------------------------------------
+    " headering
     for d in ['-', '=']
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':     d,
         \ 'at':       '^\n\%#',
         \ 'input':    d,
         \ 'mode':     'i',
         \ 'filetype': ['markdown'],
       \ })
-      call smartinput#define_rule({
+      call lexima#add_rule({
         \ 'char':     d,
         \ 'at':       '^\%#',
         \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
@@ -2283,7 +2335,7 @@ if neobundle#tap('vim-smartinput')
     endfor
     unlet d
 
-    call smartinput#define_rule({
+    call lexima#add_rule({
       \ 'char':     '-',
       \ 'at':       '^-\%#',
       \ 'input':    "<C-r>=repeat('-', 80)<CR>",
@@ -2509,7 +2561,6 @@ if neobundle#tap('neocomplete')
   call neobundle#config({
     \ 'autoload': {
       \ 'insert': 1,
-      \ 'on_source': ['vim-smartinput'],
     \ }
   \ })
 
@@ -2623,6 +2674,8 @@ if neobundle#tap('neosnippet')
   endif
 
   function! neobundle#tapped.hooks.on_source(bundle)
+    NeoBundleSource 'emmet-vim'
+
     let g:neosnippet#disable_select_mode_mappings = 0
     let g:neosnippet#enable_snipmate_compatibility = 1
     let g:neosnippet#snippets_directory = s:env.path.snippets
@@ -2705,11 +2758,6 @@ endif
 "=== Plugin: nerdtree
 "==============================================================================================
 if neobundle#tap('nerdtree')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'on_source': ['vim-nerdtree-tabs'],
-    \ }
-  \ })
 
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:NERDSpaceDelims = 1
@@ -2728,6 +2776,8 @@ endif
 if neobundle#tap('vim-nerdtree-tabs')
   let g:nerdtree_tabs_open_on_gui_startup = 0
   let g:nerdtree_tabs_startup_cd = 0
+
+  NeoBundleSource 'nerdtree'
 
   nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
 
