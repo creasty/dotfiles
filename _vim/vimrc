@@ -1798,7 +1798,7 @@ if neobundle#tap('lexima.vim')
     for quote in ['"', "'"]
       call lexima#add_rule({
         \ 'char':  quote,
-        \ 'at':    '\(.......\)\?\%#\S',
+        \ 'at':    '\(.......\)\?\%#\w',
         \ 'input': quote,
         \ 'mode':  'i',
       \ })
@@ -2010,30 +2010,26 @@ if neobundle#tap('lexima.vim')
     "  Backspace
     "-----------------------------------------------
     " delete whole pair
-    call lexima#add_rule({
-      \ 'char':  '<BS>',
-      \ 'at':    '(\s*)\%#',
-      \ 'input': '<C-o>dF(<BS>',
-      \ 'mode':  'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':  '<BS>',
-      \ 'at':    '{\s*}\%#',
-      \ 'input': '<C-o>dF{<BS>',
-      \ 'mode':  'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':  '<BS>',
-      \ 'at':    '<\s*>\%#',
-      \ 'input': '<C-o>dF<<BS>',
-      \ 'mode':  'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':  '<BS>',
-      \ 'at':    '\[\s*\]\%#',
-      \ 'input': '<C-o>dF[<BS>',
-      \ 'mode':  'i',
-    \ })
+    for pa in ['()', '[]', '{}', '<>']
+      let epa = escape(pa, '[]')
+
+      call lexima#add_rule({
+        \ 'char':  '<BS>',
+        \ 'at':    epa[0] . '\s\+' . epa[1] . '\%#',
+        \ 'input': '<C-o>di' . pa[0],
+        \ 'mode':  'i',
+      \ })
+
+      call lexima#add_rule({
+        \ 'char':  '<BS>',
+        \ 'at':    epa . '\%#',
+        \ 'input': '<BS><BS>',
+        \ 'mode':  'i',
+      \ })
+    endfor
+
+    unlet pa
+    unlet epa
 
 
     "  Vim
