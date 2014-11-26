@@ -1795,7 +1795,7 @@ if neobundle#tap('lexima.vim')
     function! s:disable_lexima_inside_regexp(char)
       call lexima#add_rule({
         \ 'char':  a:char,
-        \ 'at':    '\(...........\)/\S.*\%#.*\S/',
+        \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
         \ 'input': a:char,
         \ 'mode':  'i',
       \ })
