@@ -157,9 +157,6 @@ else
   " insert several candidates with a single key
   NeoBundleLazy 'smartchr'
 
-  " provide smart input assistant
-  " NeoBundleLazy 'kana/vim-smartinput', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
-
   " auto close parentheses and repeat by dot
   NeoBundleLazy 'cohama/lexima.vim', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
 
@@ -171,9 +168,6 @@ else
 
   " maniplate selected text easily
   NeoBundleLazy 't9md/vim-textmanip'
-
-  " automatically insert closing-pair and put the cursor between them
-  " NeoBundleLazy 'Townk/vim-autoclose'
 
   " sequencial numbering with pattern
   NeoBundleLazy 'deris/vim-rengbang'
@@ -249,9 +243,6 @@ else
 
   " open URI with browser
   NeoBundleLazy 'tyru/open-browser.vim'
-
-  " simple memo plugin
-  NeoBundle 'glidenote/memolist.vim', { 'depends': ['Shougo/unite.vim'] }
 
   " hex editing system
   NeoBundleLazy 'Shougo/vinarise.vim'
@@ -2944,31 +2935,6 @@ if neobundle#tap('open-browser.vim')
 
   nnoremap gx <Plug>(openbrowser-smart-search)
   vnoremap gx <Plug>(openbrowser-smart-search)
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: memolist.vim
-"==============================================================================================
-if neobundle#tap('memolist.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['MemoNew', 'MemoList', 'MemoGrep'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:memolist_memo_suffix = 'md'
-    let g:memolist_path = $HOME . '/Dropbox/memo'
-    let g:memolist_unite = 1
-    let g:memolist_unite_source = 'file_rec'
-    let g:memolist_unite_option = '-start-insert'
-  endfunction
-
-  nnoremap ,mn :MemoNew<CR>
-  nnoremap ,mg :MemoGrep<CR>
-  nnoremap ,ml :MemoList<CR>
 
   call neobundle#untap()
 endif
