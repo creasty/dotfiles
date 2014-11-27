@@ -920,20 +920,16 @@ vmap k gk
 " fast key strokes in insert mode
 function! s:inorm_on()
   set eventignore+=InsertLeave,InsertEnter
-
   return ''
 endfunction
 
 function! s:inorm_off()
   set eventignore-=InsertLeave,InsertEnter
-
-  " workaround for missing screen update by noop keys
-  " \<Left>\<Right> destructs info of a previous cursor's column
-  return "\<C-r>\<Esc>"
+  return ''
 endfunction
 
-inoremap <expr> <Plug>(inorm-on) <SID>inorm_on()
-inoremap <expr> <Plug>(inorm-off) <SID>inorm_off()
+autocmd vimrc InsertEnter * call <SID>inorm_on()
+inoremap <expr> <Esc> <SID>inorm_off() . "\<Esc>"
 
 " Emacs-like key bindings
 inoremap <Plug>(emacs-down) <C-o>gj
@@ -947,11 +943,11 @@ imap <C-j> <CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
-imap <C-p> <Plug>(inorm-on)<Plug>(emacs-up)<Plug>(inorm-off)
-imap <C-n> <Plug>(inorm-on)<Plug>(emacs-down)<Plug>(inorm-off)
-imap <C-a> <Plug>(inorm-on)<Plug>(emacs-bol)<Plug>(inorm-off)
-imap <C-e> <Plug>(inorm-on)<Plug>(emacs-eol)<Plug>(inorm-off)
-imap <C-k> <Plug>(inorm-on)<Plug>(emacs-kill)<Plug>(inorm-off)
+imap <C-p> <Plug>(emacs-up)
+imap <C-n> <Plug>(emacs-down)
+imap <C-a> <Plug>(emacs-bol)
+imap <C-e> <Plug>(emacs-eol)
+imap <C-k> <Plug>(emacs-kill)
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -1749,6 +1745,10 @@ if neobundle#tap('lexima.vim')
     \ 'autoload': { 'insert': 1 },
   \ })
 
+  let g:lexima_no_map_to_escape = 1
+
+  inoremap <Esc> <C-r>=lexima#insmode#escape() . <SID>inorm_off()<CR><Esc>
+
   function! neobundle#tapped.hooks.on_source(bundle)
     NeoBundleSource 'smartchr'
     NeoBundleSource 'neocomplete'
@@ -1757,7 +1757,6 @@ if neobundle#tap('lexima.vim')
 
     let indents = "^\(\t\|  \)\+"
     let opx     = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
-
 
     "  Disable lexima inside string literal
     "-----------------------------------------------
@@ -2607,8 +2606,8 @@ if neobundle#tap('neocomplete')
     " cancel or accept
     imap <silent> <expr> <C-f> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Right>"
     imap <silent> <expr> <C-b> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Left>"
-    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(inorm-on)\<Plug>(emacs-bol)\<Plug>(inorm-off)"
-    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(inorm-on)\<Plug>(emacs-eol)\<Plug>(inorm-off)"
+    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(emacs-bol)"
+    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(emacs-eol)"
     imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
     inoremap <silent> <expr> <Space> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Space>"
