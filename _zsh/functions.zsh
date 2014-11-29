@@ -67,7 +67,7 @@ peco_insert_path() {
 }
 
 zle -N peco_insert_path
-bindkey '^q' peco_insert_path
+bindkey '^i^p' peco_insert_path
 
 
 #  Peco insert branch
@@ -80,4 +80,17 @@ peco_insert_branch() {
 }
 
 zle -N peco_insert_branch
-bindkey '^o' peco_insert_branch
+bindkey '^i^b' peco_insert_branch
+
+
+#  Peco insert commit id
+#-----------------------------------------------
+peco_insert_commit() {
+  local commit="$(git log --oneline --color=never | peco --rcfile=$HOME/.pecorc | cut -c -7)"
+
+  BUFFER="$LBUFFER$commit"
+  CURSOR=$#BUFFER
+}
+
+zle -N peco_insert_commit
+bindkey '^i^l' peco_insert_commit
