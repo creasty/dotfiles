@@ -8,14 +8,14 @@ dotssh() {
     return
   fi
 
-  local tmp_path="/tmp/dotfiles_$(whoami)"
-  local sock="~/.ssh/$(whoami).$RANDOM.sock"
+  local tmp_path="/tmp/dotfiles_$(whoami)_$RANDOM"
+  local sock="~/.ssh/%r@%h:%p.sock"
 
   # Establish master connection
   ssh \
     -MNf \
     -o ControlPath=$sock \
-    -o ControlPersist=10 \
+    -o ControlPersist=yes \
     "$1"
 
   # Transfer my files
@@ -27,13 +27,15 @@ dotssh() {
     [ -e /etc/motd ] && cat /etc/motd
 
     bash --rcfile <(echo '
-      export DOTSSH_PATH='$tmp_path/.dotssh'
+      export DOTSSH_PATH=\"$tmp_path/.dotssh\"
 
       [ -e /etc/bash.bashrc ] && source /etc/bash.bashrc
       [ -e ~/.bashrc ] && source ~/.bashrc
 
       source \$DOTSSH_PATH/bashrc
     ')
+
+    rm -rf \"$tmp_path\"
   "
 
   # Disconnect master

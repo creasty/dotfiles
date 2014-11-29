@@ -139,7 +139,7 @@ init_npm
 init_r() {
   section "Installing R packages"
 
-  r -f packages.r
+  r -f package.r
 }
 
 init_r
