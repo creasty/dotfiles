@@ -1048,7 +1048,7 @@ autocmd vimrc BufWritePre *
 " convert tabs to soft tabs if expandtab is set
 autocmd vimrc BufWritePre *
   \ if &et |
-    \ exec "%s/\t/  /ge" |
+    \ exec "%s/\t/" . repeat(' ', &tabstop) . "/ge" |
   \ endif
 
 " back to the last line I edited
