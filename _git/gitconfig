@@ -86,9 +86,7 @@
   modified        = "!git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -"
 
   # Remove branches that have already been merged with master
-  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-
-  num-commits = "!git log --all --oneline | wc -l"
+  dm = "!git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d"
 
   reload-config = "!git config -l > /dev/null"
 
