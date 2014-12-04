@@ -55,6 +55,7 @@ brew install clib || true
 brew install clisp || true
 brew install ctags || true
 brew install ctags-objc-ja --HEAD --enable-japanese-support || true
+brew install curl --with-ssl --with-libssh2 || true
 brew install direnv || true
 brew install eot-utils || true
 brew install fontconfig || true
@@ -67,6 +68,7 @@ brew install ghc || true
 brew install ghostscript || true
 brew install git || true
 brew install git-flow || true
+brew install git-ftp || true
 brew install go || true
 brew install gpg || true
 brew install graphviz || true
