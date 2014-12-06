@@ -1,4 +1,4 @@
-for file in ~/dotfiles/_zsh/{exports,aliases,functions,secret}.zsh; do
+for file in ~/dotfiles/_zsh/{exports,aliases,functions,secrets}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
