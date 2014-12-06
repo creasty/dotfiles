@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'octokit'
+require 'awesome_print'
+
+client = Octokit::Client.new access_token: ENV['GIT_ISSUE_LIST_ACCESS_TOKEN']
+
+remote = `git remote -v | grep origin`
+  .to_s
+  .match /git@github\.com:(.+?)\.git/
+
+exit unless remote
+
+repo = remote[1]
+
+client.issues(repo).each do |issue|
+  puts '#%d %s' % [issue[:number], issue[:title]]
+end

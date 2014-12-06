@@ -75,8 +75,10 @@ bindkey '^i^p' peco_insert_path
 peco_insert_branch() {
   local branch="$(git branch --color=never | cut -c 3- | peco --rcfile=$HOME/.pecorc)"
 
+  local rbuf="$RBUFFER"
   BUFFER="$LBUFFER$branch"
   CURSOR=$#BUFFER
+  BUFFER="$BUFFER$rbuf"
 }
 
 zle -N peco_insert_branch
@@ -88,9 +90,30 @@ bindkey '^i^b' peco_insert_branch
 peco_insert_commit() {
   local commit="$(git log --oneline --color=never | peco --rcfile=$HOME/.pecorc | cut -c -7)"
 
+  local rbuf="$RBUFFER"
   BUFFER="$LBUFFER$commit"
   CURSOR=$#BUFFER
+  BUFFER="$BUFFER$rbuf"
 }
 
 zle -N peco_insert_commit
 bindkey '^i^l' peco_insert_commit
+
+
+#  Peco insert issue
+#-----------------------------------------------
+peco_insert_issue() {
+  local issue="$(git issue-list | peco --rcfile=$HOME/.pecorc)"
+
+  if [ "${LBUFFER[$CURSOR]}" = '#' ]; then
+    issue=$(echo "$issue" | cut -d ' ' -f 1 | cut -c 2-)
+  fi
+
+  local rbuf="$RBUFFER"
+  BUFFER="$LBUFFER$issue"
+  CURSOR=$#BUFFER
+  BUFFER="$BUFFER$rbuf"
+}
+
+zle -N peco_insert_issue
+bindkey '^i^i' peco_insert_issue
