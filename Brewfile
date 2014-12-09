@@ -89,6 +89,7 @@ brew install memcached || true
 brew install mercurial || true
 brew install mysql || true
 brew install ngrep || true
+brew install nkf || true
 brew install node || true
 brew install opencv || true
 brew install optipng || true

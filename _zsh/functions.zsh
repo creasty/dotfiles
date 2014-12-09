@@ -67,7 +67,7 @@ peco_insert_path() {
 }
 
 zle -N peco_insert_path
-bindkey '^i^p' peco_insert_path
+bindkey '^o^p' peco_insert_path
 
 
 #  Peco insert branch
@@ -82,7 +82,7 @@ peco_insert_branch() {
 }
 
 zle -N peco_insert_branch
-bindkey '^i^b' peco_insert_branch
+bindkey '^o^b' peco_insert_branch
 
 
 #  Peco insert commit id
@@ -97,7 +97,7 @@ peco_insert_commit() {
 }
 
 zle -N peco_insert_commit
-bindkey '^i^l' peco_insert_commit
+bindkey '^o^l' peco_insert_commit
 
 
 #  Peco insert issue
@@ -116,4 +116,4 @@ peco_insert_issue() {
 }
 
 zle -N peco_insert_issue
-bindkey '^i^i' peco_insert_issue
+bindkey '^o^i' peco_insert_issue
