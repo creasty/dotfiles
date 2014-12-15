@@ -1,5 +1,3 @@
-require 'digest'
-
 module Base32
 
   ENCODE_MAP = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
@@ -25,7 +23,8 @@ module Base32
     # @return {String}
     ###
     def encode(str)
-      str.unpack('B*')[0]
+      str
+      .unpack('B*')[0]
       .each_char
       .each_slice(5)
       .map { |bits| ENCODE_MAP[bits.join().to_i(2)] }
