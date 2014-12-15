@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'octokit'
-require 'awesome_print'
 
 client = Octokit::Client.new access_token: ENV['GIT_ISSUE_LIST_ACCESS_TOKEN']
 
