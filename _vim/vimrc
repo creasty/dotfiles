@@ -193,6 +193,9 @@ else
   " ascii drawing plugin
   NeoBundleLazy 'DrawIt'
 
+  " instant table creation
+  NeoBundleLazy 'dhruvasagar/vim-table-mode'
+
 
   "  Completion
   "-----------------------------------------------
@@ -965,13 +968,6 @@ cnoremap <C-v> <C-r>*
 
 inoremap <C-\> <C-v>
 cnoremap <C-\> <C-v>
-
-" auto wrap
-vnoremap <Leader>( S(
-vnoremap <Leader>{ S{
-vnoremap <Leader>[ S[
-vnoremap <Leader>" S"
-vnoremap <Leader>' S'
 
 " do not store to register with x, c
 nnoremap x "_x
@@ -2548,6 +2544,23 @@ if neobundle#tap('DrawIt')
 
   map <Leader>di <Plug>DrawItStart
   map <Leader>ds <Plug>DrawItStop
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-table-mode
+"==============================================================================================
+if neobundle#tap('vim-table-mode')
+  call neobundle#config({
+    \ 'autoload': {
+      \ 'commands': [
+        \ 'TableModeToggle',
+        \ 'TableModeEnable',
+        \ 'TableModeDisable'
+      \ ],
+    \ },
+  \ })
 
   call neobundle#untap()
 endif
