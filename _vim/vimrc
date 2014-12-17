@@ -316,6 +316,9 @@ else
   " search status
   NeoBundle 'osyo-manga/vim-anzu'
 
+  " candle theme
+  NeoBundle 'creasty/candle.vim'
+
 
   "  Language
   "-----------------------------------------------
@@ -537,7 +540,7 @@ set suffixesadd& suffixesadd+=.js,.coffee,.swift,.scss
 set background=dark
 set t_Co=256
 syntax enable
-colorscheme CreastyCode
+colorscheme candle
 
 " always show statusline
 set laststatus=2
@@ -606,12 +609,12 @@ endfunction
 "  Custom highlight
 "-----------------------------------------------
 " highlight full-width space
-call CreastyCode('ZenkakuSpace', '', 'dark_red', '')
+call candle#highlight('ZenkakuSpace', '', 'dark_red', '')
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('ZenkakuSpace', '　')
 
 " highlight trailing spaces
-call CreastyCode('TrailingSpace', '', 'line', '')
+call candle#highlight('TrailingSpace', '', 'line', '')
 autocmd vimrc BufWinEnter,WinEnter *
   \ call matchadd('TrailingSpace', '\s\+$')
 
@@ -664,8 +667,8 @@ function! MyTabLine()
   return s
 endfunction
 
-call CreastyCode('TabLineNr', 'selection', 'window', '')
-call CreastyCode('TabLineNrSel', 'comment', 'foreground', '')
+call candle#highlight('TabLineNr', 'selection', 'window', '')
+call candle#highlight('TabLineNrSel', 'comment', 'foreground', '')
 
 
 "  Statusline
@@ -782,11 +785,11 @@ function! MyStatusLine(w, cw)
   return s
 endfunction
 
-call CreastyCode('StatusLineLeft', 'selection', 'window', '')
-call CreastyCode('StatusLineLeftActive', 'background', 'green', '')
-call CreastyCode('StatusLineRight', 'background', 'selection', '')
-call CreastyCode('StatusLineRightActive', 'window', 'foreground', '')
-call CreastyCode('StatusLineError', 'background', 'red', '')
+call candle#highlight('StatusLineLeft', 'selection', 'window', '')
+call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
+call candle#highlight('StatusLineRight', 'background', 'selection', '')
+call candle#highlight('StatusLineRightActive', 'window', 'foreground', '')
+call candle#highlight('StatusLineError', 'background', 'red', '')
 
 let s:prev_status_line_mode = 'n'
 
@@ -802,7 +805,7 @@ function! s:change_status_line_for_mode(m)
     \ a:m == 'r' ? 'purple' :
     \ 'green'
 
-  call CreastyCode('StatusLineLeftActive', '', color, '')
+  call candle#highlight('StatusLineLeftActive', '', color, '')
 
   return ''
 endfunction
@@ -1551,7 +1554,7 @@ if neobundle#tap('vim-easymotion')
   let g:EasyMotion_leader_key = '<Space>'
   let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
-  call CreastyCode('EasyMotionTarget', 'yellow', 'dark_yellow', 'underline')
+  call candle#highlight('EasyMotionTarget', 'yellow', 'dark_yellow', 'underline')
 
   call neobundle#untap()
 endif
@@ -1602,8 +1605,8 @@ if neobundle#tap('syntastic')
     let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
     let g:syntastic_tex_checkers = ['lacheck']
 
-    call CreastyCode('SyntasticErrorSign', 'red', '', '')
-    call CreastyCode('SyntasticWarningSign', 'yellow', '', '')
+    call candle#highlight('SyntasticErrorSign', 'red', '', '')
+    call candle#highlight('SyntasticWarningSign', 'yellow', '', '')
   endfunction
 
   call neobundle#untap()
@@ -3331,8 +3334,8 @@ if s:env.is_gui && neobundle#tap('vim-indent-guides')
   let g:indent_guides_auto_colors = 0
   let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 
-  hi IndentGuidesOdd guifg=#1c1c1c ctermfg=234 guibg=#1c1c1c ctermbg=234
-  hi IndentGuidesEven guifg=#222222 ctermfg=235 guibg=#222222 ctermbg=235
+  hi IndentGuidesOdd  guifg=#212121 ctermfg=234 guibg=#212121 ctermbg=234
+  hi IndentGuidesEven guifg=#242424 ctermfg=235 guibg=#242424 ctermbg=235
 
   call neobundle#untap()
 endif
