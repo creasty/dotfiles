@@ -190,3 +190,13 @@ init_python() {
 }
 
 init_python
+
+
+#  Golang
+#-----------------------------------------------
+init_golang() {
+  section "Installing Golang packages"
+  go get github.com/rakyll/boom
+}
+
+init_golang
