@@ -93,6 +93,8 @@ alias anp='ansible-playbook'
 
 alias maxscreen='screenresolution set 2560x1600x32@0'
 
+alias redis-server='redis-server /usr/local/etc/redis.conf'
+
 
 #  Networks
 #-----------------------------------------------
