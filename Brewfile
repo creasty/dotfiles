@@ -106,6 +106,7 @@ brew install ranger || true
 brew install rbenv || true
 brew install rbenv-gem-rehash || true
 brew install reattach-to-user-namespace || true
+brew install redis || true
 brew install ruby-build || true
 brew install sqlite || true
 brew install the_silver_searcher || true
