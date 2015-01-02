@@ -667,8 +667,9 @@ function! MyTabLine()
   return s
 endfunction
 
-call candle#highlight('TabLineNr', 'selection', 'window', '')
-call candle#highlight('TabLineNrSel', 'comment', 'foreground', '')
+autocmd vimrc VimEnter,Syntax *
+  \ call candle#highlight('TabLineNr', 'selection', 'window', '')
+  \ | call candle#highlight('TabLineNrSel', 'comment', 'foreground', '')
 
 
 "  Statusline
@@ -785,11 +786,12 @@ function! MyStatusLine(w, cw)
   return s
 endfunction
 
-call candle#highlight('StatusLineLeft', 'selection', 'window', '')
-call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
-call candle#highlight('StatusLineRight', 'background', 'selection', '')
-call candle#highlight('StatusLineRightActive', 'window', 'foreground', '')
-call candle#highlight('StatusLineError', 'background', 'red', '')
+autocmd vimrc VimEnter,Syntax *
+  \ call candle#highlight('StatusLineLeft', 'selection', 'window', '')
+  \ | call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
+  \ | call candle#highlight('StatusLineRight', 'background', 'selection', '')
+  \ | call candle#highlight('StatusLineRightActive', 'window', 'foreground', '')
+  \ | call candle#highlight('StatusLineError', 'background', 'red', '')
 
 let s:prev_status_line_mode = 'n'
 
