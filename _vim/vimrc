@@ -3071,8 +3071,6 @@ if neobundle#tap('vim-quickrun')
 
     let g:quickrun_config['scala'] = {
       \ 'command': 'scala',
-      \ 'cmdopt':  '-cp .',
-      \ 'exec':    '%c %o %s %a',
     \ }
   endfunction
 
