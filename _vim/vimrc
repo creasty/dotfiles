@@ -3029,6 +3029,7 @@ if neobundle#tap('vim-quickrun')
   call neobundle#config({
     \ 'autoload': {
       \ 'mappings': '<Plug>(quickrun)',
+      \ 'commands': ['QuickRun'],
     \ }
   \ })
 
