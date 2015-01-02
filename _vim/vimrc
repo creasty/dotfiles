@@ -353,7 +353,7 @@ else
   NeoBundleLazy 'eraserhd/vim-ios'
 
   " syntax highlight for Scala
-  NeoBundleLazy 'yuroyoro/vim-scala'
+  NeoBundleLazy 'derekwyatt/vim-scala'
 
   " syntax highlight for Clojure
   NeoBundleLazy 'jondistad/vimclojure'
@@ -3065,6 +3065,10 @@ if neobundle#tap('vim-quickrun')
       \ 'command': 'xcrun',
       \ 'cmdopt':  'swift',
       \ 'exec':    '%c %o %s',
+    \ }
+
+    let g:quickrun_config['scala'] = {
+      \ 'command': 'scala',
     \ }
   endfunction
 
