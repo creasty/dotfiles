@@ -115,6 +115,7 @@ brew install the_silver_searcher || true
 brew install tig || true
 brew install tmux || true
 brew install tree || true
+brew install typesafe-activator || true
 brew install vim --HEAD --with-lua --with-luajit || true
 brew install w3m || true
 brew install webkit2png || true

@@ -3072,7 +3072,7 @@ if neobundle#tap('vim-quickrun')
 
     let g:quickrun_config['scala'] = {
       \ 'command': 'scala',
-      \ 'cmdopt':  '-deprecation',
+      \ 'cmdopt':  '-deprecation -feature',
       \ 'exec':    '%c %o %s %a',
     \ }
   endfunction

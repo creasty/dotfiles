@@ -151,6 +151,13 @@ alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
 
 
+#  Play framework
+#-----------------------------------------------
+alias act='activator'
+alias actr='activator run'
+alias actt='activator test'
+
+
 #  Make
 #-----------------------------------------------
 alias gmake='make'
