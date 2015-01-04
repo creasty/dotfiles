@@ -1748,9 +1748,34 @@ if neobundle#tap('lexima.vim')
 
   inoremap <Esc> <C-r>=lexima#insmode#escape() . <SID>inorm_off()<CR><Esc>
 
+  function! SuperTabCompletion()
+    if pumvisible()
+      return neocomplete#close_popup()
+    elseif neosnippet#expandable_or_jumpable()
+      return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
+    elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
+      return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
+    elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
+      return neocomplete#start_manual_complete()
+    else
+      return "\<TAB>"
+    endif
+  endfunction
+
+  function! MarkdownTitleLine(char)
+    let text = getline(line('.') - 1)
+
+    if text =~ '^\(\t\|  \)*[-=]\s'
+      return a:char . ' '
+    else
+      return repeat(a:char, strwidth(text))
+    endif
+  endfunction
+
   function! neobundle#tapped.hooks.on_source(bundle)
     NeoBundleSource 'smartchr'
     NeoBundleSource 'neocomplete'
+    NeoBundleSource 'neosnippet'
 
     call lexima#set_default_rules()
 
@@ -2030,6 +2055,110 @@ if neobundle#tap('lexima.vim')
     unlet epa
 
 
+    "  Super tab completion
+    "-----------------------------------------------
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '\%#',
+      \ 'input':    '<C-r>=SuperTabCompletion()<CR>',
+      \ 'mode':     'i',
+    \ })
+
+
+    "  Arrows
+    "-----------------------------------------------
+    for width in ['-', '=']
+      " right-arrow
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       width . '\%#',
+        \ 'input':    '> ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       '\S' . width . '\%#',
+        \ 'input':    '<BS> ' . width . '> ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       width . ' \%#',
+        \ 'input':    '<BS>> ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       width . '>\%#',
+        \ 'input':    '<BS><BS><' . width . ' ',
+        \ 'mode':     'i',
+      \ })
+
+      " left-arrow
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       width . width . '\%#',
+        \ 'input':    '<BS><BS><' . width . ' ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       '\S' . width . width . '\%#',
+        \ 'input':    '<BS><BS><BS> <' . width . ' ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       width . width . ' \%#',
+        \ 'input':    '<BS><BS><BS><' . width . ' ',
+        \ 'mode':     'i',
+      \ })
+
+      " toggle
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       width . '> \%#',
+        \ 'input':    '<BS><BS><BS><' . width . ' ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       '<' . width . '\%#',
+        \ 'input':    '<BS><BS>' . width . '> ',
+        \ 'mode':     'i',
+      \ })
+      call lexima#add_rule({
+        \ 'char':     '<Tab>',
+        \ 'at':       '<' . width . ' \%#',
+        \ 'input':    '<BS><BS><BS>' .  width . '> ',
+        \ 'mode':     'i',
+      \ })
+    endfor
+    unlet width
+
+    " indent on return
+    call lexima#add_rule({
+      \ 'char':     '<CR>',
+      \ 'at':       '\(<[-=]\|[-=]>\)\%#',
+      \ 'input':    '<CR><Tab>',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<CR>',
+      \ 'at':       '\(<[-=]\|[-=]>\) \%#',
+      \ 'input':    '<BS><CR><Tab>',
+      \ 'mode':     'i',
+    \ })
+
+    " member access
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '\w\(\|\.\|->\)\%#',
+      \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
+      \ 'mode':     'i',
+    \ })
+
+
     "  Vim
     "-----------------------------------------------
     " do-end pair
@@ -2217,43 +2346,6 @@ if neobundle#tap('lexima.vim')
       \ 'filetype': ['php'],
     \ })
 
-    " left arrow (go)
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '< \%#',
-      \ 'input':    '<BS>-<Space>',
-      \ 'mode':     'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '<\%#',
-      \ 'input':    '-<Space>',
-      \ 'mode':     'i',
-    \ })
-
-    " right arrow
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '[-=] \%#',
-      \ 'input':    '<BS>><Space>',
-      \ 'mode':     'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '[-=]\%#',
-      \ 'input':    '><Space>',
-      \ 'mode':     'i',
-    \ })
-
-    " member
-    call lexima#add_rule({
-      \ 'char':     '.',
-      \ 'at':       '\w\(\|\.\|->\)\%#',
-      \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['perl', 'php'],
-    \ })
-
 
     "  SQL
     "-----------------------------------------------
@@ -2266,43 +2358,12 @@ if neobundle#tap('lexima.vim')
     \ })
 
 
-    "  C
-    "-----------------------------------------------
-    " member
-    call lexima#add_rule({
-      \ 'char':     '.',
-      \ 'at':       '\w\(\|\.\+\|->\)\%#',
-      \ 'input':    "<C-r>=smartchr#loop('.', '->', '...')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['c', 'cpp'],
-    \ })
-
-
-    "  Scala
-    "-----------------------------------------------
-    call lexima#add_rule({
-      \ 'char':     '.',
-      \ 'at':       '\w\s*\(\|\.\|=>\)\%#',
-      \ 'input':    "<C-r>=smartchr#loop('.', '=>')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['scala'],
-    \ })
-
-
     "  Go
     "-----------------------------------------------
     " chan
     call lexima#add_rule({
       \ 'char':     'n',
       \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
-      \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['go'],
-    \ })
-
-    call lexima#add_rule({
-      \ 'char':     'n',
-      \ 'at':       '<-\%#',
       \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
       \ 'mode':     'i',
       \ 'filetype': ['go'],
@@ -2338,16 +2399,6 @@ if neobundle#tap('lexima.vim')
       \ 'filetype': ['markdown'],
     \ })
 
-  endfunction
-
-  function! MarkdownTitleLine(char)
-    let text = getline(line('.') - 1)
-
-    if text =~ '^\(\t\|  \)*[-=]\s'
-      return a:char . ' '
-    else
-      return repeat(a:char, strwidth(text))
-    endif
   endfunction
 
   call neobundle#untap()
@@ -2692,23 +2743,6 @@ if neobundle#tap('neosnippet')
     let g:neosnippet#enable_snipmate_compatibility = 1
     let g:neosnippet#snippets_directory = s:env.path.snippets
     let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
-
-    " super tab completion
-    inoremap <silent> <expr> <TAB> <SID>super_tab_completion()
-
-    function! s:super_tab_completion()
-      if pumvisible()
-        return neocomplete#close_popup()
-      elseif neosnippet#expandable_or_jumpable()
-        return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
-      elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
-        return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-      elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
-        return neocomplete#start_manual_complete()
-      else
-        return "\<TAB>"
-      endif
-    endfunction
 
     " remove placeholders (hidden markers) before saving
     autocmd vimrc BufWritePre *
