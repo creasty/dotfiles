@@ -2,6 +2,8 @@ if exists('b:current_syntax') && b:current_syntax == 'swift'
   finish
 endif
 
+let b:current_syntax = 'swift'
+
 
 "=== Operators
 "==============================================================================================
@@ -70,6 +72,3 @@ hi link swiftStringLiteral String
 "==============================================================================================
 syn match swiftType /\<\([A-Z][a-z0-9]*_\?\)\+\>/
 hi link swiftType Type
-
-
-let b:current_syntax = 'swift'
