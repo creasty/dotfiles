@@ -1182,12 +1182,8 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
 
 " automatically change input source
 if s:env.support.osascript
-  let s:keycode_jis_eisuu = 102
-  let g:force_alphanumeric_input_command =
-    \ "osascript -e 'tell application \"System Events\" to key code " . s:keycode_jis_eisuu . "' &"
-
   autocmd vimrc FocusGained *
-    \ call system(g:force_alphanumeric_input_command)
+    \ call vimproc#popen2("osascript -e 'tell application \"System Events\" to key code 102'")
 endif
 
 " inspect syntax
