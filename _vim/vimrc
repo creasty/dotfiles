@@ -1131,7 +1131,22 @@ function! s:auto_mkdir(dir)
 endfunction
 
 " delete current file
-command! -nargs=0 Delete call delete(expand('%')) | enew!
+function! s:delete_or_trash(file)
+  let trash_dir = $HOME . '/.Trash'
+  let file = fnameescape(a:file)
+
+  if empty(file)
+    return
+  endif
+
+  if isdirectory(trash_dir)
+    call vimproc#popen2('mv ' . file . ' ' . trash_dir)
+  else
+    call delete(file)
+  endif
+endfunction
+
+command! -nargs=0 Delete call <SID>delete_or_trash(expand('%')) | enew!
 
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
