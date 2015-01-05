@@ -2153,7 +2153,7 @@ if neobundle#tap('lexima.vim')
     " member access
     call lexima#add_rule({
       \ 'char':     '<Tab>',
-      \ 'at':       '\w\(\|\.\|->\)\%#',
+      \ 'at':       '\w\(\.\|->\)\%#',
       \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
       \ 'mode':     'i',
     \ })
