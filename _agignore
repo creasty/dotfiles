@@ -1,6 +1,7 @@
 tmp/
 cache/
 log/
+vendor/bundle
 
 *.jpg
 *.jpeg
