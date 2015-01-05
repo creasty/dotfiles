@@ -1074,14 +1074,19 @@ endfunction
 
 "=== Fast key strokes in insert mode
 "==============================================================================================
-set eventignore+=InsertLeave
+function! s:insert_enter()
+  set eventignore+=InsertLeave,InsertEnter
+  return ''
+endfunction
 
 function! s:insert_leave()
+  set eventignore-=InsertLeave,InsertEnter
   doautocmd InsertLeave
   echo ''
   return ''
 endfunction
 
+autocmd vimrc InsertEnter * call <SID>insert_enter()
 inoremap <expr> <Esc> <SID>insert_leave() . "\<Esc>"
 
 
