@@ -190,6 +190,9 @@ init_python() {
   section "Installing Python packages"
   pip install howdoi
   pip install numpy
+  pip install mitmproxy
+  pip install protobuf
+  pip install pyamf
 }
 
 init_python
