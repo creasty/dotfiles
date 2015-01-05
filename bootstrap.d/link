@@ -8,6 +8,7 @@ DEST_DIR="$HOME"
 LINKS=(
   _agignore
   _ansible.cfg
+  _rbenv/default-gems
   _bash/bash_profile:.bash_profile
   _bash/bashrc:.bashrc
   _coffeelintrc

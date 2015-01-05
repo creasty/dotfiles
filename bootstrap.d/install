@@ -80,26 +80,6 @@ init_rbenv() {
 init_rbenv
 
 
-#  Gem
-#-----------------------------------------------
-init_gem() {
-  section "Installing bundler"
-
-  if cmd_exists bundle; then
-    print_info "Installed"
-  else
-    rbenv exec gem install bundler
-    print_status $?
-  fi
-
-  section "Installing gem packages"
-  bundle
-  print_status $?
-}
-
-init_gem
-
-
 #  NVM
 #-----------------------------------------------
 init_nvm() {
