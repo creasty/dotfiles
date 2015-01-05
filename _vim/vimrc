@@ -921,20 +921,6 @@ vmap j gj
 nmap k gk
 vmap k gk
 
-" fast key strokes in insert mode
-function! s:inorm_on()
-  set eventignore+=InsertLeave,InsertEnter
-  return ''
-endfunction
-
-function! s:inorm_off()
-  set eventignore-=InsertLeave,InsertEnter
-  return ''
-endfunction
-
-autocmd vimrc InsertEnter * call <SID>inorm_on()
-inoremap <expr> <Esc> <SID>inorm_off() . "\<Esc>"
-
 " Emacs-like key bindings
 inoremap <Plug>(emacs-down) <C-o>gj
 inoremap <Plug>(emacs-up) <C-o>gk
@@ -1086,6 +1072,19 @@ function! s:force_blockwise_visual(next_key)
 endfunction
 
 
+"=== Fast key strokes in insert mode
+"==============================================================================================
+set eventignore+=InsertLeave
+
+function! s:insert_leave()
+  doautocmd InsertLeave
+  echo ''
+  return ''
+endfunction
+
+inoremap <expr> <Esc> <SID>insert_leave() . "\<Esc>"
+
+
 "=== Utils
 "==============================================================================================
 " reopen current buffer with specific encoding
@@ -1210,7 +1209,7 @@ let s:root_patterns = [
   \ 'Gemfile',
   \ 'package.json',
   \ '.vimprojectroot',
-  \ '*.xcodeproj'
+  \ '*.xcodeproj',
 \ ]
 
 function! s:get_root_directory()
@@ -1762,7 +1761,7 @@ if neobundle#tap('lexima.vim')
 
   let g:lexima_no_map_to_escape = 1
 
-  inoremap <Esc> <C-r>=lexima#insmode#escape() . <SID>inorm_off()<CR><Esc>
+  inoremap <Esc> <C-r>=lexima#insmode#escape() . <SID>insert_leave()<CR><Esc>
 
   function! SuperTabCompletion()
     if pumvisible()
