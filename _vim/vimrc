@@ -33,6 +33,7 @@ function! s:vimrc_environment()
     \ 'neobundle': vim_path . '/bundle/neobundle.vim',
     \ 'local':     vim_path . '/locals',
     \ 'dict':      vim_path . '/dict',
+    \ 'template':  vim_path . '/templates',
     \ 'snippets':  vim_path . '/snippets',
   \ }
 
