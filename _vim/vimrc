@@ -1210,6 +1210,7 @@ let s:root_patterns = [
   \ 'package.json',
   \ '.vimprojectroot',
   \ '*.xcodeproj',
+  \ 'build.sbt',
 \ ]
 
 function! s:get_root_directory()
