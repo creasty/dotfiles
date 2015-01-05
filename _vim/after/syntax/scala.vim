@@ -4,11 +4,11 @@ hi link myScalaType Type
 hi link scalaInstanceDeclaration Type
 hi link scalaSpecial Operator
 
-syn keyword scalaSpecialFunction this package import ne eq
+syn keyword scalaSpecialFunction this import ne eq to until
 hi link scalaSpecialFunction Function
 
 syn clear scalaTypeStatement
-syn keyword scalaKeyword type
+syn keyword scalaKeyword type package
 syn keyword scalaKeyword private protected public abstract override
 
 syn keyword scalaBoolean true false
