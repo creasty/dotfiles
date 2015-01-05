@@ -24,31 +24,42 @@
   default = current
 
 [alias]
-  a    = "!git add -A -v `git rev-parse --show-toplevel`"
-  m    = merge
-  mf   = merge FETCH_HEAD
+  a = ! git add -A -v `git rev-parse --show-toplevel`
+  s = status -s
+  t = tag
+  r = remote
+
   c    = commit
-  cm   = "!git a && git c -m"
-  ca   = "!git a && git c --amend"
-  cane = "!git a && git c --amend --no-edit"
-  k    = checkout
-  kb   = checkout -B
-  km   = checkout master
-  w    = show --diff-filter=M
-  s    = status -s
-  d    = diff --diff-filter=M
-  dc   = diff --diff-filter=M --cached
-  sd   = "!git s && git d"
-  sdc  = "!git s && git dc"
-  b    = branch
-  t    = tag
-  l    = log
-  ll   = log -1 HEAD
-  g    = log --oneline --graph
-  r    = remote
-  v    = revert
-  st   = stash
-  sp   = stash pop
+  cm   = ! git a && git c -m
+  ca   = commit --amend
+  cam  = commit --amend -m
+  cane = commit --amend --no-edit
+
+  b  = branch
+  k  = checkout
+  kb = checkout -B
+  km = checkout master
+  kd = checkout develop
+
+  wr = browse-remote
+  w  = show --diff-filter=M
+
+  d  = diff --diff-filter=M
+  dc = diff --diff-filter=M --cached
+
+  l  = log
+  ll = log -1 HEAD
+  lg = log --oneline --graph
+
+  m  = merge
+  mf = merge FETCH_HEAD
+
+  st = stash
+  sp = stash pop
+
+  v  = revert
+  p  = cherry-pick
+  re = rebase
 
   sm  = submodule
   smu = submodule update --remote
@@ -71,6 +82,7 @@
   res3 = reset --soft HEAD~~~
   res4 = reset --soft HEAD~~~~
   res5 = reset --soft HEAD~~~~~
+
   reh  = reset --hard
   reh0 = reset --hard HEAD
   reh1 = reset --hard HEAD~
@@ -79,19 +91,29 @@
   reh4 = reset --hard HEAD~~~~
   reh5 = reset --hard HEAD~~~~~
 
-  edit-modified   = "!vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`"
-  edit-unmerged   = "!vim `git ls-files --unmerged | cut -f2 | sort -u`"
-  add-unmerged    = "!git add `git ls-files --unmerged | cut -f2 | sort -u`"
-  delete-unmerged = "!git rm `git ls-files --deleted | cut -f2 | sort -u`"
-  modified        = "!git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -"
+  edit-modified   = ! vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`
+  edit-unmerged   = ! vim `git ls-files --unmerged | cut -f2 | sort -u`
+  add-unmerged    = ! git add `git ls-files --unmerged | cut -f2 | sort -u`
+  delete-unmerged = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
+  modified        = ! git diff $1..$1\\^ --name-only | xargs sh -c 'vim "$@" < /dev/tty' -
 
   # Remove branches that have already been merged with master
-  dm = "!git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d"
+  dm = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
 
   reload-config = "!git config -l > /dev/null"
+
+  ignore = ! ([ ! -e .gitignore ] && touch .gitignore) | echo $1 >> .gitignore
 
 [url "https://"]
   insteadOf = git://
 
 [issue]
   type = github
+
+[web]
+  browser = google-chrome
+
+[browse-remote "github.com"]
+  top = https://{host}/{path}
+  ref = https://{host}/{path}/tree/{short_ref}
+  rev = https://{host}/{path}/commit/{commit}
