@@ -1,3 +1,7 @@
+" Vim syntax file
+" Language:   Swift (https://developer.apple.com/swift)
+" Maintainer: Yuki Iwanaga (yuki@creasty.com)
+
 if exists('b:current_syntax') && b:current_syntax == 'swift'
   finish
 endif

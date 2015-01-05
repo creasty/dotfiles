@@ -1,28 +1,28 @@
 " Vim indent file
 " Language:   Scala (http://scala-lang.org/)
-" Maintainer: Yuki Iwanaga
+" Maintainer: Yuki Iwanaga (yuki@creasty.com)
 
 if exists('b:did_indent')
   finish
 endif
 let b:did_indent = 1
 
-setlocal indentexpr=GetMyScalaIndent()
+setlocal indentexpr=GetScalaIndent()
 setlocal indentkeys=0{,0},0),!^F,<>>,<CR>
 setlocal autoindent shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
-if exists('*GetMyScalaIndent')
-  finish
-endif
+" if exists('*GetScalaIndent')
+"   finish
+" endif
 
-function! CountParens(line)
+function! s:count_parens(line)
   let line = substitute(a:line, '"\(.\|\\"\)*"', '', 'g')
   let open = substitute(line, '[^(]', '', 'g')
   let close = substitute(line, '[^)]', '', 'g')
   return strlen(open) - strlen(close)
 endfunction
 
-function! GetMyScalaIndent()
+function! GetScalaIndent()
   let lnum = prevnonblank(v:lnum - 1)
 
   if lnum == 0
@@ -47,7 +47,7 @@ function! GetMyScalaIndent()
   endif
 
   " parentheses
-  let c = CountParens(prevline)
+  let c = s:count_parens(prevline)
   if c > 0
     let ind = ind + &shiftwidth
   elseif c < 0
