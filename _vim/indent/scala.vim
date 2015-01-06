@@ -33,6 +33,11 @@ function! GetScalaIndent()
   let prevline = getline(lnum)
   let thisline = getline(v:lnum)
 
+  " comments
+  if prevline =~ '^\s*/\*\*\?'
+    return ind + 1
+  endif
+
   " html literals
   if prevline !~# '/>\s*$' && prevline =~# '^\s*<[a-zA-Z][^>]*>\s*$'
     return ind + &shiftwidth
