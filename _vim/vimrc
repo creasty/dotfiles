@@ -1173,24 +1173,27 @@ cnoremap <expr> r
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
-" edit next file :en
-cnoremap <expr> n
-  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>NextFile" : 'n'
-
 " edit a next file in the same directory
-command! -nargs=0 NextFile call <SID>next_file(expand('%:p'))
+command! -nargs=0 NextFile call <SID>next_file(1)
+command! -nargs=0 PrevFile call <SID>next_file(-1)
 
-function! s:next_file(path)
-  let basename = fnamemodify(a:path, ':t')
-  let directory = fnamemodify(a:path, ':h')
+nnoremap g9 :PrevFile<CR>
+nnoremap g0 :NextFile<CR>
 
-  let files = split(system('ls ' . fnameescape(directory) . ' -aF | grep -v / | sed -e "s/*//"'), "\n")
+function! s:next_file(direction)
+  let path = expand('%:p')
+  let directory = fnamemodify(path, ':h')
+
+  let paths = split(globpath(directory, '*'), "\n")
+  let files = filter(paths, '!isdirectory(v:val)')
   let n = len(files)
-  let idx = index(files, basename)
+  let idx = index(files, path)
 
-  let next = directory . '/' . fnameescape(files[(idx + 1) % n])
+  if idx >= 0
+    exec 'edit' fnameescape(files[(idx + a:direction) % n])
+  endif
 
-  exec 'edit' next
+  return ''
 endfunction
 
 " file detect on read / save
