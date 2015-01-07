@@ -1192,8 +1192,6 @@ function! s:next_file(direction)
   if idx >= 0
     exec 'edit' fnameescape(files[(idx + a:direction) % n])
   endif
-
-  return ''
 endfunction
 
 " file detect on read / save
