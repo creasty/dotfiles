@@ -1146,7 +1146,7 @@ function! s:delete_or_trash(file)
   endif
 endfunction
 
-command! -nargs=0 Delete call <SID>delete_or_trash(expand('%')) | enew!
+command! -nargs=0 Delete call <SID>delete_or_trash(expand('%:p')) | enew!
 
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
@@ -1788,10 +1788,8 @@ if neobundle#tap('lexima.vim')
       return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
     elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
       return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-    elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
-      return neocomplete#start_manual_complete()
     else
-      return "\<TAB>"
+      return "\<Tab>"
     endif
   endfunction
 
