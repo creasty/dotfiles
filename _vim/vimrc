@@ -874,6 +874,22 @@ function! MyDiff()
 endfunction
 
 
+"=== Fast <C-o> hack
+"==============================================================================================
+function! s:insert_enter()
+  set eventignore+=InsertLeave,InsertEnter
+  return ''
+endfunction
+
+function! s:insert_leave()
+  set eventignore-=InsertLeave,InsertEnter
+  return "\<Left>\<Right>" | " Workaround for missing screen update
+endfunction
+
+inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
+inoremap <expr> <Plug>(insert-leave) <SID>insert_leave()
+
+
 "=== Editing
 "==============================================================================================
 " indent
@@ -933,11 +949,11 @@ imap <C-j> <CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
-imap <C-p> <Plug>(emacs-up)
-imap <C-n> <Plug>(emacs-down)
-imap <C-a> <Plug>(emacs-bol)
-imap <C-e> <Plug>(emacs-eol)
-imap <C-k> <Plug>(emacs-kill)
+imap <C-p> <Plug>(insert-enter)<Plug>(emacs-up)<Plug>(insert-leave)
+imap <C-n> <Plug>(insert-enter)<Plug>(emacs-down)<Plug>(insert-leave)
+imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)<Plug>(insert-leave)
+imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)<Plug>(insert-leave)
+imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)<Plug>(insert-leave)
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -1070,24 +1086,6 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
-
-
-"=== Fast key strokes in insert mode
-"==============================================================================================
-function! s:insert_enter()
-  set eventignore+=InsertLeave,InsertEnter
-  return ''
-endfunction
-
-function! s:insert_leave()
-  set eventignore-=InsertLeave,InsertEnter
-  doautocmd InsertLeave
-  echo ''
-  return ''
-endfunction
-
-autocmd vimrc InsertEnter * call <SID>insert_enter()
-inoremap <expr> <Esc> <SID>insert_leave() . "\<Esc>"
 
 
 "=== Utils
@@ -1776,10 +1774,6 @@ if neobundle#tap('lexima.vim')
   call neobundle#config({
     \ 'autoload': { 'insert': 1 },
   \ })
-
-  let g:lexima_no_map_to_escape = 1
-
-  inoremap <Esc> <C-r>=lexima#insmode#escape() . <SID>insert_leave()<CR><Esc>
 
   function! SuperTabCompletion()
     if pumvisible()
@@ -2714,8 +2708,8 @@ if neobundle#tap('neocomplete')
     " cancel or accept
     imap <silent> <expr> <C-f> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Right>"
     imap <silent> <expr> <C-b> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Left>"
-    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(emacs-bol)"
-    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(emacs-eol)"
+    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(insert-enter)\<Plug>(emacs-bol)\<Plug>(insert-leave)"
+    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(insert-enter)\<Plug>(emacs-eol)\<Plug>(insert-leave)"
     imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
     inoremap <silent> <expr> <Space> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Space>"
