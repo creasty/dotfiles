@@ -875,6 +875,22 @@ function! MyDiff()
 endfunction
 
 
+"=== Fast <C-o> hack
+"==============================================================================================
+function! s:insert_enter()
+  set eventignore+=InsertLeave,InsertEnter
+  return ''
+endfunction
+
+function! s:insert_leave()
+  set eventignore-=InsertLeave,InsertEnter
+  return "\<Left>\<Right>" | " Workaround for missing screen update
+endfunction
+
+inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
+inoremap <expr> <Plug>(insert-leave) <SID>insert_leave()
+
+
 "=== Editing
 "==============================================================================================
 " indent
@@ -934,11 +950,11 @@ imap <C-j> <CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
-imap <C-p> <Plug>(emacs-up)
-imap <C-n> <Plug>(emacs-down)
-imap <C-a> <Plug>(emacs-bol)
-imap <C-e> <Plug>(emacs-eol)
-imap <C-k> <Plug>(emacs-kill)
+imap <C-p> <Plug>(insert-enter)<Plug>(emacs-up)<Plug>(insert-leave)
+imap <C-n> <Plug>(insert-enter)<Plug>(emacs-down)<Plug>(insert-leave)
+imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)<Plug>(insert-leave)
+imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)<Plug>(insert-leave)
+imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)<Plug>(insert-leave)
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -1073,24 +1089,6 @@ function! s:force_blockwise_visual(next_key)
 endfunction
 
 
-"=== Fast key strokes in insert mode
-"==============================================================================================
-function! s:insert_enter()
-  set eventignore+=InsertLeave,InsertEnter
-  return ''
-endfunction
-
-function! s:insert_leave()
-  set eventignore-=InsertLeave,InsertEnter
-  doautocmd InsertLeave
-  echo ''
-  return ''
-endfunction
-
-autocmd vimrc InsertEnter * call <SID>insert_enter()
-inoremap <expr> <Esc> <SID>insert_leave() . "\<Esc>"
-
-
 "=== Utils
 "==============================================================================================
 " reopen current buffer with specific encoding
@@ -1132,7 +1130,22 @@ function! s:auto_mkdir(dir)
 endfunction
 
 " delete current file
-command! -nargs=0 Delete call delete(expand('%')) | enew!
+function! s:delete_or_trash(file)
+  let trash_dir = $HOME . '/.Trash'
+  let file = fnameescape(a:file)
+
+  if empty(file)
+    return
+  endif
+
+  if isdirectory(trash_dir)
+    call vimproc#popen2('mv ' . file . ' ' . trash_dir)
+  else
+    call delete(file)
+  endif
+endfunction
+
+command! -nargs=0 Delete call <SID>delete_or_trash(expand('%:p')) | enew!
 
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
@@ -1159,24 +1172,25 @@ cnoremap <expr> r
 
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
-" edit next file :en
-cnoremap <expr> n
-  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>NextFile" : 'n'
-
 " edit a next file in the same directory
-command! -nargs=0 NextFile call <SID>next_file(expand('%:p'))
+command! -nargs=0 NextFile call <SID>next_file(1)
+command! -nargs=0 PrevFile call <SID>next_file(-1)
 
-function! s:next_file(path)
-  let basename = fnamemodify(a:path, ':t')
-  let directory = fnamemodify(a:path, ':h')
+nnoremap g9 :PrevFile<CR>
+nnoremap g0 :NextFile<CR>
 
-  let files = split(system('ls ' . fnameescape(directory) . ' -aF | grep -v / | sed -e "s/*//"'), "\n")
+function! s:next_file(direction)
+  let path = expand('%:p')
+  let directory = fnamemodify(path, ':h')
+
+  let paths = split(globpath(directory, '*'), "\n")
+  let files = filter(paths, '!isdirectory(v:val)')
   let n = len(files)
-  let idx = index(files, basename)
+  let idx = index(files, path)
 
-  let next = directory . '/' . fnameescape(files[(idx + 1) % n])
-
-  exec 'edit' next
+  if idx >= 0
+    exec 'edit' fnameescape(files[(idx + a:direction) % n])
+  endif
 endfunction
 
 " file detect on read / save
@@ -1762,10 +1776,6 @@ if neobundle#tap('lexima.vim')
     \ 'autoload': { 'insert': 1 },
   \ })
 
-  let g:lexima_no_map_to_escape = 1
-
-  inoremap <Esc> <C-r>=lexima#insmode#escape() . <SID>insert_leave()<CR><Esc>
-
   function! SuperTabCompletion()
     if pumvisible()
       return neocomplete#close_popup()
@@ -1773,10 +1783,8 @@ if neobundle#tap('lexima.vim')
       return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
     elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
       return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-    elseif strpart(getline('.'), col('.') - 2, 1) =~ '\w'
-      return neocomplete#start_manual_complete()
     else
-      return "\<TAB>"
+      return "\<Tab>"
     endif
   endfunction
 
@@ -2701,8 +2709,8 @@ if neobundle#tap('neocomplete')
     " cancel or accept
     imap <silent> <expr> <C-f> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Right>"
     imap <silent> <expr> <C-b> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Left>"
-    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(emacs-bol)"
-    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(emacs-eol)"
+    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(insert-enter)\<Plug>(emacs-bol)\<Plug>(insert-leave)"
+    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(insert-enter)\<Plug>(emacs-eol)\<Plug>(insert-leave)"
     imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
     inoremap <silent> <expr> <Space> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Space>"
