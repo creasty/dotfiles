@@ -193,6 +193,9 @@ else
   " instant table creation
   NeoBundleLazy 'dhruvasagar/vim-table-mode'
 
+  " a genius template engine
+  NeoBundle 'creasty/mold.vim'
+
 
   "  Completion
   "-----------------------------------------------
@@ -2639,6 +2642,29 @@ if neobundle#tap('vim-table-mode')
       \ ],
     \ },
   \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: mold.vim
+"==============================================================================================
+if neobundle#tap('mold.vim')
+  " auto load
+  " autocmd BufReadPost,BufNewFile * Template
+
+  autocmd User MoldLoad call <SID>template_loaded()
+
+  function! s:template_loaded()
+    %s/FILE_PATH/\=expand('%:p')/ge
+    %s/FILE_NAME/\=expand('%:t')/ge
+
+    silent! :%!erb
+
+    if search('<+CURSOR+>')
+      execute 'normal! "_da>'
+    endif
+  endfunction
 
   call neobundle#untap()
 endif
