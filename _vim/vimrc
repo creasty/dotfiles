@@ -2650,10 +2650,9 @@ endif
 "=== Plugin: mold.vim
 "==============================================================================================
 if neobundle#tap('mold.vim')
-  " auto load
-  " autocmd BufReadPost,BufNewFile * Template
+  autocmd vimrc BufNewFile * Template
 
-  autocmd User MoldLoad call <SID>template_loaded()
+  autocmd vimrc User MoldLoad call <SID>template_loaded()
 
   function! s:template_loaded()
     %s/FILE_PATH/\=expand('%:p')/ge
