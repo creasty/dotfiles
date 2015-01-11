@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+IFS=$'\n'
+
+for l in `cat`; do
+  IFS=' '
+  $@ "$l"
+done
