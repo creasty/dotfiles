@@ -1,0 +1,6 @@
+Host <%= 'FILE_NAME' %>
+  HostName 127.0.0.1<+CURSOR+>
+  User webapp
+  Port 22
+  IdentityFile ~/.ssh/keys/<%= 'FILE_NAME' %>_webapp
+
