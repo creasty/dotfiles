@@ -3450,14 +3450,14 @@ if neobundle#tap('vim-tags')
   let g:vim_tags_gems_tags_command = '{CTAGS} -R {OPTIONS} `rbenv exec bundle show --paths` 2>/dev/null'
 
   let g:vim_tags_directories = [
-    / '.git',
-    / '.hg',
-    / '.svn',
-    / '.vimprojectroot',
-    / '.bzr',
-    / '_darcs',
-    / 'CVS',
-  / ]
+    \ '.git',
+    \ '.hg',
+    \ '.svn',
+    \ '.vimprojectroot',
+    \ '.bzr',
+    \ '_darcs',
+    \ 'CVS',
+  \ ]
 
   call neobundle#untap()
 endif
