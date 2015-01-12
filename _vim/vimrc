@@ -305,6 +305,9 @@ else
   " display tags of a file ordered by scope
   NeoBundleLazy 'majutsushi/tagbar'
 
+  " ctags generator
+  NeoBundle 'szw/vim-tags'
+
 
   "  Appearance
   "-----------------------------------------------
@@ -1045,6 +1048,8 @@ nnoremap <leader>sor ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
 nnoremap tn :tn<CR>
 nnoremap tp :tp<CR>
 nnoremap tl :tags<CR>
+
+nnoremap <C-]> g<C-]>
 
 " tab pages / buffers
 nmap <C-w><C-t> <C-w>t
@@ -3437,6 +3442,27 @@ if neobundle#tap('tagbar')
 endif
 
 
+"=== Plugin: vim-tags
+"==============================================================================================
+if neobundle#tap('vim-tags')
+  let g:vim_tags_auto_generate = 1
+  let g:vim_tags_main_file = '.tags'
+  let g:vim_tags_gems_tags_command = '{CTAGS} -R {OPTIONS} `rbenv exec bundle show --paths` 2>/dev/null'
+
+  let g:vim_tags_directories = [
+    / '.git',
+    / '.hg',
+    / '.svn',
+    / '.vimprojectroot',
+    / '.bzr',
+    / '_darcs',
+    / 'CVS',
+  / ]
+
+  call neobundle#untap()
+endif
+
+
 "=== Plugin: vim-indent-guides
 "==============================================================================================
 if s:env.is_gui && neobundle#tap('vim-indent-guides')
@@ -3599,6 +3625,8 @@ if neobundle#tap('vim-scala')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['scala'] }
   \ })
+
+  let g:scala_sort_across_groups = 1
 
   call neobundle#untap()
 endif

@@ -1,13 +1,15 @@
+--append=yes
+--recurse=yes
+
 --fields=-s
 --fields=+l
 --fields=+n
-
---languages=-html
 
 --exclude=.git
 --exclude=build
 --exclude=dist
 
+--languages=-html
 --langmap=lisp:+.clj
 
 --langdef=scala
