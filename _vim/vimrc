@@ -2202,6 +2202,16 @@ if neobundle#tap('lexima.vim')
     \ })
 
 
+    "  C
+    "-----------------------------------------------
+    call lexima#add_rule({
+      \ 'char':     '<Space>',
+      \ 'at':       '^#include\%#',
+      \ 'input':    ' <><Left>',
+      \ 'filetype': ['c', 'cpp', 'objc'],
+    \ })
+
+
     "  Vim
     "-----------------------------------------------
     " do-end pair
