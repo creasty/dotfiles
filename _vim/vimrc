@@ -2664,8 +2664,10 @@ if neobundle#tap('mold.vim')
   autocmd vimrc User MoldLoad call <SID>template_loaded()
 
   function! s:template_loaded()
-    %s/FILE_PATH/\=expand('%:p')/ge
-    %s/FILE_NAME/\=expand('%:t')/ge
+    %s/\<FILE_PATH\>/\=expand('%:p')/ge
+    %s/\<FILE_NAME\>/\=expand('%:t')/ge
+    %s/\<FULL_NAME\>/Yuki Iwanaga/ge
+    %s/\<USER_NAME\>/Creasty/ge
 
     silent! :%!erb
 
