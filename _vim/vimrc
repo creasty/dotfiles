@@ -3459,6 +3459,8 @@ if neobundle#tap('vim-tags')
     \ 'CVS',
   \ ]
 
+  nnoremap tg :TagsGenerate<CR>
+
   call neobundle#untap()
 endif
 
