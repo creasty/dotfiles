@@ -580,6 +580,11 @@ set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 " show wrap line break
 let &showbreak = '❮'
 
+" conceal
+if has('conceal')
+  set conceallevel=2 concealcursor=
+endif
+
 
 "  Folding
 "-----------------------------------------------
@@ -2821,10 +2826,6 @@ if neobundle#tap('neosnippet')
       \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
     \ }
   \ })
-
-  if has('conceal')
-    set conceallevel=2 concealcursor=i
-  endif
 
   function! neobundle#tapped.hooks.on_source(bundle)
     NeoBundleSource 'emmet-vim'
