@@ -85,6 +85,7 @@ brew install luajit || true
 brew install luarocks || true
 brew install macvim --HEAD --with-luajit || true
 brew install massren && massren --config editor vim || true
+brew install mdp || true
 brew install memcached || true
 brew install mercurial || true
 brew install mysql || true

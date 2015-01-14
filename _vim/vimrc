@@ -774,11 +774,11 @@ function! MyStatusLine(w, cw)
   " space
   let s .= '%='
 
-  if active && is_file && enough_width
+  if active && enough_width
     " file type & encoding
     let s .= ' '
     let s .= (s:status_line_rich_icon ? s:powerline_font_chars['ft'] . ' ' : '')
-      \ . (empty(&ft) ? 'plain' : &ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
+      \ . (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
     let s .= ' '
 
     " cursor
@@ -2973,15 +2973,23 @@ if neobundle#tap('unite.vim')
     let g:unite_source_rec_max_cache_files = 30000
     let g:unite_source_history_yank_enable = 1
 
-    let ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern'])
-      \ . '\|\.\%(jpe\?g\|png\|gif\|pdf\|ttf\|otf\|eot\|woff\|svg\|svgz\)$'
-      \ . '\|\%(^\|/\)\%(tmp\|cache\|public\/system\|vendor\/bundle\)/'
+    let ignore_globs = unite#sources#rec#define()[0]['ignore_globs'] + [
+      \ '.tags',
+      \ '*.jpg', '*.jpeg', '*.png', '*.gif', '*.pdf', '*.ttf', '*.otf', '*.eot', '*.woff', '*.svg', '*.svgz',
+      \ 'tmp/**', 'cache/**', 'public/system/**', 'vendor/bundle/**',
+    \ ]
 
-    call unite#custom#source('file',           'ignore_pattern', ignore_pattern)
-    call unite#custom#source('file_rec',       'ignore_pattern', ignore_pattern)
-    call unite#custom#source('file_rec/async', 'ignore_pattern', ignore_pattern)
-    call unite#custom#source('file_rec/git',   'ignore_pattern', ignore_pattern)
-    call unite#custom#source('grep',           'ignore_pattern', ignore_pattern)
+    call unite#custom#source(
+      \ join([
+        \ 'file',
+        \ 'file_rec',
+        \ 'file_rec/async',
+        \ 'file_rec/git',
+        \ 'grep',
+      \ ], ','),
+      \ 'ignore_globs',
+      \ ignore_globs
+    \ )
 
     if s:env.support.ag
       let g:unite_source_grep_command = 'ag'
