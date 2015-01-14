@@ -2674,20 +2674,33 @@ endif
 "=== Plugin: mold.vim
 "==============================================================================================
 if neobundle#tap('mold.vim')
-  autocmd vimrc BufNewFile * Template
+  autocmd vimrc BufNewFile * call mold#load('', 1)
 
-  autocmd vimrc User MoldLoad call <SID>template_loaded()
+  autocmd vimrc User MoldTemplateLoadPre  call <SID>template_before_load()
+  autocmd vimrc User MoldTemplateLoadPost call <SID>template_after_load()
 
-  function! s:template_loaded()
-    %s/\<FILE_PATH\>/\=expand('%:p')/ge
-    %s/\<FILE_NAME\>/\=expand('%:t')/ge
-    %s/\<FULL_NAME\>/Yuki Iwanaga/ge
-    %s/\<USER_NAME\>/Creasty/ge
+  let s:mold_template_macro = {
+    \ 'FILE_PATH': "\\=expand('%:p')",
+    \ 'FILE_NAME': "\\=expand('%:t')",
+    \ 'FULL_NAME': "Yuki Iwanaga",
+    \ 'USER_NAME': "Creasty",
+  \ }
 
-    silent! :%!erb
+  function! s:template_before_load()
+    let b:mold_saved_cursor = getcurpos()
+  endfunction
+
+  function! s:template_after_load()
+    for [macro, def] in items(s:mold_template_macro)
+      silent exec '%s/\<' . macro . '\>/' . def . '/ge'
+    endfor
+
+    silent! :%!erb -T '-'
 
     if search('<+CURSOR+>')
       execute 'normal! "_da>'
+    else
+      call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
 
