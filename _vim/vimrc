@@ -2944,6 +2944,8 @@ if neobundle#tap('vim-session')
   let g:session_default_overwrite = 1
   let g:session_command_aliases = 1
 
+  let g:session_persist_colors = 0
+
   set sessionoptions-=blank
   set sessionoptions-=help
   set sessionoptions-=options
