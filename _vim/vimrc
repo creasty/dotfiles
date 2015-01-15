@@ -185,8 +185,7 @@ else
   NeoBundleLazy 'Qureana/backend_if'
 
   " highlight Ruby local variables
-  " NeoBundleLazy 'todesking/ruby_hl_lvar.vim'
-  NeoBundleLazy 'creasty/ruby_hl_lvar.vim', 'pr/prevent_from_refreshing_in_vmode'
+  NeoBundleLazy 'todesking/ruby_hl_lvar.vim'
 
   " ascii drawing plugin
   NeoBundleLazy 'DrawIt'
