@@ -9,6 +9,7 @@ hirb
 interactive_editor
 octokit
 powder
+pry
 rails
 synx
 xcpretty
