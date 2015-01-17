@@ -14,6 +14,7 @@ alias lla='ls -Gla'
 alias tree='tree -C'
 alias df='df -h'
 alias tf='tail -f'
+alias less='less -R'
 
 alias vi='vim'
 alias g='git'
