@@ -903,7 +903,7 @@ endfunction
 
 function! s:insert_leave()
   set eventignore-=InsertLeave,InsertEnter
-  return "\<Left>\<Right>" | " Workaround for missing screen update
+  return "\<C-r>\<Esc>" | " Fix for missing screen update
 endfunction
 
 inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
