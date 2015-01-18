@@ -958,11 +958,11 @@ nmap k gk
 vmap k gk
 
 " Emacs-like key bindings
-inoremap <Plug>(emacs-down) <C-o>gj
-inoremap <Plug>(emacs-up) <C-o>gk
-inoremap <Plug>(emacs-eol) <C-o>g$
-inoremap <expr> <Plug>(emacs-bol) (col('.') == 2) ? "\<Left>" : "\<C-o>g0"
-inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-o>d$"
+inoremap <Plug>(emacs-down) <C-g>u<C-o>gj
+inoremap <Plug>(emacs-up) <C-g>u<C-o>gk
+inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
+inoremap <expr> <Plug>(emacs-bol) (col('.') == 2) ? "\<Left>" : "\<C-g>u\<C-o>g0"
+inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
 
 map <C-c> <Esc>
 imap <C-j> <CR>
@@ -1025,6 +1025,9 @@ vnoremap / /\v
 nnoremap <Space>h g^
 nnoremap <Space>l g$
 nnoremap <Space>m %
+vnoremap <Space>h g^
+vnoremap <Space>l g$
+vnoremap <Space>m %
 
 " insert blank lines without going into insert mode
 nnoremap <Space>o mZo<Esc>`ZmZ
