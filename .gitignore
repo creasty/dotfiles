@@ -7,4 +7,6 @@ _vim/.netrwhist
 
 _zsh/secrets.zsh
 
+_tags/tags
+
 !.gitkeep
