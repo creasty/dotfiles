@@ -96,6 +96,8 @@ alias maxscreen='screenresolution set 2560x1600x32@0'
 
 alias redis-server='redis-server /usr/local/etc/redis.conf'
 
+alias ql='qlmanage -p "$@" >& /dev/null'
+
 
 #  Networks
 #-----------------------------------------------
