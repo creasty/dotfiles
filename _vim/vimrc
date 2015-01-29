@@ -528,10 +528,22 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 set wildignore& wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " nice window title
-set title titlestring=
-set titlestring+=#%n " buffer number
-set titlestring+=\ -\ %t%m%r%h%w " file name and flags
-set titlestring+=\ (%{substitute(expand('%:p:h'),\ $HOME,\ '~',\ '')}) " path
+set title titlestring=%{MyTitleText()}
+
+function! MyTitleText()
+  let t = []
+
+  let session = fnamemodify(v:this_session, ':t:r')
+
+  if session != ''
+    call add(t, '[' . session . ']')
+  endif
+
+  let path = substitute(expand('%:p'), $HOME, '~', '')
+  call add(t, path == '' ? '[No Name]' : path)
+
+  return join(t, ' ')
+endfunction
 
 " find file with suffixes
 set suffixesadd& suffixesadd+=.js,.coffee,.swift,.scss
