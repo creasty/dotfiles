@@ -2510,29 +2510,27 @@ if neobundle#tap('switch.vim')
     \ }
   \ })
 
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:switch_custom_definitions = [
-      \ ['public', 'protected', 'private'],
-      \ ['on', 'off'],
-      \ ['yes', 'no'],
-      \ ['it', 'specify'],
-      \ ['describe', 'context'],
-      \ ['and', 'or'],
-      \ ['if', 'unless'],
-      \ ['TRUE', 'FALSE'],
-      \ ['ON', 'OFF'],
-      \ ['YES', 'NO'],
-      \ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
-      \ ['日', '土', '金', '木', '水', '火', '月'],
-      \ ['NeoBundle', 'NeoBundleLazy', 'NeoBundleDisable'],
-      \ {
-        \ '\(\k\+\)':       '''\1''',
-        \ '''\(.\{-}\)''':  '"\1"',
-        \ '"\(.\{-}\)"':    '\1',
-      \ }
-    \ ]
-  endfunction
+  let g:switch_custom_definitions = [
+    \ ['public', 'protected', 'private'],
+    \ ['on', 'off'],
+    \ ['yes', 'no'],
+    \ ['it', 'specify'],
+    \ ['describe', 'context'],
+    \ ['and', 'or'],
+    \ ['if', 'unless'],
+    \ ['TRUE', 'FALSE'],
+    \ ['ON', 'OFF'],
+    \ ['YES', 'NO'],
+    \ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
+    \ ['日', '土', '金', '木', '水', '火', '月'],
+    \ ['NeoBundle', 'NeoBundleLazy', 'NeoBundleDisable'],
+    \ { ':\(\w\+\)': '''\1''' },
+    \ {
+      \ '''\(.\{-}\)''':  '"\1"',
+      \ '"\(.\{-}\)"':    '''\1''',
+    \ },
+  \ ]
 
   nnoremap <silent> - :Switch<CR>
 
