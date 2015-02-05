@@ -2215,7 +2215,7 @@ if neobundle#tap('lexima.vim')
 
     " member access
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
+      \ 'char':     '<C-t>',
       \ 'at':       '\w\(\.\|->\)\%#',
       \ 'input':    "<C-r>=smartchr#loop('.', '->')<CR>",
       \ 'mode':     'i',
@@ -2738,7 +2738,6 @@ if neobundle#tap('neocomplete')
   function! neobundle#tapped.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_smart_case = 1
-    let g:neocomplcache_max_list = 20
     let g:neocomplete#sources#syntax#min_keyword_length = 3
     let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
     let g:neocomplete#disable_auto_complete = 0
