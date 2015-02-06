@@ -46,10 +46,10 @@ init_homebrew
 #-----------------------------------------------
 init_rbenv() {
   ruby_versions=(
-    2.1.1
     2.1.5
+    2.2.0
   )
-  default_version=2.1.5
+  default_version="$(< $DOTFILES_PATH/.ruby-version)"
 
   installed_ruby_versions="$(rbenv versions --bare)"
 
