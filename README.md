@@ -13,7 +13,7 @@ Installation
 ------------
 
 ```sh
-$ bash <(curl -L dotfiles.creasty.co/bootstrap)
+$ bash <(curl -L dotfiles.creasty.com/bootstrap)
 ```
 
 Update
