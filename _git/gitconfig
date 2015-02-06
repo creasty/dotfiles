@@ -100,7 +100,7 @@
   # Remove branches that have already been merged with master
   dm = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
 
-  reload-config = "!git config -l > /dev/null"
+  reload-config = ! git config -l > /dev/null
 
   ignore = ! ([ ! -e .gitignore ] && touch .gitignore) | echo $1 >> .gitignore
 
