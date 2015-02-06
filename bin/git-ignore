@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ $# -gt 0 ]; then
+  for pattern in "$@"; do
+    echo "$pattern" >> .gitignore
+  done
+else
+  cat .gitignore
+fi

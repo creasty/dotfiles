@@ -102,8 +102,6 @@
 
   reload-config = ! git config -l > /dev/null
 
-  ignore = ! ([ ! -e .gitignore ] && touch .gitignore) | echo $1 >> .gitignore
-
 [url "https://"]
   insteadOf = git://
 
