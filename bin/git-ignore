@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
+IFILE=.gitignore
+
 if [ $# -gt 0 ]; then
   for pattern in "$@"; do
-    echo "$pattern" >> .gitignore
+    if grep -Fxq "$pattern" $IFILE; then
+      echo "Already ignored: $pattern"
+    else
+      echo "$pattern" >> $IFILE
+      echo "Added: $pattern"
+    fi
   done
 else
-  cat .gitignore
+  cat $IFILE
 fi
