@@ -685,13 +685,6 @@ function! MyTabLine()
 
   let s .= '%#TabLineFill#'
 
-  " space
-  let s .= '%='
-
-  let s .= fnamemodify(v:this_session, ':t:r')
-
-  let s .= ' '
-
   return s
 endfunction
 
