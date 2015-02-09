@@ -1,8 +1,8 @@
-dotfiles
-========
-
 ![dotfiles -- Work it harder, make it better, do it faster, makes us stronger](./readme/dotfiles.png)
 
+
+dotfiles
+========
 
 Installation
 ------------
