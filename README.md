@@ -54,19 +54,17 @@ Extra configurations
 ### Security key settings
 
 1. Create `_zsh/secrets.zsh`.
-2. Configure aws cli by run:
-    ```sh
-    $ aws configure
-    ```
+2. Configure aws cli by run: `$ aws configure`
+
 ### System Preference.app
 
 #### Keyboard
 
-1. Change modifier keys (press `Modifier Keys...` button in `Keyboard` tab)
+1. Change modifier keys (press `Modifier Keys...` button in `Keyboard` tab)  
   ![](./readme/syspref/keyboard/modifiers.png)
-2. Set key for moving focus to next window (in `Keyboard` section of `Shortcuts` tab)
+2. Set key for moving focus to next window (in `Keyboard` section of `Shortcuts` tab)  
   ![](./readme/syspref/keyboard/next_window.png)
-3. Enable full keyboard access (in `Shortcuts` tab)
+3. Enable full keyboard access (in `Shortcuts` tab)  
   ![](./readme/syspref/keyboard/access.png)
 
 #### Trackpad
@@ -77,18 +75,18 @@ Extra configurations
 
 ### Karabiner.app
 
-1. Enable these options (in `Change Key` tab)
+1. Enable these options (in `Change Key` tab)  
   ![](./readme/karabiner/change_key.png)
-2. Set these values (in `Key Repeate` tab)
+2. Set these values (in `Key Repeate` tab)  
   ![](./readme/karabiner/key_repeat.png)
-3. Turn off status message (in `Status Message` tab)
+3. Turn off status message (in `Status Message` tab)  
   ![](./readme/karabiner/status_message.png)
-4. Hide icon in the menu bar (in `MenuBar` tab)
+4. Hide icon in the menu bar (in `MenuBar` tab)  
   ![](./readme/karabiner/icon.png)
 
 ### Seil.app
 
-Change `Control_L` to `Escape` in `Other keys` section of `Setting` tab.
+Change `Control_L` to `Escape` in `Other keys` section of `Setting` tab.  
 ![](./readme/seil/control_l.png)
 
 
