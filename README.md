@@ -1,12 +1,7 @@
 dotfiles
 ========
 
-**Harder, Better, Faster, Stronger**
-
-> Work it harder  
-> Make it better  
-> Do it faster  
-> Makes us stronger
+![dotfiles -- Work it harder, make it better, do it faster, makes us stronger](./readme/dotfiles.png)
 
 
 Installation
