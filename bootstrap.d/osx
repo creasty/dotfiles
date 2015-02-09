@@ -15,13 +15,6 @@ subsection "General"
 # disable the sound effects on boot
 sudo nvram SystemAudioVolume=' '
 
-# menu bar: hide the Time Machine, Volume, User, and Bluetooth icons
-defaults write ~/Library/Preferences/ByHost/com.apple.systemuiserver.* dontAutoLoad -array \
-  '/System/Library/CoreServices/Menu Extras/TimeMachine.menu' \
-  '/System/Library/CoreServices/Menu Extras/Volume.menu' \
-  '/System/Library/CoreServices/Menu Extras/User.menu' \
-  '/System/Library/CoreServices/Menu Extras/Bluetooth.menu'
-
 # set sidebar icon size to small
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
 
@@ -54,7 +47,7 @@ defaults write com.apple.springing.enabled -bool true
 # skin
 defaults write NSGlobalDomain AppleAntiAliasingThreshold -int 4
 defaults write NSGlobalDomain AppleAquaColorVariant -int 6
-defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool ture
+defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool true
 defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
 defaults write NSGlobalDomain AppleInterfaceStyle -string 'Dark'
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
