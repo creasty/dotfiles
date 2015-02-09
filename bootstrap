@@ -79,7 +79,7 @@ main() {
 
   cd $DOTFILES_PATH
 
-  # ./bootstrap.d/install
+  ./bootstrap.d/install
   ./bootstrap.d/link
   ./bootstrap.d/shell
   ./bootstrap.d/app

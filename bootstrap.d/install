@@ -6,7 +6,7 @@ source $DOTFILES_PATH/lib/helpers.sh
 
 #  Xcode command line tool
 #-----------------------------------------------
-init_xcode_clt() {
+init_xcode_cli() {
   section "Installing Xcode command line tool"
   xcode-select --install > /dev/null 2>&1
 
@@ -17,7 +17,7 @@ init_xcode_clt() {
   fi
 }
 
-init_xcode_clt
+init_xcode_cli
 
 
 #  Homebrew
@@ -72,7 +72,7 @@ init_rbenv() {
     fi
   done
 
-  subsection "Set global ruby to v"
+  subsection "Set global ruby to v$version"
   rbenv global $version
   print_status $?
 }
@@ -182,11 +182,11 @@ init_lua
 #-----------------------------------------------
 init_python() {
   section "Installing Python packages"
-  pip install howdoi
-  pip install numpy
-  pip install mitmproxy
-  pip install protobuf
-  pip install pyamf
+  pip install --upgrade howdoi
+  pip install --upgrade numpy
+  pip install --upgrade mitmproxy
+  pip install --upgrade protobuf
+  pip install --upgrade pyamf
 }
 
 init_python
