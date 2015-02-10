@@ -9,6 +9,7 @@ brew upgrade
 # add repositories
 brew tap caskroom/versions || true
 brew tap creasty/homebrew-creasty || true
+brew tap homebrew/boneyard || true
 brew tap homebrew/dupes || true
 brew tap homebrew/science || true
 brew tap josegonzalez/php || true
@@ -58,6 +59,7 @@ brew install ctags || true
 brew install ctags-objc-ja --HEAD --enable-japanese-support || true
 brew install curl --with-ssl --with-libssh2 || true
 brew install direnv || true
+brew install elasticsearch || true
 brew install eot-utils || true
 brew install fontconfig || true
 brew install fontforge || true
@@ -89,6 +91,7 @@ brew install massren && massren --config editor vim || true
 brew install mdp || true
 brew install memcached || true
 brew install mercurial || true
+brew install mongodb || true
 brew install mysql || true
 brew install ngrep || true
 brew install nkf || true
@@ -100,6 +103,7 @@ brew install pcre || true
 brew install peco || true
 brew install phantomjs || true
 brew install php55 || true
+brew install postgresql || true
 brew install pstree || true
 brew install python3 || true
 brew install q || true
