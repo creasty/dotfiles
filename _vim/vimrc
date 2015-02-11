@@ -184,9 +184,6 @@ else
   " toggle ruby's postfix notations of if/unless/while/until
   NeoBundleLazy 'Qureana/backend_if'
 
-  " highlight Ruby local variables
-  NeoBundleLazy 'todesking/ruby_hl_lvar.vim'
-
   " ascii drawing plugin
   NeoBundleLazy 'DrawIt'
 
@@ -2631,19 +2628,6 @@ if neobundle#tap('backend_if')
 
   autocmd vimrc FileType ruby
     \ nnoremap <Leader>ts :ToggleStatement<CR>
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: ruby_hl_lvar.vim
-"==============================================================================================
-if neobundle#tap('ruby_hl_lvar.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'filetypes': ['ruby'],
-    \ },
-  \ })
 
   call neobundle#untap()
 endif
