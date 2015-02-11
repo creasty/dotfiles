@@ -16,6 +16,7 @@ alias df='df -h'
 alias tf='tail -f'
 alias less='less -R'
 
+alias v='vim'
 alias vi='vim'
 alias g='git'
 alias ti='titanium'
@@ -69,7 +70,7 @@ _run_c() {
   shift
 
   gcc -o $out $file && $out $@
-  # rm -f $out
+  rm -f $out
 }
 alias -s c='_run_c'
 
@@ -88,13 +89,14 @@ alias -s java='_run_java'
 alias mvim='open -a MacVim'
 alias ff='open -a Firefox'
 alias finder='open -a Finder'
-alias v='vagrant'
+alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
 
 alias maxscreen='screenresolution set 2560x1600x32@0'
 
 alias redis-server='redis-server /usr/local/etc/redis.conf'
+alias postgres-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
 
 alias ql='qlmanage -p "$@" >& /dev/null'
 
