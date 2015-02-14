@@ -2353,6 +2353,12 @@ if neobundle#tap('lexima.vim')
       \ 'mode':     'i',
     \ })
     call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(........\)\?<\%#>',
+      \ 'input':    '<Right>',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
       \ 'char':     '<',
       \ 'at':       '\(........\)\?\%#',
       \ 'input':    '<><Left>',
@@ -2447,6 +2453,7 @@ if neobundle#tap('lexima.vim')
       \ 'at':       '\(.....\)\?< \%#',
       \ 'input':    '<BS>><Space>',
       \ 'mode':     'i',
+      \ 'filetype': ['sql'],
     \ })
 
 
