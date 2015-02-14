@@ -21,6 +21,7 @@ alias vi='vim'
 alias g='git'
 alias ti='titanium'
 alias :q='exit'
+alias ag="ag --pager='less -R'"
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
