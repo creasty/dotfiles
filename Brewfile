@@ -49,6 +49,7 @@ brew cask install xquartz || true
 
 # install brew-packages
 brew install ansible || true
+brew install asciinema || true
 brew install awscli --HEAD || true
 brew install binutils || true
 brew install cabal-install || true
