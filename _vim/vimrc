@@ -2049,6 +2049,30 @@ if neobundle#tap('lexima.vim')
     endfor
     unlet op
 
+    " dash in html/css
+    call lexima#add_rule({
+      \ 'char':     '-',
+      \ 'at':       '\(........\)\?\%#',
+      \ 'input':    '-',
+      \ 'mode':     'i',
+      \ 'filetype': ['html', 'eruby', 'slim', 'xml', 'css', 'scss'],
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '-',
+      \ 'at':       '^[ \t]*\.\w\+\%#',
+      \ 'input':    '-',
+      \ 'mode':     'i',
+      \ 'filetype': ['haml', 'slim'],
+    \ })
+
+    " hyphenated words
+    call lexima#add_rule({
+      \ 'char':     '-',
+      \ 'at':       '\(........\)\?\w\+-\w\+\%#',
+      \ 'input':    '-',
+      \ 'mode':     'i',
+    \ })
+
 
     "  C-t
     "-----------------------------------------------
@@ -2313,7 +2337,6 @@ if neobundle#tap('lexima.vim')
     unlet end_word
     unlet rules
 
-
     "  Html
     "-----------------------------------------------
     " tag
@@ -2321,6 +2344,12 @@ if neobundle#tap('lexima.vim')
       \ 'char':     '>',
       \ 'at':       '\(.....\)\?<\%#',
       \ 'input':    '>',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '>',
+      \ 'at':       '\(........\)\?< \%#',
+      \ 'input':    '<BS>><Left>',
       \ 'mode':     'i',
     \ })
     call lexima#add_rule({
