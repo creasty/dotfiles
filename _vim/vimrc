@@ -2801,8 +2801,8 @@ if neobundle#tap('neocomplete')
     let g:clang_use_library = 1
 
     " cancel or accept
-    imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
-    imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=neocomplete#cancel_popup()\<CR>" : "\<Esc>"
+    imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
 
     " omni completion
     autocmd vimrc FileType css
