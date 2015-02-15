@@ -118,6 +118,11 @@ alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET
 alias pyserver="python -m SimpleHTTPServer"
 alias nserver="http-server -p"
 
+rbserver() {
+  local port=${1:-5000}
+  ruby -rwebrick -e "WEBrick::HTTPServer.new(DocumentRoot: './', Port: $port}).start"
+}
+
 
 #  Scripts
 #-----------------------------------------------
