@@ -2801,13 +2801,8 @@ if neobundle#tap('neocomplete')
     let g:clang_use_library = 1
 
     " cancel or accept
-    imap <silent> <expr> <C-f> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Right>"
-    imap <silent> <expr> <C-b> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Left>"
-    imap <silent> <expr> <C-a> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(insert-enter)\<Plug>(emacs-bol)\<Plug>(insert-leave)"
-    imap <silent> <expr> <C-e> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Plug>(insert-enter)\<Plug>(emacs-eol)\<Plug>(insert-leave)"
     imap <silent> <expr> <C-c> pumvisible() ? neocomplete#cancel_popup() : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    inoremap <silent> <expr> <Space> (pumvisible() ? neocomplete#cancel_popup() : '') . "\<Space>"
 
     " omni completion
     autocmd vimrc FileType css
