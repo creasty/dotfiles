@@ -2537,11 +2537,18 @@ if neobundle#tap('switch.vim')
   \ })
 
   let g:switch_custom_definitions = [
+    \ {
+      \ '''\(.\{-}\)''': '"\1"',
+      \ '"\(.\{-}\)"':   '''\1''',
+      \ ':\(\w\+\)':     '''\1''',
+    \ },
     \ ['public', 'protected', 'private'],
     \ ['on', 'off'],
     \ ['yes', 'no'],
-    \ ['it', 'specify'],
-    \ ['describe', 'context'],
+    \ ['it', 'xit'],
+    \ ['describe', 'xdescribe'],
+    \ ['context', 'xcontext'],
+    \ ['senario', 'xsenario'],
     \ ['and', 'or'],
     \ ['if', 'unless'],
     \ ['TRUE', 'FALSE'],
@@ -2551,11 +2558,6 @@ if neobundle#tap('switch.vim')
     \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
     \ ['日', '土', '金', '木', '水', '火', '月'],
     \ ['NeoBundle', 'NeoBundleLazy', 'NeoBundleDisable'],
-    \ { ':\(\w\+\)': '''\1''' },
-    \ {
-      \ '''\(.\{-}\)''':  '"\1"',
-      \ '"\(.\{-}\)"':    '''\1''',
-    \ },
   \ ]
 
   nnoremap <silent> - :Switch<CR>
