@@ -2096,13 +2096,13 @@ if neobundle#tap('lexima.vim')
     call lexima#add_rule({
       \ 'char':  '<C-t>',
       \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
-      \ 'input': '<Esc>bhxf<Space>cl',
+      \ 'input': '<Esc>bh"_xf<Space>"_cl',
       \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  '<C-t>',
       \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
-      \ 'input': '<Space><Esc>bhxf<Space>cl',
+      \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
       \ 'mode':  'i',
     \ })
 
