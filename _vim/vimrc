@@ -2778,7 +2778,7 @@ if neobundle#tap('neocomplete')
 
     " keyword patterns
     let g:neocomplete#keyword_patterns = get(g:, 'neocomplete#keyword_patterns', {})
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+    let g:neocomplete#keyword_patterns._ = '\h\w*'
     let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
 
     " input patterns
