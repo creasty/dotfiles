@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+DEFAULT_REMOTE=origin
+DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
+
+SUB_COMMAND="$1"
+
+shift
+
+ARGS=""
+OPTS=""
+
+for a in "$@"; do
+  case "$a" in
+    --ff)
+      OPTS="$OPTS --ff --ff-only"
+      ;;
+    -*)
+      OPTS="$OPTS $a"
+      ;;
+    *)
+      ARGS="$ARGS $a"
+      ;;
+  esac
+done
+
+if [ ${#ARGS} -ge 2 ]; then
+  REMOTE="${ARGS[1]}"
+  BRANCH="${ARGS[2]}"
+else
+  REMOTE="="
+  BRANCH="${ARGS[1]}"
+fi
+
+if [[ "$REMOTE" =~ ^=?$ ]]; then
+  REMOTE="$DEFAULT_REMOTE"
+fi
+if [[ "$BRANCH" =~ ^=?$ ]]; then
+  BRANCH="$DEFAULT_BRANCH"
+fi
+
+COMMAND="git $SUB_COMMAND$OPTS $REMOTE $BRANCH"
+echo "$COMMAND"
+bash -c "$COMMAND"

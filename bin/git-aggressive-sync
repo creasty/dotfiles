@@ -3,19 +3,19 @@
 source "$(dirname $0)/../lib/helpers.sh"
 
 section 'add'
-git a || true
+git add -A -v `git rev-parse --show-toplevel` || true
 
 section 'commit'
 if [ $# -gt 0 ]; then
-  git cm "$1"
+  git commit -m "$1"
 else
-  git c
+  git commit
 fi
 
 if [ $? -eq 0 ]; then
   section 'pull'
-  git pl || true
+  git auto-ref pull || true
 
   section 'push'
-  git pu
+  git auto-ref push
 fi

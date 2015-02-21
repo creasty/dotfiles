@@ -41,6 +41,10 @@
   km = checkout master
   kd = checkout develop
 
+  pl = auto-ref pull
+  pu = auto-ref push
+  sy = aggressive-sync
+
   wr = browse-remote
   w  = show --diff-filter=M
 
