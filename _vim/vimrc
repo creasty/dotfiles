@@ -2446,6 +2446,18 @@ if neobundle#tap('lexima.vim')
     \ })
 
 
+    "  Haml / Slim
+    "-----------------------------------------------
+    " equal sign
+    call lexima#add_rule({
+      \ 'char':     '=',
+      \ 'at':       '^\s*\([.#%]\(\w\|-\)\+\)*\%#',
+      \ 'input':    '= ',
+      \ 'mode':     'i',
+      \ 'filetype': ['haml', 'slim'],
+    \ })
+
+
     "  PHP
     "-----------------------------------------------
     " <?php
