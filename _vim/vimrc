@@ -503,7 +503,7 @@ set ttyfast
 set history=1000
 
 " use dictionaries for completion
-set complete& complete+=k
+set complete& complete=k
 
 " yank use system clipboard
 set clipboard=unnamed
