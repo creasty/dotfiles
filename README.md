@@ -35,13 +35,13 @@ Applications
 - Adobe Creative Cloud
 - Alfred
 - Dropbox
-- firefox
+- Firefox
 - Flip4mac
 - Google Chrome
 - Google Hangouts
 - Google Japanese IME
 - Imagealpha
-- imageoptim
+- Imageoptim
 - iTerm 2
 - Karabiner
 - Seil
