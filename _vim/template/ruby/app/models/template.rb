@@ -1,8 +1,8 @@
 <%=
-namespaces = File.dirname('FILE_PATH')
-  .gsub(%r{^.*?app/models/}, '')
+namespaces = File.dirname('FILE_PATH'.split('app/models')[1])
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .split('/')
+  .reject { |n| n == '' }
 
 controller_name = File.basename('FILE_NAME', '.rb')
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
