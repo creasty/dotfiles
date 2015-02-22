@@ -1,4 +1,4 @@
-![dotfiles -- Work it harder, make it better, do it faster, makes us stronger](./readme/dotfiles.png)
+![dotfiles -- Work it harder, make it better, do it faster, makes us stronger](./docs/images/dotfiles.png)
 
 
 dotfiles
@@ -18,8 +18,46 @@ $ ./bootstrap
 ```
 
 
-Applications via AppStore
--------------------------
+Extra configurations
+--------------------
+
+- [Security](./docs/seurity.md)
+- [System Preference](./docs/system_preference.md)
+- [Karabiner](./docs/karabiner.md)
+- [Seil](./docs/seil.md)
+
+
+Applications
+------------
+
+### Via Brew Cask
+
+- Adobe Creative Cloud
+- Alfred
+- Dropbox
+- firefox
+- Flip4mac
+- Google Chrome
+- Google Hangouts
+- Google Japanese IME
+- Imagealpha
+- imageoptim
+- iTerm 2
+- Karabiner
+- Seil
+- Sequel Pro
+- Skype
+- Sophos Antivirus
+- Transmission
+- TrueCrypt
+- Vagrant
+- VirtualBox
+- XQuartz
+
+
+### Via Mac App Store
+
+Manually install these applications:
 
 - 1Password
 - Airmail
@@ -41,48 +79,6 @@ Applications via AppStore
 - The Unarchiver
 - Wunderlist
 - iPhoto
-
-
-Extra configurations
---------------------
-
-### Security key settings
-
-1. Create `_zsh/secrets.zsh`.
-2. Configure aws cli by run: `$ aws configure`
-
-### System Preference.app
-
-#### Keyboard
-
-1. Change modifier keys (press `Modifier Keys...` button in `Keyboard` tab)  
-  ![](./readme/syspref/keyboard/modifiers.png)
-2. Set key for moving focus to next window (in `Keyboard` section of `Shortcuts` tab)  
-  ![](./readme/syspref/keyboard/next_window.png)
-3. Enable full keyboard access (in `Shortcuts` tab)  
-  ![](./readme/syspref/keyboard/access.png)
-
-#### Trackpad
-
-![](./readme/syspref/trackpad/point_click.png)
-![](./readme/syspref/trackpad/scroll_zoom.png)
-![](./readme/syspref/trackpad/more_gestures.png)
-
-### Karabiner.app
-
-1. Enable these options (in `Change Key` tab)  
-  ![](./readme/karabiner/change_key.png)
-2. Set these values (in `Key Repeate` tab)  
-  ![](./readme/karabiner/key_repeat.png)
-3. Turn off status message (in `Status Message` tab)  
-  ![](./readme/karabiner/status_message.png)
-4. Hide icon in the menu bar (in `MenuBar` tab)  
-  ![](./readme/karabiner/icon.png)
-
-### Seil.app
-
-Change `Control_L` to `Escape` in `Other keys` section of `Setting` tab.  
-![](./readme/seil/control_l.png)
 
 
 Author
