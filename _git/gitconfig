@@ -51,9 +51,9 @@
   d  = diff --diff-filter=M
   dc = diff --diff-filter=M --cached
 
-  l  = log
-  ll = log -1 HEAD
+  l  = log --oneline
   lg = log --oneline --graph
+  ll = ! git log -1 HEAD | cat
 
   m  = merge
   mf = merge FETCH_HEAD
