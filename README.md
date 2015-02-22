@@ -21,7 +21,7 @@ $ ./bootstrap
 Extra configurations
 --------------------
 
-- [Security](./docs/seurity.md)
+- [Security](./docs/security.md)
 - [System Preference](./docs/system_preference.md)
 - [Karabiner](./docs/karabiner.md)
 - [Seil](./docs/seil.md)
