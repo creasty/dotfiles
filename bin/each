@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-for l in `(IFS=$'\n' cat)`; do
+for l in `IFS=$'\n'; cat`; do
   $@ "$l"
 done
