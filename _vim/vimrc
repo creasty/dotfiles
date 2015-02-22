@@ -2775,14 +2775,15 @@ if neobundle#tap('neocomplete')
     \ }
   \ })
 
+  set completeopt& completeopt-=preview
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
   let g:neocomplete#disable_auto_complete = 0
   let g:neocomplete#enable_auto_select = 1
   let g:neocomplete#enable_insert_char_pre = 1
-  set completeopt& completeopt-=preview
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
+  let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
 
   let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default':    '',
@@ -2799,9 +2800,6 @@ if neobundle#tap('neocomplete')
     \ 'scala':      s:env.path.dict . '/scala.dict',
   \ }
 
-  let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
-  let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
-
   " keyword patterns
   let g:neocomplete#keyword_patterns = get(g:, 'neocomplete#keyword_patterns', {})
   let g:neocomplete#keyword_patterns._ = '\h\w*'
@@ -2815,6 +2813,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
   let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
+  " omni
   let g:neocomplete#force_overwrite_completefunc = 1
   let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
   let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
@@ -2822,6 +2821,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
   let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
+  " clang
   let g:clang_complete_auto = 0
   let g:clang_auto_select = 0
   let g:clang_use_library = 1
