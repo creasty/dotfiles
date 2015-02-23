@@ -7,29 +7,29 @@ SUB_COMMAND="$1"
 
 shift
 
-ARGS=""
-OPTS=""
+ARGS=()
+OPTS=()
 
 for a in "$@"; do
   case "$a" in
     --ff)
-      OPTS="$OPTS --ff --ff-only"
+      OPTS=("${OPTS[@]}" '--ff --ff-only')
       ;;
     -*)
-      OPTS="$OPTS $a"
+      OPTS=("${OPTS[@]}" "$a")
       ;;
     *)
-      ARGS="$ARGS $a"
+      ARGS=("${ARGS[@]}" "$a")
       ;;
   esac
 done
 
-if [ ${#ARGS} -ge 2 ]; then
-  REMOTE="${ARGS[1]}"
-  BRANCH="${ARGS[2]}"
+if [ ${#ARGS[@]} -ge 2 ]; then
+  REMOTE="${ARGS[0]}"
+  BRANCH="${ARGS[1]}"
 else
   REMOTE="="
-  BRANCH="${ARGS[1]}"
+  BRANCH="${ARGS[0]}"
 fi
 
 if [[ "$REMOTE" =~ ^=?$ ]]; then
@@ -39,6 +39,6 @@ if [[ "$BRANCH" =~ ^=?$ ]]; then
   BRANCH="$DEFAULT_BRANCH"
 fi
 
-COMMAND="git $SUB_COMMAND$OPTS $REMOTE $BRANCH"
+COMMAND="git ${SUB_COMMAND}${OPTS[@]} $REMOTE $BRANCH"
 echo "$COMMAND"
 bash -c "$COMMAND"
