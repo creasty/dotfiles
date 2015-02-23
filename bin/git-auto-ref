@@ -39,6 +39,11 @@ if [[ "$BRANCH" =~ ^=?$ ]]; then
   BRANCH="$DEFAULT_BRANCH"
 fi
 
-COMMAND="git ${SUB_COMMAND}${OPTS[@]} $REMOTE $BRANCH"
-echo "$COMMAND"
-bash -c "$COMMAND"
+COMMAND=(git)
+COMMAND=(${COMMAND[@]} $SUB_COMMAND)
+COMMAND=(${COMMAND[@]} ${OPTS[@]})
+COMMAND=(${COMMAND[@]} $REMOTE)
+COMMAND=(${COMMAND[@]} $BRANCH)
+
+echo "${COMMAND[@]}"
+${COMMAND[@]}
