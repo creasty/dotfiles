@@ -27,15 +27,14 @@ end
 #-----------------------------------------------
 puts 'Scanning...'
 
-scopes     = name.split '.'
-scope_size = scopes.size
+scopes     = name.split('.').unshift nil
+scope_size = scopes.size - 1
 founds     = []
 
 files.reverse.each do |file|
   File.open(file) do |f|
     current_level  = 0
     current_locale = nil
-    another_exists = false
 
     f.each_line.with_index do |line, n|
       next unless line =~ /\A([ ]*)(["']|)(\w+)\2:\s*(.*)\s*\z/
@@ -53,11 +52,10 @@ files.reverse.each do |file|
         if scope == scopes[current_level]
           if level == scope_size
             founds << {
-              locale:     current_locale,
-              file:       Pathname.new(file).relative_path_from(APP_ROOT).to_s,
-              line:       n + 1,
-              conflicted: another_exists,
-              text:       (text == '') ? '{ ... }' : text,
+              locale: current_locale,
+              file:   Pathname.new(file).relative_path_from(APP_ROOT).to_s,
+              line:   n + 1,
+              text:   (text == '') ? '{ ... }' : text,
             }
             another_exists = true
           elsif '' == text
@@ -75,17 +73,19 @@ end
 #  Output results
 #-----------------------------------------------
 if founds.any?
-  founds.reverse.each.with_index do |found, i|
-    # if i == 1
-    #   puts "\n"
-    #   puts "Conflicts"
-    #   puts "========="
-    # end
-
+  founds.reverse
+  .group_by { |f| f[:locale] }
+  .sort_by { |f| f[0] }
+  .each do |(locale, locale_founds)|
     puts
-    #puts found[:locale], found[:conflicted]
-    puts '- %s:%d' % [found[:file], found[:line]]
-    puts found[:text]
+    puts '== %s' % locale
+    puts
+    locale_founds.each.with_index do |found, i|
+      puts <<-EOS
+- #{found[:file]}:#{found[:line]}#{i.zero? ? '' : ' [CONFLICTED]'}
+  #{found[:text]}
+EOS
+    end
   end
 else
   puts
