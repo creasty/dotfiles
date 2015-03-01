@@ -8,27 +8,28 @@ DEST_DIR="$HOME"
 LINKS=(
   _agignore
   _ansible.cfg
-  _rbenv/default-gems
   _bash/bash_profile:.bash_profile
   _bash/bashrc:.bashrc
   _coffeelintrc
+  _config/ranger/colorschemes/original.py
+  _config/ranger/rc.conf
   _ctags
   _curlrc
+  _dotssh
+  _gemrc
   _git/gitconfig:.gitconfig
   _git/gitignore:.gitignore
   _irbrc
   _pecorc
   _railsrc
-  _dotssh
+  _rbenv/default-gems
   _tmux.conf
   _vim
-  _vim/vimrc:.vimrc
   _vim/gvimrc:.gvimrc
+  _vim/vimrc:.vimrc
   _zsh
   _zsh/zshenv:.zshenv
   _zsh/zshrc:.zshrc
-  _config/ranger/colorschemes/original.py
-  _config/ranger/rc.conf
 )
 
 
