@@ -200,3 +200,17 @@ init_golang() {
 }
 
 init_golang
+
+
+#  Elasticsearch
+#-----------------------------------------------
+init_golang() {
+  section "Installing Golang packages"
+  plugin --install royrusso/elasticsearch-HQ
+  plugin --install mobz/elasticsearch-head
+  plugin --install elasticsearch/elasticsearch-analysis-kuromoji/2.2.0
+  plugin --install polyfractal/elasticsearch-inquisitor
+  plugin --install elasticsearch/marvel/latest
+}
+
+init_golang

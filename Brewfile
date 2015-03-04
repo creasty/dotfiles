@@ -18,6 +18,9 @@ brew tap peco/peco || true
 brew tap phinze/homebrew-cask || true
 brew tap supermomonga/homebrew-splhack || true
 
+# fixate versions
+git --gitdir=$(brew --prefix) checkout 3bbd4f1 -- /usr/local/Library/Formula/elasticsearch.rb
+
 # cask
 brew install brew-cask || true
 
