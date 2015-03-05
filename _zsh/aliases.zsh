@@ -153,6 +153,10 @@ alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
 alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
 
+rdbb() {
+  bundle exec rake db:rollback STEP=$1
+}
+
 alias rc='bundle exec rails c'
 alias rs='bundle exec rails s'
 alias rs1='bundle exec rails s -p 3001'
