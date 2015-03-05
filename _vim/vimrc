@@ -3233,7 +3233,6 @@ if neobundle#tap('vim-quickrun')
       \ 'command': 'rspec',
       \ 'cmdopt':  'bundle exec',
       \ 'exec':    '%o %c %s',
-      \ 'outputter': 'rspec_outputter',
     \ }
     let g:quickrun_config['markdown'] = {
       \ 'outputter': 'null',
@@ -3277,7 +3276,6 @@ if neobundle#tap('vim-quickrun')
 
       call matchadd('RSpecGreen', '^[\.F]*\.[\.F]*$')
       call matchadd('RSpecGreen', '^.*, 0 failures$')
-      call matchadd('RSpecRed', 'F')
       call matchadd('RSpecRed', '^.*, [1-9]* failures.*$')
       call matchadd('RSpecRed', '^.*, 1 failure.*$')
       call matchadd('RSpecRed', '^ *(.*$')
