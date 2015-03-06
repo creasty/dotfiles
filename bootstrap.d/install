@@ -204,7 +204,7 @@ init_golang
 
 #  Elasticsearch
 #-----------------------------------------------
-init_golang() {
+init_elasticsearch() {
   section "Installing Golang packages"
   plugin --install royrusso/elasticsearch-HQ
   plugin --install mobz/elasticsearch-head
@@ -213,4 +213,4 @@ init_golang() {
   plugin --install elasticsearch/marvel/latest
 }
 
-init_golang
+init_elasticsearch
