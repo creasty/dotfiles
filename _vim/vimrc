@@ -1229,7 +1229,7 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
 " automatically change input source
 if s:env.support.osascript
   autocmd vimrc FocusGained *
-    \ call vimproc#popen2("osascript -e 'tell application \"System Events\" to key code 102'")
+    \ call vimproc#system("osascript -e 'tell application \"System Events\" to key code 102'")
 endif
 
 " inspect syntax
