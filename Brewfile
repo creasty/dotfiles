@@ -27,6 +27,7 @@ brew install brew-cask || true
 # install cask-packages
 brew cask install adobe-creative-cloud || true
 brew cask install alfred || true
+brew cask install anybar || true
 brew cask install dropbox || true
 brew cask install firefox || true
 brew cask install flip4mac || true
