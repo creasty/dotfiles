@@ -118,6 +118,7 @@ brew install rbenv-default-gems || true
 brew install rbenv-gem-rehash || true
 brew install reattach-to-user-namespace || true
 brew install redis || true
+brew install rsense || true
 brew install ruby-build || true
 brew install sbt || true
 brew install scala || true

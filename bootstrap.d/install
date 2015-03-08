@@ -6,7 +6,7 @@ source $DOTFILES_PATH/lib/helpers.sh
 
 #  Xcode command line tool
 #-----------------------------------------------
-init_xcode_cli() {
+setup_xcode_cli() {
   section "Installing Xcode command line tool"
   xcode-select --install > /dev/null 2>&1
 
@@ -17,12 +17,12 @@ init_xcode_cli() {
   fi
 }
 
-init_xcode_cli
+setup_xcode_cli
 
 
 #  Homebrew
 #-----------------------------------------------
-init_homebrew() {
+setup_homebrew() {
   section "Installing homebrew"
 
   if cmd_exists brew; then
@@ -37,14 +37,17 @@ init_homebrew() {
 
   section "Configure redis"
   sed -ie 's/^daemonize no/daemonize yes/' /usr/local/etc/redis.conf
+
+  section "Configure rsense"
+  ruby $(brew --cellar rsense)/0.3/libexec/etc/config.rb > ~/.rsense
 }
 
-init_homebrew
+setup_homebrew
 
 
 #  rbenv
 #-----------------------------------------------
-init_rbenv() {
+setup_rbenv() {
   ruby_versions=(
     2.1.5
     2.2.0
@@ -77,12 +80,12 @@ init_rbenv() {
   print_status $?
 }
 
-init_rbenv
+setup_rbenv
 
 
 #  NVM
 #-----------------------------------------------
-init_nvm() {
+setup_nvm() {
   section "Installing nodejs"
 
   subsection "Installing nvm"
@@ -97,23 +100,23 @@ init_nvm() {
   print_status $?
 }
 
-init_nvm
+setup_nvm
 
 
 #  Node packages
 #-----------------------------------------------
-init_npm() {
+setup_npm() {
   section "Installing nodejs packages"
 
   npm i -g
 }
 
-init_npm
+setup_npm
 
 
 #  Vagrant
 #-----------------------------------------------
-init_vagrant() {
+setup_vagrant() {
   section "Installing vagrant boxes"
   # subsection "CentOS 6.5 x86_64"
   # vagrant box add centos65 https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box
@@ -128,23 +131,23 @@ init_vagrant() {
   print_status $?
 }
 
-init_vagrant
+setup_vagrant
 
 
 #  R
 #-----------------------------------------------
-init_r() {
+setup_r() {
   section "Installing R packages"
 
   r -f package.r
 }
 
-init_r
+setup_r
 
 
 #  Haskell
 #-----------------------------------------------
-init_haskell() {
+setup_haskell() {
   section "Installing Haskell packages"
 
   subsection "Updating cabal"
@@ -156,12 +159,12 @@ init_haskell() {
   cabal install erd
 }
 
-init_haskell
+setup_haskell
 
 
 #  Lua
 #-----------------------------------------------
-init_lua() {
+setup_lua() {
   section "Installing Lua packages"
 
   luarocks install md5
@@ -175,12 +178,12 @@ init_lua() {
   luarocks install cassowary
 }
 
-init_lua
+setup_lua
 
 
 #  Python
 #-----------------------------------------------
-init_python() {
+setup_python() {
   section "Installing Python packages"
   pip install --upgrade howdoi
   pip install --upgrade numpy
@@ -189,22 +192,22 @@ init_python() {
   pip install --upgrade pyamf
 }
 
-init_python
+setup_python
 
 
 #  Golang
 #-----------------------------------------------
-init_golang() {
+setup_golang() {
   section "Installing Golang packages"
   go get github.com/rakyll/boom
 }
 
-init_golang
+setup_golang
 
 
 #  Elasticsearch
 #-----------------------------------------------
-init_elasticsearch() {
+setup_elasticsearch() {
   section "Installing Golang packages"
   plugin --install royrusso/elasticsearch-HQ
   plugin --install mobz/elasticsearch-head
@@ -213,4 +216,4 @@ init_elasticsearch() {
   plugin --install elasticsearch/marvel/latest
 }
 
-init_elasticsearch
+setup_elasticsearch
