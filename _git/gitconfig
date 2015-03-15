@@ -37,7 +37,7 @@
 
   b  = branch
   k  = checkout
-  kb = checkout -B
+  kb = checkout-head
   km = checkout master
   kd = checkout develop
 
