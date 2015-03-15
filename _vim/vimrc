@@ -866,13 +866,13 @@ nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 autocmd vimrc BufReadPost * :nohlsearch
 
 " search selection
-vnoremap // /<C-r>=escape(@", '\\/.*$^~')<CR>
+vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
 " replace selection
-vnoremap /r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
-nnoremap <expr> s* ':%s/\<' . expand('<cword>') . '\>/'
+nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
 " auto escaping
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
@@ -1021,10 +1021,6 @@ nnoremap <silent> K ylpr<Enter>
 " reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
-
-" use sane regexes
-nnoremap / /\v
-vnoremap / /\v
 
 " easy key
 nnoremap <Space>h g^
@@ -1768,7 +1764,8 @@ if neobundle#tap('vim-operator-replace')
     \ }
   \ })
 
-  map R <Plug>(operator-replace)
+  map r <Plug>(operator-replace)
+  noremap R r
 
   call neobundle#untap()
 endif
