@@ -23,6 +23,7 @@ LINKS=(
   _pecorc
   _railsrc
   _rbenv/default-gems
+  _rspec
   _tmux.conf
   _vim
   _vim/gvimrc:.gvimrc
