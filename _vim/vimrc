@@ -545,9 +545,6 @@ endfunction
 " find file with suffixes
 set suffixesadd& suffixesadd+=.js,.coffee,.swift,.scss
 
-" rsense
-let g:rsenseHome = '/usr/local/Cellar/rsense/0.3/libexec/'
-
 
 "=== Apperance
 "==============================================================================================
