@@ -209,12 +209,32 @@ setup_golang
 #  Elasticsearch
 #-----------------------------------------------
 setup_elasticsearch() {
-  section "Installing Golang packages"
+  section "Installing Elasticsearch plugins"
   plugin --install royrusso/elasticsearch-HQ
   plugin --install mobz/elasticsearch-head
   plugin --install elasticsearch/elasticsearch-analysis-kuromoji/2.2.0
   plugin --install polyfractal/elasticsearch-inquisitor
   plugin --install elasticsearch/marvel/latest
+
+  section "Configure custom Elasticsearch options"
+
+  local config_file='/usr/local/opt/elasticsearch/config/elasticsearch.yml'
+  local options=(
+    'script.disable_dynamic: false'
+  )
+
+  for option in "${options[@]}"; do
+    local key="${option%%:*}"
+
+    echo "Setting $option..."
+    if [ "$(grep "$key" $config_file)" == "" ]; then
+      echo "$option" >> $config_file
+    else
+      sed -ie "s/^$key:.*/$option/" $config_file
+    fi
+  done
+
+  echo "Done"
 }
 
 setup_elasticsearch
