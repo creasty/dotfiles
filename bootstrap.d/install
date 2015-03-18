@@ -223,18 +223,22 @@ setup_elasticsearch() {
     'script.disable_dynamic: false'
   )
 
-  for option in "${options[@]}"; do
-    local key="${option%%:*}"
+  if [ -f $config_file ]; then
+    for option in "${options[@]}"; do
+      local key="${option%%:*}"
 
-    echo "Setting $option..."
-    if [ "$(grep "$key" $config_file)" == "" ]; then
-      echo "$option" >> $config_file
-    else
-      sed -ie "s/^$key:.*/$option/" $config_file
-    fi
-  done
+      echo "Setting $option..."
+      if [ "$(grep "$key" $config_file)" == "" ]; then
+        echo "$option" >> $config_file
+      else
+        sed -ie "s/^$key:.*/$option/" $config_file
+      fi
+    done
 
-  echo "Done"
+    echo "Done"
+  else
+    echo "Elasticsearch config file not found at $CONFIG_FILE"
+  fi
 }
 
 setup_elasticsearch
