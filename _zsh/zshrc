@@ -162,7 +162,7 @@ GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM=1
 
 PROMPT="
-%F{blue}at %f%F{white}\${PWD/\$HOME/~}%f\$(__git_ps1 ' ${fg[blue]}of${fg[white]} %s')%f
+%F{blue}in %f%F{white}\${PWD/\$HOME/~}%f\$(__git_ps1 ' ${fg[blue]}on${fg[white]} %s${fg[red]}%s%s%s${reset_color}')%f
 %F{blue}❯ %f"
 
 PROMPT2="%F{white}❯ %f"
