@@ -117,6 +117,8 @@ anybar() {
   echo -n "$1" | nc -4u -w0 localhost 1738
 }
 
+alias es='elasticsearch'
+
 
 #  Networks
 #-----------------------------------------------
