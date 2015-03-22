@@ -1161,7 +1161,7 @@ function! s:delete_or_trash(file)
   endif
 
   if isdirectory(trash_dir)
-    call vimproc#popen2('mv ' . file . ' ' . trash_dir)
+    call vimproc#system('mv ' . file . ' ' . trash_dir)
   else
     call delete(file)
   endif
