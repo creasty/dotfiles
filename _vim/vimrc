@@ -2258,7 +2258,7 @@ if neobundle#tap('lexima.vim')
 
     "  Vim
     "-----------------------------------------------
-    " do-end pair
+    " end wise
     for at in ['fu', 'fun', 'func', 'funct', 'functi', 'functio', 'function', 'if', 'wh', 'whi', 'whil', 'while', 'for', 'try']
       call lexima#add_rule({
         \ 'char':     '<CR>',
@@ -2273,9 +2273,9 @@ if neobundle#tap('lexima.vim')
 
     "  Ruby
     "-----------------------------------------------
-    " do-end pair
+    " end wise
     for at in [
-        \ '^\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+        \ '\%([=,*/%+-]\|<<\|>>\|:\s\|^\)\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
         \ '^\s*\(public\|protected\|private\)\s\+def\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
         \ '^\s*\%(begin\)\s*\%#',
         \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
