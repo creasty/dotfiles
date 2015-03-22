@@ -334,9 +334,6 @@ else
   " working with Ruby on Rails applications
   NeoBundleLazy 'tpope/vim-rails'
 
-  " syntax highlight for Cucumber
-  NeoBundleLazy 'tpope/vim-cucumber'
-
   " syntax highlight for Slim
   NeoBundleLazy 'slim-template/vim-slim'
 
@@ -3660,17 +3657,6 @@ if neobundle#tap('vim-rails')
   \ })
 
   nmap gr :R<CR>
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-cucumber
-"==============================================================================================
-if neobundle#tap('vim-cucumber')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['cucumber.ruby'] }
-  \ })
 
   call neobundle#untap()
 endif
