@@ -157,9 +157,6 @@ else
   " auto close parentheses and repeat by dot
   NeoBundleLazy 'cohama/lexima.vim', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
 
-  " refactoring tool for Ruby in vim
-  NeoBundleLazy 'ecomba/vim-ruby-refactoring'
-
   " switch segments of text with predefined replacements
   NeoBundleLazy 'AndrewRadev/switch.vim'
 
@@ -2523,29 +2520,6 @@ if neobundle#tap('lexima.vim')
     \ })
 
   endfunction
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-ruby-refactoring
-"==============================================================================================
-if neobundle#tap('vim-ruby-refactoring')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'filetypes': ['ruby'],
-    \ }
-  \ })
-
-  nnoremap <Leader>rap  :RAddParameter<CR>
-  nnoremap <Leader>rcpc :RConvertPostConditional<CR>
-  nnoremap <Leader>rel  :RExtractLet<CR>
-  vnoremap <Leader>rec  :RExtractConstant<CR>
-  vnoremap <Leader>relv :RExtractLocalVariable<CR>
-  nnoremap <Leader>rit  :RInlineTemp<CR>
-  vnoremap <Leader>rrlv :RRenameLocalVariable<CR>
-  vnoremap <Leader>rriv :RRenameInstanceVariable<CR>
-  vnoremap <Leader>rem  :RExtractMethod<CR>
 
   call neobundle#untap()
 endif
