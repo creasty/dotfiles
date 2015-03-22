@@ -1832,6 +1832,7 @@ if neobundle#tap('lexima.vim')
     let indents = "^\(\t\|  \)\+"
     let opx     = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
 
+
     "  Disable lexima inside string literal
     "-----------------------------------------------
     function! s:disable_lexima_inside_string(char)
@@ -2346,6 +2347,7 @@ if neobundle#tap('lexima.vim')
     unlet at
     unlet end_word
     unlet rules
+
 
     "  Html
     "-----------------------------------------------
