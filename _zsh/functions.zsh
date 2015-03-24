@@ -91,3 +91,22 @@ peco_insert_issue() {
 
 zle -N peco_insert_issue
 bindkey '^o^i' peco_insert_issue
+
+
+#  Peco history
+#-----------------------------------------------
+function peco_history() {
+  local tac
+
+  if which tac > /dev/null; then
+    tac='tac'
+  else
+    tac='tail -r'
+  fi
+
+  BUFFER=$(\history -n 1 | eval $tac | peco --query "$LBUFFER")
+  CURSOR=$#BUFFER
+}
+
+zle -N peco_history
+bindkey '^r' peco_history
