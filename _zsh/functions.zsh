@@ -27,7 +27,7 @@ peco_insert_path() {
 
   local filepath="$(eval "$cmd" | peco --rcfile=$HOME/.pecorc)"
 
-  if [ "$LBUFFER" -eq "" ]; then
+  if [ "$LBUFFER" = "" ]; then
     if [ -d "$filepath" ]; then
       BUFFER="cd $filepath"
     elif [ -f "$filepath" ]; then
