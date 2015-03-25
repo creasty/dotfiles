@@ -25,7 +25,7 @@ peco_insert_path() {
     cmd='find .'
   fi
 
-  local filepath="$(eval "$cmd" | peco --rcfile=$HOME/.pecorc)"
+  local filepath="$(eval "$cmd" | peco --rcfile=$HOME/.pecorc | xargs echo -n)"
 
   if [ "$LBUFFER" = "" ]; then
     if [ -d "$filepath" ]; then
@@ -44,10 +44,25 @@ zle -N peco_insert_path
 bindkey '^o^p' peco_insert_path
 
 
+#  Peco insert modified files
+#-----------------------------------------------
+peco_modified_file() {
+  local filepath="$(git status -s | cut -b 4- | peco --rcfile=$HOME/.pecorc | xargs echo -n)"
+
+  local rbuf="$RBUFFER"
+  BUFFER="$LBUFFER$filepath"
+  CURSOR=$#BUFFER
+  BUFFER="$BUFFER$rbuf"
+}
+
+zle -N peco_modified_file
+bindkey '^o^m' peco_modified_file
+
+
 #  Peco insert branch
 #-----------------------------------------------
 peco_insert_branch() {
-  local branch="$(git branch --color=never | cut -c 3- | peco --rcfile=$HOME/.pecorc)"
+  local branch="$(git branch --color=never | cut -c 3- | peco --rcfile=$HOME/.pecorc | xargs echo -n)"
 
   local rbuf="$RBUFFER"
   BUFFER="$LBUFFER$branch"
