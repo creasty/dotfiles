@@ -11,6 +11,19 @@ _buffer_insert() {
   CURSOR=$#BUFFER
   BUFFER="$BUFFER$rbuf"
 }
+_buffer_insert_lines() {
+  cat \
+    | {
+      lines=()
+
+      while read -r line; do
+        lines=(${lines[@]} "$line")
+      done
+
+      echo -n "${(q)lines[@]}"
+    } \
+    | _buffer_insert
+}
 _buffer_replace() {
   BUFFER="$(cat)"
   CURSOR=$#BUFFER
@@ -48,19 +61,6 @@ _peco_select() {
 
   peco --rcfile=$HOME/.pecorc --query "$query" <<< "$tx"
 }
-_peco_select_multi() {
-  cat \
-    | _peco_select "$1" \
-    | {
-      lines=()
-
-      while read -r line; do
-        lines=(${lines[@]} "$line")
-      done
-
-      echo -n "${(q)lines[@]}"
-    }
-}
 
 
 #  Insert path
@@ -79,17 +79,17 @@ peco_insert_path() {
     | {
       file="$(cat)"
 
-      if [ "$LBUFFER" = "" ] && [ $(wc -l <<< "$file") -eq 1 ]; then
-        if [ -d "$file" ]; then
-          echo -n "cd $file"
-        elif [ -f "$file" ]; then
-          echo -n "$EDITOR $file"
-        fi
+      if [ "$LBUFFER" != "" ]; then
+        echo -n "$file"
+      elif [ -d "$file" ]; then
+        echo -n "cd $file"
+      elif [ -f "$file" ]; then
+        echo -n "$EDITOR $file"
       else
-        echo -n "$(tr "\n" ' ' <<< "$file")"
+        echo -n "$file"
       fi
     } \
-    | _buffer_insert
+    | _buffer_insert_lines
 }
 
 _register_keycommand '^o^p' peco_insert_path
@@ -100,8 +100,8 @@ _register_keycommand '^o^p' peco_insert_path
 peco_modified_file() {
   git status -s \
     | cut -b 4- \
-    | _peco_select_multi \
-    | _buffer_insert
+    | _peco_select \
+    | _buffer_insert_lines
 }
 
 _register_keycommand '^o^m' peco_modified_file
@@ -112,8 +112,8 @@ _register_keycommand '^o^m' peco_modified_file
 peco_insert_branch() {
   git branch --color=never \
     | cut -c 3- \
-    | _peco_select_multi \
-    | _buffer_insert
+    | _peco_select \
+    | _buffer_insert_lines
 }
 
 _register_keycommand '^o^b' peco_insert_branch
@@ -123,8 +123,8 @@ _register_keycommand '^o^b' peco_insert_branch
 #-----------------------------------------------
 peco_insert_commit() {
   git log --oneline --color=never \
-    | _peco_select_multi \
-    | _buffer_insert
+    | _peco_select \
+    | _buffer_insert_lines
 }
 
 _register_keycommand '^o^l' peco_insert_commit
@@ -134,7 +134,7 @@ _register_keycommand '^o^l' peco_insert_commit
 #-----------------------------------------------
 peco_insert_issue() {
   git github ls-issue \
-    | _peco_select_multi \
+    | _peco_select \
     | {
       if [ "${LBUFFER[$CURSOR]}" = '#' ]; then
         cat | cut -d ' ' -f 1 | cut -c 2-
@@ -142,7 +142,7 @@ peco_insert_issue() {
         cat
       fi
     } \
-    | _buffer_insert
+    | _buffer_insert_lines
 }
 
 _register_keycommand '^o^i' peco_insert_issue
