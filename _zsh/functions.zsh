@@ -153,6 +153,7 @@ _register_keycommand '^o^i' peco_insert_issue
 peco_history() {
   \history -n 1 \
     | tail -r \
+    | awk '!a[$0]++' \
     | _peco_select "$LBUFFER" \
     | _buffer_replace
 }
