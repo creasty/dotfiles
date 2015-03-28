@@ -1,1 +1,7 @@
-gem: --no-document
+update_sources: true
+backtrace:      true
+verbose:        true
+
+gem:     --no-document
+install: --no-document --verbose
+update:  --no-document --verbose
