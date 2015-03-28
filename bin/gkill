@@ -2,15 +2,9 @@
 
 source "$(dirname $0)/../lib/helpers.sh"
 
-if [ "${#1}" -lt 3 ]; then
-  echo "Error: identifier must be at least 3 charactors"
-  return
-fi
-
-list="$(ps aux | grep "$1" | grep -v grep | grep -v $0)"
+list="$(ps aux | grep -v grep | grep -v $0 | peco --rcfile=$HOME/.pecorc)"
 
 echo "$list"
-
 echo
 
 ask_for_confirmation "Are you sure to kill all these processes?"
