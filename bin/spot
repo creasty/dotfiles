@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mdfind -onlyin ~ -name $1 \
+mdfind -onlyin ~ -name ".$1" \
   | {
     tx="$(cat)"
     query=""
