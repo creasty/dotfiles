@@ -5,6 +5,17 @@ _register_keycommand() {
   bindkey "$1" $2
 }
 
+_buffer_insert() {
+  local rbuf="$RBUFFER"
+  BUFFER="$LBUFFER$(cat)"
+  CURSOR=$#BUFFER
+  BUFFER="$BUFFER$rbuf"
+}
+_buffer_replace() {
+  BUFFER="$(cat)"
+  CURSOR=$#BUFFER
+}
+
 
 #=== CD
 #==============================================================================================
@@ -26,25 +37,29 @@ mkd() {
 
 #=== Peco
 #==============================================================================================
-_peco_insert() {
-  local rbuf="$RBUFFER"
-  BUFFER="$LBUFFER$(cat)"
-  CURSOR=$#BUFFER
-  BUFFER="$BUFFER$rbuf"
-}
-_peco_replace() {
-  BUFFER="$(cat)"
-  CURSOR=$#BUFFER
-}
 _peco_select() {
   local tx="$(cat)"
+  local query="$1"
 
-  if [ "$tx" != '' ]; then
-    peco --rcfile=$HOME/.pecorc --query "$1" <<< "$tx"
+  if [ "$tx" = '' ]; then
+    tx=' '
+    query='(nothing)'
   fi
+
+  peco --rcfile=$HOME/.pecorc --query "$query" <<< "$tx"
 }
 _peco_select_multi() {
-  cat | _peco_select "$1" | tr "\n" ' '
+  cat \
+    | _peco_select "$1" \
+    | {
+      lines=()
+
+      while read -r line; do
+        lines=(${lines[@]} "$line")
+      done
+
+      echo -n "${(q)lines[@]}"
+    }
 }
 
 
@@ -74,7 +89,7 @@ peco_insert_path() {
         echo -n "$(tr "\n" ' ' <<< "$file")"
       fi
     } \
-    | _peco_insert
+    | _buffer_insert
 }
 
 _register_keycommand '^o^p' peco_insert_path
@@ -86,7 +101,7 @@ peco_modified_file() {
   git status -s \
     | cut -b 4- \
     | _peco_select_multi \
-    | _peco_insert
+    | _buffer_insert
 }
 
 _register_keycommand '^o^m' peco_modified_file
@@ -98,7 +113,7 @@ peco_insert_branch() {
   git branch --color=never \
     | cut -c 3- \
     | _peco_select_multi \
-    | _peco_insert
+    | _buffer_insert
 }
 
 _register_keycommand '^o^b' peco_insert_branch
@@ -109,7 +124,7 @@ _register_keycommand '^o^b' peco_insert_branch
 peco_insert_commit() {
   git log --oneline --color=never \
     | _peco_select_multi \
-    | _peco_insert
+    | _buffer_insert
 }
 
 _register_keycommand '^o^l' peco_insert_commit
@@ -127,7 +142,7 @@ peco_insert_issue() {
         cat
       fi
     } \
-    | _peco_insert
+    | _buffer_insert
 }
 
 _register_keycommand '^o^i' peco_insert_issue
@@ -139,7 +154,7 @@ peco_history() {
   \history -n 1 \
     | tail -r \
     | _peco_select "$LBUFFER" \
-    | _peco_replace
+    | _buffer_replace
 }
 
 _register_keycommand '^r' peco_history
