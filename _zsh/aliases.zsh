@@ -1,7 +1,5 @@
 #  General
 #-----------------------------------------------
-alias refresh='exec $SHELL -l'
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

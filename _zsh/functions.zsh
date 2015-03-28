@@ -30,21 +30,14 @@ _buffer_replace() {
 }
 
 
-#=== CD
+#=== General
 #==============================================================================================
-#  Project root
+#  Move to project root
 #-----------------------------------------------
 cdrt() {
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     cd `git rev-parse --show-toplevel`
   fi
-}
-
-
-#  Make directory and enter to it
-#-----------------------------------------------
-mkd() {
-  mkdir -p "$@" && cd "$@"
 }
 
 
@@ -58,6 +51,28 @@ cdf() {
     pwd
   fi
 }
+
+
+#  Make directory and enter to it
+#-----------------------------------------------
+mkd() {
+  mkdir -p "$@" && cd "$@"
+}
+
+
+#  Refresh without restart
+#-----------------------------------------------
+refresh() {
+  exec zsh -l
+}
+
+_refresh_screen() {
+  zle clear-screen
+  rehash
+  zle reset-prompt
+}
+
+_register_keycommand '^l' _refresh_screen
 
 
 #=== Peco
