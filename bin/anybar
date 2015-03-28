@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# white
+# red
+# orange
+# yellow
+# green
+# cyan
+# blue
+# purple
+# black
+# question
+# exclamation
+# quit
+echo -n "$1" | nc -4u -w0 localhost 1738

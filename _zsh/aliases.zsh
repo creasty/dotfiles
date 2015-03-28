@@ -101,22 +101,6 @@ alias pg-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
 
 alias ql='qlmanage -p "$@" >& /dev/null'
 
-anybar() {
-  # white
-  # red
-  # orange
-  # yellow
-  # green
-  # cyan
-  # blue
-  # purple
-  # black
-  # question
-  # exclamation
-  # quit
-  echo -n "$1" | nc -4u -w0 localhost 1738
-}
-
 alias es='elasticsearch'
 
 
