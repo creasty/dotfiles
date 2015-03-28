@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+mdfind -onlyin ~ -name $1 \
+  | {
+    tx="$(cat)"
+    query=""
+
+    if [ "$tx" = '' ]; then
+      tx=' '
+      query='(nothing)'
+    fi
+
+    peco --rcfile=$HOME/.pecorc --query "$query" <<< "$tx"
+  } \
+  | {
+    while read -r file; do
+      open "$file"
+    done
+  }
