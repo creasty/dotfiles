@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require 'octokit'
+
+client = Octokit::Client.new access_token: ENV['GITHUB_ACCESS_TOKEN']
+
+remote = `git remote -v | grep origin`
+  .to_s
+  .match /git@github\.com:(.+?)\.git/
+
+exit unless remote
+
+repo = remote[1]
+
+case ARGV.shift
+when 'ls-issue'
+  client.issues(repo, per_page: 300).each do |issue|
+    puts '#%d %s' % [issue[:number], issue[:title]]
+  end
+when 'ls-pr'
+  client.pull_requests(repo, per_page: 300).each do |pr|
+    puts '#%d %s' % [pr[:number], pr[:title]]
+  end
+else
+  puts 'command not found'
+end

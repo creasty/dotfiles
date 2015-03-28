@@ -93,7 +93,7 @@ bindkey '^o^l' peco_insert_commit
 #  Peco insert issue
 #-----------------------------------------------
 peco_insert_issue() {
-  local issue="$(git issue-list | peco --rcfile=$HOME/.pecorc | tr "\n" ' ')"
+  local issue="$(git github ls-issue | peco --rcfile=$HOME/.pecorc | tr "\n" ' ')"
 
   if [ "${LBUFFER[$CURSOR]}" = '#' ]; then
     issue=$(echo "$issue" | cut -d ' ' -f 1 | cut -c 2-)
