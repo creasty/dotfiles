@@ -9,4 +9,7 @@ _zsh/secrets.zsh
 
 _tags/tags
 
+_tmux/plugins/*
+!_tmux/plugins/tpm
+
 !.gitkeep

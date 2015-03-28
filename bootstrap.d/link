@@ -24,7 +24,8 @@ LINKS=(
   _railsrc
   _rbenv/default-gems
   _rspec
-  _tmux.conf
+  _tmux
+  _tmux/tmux.conf:.tmux.conf
   _vim
   _vim/gvimrc:.gvimrc
   _vim/vimrc:.vimrc
