@@ -1,4 +1,14 @@
-#  cd to the project root
+#=== Helper
+#==============================================================================================
+_register_keycommand() {
+  zle -N $2
+  bindkey "$1" $2
+}
+
+
+#=== CD
+#==============================================================================================
+#  Project root
 #-----------------------------------------------
 cdrt() {
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
@@ -14,7 +24,31 @@ mkd() {
 }
 
 
-#  Peco insert path
+#=== Peco
+#==============================================================================================
+_peco_insert() {
+  local rbuf="$RBUFFER"
+  BUFFER="$LBUFFER$(cat)"
+  CURSOR=$#BUFFER
+  BUFFER="$BUFFER$rbuf"
+}
+_peco_replace() {
+  BUFFER="$(cat)"
+  CURSOR=$#BUFFER
+}
+_peco_select() {
+  local tx="$(cat)"
+
+  if [ "$tx" != '' ]; then
+    peco --rcfile=$HOME/.pecorc --query "$1" <<< "$tx"
+  fi
+}
+_peco_select_multi() {
+  cat | _peco_select "$1" | tr "\n" ' '
+}
+
+
+#  Insert path
 #-----------------------------------------------
 peco_insert_path() {
   local cmd
@@ -25,96 +59,87 @@ peco_insert_path() {
     cmd='find .'
   fi
 
-  local filepath="$(eval "$cmd" | peco --rcfile=$HOME/.pecorc)"
+  eval "$cmd" \
+    | _peco_select \
+    | {
+      file="$(cat)"
 
-  if [ "$LBUFFER" = "" ] && [ $(wc -l <<< "$filepath") -eq 1 ]; then
-    if [ -d "$filepath" ]; then
-      BUFFER="cd $filepath"
-    elif [ -f "$filepath" ]; then
-      BUFFER="$EDITOR $filepath"
-    fi
-  else
-    filepath=$(tr "\n" ' ' <<< "$filepath")
-    BUFFER="$LBUFFER$filepath"
-  fi
-
-  CURSOR=$#BUFFER
+      if [ "$LBUFFER" = "" ] && [ $(wc -l <<< "$file") -eq 1 ]; then
+        if [ -d "$file" ]; then
+          echo -n "cd $file"
+        elif [ -f "$file" ]; then
+          echo -n "$EDITOR $file"
+        fi
+      else
+        echo -n "$(tr "\n" ' ' <<< "$file")"
+      fi
+    } \
+    | _peco_insert
 }
 
-zle -N peco_insert_path
-bindkey '^o^p' peco_insert_path
+_register_keycommand '^o^p' peco_insert_path
 
 
-#  Peco insert modified files
+#  Insert modified files
 #-----------------------------------------------
 peco_modified_file() {
-  local filepath="$(git status -s | cut -b 4- | peco --rcfile=$HOME/.pecorc | tr "\n" ' ')"
-
-  local rbuf="$RBUFFER"
-  BUFFER="$LBUFFER$filepath"
-  CURSOR=$#BUFFER
-  BUFFER="$BUFFER$rbuf"
+  git status -s \
+    | cut -b 4- \
+    | _peco_select_multi \
+    | _peco_insert
 }
 
-zle -N peco_modified_file
-bindkey '^o^m' peco_modified_file
+_register_keycommand '^o^m' peco_modified_file
 
 
-#  Peco insert branch
+#  Insert branch
 #-----------------------------------------------
 peco_insert_branch() {
-  local branch="$(git branch --color=never | cut -c 3- | peco --rcfile=$HOME/.pecorc | tr "\n" ' ')"
-
-  local rbuf="$RBUFFER"
-  BUFFER="$LBUFFER$branch"
-  CURSOR=$#BUFFER
-  BUFFER="$BUFFER$rbuf"
+  git branch --color=never \
+    | cut -c 3- \
+    | _peco_select_multi \
+    | _peco_insert
 }
 
-zle -N peco_insert_branch
-bindkey '^o^b' peco_insert_branch
+_register_keycommand '^o^b' peco_insert_branch
 
 
-#  Peco insert commit id
+#  Insert commit id
 #-----------------------------------------------
 peco_insert_commit() {
-  local commit="$(git log --oneline --color=never | peco --rcfile=$HOME/.pecorc | cut -c -7 | tr "\n" ' ')"
-
-  local rbuf="$RBUFFER"
-  BUFFER="$LBUFFER$commit"
-  CURSOR=$#BUFFER
-  BUFFER="$BUFFER$rbuf"
+  git log --oneline --color=never \
+    | _peco_select_multi \
+    | _peco_insert
 }
 
-zle -N peco_insert_commit
-bindkey '^o^l' peco_insert_commit
+_register_keycommand '^o^l' peco_insert_commit
 
 
-#  Peco insert issue
+#  Insert issue
 #-----------------------------------------------
 peco_insert_issue() {
-  local issue="$(git github ls-issue | peco --rcfile=$HOME/.pecorc | tr "\n" ' ')"
-
-  if [ "${LBUFFER[$CURSOR]}" = '#' ]; then
-    issue=$(echo "$issue" | cut -d ' ' -f 1 | cut -c 2-)
-  fi
-
-  local rbuf="$RBUFFER"
-  BUFFER="$LBUFFER$issue"
-  CURSOR=$#BUFFER
-  BUFFER="$BUFFER$rbuf"
+  git github ls-issue \
+    | _peco_select_multi \
+    | {
+      if [ "${LBUFFER[$CURSOR]}" = '#' ]; then
+        cat | cut -d ' ' -f 1 | cut -c 2-
+      else
+        cat
+      fi
+    } \
+    | _peco_insert
 }
 
-zle -N peco_insert_issue
-bindkey '^o^i' peco_insert_issue
+_register_keycommand '^o^i' peco_insert_issue
 
 
-#  Peco history
+#  Iistory
 #-----------------------------------------------
 peco_history() {
-  BUFFER=$(\history -n 1 | tail -r | peco --query "$LBUFFER")
-  CURSOR=$#BUFFER
+  \history -n 1 \
+    | tail -r \
+    | _peco_select "$LBUFFER" \
+    | _peco_replace
 }
 
-zle -N peco_history
-bindkey '^r' peco_history
+_register_keycommand '^r' peco_history
