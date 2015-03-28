@@ -1,6 +1,7 @@
 update_sources: true
 backtrace:      true
 verbose:        true
+jobs:           4
 
 gem:     --no-document
 install: --no-document --verbose
