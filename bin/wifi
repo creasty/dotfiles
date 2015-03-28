@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+AIRPORT=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport
+
+DEVICE=en0
+CURRENT_AP="$(networksetup -getairportnetwork $DEVICE | cut -d ':' -f 2 | cut -c 2-)"
+
+if [ "$1" = "-s" ]; then
+  AP="$(
+    $AIRPORT -s \
+      | sed '1d' \
+      | awk "{ print ((\$1 == \"$CURRENT_AP\") ? \"* \" : \"  \") \$1 }" \
+      | peco \
+      | head -n 1 \
+      | cut -c 3-
+  )"
+
+  PASSWORD="$(security find-generic-password -gwa "$AP")"
+  networksetup -setairportnetwork $DEVICE "$AP" "$PASSWORD"
+else
+  echo "$CURRENT_AP"
+fi
