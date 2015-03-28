@@ -175,7 +175,7 @@ peco_insert_issue() {
 _register_keycommand '^o^i' peco_insert_issue
 
 
-#  Iistory
+#  History
 #-----------------------------------------------
 peco_history() {
   \history -n 1 \
