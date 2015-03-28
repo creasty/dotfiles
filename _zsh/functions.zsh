@@ -71,7 +71,7 @@ _peco_select() {
     query='(nothing)'
   fi
 
-  peco --rcfile=$HOME/.pecorc --query "$query" <<< "$tx"
+  peco --query "$query" <<< "$tx"
 }
 
 

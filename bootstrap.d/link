@@ -20,7 +20,7 @@ LINKS=(
   _git/gitconfig:.gitconfig
   _git/gitignore:.gitignore
   _irbrc
-  _pecorc
+  _peco
   _railsrc
   _rbenv/default-gems
   _rspec

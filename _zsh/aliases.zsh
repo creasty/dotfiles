@@ -26,7 +26,6 @@ alias ag="ag --pager='less -R'"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 
-alias peco="peco --rcfile=$HOME/.pecorc"
 alias o='git ls-files | peco | xargs open'
 
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'

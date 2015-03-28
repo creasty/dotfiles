@@ -2,7 +2,7 @@
 
 source "$(dirname $0)/../lib/helpers.sh"
 
-list="$(ps aux | grep -v grep | grep -v $0 | peco --rcfile=$HOME/.pecorc)"
+list="$(ps aux | grep -v grep | grep -v $0 | peco)"
 
 echo "$list"
 echo

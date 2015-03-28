@@ -10,7 +10,7 @@ mdfind -onlyin ~ -name $1 \
       query='(nothing)'
     fi
 
-    peco --rcfile=$HOME/.pecorc --query "$query" <<< "$tx"
+    peco --query "$query" <<< "$tx"
   } \
   | {
     while read -r file; do
