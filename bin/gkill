@@ -2,16 +2,9 @@
 
 source "$(dirname $0)/../lib/helpers.sh"
 
-list="$(ps aux | grep -v grep | grep -v $0 | peco)"
-
-echo "$list"
-echo
-
-ask_for_confirmation "Are you sure to kill all these processes?"
-
-if answer_is_yes; then
-  echo "$list" | awk '{ print $2 }' | xargs kill -9
-  echo "Done"
-else
-  echo "Canceled"
-fi
+ps aux \
+  | grep -v grep \
+  | grep -v $0 \
+  | peco \
+  | awk '{ print $2 }' \
+  | xargs kill -9
