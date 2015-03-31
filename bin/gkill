@@ -2,11 +2,19 @@
 
 source "$(dirname $0)/../lib/helpers.sh"
 
+ARGS="$@"
+
 ps aux \
   | grep -v $0 \
   | grep -v grep \
   | grep -v peco \
   | sed '1d' \
-  | peco --query "$@" \
+  | {
+    if [ "$ARGS" = '' ]; then
+      cat | peco
+    else
+      cat | peco --query "$ARGS"
+    fi
+  } \
   | awk '{ print $2 }' \
   | xargs kill -9
