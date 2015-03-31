@@ -107,16 +107,15 @@ peco_insert_path() {
       file="$(cat)"
 
       if [ "$LBUFFER" != "" ]; then
-        echo -n "$file"
+        echo "$file" | _buffer_insert_lines
       elif [ -d "$file" ]; then
-        echo -n "cd $file"
+        echo "cd $file" | _buffer_insert
       elif [ -f "$file" ]; then
-        echo -n "$EDITOR $file"
+        echo "$EDITOR $file" | _buffer_insert
       else
-        echo -n "$file"
+        echo "$file" | _buffer_insert_lines
       fi
-    } \
-    | _buffer_insert_lines
+    }
 }
 
 _register_keycommand '^o^p' peco_insert_path
@@ -151,6 +150,7 @@ _register_keycommand '^o^b' peco_insert_branch
 peco_insert_commit() {
   git log --oneline --color=never \
     | _peco_select \
+    | cut -d ' ' -f 1 \
     | _buffer_insert_lines
 }
 
@@ -162,13 +162,8 @@ _register_keycommand '^o^l' peco_insert_commit
 peco_insert_issue() {
   git github ls-issue \
     | _peco_select \
-    | {
-      if [ "${LBUFFER[$CURSOR]}" = '#' ]; then
-        cat | cut -d ' ' -f 1 | cut -c 2-
-      else
-        cat
-      fi
-    } \
+    | cut -d ' ' -f 1 \
+    | cut -c 2- \
     | _buffer_insert_lines
 }
 
