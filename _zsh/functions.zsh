@@ -148,7 +148,7 @@ _register_keycommand '^o^b' peco_insert_branch
 #  Insert commit id
 #-----------------------------------------------
 peco_insert_commit() {
-  git log --oneline --color=never \
+  git log --oneline --color=never -1000 \
     | _peco_select \
     | cut -d ' ' -f 1 \
     | _buffer_insert_lines
