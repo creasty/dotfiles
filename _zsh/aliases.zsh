@@ -100,6 +100,11 @@ alias ql='qlmanage -p "$@" >& /dev/null'
 
 alias es='elasticsearch'
 
+erd() {
+  local cmd=$HOME/.cabal/bin/erd
+  $cmd -i "$1" -o "${1}.${2:-pdf}"
+}
+
 
 #  Networks
 #-----------------------------------------------
