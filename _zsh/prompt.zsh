@@ -38,29 +38,29 @@ __git_ps1() {
     total=$(cat "$g/rebase-merge/end")
 
     if [ -f "$g/rebase-merge/interactive" ]; then
-      r="|rebase-i"
+      r=" rebase-i"
     else
-      r="|rebase-m"
+      r=" rebase-m"
     fi
   else
     if [ -d "$g/rebase-apply" ]; then
       step=$(cat "$g/rebase-apply/next")
       total=$(cat "$g/rebase-apply/last")
       if [ -f "$g/rebase-apply/rebasing" ]; then
-        r="|rebase"
+        r=" rebase"
       elif [ -f "$g/rebase-apply/applying" ]; then
-        r="|am"
+        r=" am"
       else
-        r="|am/rebase"
+        r=" am/rebase"
       fi
     elif [ -f "$g/MERGE_HEAD" ]; then
-      r="|merging"
+      r=" merging"
     elif [ -f "$g/CHERRY_PICK_HEAD" ]; then
-      r="|cherry-picking"
+      r=" cherry-picking"
     elif [ -f "$g/REVERT_HEAD" ]; then
-      r="|reverting"
+      r=" reverting"
     elif [ -f "$g/BISECT_LOG" ]; then
-      r="|bisecting"
+      r=" bisecting"
     fi
 
     b="$(git symbolic-ref --short HEAD 2>/dev/null)" ||
