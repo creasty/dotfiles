@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+VIM_APP_DIR=/usr/local/Cellar/macvim/HEAD
+BINARY="$VIM_APP_DIR/MacVim.app/Contents/MacOS/Vim"
+
+if ! [ -z "$($BINARY --serverlist)" ]; then
+  $BINARY -g --remote-tab-silent ${1:+"$@"}
+else
+  $BINARY -g ${1:+"$@"}
+fi

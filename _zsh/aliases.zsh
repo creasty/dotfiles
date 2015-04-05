@@ -84,7 +84,6 @@ alias -s java='_run_java'
 
 #  Applications
 #-----------------------------------------------
-alias mvim='open -a MacVim'
 alias ff='open -a Firefox'
 alias finder='open -a Finder'
 alias va='vagrant'
