@@ -41,18 +41,6 @@ cdrt() {
 }
 
 
-#  Move to active Finder's directory
-#-----------------------------------------------
-cdf() {
-  local target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
-
-  if [ "$target" != "" ]; then
-    cd "$target"
-    pwd
-  fi
-}
-
-
 #  Make directory and enter to it
 #-----------------------------------------------
 mkd() {
