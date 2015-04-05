@@ -10,5 +10,6 @@
     "Selected": ["on_black", "default"],
     "Query": ["on_default", "yellow"],
     "Matched": ["on_default", "yellow"]
-  }
+  },
+  "StickySelection": true
 }
