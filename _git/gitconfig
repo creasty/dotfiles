@@ -105,7 +105,7 @@
   # reload config
   rc = ! git config -l > /dev/null
 
-  pr = mkpr
+  pr = github mk-pr
   wr = browse-remote
 
 [url "https://"]

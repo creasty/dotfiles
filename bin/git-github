@@ -1,32 +1,140 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
 
-require 'octokit'
+source "$(dirname $0)/../lib/helpers.sh"
 
-client = Octokit::Client.new access_token: ENV['GITHUB_ACCESS_TOKEN']
 
-remote = `git remote -v | grep origin`
-  .to_s
-  .match /git@github\.com:(.+?)\.git/
+REPO="$(git config --get remote.origin.url | grep github.com | sed 's/^.*github\.com[:\/]\(.*\)\.git$/\1/' | tr -d "\n")"
 
-exit unless remote
+if [ -z "$REPO" ]; then
+  [ -t 1 ] && print_error 'Remote origin is not at github.com'
+  exit 1
+fi
 
-repo = remote[1]
+DEFAULT_PAR_PAGE=100
+DEFAULT_EDITOR="${EDITOR:-vim}"
 
-case ARGV.shift
-when 'ls-issue'
-  client.issues(repo, per_page: 300).each do |issue|
-    puts '#%d %s' % [issue[:number], issue[:title]]
+USERNAME="${REPO%%/*}"
+HEAD="$(git symbolic-ref --short HEAD)"
+PROJECT_DIR="$(git rev-parse --show-toplevel)"
+GIT_DIR="$PROJECT_DIR/.git"
+
+
+#  Functions
+#-----------------------------------------------
+client() {
+  cat | curl "https://api.github.com/$2" \
+    -sS \
+    -X "$1" \
+    -H 'Accept: application/vnd.github.v3+json' \
+    -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
+    -d @-
+}
+
+
+#  Commands
+#-----------------------------------------------
+command_ls_issue() {
+  local ruby=$(cat <<RUBY
+  JSON.parse(\$stdin.read).each do |issue|
+    next if issue['pull_request']
+    puts '#%d %s' % [issue['number'], issue['title']]
   end
-when 'ls-pr'
-  client.pull_requests(repo, per_page: 300).each do |pr|
-    puts '#%d %s' % [pr[:number], pr[:title]]
+RUBY)
+
+  local page="${1:-$DEFAULT_PAR_PAGE}"
+
+  echo \
+    | client GET "repos/$REPO/issues?per_page=$page" \
+    | ruby -r json -e "$ruby"
+}
+
+command_ls_pr() {
+  local ruby=$(cat <<RUBY
+  JSON.parse(\$stdin.read).each do |issue|
+    puts '#%d %s' % [issue['number'], issue['title']]
   end
-when 'mk-pr'
-  base, head, title = ARGV
-  begin
-    res = client.create_pull_request(repo, base, head, title)
-    puts res[:html_url]
+RUBY)
+
+  local page="${1:-$DEFAULT_PAR_PAGE}"
+
+  echo \
+    | client GET "repos/$REPO/pulls?per_page=$page" \
+    | ruby -r json -e "$ruby"
+}
+
+command_mk_pr() {
+  local ruby_in=$(cat <<RUBY
+  head, base = ARGV
+  data = \$stdin.read.gsub(/\\n?\\r/, "\\n").split /\\n{2}/
+  title = data.shift
+  body = data.join("\\n\\n").gsub /\\A\\s+|\\s+\\z/, ''
+
+  if '' != title
+    data = {
+      title: title,
+      body:  body,
+      head:  head,
+      base:  base,
+    }
+    puts data.to_json
   end
-else
-  puts 'command not found'
-end
+RUBY)
+
+  local ruby_out=$(cat <<-RUBY
+  puts JSON.parse(\$stdin.read)['html_url']
+RUBY)
+
+  local head="${1:-$HEAD}"
+  local base="${2:-master}"
+
+  local last_commit="$(git log -n 1 --pretty=format:'%s' "${base}..${head}" | cat)"
+
+  if [ -z "$last_commit" ]; then
+    [ -t 1 ] && print_error 'No commits'
+    exit 1
+  fi
+
+  local file="$GIT_DIR/PR_EDITMSG.markdown"
+  echo -e "$last_commit\n\n## What\n\n" > "$file"
+
+  $DEFAULT_EDITOR "$file"
+
+  [ -t 1 ] && section "Creating a pull request to $base from $head"
+
+  ruby -r json -e "$ruby_in" "$USERNAME:$head" "$base" < "$file" \
+    | client POST "repos/$REPO/pulls" \
+    | ruby -r json -e "$ruby_out" \
+    | tr -d "\n" \
+    | {
+      url="$(cat)"
+
+      if [ -z "$url" ]; then
+        [ -t 1 ] && print_error "Couldn't create pull request"
+        exit 1
+      else
+        if [ -t 1 ]; then
+          print_success "$url"
+          echo -n "$url" | pbcopy
+        else
+          echo "$url"
+        fi
+      fi
+    }
+}
+
+
+#  Dispatch
+#-----------------------------------------------
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+  ls-issue) command_ls_issue "$1"   ;;
+  ls-pr)    command_ls_pr "$1"      ;;
+  mk-pr)    command_mk_pr "$1" "$2" ;;
+
+  *)
+    [ -t 1 ] && print_error 'Command not found'
+    exit 1
+    ;;
+esac
