@@ -30,6 +30,7 @@
   ca   = commit --amend
   cam  = commit --amend -m
   cane = commit --amend --no-edit
+  ce   = commit --allow-empty -m
 
   r = remote
   t = tag
