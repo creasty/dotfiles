@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if [ $# -eq 2 ]; then
+  BASE="$1"
+  TITLE="$2"
+else
+  BASE='master'
+  TITLE="$1"
+fi
+
+if ! [ -z "$TITLE" ]; then
+  git commit --allow-empty -m "$TITLE" || exit 1
+fi
+
+URL="$(git pull-request -m '' -b "$BASE")"
+
+[ -z "$URL" ] && exit 1
+
+echo "$URL"
+echo -n "$URL" | pbcopy
