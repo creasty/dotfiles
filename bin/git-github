@@ -21,6 +21,12 @@ when 'ls-pr'
   client.pull_requests(repo, per_page: 300).each do |pr|
     puts '#%d %s' % [pr[:number], pr[:title]]
   end
+when 'mk-pr'
+  base, head, title = ARGV
+  begin
+    res = client.create_pull_request(repo, base, head, title)
+    puts res[:html_url]
+  end
 else
   puts 'command not found'
 end

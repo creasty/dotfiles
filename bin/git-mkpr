@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+source "$(dirname $0)/../lib/helpers.sh"
+
+HEAD="$(git symbolic-ref --short HEAD)"
+
 if [ $# -eq 2 ]; then
   BASE="$1"
   TITLE="$2"
@@ -8,13 +12,26 @@ else
   TITLE="$1"
 fi
 
-if ! [ -z "$TITLE" ]; then
+section 'Creating pull request'
+
+if [ -z "$TITLE" ]; then
+  TITLE="$(git log -n 1 --pretty=format:'%s' | cat)"
+else
+  subsection 'Creating empty commit'
   git commit --allow-empty -m "$TITLE" || exit 1
+
+  subsection 'Push'
+  git auto-ref push
 fi
 
-URL="$(git pull-request -m '' -b "$BASE")"
+subsection "Requesting '$TITLE' to $BASE from $HEAD"
 
-[ -z "$URL" ] && exit 1
+URL="$(git github mk-pr "$BASE" "$HEAD" "$TITLE" | tr -d "\n")"
 
-echo "$URL"
+if [ -z "$URL" ]; then
+  print_error "Couldn't create pull request"
+  exit 1
+fi
+
+print_success "$URL"
 echo -n "$URL" | pbcopy
