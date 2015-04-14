@@ -11,7 +11,6 @@ if [ -z "$REPO" ]; then
 fi
 
 DEFAULT_PAR_PAGE=100
-DEFAULT_EDITOR="${EDITOR:-vim}"
 
 USERNAME="${REPO%%/*}"
 HEAD="$(git symbolic-ref --short HEAD)"
@@ -28,6 +27,14 @@ client() {
     -H 'Accept: application/vnd.github.v3+json' \
     -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
     -d @-
+}
+
+editor() {
+  if [ -z "${GIT_EDITOR:+set}" ]; then
+    GIT_EDITOR="$(git var GIT_EDITOR)" || return $?
+  fi
+
+  eval "$GIT_EDITOR" '"$@"'
 }
 
 
@@ -97,7 +104,7 @@ RUBY)
   local file="$GIT_DIR/PR_EDITMSG.markdown"
   echo -e "$last_commit\n\n## What\n\n" > "$file"
 
-  $DEFAULT_EDITOR "$file"
+  editor "$file"
 
   [ -t 1 ] && section "Creating a pull request to $base from $head"
 
