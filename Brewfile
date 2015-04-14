@@ -72,7 +72,6 @@ brew install fontforge || true
 brew install freetype || true
 brew install gdbm || true
 brew install gettext || true
-brew install gh || true
 brew install ghc || true
 brew install ghostscript || true
 brew install git || true
