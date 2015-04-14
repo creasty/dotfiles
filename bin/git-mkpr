@@ -12,19 +12,29 @@ else
   TITLE="$1"
 fi
 
-section 'Creating pull request'
 
-if [ -z "$TITLE" ]; then
-  TITLE="$(git log -n 1 --pretty=format:'%s' | cat)"
-else
-  subsection 'Creating empty commit'
+section 'Prepare branch for a request'
+
+LAST_COMMIT="$(git log -n 1 --pretty=format:'%s' "${BASE}..${HEAD}" | cat)"
+
+if [ -z "$LAST_COMMIT" ]; then
+  if [ -z "$TITLE" ]; then
+    print_error 'Empty title'
+    exit 1
+  fi
+
+  subsection 'Create empty commit'
   git commit --allow-empty -m "$TITLE" || exit 1
-
-  subsection 'Push'
-  git auto-ref push
+  print_status $?
+else
+  TITLE="${TITLE:-$LAST_COMMIT}"
 fi
 
-subsection "Requesting '$TITLE' to $BASE from $HEAD"
+subsection 'Push'
+git auto-ref push
+
+
+section "Request '$TITLE' to $BASE from $HEAD"
 
 URL="$(git github mk-pr "$BASE" "$HEAD" "$TITLE" | tr -d "\n")"
 
@@ -34,4 +44,5 @@ if [ -z "$URL" ]; then
 fi
 
 print_success "$URL"
+
 echo -n "$URL" | pbcopy
