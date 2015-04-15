@@ -97,8 +97,8 @@ command_mk_pr() {
     puts res["html_url"] || res["message"]
   '
 
-  local head="${1:-"$HEAD"}"
-  local base="${2:-'master'}"
+  local head="${1:-$HEAD}"
+  local base="${2:-master}"
 
   local last_commit="$(git log -n 1 --pretty=format:'%s' "${base}..${head}" | cat)"
 

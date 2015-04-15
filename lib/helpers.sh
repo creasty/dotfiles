@@ -37,7 +37,7 @@ answer_is_yes() {
 #  Print labeled text
 #-----------------------------------------------
 print_error() {
-  printf "\e[0;31m[Error]\e[0m $@\n"
+  printf "\e[0;31m[Error]\e[0m $@\n" 1>&2
 }
 
 print_success() {
