@@ -26,9 +26,15 @@ GIT_DIR="$PROJECT_DIR/.git"
 #  Functions
 #-----------------------------------------------
 client() {
-  cat | curl "https://api.github.com/$2" \
+  local method="$1"
+  local url="https://api.github.com/$2"
+
+  local cat_or_echo='cat'
+  [ "$method" = 'GET' ] && cat_or_echo='echo'
+
+  $cat_or_echo | curl "$url" \
     -sS \
-    -X "$1" \
+    -X "$method" \
     -H 'Accept: application/vnd.github.v3+json' \
     -H "Authorization: token $GITHUB_ACCESS_TOKEN" \
     -d @-
@@ -47,54 +53,60 @@ editor() {
 #-----------------------------------------------
 command_ls_issue() {
   local ruby='
-    JSON.parse($stdin.read).each do |issue|
-      next if issue["pull_request"]
-      puts "#%d %s" % [issue["number"], issue["title"]]
+    begin
+      JSON.parse($stdin.read).each do |issue|
+        next if issue["pull_request"]
+        puts "#%d %s" % [issue["number"], issue["title"]]
+      end
     end
   '
 
   local page="${1:-$DEFAULT_PAR_PAGE}"
 
-  echo \
-    | client GET "repos/$REPO/issues?per_page=$page" \
+  client GET "repos/$REPO/issues?per_page=$page" \
     | ruby -r json -e "$ruby"
 }
 
 command_ls_pr() {
   local ruby='
-    JSON.parse($stdin.read).each do |issue|
-      puts "#%d %s" % [issue["number"], issue["title"]]
+    begin
+      JSON.parse($stdin.read).each do |issue|
+        puts "#%d %s" % [issue["number"], issue["title"]]
+      end
     end
   '
 
   local page="${1:-$DEFAULT_PAR_PAGE}"
 
-  echo \
-    | client GET "repos/$REPO/pulls?per_page=$page" \
+  client GET "repos/$REPO/pulls?per_page=$page" \
     | ruby -r json -e "$ruby"
 }
 
 command_mk_pr() {
   local ruby_in='
-    head, base = ARGV
-    data = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/
-    title = data.shift
-    body = data.join("\n\n").gsub /\A\s+|\s+\z/, ""
+    begin
+      head, base = ARGV
+      data = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/
+      title = data.shift
+      body = data.join("\n\n").gsub /\A\s+|\s+\z/, ""
 
-    unless title =~ /^\s*$/
-      data = {
-        title: title,
-        body:  body,
-        head:  head,
-        base:  base,
-      }
-      puts data.to_json
+      unless title =~ /^\s*$/
+        data = {
+          title: title,
+          body:  body,
+          head:  head,
+          base:  base,
+        }
+        puts data.to_json
+      end
     end
   '
 
   local ruby_out='
-    res = JSON.parse $stdin.read
-    puts res["html_url"] || res["message"]
+    begin
+      res = JSON.parse $stdin.read
+      puts res["html_url"] || res["message"]
+    end
   '
 
   local head="${1:-$HEAD}"
