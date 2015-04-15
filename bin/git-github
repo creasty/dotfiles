@@ -3,7 +3,12 @@
 source "$(dirname $0)/../lib/helpers.sh"
 
 
-REPO="$(git config --get remote.origin.url | grep github.com | sed 's/^.*github\.com[:\/]\(.*\)\.git$/\1/' | tr -d "\n")"
+REPO="$(
+  git config --get remote.origin.url \
+    | grep github.com \
+    | sed 's/^.*github\.com[:\/]\(.*\)\.git$/\1/' \
+    | tr -d "\n"
+)"
 
 if [ -z "$REPO" ]; then
   [ -t 1 ] && print_error 'Remote origin is not at github.com'
@@ -92,8 +97,8 @@ command_mk_pr() {
     puts res["html_url"] || res["message"]
   '
 
-  local head="${1:-$HEAD}"
-  local base="${2:-master}"
+  local head="${1:-"$HEAD"}"
+  local base="${2:-'master'}"
 
   local last_commit="$(git log -n 1 --pretty=format:'%s' "${base}..${head}" | cat)"
 
