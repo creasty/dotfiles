@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/../lib/helpers.sh"
-
-
 REPO="$(
   git config --get remote.origin.url \
     | grep github.com \
@@ -11,16 +8,15 @@ REPO="$(
 )"
 
 if [ -z "$REPO" ]; then
-  [ -t 1 ] && print_error 'Remote origin is not at github.com'
+  echo 'Remote origin is not hosted at github.com' 1>&2
   exit 1
 fi
 
-DEFAULT_PAR_PAGE=100
-
-USERNAME="${REPO%%/*}"
 HEAD="$(git symbolic-ref --short HEAD)"
 PROJECT_DIR="$(git rev-parse --show-toplevel)"
 GIT_DIR="$PROJECT_DIR/.git"
+
+DEFAULT_PAR_PAGE=100
 
 
 #  Functions
@@ -46,6 +42,16 @@ editor() {
   fi
 
   eval "$GIT_EDITOR" '"$@"'
+}
+
+copy2clipboard() {
+  if command -v pbcopy > /dev/null 2>&1; then
+    echo -n "$1" | pbcopy
+  fi
+}
+
+error() {
+  echo -e "Error: $@" 1>&2
 }
 
 
@@ -80,11 +86,9 @@ list_pull_requests() {
 
 create_issue() {
   local file="$GIT_DIR/ISSUE_EDIT.markdown"
+
   echo > "$file"
-
   editor "$file"
-
-  [ -t 1 ] && section "Creating a issue"
 
   ruby -r json -e '
     begin
@@ -112,16 +116,12 @@ create_issue() {
 
       case "$res" in
         http*)
-          if [ -t 1 ]; then
-            print_success "$res"
-            cmd_exists pbcopy && (echo -n "$res" | pbcopy)
-          else
-            echo "$res"
-          fi
+          echo "$res"
+          [ -t 1 ] && copy2clipboard "$res"
           ;;
 
         *)
-          [ -t 1 ] && print_error "${res:-"Couldn't create issue"}"
+          error "${res:-"Couldn't create issue"}"
           exit 1
           ;;
       esac
@@ -132,24 +132,30 @@ create_pull_request() {
   local head="${1:-$HEAD}"
   local base="${2:-master}"
 
-  local last_commit="$(git log -n 1 --pretty=format:'%s' "${base}..${head}" | cat)"
+  local commits="$(git log --pretty=format:'%s' "${base}..${head}" | cat)"
+  local last_commit="$(echo "$commits" | head -n 1)"
 
   if [ -z "$last_commit" ]; then
-    [ -t 1 ] && print_error 'No commits'
+    error 'No commits'
     exit 1
   fi
 
   local file="$GIT_DIR/PULLREQ_EDIT.markdown"
-  echo -e "$last_commit\n\n## What\n\n" > "$file"
 
+  local body="$last_commit
+
+> Create a new pull request to \`$base\` from \`$head\`:
+>
+$(echo "$commits" | sed 's/^/> - /')"
+
+  echo -e "$body" > "$file"
   editor "$file"
-
-  [ -t 1 ] && section "Creating a pull request to $base from $head"
 
   ruby -r json -e '
     begin
       head, base = ARGV
       title, body = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/, 2
+      body = body.split("\n> Create a new pull request to")[0]
 
       unless title =~ /^\s*$/
         data = {
@@ -175,20 +181,35 @@ create_pull_request() {
 
       case "$res" in
         http*)
-          if [ -t 1 ]; then
-            print_success "$res"
-            cmd_exists pbcopy && (echo -n "$res" | pbcopy)
-          else
-            echo "$res"
-          fi
+          echo "$res"
+          [ -t 1 ] && copy2clipboard "$res"
           ;;
 
         *)
-          [ -t 1 ] && print_error "${res:-"Couldn't create pull request"}"
+          error "${res:-"Couldn't create pull request"}"
           exit 1
           ;;
       esac
     }
+}
+
+show_help() {
+  cat <<HELP
+usage: git github <command>
+usage: git github -h
+
+Commands:
+
+ls-issue [size]
+    List issues of the repository
+ls-pr [size]
+    List pull requests of the repository
+mk-issue
+    Create new issue
+mk-pr [head] [base]
+    Create new pull request to head from base
+    head is default to master; base is to the current branch
+HELP
 }
 
 
@@ -198,18 +219,6 @@ COMMAND="$1"
 shift
 
 case "$COMMAND" in
-  repo)
-    echo "$REPO"
-    ;;
-
-  username)
-    echo "$USERNAME"
-    ;;
-
-  url)
-    echo "https://github.com/$REPO"
-    ;;
-
   ls-issue)
     list_issues "$1"
     ;;
@@ -227,28 +236,16 @@ case "$COMMAND" in
     ;;
 
   -h|'')
-    echo -n 'usage: git github [-h] <command>
-
-Commands:
-
-repo                     Show name of the repository
-username                 Show username of the repository
-url                      Show GitHub repository URL
-ls-issue [$size]         List issues of the repository
-ls-pr [$size]            List pull requests of the repository
-mk-issue                 Create new issue
-mk-pr [$head] [$base]    Create new pull request to $head from $base
-                         $head is default to master; $base is to the current branch
-'
+    show_help
     ;;
 
   -*)
-    [ -t 1 ] && print_error "Unknown option: $COMMAND"
+    error "Unknown option: $COMMAND"
     exit 1
     ;;
 
   *)
-    [ -t 1 ] && print_error "Command not found: $COMMAND"
+    error "Command not found: $COMMAND"
     exit 1
     ;;
 esac
