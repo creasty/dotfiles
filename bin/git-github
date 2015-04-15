@@ -51,7 +51,7 @@ editor() {
 
 #  Commands
 #-----------------------------------------------
-command_ls_issue() {
+list_issues() {
   local page="${1:-$DEFAULT_PAR_PAGE}"
 
   client GET "repos/$REPO/issues?per_page=$page" \
@@ -65,7 +65,7 @@ command_ls_issue() {
       '
 }
 
-command_ls_pr() {
+list_pull_requests() {
   local page="${1:-$DEFAULT_PAR_PAGE}"
 
   client GET "repos/$REPO/pulls?per_page=$page" \
@@ -78,7 +78,57 @@ command_ls_pr() {
       '
 }
 
-command_mk_pr() {
+create_issue() {
+  local file="$GIT_DIR/ISSUE_EDIT.markdown"
+  echo > "$file"
+
+  editor "$file"
+
+  [ -t 1 ] && section "Creating a issue"
+
+  ruby -r json -e '
+    begin
+      title, body = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/, 2
+
+      unless title =~ /^\s*$/
+        data = {
+          title: title,
+          body:  body,
+        }
+        puts data.to_json
+      end
+    end
+  ' < "$file" \
+    | client POST "repos/$REPO/issues" \
+    | ruby -r json -e '
+        begin
+          res = JSON.parse $stdin.read
+          puts res["html_url"] || res["message"]
+        end
+      ' \
+    | tr -d "\n" \
+    | {
+      res="$(cat)"
+
+      case "$res" in
+        http*)
+          if [ -t 1 ]; then
+            print_success "$res"
+            cmd_exists pbcopy && (echo -n "$res" | pbcopy)
+          else
+            echo "$res"
+          fi
+          ;;
+
+        *)
+          [ -t 1 ] && print_error "${res:-"Couldn't create issue"}"
+          exit 1
+          ;;
+      esac
+    }
+}
+
+create_pull_request() {
   local head="${1:-$HEAD}"
   local base="${2:-master}"
 
@@ -89,7 +139,7 @@ command_mk_pr() {
     exit 1
   fi
 
-  local file="$GIT_DIR/PR_EDITMSG.markdown"
+  local file="$GIT_DIR/PULLREQ_EDIT.markdown"
   echo -e "$last_commit\n\n## What\n\n" > "$file"
 
   editor "$file"
@@ -161,15 +211,19 @@ case "$COMMAND" in
     ;;
 
   ls-issue)
-    command_ls_issue "$1"
+    list_issues "$1"
     ;;
 
   ls-pr)
-    command_ls_pr "$1"
+    list_pull_requests "$1"
+    ;;
+
+  mk-issue)
+    create_issue
     ;;
 
   mk-pr)
-    command_mk_pr "$1" "$2"
+    create_pull_request "$1" "$2"
     ;;
 
   -h|'')
@@ -182,7 +236,8 @@ username                 Show username of the repository
 url                      Show GitHub repository URL
 ls-issue [$size]         List issues of the repository
 ls-pr [$size]            List pull requests of the repository
-mk-pr [$head] [$base]    Create pull requests to $head from $base
+mk-issue                 Create new issue
+mk-pr [$head] [$base]    Create new pull request to $head from $base
                          $head is default to master; $base is to the current branch
 '
     ;;
