@@ -52,63 +52,33 @@ editor() {
 #  Commands
 #-----------------------------------------------
 command_ls_issue() {
-  local ruby='
-    begin
-      JSON.parse($stdin.read).each do |issue|
-        next if issue["pull_request"]
-        puts "#%d %s" % [issue["number"], issue["title"]]
-      end
-    end
-  '
-
   local page="${1:-$DEFAULT_PAR_PAGE}"
 
   client GET "repos/$REPO/issues?per_page=$page" \
-    | ruby -r json -e "$ruby"
+    | ruby -r json -e '
+        begin
+          JSON.parse($stdin.read).each do |issue|
+            next if issue["pull_request"]
+            puts "#%d %s" % [issue["number"], issue["title"]]
+          end
+        end
+      '
 }
 
 command_ls_pr() {
-  local ruby='
-    begin
-      JSON.parse($stdin.read).each do |issue|
-        puts "#%d %s" % [issue["number"], issue["title"]]
-      end
-    end
-  '
-
   local page="${1:-$DEFAULT_PAR_PAGE}"
 
   client GET "repos/$REPO/pulls?per_page=$page" \
-    | ruby -r json -e "$ruby"
+    | ruby -r json -e '
+        begin
+          JSON.parse($stdin.read).each do |issue|
+            puts "#%d %s" % [issue["number"], issue["title"]]
+          end
+        end
+      '
 }
 
 command_mk_pr() {
-  local ruby_in='
-    begin
-      head, base = ARGV
-      data = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/
-      title = data.shift
-      body = data.join("\n\n").gsub /\A\s+|\s+\z/, ""
-
-      unless title =~ /^\s*$/
-        data = {
-          title: title,
-          body:  body,
-          head:  head,
-          base:  base,
-        }
-        puts data.to_json
-      end
-    end
-  '
-
-  local ruby_out='
-    begin
-      res = JSON.parse $stdin.read
-      puts res["html_url"] || res["message"]
-    end
-  '
-
   local head="${1:-$HEAD}"
   local base="${2:-master}"
 
@@ -126,9 +96,31 @@ command_mk_pr() {
 
   [ -t 1 ] && section "Creating a pull request to $base from $head"
 
-  ruby -r json -e "$ruby_in" "$head" "$base" < "$file" \
+  ruby -r json -e '
+    begin
+      head, base = ARGV
+      data = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/
+      title = data.shift
+      body = data.join("\n\n").gsub /\A\s+|\s+\z/, ""
+
+      unless title =~ /^\s*$/
+        data = {
+          title: title,
+          body:  body,
+          head:  head,
+          base:  base,
+        }
+        puts data.to_json
+      end
+    end
+  ' "$head" "$base" < "$file" \
     | client POST "repos/$REPO/pulls" \
-    | ruby -r json -e "$ruby_out" \
+    | ruby -r json -e '
+        begin
+          res = JSON.parse $stdin.read
+          puts res["html_url"] || res["message"]
+        end
+      ' \
     | tr -d "\n" \
     | {
       res="$(cat)"
@@ -137,7 +129,7 @@ command_mk_pr() {
         http*)
           if [ -t 1 ]; then
             print_success "$res"
-            echo -n "$res" | pbcopy
+            cmd_exists pbcopy && (echo -n "$res" | pbcopy)
           else
             echo "$res"
           fi
