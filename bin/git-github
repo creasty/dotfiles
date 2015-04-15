@@ -174,8 +174,28 @@ case "$COMMAND" in
     command_mk_pr "$1" "$2"
     ;;
 
+  -h|'')
+    echo -n 'usage: git github [-h] <command>
+
+Commands:
+
+repo                     Show name of the repository
+username                 Show username of the repository
+url                      Show GitHub repository URL
+ls-issue [$size]         List issues of the repository
+ls-pr [$size]            List pull requests of the repository
+mk-pr [$head] [$base]    Create pull requests to $head from $base
+                         $head is default to master; $base is to the current branch
+'
+    ;;
+
+  -*)
+    [ -t 1 ] && print_error "Unknown option: $COMMAND"
+    exit 1
+    ;;
+
   *)
-    [ -t 1 ] && print_error 'Command not found'
+    [ -t 1 ] && print_error "Command not found: $COMMAND"
     exit 1
     ;;
 esac
