@@ -99,9 +99,7 @@ command_mk_pr() {
   ruby -r json -e '
     begin
       head, base = ARGV
-      data = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/
-      title = data.shift
-      body = data.join("\n\n").gsub /\A\s+|\s+\z/, ""
+      title, body = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/, 2
 
       unless title =~ /^\s*$/
         data = {
