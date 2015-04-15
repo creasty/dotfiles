@@ -125,6 +125,7 @@ command_mk_pr() {
             echo "$res"
           fi
           ;;
+
         *)
           [ -t 1 ] && print_error "${res:-"Couldn't create pull request"}"
           exit 1
@@ -140,9 +141,29 @@ COMMAND="$1"
 shift
 
 case "$COMMAND" in
-  ls-issue) command_ls_issue "$1"   ;;
-  ls-pr)    command_ls_pr "$1"      ;;
-  mk-pr)    command_mk_pr "$1" "$2" ;;
+  repo)
+    echo "$REPO"
+    ;;
+
+  username)
+    echo "$USERNAME"
+    ;;
+
+  url)
+    echo "https://github.com/$REPO"
+    ;;
+
+  ls-issue)
+    command_ls_issue "$1"
+    ;;
+
+  ls-pr)
+    command_ls_pr "$1"
+    ;;
+
+  mk-pr)
+    command_mk_pr "$1" "$2"
+    ;;
 
   *)
     [ -t 1 ] && print_error 'Command not found'
