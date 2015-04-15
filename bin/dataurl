@@ -2,10 +2,10 @@
 
 # Create a data URL from a file
 
-local mimeType=$(file -b --mime-type "$1")
+MIME_TYPE=$(file -b --mime-type "$1")
 
-if [[ $mimeType == text/* ]]; then
-  mimeType="${mimeType};charset=utf-8"
+if [[ $MIME_TYPE == text/* ]]; then
+  MIME_TYPE="$MIME_TYPE;charset=utf-8"
 fi
 
-echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
+echo "data:$MIME_TYPE;base64,$(openssl base64 -in "$1" | tr -d '\n')"
