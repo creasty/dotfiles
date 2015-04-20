@@ -155,7 +155,7 @@ $(echo "$commits" | sed 's/^/> - /')"
     begin
       head, base = ARGV
       title, body = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/, 2
-      body = body.split("\n> Create a new pull request to")[0]
+      body.sub! /^> Create a new pull request to.+(\n>.+)/, ""
 
       unless title =~ /^\s*$/
         data = {
