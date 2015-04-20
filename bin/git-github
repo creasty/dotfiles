@@ -141,11 +141,10 @@ create_pull_request() {
   fi
 
   local file="$GIT_DIR/PULLREQ_EDIT.markdown"
-  local diff_title='Create a new pull request'
 
   local body="$last_commit
 
-> $diff_title to \`$base\` from \`$head\`:
+> Create a new pull request to \`$base\` from \`$head\`:
 >
 $(echo "$commits" | sed 's/^/> - /')"
 
@@ -156,7 +155,7 @@ $(echo "$commits" | sed 's/^/> - /')"
     begin
       head, base = ARGV
       title, body = $stdin.read.gsub(/\n?\r/, "\n").split /\n{2}/, 2
-      body.sub! /^> '$diff_title'.+(\n>.+)/, ""
+      body = body.to_s.sub /^> Create a new pull request.+(\n>.*)+/, ""
 
       unless title =~ /^\s*$/
         data = {
