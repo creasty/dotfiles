@@ -12,7 +12,7 @@ OPTS=()
 
 for a in "$@"; do
   case "$a" in
-    --ff)
+    --ff|-ff)
       OPTS=("${OPTS[@]}" '--ff --ff-only')
       ;;
     -*)
