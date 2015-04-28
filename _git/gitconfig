@@ -41,6 +41,9 @@
   km = checkout master
   kd = checkout develop
 
+  fe = fetch
+  fo = fetch origin
+
   pl = auto-ref pull
   pu = auto-ref push
   sy = aggressive-sync
