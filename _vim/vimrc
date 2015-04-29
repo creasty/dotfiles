@@ -3018,8 +3018,8 @@ if neobundle#tap('vim-session')
   nnoremap <Leader>sc :CloseSession<CR>
   nnoremap <Leader>ss :SaveSession<CR>
 
-  autocmd vimrc VimLeavePre *
-    \ call <SID>auto_save_session()
+  " autocmd vimrc VimLeavePre *
+  "   \ call <SID>auto_save_session()
 
   function! s:auto_save_session()
     let session = fnamemodify(v:this_session, ':t')
