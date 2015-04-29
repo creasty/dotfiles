@@ -5,6 +5,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cdk='cd ~/Desktop'
 
+alias l='less'
 alias ls='ls -G'
 alias ll='ls -Gl'
 alias la='ls -Ga'
