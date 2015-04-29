@@ -1127,16 +1127,14 @@ command! -bang -nargs=? Euc
 command! CleanBuffers :call <SID>clean_buffers()
 
 function! s:clean_buffers()
-  redir => buffersoutput
+  redir => bufs
     silent buffers
   redir END
 
-  let buflist = split(buffersoutput, "\n")
-
-  for item in buflist
-    let t = matchlist(item, '\v^\s*(\d+)([^"]*)')
-    if t[2][1] != '#' && t[2][2] != 'a' && t[2][4] != '+'
-      exec 'bdelete ' . t[1]
+  for ibuf in split(bufs, "\n")
+    let t = matchlist(ibuf, '\v^\s*(\d+)([^"]*)')
+    if t[2] !~# '[#a+]'
+      exec 'bdelete' t[1]
     endif
   endfor
 endfunction
