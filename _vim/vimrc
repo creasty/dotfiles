@@ -1232,7 +1232,7 @@ command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans
 
 "=== Restore last closed buffers
 "==============================================================================================
-let g:lcb_max_restore_count = 4
+let g:lcb_max_restore_count = 5
 
 let g:lcb_current = 0
 let g:lcb_leaved  = 0
@@ -1242,7 +1242,7 @@ function! s:lcb_remember_on_enter()
   let g:lcb_current = bufnr('')
 
   if g:lcb_leaved > 0 && !bufloaded(g:lcb_leaved)
-    let g:lcb_closed = [g:lcb_leaved] + g:lcb_closed[0:(g:lcb_max_restore_count - 1)]
+    let g:lcb_closed = ([g:lcb_leaved] + g:lcb_closed)[0 : g:lcb_max_restore_count - 1]
   endif
 endfunction
 
@@ -1262,10 +1262,10 @@ function! s:lcb_restore()
 endfunction
 
 autocmd vimrc BufEnter *
-  \ call s:lcb_remember_on_enter()
+  \ call <SID>lcb_remember_on_enter()
 
 autocmd vimrc BufLeave *
-  \ call s:lcb_remember_on_leave()
+  \ call <SID>lcb_remember_on_leave()
 
 nmap <C-w>r <C-w><C-r>
 nnoremap <silent> <C-w><C-r> :call <SID>lcb_restore()<CR>
