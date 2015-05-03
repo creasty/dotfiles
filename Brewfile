@@ -129,7 +129,7 @@ brew install tig || true
 brew install tmux || true
 brew install tree || true
 brew install typesafe-activator || true
-brew install vim --HEAD --with-lua --with-luajit || true
+brew install vim --HEAD --disable-nls --override-system-vi --with-luajit --with-client-server || true
 brew install w3m || true
 brew install webkit2png || true
 brew install wget --enable-iri || true
