@@ -10,6 +10,7 @@ _zsh/secrets.zsh
 _tags/tags
 
 _tmux/plugins/*
+_tmux/resurrect/*
 !_tmux/plugins/tpm
 
 !.gitkeep
