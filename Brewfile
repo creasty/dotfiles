@@ -115,6 +115,7 @@ brew install q || true
 brew install r || true  # require xquartz to be installed
 brew install ranger || true
 brew install rbenv || true
+brew install rbenv-binstubs || true
 brew install rbenv-default-gems || true
 brew install rbenv-gem-rehash || true
 brew install reattach-to-user-namespace || true

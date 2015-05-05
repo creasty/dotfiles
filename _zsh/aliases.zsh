@@ -141,7 +141,7 @@ alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348
 #-----------------------------------------------
 alias b='bundle'
 alias be='bundle exec'
-alias bi='bundle install --path=vendor/bundle'
+alias bi='bundle install --path=vendor/bundle --binstubs .bundle/bin'
 
 alias ra='bundle exec rails'
 alias rg='bundle exec rails g'
