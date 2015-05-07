@@ -3219,6 +3219,7 @@ if neobundle#tap('vim-altr')
     call altr#define('lib/%.rb', 'spec/lib/%_spec.rb')
     call altr#define('%.html.haml', '%_smart_phone.html.haml')
     call altr#define('%.html.slim', '%_smart_phone.html.slim')
+    call altr#define('locales/%/en.yml', 'locales/%/ja.yml')
   endfunction
 
   nmap ga <Plug>(altr-forward)
