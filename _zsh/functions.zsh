@@ -127,7 +127,15 @@ peco_insert_branch() {
   git branch --color=never \
     | cut -c 3- \
     | _peco_select \
-    | _buffer_insert_lines
+    | {
+      branch="$(cat)"
+
+      if [[ -z "$LBUFFER" && `echo "$branch" | wc -l` -eq 1 ]]; then
+        echo "g k $branch" | _buffer_insert
+      else
+        echo "$branch" | _buffer_insert_lines
+      fi
+    }
 }
 
 _register_keycommand '^o^b' peco_insert_branch
