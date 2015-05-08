@@ -17,10 +17,12 @@ _buffer_insert_lines() {
       lines=()
 
       while read -r line; do
-        lines=(${lines[@]} "$line")
+        if ! [ -z "$line" ]; then
+          lines=(${lines[@]} "${(q)line}")
+        fi
       done
 
-      echo -n "${(q)lines[@]}"
+      echo -n "${lines[@]}"
     } \
     | _buffer_insert
 }
