@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+PKCS=$1
+
+openssl pkcs12 -in $PKCS -clcerts -nokeys -out cacert.pem
+openssl pkcs12 -in $PKCS -nocerts -nodes -out cacert.key
