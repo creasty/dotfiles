@@ -36,7 +36,7 @@ $ ./bootstrap
 Extra
 -----
 
-- [Applications from Store](./docs/apps_from_tore.md)
+- [Applications from Store](./docs/apps_from_store.md)
 - [System Preference](./docs/system_preference.md)
 - [Karabiner](./docs/karabiner.md)
 - [Seil](./docs/seil.md)
