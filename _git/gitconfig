@@ -101,8 +101,8 @@
   # ecf: edit conflicted files
   # udf: untrack deleted files
   # dmb: delete merged branches
-  emf = ! vim `git status -s | cut -b 4- | grep -v '\\/$' | uniq`
-  ecf = ! vim `git ls-files --unmerged | cut -f2 | sort -u`
+  emf = ! vim -p `git status -s | cut -b 4- | grep -v '\\/$' | uniq`
+  ecf = ! vim -p `git ls-files --unmerged | cut -f2 | sort -u`
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
   dmb = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
 
