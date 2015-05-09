@@ -5,6 +5,7 @@ _vim/bundle/*
 !_vim/bundle/neobundle.vim
 _vim/.netrwhist
 
+_aws/credentials
 _zsh/secrets.zsh
 
 _tags/tags

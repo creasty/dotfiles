@@ -8,6 +8,8 @@ DEST_DIR="$HOME"
 LINKS=(
   _agignore
   _ansible.cfg
+  _aws/config
+  _aws/credentials
   _bash/bash_profile:.bash_profile
   _bash/bashrc:.bashrc
   _coffeelintrc
@@ -40,6 +42,11 @@ section "Creating symbolic links"
 for link in "${LINKS[@]}"; do
   src="${link%%:*}"
   dest="${link#*:}"
+
+  if ! [ -r "$src" ]; then
+    echo "Skipping $src"
+    continue
+  fi
 
   if [ "$dest" = "$src" ]; then
     dest="$(echo "$src" | sed 's/^_/./' | tr -d "\n")"

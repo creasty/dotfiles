@@ -1,84 +1,45 @@
 ![dotfiles -- Work it harder, make it better, do it faster, makes us stronger](./docs/images/dotfiles.png)
 
 
-dotfiles
-========
+creasty's dotfiles
+==================
 
-Installation
-------------
+Setup
+-----
 
 ```sh
 $ bash <(curl -L dotfiles.creasty.com/bootstrap)
 ```
 
-or to update already bootstrapped computer:
+And configure your secret keys:
+
+```sh
+# environment variables
+$ cp _zsh/secrets.zsh{.sample,}
+$ vi $_
+
+# AWS
+$ cp _aws/credentials{.sample,}
+$ vi $_
+$ ./bootstrap.d/link
+```
+
+
+Update
+------
 
 ```sh
 $ ./bootstrap
 ```
 
 
-Extra configurations
---------------------
+Extra
+-----
 
-- [Security](./docs/security.md)
+- [Applications from Store](./docs/apps_from_tore.md)
 - [System Preference](./docs/system_preference.md)
 - [Karabiner](./docs/karabiner.md)
 - [Seil](./docs/seil.md)
-
-
-Applications
-------------
-
-### Via Brew Cask
-
-- Adobe Creative Cloud
-- Alfred
-- Dropbox
-- Firefox
-- Flip4mac
-- Google Chrome
-- Google Hangouts
-- Google Japanese IME
-- Imagealpha
-- Imageoptim
-- iTerm 2
-- Karabiner
-- Seil
-- Sequel Pro
-- Skype
-- Sophos Antivirus
-- Transmission
-- TrueCrypt
-- Vagrant
-- VirtualBox
-- XQuartz
-
-
-### Via Mac App Store
-
-Manually install these applications:
-
-- 1Password
-- Airmail
-- ColorChooser
-- Dash
-- Equation Maker
-- Evernote
-- ForkLift
-- Growl
-- Keynote
-- Notefile
-- Numbers
-- Pages
-- Paw
-- Pocket
-- Slack
-- SnapRuler
-- Texpad
-- The Unarchiver
-- Wunderlist
-- iPhoto
 
 
 Author
