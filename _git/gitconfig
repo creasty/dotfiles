@@ -55,7 +55,7 @@
 
   l  = log --oneline
   lg = log --oneline --graph
-  ll = ! git log -1 HEAD | cat
+  ll = ! git --no-pager log -1 HEAD
 
   m  = merge
   mf = merge FETCH_HEAD
@@ -106,11 +106,8 @@
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
   dmb = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
 
-  # reload config
-  rc = ! git config -l > /dev/null
-
-  g  = github
   pr = github mk-pr
+  is = github mk-issue
   wr = browse-remote
 
 [url "https://"]
