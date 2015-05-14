@@ -49,6 +49,7 @@ brew cask install sophos-antivirus-home-edition || true
 brew cask install transmission || true
 brew cask install truecrypt || true
 brew cask install vagrant || true
+brew cask install vault || true
 brew cask install virtualbox || true
 brew cask install xquartz || true
 
