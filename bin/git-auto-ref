@@ -24,20 +24,24 @@ for a in "$@"; do
   esac
 done
 
-if [ ${#ARGS[@]} -ge 2 ]; then
-  REMOTE="${ARGS[0]}"
-  BRANCH="${ARGS[1]}"
+# one of:
+#
+# `remote:`
+# `remote:branch`
+# `:branch`
+# `branch`
+TARGET="${ARGS[0]}"
+
+if [[ "$TARGET" = *:* ]]; then
+  REMOTE="${TARGET%%:*}"
+  BRANCH="${TARGET#*:}"
 else
-  REMOTE="="
-  BRANCH="${ARGS[0]}"
+  REMOTE=""
+  BRANCH="$TARGET"
 fi
 
-if [[ "$REMOTE" =~ ^=?$ ]]; then
-  REMOTE="$DEFAULT_REMOTE"
-fi
-if [[ "$BRANCH" =~ ^=?$ ]]; then
-  BRANCH="$DEFAULT_BRANCH"
-fi
+[ -z "$REMOTE" ] && REMOTE="$DEFAULT_REMOTE"
+[ -z "$BRANCH" ] && BRANCH="$DEFAULT_BRANCH"
 
 COMMAND=(git)
 COMMAND=(${COMMAND[@]} $SUB_COMMAND)
