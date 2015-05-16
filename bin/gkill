@@ -16,5 +16,13 @@ ps aux \
       cat | peco --query "$ARGS"
     fi
   } \
-  | awk '{ print $2 }' \
-  | xargs kill -9
+  | {
+    sel="$(cat)"
+
+    if ! [ -z "$sel" ]; then
+      echo "$sel"
+      echo "$sel" \
+        | awk '{ print $2 }' \
+        | xargs kill -9
+    fi
+  }
