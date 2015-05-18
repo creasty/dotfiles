@@ -32,9 +32,16 @@
   cane = commit --amend --no-edit
   ce   = commit --allow-empty -m
 
-  r = remote
   t = tag
-  b = branch
+
+  r   = remote
+  ra  = remote add
+  ru  = remote set-url
+  ruo = remote set-url origin
+
+  b  = branch
+  bd = branch -D
+  bm = branch -m
 
   k  = checkout
   kb = checkout-head
