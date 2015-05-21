@@ -1,0 +1,5 @@
+Pry::Commands.block_command '@', 'Evaluate string of `pbpaste`', keep_retval: true do
+  string = `pbpaste`
+  puts string
+  target.eval string
+end

@@ -18,14 +18,15 @@ LINKS=(
   _ctags
   _curlrc
   _dotssh
-  _gemrc
   _git/gitconfig:.gitconfig
   _git/gitignore:.gitignore
-  _irbrc
   _peco
-  _railsrc
   _rbenv/default-gems
-  _rspec
+  _ruby/gemrc:.gemrc
+  _ruby/irbrc:.irbrc
+  _ruby/pryrc:.pryrc
+  _ruby/railsrc:.railsrc
+  _ruby/rspec:.rspec
   _tmux
   _tmux/tmux.conf:.tmux.conf
   _vim
