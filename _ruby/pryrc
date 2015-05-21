@@ -3,3 +3,5 @@ Pry::Commands.block_command '@', 'Evaluate string of `pbpaste`', keep_retval: tr
   puts string
   target.eval string
 end
+
+Pry::Commands.alias_command '!!', 'reload!' rescue nil
