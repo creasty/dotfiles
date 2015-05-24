@@ -1,7 +1,15 @@
-Pry::Commands.block_command '@', 'Evaluate string of `pbpaste`', keep_retval: true do
-  string = `pbpaste`
-  puts string
-  target.eval string
+require 'rubygems' unless defined? Gem
+
+begin
+  require 'awesome_print'
+  AwesomePrint.pry!
 end
 
-Pry::Commands.alias_command '!!', 'reload!' rescue nil
+Pry.commands.delete('.<shell command>')
+Pry::Commands.alias_command(/^@$/, 'reload!') rescue nil
+
+Pry.commands.block_command(/^.$/, 'Evaluate string of `pbpaste`', keep_retval: true) do
+  string = `pbpaste`
+  puts Pry::Helpers::BaseHelpers.colorize_code(string)
+  target.eval string
+end
