@@ -6,9 +6,16 @@ begin
 end
 
 Pry.commands.delete('.<shell command>') rescue nil
-Pry.commands.alias_command(/^@$/, 'reload!') rescue nil
 
-Pry.commands.block_command(/^.$/, 'Evaluate string of `pbpaste`', keep_retval: true) do
+Pry.commands.block_command(/^!$/, 'Reload rails') do
+  target.eval('reload!') if defined?(Rails::ConsoleMethods)
+end
+
+Pry.commands.block_command(/^!!$/, 'Exit') do
+  exit
+end
+
+Pry.commands.block_command(/^\.$/, 'Evaluate string of `pbpaste`', keep_retval: true) do
   string = `pbpaste`
   puts Pry::Helpers::BaseHelpers.colorize_code(string)
   target.eval string
