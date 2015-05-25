@@ -5,8 +5,8 @@ begin
   AwesomePrint.pry!
 end
 
-Pry.commands.delete('.<shell command>')
-Pry::Commands.alias_command(/^@$/, 'reload!') rescue nil
+Pry.commands.delete('.<shell command>') rescue nil
+Pry.commands.alias_command(/^@$/, 'reload!') rescue nil
 
 Pry.commands.block_command(/^.$/, 'Evaluate string of `pbpaste`', keep_retval: true) do
   string = `pbpaste`
