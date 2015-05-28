@@ -5,3 +5,4 @@ Thumb.db
 .vimprojectroot
 vendor/bundle
 .bundle
+.envrc
