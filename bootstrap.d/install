@@ -108,7 +108,7 @@ setup_nvm
 setup_npm() {
   section "Installing nodejs packages"
 
-  npm i -g
+  (cd ./node && npm i -g)
 }
 
 setup_npm
