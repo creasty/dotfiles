@@ -6,35 +6,35 @@ SRC_DIR="$DOTFILES_PATH"
 DEST_DIR="$HOME"
 
 LINKS=(
-  _agignore
-  _ansible.cfg
-  _aws/config
-  _aws/credentials
-  _bash/bash_profile:.bash_profile
-  _bash/bashrc:.bashrc
-  _coffeelintrc
-  _config/ranger/colorschemes/original.py
-  _config/ranger/rc.conf
-  _ctags
-  _curlrc
-  _dotssh
-  _git/gitconfig:.gitconfig
-  _git/gitignore:.gitignore
-  _peco
-  _rbenv/default-gems
-  _ruby/gemrc:.gemrc
-  _ruby/irbrc:.irbrc
-  _ruby/pryrc:.pryrc
-  _ruby/railsrc:.railsrc
-  _ruby/rspec:.rspec
-  _tmux
-  _tmux/tmux.conf:.tmux.conf
-  _vim
-  _vim/gvimrc:.gvimrc
-  _vim/vimrc:.vimrc
-  _zsh
-  _zsh/zshenv:.zshenv
-  _zsh/zshrc:.zshrc
+  aws/config:.aws/config
+  aws/credentials:.aws/credentials
+  bash/bash_profile:.bash_profile
+  bash/bashrc:.bashrc
+  config/agignore:.agignore
+  config/ansible.cfg:.ansible.cfg
+  config/coffeelintrc:.coffeelintrc
+  config/ctags:.ctags
+  config/curlrc:.curlrc
+  config/ranger/colorschemes/original.py:.config/ranger/colorschemes/original.py
+  config/ranger/rc.conf:.config/ranger/rc.conf
+  dotssh:.dotssh
+  git/gitconfig:.gitconfig
+  git/gitignore:.gitignore
+  peco:.peco
+  rbenv/default-gems:.rbenv/default-gems
+  ruby/gemrc:.gemrc
+  ruby/irbrc:.irbrc
+  ruby/pryrc:.pryrc
+  ruby/railsrc:.railsrc
+  ruby/rspec:.rspec
+  tmux/tmux.conf:.tmux.conf
+  tmux:.tmux
+  vim/gvimrc:.gvimrc
+  vim/vimrc:.vimrc
+  vim:.vim
+  zsh/zshenv:.zshenv
+  zsh/zshrc:.zshrc
+  zsh:.zsh
 )
 
 
@@ -45,12 +45,13 @@ for link in "${LINKS[@]}"; do
   dest="${link#*:}"
 
   if ! [ -r "$src" ]; then
-    echo "Skipping $src"
+    print_info "Skipping $src"
     continue
   fi
 
   if [ "$dest" = "$src" ]; then
-    dest="$(echo "$src" | sed 's/^_/./' | tr -d "\n")"
+    print_error "Please define destination for $src"
+    continue
   fi
 
   src="$SRC_DIR/$src"
@@ -62,7 +63,13 @@ for link in "${LINKS[@]}"; do
     print_info "Created directory `$dest_dir`"
   fi
 
-  if [ ! -L "$dest" ]; then
+  if [ -L "$dest" ]; then
+    realpath="$(readlink "$dest")"
+    if ! [ "$realpath" = "$src" ]; then
+      ln -sf "$src" "$dest"
+      print_info "Updated: $src --> $dest (formerly $realpath)"
+    fi
+  else
     if [ -f "$dest" ]; then
       print_error "File exists at $dest"
     else
