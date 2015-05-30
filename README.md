@@ -15,11 +15,11 @@ And configure your secret keys:
 
 ```sh
 # environment variables
-$ cp _zsh/secrets.zsh{.sample,}
+$ cp zsh/secrets.zsh{.sample,}
 $ vi $_
 
 # AWS
-$ cp _aws/credentials{.sample,}
+$ cp aws/credentials{.sample,}
 $ vi $_
 $ ./bootstrap.d/link
 ```
