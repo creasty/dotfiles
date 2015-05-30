@@ -139,7 +139,7 @@ setup_vagrant
 setup_r() {
   section "Installing R packages"
 
-  r -f package.r
+  r -f ./r/package.r
 }
 
 setup_r
