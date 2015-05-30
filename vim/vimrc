@@ -25,7 +25,7 @@ function! s:vimrc_environment()
   let env.hostname = substitute(hostname(), '[^\w.]', '', '')
 
   let dotfiles_path = $HOME . '/dotfiles'
-  let vim_path = dotfiles_path . '/_vim'
+  let vim_path = dotfiles_path . '/vim'
 
   let env.path = {
     \ 'dotfiles':  dotfiles_path,

@@ -1,11 +1,12 @@
 {
   "name": "dotfiles",
-  "description": "home sweet home",
+  "description": "Harder, Better, Faster, Stronger",
   "version": "1.0.0",
   "type": "git",
   "author": "creasty",
   "url": "http://github.com/creasty/dotfiles",
-  "main": "bootstrap.sh",
+  "main": "bootstrap",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/creasty/dotfiles.git"

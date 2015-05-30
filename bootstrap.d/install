@@ -3,242 +3,26 @@
 cd $DOTFILES_PATH
 source $DOTFILES_PATH/lib/helpers.sh
 
+INSTALLERS_PATH=$DOTFILES_PATH/bootstrap.d/install.d
 
-#  Xcode command line tool
-#-----------------------------------------------
-setup_xcode_cli() {
-  section "Installing Xcode command line tool"
-  xcode-select --install > /dev/null 2>&1
+INSTALLERS=(
+  xcode_cli
+  homebrew
 
-  if [ $? -ne 0 ]; then
-    print_info "Installed"
-  else
-    print_success "OK"
-  fi
-}
+  rbenv
+  nodejs
+  vagrant
+  r
+  haskell
+  lua
+  python
+  golang
 
-setup_xcode_cli
+  redis
+  rsense
+  elasticsearch
+)
 
-
-#  Homebrew
-#-----------------------------------------------
-setup_homebrew() {
-  section "Installing homebrew"
-
-  if cmd_exists brew; then
-    print_info "Installed"
-  else
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    print_status $?
-  fi
-
-  section "Installing brew packages"
-  bash < ./Brewfile
-
-  section "Configure redis"
-  sed -ie 's/^daemonize no/daemonize yes/' /usr/local/etc/redis.conf
-
-  section "Configure rsense"
-  ruby $(brew --cellar rsense)/0.3/libexec/etc/config.rb > ~/.rsense
-}
-
-setup_homebrew
-
-
-#  rbenv
-#-----------------------------------------------
-setup_rbenv() {
-  ruby_versions=(
-    2.1.5
-    2.2.0
-  )
-  default_version="$(< $DOTFILES_PATH/.ruby-version)"
-
-  installed_ruby_versions="$(rbenv versions --bare)"
-
-  section "Installing ruby"
-
-  subsection "Upgrading ruby-build"
-  brew upgrade ruby-build > /dev/null 2>&1
-  print_success "OK"
-
-  for version in "${ruby_versions[@]}"; do
-    installed="$(echo -n "$installed_ruby_versions" | grep $version)"
-
-    subsection "Ruby v$version"
-
-    if [ "$installed" == "" ]; then
-      rbenv install $version
-      print_status $?
-    else
-      print_info "Installed"
-    fi
-  done
-
-  subsection "Set global ruby to v$version"
-  rbenv global $version
-  print_status $?
-}
-
-setup_rbenv
-
-
-#  NVM
-#-----------------------------------------------
-setup_nvm() {
-  section "Installing nodejs"
-
-  subsection "Installing nvm"
-  if cmd_exists nvm; then
-    print_info "Installed"
-  else
-    curl https://raw.githubusercontent.com/creationix/nvm/v0.17.3/install.sh | bash
-  fi
-
-  subsection "Installing nvm"
-  nvm install 0.10
-  print_status $?
-}
-
-setup_nvm
-
-
-#  Node packages
-#-----------------------------------------------
-setup_npm() {
-  section "Installing nodejs packages"
-
-  npm i -g
-}
-
-setup_npm
-
-
-#  Vagrant
-#-----------------------------------------------
-setup_vagrant() {
-  section "Installing vagrant boxes"
-  # subsection "CentOS 6.5 x86_64"
-  # vagrant box add centos65 https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box
-  # print_status $?
-
-  subsection "CentOS 7.0 x86_64"
-  vagrant box add centos70 https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box
-  print_status $?
-
-  section "Installing vagrant plugins"
-  vagrant plugin install sahara
-  print_status $?
-}
-
-setup_vagrant
-
-
-#  R
-#-----------------------------------------------
-setup_r() {
-  section "Installing R packages"
-
-  r -f package.r
-}
-
-setup_r
-
-
-#  Haskell
-#-----------------------------------------------
-setup_haskell() {
-  section "Installing Haskell packages"
-
-  subsection "Updating cabal"
-  cabal update
-  print_status $?
-
-  subsection "Installing packages"
-  cabal install cabal-install
-  cabal install erd
-}
-
-setup_haskell
-
-
-#  Lua
-#-----------------------------------------------
-setup_lua() {
-  section "Installing Lua packages"
-
-  luarocks install md5
-  luarocks install stdlib
-  luarocks install lgi
-  luarocks install lpeg
-  luarocks install luaexpat
-  luarocks install inspect
-  luarocks install luaepnf
-  luarocks install luarepl
-  luarocks install cassowary
-}
-
-setup_lua
-
-
-#  Python
-#-----------------------------------------------
-setup_python() {
-  section "Installing Python packages"
-  pip install --upgrade howdoi
-  pip install --upgrade locustio
-  pip install --upgrade mitmproxy
-  pip install --upgrade numpy
-  pip install --upgrade protobuf
-  pip install --upgrade pyamf
-}
-
-setup_python
-
-
-#  Golang
-#-----------------------------------------------
-setup_golang() {
-  section "Installing Golang packages"
-  go get github.com/rakyll/boom
-}
-
-setup_golang
-
-
-#  Elasticsearch
-#-----------------------------------------------
-setup_elasticsearch() {
-  section "Installing Elasticsearch plugins"
-  plugin --install royrusso/elasticsearch-HQ
-  plugin --install mobz/elasticsearch-head
-  plugin --install elasticsearch/elasticsearch-analysis-kuromoji/2.2.0
-  plugin --install polyfractal/elasticsearch-inquisitor
-  plugin --install elasticsearch/marvel/latest
-
-  section "Configure custom Elasticsearch options"
-
-  local config_file='/usr/local/opt/elasticsearch/config/elasticsearch.yml'
-  local options=(
-    'script.disable_dynamic: false'
-  )
-
-  if [ -f $config_file ]; then
-    for option in "${options[@]}"; do
-      local key="${option%%:*}"
-
-      echo "Setting $option..."
-      if [ "$(grep "$key" $config_file)" == "" ]; then
-        echo "$option" >> $config_file
-      else
-        sed -ie "s/^$key:.*/$option/" $config_file
-      fi
-    done
-
-    echo "Done"
-  else
-    echo "Elasticsearch config file not found at $CONFIG_FILE"
-  fi
-}
-
-setup_elasticsearch
+for installer in "${INSTALLERS[@]}"; do
+  (source "$INSTALLERS_PATH/${installer}.sh")
+done

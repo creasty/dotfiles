@@ -1,15 +1,15 @@
-[submodule "_zsh/plugins/zsh-syntax-highlighting"]
-	path = _zsh/plugins/zsh-syntax-highlighting
+[submodule "zsh/plugins/zsh-syntax-highlighting"]
+	path = zsh/plugins/zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "_zsh/plugins/zsh-autosuggestions"]
-	path = _zsh/plugins/zsh-autosuggestions
+[submodule "zsh/plugins/zsh-autosuggestions"]
+	path = zsh/plugins/zsh-autosuggestions
 	url = git://github.com/tarruda/zsh-autosuggestions.git
-[submodule "_zsh/zsh-completions"]
-	path = _zsh/zsh-completions
+[submodule "zsh/zsh-completions"]
+	path = zsh/zsh-completions
 	url = git://github.com/zsh-users/zsh-completions.git
-[submodule "_vim/bundle/neobundle.vim"]
-	path = _vim/bundle/neobundle.vim
+[submodule "vim/bundle/neobundle.vim"]
+	path = vim/bundle/neobundle.vim
 	url = https://github.com/Shougo/neobundle.vim.git
-[submodule "_tmux/plugins/tpm"]
-	path = _tmux/plugins/tpm
+[submodule "tmux/plugins/tpm"]
+	path = tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
