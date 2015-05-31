@@ -21,11 +21,11 @@ LINKS=(
   git/gitconfig:.gitconfig
   git/gitignore:.gitignore
   peco:.peco
-  rbenv/default-gems:.rbenv/default-gems
   ruby/gemrc:.gemrc
   ruby/irbrc:.irbrc
   ruby/pryrc:.pryrc
   ruby/railsrc:.railsrc
+  ruby/rbenv/default-gems:.rbenv/default-gems
   ruby/rspec:.rspec
   tmux/tmux.conf:.tmux.conf
   tmux:.tmux
