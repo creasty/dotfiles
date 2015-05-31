@@ -5,5 +5,4 @@ cabal update
 print_status $?
 
 subsection "Installing packages"
-cabal install cabal-install
-cabal install erd
+cat $DOTFILES_PATH/haskell/requirements.txt | each cabal install
