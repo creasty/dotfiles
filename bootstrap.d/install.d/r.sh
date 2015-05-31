@@ -1,3 +1,3 @@
 section "Installing R packages"
 
-r -f ./r/package.r
+r -f $DOTFILES_PATH/r/package.r
