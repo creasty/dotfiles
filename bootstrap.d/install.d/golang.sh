@@ -1,3 +1,3 @@
 section "Installing Golang packages"
 
-go get github.com/rakyll/boom
+cat $DOTFILES_PATH/golang/requirements.txt | each go get
