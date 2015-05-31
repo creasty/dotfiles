@@ -62,3 +62,9 @@ print_status() {
 cmd_exists() {
   command -v "$1" > /dev/null 2>&1 && return 0 || return 1
 }
+
+each() {
+  while read -r line; do
+    $@ "$line"
+  done
+}
