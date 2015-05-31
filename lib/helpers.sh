@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eu
-
 export DOTFILES_PATH="$HOME/dotfiles"
 
 
