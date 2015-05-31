@@ -1,9 +1,5 @@
 section "Installing Elasticsearch plugins"
-plugin --install royrusso/elasticsearch-HQ
-plugin --install mobz/elasticsearch-head
-plugin --install elasticsearch/elasticsearch-analysis-kuromoji/2.2.0
-plugin --install polyfractal/elasticsearch-inquisitor
-plugin --install elasticsearch/marvel/latest
+cat $DOTFILES_PATH/elasticsearch/requirements.txt | each plugin --install
 
 section "Configure custom Elasticsearch options"
 
