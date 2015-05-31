@@ -8,4 +8,4 @@ else
 fi
 
 section "Installing brew packages"
-bash < ./Brewfile
+source $DOTFILES_PATH/Brewfile
