@@ -1,4 +1,6 @@
-for file in ~/dotfiles/zsh/{exports,aliases,functions,prompt,secrets}.zsh; do
+export DOTFILES_PATH="$HOME/dotfiles"
+
+for file in $DOTFILES_PATH/zsh/{exports,aliases,functions,prompt,secrets}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
