@@ -67,6 +67,7 @@ brew install ctags-objc-ja --HEAD --enable-japanese-support || true
 brew install curl --with-ssl --with-libssh2 || true
 brew install direnv || true
 brew install elasticsearch || true
+brew install elixir || true
 brew install eot-utils || true
 brew install fontconfig || true
 brew install fontforge || true
