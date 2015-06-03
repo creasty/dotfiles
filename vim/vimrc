@@ -280,9 +280,6 @@ else
   " github issue lookup
   NeoBundleLazy 'jaxbot/github-issues.vim'
 
-  " automatically save changes to disk
-  NeoBundle 'vim-auto-save'
-
   " perform the replacement in quickfix
   NeoBundleLazy 'thinca/vim-qfreplace'
 
@@ -538,6 +535,9 @@ endfunction
 
 " find file with suffixes
 set suffixesadd& suffixesadd+=.js,.coffee,.swift,.scss
+
+" fast update
+set updatetime=200
 
 
 "=== Apperance
@@ -1228,6 +1228,39 @@ endif
 
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
+
+
+"=== Auto save
+"==============================================================================================
+let g:auto_save = 1
+
+autocmd vimrc CursorHoldI,CompleteDone * call <SID>auto_save()
+autocmd vimrc CursorHold,InsertLeave * call <SID>auto_save()
+
+command! AutoSaveToggle :call <SID>auto_save_toggle()
+
+function! s:auto_save()
+  if g:auto_save >= 1
+    let was_modified = &modified
+
+    silent! wa
+
+    if was_modified && !&modified
+      " TODO: exec syntasic command here
+      echo "(AutoSaved at " . strftime("%H:%M:%S") . ")"
+    endif
+  endif
+endfunction
+
+function! s:auto_save_toggle()
+  if g:auto_save >= 1
+    let g:auto_save = 0
+    echo "AutoSave is OFF"
+  else
+    let g:auto_save = 1
+    echo "AutoSave is ON"
+  endif
+endfunction
 
 
 "=== Restore last closed buffers
@@ -3501,15 +3534,6 @@ if neobundle#tap('github-issues.vim')
   \ })
 
   " TODO: configure account
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-auto-save
-"==============================================================================================
-if neobundle#tap('vim-auto-save')
-  let g:auto_save = 1
 
   call neobundle#untap()
 endif
