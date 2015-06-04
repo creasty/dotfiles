@@ -2651,6 +2651,8 @@ if neobundle#tap('vim-textmanip')
     \ }
   \ })
 
+  let g:textmanip_enable_mappings = 0
+
   " move selection
   vmap <C-j> <Plug>(textmanip-move-down)
   vmap <C-k> <Plug>(textmanip-move-up)
@@ -2662,6 +2664,24 @@ if neobundle#tap('vim-textmanip')
   vmap <Space><C-k> <Plug>(textmanip-duplicate-up)
   vmap <Space><C-h> <Plug>(textmanip-duplicate-left)
   vmap <Space><C-l> <Plug>(textmanip-duplicate-right)
+
+  let g:textmanip_hooks = {}
+
+  function! g:textmanip_hooks.finish(tm)
+    let tm = a:tm
+    let helper = textmanip#helper#get()
+    if tm.linewise
+      " if filetype is `html` automatically indent
+      if &ft ==# 'html'
+        call helper.indent(tm)
+      endif
+    else
+      " When blockwise move/duplicate, remove trailing white space.
+      " To use this feature without feeling counterintuitive,
+      " I recommend you to ':set virtualedit=block',
+      call helper.remove_trailing_WS(tm)
+    endif
+  endfunction
 
   call neobundle#untap()
 endif
