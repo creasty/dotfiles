@@ -355,6 +355,9 @@ else
   " go development plugin
   NeoBundleLazy 'fatih/vim-go'
 
+  " Elixir support for vim
+  NeoBundleLazy 'elixir-lang/vim-elixir'
+
   NeoBundleSaveCache
 endif
 
@@ -3829,6 +3832,17 @@ if neobundle#tap('vim-go')
   endfunction
 
   let g:loaded_gocode = 1  " disable fucking slow completion
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-elixir
+"==============================================================================================
+if neobundle#tap('vim-elixir')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['elixir'] }
+  \ })
 
   call neobundle#untap()
 endif
