@@ -2331,12 +2331,30 @@ if neobundle#tap('lexima.vim')
 
     "  C
     "-----------------------------------------------
+    " include
     call lexima#add_rule({
       \ 'char':     '<Space>',
       \ 'at':       '^#include\%#',
       \ 'input':    ' <><Left>',
       \ 'filetype': ['c', 'cpp', 'objc'],
     \ })
+
+    " member access on pointer `->`
+    call lexima#add_rule({
+      \ 'char':     ',',
+      \ 'at':       '\(........\)\?\w\+[\.,]\%#',
+      \ 'input':    '<BS>->',
+      \ 'filetype': ['c', 'cpp', 'objc'],
+    \ })
+    for at in split('_abcdefghijklmnopqrstuvwxyz', '.\zs\ze.')
+      call lexima#add_rule({
+        \ 'char':     at,
+        \ 'at':       '\(........\)\?\w\+\.\.\%#',
+        \ 'input':    '<BS><BS>->' . at,
+        \ 'filetype': ['c', 'cpp', 'objc'],
+      \ })
+    endfor
+    unlet at
 
 
     "  Vim
