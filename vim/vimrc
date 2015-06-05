@@ -2254,7 +2254,7 @@ if neobundle#tap('lexima.vim')
       " left-arrow
       call lexima#add_rule({
         \ 'char':     '<Tab>',
-        \ 'at':       width . width . '\%#',
+        \ 'at':       '\(.....\)\?' . width . width . '\%#',
         \ 'input':    '<BS><BS><' . width . ' ',
         \ 'mode':     'i',
       \ })
