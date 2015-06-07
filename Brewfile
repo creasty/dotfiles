@@ -60,6 +60,7 @@ brew install awscli --HEAD || true
 brew install binutils || true
 brew install cabal-install || true
 brew install chrome-cli || true
+brew install chisel || true
 brew install clib || true
 brew install clisp || true
 brew install ctags || true

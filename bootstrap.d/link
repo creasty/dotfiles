@@ -11,6 +11,7 @@ LINKS=(
   bash/bash_profile:.bash_profile
   bash/bashrc:.bashrc
   config/agignore:.agignore
+  config/lldbinit:.lldbinit
   config/ansible.cfg:.ansible.cfg
   config/coffeelintrc:.coffeelintrc
   config/ctags:.ctags
