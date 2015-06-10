@@ -2639,7 +2639,7 @@ if neobundle#tap('lexima.vim')
 
   " edit buffer :eb
   call lexima#add_rule({
-    \ 'char':  'h',
+    \ 'char':  'b',
     \ 'at':    '^e\%#',
     \ 'input': " #",
     \ 'mode':  'c',
