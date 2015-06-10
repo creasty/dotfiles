@@ -2607,26 +2607,45 @@ if neobundle#tap('lexima.vim')
 
   "  Command mode
   "-----------------------------------------------
-  " w!! to write a file as sudo
-  cnoremap <expr> !
-    \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
+  " write a file as sudo :w!!
+  call lexima#add_rule({
+    \ 'char':  '!',
+    \ 'at':    '^w!\%#',
+    \ 'input': "\<C-u>w !sudo tee % > /dev/null",
+    \ 'mode':  'c',
+  \ })
 
   " edit relative :ee
-  cnoremap <expr> e
-    \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
+  call lexima#add_rule({
+    \ 'char':  'e',
+    \ 'at':    '^e\%#',
+    \ 'input': " \<C-r>=expand('%:h') . '/' \<CR>",
+    \ 'mode':  'c',
+  \ })
 
   " home directory :eh
-  cnoremap <expr> h
-    \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
+  call lexima#add_rule({
+    \ 'char':  'h',
+    \ 'at':    '^e\%#',
+    \ 'input': " ~/",
+    \ 'mode':  'c',
+  \ })
 
   " edit buffer :eb
-  cnoremap <expr> b
-    \ (getcmdtype() . getcmdline() == ':e') ? ' #' : 'b'
+  call lexima#add_rule({
+    \ 'char':  'h',
+    \ 'at':    '^e\%#',
+    \ 'input': " #",
+    \ 'mode':  'c',
+  \ })
 
   " rename :er
-  cnoremap <expr> r
-    \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
-
+  call lexima#add_rule({
+    \ 'char':  'r',
+    \ 'at':    '^e\%#',
+    \ 'input': "\<C-u>Rename \<C-r>=expand('%:p') \<CR>",
+    \ 'mode':  'c',
+  \ })
 
 
   call neobundle#untap()
