@@ -155,7 +155,7 @@ else
   NeoBundleLazy 'smartchr'
 
   " auto close parentheses and repeat by dot
-  NeoBundleLazy 'cohama/lexima.vim', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
+  NeoBundle 'cohama/lexima.vim', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
 
   " switch segments of text with predefined replacements
   NeoBundleLazy 'AndrewRadev/switch.vim'
@@ -1173,26 +1173,7 @@ command! -nargs=0 Delete call <SID>delete_or_trash(expand('%:p')) | enew!
 " insert relative path
 cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
-" w!! to write a file as sudo
-cnoremap <expr> !
-  \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
-
-" edit relative :ee
-cnoremap <expr> e
-  \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
-
-" home directory :eh
-cnoremap <expr> h
-  \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
-
-" edit buffer :eb
-cnoremap <expr> b
-  \ (getcmdtype() . getcmdline() == ':e') ? ' #' : 'b'
-
-" rename :er
-cnoremap <expr> r
-  \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
-
+" rename current file name
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
 
 " edit a next file in the same directory
@@ -1867,10 +1848,6 @@ endif
 "=== Plugin: lexima.vim
 "==============================================================================================
 if neobundle#tap('lexima.vim')
-  call neobundle#config({
-    \ 'autoload': { 'insert': 1 },
-  \ })
-
   function! SuperTabCompletion()
     if pumvisible()
       return neocomplete#close_popup()
@@ -1883,751 +1860,763 @@ if neobundle#tap('lexima.vim')
     endif
   endfunction
 
-  function! MarkdownTitleLine(char)
-    let text = getline(line('.') - 1)
+  NeoBundleSource 'smartchr'
+  NeoBundleSource 'neocomplete'
+  NeoBundleSource 'neosnippet'
 
-    if text =~ '^\(\t\|  \)*[-=]\s'
-      return a:char . ' '
-    else
-      return repeat(a:char, strwidth(text))
-    endif
+  call lexima#set_default_rules()
+
+  let indents = "^\(\t\|  \)\+"
+  let opx     = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
+
+
+  "  Disable lexima inside string literal
+  "-----------------------------------------------
+  function! s:disable_lexima_inside_string(char)
+    call lexima#add_rule({
+      \ 'char':  a:char,
+      \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
+      \ 'input': a:char,
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  a:char,
+      \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
+      \ 'input': a:char,
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  a:char,
+      \ 'at':    '\%#',
+      \ 'input': a:char,
+      \ 'mode':  'i',
+      \ 'syntax': ['String']
+    \ })
   endfunction
 
-  function! neobundle#tapped.hooks.on_source(bundle)
-    NeoBundleSource 'smartchr'
-    NeoBundleSource 'neocomplete'
-    NeoBundleSource 'neosnippet'
-
-    call lexima#set_default_rules()
-
-    let indents = "^\(\t\|  \)\+"
-    let opx     = "\(" . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . "\)"
-
-
-    "  Disable lexima inside string literal
-    "-----------------------------------------------
-    function! s:disable_lexima_inside_string(char)
-      call lexima#add_rule({
-        \ 'char':  a:char,
-        \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
-        \ 'input': a:char,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  a:char,
-        \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
-        \ 'input': a:char,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  a:char,
-        \ 'at':    '\%#',
-        \ 'input': a:char,
-        \ 'mode':  'i',
-        \ 'syntax': ['String']
-      \ })
-    endfunction
-
-    function! s:disable_lexima_inside_regexp(char)
-      call lexima#add_rule({
-        \ 'char':  a:char,
-        \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
-        \ 'input': a:char,
-        \ 'mode':  'i',
-      \ })
-    endfunction
-
-
-    "  Quotes
-    "-----------------------------------------------
-    for quote in ['"', "'"]
-      call lexima#add_rule({
-        \ 'char':  quote,
-        \ 'at':    '\(.......\)\?\%#\w',
-        \ 'input': quote,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  quote,
-        \ 'at':    '\(.......\)\?' . quote . '\%#',
-        \ 'input': quote,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  quote,
-        \ 'at':    '\(...........\)\?\%#' . quote,
-        \ 'input': '<Right>',
-        \ 'mode':  'i',
-      \ })
-
-      call s:disable_lexima_inside_regexp(quote)
-    endfor
-
-    unlet quote
-
-
-    "  Operators
-    "-----------------------------------------------
-    " looping with Smartchr
-    let rules = {
-      \ '<':     "smartchr#loop('<', '<<')",
-      \ '>':     "smartchr#loop('>', '>>', '>>>')",
-      \ '&':     "smartchr#loop('&', '&&')",
-      \ '<Bar>': "smartchr#loop('|', '||')",
-    \ }
-
-    for [char, rule] in items(rules)
-      let uchar = substitute(char, '<Bar>', '|', '')
-
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '\S\%#',
-        \ 'input': ' ' . char . ' ',
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '^\s*\%#',
-        \ 'input': char . ' ',
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '^\s*\%# ',
-        \ 'input': char,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '\S \%#',
-        \ 'input': char . ' ',
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '\S \%# ',
-        \ 'input': char,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '\(...\)\?' . uchar . ' \%#',
-        \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  char,
-        \ 'at':    '\(...\)\?' . uchar . ' \%# ',
-        \ 'input': '<BS><C-r>=' . rule . '<CR>',
-        \ 'mode':  'i',
-      \ })
-
-      call s:disable_lexima_inside_string(char)
-      call s:disable_lexima_inside_regexp(char)
-    endfor
-
-    unlet char
-    unlet uchar
-    unlet rule
-    unlet rules
-
-    " space around
-    for op in ['+', '-', '/', '*', '=', '%']
-      let eop = escape(op, '*')
-
-      call lexima#add_rule({
-        \ 'char':  op,
-        \ 'at':    '\w\%#',
-        \ 'input': ' ' . op . ' ',
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  op,
-        \ 'at':    '\(^\|\w\) ' . eop . '\%#',
-        \ 'input': op . ' ',
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  op,
-        \ 'at':    eop . ' \%#',
-        \ 'input': '<BS>' . op . ' ',
-        \ 'mode':  'i',
-      \ })
-
-      call s:disable_lexima_inside_string(op)
-      call s:disable_lexima_inside_regexp(op)
-    endfor
-    unlet op
-    unlet eop
-
-    " compound assignment operator
+  function! s:disable_lexima_inside_regexp(char)
     call lexima#add_rule({
-      \ 'char':  '=',
-      \ 'at':    '\s[&|?+-/<>]\%#',
-      \ 'input': '= ',
+      \ 'char':  a:char,
+      \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
+      \ 'input': a:char,
+      \ 'mode':  'i',
+    \ })
+  endfunction
+
+
+  "  Quotes
+  "-----------------------------------------------
+  for quote in ['"', "'"]
+    call lexima#add_rule({
+      \ 'char':  quote,
+      \ 'at':    '\(.......\)\?\%#\w',
+      \ 'input': quote,
       \ 'mode':  'i',
     \ })
     call lexima#add_rule({
-      \ 'char':  '=',
-      \ 'at':    '[&|?+-/<>] \%#',
-      \ 'input': '<BS>= ',
+      \ 'char':  quote,
+      \ 'at':    '\(.......\)\?' . quote . '\%#',
+      \ 'input': quote,
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  quote,
+      \ 'at':    '\(...........\)\?\%#' . quote,
+      \ 'input': '<Right>',
       \ 'mode':  'i',
     \ })
 
-    " slash as non arithmetic operators
+    call s:disable_lexima_inside_regexp(quote)
+  endfor
+
+  unlet quote
+
+
+  "  Operators
+  "-----------------------------------------------
+  " looping with Smartchr
+  let rules = {
+    \ '<':     "smartchr#loop('<', '<<')",
+    \ '>':     "smartchr#loop('>', '>>', '>>>')",
+    \ '&':     "smartchr#loop('&', '&&')",
+    \ '<Bar>': "smartchr#loop('|', '||')",
+  \ }
+
+  for [char, rule] in items(rules)
+    let uchar = substitute(char, '<Bar>', '|', '')
+
     call lexima#add_rule({
-      \ 'char':  '/',
-      \ 'at':    '\S/\S[^/]*\%#',
-      \ 'input': '/',
+      \ 'char':  char,
+      \ 'at':    '\S\%#',
+      \ 'input': ' ' . char . ' ',
       \ 'mode':  'i',
     \ })
     call lexima#add_rule({
-      \ 'char':  '/',
+      \ 'char':  char,
       \ 'at':    '^\s*\%#',
-      \ 'input': '/',
+      \ 'input': char . ' ',
       \ 'mode':  'i',
     \ })
     call lexima#add_rule({
-      \ 'char':  '/',
-      \ 'at':    '^\s*/.*\%#',
-      \ 'input': '/',
-      \ 'mode':  'i',
-    \ })
-    call s:disable_lexima_inside_regexp('/')
-
-    " decrement/increment operators
-    for op in ['+', '-']
-      call lexima#add_rule({
-        \ 'char':  op,
-        \ 'at':    ' ' . op . ' \%#',
-        \ 'input': '<BS><BS><BS>' . op . op,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  op,
-        \ 'at':    indents . op . ' \%#',
-        \ 'input': op,
-        \ 'mode':  'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':  op,
-        \ 'at':    '\w' . op . op . '\%#',
-        \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
-        \ 'mode':  'i',
-      \ })
-    endfor
-    unlet op
-
-    " dash in html/css
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '-',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'xml', 'css', 'scss'],
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '^[ \t]*[\.#]\w\+\%#',
-      \ 'input':    '-',
-      \ 'mode':     'i',
-      \ 'filetype': ['haml', 'slim'],
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '}*[\.#]\w\+\%#',
-      \ 'input':    '-',
-      \ 'mode':     'i',
-      \ 'filetype': ['haml', 'slim'],
-    \ })
-
-    " hyphenated words
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '\(........\)\?\w\+-\w\+\%#',
-      \ 'input':    '-',
-      \ 'mode':     'i',
-    \ })
-
-
-    "  C-t
-    "-----------------------------------------------
-    " nop
-    call lexima#add_rule({
-      \ 'char':  '<C-t>',
-      \ 'at':    '\%#',
-      \ 'input': '',
-      \ 'mode':  'i',
-    \ })
-
-    " transpose charactors before/after cursor
-    call lexima#add_rule({
-      \ 'char':  '<C-t>',
-      \ 'at':    '\(...........\)\?\w\%#\w',
-      \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
-      \ 'mode':  'i',
-    \ })
-
-    " delete spaces around
-    call lexima#add_rule({
-      \ 'char':  '<C-t>',
-      \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
-      \ 'input': '<Esc>bh"_xf<Space>"_cl',
+      \ 'char':  char,
+      \ 'at':    '^\s*\%# ',
+      \ 'input': char,
       \ 'mode':  'i',
     \ })
     call lexima#add_rule({
-      \ 'char':  '<C-t>',
-      \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
-      \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
+      \ 'char':  char,
+      \ 'at':    '\S \%#',
+      \ 'input': char . ' ',
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  char,
+      \ 'at':    '\S \%# ',
+      \ 'input': char,
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  char,
+      \ 'at':    '\(...\)\?' . uchar . ' \%#',
+      \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  char,
+      \ 'at':    '\(...\)\?' . uchar . ' \%# ',
+      \ 'input': '<BS><C-r>=' . rule . '<CR>',
       \ 'mode':  'i',
     \ })
 
+    call s:disable_lexima_inside_string(char)
+    call s:disable_lexima_inside_regexp(char)
+  endfor
 
-    "  Backspace
-    "-----------------------------------------------
-    " delete whole pair
-    for pa in ['()', '[]', '{}', '<>']
-      let epa = escape(pa, '[]')
+  unlet char
+  unlet uchar
+  unlet rule
+  unlet rules
 
-      call lexima#add_rule({
-        \ 'char':  '<BS>',
-        \ 'at':    epa[0] . '\s\+' . epa[1] . '\%#',
-        \ 'input': '<C-o>di' . pa[0],
-        \ 'mode':  'i',
-      \ })
+  " space around
+  for op in ['+', '-', '/', '*', '=', '%']
+    let eop = escape(op, '*')
 
-      call lexima#add_rule({
-        \ 'char':  '<BS>',
-        \ 'at':    epa . '\%#',
-        \ 'input': '<BS><BS>',
-        \ 'mode':  'i',
-      \ })
-    endfor
+    call lexima#add_rule({
+      \ 'char':  op,
+      \ 'at':    '\w\%#',
+      \ 'input': ' ' . op . ' ',
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  op,
+      \ 'at':    '\(^\|\w\) ' . eop . '\%#',
+      \ 'input': op . ' ',
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  op,
+      \ 'at':    eop . ' \%#',
+      \ 'input': '<BS>' . op . ' ',
+      \ 'mode':  'i',
+    \ })
 
-    unlet pa
-    unlet epa
+    call s:disable_lexima_inside_string(op)
+    call s:disable_lexima_inside_regexp(op)
+  endfor
+  unlet op
+  unlet eop
+
+  " compound assignment operator
+  call lexima#add_rule({
+    \ 'char':  '=',
+    \ 'at':    '\s[&|?+-/<>]\%#',
+    \ 'input': '= ',
+    \ 'mode':  'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  '=',
+    \ 'at':    '[&|?+-/<>] \%#',
+    \ 'input': '<BS>= ',
+    \ 'mode':  'i',
+  \ })
+
+  " slash as non arithmetic operators
+  call lexima#add_rule({
+    \ 'char':  '/',
+    \ 'at':    '\S/\S[^/]*\%#',
+    \ 'input': '/',
+    \ 'mode':  'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  '/',
+    \ 'at':    '^\s*\%#',
+    \ 'input': '/',
+    \ 'mode':  'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  '/',
+    \ 'at':    '^\s*/.*\%#',
+    \ 'input': '/',
+    \ 'mode':  'i',
+  \ })
+  call s:disable_lexima_inside_regexp('/')
+
+  " decrement/increment operators
+  for op in ['+', '-']
+    call lexima#add_rule({
+      \ 'char':  op,
+      \ 'at':    ' ' . op . ' \%#',
+      \ 'input': '<BS><BS><BS>' . op . op,
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  op,
+      \ 'at':    indents . op . ' \%#',
+      \ 'input': op,
+      \ 'mode':  'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':  op,
+      \ 'at':    '\w' . op . op . '\%#',
+      \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
+      \ 'mode':  'i',
+    \ })
+  endfor
+  unlet op
+
+  " dash in html/css
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '\(........\)\?\%#',
+    \ 'input':    '-',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'xml', 'css', 'scss'],
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '^[ \t]*[\.#]\w\+\%#',
+    \ 'input':    '-',
+    \ 'mode':     'i',
+    \ 'filetype': ['haml', 'slim'],
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '}*[\.#]\w\+\%#',
+    \ 'input':    '-',
+    \ 'mode':     'i',
+    \ 'filetype': ['haml', 'slim'],
+  \ })
+
+  " hyphenated words
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '\(........\)\?\w\+-\w\+\%#',
+    \ 'input':    '-',
+    \ 'mode':     'i',
+  \ })
 
 
-    "  Super tab completion
-    "-----------------------------------------------
+  "  C-t
+  "-----------------------------------------------
+  " nop
+  call lexima#add_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    '\%#',
+    \ 'input': '',
+    \ 'mode':  'i',
+  \ })
+
+  " transpose charactors before/after cursor
+  call lexima#add_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    '\(...........\)\?\w\%#\w',
+    \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
+    \ 'mode':  'i',
+  \ })
+
+  " delete spaces around
+  call lexima#add_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
+    \ 'input': '<Esc>bh"_xf<Space>"_cl',
+    \ 'mode':  'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
+    \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
+    \ 'mode':  'i',
+  \ })
+
+
+  "  Backspace
+  "-----------------------------------------------
+  " delete whole pair
+  for pa in ['()', '[]', '{}', '<>']
+    let epa = escape(pa, '[]')
+
+    call lexima#add_rule({
+      \ 'char':  '<BS>',
+      \ 'at':    epa[0] . '\s\+' . epa[1] . '\%#',
+      \ 'input': '<C-o>di' . pa[0],
+      \ 'mode':  'i',
+    \ })
+
+    call lexima#add_rule({
+      \ 'char':  '<BS>',
+      \ 'at':    epa . '\%#',
+      \ 'input': '<BS><BS>',
+      \ 'mode':  'i',
+    \ })
+  endfor
+
+  unlet pa
+  unlet epa
+
+
+  "  Super tab completion
+  "-----------------------------------------------
+  call lexima#add_rule({
+    \ 'char':     '<Tab>',
+    \ 'at':       '\%#',
+    \ 'input':    '<C-r>=SuperTabCompletion()<CR>',
+    \ 'mode':     'i',
+  \ })
+
+
+  "  Arrows
+  "-----------------------------------------------
+  for width in ['-', '=']
+    " right-arrow
     call lexima#add_rule({
       \ 'char':     '<Tab>',
-      \ 'at':       '\%#',
-      \ 'input':    '<C-r>=SuperTabCompletion()<CR>',
+      \ 'at':       width . '\%#',
+      \ 'input':    '> ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '\S' . width . '\%#',
+      \ 'input':    '<BS> ' . width . '> ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       width . ' \%#',
+      \ 'input':    '<BS>> ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       width . '>\%#',
+      \ 'input':    '<BS><BS><' . width . ' ',
       \ 'mode':     'i',
     \ })
 
-
-    "  Arrows
-    "-----------------------------------------------
-    for width in ['-', '=']
-      " right-arrow
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       width . '\%#',
-        \ 'input':    '> ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       '\S' . width . '\%#',
-        \ 'input':    '<BS> ' . width . '> ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       width . ' \%#',
-        \ 'input':    '<BS>> ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       width . '>\%#',
-        \ 'input':    '<BS><BS><' . width . ' ',
-        \ 'mode':     'i',
-      \ })
-
-      " left-arrow
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       '\(.....\)\?' . width . width . '\%#',
-        \ 'input':    '<BS><BS><' . width . ' ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       '\S' . width . width . '\%#',
-        \ 'input':    '<BS><BS><BS> <' . width . ' ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       width . width . ' \%#',
-        \ 'input':    '<BS><BS><BS><' . width . ' ',
-        \ 'mode':     'i',
-      \ })
-
-      " toggle
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       width . '> \%#',
-        \ 'input':    '<BS><BS><BS><' . width . ' ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       '<' . width . '\%#',
-        \ 'input':    '<BS><BS>' . width . '> ',
-        \ 'mode':     'i',
-      \ })
-      call lexima#add_rule({
-        \ 'char':     '<Tab>',
-        \ 'at':       '<' . width . ' \%#',
-        \ 'input':    '<BS><BS><BS>' .  width . '> ',
-        \ 'mode':     'i',
-      \ })
-    endfor
-    unlet width
-
-    " indent on return
+    " left-arrow
     call lexima#add_rule({
-      \ 'char':  '<CR>',
-      \ 'at':    '\(<[-=]\|[-=]>\)\%#',
-      \ 'input': '<CR><Tab>',
+      \ 'char':     '<Tab>',
+      \ 'at':       '\(.....\)\?' . width . width . '\%#',
+      \ 'input':    '<BS><BS><' . width . ' ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '\S' . width . width . '\%#',
+      \ 'input':    '<BS><BS><BS> <' . width . ' ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       width . width . ' \%#',
+      \ 'input':    '<BS><BS><BS><' . width . ' ',
+      \ 'mode':     'i',
+    \ })
+
+    " toggle
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       width . '> \%#',
+      \ 'input':    '<BS><BS><BS><' . width . ' ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '<' . width . '\%#',
+      \ 'input':    '<BS><BS>' . width . '> ',
+      \ 'mode':     'i',
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '<' . width . ' \%#',
+      \ 'input':    '<BS><BS><BS>' .  width . '> ',
+      \ 'mode':     'i',
+    \ })
+  endfor
+  unlet width
+
+  " indent on return
+  call lexima#add_rule({
+    \ 'char':  '<CR>',
+    \ 'at':    '\(<[-=]\|[-=]>\)\%#',
+    \ 'input': '<CR><Tab>',
+    \ 'mode':  'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  '<CR>',
+    \ 'at':    '\(<[-=]\|[-=]>\) \%#',
+    \ 'input': '<BS><CR><Tab>',
+    \ 'mode':  'i',
+  \ })
+
+  " member access
+  call lexima#add_rule({
+    \ 'char':  '<C-t>',
+    \ 'at':    '\w\(\.\|->\)\%#',
+    \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
+    \ 'mode':  'i',
+  \ })
+
+
+  "  Fix pair completion
+  "-----------------------------------------------
+  for pair in ['()', '[]', '{}']
+    call lexima#add_rule({
+      \ 'char':  pair[0],
+      \ 'at':    '\(........\)\?\%#[^\s' . escape(pair[1], ']') . ']',
+      \ 'input': pair[0],
       \ 'mode':  'i',
     \ })
+  endfor
+  unlet pair
+
+
+  "  Comma
+  "-----------------------------------------------
+  call lexima#add_rule({
+    \ 'char':     ',',
+    \ 'at':       '\%#',
+    \ 'input':    "<C-r>=smartchr#loop(', ', ',')<CR>",
+  \ })
+
+
+  "  C
+  "-----------------------------------------------
+  " include
+  call lexima#add_rule({
+    \ 'char':     '<Space>',
+    \ 'at':       '^#include\%#',
+    \ 'input':    ' <><Left>',
+    \ 'filetype': ['c', 'cpp', 'objc'],
+  \ })
+
+  " member access on pointer `->`
+  call lexima#add_rule({
+    \ 'char':     ',',
+    \ 'at':       '\(........\)\?\w\+[\.,]\%#',
+    \ 'input':    '<BS>->',
+    \ 'filetype': ['c', 'cpp', 'objc'],
+  \ })
+  for at in split('_abcdefghijklmnopqrstuvwxyz', '.\zs\ze.')
     call lexima#add_rule({
-      \ 'char':  '<CR>',
-      \ 'at':    '\(<[-=]\|[-=]>\) \%#',
-      \ 'input': '<BS><CR><Tab>',
-      \ 'mode':  'i',
-    \ })
-
-    " member access
-    call lexima#add_rule({
-      \ 'char':  '<C-t>',
-      \ 'at':    '\w\(\.\|->\)\%#',
-      \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
-      \ 'mode':  'i',
-    \ })
-
-
-    "  Fix pair completion
-    "-----------------------------------------------
-    for pair in ['()', '[]', '{}']
-      call lexima#add_rule({
-        \ 'char':  pair[0],
-        \ 'at':    '\(........\)\?\%#[^\s' . escape(pair[1], ']') . ']',
-        \ 'input': pair[0],
-        \ 'mode':  'i',
-      \ })
-    endfor
-    unlet pair
-
-
-    "  Comma
-    "-----------------------------------------------
-    call lexima#add_rule({
-      \ 'char':     ',',
-      \ 'at':       '\%#',
-      \ 'input':    "<C-r>=smartchr#loop(', ', ',')<CR>",
-    \ })
-
-
-    "  C
-    "-----------------------------------------------
-    " include
-    call lexima#add_rule({
-      \ 'char':     '<Space>',
-      \ 'at':       '^#include\%#',
-      \ 'input':    ' <><Left>',
+      \ 'char':     at,
+      \ 'at':       '\(........\)\?\w\+\.\.\%#',
+      \ 'input':    '<BS><BS>->' . at,
       \ 'filetype': ['c', 'cpp', 'objc'],
     \ })
+  endfor
+  unlet at
 
-    " member access on pointer `->`
+
+  "  Vim
+  "-----------------------------------------------
+  " end wise
+  for at in ['fu', 'fun', 'func', 'funct', 'functi', 'functio', 'function', 'if', 'wh', 'whi', 'whil', 'while', 'for', 'try']
     call lexima#add_rule({
-      \ 'char':     ',',
-      \ 'at':       '\(........\)\?\w\+[\.,]\%#',
-      \ 'input':    '<BS>->',
-      \ 'filetype': ['c', 'cpp', 'objc'],
+      \ 'char':     '<CR>',
+      \ 'at':       '^\s*' . at . '\>.*\%#',
+      \ 'input':    '<CR>end' . at . '<Esc>O',
+      \ 'mode':     'i',
+      \ 'filetype': ['vim'],
     \ })
-    for at in split('_abcdefghijklmnopqrstuvwxyz', '.\zs\ze.')
-      call lexima#add_rule({
-        \ 'char':     at,
-        \ 'at':       '\(........\)\?\w\+\.\.\%#',
-        \ 'input':    '<BS><BS>->' . at,
-        \ 'filetype': ['c', 'cpp', 'objc'],
-      \ })
-    endfor
-    unlet at
+  endfor
+  unlet at
 
 
-    "  Vim
-    "-----------------------------------------------
-    " end wise
-    for at in ['fu', 'fun', 'func', 'funct', 'functi', 'functio', 'function', 'if', 'wh', 'whi', 'whil', 'while', 'for', 'try']
-      call lexima#add_rule({
-        \ 'char':     '<CR>',
-        \ 'at':       '^\s*' . at . '\>.*\%#',
-        \ 'input':    '<CR>end' . at . '<Esc>O',
-        \ 'mode':     'i',
-        \ 'filetype': ['vim'],
-      \ })
-    endfor
-    unlet at
-
-
-    "  Ruby
-    "-----------------------------------------------
-    " end wise
-    for at in [
-        \ '\%([=,*/%+-]\|<<\|>>\|:\s\|^\)\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
-        \ '^\s*\(public\|protected\|private\)\s\+def\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
-        \ '^\s*\%(begin\)\s*\%#',
-        \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
-      \ ]
-
-      call lexima#add_rule({
-        \ 'char':     '<CR>',
-        \ 'at':       at,
-        \ 'input':    '<CR>end<Esc>O',
-        \ 'mode':     'i',
-        \ 'filetype': ['ruby'],
-      \ })
-    endfor
-    unlet at
+  "  Ruby
+  "-----------------------------------------------
+  " end wise
+  for at in [
+      \ '\%([=,*/%+-]\|<<\|>>\|:\s\|^\)\s*\%(module\|def\|class\|if\|unless\|for\|while\|until\|case\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+      \ '^\s*\(public\|protected\|private\)\s\+def\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+      \ '^\s*\%(begin\)\s*\%#',
+      \ '\%(^\s*#.*\)\@<!do\%(\s*|\k\+|\)\?\s*\%#',
+    \ ]
 
     call lexima#add_rule({
       \ 'char':     '<CR>',
-      \ 'at':       '\<\%(if\|unless\)\>.*\%#',
+      \ 'at':       at,
       \ 'input':    '<CR>end<Esc>O',
-      \ 'filetype': ['ruby'],
-      \ 'syntax':   ['rubyConditionalExpression']
-    \ })
-
-    " block
-    call lexima#add_rule({
-      \ 'char':     '<Bar>',
-      \ 'at':       '\({\|do\)\s*\%#',
-      \ 'input':    '<Bar><Bar><Left>',
       \ 'mode':     'i',
       \ 'filetype': ['ruby'],
     \ })
+  endfor
+  unlet at
+
+  call lexima#add_rule({
+    \ 'char':     '<CR>',
+    \ 'at':       '\<\%(if\|unless\)\>.*\%#',
+    \ 'input':    '<CR>end<Esc>O',
+    \ 'filetype': ['ruby'],
+    \ 'syntax':   ['rubyConditionalExpression']
+  \ })
+
+  " block
+  call lexima#add_rule({
+    \ 'char':     '<Bar>',
+    \ 'at':       '\({\|do\)\s*\%#',
+    \ 'input':    '<Bar><Bar><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['ruby'],
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '<Bar>',
+    \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
+    \ 'input':    '<Right>',
+    \ 'mode':     'i',
+    \ 'filetype': ['ruby'],
+  \ })
+
+  " lambda
+  call lexima#add_rule({
+    \ 'char':     '(',
+    \ 'at':       '\(........\)\?-> \%#',
+    \ 'input':    '<BS>()<Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['ruby'],
+  \ })
+
+
+  "  Shell
+  "-----------------------------------------------
+  " do-end pair
+  let rules = {
+    \ '^\s*if\>.*\%#':             'fi',
+    \ '^\s*case\>.*\%#':           'esac',
+    \ '\%(^\s*#.*\)\@<!do\>.*\%#': 'done',
+  \ }
+
+  for [at, end_word] in items(rules)
     call lexima#add_rule({
-      \ 'char':     '<Bar>',
-      \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
-      \ 'input':    '<Right>',
-      \ 'mode':     'i',
-      \ 'filetype': ['ruby'],
+      \ 'char':     '<CR>',
+      \ 'at':       at,
+      \ 'input':    '<CR>' . end_word . '<Esc>O',
+      \ 'filetype': ['sh', 'zsh'],
     \ })
+  endfor
 
-    " lambda
+  unlet at
+  unlet end_word
+  unlet rules
+
+
+  "  Html
+  "-----------------------------------------------
+  " tag
+  call lexima#add_rule({
+    \ 'char':     '>',
+    \ 'at':       '\(.....\)\?<\%#',
+    \ 'input':    '>',
+    \ 'mode':     'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '>',
+    \ 'at':       '\(........\)\?< \%#',
+    \ 'input':    '<BS>><Left>',
+    \ 'mode':     'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '>',
+    \ 'at':       '\(........\)\?<\%#>',
+    \ 'input':    '<Right>',
+    \ 'mode':     'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '<',
+    \ 'at':       '\(........\)\?\%#',
+    \ 'input':    '<><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '>',
+    \ 'at':       '\(........\)\?\%#',
+    \ 'input':    '>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '>',
+    \ 'at':       '\(........\)\?\%#>',
+    \ 'input':    '<Right>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+
+  " attributes
+  call lexima#add_rule({
+    \ 'char':     '=',
+    \ 'at':       '\(........\)\?<.\+\%#',
+    \ 'input':    '=""<Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+
+  " closing tag
+  call lexima#add_rule({
+    \ 'char':     '/',
+    \ 'at':       '\(........\)\?<\%#>',
+    \ 'input':    '/<C-x><C-o><BS><ESC>a',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+
+  " entity
+  call lexima#add_rule({
+    \ 'char':     '&',
+    \ 'at':       '\(........\)\?\%#',
+    \ 'input':    '&;<Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+
+  " comment
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '\(........\)\?<\%#>',
+    \ 'input':    '!--  --<Left><Left><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ })
+
+  " server script
+  call lexima#add_rule({
+    \ 'char':     '%',
+    \ 'at':       '\(........\)\?<\%#',
+    \ 'input':    '%  %<Left><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'ejs', 'eruby'],
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '%',
+    \ 'at':       '\(........\)\?<%[=-]\? \%#',
+    \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['html', 'ejs', 'eruby'],
+  \ })
+
+
+  "  Haml / Slim
+  "-----------------------------------------------
+  " equal sign
+  call lexima#add_rule({
+    \ 'char':     '=',
+    \ 'at':       '^\s*\([.#%]\(\w\|-\)\+\)*\%#',
+    \ 'input':    '= ',
+    \ 'mode':     'i',
+    \ 'filetype': ['haml', 'slim'],
+  \ })
+
+
+  "  PHP
+  "-----------------------------------------------
+  " <?php
+  call lexima#add_rule({
+    \ 'char':     '?',
+    \ 'at':       '\(........\)\?<\%#>',
+    \ 'input':    '?php  ?<Left><Left>',
+    \ 'mode':     'i',
+    \ 'filetype': ['php'],
+  \ })
+
+
+  "  SQL
+  "-----------------------------------------------
+  " not <>
+  call lexima#add_rule({
+    \ 'char':     '>',
+    \ 'at':       '\(.....\)\?< \%#',
+    \ 'input':    '<BS>><Space>',
+    \ 'mode':     'i',
+    \ 'filetype': ['sql'],
+  \ })
+
+
+  "  Go
+  "-----------------------------------------------
+  " chan
+  call lexima#add_rule({
+    \ 'char':     'n',
+    \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
+    \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['go'],
+  \ })
+
+
+  "  Markdown
+  "-----------------------------------------------
+  " headering
+  for d in ['-', '=']
     call lexima#add_rule({
-      \ 'char':     '(',
-      \ 'at':       '\(........\)\?-> \%#',
-      \ 'input':    '<BS>()<Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['ruby'],
-    \ })
-
-
-    "  Shell
-    "-----------------------------------------------
-    " do-end pair
-    let rules = {
-      \ '^\s*if\>.*\%#':             'fi',
-      \ '^\s*case\>.*\%#':           'esac',
-      \ '\%(^\s*#.*\)\@<!do\>.*\%#': 'done',
-    \ }
-
-    for [at, end_word] in items(rules)
-      call lexima#add_rule({
-        \ 'char':     '<CR>',
-        \ 'at':       at,
-        \ 'input':    '<CR>' . end_word . '<Esc>O',
-        \ 'filetype': ['sh', 'zsh'],
-      \ })
-    endfor
-
-    unlet at
-    unlet end_word
-    unlet rules
-
-
-    "  Html
-    "-----------------------------------------------
-    " tag
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(.....\)\?<\%#',
-      \ 'input':    '>',
-      \ 'mode':     'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(........\)\?< \%#',
-      \ 'input':    '<BS>><Left>',
-      \ 'mode':     'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(........\)\?<\%#>',
-      \ 'input':    '<Right>',
-      \ 'mode':     'i',
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '<',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '<><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(........\)\?\%#>',
-      \ 'input':    '<Right>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-
-    " attributes
-    call lexima#add_rule({
-      \ 'char':     '=',
-      \ 'at':       '\(........\)\?<.\+\%#',
-      \ 'input':    '=""<Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-
-    " closing tag
-    call lexima#add_rule({
-      \ 'char':     '/',
-      \ 'at':       '\(........\)\?<\%#>',
-      \ 'input':    '/<C-x><C-o><BS><ESC>a',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-
-    " entity
-    call lexima#add_rule({
-      \ 'char':     '&',
-      \ 'at':       '\(........\)\?\%#',
-      \ 'input':    '&;<Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-
-    " comment
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '\(........\)\?<\%#>',
-      \ 'input':    '!--  --<Left><Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-    \ })
-
-    " server script
-    call lexima#add_rule({
-      \ 'char':     '%',
-      \ 'at':       '\(........\)\?<\%#',
-      \ 'input':    '%  %<Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'ejs', 'eruby'],
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '%',
-      \ 'at':       '\(........\)\?<%[=-]\? \%#',
-      \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['html', 'ejs', 'eruby'],
-    \ })
-
-
-    "  Haml / Slim
-    "-----------------------------------------------
-    " equal sign
-    call lexima#add_rule({
-      \ 'char':     '=',
-      \ 'at':       '^\s*\([.#%]\(\w\|-\)\+\)*\%#',
-      \ 'input':    '= ',
-      \ 'mode':     'i',
-      \ 'filetype': ['haml', 'slim'],
-    \ })
-
-
-    "  PHP
-    "-----------------------------------------------
-    " <?php
-    call lexima#add_rule({
-      \ 'char':     '?',
-      \ 'at':       '\(........\)\?<\%#>',
-      \ 'input':    '?php  ?<Left><Left>',
-      \ 'mode':     'i',
-      \ 'filetype': ['php'],
-    \ })
-
-
-    "  SQL
-    "-----------------------------------------------
-    " not <>
-    call lexima#add_rule({
-      \ 'char':     '>',
-      \ 'at':       '\(.....\)\?< \%#',
-      \ 'input':    '<BS>><Space>',
-      \ 'mode':     'i',
-      \ 'filetype': ['sql'],
-    \ })
-
-
-    "  Go
-    "-----------------------------------------------
-    " chan
-    call lexima#add_rule({
-      \ 'char':     'n',
-      \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
-      \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
-      \ 'mode':     'i',
-      \ 'filetype': ['go'],
-    \ })
-
-
-    "  Markdown
-    "-----------------------------------------------
-    " headering
-    for d in ['-', '=']
-      call lexima#add_rule({
-        \ 'char':     d,
-        \ 'at':       '^\n\%#',
-        \ 'input':    d,
-        \ 'mode':     'i',
-        \ 'filetype': ['markdown'],
-      \ })
-      call lexima#add_rule({
-        \ 'char':     d,
-        \ 'at':       '^\%#',
-        \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
-        \ 'mode':     'i',
-        \ 'filetype': ['markdown'],
-      \ })
-    endfor
-    unlet d
-
-    call lexima#add_rule({
-      \ 'char':     '-',
-      \ 'at':       '^-\%#',
-      \ 'input':    "<C-r>=repeat('-', 80)<CR>",
+      \ 'char':     d,
+      \ 'at':       '^\n\%#',
+      \ 'input':    d,
       \ 'mode':     'i',
       \ 'filetype': ['markdown'],
     \ })
+    call lexima#add_rule({
+      \ 'char':     d,
+      \ 'at':       '^\%#',
+      \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
+      \ 'mode':     'i',
+      \ 'filetype': ['markdown'],
+    \ })
+  endfor
+  unlet d
 
-  endfunction
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '^-\%#',
+    \ 'input':    "<C-r>=repeat('-', 80)<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['markdown'],
+  \ })
+
+
+  "  Command mode
+  "-----------------------------------------------
+  " w!! to write a file as sudo
+  cnoremap <expr> !
+    \ (getcmdtype() . getcmdline() == ':w!') ? "\<C-u>w !sudo tee % >/dev/null" : '!'
+
+  " edit relative :ee
+  cnoremap <expr> e
+    \ (getcmdtype() . getcmdline() == ':e') ? " \<C-r>=expand('%:h') . '/' \<CR>" : 'e'
+
+  " home directory :eh
+  cnoremap <expr> h
+    \ (getcmdtype() . getcmdline() == ':e') ? ' ~/' : 'h'
+
+  " edit buffer :eb
+  cnoremap <expr> b
+    \ (getcmdtype() . getcmdline() == ':e') ? ' #' : 'b'
+
+  " rename :er
+  cnoremap <expr> r
+    \ (getcmdtype() . getcmdline() == ':e') ? "\<C-u>Rename \<C-r>=expand('%:p') \<CR>" : 'r'
+
+
 
   call neobundle#untap()
 endif
