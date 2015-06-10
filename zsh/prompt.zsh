@@ -112,7 +112,7 @@ __git_ps1() {
 }
 
 PROMPT="
-%F{blue}in %f%F{white}\${PWD/\$HOME/~}%f\$(__git_ps1)%f
+%F{blue}in %f%F{white}\${(%):-%~}%f\$(__git_ps1)%f
 %F{blue}❯ %f"
 
 PROMPT2="%F{white}❯ %f"
