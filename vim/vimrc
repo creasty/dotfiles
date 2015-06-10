@@ -1848,18 +1848,6 @@ endif
 "=== Plugin: lexima.vim
 "==============================================================================================
 if neobundle#tap('lexima.vim')
-  function! SuperTabCompletion()
-    if pumvisible()
-      return neocomplete#close_popup()
-    elseif neosnippet#expandable_or_jumpable()
-      return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
-    elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
-      return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-    else
-      return "\<Tab>"
-    endif
-  endfunction
-
   NeoBundleSource 'smartchr'
   NeoBundleSource 'neocomplete'
   NeoBundleSource 'neosnippet'
@@ -2182,6 +2170,18 @@ if neobundle#tap('lexima.vim')
     \ 'input':    '<C-r>=SuperTabCompletion()<CR>',
     \ 'mode':     'i',
   \ })
+
+  function! SuperTabCompletion()
+    if pumvisible()
+      return neocomplete#close_popup()
+    elseif neosnippet#expandable_or_jumpable()
+      return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
+    elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
+      return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
+    else
+      return "\<Tab>"
+    endif
+  endfunction
 
 
   "  Arrows
@@ -2566,6 +2566,15 @@ if neobundle#tap('lexima.vim')
 
   "  Markdown
   "-----------------------------------------------
+  " horizontal rule
+  call lexima#add_rule({
+    \ 'char':     '-',
+    \ 'at':       '^-\%#',
+    \ 'input':    "<C-r>=repeat('-', 80)<CR>",
+    \ 'mode':     'i',
+    \ 'filetype': ['markdown'],
+  \ })
+
   " headering
   for d in ['-', '=']
     call lexima#add_rule({
@@ -2585,13 +2594,15 @@ if neobundle#tap('lexima.vim')
   endfor
   unlet d
 
-  call lexima#add_rule({
-    \ 'char':     '-',
-    \ 'at':       '^-\%#',
-    \ 'input':    "<C-r>=repeat('-', 80)<CR>",
-    \ 'mode':     'i',
-    \ 'filetype': ['markdown'],
-  \ })
+  function! MarkdownTitleLine(char)
+    let text = getline(line('.') - 1)
+
+    if text =~ '^\(\t\|  \)*[-=]\s'
+      return a:char . ' '
+    else
+      return repeat(a:char, strwidth(text))
+    endif
+  endfunction
 
 
   "  Command mode
