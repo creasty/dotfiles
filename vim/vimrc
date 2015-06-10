@@ -24,6 +24,8 @@ function! s:vimrc_environment()
 
   let env.hostname = substitute(hostname(), '[^\w.]', '', '')
 
+  let env.sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_vimrc_environment$')
+
   let dotfiles_path = $HOME . '/dotfiles'
   let vim_path = dotfiles_path . '/vim'
 
@@ -48,6 +50,10 @@ function! s:vimrc_environment()
 endfunction
 
 let s:env = s:vimrc_environment()
+
+function! s:with_snr(name)
+  return '<SNR>' . s:env . '_' . a:name
+endfunction
 
 " unregister autocmds
 augroup vimrc
