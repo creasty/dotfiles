@@ -179,3 +179,21 @@ peco_history() {
 }
 
 _register_keycommand '^r' peco_history
+
+
+#  GHQ
+#-----------------------------------------------
+peco_cd_repo() {
+  ghq list \
+    | _peco_select \
+    | {
+      repo="$(cat)"
+
+      if ! [ -z "$repo" ]; then
+        echo 'cd' "$(ghq root)/$repo" | _buffer_replace
+        zle accept-line
+      fi
+    }
+}
+
+_register_keycommand '^q' peco_cd_repo

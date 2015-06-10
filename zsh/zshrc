@@ -99,10 +99,6 @@ hash -d h=~
 hash -d ht=~/Desktop
 hash -d hl=~/Downloads
 
-hash -d d=~/Develop
-hash -d dc=~/Develop/creasty
-hash -d dw=~/Develop/wantedly
-
 
 #  Fish shell like syntax highlighting
 #-----------------------------------------------
