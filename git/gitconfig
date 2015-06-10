@@ -117,9 +117,6 @@
   is = github mk-issue
   wr = browse-remote
 
-[url "https://"]
-  insteadOf = git://
-
 [issue]
   type = github
 
