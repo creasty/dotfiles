@@ -25,7 +25,7 @@ alias ag="ag --pager='less -R'"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 
-alias o='git ls-files | peco | xargs open'
+alias o='finder'
 
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
 
@@ -85,8 +85,6 @@ alias -s java='_run_java'
 
 #  Applications
 #-----------------------------------------------
-alias ff='open -a Firefox'
-alias finder='open -a Finder'
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'

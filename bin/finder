@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+BIN=/usr/bin/osascript
+
+SCRIPT='
+  on run argv
+    set targetPath to (beginning of argv) as POSIX file
+
+    tell application "System Events"
+      tell application "Finder"
+        activate
+      end
+
+      (*
+      set currentPath to alias (target of Finder window 1)
+
+      if currentPath is not targetPath
+      end if
+      *)
+
+      tell process "Finder"
+        click menu item "New Tab" of menu "File" of menu bar 1
+      end
+
+      tell application "Finder"
+        set target of Finder window 1 to targetPath
+      end tell
+    end tell
+  end run
+'
+
+PATH="$(cd "${1:-.}"; pwd)"
+
+if [ -d "$PATH" ]; then
+  $BIN -e "$SCRIPT" "$PATH" # > /dev/null 2>&1
+else
+  open "$@"
+fi
