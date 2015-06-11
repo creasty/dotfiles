@@ -65,6 +65,13 @@ _refresh_screen() {
 _register_keycommand '^l' _refresh_screen
 
 
+#  Update all repos managed by ghq
+#-----------------------------------------------
+ghq-update() {
+  ghq list | xargs -n 1 -P 10 ghq get -u
+}
+
+
 #=== Peco
 #==============================================================================================
 _peco_select() {
