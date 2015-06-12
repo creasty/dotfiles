@@ -28,7 +28,7 @@ SCRIPT='
 PATH="$(cd "${1:-.}"; pwd)"
 
 if [ -d "$PATH" ]; then
-  $BIN -e "$SCRIPT" "$PATH" # > /dev/null 2>&1
+  $BIN -e "$SCRIPT" "$PATH" > /dev/null 2>&1
 else
   open "$@"
 fi
