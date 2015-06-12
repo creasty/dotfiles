@@ -2631,11 +2631,11 @@ if neobundle#tap('lexima.vim')
 
   " directory shortcuts
   let directories = {
-    \ 'h':  '~/',
-    \ 'gg': '~/.ghq/github.com/',
-    \ 'gl': '~/.ghq/local/',
-    \ 'gw': '~/.ghq/github.com/wantedly/',
-    \ 'gc': '~/.ghq/github.com/creasty/',
+    \ 'h': '~/',
+    \ 'g': '~/.ghq/github.com/',
+    \ 'l': '~/.ghq/local/',
+    \ 'w': '~/.ghq/github.com/wantedly/',
+    \ 'c': '~/.ghq/github.com/creasty/',
   \ }
 
   for [shortcut, directory] in items(directories)
