@@ -2629,19 +2629,32 @@ if neobundle#tap('lexima.vim')
     \ 'mode':  'c',
   \ })
 
-  " home directory :eh
-  call lexima#add_rule({
-    \ 'char':  'h',
-    \ 'at':    '^e\%#',
-    \ 'input': " ~/",
-    \ 'mode':  'c',
-  \ })
+  " directory shortcuts
+  let directories = {
+    \ 'h':  '~/',
+    \ 'gg': '~/.ghq/github.com/',
+    \ 'gl': '~/.ghq/local/',
+    \ 'gw': '~/.ghq/github.com/wantedly/',
+    \ 'gc': '~/.ghq/github.com/creasty/',
+  \ }
+
+  for [shortcut, directory] in items(directories)
+    call lexima#add_rule({
+      \ 'char':  shortcut,
+      \ 'at':    '^e\%#',
+      \ 'input': ' ' . directory,
+      \ 'mode':  'c',
+    \ })
+  endfor
+  unlet directories
+  unlet shortcut
+  unlet directory
 
   " edit buffer :eb
   call lexima#add_rule({
     \ 'char':  'b',
     \ 'at':    '^e\%#',
-    \ 'input': " #",
+    \ 'input': ' #',
     \ 'mode':  'c',
   \ })
 
