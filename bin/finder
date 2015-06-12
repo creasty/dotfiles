@@ -9,22 +9,18 @@ SCRIPT='
     tell application "System Events"
       tell application "Finder"
         activate
+        set currentPath to (target of the front window) as alias
       end
 
-      (*
-      set currentPath to alias (target of Finder window 1)
+      if currentPath is not targetPath as alias
+        tell process "Finder"
+          click menu item "New Tab" of menu "File" of menu bar 1
+        end
 
-      if currentPath is not targetPath
+        tell application "Finder"
+          set target of the front window to targetPath
+        end tell
       end if
-      *)
-
-      tell process "Finder"
-        click menu item "New Tab" of menu "File" of menu bar 1
-      end
-
-      tell application "Finder"
-        set target of Finder window 1 to targetPath
-      end tell
     end tell
   end run
 '
