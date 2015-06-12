@@ -366,7 +366,7 @@
 		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
 		hAErATGG
 		</data>
-		<string>198</string>
+		<string>302</string>
 	</array>
 	<key>NSTableView Hidden Columns KeyBingingTable</key>
 	<array/>
@@ -384,7 +384,7 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>554 614 924 485 0 0 2560 1577 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1 10 2555 1561 0 0 2560 1577 </string>
+	<string>1 10 2558 1561 0 0 2560 1577 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 1097 570 473 0 0 2560 1577 </string>
 	<key>NeverWarnAboutShortLivedSessions_00CE52AA-E97C-408F-AE73-50ABE1085D03</key>
@@ -585,7 +585,7 @@
 			<key>Columns</key>
 			<integer>80</integer>
 			<key>Command</key>
-			<string>/usr/bin/env zsh -c 'tmux'</string>
+			<string>/usr/local/bin/tmux -l</string>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -1862,6 +1862,10 @@
 	</array>
 	<key>NoSyncNeverRemindPrefsChangesCopy</key>
 	<true/>
+	<key>NoSyncTimeOfLastPromo</key>
+	<real>453208214.079189</real>
+	<key>NoSyncTimeOfLastPromoDownload</key>
+	<real>455631068.56965601</real>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
 	<key>OpenArrangementAtStartup</key>
@@ -1930,7 +1934,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-05-03T03:31:08Z</date>
+	<date>2015-06-12T10:22:38Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1976,6 +1980,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.1</string>
+	<string>2.1.1</string>
 </dict>
 </plist>
