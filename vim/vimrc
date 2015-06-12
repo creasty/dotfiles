@@ -2625,7 +2625,7 @@ if neobundle#tap('lexima.vim')
   call lexima#add_rule({
     \ 'char':  'e',
     \ 'at':    '^e\%#',
-    \ 'input': " \<C-r>=expand('%:h') . '/' \<CR>",
+    \ 'input': " \<C-r>=expand('%:p:h') . '/' \<CR>",
     \ 'mode':  'c',
   \ })
 
