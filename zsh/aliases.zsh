@@ -193,6 +193,11 @@ alias tma1='tmux attach -t 1'
 alias tma2='tmux attach -t 2'
 alias tml='tmux list-sessions'
 
+# kill all non-attached sessions
+tmk() {
+  tmux ls | grep -v attached | cut -d: -f 1 | each tmux kill-session -t
+}
+
 
 #  Xcode
 #-----------------------------------------------
