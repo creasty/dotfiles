@@ -16,7 +16,7 @@ export NODE_PATH=/usr/local/lib/node_modules
 export RBENV_ROOT=$HOME/.rbenv
 
 # golang
-export GOPATH=$HOME/.ghq
+export GOPATH=$HOME/go
 
 # path
 export PATH=/usr/local/bin:$PATH

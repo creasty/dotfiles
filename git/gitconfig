@@ -136,4 +136,4 @@
   insteadOf = https://github.com/
 
 [ghq]
-  root = ~/.ghq/src
+  root = ~/go/src
