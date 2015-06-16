@@ -384,9 +384,9 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>554 614 924 485 0 0 2560 1577 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1 10 2558 1561 0 0 2560 1577 </string>
+	<string>0 4 2560 1573 0 0 2560 1577 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 1097 570 473 0 0 2560 1577 </string>
+	<string>0 1114 570 451 0 0 2560 1577 </string>
 	<key>NeverWarnAboutShortLivedSessions_00CE52AA-E97C-408F-AE73-50ABE1085D03</key>
 	<true/>
 	<key>New Bookmarks</key>
@@ -595,7 +595,7 @@
 			<key>Close Sessions On End</key>
 			<true/>
 			<key>Columns</key>
-			<integer>80</integer>
+			<integer>1000</integer>
 			<key>Command</key>
 			<string>/usr/local/bin/tmux -l</string>
 			<key>Cursor Color</key>
@@ -967,17 +967,17 @@
 			<key>Prompt Before Closing 2</key>
 			<integer>0</integer>
 			<key>Right Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Rows</key>
-			<integer>25</integer>
+			<integer>1000</integer>
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>10000</integer>
+			<integer>1000</integer>
 			<key>Scrollback With Status Bar</key>
 			<false/>
 			<key>Scrollback in Alternate Screen</key>
-			<true/>
+			<false/>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -1115,7 +1115,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.074847444891929626</real>
+			<real>0.11674371361732483</real>
 			<key>Triggers</key>
 			<array/>
 			<key>Unlimited Scrollback</key>
@@ -1143,7 +1143,7 @@
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>453208214.079189</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>455865120.25129098</real>
+	<real>456113344.25484598</real>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
 	<key>OpenArrangementAtStartup</key>
@@ -1212,7 +1212,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-06-14T09:38:08Z</date>
+	<date>2015-06-16T02:04:48Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
