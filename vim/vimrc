@@ -224,10 +224,7 @@ else
   NeoBundle 'tpope/vim-repeat'
 
   " a tree explorer
-  NeoBundleLazy 'scrooloose/nerdtree'
-
-  " making NERDTree feel like a true panel, independent of tabs
-  NeoBundle 'jistr/vim-nerdtree-tabs', { 'depends': ['scrooloose/nerdtree'] }
+  NeoBundle 'scrooloose/nerdtree'
 
   " miscellaneous auto-load Vim scripts (dependency of vim-session)
   NeoBundleLazy 'xolox/vim-misc'
@@ -3086,42 +3083,11 @@ endif
 "=== Plugin: nerdtree
 "==============================================================================================
 if neobundle#tap('nerdtree')
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:NERDSpaceDelims = 1
-    let g:NERDShutUp = 1
-    let g:NERDTreeShowHidden = 1
-    let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
-    let g:NERDTreeAutoDeleteBuffer = 1
-  endfunction
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-nerdtree-tabs
-"==============================================================================================
-if neobundle#tap('vim-nerdtree-tabs')
-  let g:nerdtree_tabs_open_on_gui_startup = 0
-  let g:nerdtree_tabs_startup_cd = 0
-
-  NeoBundleSource 'nerdtree'
-
-  nnoremap <silent> <expr> <C-s><C-s> <SID>NERDTreeToggleOrFocus()
-
-  function! s:NERDTreeToggleOrFocus()
-    let isOpen = 0
-
-    if exists('t:NERDTreeBufName')
-      let isOpen = (bufwinnr(t:NERDTreeBufName) != -1 && bufnr(t:NERDTreeBufName) != bufnr('%'))
-    endif
-
-    if isOpen
-      return ":0wincmd w\<CR>"
-    else
-      return ":NERDTreeTabsToggle\<CR>"
-    endif
-  endfunction
+  let g:NERDSpaceDelims = 1
+  let g:NERDShutUp = 1
+  let g:NERDTreeShowHidden = 1
+  let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
+  let g:NERDTreeAutoDeleteBuffer = 1
 
   call neobundle#untap()
 endif
