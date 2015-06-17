@@ -1072,6 +1072,12 @@ nnoremap <C-w>c <Nop>
 nmap <C-w><C-x> <C-w>x
 nnoremap <C-w>x :close<CR>
 
+nnoremap <C-w><C-n> gt
+nnoremap <C-w><C-b> gT
+
+" tmux
+nmap <C-s> <C-w>
+
 " remove trailing spaces before saving
 autocmd vimrc BufWritePre *
   \ if &ft != 'markdown' |
@@ -3101,7 +3107,7 @@ if neobundle#tap('vim-nerdtree-tabs')
 
   NeoBundleSource 'nerdtree'
 
-  nnoremap <silent> <expr> <C-s> <SID>NERDTreeToggleOrFocus()
+  nnoremap <silent> <expr> <C-s><C-s> <SID>NERDTreeToggleOrFocus()
 
   function! s:NERDTreeToggleOrFocus()
     let isOpen = 0
