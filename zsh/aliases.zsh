@@ -47,6 +47,7 @@ alias -g N='> /dev/null'
 alias -g S='| sort'
 alias -g W='| wc'
 alias -g X='| xargs'
+alias -g X1='| xargs -n 1'
 
 
 #  Suffix
