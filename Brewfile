@@ -108,6 +108,7 @@ brew install node || true
 brew install opencv || true
 brew install optipng || true
 brew install osquery || true
+brew install packer || true
 brew install pcre || true
 brew install peco || true
 brew install phantomjs || true
