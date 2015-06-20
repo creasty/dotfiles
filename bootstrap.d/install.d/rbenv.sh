@@ -22,7 +22,7 @@ _install_ruby() {
   fi
 }
 
-cat $DOTFILES_PATH/ruby/versions.txt | each _install_ruby
+cat $DOTFILES_PATH/ruby/versions.txt | xargs -n 1 _install_ruby
 
 subsection "Set global ruby to v$DEFAULT_VERSION"
 rbenv global $DEFAULT_VERSION
