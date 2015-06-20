@@ -96,7 +96,7 @@ alias pg-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
 
 alias ql='qlmanage -p "$@" >& /dev/null'
 
-alias es='elasticsearch'
+alias es='elasticsearch -Xms1g -Xmx2g -Des.script.disable_dynamic=false'
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
