@@ -72,6 +72,14 @@ ghq-update() {
 }
 
 
+#  Tmux
+#-----------------------------------------------
+# kill all non-attached sessions
+tmk() {
+  tmux ls | grep -v attached | cut -d: -f 1 | each tmux kill-session -t
+}
+
+
 #=== Peco
 #==============================================================================================
 _peco_select() {

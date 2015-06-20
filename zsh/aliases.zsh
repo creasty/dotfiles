@@ -103,6 +103,10 @@ erd() {
   $cmd -i "$1" -o "${1}.${2:-pdf}"
 }
 
+TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
+alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
+alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
+
 
 #  Networks
 #-----------------------------------------------
@@ -192,11 +196,6 @@ alias tma0='tmux attach -t 0'
 alias tma1='tmux attach -t 1'
 alias tma2='tmux attach -t 2'
 alias tml='tmux list-sessions'
-
-# kill all non-attached sessions
-tmk() {
-  tmux ls | grep -v attached | cut -d: -f 1 | each tmux kill-session -t
-}
 
 
 #  Xcode
