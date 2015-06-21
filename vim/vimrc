@@ -1884,7 +1884,7 @@ if neobundle#tap('lexima.vim')
       \ 'char':  a:char,
       \ 'at':    '\%#',
       \ 'input': a:char,
-      \ 'syntax': ['String']
+      \ 'syntax': ['String'],
     \ })
   endfunction
 
@@ -2078,9 +2078,9 @@ if neobundle#tap('lexima.vim')
 
   " hyphenated words
   call lexima#add_rule({
-    \ 'char':     '-',
-    \ 'at':       '\(........\)\?\w\+-\w\+\%#',
-    \ 'input':    '-',
+    \ 'char':  '-',
+    \ 'at':    '\(........\)\?\w\+-\w\+\%#',
+    \ 'input': '-',
   \ })
 
 
@@ -2174,58 +2174,58 @@ if neobundle#tap('lexima.vim')
   for width in ['-', '=']
     " right-arrow
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       width . '\%#',
-      \ 'input':    '> ',
+      \ 'char':  '<Tab>',
+      \ 'at':    width . '\%#',
+      \ 'input': '> ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '\S' . width . '\%#',
-      \ 'input':    '<BS> ' . width . '> ',
+      \ 'char':  '<Tab>',
+      \ 'at':    '\S' . width . '\%#',
+      \ 'input': '<BS> ' . width . '> ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       width . ' \%#',
-      \ 'input':    '<BS>> ',
+      \ 'char':  '<Tab>',
+      \ 'at':    width . ' \%#',
+      \ 'input': '<BS>> ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       width . '>\%#',
-      \ 'input':    '<BS><BS><' . width . ' ',
+      \ 'char':  '<Tab>',
+      \ 'at':    width . '>\%#',
+      \ 'input': '<BS><BS><' . width . ' ',
     \ })
 
     " left-arrow
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '\(.....\)\?' . width . width . '\%#',
-      \ 'input':    '<BS><BS><' . width . ' ',
+      \ 'char':  '<Tab>',
+      \ 'at':    '\(.....\)\?' . width . width . '\%#',
+      \ 'input': '<BS><BS><' . width . ' ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '\S' . width . width . '\%#',
-      \ 'input':    '<BS><BS><BS> <' . width . ' ',
+      \ 'char':  '<Tab>',
+      \ 'at':    '\S' . width . width . '\%#',
+      \ 'input': '<BS><BS><BS> <' . width . ' ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       width . width . ' \%#',
-      \ 'input':    '<BS><BS><BS><' . width . ' ',
+      \ 'char':  '<Tab>',
+      \ 'at':    width . width . ' \%#',
+      \ 'input': '<BS><BS><BS><' . width . ' ',
     \ })
 
     " toggle
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       width . '> \%#',
-      \ 'input':    '<BS><BS><BS><' . width . ' ',
+      \ 'char':  '<Tab>',
+      \ 'at':    width . '> \%#',
+      \ 'input': '<BS><BS><BS><' . width . ' ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '<' . width . '\%#',
-      \ 'input':    '<BS><BS>' . width . '> ',
+      \ 'char':  '<Tab>',
+      \ 'at':    '<' . width . '\%#',
+      \ 'input': '<BS><BS>' . width . '> ',
     \ })
     call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '<' . width . ' \%#',
-      \ 'input':    '<BS><BS><BS>' .  width . '> ',
+      \ 'char':  '<Tab>',
+      \ 'at':    '<' . width . ' \%#',
+      \ 'input': '<BS><BS><BS>' .  width . '> ',
     \ })
   endfor
   unlet width
@@ -2390,19 +2390,19 @@ if neobundle#tap('lexima.vim')
   "-----------------------------------------------
   " tag
   call lexima#add_rule({
-    \ 'char':     '>',
-    \ 'at':       '\(.....\)\?<\%#',
-    \ 'input':    '>',
+    \ 'char':  '>',
+    \ 'at':    '\(.....\)\?<\%#',
+    \ 'input': '>',
   \ })
   call lexima#add_rule({
-    \ 'char':     '>',
-    \ 'at':       '\(........\)\?< \%#',
-    \ 'input':    '<BS>><Left>',
+    \ 'char':  '>',
+    \ 'at':    '\(........\)\?< \%#',
+    \ 'input': '<BS>><Left>',
   \ })
   call lexima#add_rule({
-    \ 'char':     '>',
-    \ 'at':       '\(........\)\?<\%#>',
-    \ 'input':    '<Right>',
+    \ 'char':  '>',
+    \ 'at':    '\(........\)\?<\%#>',
+    \ 'input': '<Right>',
   \ })
   call lexima#add_rule({
     \ 'char':     '<',
