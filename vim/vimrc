@@ -2151,6 +2151,14 @@ if neobundle#tap('lexima.vim')
     \ 'mode':  'i',
   \ })
 
+  " indent
+  call lexima#add_rule({
+    \ 'char':  '<C-l>',
+    \ 'at':    '^\s*\%#',
+    \ 'input': '<Esc>ddO',
+    \ 'mode':  'i',
+  \ })
+
 
   "  Backspace
   "-----------------------------------------------
