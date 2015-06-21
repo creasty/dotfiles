@@ -2134,14 +2134,20 @@ if neobundle#tap('lexima.vim')
   " delete spaces around
   call lexima#add_rule({
     \ 'char':  '<C-l>',
-    \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
+    \ 'at':    '\S [+-\*/%?&|<>=]\+ \%#',
     \ 'input': '<Esc>bh"_xf<Space>"_cl',
     \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '<C-l>',
-    \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
+    \ 'at':    '\S [+-\*/%?&|<>=]\+\%#',
     \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
+    \ 'mode':  'i',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  '<C-l>',
+    \ 'at':    '\S[+-\*/%?&|<>=]\+ \%#',
+    \ 'input': '<BS>',
     \ 'mode':  'i',
   \ })
 
