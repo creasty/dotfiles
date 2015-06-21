@@ -101,7 +101,7 @@ alias es='elasticsearch -Xms1g -Xmx2g -Des.script.disable_dynamic=false'
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
-  $cmd -i "$1" -o "${1}.${2:-pdf}"
+  $cmd -i "$1" -o "${1}.${2:-png}"
 }
 
 TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
