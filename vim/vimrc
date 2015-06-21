@@ -2113,11 +2113,11 @@ if neobundle#tap('lexima.vim')
   \ })
 
 
-  "  C-t
+  "  C-l
   "-----------------------------------------------
   " nop
   call lexima#add_rule({
-    \ 'char':  '<C-t>',
+    \ 'char':  '<C-l>',
     \ 'at':    '\%#',
     \ 'input': '',
     \ 'mode':  'i',
@@ -2125,7 +2125,7 @@ if neobundle#tap('lexima.vim')
 
   " transpose charactors before/after cursor
   call lexima#add_rule({
-    \ 'char':  '<C-t>',
+    \ 'char':  '<C-l>',
     \ 'at':    '\(...........\)\?\w\%#\w',
     \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
     \ 'mode':  'i',
@@ -2133,13 +2133,13 @@ if neobundle#tap('lexima.vim')
 
   " delete spaces around
   call lexima#add_rule({
-    \ 'char':  '<C-t>',
+    \ 'char':  '<C-l>',
     \ 'at':    ' [+-\*/%?&|<>=]\+ \%#',
     \ 'input': '<Esc>bh"_xf<Space>"_cl',
     \ 'mode':  'i',
   \ })
   call lexima#add_rule({
-    \ 'char':  '<C-t>',
+    \ 'char':  '<C-l>',
     \ 'at':    ' [+-\*/%?&|<>=]\+\%#',
     \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
     \ 'mode':  'i',
