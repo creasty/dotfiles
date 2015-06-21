@@ -1874,19 +1874,16 @@ if neobundle#tap('lexima.vim')
       \ 'char':  a:char,
       \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
       \ 'input': a:char,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  a:char,
       \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
       \ 'input': a:char,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  a:char,
       \ 'at':    '\%#',
       \ 'input': a:char,
-      \ 'mode':  'i',
       \ 'syntax': ['String']
     \ })
   endfunction
@@ -1896,7 +1893,6 @@ if neobundle#tap('lexima.vim')
       \ 'char':  a:char,
       \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
       \ 'input': a:char,
-      \ 'mode':  'i',
     \ })
   endfunction
 
@@ -1908,19 +1904,16 @@ if neobundle#tap('lexima.vim')
       \ 'char':  quote,
       \ 'at':    '\(.......\)\?\%#\w',
       \ 'input': quote,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  quote,
       \ 'at':    '\(.......\)\?' . quote . '\%#',
       \ 'input': quote,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  quote,
       \ 'at':    '\(...........\)\?\%#' . quote,
       \ 'input': '<Right>',
-      \ 'mode':  'i',
     \ })
 
     call s:disable_lexima_inside_regexp(quote)
@@ -1946,43 +1939,36 @@ if neobundle#tap('lexima.vim')
       \ 'char':  char,
       \ 'at':    '\S\%#',
       \ 'input': ' ' . char . ' ',
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  char,
       \ 'at':    '^\s*\%#',
       \ 'input': char . ' ',
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  char,
       \ 'at':    '^\s*\%# ',
       \ 'input': char,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  char,
       \ 'at':    '\S \%#',
       \ 'input': char . ' ',
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  char,
       \ 'at':    '\S \%# ',
       \ 'input': char,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  char,
       \ 'at':    '\(...\)\?' . uchar . ' \%#',
       \ 'input': '<BS><C-r>=' . rule . '<CR><Space>',
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  char,
       \ 'at':    '\(...\)\?' . uchar . ' \%# ',
       \ 'input': '<BS><C-r>=' . rule . '<CR>',
-      \ 'mode':  'i',
     \ })
 
     call s:disable_lexima_inside_string(char)
@@ -2002,19 +1988,16 @@ if neobundle#tap('lexima.vim')
       \ 'char':  op,
       \ 'at':    '\w\%#',
       \ 'input': ' ' . op . ' ',
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  op,
       \ 'at':    '\(^\|\w\) ' . eop . '\%#',
       \ 'input': op . ' ',
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  op,
       \ 'at':    eop . ' \%#',
       \ 'input': '<BS>' . op . ' ',
-      \ 'mode':  'i',
     \ })
 
     call s:disable_lexima_inside_string(op)
@@ -2028,13 +2011,11 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '=',
     \ 'at':    '\s[&|?+-/<>]\%#',
     \ 'input': '= ',
-    \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '=',
     \ 'at':    '[&|?+-/<>] \%#',
     \ 'input': '<BS>= ',
-    \ 'mode':  'i',
   \ })
 
   " slash as non arithmetic operators
@@ -2042,19 +2023,16 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '/',
     \ 'at':    '\S/\S[^/]*\%#',
     \ 'input': '/',
-    \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '/',
     \ 'at':    '^\s*\%#',
     \ 'input': '/',
-    \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '/',
     \ 'at':    '^\s*/.*\%#',
     \ 'input': '/',
-    \ 'mode':  'i',
   \ })
   call s:disable_lexima_inside_regexp('/')
 
@@ -2064,19 +2042,16 @@ if neobundle#tap('lexima.vim')
       \ 'char':  op,
       \ 'at':    ' ' . op . ' \%#',
       \ 'input': '<BS><BS><BS>' . op . op,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  op,
       \ 'at':    indents . op . ' \%#',
       \ 'input': op,
-      \ 'mode':  'i',
     \ })
     call lexima#add_rule({
       \ 'char':  op,
       \ 'at':    '\w' . op . op . '\%#',
       \ 'input': '<BS><BS><Space>' . op . op . '<Space>',
-      \ 'mode':  'i',
     \ })
   endfor
   unlet op
@@ -2086,21 +2061,18 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '-',
     \ 'at':       '\(........\)\?\%#',
     \ 'input':    '-',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'xml', 'css', 'scss'],
   \ })
   call lexima#add_rule({
     \ 'char':     '-',
     \ 'at':       '^[ \t]*[\.#]\w\+\%#',
     \ 'input':    '-',
-    \ 'mode':     'i',
     \ 'filetype': ['haml', 'slim'],
   \ })
   call lexima#add_rule({
     \ 'char':     '-',
     \ 'at':       '}*[\.#]\w\+\%#',
     \ 'input':    '-',
-    \ 'mode':     'i',
     \ 'filetype': ['haml', 'slim'],
   \ })
 
@@ -2109,7 +2081,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '-',
     \ 'at':       '\(........\)\?\w\+-\w\+\%#',
     \ 'input':    '-',
-    \ 'mode':     'i',
   \ })
 
 
@@ -2120,7 +2091,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<C-l>',
     \ 'at':    '\%#',
     \ 'input': '',
-    \ 'mode':  'i',
   \ })
 
   " transpose charactors before/after cursor
@@ -2128,7 +2098,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<C-l>',
     \ 'at':    '\(...........\)\?\w\%#\w',
     \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
-    \ 'mode':  'i',
   \ })
 
   " delete spaces around
@@ -2136,19 +2105,16 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<C-l>',
     \ 'at':    '\S [+\-\*/%?&|<>=]\+ \%#',
     \ 'input': '<Esc>bh"_xf<Space>"_cl',
-    \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '<C-l>',
     \ 'at':    '\S [+\-\*/%?&|<>=]\+\%#',
     \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
-    \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '<C-l>',
     \ 'at':    '\S[+\-\*/%?&|<>=]\+ \%#',
     \ 'input': '<BS>',
-    \ 'mode':  'i',
   \ })
 
   " indent
@@ -2156,7 +2122,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<C-l>',
     \ 'at':    '^\s*\%#',
     \ 'input': '<Esc>ddO',
-    \ 'mode':  'i',
   \ })
 
 
@@ -2170,14 +2135,12 @@ if neobundle#tap('lexima.vim')
       \ 'char':  '<BS>',
       \ 'at':    epa[0] . '\s\+' . epa[1] . '\%#',
       \ 'input': '<C-o>di' . pa[0],
-      \ 'mode':  'i',
     \ })
 
     call lexima#add_rule({
       \ 'char':  '<BS>',
       \ 'at':    epa . '\%#',
       \ 'input': '<BS><BS>',
-      \ 'mode':  'i',
     \ })
   endfor
 
@@ -2191,7 +2154,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '<Tab>',
     \ 'at':       '\%#',
     \ 'input':    '<C-r>=SuperTabCompletion()<CR>',
-    \ 'mode':     'i',
   \ })
 
   function! SuperTabCompletion()
@@ -2215,25 +2177,21 @@ if neobundle#tap('lexima.vim')
       \ 'char':     '<Tab>',
       \ 'at':       width . '\%#',
       \ 'input':    '> ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '\S' . width . '\%#',
       \ 'input':    '<BS> ' . width . '> ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       width . ' \%#',
       \ 'input':    '<BS>> ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       width . '>\%#',
       \ 'input':    '<BS><BS><' . width . ' ',
-      \ 'mode':     'i',
     \ })
 
     " left-arrow
@@ -2241,19 +2199,16 @@ if neobundle#tap('lexima.vim')
       \ 'char':     '<Tab>',
       \ 'at':       '\(.....\)\?' . width . width . '\%#',
       \ 'input':    '<BS><BS><' . width . ' ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '\S' . width . width . '\%#',
       \ 'input':    '<BS><BS><BS> <' . width . ' ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       width . width . ' \%#',
       \ 'input':    '<BS><BS><BS><' . width . ' ',
-      \ 'mode':     'i',
     \ })
 
     " toggle
@@ -2261,19 +2216,16 @@ if neobundle#tap('lexima.vim')
       \ 'char':     '<Tab>',
       \ 'at':       width . '> \%#',
       \ 'input':    '<BS><BS><BS><' . width . ' ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '<' . width . '\%#',
       \ 'input':    '<BS><BS>' . width . '> ',
-      \ 'mode':     'i',
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '<' . width . ' \%#',
       \ 'input':    '<BS><BS><BS>' .  width . '> ',
-      \ 'mode':     'i',
     \ })
   endfor
   unlet width
@@ -2283,13 +2235,11 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<CR>',
     \ 'at':    '\(<[-=]\|[-=]>\)\%#',
     \ 'input': '<CR><Tab>',
-    \ 'mode':  'i',
   \ })
   call lexima#add_rule({
     \ 'char':  '<CR>',
     \ 'at':    '\(<[-=]\|[-=]>\) \%#',
     \ 'input': '<BS><CR><Tab>',
-    \ 'mode':  'i',
   \ })
 
   " member access
@@ -2297,7 +2247,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<C-t>',
     \ 'at':    '\w\(\.\|->\)\%#',
     \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
-    \ 'mode':  'i',
   \ })
 
 
@@ -2308,7 +2257,6 @@ if neobundle#tap('lexima.vim')
       \ 'char':  pair[0],
       \ 'at':    '\(........\)\?\%#[^\s' . escape(pair[1], ']') . ']',
       \ 'input': pair[0],
-      \ 'mode':  'i',
     \ })
   endfor
   unlet pair
@@ -2359,7 +2307,6 @@ if neobundle#tap('lexima.vim')
       \ 'char':     '<CR>',
       \ 'at':       '^\s*' . at . '\>.*\%#',
       \ 'input':    '<CR>end' . at . '<Esc>O',
-      \ 'mode':     'i',
       \ 'filetype': ['vim'],
     \ })
   endfor
@@ -2380,7 +2327,6 @@ if neobundle#tap('lexima.vim')
       \ 'char':     '<CR>',
       \ 'at':       at,
       \ 'input':    '<CR>end<Esc>O',
-      \ 'mode':     'i',
       \ 'filetype': ['ruby'],
     \ })
   endfor
@@ -2399,14 +2345,12 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '<Bar>',
     \ 'at':       '\({\|do\)\s*\%#',
     \ 'input':    '<Bar><Bar><Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['ruby'],
   \ })
   call lexima#add_rule({
     \ 'char':     '<Bar>',
     \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
     \ 'input':    '<Right>',
-    \ 'mode':     'i',
     \ 'filetype': ['ruby'],
   \ })
 
@@ -2415,7 +2359,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '(',
     \ 'at':       '\(........\)\?-> \%#',
     \ 'input':    '<BS>()<Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['ruby'],
   \ })
 
@@ -2450,39 +2393,33 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '>',
     \ 'at':       '\(.....\)\?<\%#',
     \ 'input':    '>',
-    \ 'mode':     'i',
   \ })
   call lexima#add_rule({
     \ 'char':     '>',
     \ 'at':       '\(........\)\?< \%#',
     \ 'input':    '<BS>><Left>',
-    \ 'mode':     'i',
   \ })
   call lexima#add_rule({
     \ 'char':     '>',
     \ 'at':       '\(........\)\?<\%#>',
     \ 'input':    '<Right>',
-    \ 'mode':     'i',
   \ })
   call lexima#add_rule({
     \ 'char':     '<',
     \ 'at':       '\(........\)\?\%#',
     \ 'input':    '<><Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
   call lexima#add_rule({
     \ 'char':     '>',
     \ 'at':       '\(........\)\?\%#',
     \ 'input':    '>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
   call lexima#add_rule({
     \ 'char':     '>',
     \ 'at':       '\(........\)\?\%#>',
     \ 'input':    '<Right>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
 
@@ -2491,7 +2428,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '=',
     \ 'at':       '\(........\)\?<.\+\%#',
     \ 'input':    '=""<Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
 
@@ -2500,7 +2436,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '/',
     \ 'at':       '\(........\)\?<\%#>',
     \ 'input':    '/<C-x><C-o><BS><ESC>a',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
 
@@ -2509,7 +2444,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '&',
     \ 'at':       '\(........\)\?\%#',
     \ 'input':    '&;<Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
 
@@ -2518,7 +2452,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '-',
     \ 'at':       '\(........\)\?<\%#>',
     \ 'input':    '!--  --<Left><Left><Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
   \ })
 
@@ -2527,14 +2460,12 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '%',
     \ 'at':       '\(........\)\?<\%#',
     \ 'input':    '%  %<Left><Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'ejs', 'eruby'],
   \ })
   call lexima#add_rule({
     \ 'char':     '%',
     \ 'at':       '\(........\)\?<%[=-]\? \%#',
     \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
-    \ 'mode':     'i',
     \ 'filetype': ['html', 'ejs', 'eruby'],
   \ })
 
@@ -2546,7 +2477,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '=',
     \ 'at':       '^\s*\([.#%]\(\w\|-\)\+\)*\%#',
     \ 'input':    '= ',
-    \ 'mode':     'i',
     \ 'filetype': ['haml', 'slim'],
   \ })
 
@@ -2558,7 +2488,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '?',
     \ 'at':       '\(........\)\?<\%#>',
     \ 'input':    '?php  ?<Left><Left>',
-    \ 'mode':     'i',
     \ 'filetype': ['php'],
   \ })
 
@@ -2570,7 +2499,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '>',
     \ 'at':       '\(.....\)\?< \%#',
     \ 'input':    '<BS>><Space>',
-    \ 'mode':     'i',
     \ 'filetype': ['sql'],
   \ })
 
@@ -2582,7 +2510,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     'n',
     \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
     \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
-    \ 'mode':     'i',
     \ 'filetype': ['go'],
   \ })
 
@@ -2594,7 +2521,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':     '-',
     \ 'at':       '^-\%#',
     \ 'input':    "<C-r>=repeat('-', 80)<CR>",
-    \ 'mode':     'i',
     \ 'filetype': ['markdown'],
   \ })
 
@@ -2604,14 +2530,12 @@ if neobundle#tap('lexima.vim')
       \ 'char':     d,
       \ 'at':       '^\n\%#',
       \ 'input':    d,
-      \ 'mode':     'i',
       \ 'filetype': ['markdown'],
     \ })
     call lexima#add_rule({
       \ 'char':     d,
       \ 'at':       '^\%#',
       \ 'input':    "<C-r>=MarkdownTitleLine('" . d . "')<CR>",
-      \ 'mode':     'i',
       \ 'filetype': ['markdown'],
     \ })
   endfor
