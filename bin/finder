@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-BIN=/usr/bin/osascript
+OSAS_BIN=/usr/bin/osascript
+OPEN_BIN=/usr/bin/open
 
 SCRIPT='
   on run argv
@@ -25,10 +26,10 @@ SCRIPT='
   end run
 '
 
-PATH="$(cd "${1:-.}"; pwd)"
+PATH="${1:-.}"
 
 if [ -d "$PATH" ]; then
-  $BIN -e "$SCRIPT" "$PATH" > /dev/null 2>&1
+  $OSAS_BIN -e "$SCRIPT" "$(cd "$PATH"; pwd)" > /dev/null 2>&1
 else
-  open "$@"
+  $OPEN_BIN "$@"
 fi
