@@ -160,6 +160,8 @@ alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
 alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
 
+alias rdbma='rake-db-migrate-all'
+
 rdbb() {
   bundle exec rake db:rollback STEP=$1
 }

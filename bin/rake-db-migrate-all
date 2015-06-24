@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source "$(dirname $0)/../lib/helpers.sh"
+
+migrate_databases() {
+  local databases="$(cat)"
+  local count="$(echo "$databases" | wc -l | tr -d ' ')"
+
+  print_info "$count databases found:"
+  echo "$databases" | sed 's/^/  - /'
+  echo
+
+  echo "$databases" | {
+    while read -r database; do
+      cmd="bundle exec rake $database:migrate"
+
+      section "$cmd"
+      $cmd
+    done
+  }
+}
+
+main() {
+  find ./config -name '*database.yml' \
+    | xargs -n1 -I{} basename {} '.yml' \
+    | sed -e 's/^database$/db/' -e 's/_database$/_db/' \
+    | migrate_databases
+}
+
+main
