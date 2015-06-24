@@ -127,7 +127,7 @@ alias nserver="http-server -p"
 
 rbserver() {
   local port=${1:-5000}
-  ruby -rwebrick -e "WEBrick::HTTPServer.new(DocumentRoot: './', Port: $port}).start"
+  ruby -rwebrick -e "WEBrick::HTTPServer.new(DocumentRoot: './', Port: $port).start"
 }
 
 
