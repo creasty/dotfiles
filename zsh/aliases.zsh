@@ -92,12 +92,7 @@ alias anp='ansible-playbook'
 
 alias maxscreen='screenresolution set 2560x1600x32@0'
 
-alias redis-server='redis-server /usr/local/etc/redis.conf'
-alias pg-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
-
 alias ql='qlmanage -p "$@" >& /dev/null'
-
-alias es='elasticsearch -Xms1g -Xmx2g -Des.script.disable_dynamic=false'
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
@@ -129,6 +124,11 @@ rbserver() {
   local port=${1:-5000}
   ruby -rwebrick -e "WEBrick::HTTPServer.new(DocumentRoot: './', Port: $port).start"
 }
+
+alias redis-server='redis-server /usr/local/etc/redis.conf'
+alias pg-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
+
+alias es='elasticsearch -Xms1g -Xmx2g -Des.script.disable_dynamic=false'
 
 
 #  Scripts
