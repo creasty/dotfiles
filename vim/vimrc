@@ -440,8 +440,9 @@ endif
 " use comma as leader
 let mapleader = ','
 
-" split to right
+" split to right / bottom
 set splitright
+set splitbelow
 
 " use double width to print non-ascii charactors
 set ambiwidth=double
@@ -1062,6 +1063,9 @@ nnoremap <C-w>t :tabnew<CR>
 
 nmap <C-w><C-v> <C-w>v
 nnoremap <C-w>v :vnew<CR>
+
+nmap <C-w><C-s> <C-w>s
+nnoremap <C-w>s :split +enew<CR>
 
 nmap <C-w><C-c> <Nop>
 nnoremap <C-w>c <Nop>
