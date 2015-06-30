@@ -13,7 +13,6 @@ brew tap homebrew/boneyard || true
 brew tap homebrew/dupes || true
 brew tap homebrew/science || true
 brew tap josegonzalez/php || true
-brew tap laurent22/massren || true
 brew tap peco/peco || true
 brew tap phinze/homebrew-cask || true
 brew tap supermomonga/homebrew-splhack || true
@@ -96,7 +95,6 @@ brew install lua || true
 brew install luajit || true
 brew install luarocks || true
 brew install macvim --HEAD --with-luajit || true
-brew install massren && massren --config editor vim || true
 brew install mdp || true
 brew install memcached || true
 brew install mercurial || true
