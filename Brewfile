@@ -13,7 +13,6 @@ brew tap homebrew/boneyard || true
 brew tap homebrew/dupes || true
 brew tap homebrew/science || true
 brew tap josegonzalez/php || true
-brew tap peco/peco || true
 brew tap phinze/homebrew-cask || true
 brew tap supermomonga/homebrew-splhack || true
 
@@ -108,7 +107,6 @@ brew install optipng || true
 brew install osquery || true
 brew install packer || true
 brew install pcre || true
-brew install peco || true
 brew install phantomjs || true
 brew install php55 || true
 brew install postgresql || true

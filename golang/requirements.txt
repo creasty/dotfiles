@@ -3,3 +3,4 @@ github.com/tools/godep
 github.com/rakyll/boom
 github.com/codegangsta/gin
 github.com/laurent22/massren
+github.com/peco/peco/cmd/peco
