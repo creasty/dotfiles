@@ -18,17 +18,21 @@ export RBENV_ROOT=$HOME/.rbenv
 # golang
 export GOPATH=$HOME/go
 
+# tex
+export TEXLIVE_PATH=/usr/local/texlive
+export TEXLIVE_BIN_PATH=$TEXLIVE_PATH/2015/bin/universal-darwin
+export TEXLIVE_TEXMR_PATH=$TEXLIVE_PATH/texmf-local
+
 # path
 export PATH=/usr/local/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$PATH
 export PATH=$DOTFILES_PATH/bin:$PATH
 
-export PATH=$PATH:/opt/local/bin
 export PATH=$PATH:$HOME/.npm/node_modules/bin
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:$HOME/.cabal/bin
-export PATH=$PATH:/Applications/TeXLive/Library/texlive/2013/bin/x86_64-darwin
+export PATH=$PATH:$TEXLIVE_BIN_PATH
 
 
 #  Git
