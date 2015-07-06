@@ -361,6 +361,9 @@ else
   " neobundle friendly repo for nsf/gocode
   " NeoBundleLazy 'Blackrush/vim-gocode'
 
+  " extra plugin for golang
+  NeoBundleLazy 'vim-go-exra'
+
   " Elixir support for vim
   NeoBundleLazy 'elixir-lang/vim-elixir'
 
@@ -3839,6 +3842,20 @@ endif
 "=== Plugin: vim-gocode
 "==============================================================================================
 if neobundle#tap('vim-gocode')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['go'] }
+  \ })
+
+  function! neobundle#tapped.hooks.on_source(bundle)
+  endfunction
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-go-extra
+"==============================================================================================
+if neobundle#tap('vim-go-extra')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['go'] }
   \ })
