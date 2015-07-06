@@ -118,7 +118,6 @@ brew install rbenv || true
 brew install rbenv-binstubs || true
 brew install rbenv-default-gems || true
 brew install rbenv-gem-rehash || true
-brew install reattach-to-user-namespace || true
 brew install redis || true
 brew install rsense || true
 brew install ruby-build || true
