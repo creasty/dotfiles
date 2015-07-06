@@ -10,9 +10,17 @@ migrate_databases() {
   echo "$databases" | sed 's/^/  - /'
   echo
 
+  local migration_cmd
+
+  if [ "$1" = '-t' ]; then
+    migration_cmd="test:prepare"
+  else
+    migration_cmd="migrate"
+  fi
+
   echo "$databases" | {
     while read -r database; do
-      cmd="bundle exec rake $database:migrate"
+      cmd="bundle exec rake $database:$migration_cmd"
 
       section "$cmd"
       $cmd
@@ -24,7 +32,7 @@ main() {
   find ./config -name '*database.yml' \
     | xargs -n1 -I{} basename {} '.yml' \
     | sed -e 's/^database$/db/' -e 's/_database$/_db/' \
-    | migrate_databases
+    | migrate_databases $1
 }
 
-main
+main $1
