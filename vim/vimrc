@@ -355,14 +355,8 @@ else
   " syntax highlight for Haskell
   NeoBundleLazy 'kana/vim-filetype-haskell'
 
-  " go development plugin
-  " NeoBundleLazy 'fatih/vim-go'
-
-  " neobundle friendly repo for nsf/gocode
-  " NeoBundleLazy 'Blackrush/vim-gocode'
-
   " extra plugin for golang
-  NeoBundleLazy 'vim-go-exra'
+  NeoBundleLazy 'vim-jp/vim-go-extra'
 
   " Elixir support for vim
   NeoBundleLazy 'elixir-lang/vim-elixir'
@@ -2897,7 +2891,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
   let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
   let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.go = '\h\w*\.\?'
+  let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
   let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 
   " omni
@@ -2924,6 +2918,8 @@ if neobundle#tap('neocomplete')
     \ setlocal omnifunc=pythoncomplete#Complete
   autocmd vimrc FileType xml
     \ setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd vimrc FileType go
+    \ setlocal omnifunc=gocomplete#Complete
 
   function! neobundle#tapped.hooks.on_source(bundle)
     " cancel or accept
@@ -3819,46 +3815,14 @@ if neobundle#tap('vim-filetype-haskell')
 endif
 
 
-"=== Plugin: vim-go
-"==============================================================================================
-if neobundle#tap('vim-go')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['go'] }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:go_auto_type_info = 0
-    let g:go_disable_autoinstall = 1
-    let g:go_snippet_engine = 'neosnippet'
-    let g:go_fmt_autosave = 0
-  endfunction
-
-  let g:loaded_gocode = 1  " disable fucking slow completion
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-gocode
-"==============================================================================================
-if neobundle#tap('vim-gocode')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['go'] }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-  endfunction
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: vim-go-extra
 "==============================================================================================
 if neobundle#tap('vim-go-extra')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['go'] }
   \ })
+
+  let g:gocomplete#system_function = 'vimproc#system'
 
   function! neobundle#tapped.hooks.on_source(bundle)
   endfunction
