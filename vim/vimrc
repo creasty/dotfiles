@@ -1231,6 +1231,8 @@ command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans
 "==============================================================================================
 let g:auto_save = 1
 
+autocmd User AutoSavePre :
+autocmd User AutoSavePost :
 autocmd vimrc CursorHoldI,CompleteDone * call <SID>auto_save()
 autocmd vimrc CursorHold,InsertLeave * call <SID>auto_save()
 
@@ -1240,10 +1242,11 @@ function! s:auto_save()
   if g:auto_save >= 1
     let was_modified = &modified
 
+    doautocmd User AutoSavePre
     silent! wa
 
     if was_modified && !&modified
-      " TODO: exec syntasic command here
+      doautocmd User AutoSavePost
       echo "(AutoSaved at " . strftime("%H:%M:%S") . ")"
     endif
   endif
