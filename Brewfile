@@ -72,6 +72,7 @@ brew install eot-utils || true
 brew install fontconfig || true
 brew install fontforge || true
 brew install freetype || true
+brew install fswatch || true
 brew install gdbm || true
 brew install gettext || true
 brew install ghc || true
