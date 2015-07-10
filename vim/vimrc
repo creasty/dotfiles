@@ -262,6 +262,9 @@ else
   " substitute preview
   NeoBundle 'osyo-manga/vim-over'
 
+  " improved incremental searching
+  NeoBundleLazy 'haya14busa/incsearch.vim'
+
   " functional Object Oriented VimL (dependency of dash.vim)
   NeoBundleLazy 'rizzatti/funcoo.vim'
 
@@ -3466,6 +3469,23 @@ if neobundle#tap('vim-over')
       return '/'
     endif
   endfunction
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: incsearch.vim
+"==============================================================================================
+if neobundle#tap('incsearch.vim')
+  call neobundle#config({
+    \ 'autoload': {
+      \ 'mappings': '<Plug>(incsearch-',
+    \ }
+  \ })
+
+  nmap /  <Plug>(incsearch-forward)
+  nmap ?  <Plug>(incsearch-backward)
+  nmap g/ <Plug>(incsearch-stay)
 
   call neobundle#untap()
 endif
