@@ -3845,10 +3845,7 @@ if neobundle#tap('vim-go-extra')
     \ 'autoload': { 'filetypes': ['go'] }
   \ })
 
-  let g:gocomplete#system_function = 'vimproc#system'
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-  endfunction
+  let g:gocomplete#system_function = 'vimproc#system2'
 
   call neobundle#untap()
 endif
