@@ -263,7 +263,7 @@ else
   NeoBundle 'osyo-manga/vim-over'
 
   " improved incremental searching
-  NeoBundleLazy 'haya14busa/incsearch.vim'
+  " NeoBundleLazy 'haya14busa/incsearch.vim'
 
   " functional Object Oriented VimL (dependency of dash.vim)
   NeoBundleLazy 'rizzatti/funcoo.vim'
