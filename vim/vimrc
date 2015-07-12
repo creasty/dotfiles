@@ -608,6 +608,10 @@ if has('conceal')
   set conceallevel=2 concealcursor=
 endif
 
+" color column
+set colorcolumn=90
+hi ColorColumn guibg=#1f1f1f ctermbg=234
+
 
 "  Folding
 "-----------------------------------------------
