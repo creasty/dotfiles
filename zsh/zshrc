@@ -19,6 +19,7 @@ plugins=(
   linux
   osx
   zsh-syntax-highlighting
+  k
 )
 
 source $ZSH/oh-my-zsh.sh

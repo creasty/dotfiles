@@ -13,3 +13,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
+[submodule "zsh/plugins/k"]
+	path = zsh/plugins/k
+	url = git@github.com:rimraf/k.git
