@@ -109,6 +109,7 @@ brew install packer || true
 brew install pcre || true
 brew install phantomjs || true
 brew install php55 || true
+brew install plantuml || true
 brew install postgresql || true
 brew install pstree || true
 brew install python3 || true
