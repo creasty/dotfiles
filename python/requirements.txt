@@ -4,3 +4,4 @@ mitmproxy
 numpy
 protobuf
 pyamf
+glances
