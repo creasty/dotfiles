@@ -28,13 +28,7 @@ print_status $?
 
 #  QuickLook
 #-----------------------------------------------
-section "Setting QuickLook"
-
-subsection "Copying plugins"
-cp -r $APP_DIR/quick_look/*.qlgenerator /Library/QuickLook/
-print_status $?
-
-subsection "Reloading QuickLook"
+section "Reloading QuickLook"
 qlmanage -r
 print_status $?
 

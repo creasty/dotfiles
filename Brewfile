@@ -51,6 +51,12 @@ brew cask install vault || true
 brew cask install virtualbox || true
 brew cask install xquartz || true
 
+brew cask install qlcolorcode || true
+brew cask install qlstephen || true
+brew cask install qlmarkdown || true
+brew cask install quicklook-json || true
+brew cask install webpquicklook || true
+
 # install brew-packages
 brew install ansible || true
 brew install asciinema || true
