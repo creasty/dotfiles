@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  cd `git rev-parse --show-toplevel`
+else
+  echo 'Not in git repository'
+  exit 1
+fi
+
+if ! [[ -e $(pwd)/.gitmodules ]]; then
+  echo 'No .gitmodules found'
+  exit 1
+fi
+
+if [[ $# -eq 0 ]]; then
+  echo 'Usage: git submodule-rm <path ...>'
+else
+  for submodulepath in $@; do
+    git config -f .git/config --remove-section submodule.$submodulepath
+    git config -f .gitmodules --remove-section submodule.$submodulepath
+    git rm --cached $submodulepath
+  done
+fi
