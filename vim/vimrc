@@ -364,6 +364,13 @@ else
   " Elixir support for vim
   NeoBundleLazy 'elixir-lang/vim-elixir'
 
+  " Vastly improved Javascript indentation and syntax support
+  NeoBundleLazy 'pangloss/vim-javascript'
+
+  " React JSX syntax highlighting and indenting
+  NeoBundle 'mxw/vim-jsx'
+
+
   NeoBundleSaveCache
 endif
 
@@ -3871,6 +3878,17 @@ endif
 if neobundle#tap('vim-elixir')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['elixir'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-javascript
+"==============================================================================================
+if neobundle#tap('vim-javascript')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['js'] }
   \ })
 
   call neobundle#untap()
