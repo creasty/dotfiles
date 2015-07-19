@@ -3888,7 +3888,7 @@ endif
 "==============================================================================================
 if neobundle#tap('vim-javascript')
   call neobundle#config({
-    \ 'autoload': { 'filetypes': ['js'] }
+    \ 'autoload': { 'filetypes': ['javascript'] }
   \ })
 
   call neobundle#untap()
