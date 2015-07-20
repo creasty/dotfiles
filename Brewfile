@@ -61,6 +61,7 @@ brew cask install webpquicklook || true
 brew install ansible || true
 brew install asciinema || true
 brew install awscli --HEAD || true
+brew install batik || true
 brew install binutils || true
 brew install cabal-install || true
 brew install chrome-cli || true
