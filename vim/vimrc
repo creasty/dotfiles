@@ -1271,7 +1271,9 @@ function! s:auto_save()
     silent! wa
 
     if was_modified && !&modified
+      let g:auto_save = 0
       doautocmd User AutoSavePost
+      let g:auto_save = 1
       echo "(AutoSaved at " . strftime("%H:%M:%S") . ")"
     endif
   endif
