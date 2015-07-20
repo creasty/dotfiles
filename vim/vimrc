@@ -133,8 +133,17 @@ else
   " commenting code
   NeoBundle 'scrooloose/nerdcommenter'
 
-  " syntax checking on the fly has never been so pimp
-  NeoBundleLazy 'scrooloose/syntastic'
+  " async syntax checking
+  NeoBundle 'osyo-manga/vim-watchdogs'
+
+  " update status line
+  NeoBundle 'KazuakiM/vim-qfstatusline'
+
+  " highlight quickfix errors
+  NeoBundle 'jceb/vim-hier'
+
+  " see quickfix, location list and Syntastic lists errors and warnings
+  NeoBundle 'dannyob/quickfixstatus'
 
   " a simple, easy-to-use Vim alignment plugin
   NeoBundleLazy 'junegunn/vim-easy-align'
@@ -819,12 +828,12 @@ function! MyStatusLine(w, cw)
     let s .= ' %#StatusLine#'
 
     " syntastic
-    if exists('*SyntasticStatuslineFlag')
-      let synerr = SyntasticStatuslineFlag()
-      if !empty(synerr)
-        let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
-      endif
-    endif
+    " if exists('*SyntasticStatuslineFlag')
+    "   let synerr = SyntasticStatuslineFlag()
+    "   if !empty(synerr)
+    "     let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
+    "   endif
+    " endif
   endif
 
   return s
@@ -1722,27 +1731,30 @@ if neobundle#tap('nerdcommenter')
 endif
 
 
-"=== Plugin: syntastic
+"=== Plugin: vim-watchdogs
 "==============================================================================================
-if neobundle#tap('syntastic')
-  call neobundle#config({
-    \ 'autoload': { 'insert': 1 },
-  \ })
+if neobundle#tap('vim-watchdogs')
+  " let g:syntastic_error_symbol = '✗'
+  " let g:syntastic_warning_symbol = '⚠'
+  " let g:syntastic_style_error_symbol = '✗'
+  " let g:syntastic_style_warning_symbol = '⚠'
+  " let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
 
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:syntastic_error_symbol = '✗'
-    let g:syntastic_warning_symbol = '⚠'
-    let g:syntastic_style_error_symbol = '✗'
-    let g:syntastic_style_warning_symbol = '⚠'
-    let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
+  " let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
+  " let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
+  " let g:syntastic_tex_checkers = ['lacheck']
 
-    let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
-    let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
-    let g:syntastic_tex_checkers = ['lacheck']
+  " call candle#highlight('SyntasticErrorSign', 'red', '', '')
+  " call candle#highlight('SyntasticWarningSign', 'yellow', '', '')
 
-    call candle#highlight('SyntasticErrorSign', 'red', '', '')
-    call candle#highlight('SyntasticWarningSign', 'yellow', '', '')
-  endfunction
+  autocmd vimrc User AutoSavePost :WatchdogsRunSilent
+
+  let g:quickrun_config = get(g:, 'quickrun_config', {})
+  let g:quickrun_config['watchdogs_checker/_'] = {
+    \ 'outputter/quickfix/open_cmd' : '',
+  \ }
+
+  call watchdogs#setup(g:quickrun_config)
 
   call neobundle#untap()
 endif
