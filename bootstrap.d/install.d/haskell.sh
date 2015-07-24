@@ -5,4 +5,4 @@ cabal update
 print_status $?
 
 subsection "Installing packages"
-cat $DOTFILES_PATH/haskell/requirements.txt | xargs -n 1 cabal install --allow-newer=base
+cat $DOTFILES_PATH/haskell/packages.txt | xargs -n 1 cabal install --allow-newer=base
