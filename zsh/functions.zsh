@@ -116,13 +116,13 @@ peco_insert_path() {
       file="$(cat)"
 
       if [ "$LBUFFER" != "" ]; then
-        echo "$file" | _buffer_insert_lines
+        _buffer_insert_lines <<< "$file"
       elif [ -d "$file" ]; then
-        echo "cd $file" | _buffer_insert
+        _buffer_insert <<< "cd $file"
       elif [ -f "$file" ]; then
-        echo "$EDITOR $file" | _buffer_insert
+        _buffer_insert <<< "$EDITOR $file"
       else
-        echo "$file" | _buffer_insert_lines
+        _buffer_insert_lines <<< "$file"
       fi
     }
 }
@@ -152,9 +152,9 @@ peco_insert_branch() {
       branch="$(cat)"
 
       if [[ -z "$LBUFFER" && `echo "$branch" | wc -l` -eq 1 ]]; then
-        echo "g k $branch" | _buffer_insert
+        _buffer_insert <<< "g k $branch"
       else
-        echo "$branch" | _buffer_insert_lines
+        _buffer_insert_lines <<< "$branch"
       fi
     }
 }
@@ -209,7 +209,7 @@ peco_cd_repo() {
       repo="$(cat)"
 
       if ! [ -z "$repo" ]; then
-        echo 'cd' "$(ghq root)/$repo" | _buffer_replace
+        _buffer_replace <<< "cd $(ghq root)/$repo"
         zle accept-line
       fi
     }
