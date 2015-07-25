@@ -52,10 +52,6 @@ mkd() {
 
 #  Refresh without restart
 #-----------------------------------------------
-refresh() {
-  exec zsh -l
-}
-
 _refresh_screen() {
   zle clear-screen
   rehash
@@ -63,6 +59,14 @@ _refresh_screen() {
 }
 
 _register_keycommand '^l' _refresh_screen
+
+
+#  Reload
+#-----------------------------------------------
+reload() {
+  exec zsh -l
+  [ -n "$TMUX" ] && tmux source-file ~/.tmux.conf
+}
 
 
 #  Update all repos managed by ghq
