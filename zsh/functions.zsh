@@ -123,7 +123,19 @@ peco_insert_path() {
       elif [ -d "$file" ]; then
         _buffer_insert <<< "cd $file"
       elif [ -f "$file" ]; then
-        _buffer_insert <<< "$EDITOR $file"
+        buf=''
+
+        case "$file" in
+          *_spec.rb)
+            buf="be rspec $file"
+            ;;
+
+          *)
+            buf="$EDITOR $file"
+            ;;
+        esac
+
+        _buffer_insert <<< "$buf"
       else
         _buffer_insert_lines <<< "$file"
       fi
