@@ -80,7 +80,10 @@ ghq-update() {
 #-----------------------------------------------
 # kill all non-attached sessions
 tmk() {
-  tmux ls | grep -v attached | cut -d: -f 1 | xargs -n 1 tmux kill-session -t
+  tmux ls \
+    | grep -v attached \
+    | cut -d: -f 1 \
+    | xargs -n 1 tmux kill-session -t
 }
 
 
