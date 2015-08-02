@@ -1151,6 +1151,10 @@ function! s:force_blockwise_visual(next_key)
   endif
 endfunction
 
+" q:
+nnoremap q: :q
+nnoremap <Space>: q:
+
 
 "=== Utils
 "==============================================================================================
