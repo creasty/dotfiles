@@ -8,5 +8,5 @@ export PATH=$PATH:/opt/local/bin
 
 eval "$(rbenv init -)"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+export NVM_DIR=$HOME/.nvm
+[ -d "$NVM_DIR" ] && . "$NVM_DIR/nvm.sh"

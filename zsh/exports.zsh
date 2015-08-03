@@ -10,7 +10,7 @@ export EDITOR=vim
 export DOTFILES_PATH="$HOME/dotfiles"
 
 # node
-export NODE_PATH=/usr/local/lib/node_modules
+export NVM_DIR=$HOME/.nvm
 
 # ruby
 export RBENV_ROOT=$HOME/.rbenv
