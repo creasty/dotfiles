@@ -28,7 +28,7 @@ cat $DOTFILES_PATH/brew/tap.txt \
 section "Install applications"
 
 subsection "Installing cask"
-# brew install caskroom/cask/brew-cask || true
+brew install caskroom/cask/brew-cask || true
 
 cat $DOTFILES_PATH/brew/cask.txt \
   | sed 's/\s*#.*$//' \
