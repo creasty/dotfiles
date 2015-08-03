@@ -1,0 +1,87 @@
+ansible
+asciinema
+awscli --HEAD
+batik
+binutils
+cabal-install
+chrome-cli
+chisel
+clib
+clisp
+ctags
+ctags-objc-ja --HEAD --enable-japanese-support
+curl --with-ssl --with-libssh2
+direnv
+elasticsearch
+elixir
+envchain
+eot-utils
+fontconfig
+fontforge
+freetype
+fswatch
+gdbm
+gettext
+ghc
+ghostscript
+git
+git-flow
+git-ftp
+go
+gpg
+graphviz
+httpie
+hub
+imagemagick
+irssi --with-perl=yes --with-proxy --with-socks
+jbig2dec
+jpeg
+jq
+lua
+luajit
+luarocks
+macvim --HEAD --with-luajit
+mdp
+memcached
+mercurial
+mongodb
+mysql
+ngrep
+nkf
+node
+nvm
+opencv
+optipng
+osquery
+packer
+pcre
+phantomjs
+php55
+plantuml
+postgresql
+pstree
+python3
+q
+r  # require xquartz to be installed
+ranger
+rbenv
+rbenv-binstubs
+rbenv-default-gems
+rbenv-gem-rehash
+redis
+rsense
+ruby-build
+sbt
+scala
+sqlite
+the_silver_searcher
+tig
+tmux
+tree
+typesafe-activator
+vim --HEAD --disable-nls --override-system-vi --with-luajit
+w3m
+webkit2png
+wget --enable-iri
+xctool
+zsh
