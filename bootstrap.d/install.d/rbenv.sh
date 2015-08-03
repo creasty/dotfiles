@@ -10,7 +10,6 @@ print_success "OK"
 
 _install_ruby() {
   local version=$1
-  local installed=
 
   subsection "Ruby v$version"
 
