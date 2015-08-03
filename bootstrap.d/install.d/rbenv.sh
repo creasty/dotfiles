@@ -1,4 +1,4 @@
-DEFAULT_VERSION="$(< $DOTFILES_PATH/.ruby-version)"
+DEFAULT_VERSION="$(< $DOTFILES_PATH/ruby/.ruby-version)"
 
 INSTALLED_RUBY_VERSIONS="$(rbenv versions --bare)"
 

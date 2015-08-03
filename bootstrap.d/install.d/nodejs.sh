@@ -1,4 +1,4 @@
-DEFAULT_VERSION="$(< $DOTFILES_PATH/.node-version)"
+DEFAULT_VERSION="$(< $DOTFILES_PATH/nodejs/.node-version)"
 
 INSTALLED_NODE_VERSIONS="$(node ls)"
 
