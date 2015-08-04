@@ -13,22 +13,24 @@ if ! [ -d "$NVM_DIR" ]; then
 fi
 
 
-_install_nodejs() {
-  local version=$1
+cat $DOTFILES_PATH/nodejs/packages.txt \
+| {
+  while read -r line; do
+    if ! [ -z "$line" ]; then
+      version="$line"
+      subsection "Install $version"
 
-  subsection "Install $version"
-
-  if [ -z "$(echo -n "$INSTALLED_NODE_VERSIONS" | grep $version)" ]; then
-    nvm install $version
-    print_status $?
-  else
-    print_info "Installed"
-  fi
+      if [ -z "$(echo -n "$INSTALLED_NODE_VERSIONS" | grep $version)" ]; then
+        nvm install $version
+        print_status $?
+      else
+        print_info "Installed"
+      fi
+    fi
+  done
 }
 
-cat $DOTFILES_PATH/nodejs/packages.txt | xargs -n 1 _install_nodejs
-
-subsection "Set default version"
+section "Set default version"
 nvm alias default $DEFAULT_VERSION
 nvm use default
 
