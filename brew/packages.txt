@@ -1,11 +1,12 @@
+android-sdk
 ansible
 asciinema
 awscli --HEAD
 batik
 binutils
 cabal-install
-chrome-cli
 chisel
+chrome-cli
 clib
 clisp
 ctags

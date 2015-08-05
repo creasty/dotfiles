@@ -1,5 +1,6 @@
 adobe-creative-cloud
 alfred
+android-studio
 anybar
 boot2docker
 dropbox

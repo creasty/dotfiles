@@ -23,6 +23,9 @@ export TEXLIVE_PATH=/usr/local/texlive
 export TEXLIVE_BIN_PATH=$TEXLIVE_PATH/2015/bin/universal-darwin
 export TEXLIVE_TEXMR_PATH=$TEXLIVE_PATH/texmf-local
 
+# android
+export ANDROID_HOME=/usr/local/opt/android-sdk
+
 # path
 export PATH=/usr/local/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$PATH
