@@ -4,6 +4,7 @@ android-studio
 anybar
 boot2docker
 dropbox
+eclipse-java
 firefox
 flip4mac
 google-chrome
