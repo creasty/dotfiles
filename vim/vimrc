@@ -3038,7 +3038,8 @@ if neobundle#tap('eclim')
     \ }
   \ })
 
-  let g:EclimCompletionMethod = 'omnifunc'
+  " FIXME
+  " let g:EclimCompletionMethod = 'omnifunc'
 
   call neobundle#untap()
 endif
