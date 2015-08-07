@@ -2943,6 +2943,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
   let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
   let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+  let g:neocomplete#force_omni_input_patterns.java = '\k\.\k*'
 
   " clang
   let g:clang_complete_auto = 0
@@ -3036,6 +3037,8 @@ if neobundle#tap('eclim')
       \ 'filetypes': ['java'],
     \ }
   \ })
+
+  let g:EclimCompletionMethod = 'omnifunc'
 
   call neobundle#untap()
 endif
