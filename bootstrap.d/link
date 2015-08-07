@@ -15,6 +15,7 @@ LINKS=(
   config/coffeelintrc:.coffeelintrc
   config/ctags:.ctags
   config/curlrc:.curlrc
+  config/eclimrc:.eclimrc
   config/lldbinit:.lldbinit
   config/pgclirc:.pgclirc
   config/ranger/colorschemes/original.py:.config/ranger/colorschemes/original.py
