@@ -370,6 +370,9 @@ else
   " React JSX syntax highlighting and indenting
   NeoBundle 'mxw/vim-jsx'
 
+  " Jade template engine syntax highlighting and indention
+  NeoBundleLazy 'digitaltoad/vim-jade'
+
 
   NeoBundleSaveCache
 endif
@@ -3895,6 +3898,17 @@ endif
 if neobundle#tap('vim-javascript')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['javascript'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('vim-jade')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['jade'] }
   \ })
 
   call neobundle#untap()
