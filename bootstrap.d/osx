@@ -141,8 +141,11 @@ defaults write com.apple.dock tilesize -int 25
 # minimize windows into their application's icon
 defaults write com.apple.dock minimize-to-application -bool true
 
-# speed up Mission Control animations
-defaults write com.apple.dock expose-animation-duration -float 0.1
+# disable animations
+defaults write com.apple.dock expose-animation-duration -int 0
+defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES
+defaults write com.apple.dock springboard-show-duration -int 0
+defaults write com.apple.dock springboard-hide-duration -int 0
 
 # disable Dashboard
 defaults write com.apple.dashboard mcx-disabled -bool true
