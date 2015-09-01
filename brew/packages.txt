@@ -9,6 +9,7 @@ chisel
 chrome-cli
 clib
 clisp
+cloc
 ctags
 ctags-objc-ja --HEAD --enable-japanese-support
 curl --with-ssl --with-libssh2
