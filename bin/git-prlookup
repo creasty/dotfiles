@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+SHA=$1
+
+REPO="$(
+  git config --get remote.origin.url \
+    | grep github.com \
+    | sed 's/^.*github\.com[:\/]\(.*\)\.git$/\1/' \
+    | tr -d "\n"
+)"
+
+if [ -z "$REPO" ]; then
+  echo 'Remote origin is not hosted at github.com' 1>&2
+  exit 1
+fi
+
+PR_NUM="$(
+  git log --merges --ancestry-path --oneline "${SHA}..master" 2> /dev/null \
+    | grep 'pull request' \
+    | tail -n 1 \
+    | awk '{ print $5 }' \
+    | cut -c 2-
+)"
+
+if [ -z "$PR_NUM" ]; then
+  echo "Counldn't find any pull request for the commit"
+else
+  URL="https://github.com/$REPO/pull/$PR_NUM"
+  pbcopy <<< "$URL"
+  echo "$URL"
+fi
