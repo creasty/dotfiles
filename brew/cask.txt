@@ -2,6 +2,7 @@ adobe-creative-cloud
 alfred
 android-studio
 anybar
+astah-community
 boot2docker
 dropbox
 firefox
