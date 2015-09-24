@@ -8,22 +8,23 @@ dotssh() {
     return
   fi
 
+  local server="$1"
   local tmp_path="/tmp/dotfiles_$(whoami)_$RANDOM"
-  local sock="~/.ssh/%r@%h:%p.sock"
+  local sock="$HOME/.ssh/$server.sock"
 
   # Establish master connection
   ssh \
     -MNf \
-    -o ControlPath=$sock \
+    -o ControlPath="$sock" \
     -o ControlPersist=yes \
-    "$1"
+    "$server"
 
   # Transfer my files
-  ssh "$1" "mkdir -p $tmp_path"
+  ssh "$server" "mkdir -p $tmp_path"
   scp -r "$dotssh_dir" "$1:$tmp_path"
 
   # Bash
-  ssh -t "$1" "
+  ssh -t "$server" "
     [ -e /etc/motd ] && cat /etc/motd
 
     bash --rcfile <(echo '
@@ -40,9 +41,9 @@ dotssh() {
 
   # Disconnect master
   ssh \
-    -o ControlPath=$sock \
+    -o ControlPath="$sock" \
     -O 'exit' \
-    "$1"
+    "$server"
 }
 
 
