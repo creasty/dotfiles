@@ -2600,7 +2600,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '!',
     \ 'at':    '^w!\%#',
     \ 'input': "\<C-u>w !sudo tee % > /dev/null",
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
   " edit relative :ee
@@ -2608,7 +2608,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  'e',
     \ 'at':    '^e\%#',
     \ 'input': " \<C-r>=expand('%:p:h') . '/' \<CR>",
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
   " directory shortcuts
@@ -2622,7 +2622,7 @@ if neobundle#tap('lexima.vim')
       \ 'char':  shortcut,
       \ 'at':    '^e\%#',
       \ 'input': ' ' . directory,
-      \ 'mode':  'c',
+      \ 'mode':  ':',
     \ })
   endfor
   unlet directories
@@ -2634,7 +2634,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  'b',
     \ 'at':    '^e\%#',
     \ 'input': ' #',
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
   " rename :er
@@ -2642,7 +2642,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  'r',
     \ 'at':    '^e\%#',
     \ 'input': "\<C-u>Rename \<C-r>=expand('%:p') \<CR>",
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
 
