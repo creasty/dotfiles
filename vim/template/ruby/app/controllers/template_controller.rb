@@ -1,5 +1,5 @@
 <%=
-namespaces = File.dirname('FILE_PATH'.split('app/models')[1])
+namespaces = File.dirname('FILE_PATH'.split('app/controllers')[1])
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .split('/')
   .reject { |n| n == '' }
