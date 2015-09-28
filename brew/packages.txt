@@ -60,7 +60,7 @@ opencv
 optipng
 osquery
 packer
-# parallel
+parallel
 pcre
 phantomjs
 php55
