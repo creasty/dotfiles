@@ -51,6 +51,7 @@ memcached
 mercurial
 mongodb
 mysql
+neovim --HEAD
 ngrep
 nkf
 node
