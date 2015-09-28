@@ -33,6 +33,7 @@ git-ftp
 go
 gpg
 graphviz
+hicolor-icon-theme
 httpie
 hub
 imagemagick
@@ -40,6 +41,7 @@ irssi --with-perl=yes --with-proxy --with-socks
 jbig2dec
 jpeg
 jq
+libepoxy
 lua
 luajit
 luarocks
