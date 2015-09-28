@@ -1,4 +1,3 @@
-caskroom/versions
 creasty/homebrew-creasty
 homebrew/boneyard
 homebrew/dupes
