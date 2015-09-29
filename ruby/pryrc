@@ -3,6 +3,7 @@ require 'rubygems' unless defined? Gem
 begin
   require 'awesome_print'
   AwesomePrint.pry!
+rescue
 end
 
 Pry.commands.delete('.<shell command>') rescue nil
