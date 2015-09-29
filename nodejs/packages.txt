@@ -7,4 +7,5 @@ crconsole
 gulp
 http-server
 lodash
+speed-test
 webpack
