@@ -23,6 +23,7 @@ fontforge
 freetype
 fswatch
 gcutil
+gdb
 gdbm
 gettext
 ghc
