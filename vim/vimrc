@@ -211,6 +211,14 @@ else
   " insert #include<>
   NeoBundleLazy 'osyo-manga/vim-stargate'
 
+  " expose eclipse features inside of vim
+  let g:eclim_mac_build = 'ant -Declipse.home=' . $HOME . '/Applications/Eclipse.app/Contents/Eclipse -Dvim.files=' . s:env.path.bundle . '/eclim'
+  NeoBundleLazy 'ervandew/eclim', {
+    \ 'build': {
+      \ 'mac': g:eclim_mac_build,
+    \ }
+  \ }
+
 
   "  Utils
   "-----------------------------------------------
@@ -2938,6 +2946,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
   let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
   let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+  let g:neocomplete#force_omni_input_patterns.java = '\k\.\k*'
 
   " clang
   let g:clang_complete_auto = 0
@@ -3018,6 +3027,22 @@ if neobundle#tap('vim-stargate')
       \ 'commands': ['StargateInclude', 'StargateClearCache'],
     \ }
   \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: eclim
+"==============================================================================================
+if neobundle#tap('eclim')
+  call neobundle#config({
+    \ 'autoload': {
+      \ 'filetypes': ['java'],
+    \ }
+  \ })
+
+  " FIXME
+  " let g:EclimCompletionMethod = 'omnifunc'
 
   call neobundle#untap()
 endif

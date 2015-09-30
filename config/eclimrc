@@ -1,0 +1,2 @@
+nailgun.server.host=0.0.0.0
+nailgun.server.port=10012

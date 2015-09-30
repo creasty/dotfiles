@@ -5,6 +5,7 @@ anybar
 astah-community
 boot2docker
 dropbox
+eclipse-java
 firefox
 flip4mac
 google-chrome
