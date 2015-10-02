@@ -43,6 +43,7 @@ jbig2dec
 jpeg
 jq
 libepoxy
+libpcap
 lua
 luajit
 luarocks
