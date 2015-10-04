@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+HEAD="${1:-HEAD}"
+
+git rev-list --boundary "${HEAD}...master" \
+  | awk '/^-/ { print substr($0, 2); exit }'
