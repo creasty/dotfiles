@@ -1098,8 +1098,8 @@ nnoremap <C-w>s :split +enew<CR>
 nmap <C-w><C-c> <Nop>
 nnoremap <C-w>c <Nop>
 
-nmap <C-w><C-x> <C-w>x
-nnoremap <C-w>x :close<CR>
+nmap <C-w><C-d> <C-w>d
+nnoremap <C-w>d :close<CR>
 
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
