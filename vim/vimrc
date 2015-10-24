@@ -3181,6 +3181,12 @@ if neobundle#tap('unite.vim')
   endfunction
 
   function! s:dispatch_unite_file_rec_async_or_git()
+    let pwd = getcwd()
+
+    if pwd == $HOME
+      return
+    endif
+
     if isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
       Unite -hide-source-names -buffer-name=files file_rec/git
     else
