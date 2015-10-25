@@ -241,6 +241,9 @@ else
   " tags source for unite.vim
   NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
 
+  " source for ghq list
+  NeoBundleLazy 'sorah/unite-ghq', { 'depends': ['Shougo/unite.vim'] }
+
   " open URI with browser
   NeoBundleLazy 'tyru/open-browser.vim'
 
@@ -3184,10 +3187,8 @@ if neobundle#tap('unite.vim')
     let pwd = getcwd()
 
     if pwd == $HOME
-      return
-    endif
-
-    if isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
+      Unite ghq
+    elseif isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
       Unite -hide-source-names -buffer-name=files file_rec/git
     else
       Unite -hide-source-names -buffer-name=files file_rec/async
