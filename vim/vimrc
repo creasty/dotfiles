@@ -1282,8 +1282,11 @@ function! s:auto_save()
 
     if was_modified && !&modified
       let g:auto_save = 0
-      doautocmd User AutoSavePost
-      let g:auto_save = 1
+      try
+        doautocmd User AutoSavePost
+      finally
+        let g:auto_save = 1
+      endtry
       echo "(AutoSaved at " . strftime("%H:%M:%S") . ")"
     endif
   endif
