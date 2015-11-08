@@ -1,5 +1,12 @@
-section "Installing homebrew"
+section "Fix SIP on /usr/local"
+sudo -v  # ask for the administrator password upfront
+[ -d /usr/local ] || sudo mkdir /usr/local
+sudo chflags norestricted /usr/local
+sudo chown $(whoami):admin /usr/local
+sudo chown -R $(whoami):admin /usr/local
 
+
+section "Installing homebrew"
 if cmd_exists brew; then
   print_info "Installed"
 else
