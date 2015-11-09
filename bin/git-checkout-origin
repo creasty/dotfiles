@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+BRANCH="$1"
+
+git fetch origin "$BRANCH" && git checkout "$BRANCH"
