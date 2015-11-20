@@ -376,6 +376,12 @@ else
   " Jade template engine syntax highlighting and indention
   NeoBundleLazy 'digitaltoad/vim-jade'
 
+  " TypesSript syntax files for Vim
+  NeoBundleLazy 'leafgarland/typescript-vim'
+
+  " tools related to the TypeScript language
+  NeoBundleLazy 'clausreinke/typescript-tools'
+
 
   NeoBundleSaveCache
 endif
@@ -2936,6 +2942,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
   let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
   let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+  let g:neocomplete#sources#omni#input_patterns.typescript = '\h\w*\|[^. \t]\.\w*'
 
   " omni
   let g:neocomplete#force_overwrite_completefunc = 1
@@ -3926,6 +3933,28 @@ endif
 if neobundle#tap('vim-jade')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['jade'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('leafgarland/typescript-vim')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['typescript'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('clausreinke/typescript-tools')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['typescript'] }
   \ })
 
   call neobundle#untap()
