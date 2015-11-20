@@ -3141,6 +3141,7 @@ if neobundle#tap('unite.vim')
       \ '.tags',
       \ '*.jpg', '*.jpeg', '*.png', '*.gif', '*.pdf', '*.ttf', '*.otf', '*.eot', '*.woff', '*.svg', '*.svgz',
       \ 'tmp/**', 'cache/**', 'public/system/**', 'vendor/bundle/**',
+      \ 'Godeps/**',
     \ ]
 
     call unite#custom#source(
