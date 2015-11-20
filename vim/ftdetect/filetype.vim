@@ -48,6 +48,7 @@ augroup custom_filetypes
   "  Shortcuts
   "-----------------------------------------------
   autocmd FileType js setlocal ft=javascript
+  autocmd FileType ts setlocal ft=typescript
   autocmd FileType cs setlocal ft=coffee
   autocmd FileType md setlocal ft=markdown
 
