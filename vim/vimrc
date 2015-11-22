@@ -576,18 +576,18 @@ set title titlestring=%{MyTitleText()}
 function! MyTitleText()
   let t = []
 
-  let session = fnamemodify(v:this_session, ':t:r')
-
-  if session != ''
-    call add(t, '[' . session . ']')
-  endif
-
   if !empty(v:servername)
     let name = substitute(v:servername, 'VIM', '', '')
     if name == ''
       let name = '0'
     endif
     call add(t, '@' . name . ': ')
+  endif
+
+  let session = fnamemodify(v:this_session, ':t:r')
+
+  if session != ''
+    call add(t, '[' . session . ']')
   endif
 
   let path = substitute(expand('%:p'), $HOME, '~', '')
