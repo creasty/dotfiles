@@ -8,8 +8,9 @@ INSTALLERS_PATH=$DOTFILES_PATH/bootstrap.d/install.d
 INSTALLERS=(
   xcode_cli
   homebrew
+  anyenv
 
-  rbenv
+  ruby
   nodejs
   vagrant
   r
@@ -17,6 +18,7 @@ INSTALLERS=(
   lua
   python
   golang
+  java
 
   redis
   rsense

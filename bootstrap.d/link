@@ -27,7 +27,7 @@ LINKS=(
   ruby/irbrc:.irbrc
   ruby/pryrc:.pryrc
   ruby/railsrc:.railsrc
-  ruby/rbenv/default-gems:.rbenv/default-gems
+  ruby/rbenv/default-gems:.anyenv/envs/rbenv/default-gems
   ruby/rspec:.rspec
   tmux/tmux.conf:.tmux.conf
   tmux:.tmux
