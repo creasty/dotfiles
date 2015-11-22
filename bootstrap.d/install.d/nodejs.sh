@@ -1,12 +1,14 @@
 DEFAULT_VERSION="$(< $DOTFILES_PATH/nodejs/.node-version)"
 
-INSTALLED_NODE_VERSIONS="$(node ls)"
-
-subsection "Install ndenv"
+section "Installing ndenv"
 
 anyenv install ndenv
+exec $SHELL -l
+print_success "OK"
 
 section "Installing nodejs"
+
+INSTALLED_NODE_VERSIONS="$(ndenv versions)"
 
 cat $DOTFILES_PATH/nodejs/packages.txt \
 | {
