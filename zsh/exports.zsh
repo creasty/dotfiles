@@ -9,11 +9,6 @@ export EDITOR=vim
 # dotfiles
 export DOTFILES_PATH="$HOME/dotfiles"
 
-# node
-# export NVM_DIR=$HOME/.nvm
-
-# ruby
-
 # golang
 export GOPATH=$HOME/go
 
@@ -33,11 +28,9 @@ export PATH=/usr/local/bin:$PATH
 
 export PATH=$ANYENV_DIR/bin:$PATH
 export PATH="$ANYENV_DIR/envs/rbenv/shims:$PATH"
+export PATH="$ANYENV_DIR/envs/ndenv/shims:$PATH"
 
-# export PATH=$RBENV_ROOT/bin:$PATH
 export PATH=$DOTFILES_PATH/bin:$PATH
-
-# export PATH=$PATH:$HOME/.npm/node_modules/bin
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:$HOME/.cabal/bin

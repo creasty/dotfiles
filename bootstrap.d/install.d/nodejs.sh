@@ -2,16 +2,11 @@ DEFAULT_VERSION="$(< $DOTFILES_PATH/nodejs/.node-version)"
 
 INSTALLED_NODE_VERSIONS="$(node ls)"
 
+subsection "Install ndenv"
+
+anyenv install ndenv
+
 section "Installing nodejs"
-
-subsection "Setup nvm"
-
-export NVM_DIR=$HOME/.nvm
-
-if ! [ -d "$NVM_DIR" ]; then
-  ln -sf "$(brew --prefix nvm)" "$NVM_DIR"
-fi
-
 
 cat $DOTFILES_PATH/nodejs/packages.txt \
 | {
@@ -21,7 +16,7 @@ cat $DOTFILES_PATH/nodejs/packages.txt \
       subsection "Install $version"
 
       if [ -z "$(echo -n "$INSTALLED_NODE_VERSIONS" | grep $version)" ]; then
-        nvm install $version
+        ndenv install $version
         print_status $?
       else
         print_info "Installed"
@@ -31,8 +26,7 @@ cat $DOTFILES_PATH/nodejs/packages.txt \
 }
 
 section "Set default version"
-nvm alias default $DEFAULT_VERSION
-nvm use default
+ndenv global $DEFAULT_VERSION
 
 section "Installing nodejs packages"
 cat $DOTFILES_PATH/nodejs/packages.txt | xargs -n 1 npm i -g
