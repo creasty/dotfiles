@@ -581,7 +581,7 @@ function! MyTitleText()
     if name == ''
       let name = '0'
     endif
-    call add(t, '@' . name . ': ')
+    call add(t, '$' . name . ':')
   endif
 
   let session = fnamemodify(v:this_session, ':t:r')
