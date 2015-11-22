@@ -1,18 +1,41 @@
 #!/usr/bin/env bash
 
-SERVERS="$(gvim --serverlist | sed -e 's/^VIM$/0/g' -e 's/^VIM//g')"
+OSAS_BIN=/usr/bin/osascript
 
-if [ -z "$SERVERS" ]; then
+SCRIPT="
+  global titles
+  tell application \"System Events\"
+    set titleList to get the title of every window of process \"MacVim\"
+    set AppleScript's text item delimiters to \"\n\"
+    set titles to titleList as string
+  end tell
+  return titles
+"
+
+WINDOWS="$(
+  $OSAS_BIN -e "$SCRIPT" \
+    | sort -n \
+    | grep '^\$'
+)"
+
+# gvim --serverlist
+
+if [ -z "$WINDOWS" ]; then
   gvim -g $@
 else
-  if [ `echo "$SERVERS" | wc -l` -lt 2 ]; then
-    SERVER="$(echo "$SERVERS" | head -n 1 | tr -d "\n")"
+  if [ `echo "$WINDOWS" | wc -l` -lt 2 ]; then
+    SERVER="$(echo "$WINDOWS" | head -n 1 | tr -d "\n")"
   else
-    SERVER="$(peco <<< "$SERVERS" | tr -d "\n")"
+    SERVER="$(peco <<< "$WINDOWS" | tr -d "\n")"
   fi
 
   [ -z "$SERVER" ] && exit 1
 
-  SELECTED_SERVER="$(echo "$SERVER" | sed -e 's/0//' -e 's/^/VIM/g')"
+  SELECTED_SERVER="$(
+    echo "$SERVER" \
+      | cut -d: -f1 \
+      | cut -c 2- \
+      | sed -e 's/0//' -e 's/^/VIM/g'
+  )"
   gvim -g --servername "$SELECTED_SERVER" --remote-tab-silent $@
 fi
