@@ -136,17 +136,17 @@ else
   " general quickrun-hook plugins
   NeoBundle 'osyo-manga/shabadou.vim'
 
-  " async syntax checking
-  NeoBundle 'osyo-manga/vim-watchdogs'
-
   " update status line
   NeoBundle 'KazuakiM/vim-qfstatusline'
 
   " highlight quickfix errors
-  NeoBundle 'jceb/vim-hier'
+  NeoBundle 'cohama/vim-hier'
 
   " see quickfix, location list and Syntastic lists errors and warnings
   NeoBundle 'dannyob/quickfixstatus'
+
+  " async syntax checking
+  NeoBundle 'osyo-manga/vim-watchdogs'
 
   " a simple, easy-to-use Vim alignment plugin
   NeoBundleLazy 'junegunn/vim-easy-align'
@@ -754,7 +754,7 @@ let s:powerline_font_chars = {
 
 let s:status_line_rich_icon = 1 " s:env.is_gui
 
-function! s:refresh_statusline()
+function! RefreshStatusline()
   let cw = winnr()
 
   for nr in range(1, winnr('$'))
@@ -762,7 +762,7 @@ function! s:refresh_statusline()
   endfor
 endfunction
 
-autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
+autocmd vimrc VimEnter,WinEnter,BufWinEnter * call RefreshStatusline()
 
 function! MyStatusLine(w, cw)
   let s = ''
@@ -843,12 +843,12 @@ function! MyStatusLine(w, cw)
     let s .= ' %#StatusLine#'
 
     " syntastic
-    " if exists('*SyntasticStatuslineFlag')
-    "   let synerr = SyntasticStatuslineFlag()
-    "   if !empty(synerr)
-    "     let s .= '%#StatusLineError# ' . synerr . ' %#StatusLine#'
-    "   endif
-    " endif
+    if exists('*qfstatusline#Update')
+      let synerr = qfstatusline#Update()
+      if !empty(synerr)
+        let s .= '%#StatusLineError# ' . substitute(synerr, '^Error: ', '', '') . ' %#StatusLine#'
+      endif
+    endif
   endif
 
   return s
@@ -3430,11 +3430,22 @@ if neobundle#tap('vim-watchdogs')
 
   let g:quickrun_config = get(g:, 'quickrun_config', {})
   let g:quickrun_config['watchdogs_checker/_'] = {
-    \ 'outputter/quickfix/open_cmd' : '',
+    \ 'outputter/quickfix/open_cmd':            '',
+    \ 'hook/qfstatusline_update/enable_exit':   1,
+    \ 'hook/qfstatusline_update/priority_exit': 4,
   \ }
 
   call watchdogs#setup(g:quickrun_config)
 
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-qfstatusline
+"==============================================================================================
+if neobundle#tap('vim-qfstatusline')
+  let g:Qfstatusline#Text = 0
+  let g:Qfstatusline#UpdateCmd = function('RefreshStatusline')
   call neobundle#untap()
 endif
 
