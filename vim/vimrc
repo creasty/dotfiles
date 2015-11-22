@@ -3446,8 +3446,19 @@ if neobundle#tap('vim-watchdogs')
 
   call watchdogs#setup(g:quickrun_config)
 
-  autocmd vimrc User AutoSavePost :WatchdogsRunSilent
-  autocmd vimrc BufEnter * :WatchdogsRunSilent
+  function! s:watchdogs_run()
+    if 'n' ==# mode()
+      :WatchdogsRunSilent
+      let b:watchdogs_heir_shown = 1
+    elseif b:watchdogs_heir_shown
+      :HierClear
+      let b:watchdogs_heir_shown = 0
+    endif
+  endfunction
+
+  autocmd vimrc User AutoSavePost call <SID>watchdogs_run()
+  autocmd vimrc InsertLeave * call <SID>watchdogs_run()
+  autocmd vimrc BufEnter * call <SID>watchdogs_run()
 
   call neobundle#untap()
 endif
