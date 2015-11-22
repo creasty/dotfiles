@@ -3370,11 +3370,6 @@ if neobundle#tap('vim-quickrun')
   endfunction
 
   function! rspec_outputter.finish(session)
-    call candle#highlight('RSpecGreen', 'green', '', '')
-    call candle#highlight('RSpecRed', 'red', '', '')
-    call candle#highlight('RSpecComment', 'aqua', '', '')
-    call candle#highlight('RSpecNormal', 'foreground', '', '')
-
     call matchadd('RSpecGreen', '^[\.F]*\.[\.F]*$')
     call matchadd('RSpecGreen', '^.*, 0 failures$')
     call matchadd('RSpecRed', '^.*, [1-9]* failures.*$')
@@ -3392,6 +3387,11 @@ if neobundle#tap('vim-quickrun')
 
     call call(quickrun#outputter#buffer#new().finish,  [a:session], self)
   endfunction
+
+  call candle#highlight('RSpecGreen', 'green', '', '')
+  call candle#highlight('RSpecRed', 'red', '', '')
+  call candle#highlight('RSpecComment', 'aqua', '', '')
+  call candle#highlight('RSpecNormal', 'foreground', '', '')
 
   call quickrun#register_outputter('rspec_outputter', rspec_outputter)
 
