@@ -8,6 +8,7 @@ INSTALLERS_PATH=$DOTFILES_PATH/bootstrap.d/install.d
 INSTALLERS=(
   xcode_cli
   homebrew
+  anyenv
 
   rbenv
   nodejs

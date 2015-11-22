@@ -28,6 +28,7 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 
 # path
 export PATH=/usr/local/bin:$PATH
+export PATH=$HOME/.anyenv/bin:$PATH
 export PATH=$RBENV_ROOT/bin:$PATH
 export PATH=$DOTFILES_PATH/bin:$PATH
 
