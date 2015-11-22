@@ -145,6 +145,9 @@ else
   " see quickfix, location list and Syntastic lists errors and warnings
   NeoBundle 'dannyob/quickfixstatus'
 
+  " mark syntax error lines
+  NeoBundle 'KazuakiM/vim-qfsigns'
+
   " async syntax checking
   NeoBundle 'osyo-manga/vim-watchdogs'
 
@@ -3413,19 +3416,6 @@ endif
 "=== Plugin: vim-watchdogs
 "==============================================================================================
 if neobundle#tap('vim-watchdogs')
-  " let g:syntastic_error_symbol = '✗'
-  " let g:syntastic_warning_symbol = '⚠'
-  " let g:syntastic_style_error_symbol = '✗'
-  " let g:syntastic_style_warning_symbol = '⚠'
-  " let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
-
-  " let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
-  " let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
-  " let g:syntastic_tex_checkers = ['lacheck']
-
-  " call candle#highlight('SyntasticErrorSign', 'red', '', '')
-  " call candle#highlight('SyntasticWarningSign', 'yellow', '', '')
-
   autocmd vimrc User AutoSavePost :WatchdogsRunSilent
 
   let g:quickrun_config = get(g:, 'quickrun_config', {})
@@ -3433,6 +3423,8 @@ if neobundle#tap('vim-watchdogs')
     \ 'outputter/quickfix/open_cmd':            '',
     \ 'hook/qfstatusline_update/enable_exit':   1,
     \ 'hook/qfstatusline_update/priority_exit': 4,
+    \ 'hook/qfsigns_update/enable_exit':        1,
+    \ 'hook/qfsigns_update/priority_exit':      3,
   \ }
 
   call watchdogs#setup(g:quickrun_config)
@@ -3446,6 +3438,20 @@ endif
 if neobundle#tap('vim-qfstatusline')
   let g:Qfstatusline#Text = 0
   let g:Qfstatusline#UpdateCmd = function('RefreshStatusline')
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-qfsigns
+"==============================================================================================
+if neobundle#tap('vim-qfsigns')
+  let g:qfsigns#Config = { 'id': '5051', 'name': 'QFErrorSign' }
+
+  " ⚠ or ✗
+  sign define QFErrorSign texthl=QFErrorSign text=✗
+  call candle#highlight('QFErrorSign', 'red', '', '')
+
   call neobundle#untap()
 endif
 
