@@ -74,10 +74,6 @@ python3
 q
 r  # require xquartz to be installed
 ranger
-rbenv
-rbenv-binstubs
-rbenv-default-gems
-rbenv-gem-rehash
 redis
 rsense
 ruby-build

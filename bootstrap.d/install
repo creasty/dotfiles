@@ -10,7 +10,7 @@ INSTALLERS=(
   homebrew
   anyenv
 
-  rbenv
+  ruby
   nodejs
   vagrant
   r

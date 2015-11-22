@@ -5,5 +5,8 @@ for file in $DOTFILES_PATH/zsh/{exports,aliases,functions,prompt,secrets}.zsh; d
 done
 unset file
 
-eval "$(rbenv init -)"
-[ -d "$NVM_DIR" ] && source "$NVM_DIR/nvm.sh"
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi
+# eval "$(rbenv init -)"
+# [ -d "$NVM_DIR" ] && source "$NVM_DIR/nvm.sh"
