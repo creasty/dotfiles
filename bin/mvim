@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
-VIM_APP_DIR=/usr/local/Cellar/macvim/HEAD
-BINARY="$VIM_APP_DIR/MacVim.app/Contents/MacOS/Vim"
+SERVERS="$(gvim --serverlist | sed -e 's/^VIM$/0/g' -e 's/^VIM//g')"
 
-if ! [ -z "$($BINARY --serverlist)" ]; then
-  $BINARY -g --remote-tab-silent ${1:+"$@"}
+if [ -z "$SERVERS" ]; then
+  gvim -g $@
 else
-  $BINARY -g ${1:+"$@"}
+  if [ `echo "$SERVERS" | wc -l` -lt 2 ]; then
+    SERVER="$(echo "$SERVERS" | head -n 1 | tr -d "\n")"
+  else
+    SERVER="$(peco <<< "$SERVERS" | tr -d "\n")"
+  fi
+
+  [ -z "$SERVER" ] && exit 1
+
+  SELECTED_SERVER="$(echo "$SERVER" | sed -e 's/0//' -e 's/^/VIM/g')"
+  gvim -g --servername "$SELECTED_SERVER" --remote-tab-silent $@
 fi
