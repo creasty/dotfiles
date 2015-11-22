@@ -1,19 +1,38 @@
+DEFAULT_VERSION="$(< $DOTFILES_PATH/nodejs/.node-version)"
+
+INSTALLED_NODE_VERSIONS="$(node ls)"
+
 section "Installing nodejs"
 
-subsection "Installing nvm"
-if cmd_exists nvm; then
-  print_info "Installed"
-else
-  curl https://raw.githubusercontent.com/creationix/nvm/v0.17.3/install.sh | bash
+subsection "Setup nvm"
+
+export NVM_DIR=$HOME/.nvm
+
+if ! [ -d "$NVM_DIR" ]; then
+  ln -sf "$(brew --prefix nvm)" "$NVM_DIR"
 fi
 
-subsection "Installing nodejs"
-nvm install 0.10.33
-print_status $?
 
-subsection "Set default version"
-nvm alias default 0.10.33
+cat $DOTFILES_PATH/nodejs/packages.txt \
+| {
+  while read -r line; do
+    if ! [ -z "$line" ]; then
+      version="$line"
+      subsection "Install $version"
+
+      if [ -z "$(echo -n "$INSTALLED_NODE_VERSIONS" | grep $version)" ]; then
+        nvm install $version
+        print_status $?
+      else
+        print_info "Installed"
+      fi
+    fi
+  done
+}
+
+section "Set default version"
+nvm alias default $DEFAULT_VERSION
 nvm use default
 
 section "Installing nodejs packages"
-(cd $DOTFILES_PATH/nodejs && npm i -g)
+cat $DOTFILES_PATH/nodejs/packages.txt | xargs -n 1 npm i -g

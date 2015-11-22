@@ -1,9 +1,5 @@
 autoload colors
 
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWUPSTREAM=1
-
 __gitdir() {
   if [ -z "${1-}" ]; then
     if [ -n "${__git_dir-}" ]; then
@@ -86,24 +82,17 @@ __git_ps1() {
       b="gitdir!"
     fi
   elif [ "true" = "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
-    if [ -n "${GIT_PS1_SHOWDIRTYSTATE-}" ] &&
-        [ "$(git config --bool bash.showDirtyState)" != "false" ]
-    then
-      git diff --no-ext-diff --quiet --exit-code || w="*"
-      if git rev-parse --quiet --verify HEAD >/dev/null; then
-        git diff-index --cached --quiet HEAD -- || i="+"
-      else
-        i="#"
-      fi
-    fi
-    if [ -n "${GIT_PS1_SHOWSTASHSTATE-}" ]; then
-      git rev-parse --verify refs/stash >/dev/null 2>&1 && s="$"
+    git diff --no-ext-diff --quiet --exit-code || w="*"
+
+    if git rev-parse --quiet --verify HEAD >/dev/null; then
+      git diff-index --cached --quiet HEAD -- || i="+"
+    else
+      i="#"
     fi
 
-    if [ -n "${GIT_PS1_SHOWUNTRACKEDFILES-}" ] &&
-      [ "$(git config --bool bash.showUntrackedFiles)" != "false" ] &&
-      [ -n "$(git ls-files --others --exclude-standard)" ]
-    then
+    # git rev-parse --verify refs/stash >/dev/null 2>&1 && s="$"
+
+    if [ -n "$(git ls-files --others --exclude-standard)" ]; then
       u="%${ZSH_VERSION+%}"
     fi
   fi

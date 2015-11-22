@@ -106,6 +106,10 @@ alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 
 alias tex2pdf='ptex2pdf -l'
 
+alias enx='evernote-sandbox'
+
+alias ne='npm-exec'
+
 
 #  Networks
 #-----------------------------------------------

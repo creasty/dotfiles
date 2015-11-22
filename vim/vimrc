@@ -250,6 +250,9 @@ else
   " tags source for unite.vim
   NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
 
+  " source for ghq list
+  NeoBundleLazy 'sorah/unite-ghq', { 'depends': ['Shougo/unite.vim'] }
+
   " open URI with browser
   NeoBundleLazy 'tyru/open-browser.vim'
 
@@ -378,6 +381,15 @@ else
 
   " React JSX syntax highlighting and indenting
   NeoBundle 'mxw/vim-jsx'
+
+  " Jade template engine syntax highlighting and indention
+  NeoBundleLazy 'digitaltoad/vim-jade'
+
+  " TypesSript syntax files for Vim
+  NeoBundleLazy 'leafgarland/typescript-vim'
+
+  " tools related to the TypeScript language
+  NeoBundleLazy 'clausreinke/typescript-tools'
 
 
   NeoBundleSaveCache
@@ -1104,8 +1116,8 @@ nnoremap <C-w>s :split +enew<CR>
 nmap <C-w><C-c> <Nop>
 nnoremap <C-w>c <Nop>
 
-nmap <C-w><C-x> <C-w>x
-nnoremap <C-w>x :close<CR>
+nmap <C-w><C-d> <C-w>d
+nnoremap <C-w>d :close<CR>
 
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
@@ -1159,6 +1171,10 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
+
+" q:
+nnoremap q: :q
+nnoremap <Space>: q:
 
 
 "=== Utils
@@ -1260,6 +1276,9 @@ endif
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
+" forcibly reload file
+autocmd vimrc BufEnter * :checktime
+
 
 "=== Auto save
 "==============================================================================================
@@ -1281,8 +1300,11 @@ function! s:auto_save()
 
     if was_modified && !&modified
       let g:auto_save = 0
-      doautocmd User AutoSavePost
-      let g:auto_save = 1
+      try
+        doautocmd User AutoSavePost
+      finally
+        let g:auto_save = 1
+      endtry
       echo "(AutoSaved at " . strftime("%H:%M:%S") . ")"
     endif
   endif
@@ -2605,7 +2627,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '!',
     \ 'at':    '^w!\%#',
     \ 'input': "\<C-u>w !sudo tee % > /dev/null",
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
   " edit relative :ee
@@ -2613,7 +2635,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  'e',
     \ 'at':    '^e\%#',
     \ 'input': " \<C-r>=expand('%:p:h') . '/' \<CR>",
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
   " directory shortcuts
@@ -2627,7 +2649,7 @@ if neobundle#tap('lexima.vim')
       \ 'char':  shortcut,
       \ 'at':    '^e\%#',
       \ 'input': ' ' . directory,
-      \ 'mode':  'c',
+      \ 'mode':  ':',
     \ })
   endfor
   unlet directories
@@ -2639,7 +2661,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  'b',
     \ 'at':    '^e\%#',
     \ 'input': ' #',
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
   " rename :er
@@ -2647,7 +2669,7 @@ if neobundle#tap('lexima.vim')
     \ 'char':  'r',
     \ 'at':    '^e\%#',
     \ 'input': "\<C-u>Rename \<C-r>=expand('%:p') \<CR>",
-    \ 'mode':  'c',
+    \ 'mode':  ':',
   \ })
 
 
@@ -2935,6 +2957,7 @@ if neobundle#tap('neocomplete')
   let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
   let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
   let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+  let g:neocomplete#sources#omni#input_patterns.typescript = '\h\w*\|[^. \t]\.\w*'
 
   " omni
   let g:neocomplete#force_overwrite_completefunc = 1
@@ -3133,6 +3156,7 @@ if neobundle#tap('unite.vim')
       \ '.tags',
       \ '*.jpg', '*.jpeg', '*.png', '*.gif', '*.pdf', '*.ttf', '*.otf', '*.eot', '*.woff', '*.svg', '*.svgz',
       \ 'tmp/**', 'cache/**', 'public/system/**', 'vendor/bundle/**',
+      \ 'Godeps/**',
     \ ]
 
     call unite#custom#source(
@@ -3186,7 +3210,11 @@ if neobundle#tap('unite.vim')
   endfunction
 
   function! s:dispatch_unite_file_rec_async_or_git()
-    if isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
+    let pwd = getcwd()
+
+    if pwd == $HOME
+      Unite ghq
+    elseif isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
       Unite -hide-source-names -buffer-name=files file_rec/git
     else
       Unite -hide-source-names -buffer-name=files file_rec/async
@@ -3287,18 +3315,25 @@ if neobundle#tap('vim-altr')
     " Header files
     call altr#define('%.c', '%.h', '%.m')
 
-    " Jasmine / Karma
-    call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
-
     " Rails
     call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
-    call altr#define('app/controllers/%.rb', 'spec/controllers/%_spec.rb')
-    call altr#define('app/helpers/%.rb', 'spec/helpers/%_spec.rb')
-    call altr#define('app/concerns/%.rb', 'spec/concerns/%_spec.rb')
+    call altr#define('app/%/%.rb', 'spec/%/%_spec.rb')
     call altr#define('lib/%.rb', 'spec/lib/%_spec.rb')
     call altr#define('%.html.haml', '%_smart_phone.html.haml')
     call altr#define('%.html.slim', '%_smart_phone.html.slim')
+
+    " I18n
     call altr#define('locales/%/en.yml', 'locales/%/ja.yml')
+    call altr#define('locales/%.en.yml', 'locales/%.ja.yml')
+    call altr#define('locales/en.json', 'locales/ja.json')
+    call altr#define('locales/%/en.json', 'locales/%/ja.json')
+
+    " Frontend
+    call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
+    call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade')
+
+    " Golang
+    call altr#define('%.go', '%_test.go')
   endfunction
 
   nmap ga <Plug>(altr-forward)
@@ -3903,6 +3938,39 @@ endif
 if neobundle#tap('vim-javascript')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['javascript'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('vim-jade')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['jade'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('leafgarland/typescript-vim')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['typescript'] }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('clausreinke/typescript-tools')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['typescript'] }
   \ })
 
   call neobundle#untap()

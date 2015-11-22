@@ -11,11 +11,12 @@ LINKS=(
   bash/bash_profile:.bash_profile
   bash/bashrc:.bashrc
   config/agignore:.agignore
-  config/lldbinit:.lldbinit
   config/ansible.cfg:.ansible.cfg
   config/coffeelintrc:.coffeelintrc
   config/ctags:.ctags
   config/curlrc:.curlrc
+  config/lldbinit:.lldbinit
+  config/pgclirc:.pgclirc
   config/ranger/colorschemes/original.py:.config/ranger/colorschemes/original.py
   config/ranger/rc.conf:.config/ranger/rc.conf
   dotssh:.dotssh

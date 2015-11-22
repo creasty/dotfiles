@@ -52,10 +52,6 @@ mkd() {
 
 #  Refresh without restart
 #-----------------------------------------------
-refresh() {
-  exec zsh -l
-}
-
 _refresh_screen() {
   zle clear-screen
   rehash
@@ -63,6 +59,14 @@ _refresh_screen() {
 }
 
 _register_keycommand '^l' _refresh_screen
+
+
+#  Reload
+#-----------------------------------------------
+reload() {
+  exec zsh -l
+  [ -n "$TMUX" ] && tmux source-file ~/.tmux.conf
+}
 
 
 #  Update all repos managed by ghq
@@ -76,7 +80,10 @@ ghq-update() {
 #-----------------------------------------------
 # kill all non-attached sessions
 tmk() {
-  tmux ls | grep -v attached | cut -d: -f 1 | xargs -n 1 tmux kill-session -t
+  tmux ls \
+    | grep -v attached \
+    | cut -d: -f 1 \
+    | xargs -n 1 tmux kill-session -t
 }
 
 
@@ -112,13 +119,27 @@ peco_insert_path() {
       file="$(cat)"
 
       if [ "$LBUFFER" != "" ]; then
-        echo "$file" | _buffer_insert_lines
+        _buffer_insert_lines <<< "$file"
       elif [ -d "$file" ]; then
-        echo "cd $file" | _buffer_insert
+        _buffer_insert <<< "cd $file"
       elif [ -f "$file" ]; then
-        echo "$EDITOR $file" | _buffer_insert
+        buf="$file"
+
+        if ! [ -x "$file" ]; then
+          case "$file" in
+            *_spec.rb)
+              buf="be rspec $file"
+              ;;
+
+            *)
+              buf="$EDITOR $file"
+              ;;
+          esac
+        fi
+
+        _buffer_insert <<< "$buf"
       else
-        echo "$file" | _buffer_insert_lines
+        _buffer_insert_lines <<< "$file"
       fi
     }
 }
@@ -148,9 +169,9 @@ peco_insert_branch() {
       branch="$(cat)"
 
       if [[ -z "$LBUFFER" && `echo "$branch" | wc -l` -eq 1 ]]; then
-        echo "g k $branch" | _buffer_insert
+        _buffer_insert <<< "g k $branch"
       else
-        echo "$branch" | _buffer_insert_lines
+        _buffer_insert_lines <<< "$branch"
       fi
     }
 }
@@ -205,7 +226,7 @@ peco_cd_repo() {
       repo="$(cat)"
 
       if ! [ -z "$repo" ]; then
-        echo 'cd' "$(ghq root)/$repo" | _buffer_replace
+        _buffer_replace <<< "cd $(ghq root)/$repo"
         zle accept-line
       fi
     }

@@ -6,4 +6,4 @@ done
 unset file
 
 eval "$(rbenv init -)"
-source ~/.nvm/nvm.sh
+[ -d "$NVM_DIR" ] && source "$NVM_DIR/nvm.sh"

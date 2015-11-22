@@ -1,8 +1,6 @@
-section "Installing Haskell packages"
-
-subsection "Updating cabal"
+section "Updating cabal"
 cabal update
 print_status $?
 
-subsection "Installing packages"
-cat $DOTFILES_PATH/haskell/requirements.txt | xargs -n 1 cabal install --allow-newer=base
+section "Installing haskell packages"
+cat $DOTFILES_PATH/haskell/packages.txt | xargs -n 1 cabal install --allow-newer=base

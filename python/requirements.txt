@@ -5,3 +5,4 @@ numpy
 protobuf
 pyamf
 glances
+pgcli

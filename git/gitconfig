@@ -48,8 +48,9 @@
   km = checkout master
   kd = checkout develop
 
-  fe = fetch
-  fo = fetch origin
+  fe  = fetch
+  fo  = fetch origin
+  fok = checkout-origin
 
   pl = auto-ref pull
   pu = auto-ref push

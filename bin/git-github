@@ -140,6 +140,12 @@ create_pull_request() {
     exit 1
   fi
 
+  git push origin "$head" > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    error 'Cannot push the branch'
+    exit 1
+  fi
+
   local file="$GIT_DIR/PULLREQ_EDIT.markdown"
   local section='Create a new pull request'
 

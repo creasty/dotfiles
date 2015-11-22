@@ -1,10 +1,5 @@
 require 'rubygems' unless defined? Gem
 
-begin
-  require 'awesome_print'
-  AwesomePrint.pry!
-end
-
 Pry.commands.delete('.<shell command>') rescue nil
 
 Pry.commands.block_command(/^!$/, 'Reload rails') do
