@@ -582,6 +582,14 @@ function! MyTitleText()
     call add(t, '[' . session . ']')
   endif
 
+  if !empty(v:servername)
+    let name = substitute(v:servername, 'VIM', '', '')
+    if name == ''
+      let name = '0'
+    endif
+    call add(t, '@' . name . ': ')
+  endif
+
   let path = substitute(expand('%:p'), $HOME, '~', '')
   call add(t, path == '' ? '[No Name]' : path)
 
