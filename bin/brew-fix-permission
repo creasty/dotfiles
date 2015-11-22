@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+sudo -v
+
+PREFIX="$(brew --prefix)"
+sudo chown $(whoami):admin "$PREFIX"
+sudo chown -R $(whoami):admin "$PREFIX"
