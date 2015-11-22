@@ -1,8 +1,7 @@
-![dotfiles -- Work it harder, make it better, do it faster, makes us stronger](./docs/images/dotfiles.png)
+@creasty's dotfiles
+===================
 
-
-creasty's dotfiles
-==================
+***Work it harder, make it better, do it faster, makes us stronger.***
 
 Setup
 -----
