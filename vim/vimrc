@@ -3431,13 +3431,17 @@ if neobundle#tap('vim-watchdogs')
     \ 'type': (
       \ executable('gotype') ? 'watchdogs_checker/gotype' :
       \ executable('gofmt') ? 'watchdogs_checker/gofmt' :
-      \ executable('go') ?'watchdogs_checker/go_vet' : ''
+      \ executable('go') ? 'watchdogs_checker/go_vet' : ''
     \ ),
   \ }
   let g:quickrun_config['watchdogs_checker/gotype'] = {
     \ 'command':     'gotype',
     \ 'exec':        '%c %o %s:p',
     \ 'errorformat': '%f:%l:%c: %m,%W%f:%l: %m,%-G%.%#',
+  \ }
+  let g:quickrun_config['watchdogs_checker/ruby'] = {
+    \ 'command': 'ruby',
+    \ 'exec':    '%c -cw %o %s:p',
   \ }
 
   call watchdogs#setup(g:quickrun_config)
