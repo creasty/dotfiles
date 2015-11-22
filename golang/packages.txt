@@ -8,3 +8,4 @@ github.com/b4b4r07/gomi
 github.com/nsf/gocode
 github.com/golang/lint/golint
 code.google.com/p/rog-go/exp/cmd/godef
+golang.org/x/tools/cmd/gotype
