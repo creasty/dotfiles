@@ -3455,17 +3455,25 @@ if neobundle#tap('vim-watchdogs')
   call watchdogs#setup(g:quickrun_config)
 
   function! s:watchdogs_run()
-    if 'n' ==# mode()
-      :WatchdogsRunSilent
-      let b:watchdogs_heir_shown = 1
-    elseif b:watchdogs_heir_shown
-      :HierClear
-      let b:watchdogs_heir_shown = 0
-    endif
+    try
+      if 'n' ==# mode()
+        :WatchdogsRunSilent
+        let b:watchdogs_heir_shown = 1
+      elseif b:watchdogs_heir_shown
+        :HierClear
+        let b:watchdogs_heir_shown = 0
+      endif
+    endtry
   endfunction
 
   autocmd vimrc User AutoSavePost call <SID>watchdogs_run()
-  autocmd vimrc InsertLeave * call <SID>watchdogs_run()
+  autocmd vimrc InsertEnter * let b:watchdogs_run_ileave = 0
+  autocmd vimrc InsertLeave * let b:watchdogs_run_ileave = 1
+  autocmd vimrc CursorHold *
+    \ if get(b:, 'watchdogs_run_ileave', 0) |
+      \ call <SID>watchdogs_run() |
+      \ let b:watchdogs_run_ileave = 0 |
+    \ endif
   autocmd vimrc BufEnter * call <SID>watchdogs_run()
 
   call neobundle#untap()
