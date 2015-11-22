@@ -133,6 +133,9 @@ else
   " commenting code
   NeoBundle 'scrooloose/nerdcommenter'
 
+  " general quickrun-hook plugins
+  NeoBundle 'osyo-manga/shabadou.vim'
+
   " async syntax checking
   NeoBundle 'osyo-manga/vim-watchdogs'
 
@@ -266,7 +269,7 @@ else
   NeoBundleLazy 'kana/vim-altr'
 
   " run commands quickly
-  NeoBundleLazy 'thinca/vim-quickrun'
+  NeoBundle 'thinca/vim-quickrun'
 
   " create your own submodes
   NeoBundle 'kana/vim-submode'
@@ -1748,35 +1751,6 @@ if neobundle#tap('nerdcommenter')
   vmap gcI <Leader>c$
   nmap gcA <Leader>cA
   vmap gcA <Leader>cA
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-watchdogs
-"==============================================================================================
-if neobundle#tap('vim-watchdogs')
-  " let g:syntastic_error_symbol = '✗'
-  " let g:syntastic_warning_symbol = '⚠'
-  " let g:syntastic_style_error_symbol = '✗'
-  " let g:syntastic_style_warning_symbol = '⚠'
-  " let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
-
-  " let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
-  " let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
-  " let g:syntastic_tex_checkers = ['lacheck']
-
-  " call candle#highlight('SyntasticErrorSign', 'red', '', '')
-  " call candle#highlight('SyntasticWarningSign', 'yellow', '', '')
-
-  autocmd vimrc User AutoSavePost :WatchdogsRunSilent
-
-  let g:quickrun_config = get(g:, 'quickrun_config', {})
-  let g:quickrun_config['watchdogs_checker/_'] = {
-    \ 'outputter/quickfix/open_cmd' : '',
-  \ }
-
-  call watchdogs#setup(g:quickrun_config)
 
   call neobundle#untap()
 endif
@@ -3346,86 +3320,77 @@ endif
 "=== Plugin: vim-quickrun
 "==============================================================================================
 if neobundle#tap('vim-quickrun')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(quickrun)',
-      \ 'commands': ['QuickRun'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:quickrun_config = {}
-    let g:quickrun_config['_'] = {
-      \ 'runner':                        'vimproc',
-      \ 'outputter/buffer/split':        ':botright 15sp',
-      \ 'outputter/buffer/running_mark': '',
-    \ }
-    let g:quickrun_config['ruby.rspec'] = {
-      \ 'type':    'ruby.rspec',
-      \ 'command': 'rspec',
-      \ 'cmdopt':  'bundle exec',
-      \ 'exec':    '%o %c %s',
-    \ }
-    let g:quickrun_config['markdown'] = {
-      \ 'outputter': 'null',
-      \ 'command':   'open',
-      \ 'cmdopt':    '-a',
-      \ 'args':      'Marked',
-      \ 'exec':      '%c %o %a %s',
-    \ }
-    let g:quickrun_config['javascript'] = {
-      \ 'command': 'node',
-    \ }
-    let g:quickrun_config['coffee'] = {
-      \ 'command': 'coffee',
-      \ 'exec':    ['%c -cbp %s | node'],
-    \ }
-    let g:quickrun_config['swift'] = {
-      \ 'command': 'xcrun',
-      \ 'cmdopt':  'swift',
-      \ 'exec':    '%c %o %s',
-    \ }
-    let g:quickrun_config['scala'] = {
-      \ 'command': 'scala',
-      \ 'cmdopt':  '-deprecation -feature',
-      \ 'exec':    '%c %o %s %a',
-    \ }
+  let g:quickrun_config = {}
+  let g:quickrun_config['_'] = {
+    \ 'runner':                        'vimproc',
+    \ 'outputter/buffer/split':        ':botright 15sp',
+    \ 'outputter/buffer/running_mark': '',
+  \ }
+  let g:quickrun_config['ruby.rspec'] = {
+    \ 'type':    'ruby.rspec',
+    \ 'command': 'rspec',
+    \ 'cmdopt':  'bundle exec',
+    \ 'exec':    '%o %c %s',
+  \ }
+  let g:quickrun_config['markdown'] = {
+    \ 'outputter': 'null',
+    \ 'command':   'open',
+    \ 'cmdopt':    '-a',
+    \ 'args':      'Marked',
+    \ 'exec':      '%c %o %a %s',
+  \ }
+  let g:quickrun_config['javascript'] = {
+    \ 'command': 'node',
+  \ }
+  let g:quickrun_config['coffee'] = {
+    \ 'command': 'coffee',
+    \ 'exec':    ['%c -cbp %s | node'],
+  \ }
+  let g:quickrun_config['swift'] = {
+    \ 'command': 'xcrun',
+    \ 'cmdopt':  'swift',
+    \ 'exec':    '%c %o %s',
+  \ }
+  let g:quickrun_config['scala'] = {
+    \ 'command': 'scala',
+    \ 'cmdopt':  '-deprecation -feature',
+    \ 'exec':    '%c %o %s %a',
+  \ }
 
 
-    "  Rspec outputter
-    "-----------------------------------------------
-    let rspec_outputter = quickrun#outputter#buffer#new()
+  "  Rspec outputter
+  "-----------------------------------------------
+  let rspec_outputter = quickrun#outputter#buffer#new()
 
-    function! rspec_outputter.start(session)
-      call call(quickrun#outputter#buffer#new().start,  [a:session],  self)
-    endfunction
-
-    function! rspec_outputter.finish(session)
-      call candle#highlight('RSpecGreen', 'green', '', '')
-      call candle#highlight('RSpecRed', 'red', '', '')
-      call candle#highlight('RSpecComment', 'aqua', '', '')
-      call candle#highlight('RSpecNormal', 'foreground', '', '')
-
-      call matchadd('RSpecGreen', '^[\.F]*\.[\.F]*$')
-      call matchadd('RSpecGreen', '^.*, 0 failures$')
-      call matchadd('RSpecRed', '^.*, [1-9]* failures.*$')
-      call matchadd('RSpecRed', '^.*, 1 failure.*$')
-      call matchadd('RSpecRed', '^ *(.*$')
-      call matchadd('RSpecRed', '^ *expected.*$')
-      call matchadd('RSpecRed', '^ *got.*$')
-      call matchadd('RSpecRed', '^ *Failure/Error:.*$')
-      call matchadd('RSpecRed', '^.*(FAILED - [0-9]*)$')
-      call matchadd('RSpecRed', '^rspec .*:.*$')
-      call matchadd('RSpecComment', ' # .*$')
-      call matchadd('RSpecNormal', '^Failures:')
-      call matchadd('RSpecNormal', '^Finished')
-      call matchadd('RSpecNormal', '^Failed')
-
-      call call(quickrun#outputter#buffer#new().finish,  [a:session], self)
-    endfunction
-
-    call quickrun#register_outputter('rspec_outputter', rspec_outputter)
+  function! rspec_outputter.start(session)
+    call call(quickrun#outputter#buffer#new().start,  [a:session],  self)
   endfunction
+
+  function! rspec_outputter.finish(session)
+    call candle#highlight('RSpecGreen', 'green', '', '')
+    call candle#highlight('RSpecRed', 'red', '', '')
+    call candle#highlight('RSpecComment', 'aqua', '', '')
+    call candle#highlight('RSpecNormal', 'foreground', '', '')
+
+    call matchadd('RSpecGreen', '^[\.F]*\.[\.F]*$')
+    call matchadd('RSpecGreen', '^.*, 0 failures$')
+    call matchadd('RSpecRed', '^.*, [1-9]* failures.*$')
+    call matchadd('RSpecRed', '^.*, 1 failure.*$')
+    call matchadd('RSpecRed', '^ *(.*$')
+    call matchadd('RSpecRed', '^ *expected.*$')
+    call matchadd('RSpecRed', '^ *got.*$')
+    call matchadd('RSpecRed', '^ *Failure/Error:.*$')
+    call matchadd('RSpecRed', '^.*(FAILED - [0-9]*)$')
+    call matchadd('RSpecRed', '^rspec .*:.*$')
+    call matchadd('RSpecComment', ' # .*$')
+    call matchadd('RSpecNormal', '^Failures:')
+    call matchadd('RSpecNormal', '^Finished')
+    call matchadd('RSpecNormal', '^Failed')
+
+    call call(quickrun#outputter#buffer#new().finish,  [a:session], self)
+  endfunction
+
+  call quickrun#register_outputter('rspec_outputter', rspec_outputter)
 
 
   "  Config
@@ -3440,6 +3405,35 @@ if neobundle#tap('vim-quickrun')
   "  Key
   "-----------------------------------------------
   nmap <Leader>r <Plug>(quickrun)
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-watchdogs
+"==============================================================================================
+if neobundle#tap('vim-watchdogs')
+  " let g:syntastic_error_symbol = '✗'
+  " let g:syntastic_warning_symbol = '⚠'
+  " let g:syntastic_style_error_symbol = '✗'
+  " let g:syntastic_style_warning_symbol = '⚠'
+  " let g:syntastic_stl_format = '%E{✗ %e:%fe}%B{ }%W{⚠  %w:%fw}'
+
+  " let g:syntastic_coffee_checkers = ['coffeelint', 'coffee']
+  " let g:syntastic_coffee_coffeelint_args = '-f ' . s:env.path.dotfiles . '/_coffeelintrc'
+  " let g:syntastic_tex_checkers = ['lacheck']
+
+  " call candle#highlight('SyntasticErrorSign', 'red', '', '')
+  " call candle#highlight('SyntasticWarningSign', 'yellow', '', '')
+
+  autocmd vimrc User AutoSavePost :WatchdogsRunSilent
+
+  let g:quickrun_config = get(g:, 'quickrun_config', {})
+  let g:quickrun_config['watchdogs_checker/_'] = {
+    \ 'outputter/quickfix/open_cmd' : '',
+  \ }
+
+  call watchdogs#setup(g:quickrun_config)
 
   call neobundle#untap()
 endif
