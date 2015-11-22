@@ -1,38 +1,39 @@
-DEFAULT_VERSION="$(< $DOTFILES_PATH/ruby/.ruby-version)"
-PLUGINS_DIR=$HOME/.anyenv/envs/rbenv/plugins
-
 section "Install rbenv"
 
-subsection "Installing rbenv"
 anyenv install rbenv
 exec $SHELL -l
 print_success "OK"
 
-subsection "Installing rbenv-binstubs"
-if [ -d $PLUGINS_DIR/rbenv-binstubs ]; then
-  print_info "Installed"
-else
-  git clone https://github.com/ianheggie/rbenv-binstubs.git $PLUGINS_DIR/rbenv-binstubs
-fi
 
-subsection "Installing sstephenson/rbenv-default-gems"
-if [ -d $PLUGINS_DIR/rbenv-default-gems ]; then
-  print_info "Installed"
-else
-  git clone https://github.com/sstephenson/rbenv-default-gems.git $PLUGINS_DIR/rbenv-default-gems
-fi
+section "Installing rbenv plugins"
 
-subsection "Installing rbenv-gem-rehash"
-if [ -d $PLUGINS_DIR/rbenv-gem-rehash ]; then
-  print_info "Installed"
-else
-  git clone https://github.com/sstephenson/rbenv-gem-rehash.git $PLUGINS_DIR/rbenv-gem-rehash
-fi
+PLUGINS_DIR=$HOME/.anyenv/envs/rbenv/plugins
+
+cat $DOTFILES_PATH/ruby/rbenv/plugins.txt \
+  | {
+    while read -r repo; do
+      if ! [ -z "$repo" ]; then
+        subsection "Installing $repo"
+        dir="$PLUGINS_DIR/$(basename "$repo")"
+
+        if [ -d "$dir" ]; then
+          git --git-dir="$dir" reset --hard HEAD
+          git --git-dir="$dir" pull origin master
+          print_success 'Updated'
+        else
+          git clone "https://github.com/${repo}.git" "$dir"
+          print_success 'Installed'
+        fi
+      fi
+    done
+  }
 
 
 section "Installing ruby"
 
 INSTALLED_RUBY_VERSIONS="$(rbenv versions --bare)"
+DEFAULT_VERSION="$(< $DOTFILES_PATH/ruby/.ruby-version)"
+
 cat $DOTFILES_PATH/ruby/versions.txt \
   | {
     while read -r line; do
