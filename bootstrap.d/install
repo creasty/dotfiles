@@ -18,6 +18,7 @@ INSTALLERS=(
   lua
   python
   golang
+  java
 
   redis
   rsense

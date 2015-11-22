@@ -29,6 +29,10 @@ export PATH=/usr/local/bin:$PATH
 export PATH=$ANYENV_DIR/bin:$PATH
 export PATH=$ANYENV_DIR/envs/rbenv/shims:$PATH
 export PATH=$ANYENV_DIR/envs/ndenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/jenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/luaenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/pyenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/goenv/shims:$PATH
 
 export PATH=$DOTFILES_PATH/bin:$PATH
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
