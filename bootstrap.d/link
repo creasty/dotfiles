@@ -29,6 +29,7 @@ LINKS=(
   ruby/railsrc:.railsrc
   ruby/rbenv/default-gems:.anyenv/envs/rbenv/default-gems
   ruby/rspec:.rspec
+  ruby/bundle/config:.bundle/config
   tmux/tmux.conf:.tmux.conf
   tmux:.tmux
   vim/gvimrc:.gvimrc
