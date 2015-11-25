@@ -208,6 +208,9 @@ else
 
   "  Utils
   "-----------------------------------------------
+  " a Git wrapper so awesome
+  NeoBundle 'tpope/vim-fugitive'
+
   " enable repeating supported plugin maps with dot
   NeoBundle 'tpope/vim-repeat'
 
@@ -2703,6 +2706,21 @@ if neobundle#tap('mold.vim')
       call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-fugitive
+"==============================================================================================
+if neobundle#tap('vim-fugitive')
+  autocmd vimrc User fugitive
+    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+    \   nnoremap <buffer> .. :edit %:h<CR> |
+    \ endif
+
+  autocmd vimrc BufReadPost fugitive://*
+    \ set bufhidden=delete
 
   call neobundle#untap()
 endif
