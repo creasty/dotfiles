@@ -182,31 +182,31 @@ else
   NeoBundleLazy 'AndrewRadev/switch.vim'
 
   " maniplate selected text easily
-  NeoBundleLazy 't9md/vim-textmanip'
+  " NeoBundleLazy 't9md/vim-textmanip'
 
   " sequencial numbering with pattern
   NeoBundleLazy 'deris/vim-rengbang'
 
   " incremental visual selection
-  NeoBundleLazy 'terryma/vim-expand-region'
+  " NeoBundleLazy 'terryma/vim-expand-region'
 
   " pasting with indentation adjusted to paste destination
   NeoBundle 'sickill/vim-pasta'
 
   " use CTRL-A/CTRL-X to increment dates, times, and more
-  NeoBundle 'tpope/vim-speeddating'
+  " NeoBundle 'tpope/vim-speeddating'
 
   " true Sublime Text multiple selection in Vim
-  NeoBundleLazy 'terryma/vim-multiple-cursors'
+  " NeoBundleLazy 'terryma/vim-multiple-cursors'
 
   " toggle ruby's postfix notations of if/unless/while/until
-  NeoBundleLazy 'Qureana/backend_if'
+  " NeoBundleLazy 'Qureana/backend_if'
 
   " ascii drawing plugin
-  NeoBundleLazy 'DrawIt'
+  " NeoBundleLazy 'DrawIt'
 
   " instant table creation
-  NeoBundleLazy 'dhruvasagar/vim-table-mode'
+  " NeoBundleLazy 'dhruvasagar/vim-table-mode'
 
   " a genius template engine
   NeoBundle 'creasty/mold.vim'
@@ -230,10 +230,10 @@ else
   "  Utils
   "-----------------------------------------------
   " make benchmark result of your vimrc
-  NeoBundleLazy 'mattn/benchvimrc-vim'
+  " NeoBundleLazy 'mattn/benchvimrc-vim'
 
   " a Git wrapper so awesome
-  NeoBundle 'tpope/vim-fugitive'
+  " NeoBundle 'tpope/vim-fugitive'
 
   " enable repeating supported plugin maps with dot
   NeoBundle 'tpope/vim-repeat'
@@ -251,10 +251,10 @@ else
   NeoBundleLazy 'Shougo/unite.vim'
 
   " outline source for unite.vim
-  NeoBundleLazy 'h1mesuke/unite-outline', { 'depends': ['Shougo/unite.vim'] }
+  " NeoBundleLazy 'h1mesuke/unite-outline', { 'depends': ['Shougo/unite.vim'] }
 
   " tags source for unite.vim
-  NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
+  " NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
 
   " source for ghq list
   NeoBundleLazy 'sorah/unite-ghq', { 'depends': ['Shougo/unite.vim'] }
@@ -266,7 +266,7 @@ else
   NeoBundleLazy 'Shougo/vinarise.vim'
 
   " pseudo clipboard register
-  NeoBundleLazy 'kana/vim-fakeclip'
+  " NeoBundleLazy 'kana/vim-fakeclip'
 
   " switch to the missing file without interaction
   NeoBundleLazy 'kana/vim-altr'
@@ -284,10 +284,10 @@ else
   " NeoBundleLazy 'haya14busa/incsearch.vim'
 
   " functional Object Oriented VimL (dependency of dash.vim)
-  NeoBundleLazy 'rizzatti/funcoo.vim'
+  " NeoBundleLazy 'rizzatti/funcoo.vim'
 
   " launch queries for Dash.app
-  NeoBundleLazy 'rizzatti/dash.vim', { 'depends': ['rizzatti/funcoo.vim'] }
+  " NeoBundleLazy 'rizzatti/dash.vim', { 'depends': ['rizzatti/funcoo.vim'] }
 
   " context filetype library
   NeoBundleLazy 'Shougo/context_filetype.vim'
@@ -296,13 +296,13 @@ else
   NeoBundleLazy 'osyo-manga/vim-precious', { 'depends': ['Shougo/context_filetype.vim'] }
 
   " lookup Codic
-  NeoBundleLazy 'koron/codic-vim'
+  " NeoBundleLazy 'koron/codic-vim'
 
   " unite.vim source for codic-vim
-  NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends': ['Shougo/unite.vim', 'koron/codic-vim'] }
+  " NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends': ['Shougo/unite.vim', 'koron/codic-vim'] }
 
   " github issue lookup
-  NeoBundleLazy 'jaxbot/github-issues.vim'
+  " NeoBundleLazy 'jaxbot/github-issues.vim'
 
   " perform the replacement in quickfix
   NeoBundleLazy 'thinca/vim-qfreplace'
@@ -311,13 +311,13 @@ else
   NeoBundleLazy 'rking/ag.vim'
 
   " w3m plugin
-  NeoBundleLazy 'yuratomo/w3m.vim'
+  " NeoBundleLazy 'yuratomo/w3m.vim'
 
   " list and lookup http status code
-  NeoBundleLazy 'mattn/httpstatus-vim'
+  " NeoBundleLazy 'mattn/httpstatus-vim'
 
   " display tags of a file ordered by scope
-  NeoBundleLazy 'majutsushi/tagbar'
+  " NeoBundleLazy 'majutsushi/tagbar'
 
   " ctags generator
   NeoBundle 'szw/vim-tags'
@@ -326,7 +326,7 @@ else
   "  Appearance
   "-----------------------------------------------
   " visually displaying indent levels
-  NeoBundle 'nathanaelkane/vim-indent-guides'
+  " NeoBundle 'nathanaelkane/vim-indent-guides'
 
   " toggle, display and navigate marks
   NeoBundle 'kshenoy/vim-signature'
