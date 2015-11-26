@@ -187,26 +187,8 @@ else
   " sequencial numbering with pattern
   NeoBundleLazy 'deris/vim-rengbang'
 
-  " incremental visual selection
-  NeoBundleLazy 'terryma/vim-expand-region'
-
   " pasting with indentation adjusted to paste destination
   NeoBundle 'sickill/vim-pasta'
-
-  " use CTRL-A/CTRL-X to increment dates, times, and more
-  NeoBundle 'tpope/vim-speeddating'
-
-  " true Sublime Text multiple selection in Vim
-  NeoBundleLazy 'terryma/vim-multiple-cursors'
-
-  " toggle ruby's postfix notations of if/unless/while/until
-  NeoBundleLazy 'Qureana/backend_if'
-
-  " ascii drawing plugin
-  NeoBundleLazy 'DrawIt'
-
-  " instant table creation
-  NeoBundleLazy 'dhruvasagar/vim-table-mode'
 
   " a genius template engine
   NeoBundle 'creasty/mold.vim'
@@ -229,9 +211,6 @@ else
 
   "  Utils
   "-----------------------------------------------
-  " make benchmark result of your vimrc
-  NeoBundleLazy 'mattn/benchvimrc-vim'
-
   " a Git wrapper so awesome
   NeoBundle 'tpope/vim-fugitive'
 
@@ -250,12 +229,6 @@ else
   " unite and create user interfaces
   NeoBundleLazy 'Shougo/unite.vim'
 
-  " outline source for unite.vim
-  NeoBundleLazy 'h1mesuke/unite-outline', { 'depends': ['Shougo/unite.vim'] }
-
-  " tags source for unite.vim
-  NeoBundleLazy 'tsukkee/unite-tag', { 'depends': ['Shougo/unite.vim'] }
-
   " source for ghq list
   NeoBundleLazy 'sorah/unite-ghq', { 'depends': ['Shougo/unite.vim'] }
 
@@ -266,7 +239,7 @@ else
   NeoBundleLazy 'Shougo/vinarise.vim'
 
   " pseudo clipboard register
-  NeoBundleLazy 'kana/vim-fakeclip'
+  NeoBundle 'kana/vim-fakeclip'
 
   " switch to the missing file without interaction
   NeoBundleLazy 'kana/vim-altr'
@@ -283,26 +256,11 @@ else
   " improved incremental searching
   " NeoBundleLazy 'haya14busa/incsearch.vim'
 
-  " functional Object Oriented VimL (dependency of dash.vim)
-  NeoBundleLazy 'rizzatti/funcoo.vim'
-
-  " launch queries for Dash.app
-  NeoBundleLazy 'rizzatti/dash.vim', { 'depends': ['rizzatti/funcoo.vim'] }
-
   " context filetype library
   NeoBundleLazy 'Shougo/context_filetype.vim'
 
   " switch filetype by context around cursor
   NeoBundleLazy 'osyo-manga/vim-precious', { 'depends': ['Shougo/context_filetype.vim'] }
-
-  " lookup Codic
-  NeoBundleLazy 'koron/codic-vim'
-
-  " unite.vim source for codic-vim
-  NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends': ['Shougo/unite.vim', 'koron/codic-vim'] }
-
-  " github issue lookup
-  NeoBundleLazy 'jaxbot/github-issues.vim'
 
   " perform the replacement in quickfix
   NeoBundleLazy 'thinca/vim-qfreplace'
@@ -310,24 +268,12 @@ else
   " command for the_silver_searcher
   NeoBundleLazy 'rking/ag.vim'
 
-  " w3m plugin
-  NeoBundleLazy 'yuratomo/w3m.vim'
-
-  " list and lookup http status code
-  NeoBundleLazy 'mattn/httpstatus-vim'
-
-  " display tags of a file ordered by scope
-  NeoBundleLazy 'majutsushi/tagbar'
-
   " ctags generator
   NeoBundle 'szw/vim-tags'
 
 
   "  Appearance
   "-----------------------------------------------
-  " visually displaying indent levels
-  NeoBundle 'nathanaelkane/vim-indent-guides'
-
   " toggle, display and navigate marks
   NeoBundle 'kshenoy/vim-signature'
 
@@ -2779,86 +2725,6 @@ if neobundle#tap('vim-pasta')
 endif
 
 
-"=== Plugin: vim-speeddating
-"==============================================================================================
-if neobundle#tap('vim-speeddating')
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-multiple-cursors
-"==============================================================================================
-if neobundle#tap('vim-multiple-cursors')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': [
-        \ ['n', '<Space><C-m>'],
-      \ ],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:multi_cursor_use_default_mapping = 0
-    let g:multi_cursor_start_key = '<Space><C-m>'
-    let g:multi_cursor_next_key = '<C-n>'
-    let g:multi_cursor_prev_key = '<C-p>'
-    let g:multi_cursor_skip_key = '<C-x>'
-    let g:multi_cursor_quit_key = '<C-c>'
-  endfunction
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: backend_if
-"==============================================================================================
-if neobundle#tap('backend_if')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['ToggleStatement'],
-    \ },
-  \ })
-
-  autocmd vimrc FileType ruby
-    \ nnoremap <Leader>ts :ToggleStatement<CR>
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: DrawIt
-"==============================================================================================
-if neobundle#tap('DrawIt')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>DrawItStart'
-    \ },
-  \ })
-
-  map <Leader>di <Plug>DrawItStart
-  map <Leader>ds <Plug>DrawItStop
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-table-mode
-"==============================================================================================
-if neobundle#tap('vim-table-mode')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': [
-        \ 'TableModeToggle',
-        \ 'TableModeEnable',
-        \ 'TableModeDisable'
-      \ ],
-    \ },
-  \ })
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: mold.vim
 "==============================================================================================
 if neobundle#tap('mold.vim')
@@ -3036,19 +2902,6 @@ if neobundle#tap('vim-stargate')
 endif
 
 
-"=== Plugin: benchvimrc-vim
-"==============================================================================================
-if neobundle#tap('benchvimrc-vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['BenchVimrc'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: vim-fugitive
 "==============================================================================================
 if neobundle#tap('vim-fugitive')
@@ -3215,32 +3068,6 @@ if neobundle#tap('unite.vim')
 endif
 
 
-"=== Plugin: unite-outline
-"==============================================================================================
-if neobundle#tap('unite-outline')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'unite_sources': ['outline'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: unite-tag
-"==============================================================================================
-if neobundle#tap('unite-tag')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'unite_sources': ['tag'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: open-browser.vim
 "==============================================================================================
 if neobundle#tap('open-browser.vim')
@@ -3266,20 +3093,6 @@ if neobundle#tap('vinarise.vim')
   call neobundle#config({
     \ 'autoload': {
       \ 'commands': ['Vinarise', 'VinariseDump'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-fakeclip
-"==============================================================================================
-if neobundle#tap('vim-fakeclip')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(fakeclip-',
-      \ 'function_prefix': 'fakeclip',
     \ }
   \ })
 
@@ -3620,19 +3433,6 @@ if neobundle#tap('incsearch.vim')
 endif
 
 
-"=== Plugin: dash.vim
-"==============================================================================================
-if neobundle#tap('dash.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Dash'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: vim-precious
 "==============================================================================================
 if neobundle#tap('vim-precious')
@@ -3649,47 +3449,6 @@ if neobundle#tap('vim-precious')
       \ 'markdown': { 'setfiletype': 1 },
     \ }
   endfunction
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: codic-vim
-"==============================================================================================
-if neobundle#tap('codic-vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Codic'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: unite-codic.vim
-"==============================================================================================
-if neobundle#tap('unite-codic.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'unite_sources': ['codic'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: github-issues.vim
-"==============================================================================================
-if neobundle#tap('github-issues.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Gissues'],
-    \ }
-  \ })
-
-  " TODO: configure account
 
   call neobundle#untap()
 endif
@@ -3721,47 +3480,6 @@ if neobundle#tap('ag.vim')
 endif
 
 
-"=== Plugin: w3m.vim
-"==============================================================================================
-if neobundle#tap('w3m.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['W3m'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: httpstatus-vim
-"==============================================================================================
-if neobundle#tap('httpstatus-vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['HttpStatus'],
-    \ }
-  \ })
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: tagbar
-"==============================================================================================
-if neobundle#tap('tagbar')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['TagbarToggle'],
-    \ }
-  \ })
-
-  " TODO
-
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: vim-tags
 "==============================================================================================
 if neobundle#tap('vim-tags')
@@ -3782,22 +3500,6 @@ if neobundle#tap('vim-tags')
   \ ]
 
   nnoremap tg :TagsGenerate<CR>
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-indent-guides
-"==============================================================================================
-if s:env.is_gui && neobundle#tap('vim-indent-guides')
-  let g:indent_guides_enable_on_vim_startup = 0
-  let g:indent_guides_guide_size = 1
-  let g:indent_guides_space_guides = 1
-  let g:indent_guides_auto_colors = 0
-  let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
-
-  hi IndentGuidesOdd  guifg=#212121 ctermfg=234 guibg=#212121 ctermbg=234
-  hi IndentGuidesEven guifg=#242424 ctermfg=235 guibg=#242424 ctermbg=235
 
   call neobundle#untap()
 endif
