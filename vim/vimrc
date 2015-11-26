@@ -238,6 +238,9 @@ else
   " hex editing system
   NeoBundleLazy 'Shougo/vinarise.vim'
 
+  " pseudo clipboard register
+  NeoBundle 'kana/vim-fakeclip'
+
   " switch to the missing file without interaction
   NeoBundleLazy 'kana/vim-altr'
 
