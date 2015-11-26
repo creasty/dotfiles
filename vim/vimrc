@@ -2646,6 +2646,7 @@ if neobundle#tap('switch.vim')
   call neobundle#untap()
 endif
 
+
 "=== Plugin: vim-textmanip
 "==============================================================================================
 if neobundle#tap('vim-textmanip')
@@ -2756,21 +2757,6 @@ if neobundle#tap('mold.vim')
       call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-fugitive
-"==============================================================================================
-if neobundle#tap('vim-fugitive')
-  autocmd vimrc User fugitive
-    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-    \   nnoremap <buffer> .. :edit %:h<CR> |
-    \ endif
-
-  autocmd vimrc BufReadPost fugitive://*
-    \ set bufhidden=delete
 
   call neobundle#untap()
 endif
@@ -2911,6 +2897,21 @@ if neobundle#tap('vim-stargate')
       \ 'commands': ['StargateInclude', 'StargateClearCache'],
     \ }
   \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-fugitive
+"==============================================================================================
+if neobundle#tap('vim-fugitive')
+  autocmd vimrc User fugitive
+    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+    \   nnoremap <buffer> .. :edit %:h<CR> |
+    \ endif
+
+  autocmd vimrc BufReadPost fugitive://*
+    \ set bufhidden=delete
 
   call neobundle#untap()
 endif
