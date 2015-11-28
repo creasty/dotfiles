@@ -2994,6 +2994,7 @@ if neobundle#tap('unite.vim')
       \ '.tags',
       \ '*.jpg', '*.jpeg', '*.png', '*.gif', '*.pdf', '*.ttf', '*.otf', '*.eot', '*.woff', '*.svg', '*.svgz',
       \ 'tmp/**', 'cache/**', 'public/system/**', 'vendor/bundle/**',
+      \ 'node_modules/**', 'bower_components/**',
       \ 'Godeps/**',
     \ ]
 
@@ -3015,8 +3016,8 @@ if neobundle#tap('unite.vim')
     \ })
 
     if s:env.support.ag
-      let g:unite_source_grep_command = 'ag'
-      let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+      let g:unite_source_grep_command       = 'ag'
+      let g:unite_source_grep_default_opts  = '--nogroup --nocolor --column'
       let g:unite_source_grep_recursive_opt = ''
     endif
 
@@ -3053,14 +3054,12 @@ if neobundle#tap('unite.vim')
   endfunction
 
   function! s:dispatch_unite_file_rec_async_or_git()
-    let pwd = getcwd()
-
-    if pwd == $HOME
+    if getcwd() == $HOME
       Unite ghq
     elseif isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
-      Unite -hide-source-names -buffer-name=files file_rec/git
+      Unite -hide-source-names -buffer-name=files -resume file_rec/git
     else
-      Unite -hide-source-names -buffer-name=files file_rec/async
+      Unite -hide-source-names -buffer-name=files -resume file_rec/async
     endif
   endfunction
 
@@ -3069,7 +3068,7 @@ if neobundle#tap('unite.vim')
   nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
   imap <silent> <C-x><C-v> <C-o><Space>p
 
-  nnoremap <silent> <Space>g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+  nnoremap <silent> <Space>g :<C-u>Unite -buffer-name=search-buffer grep:.<CR>
 
   call neobundle#untap()
 endif

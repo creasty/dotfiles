@@ -1,7 +1,11 @@
-tmp/
-cache/
-log/
+tmp
+cache
+log
 vendor/bundle
+Godeps
+node_modules
+bower_components
+public/system
 
 *.jpg
 *.jpeg
@@ -15,5 +19,3 @@ vendor/bundle
 *.woff
 *.svg
 *.svgz
-
-Godeps/
