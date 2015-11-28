@@ -3,9 +3,7 @@
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias cdk='cd ~/Desktop'
 
-alias l='less'
 alias ls='ls -G'
 alias ll='ls -Gl'
 alias la='ls -Ga'
@@ -17,10 +15,11 @@ alias less='less -R'
 
 alias v='vim'
 alias vi='vim'
+alias vv='mvim'
 alias g='git'
-alias ti='titanium'
-alias :q='exit'
 alias ag="ag --pager='less -R'"
+
+alias :q='exit'
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
@@ -90,10 +89,12 @@ alias -s java='_run_java'
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
+alias tex2pdf='ptex2pdf -l'
+alias enx='evernote-sandbox'
+alias ne='npm-exec'
+alias ql='qlmanage -p "$@" >& /dev/null'
 
 alias maxscreen='screenresolution set 2560x1600x32@0'
-
-alias ql='qlmanage -p "$@" >& /dev/null'
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
@@ -104,11 +105,6 @@ TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
 alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 
-alias tex2pdf='ptex2pdf -l'
-
-alias enx='evernote-sandbox'
-
-alias ne='npm-exec'
 
 
 #  Networks
@@ -167,7 +163,7 @@ alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
 alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
 
-alias rdbma='rake-db-migrate-all'
+alias rdba='rake-db-migrate-all'
 
 rdbb() {
   bundle exec rake db:rollback STEP=$1
