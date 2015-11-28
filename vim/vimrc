@@ -3009,6 +3009,11 @@ if neobundle#tap('unite.vim')
       \ ignore_globs
     \ )
 
+    call unite#custom#profile('source/grep', 'context', {
+      \ 'no_quit':  1,
+      \ 'no_empty': 1,
+    \ })
+
     if s:env.support.ag
       let g:unite_source_grep_command = 'ag'
       let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
@@ -3063,6 +3068,8 @@ if neobundle#tap('unite.vim')
   nnoremap <silent> <Space><C-q>a :Unite -hide-source-names -buffer-name=files file_rec/async<CR>
   nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
   imap <silent> <C-x><C-v> <C-o><Space>p
+
+  nnoremap <silent> <Space>g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 
   call neobundle#untap()
 endif
