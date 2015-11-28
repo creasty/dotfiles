@@ -341,7 +341,7 @@ else
   NeoBundleLazy 'leafgarland/typescript-vim'
 
   " tools related to the TypeScript language
-  NeoBundleLazy 'clausreinke/typescript-tools'
+  NeoBundleLazy 'clausreinke/typescript-tools.vim'
 
 
   NeoBundleSaveCache
@@ -3715,9 +3715,9 @@ if neobundle#tap('vim-jade')
 endif
 
 
-"=== Plugin: vim-jade
+"=== Plugin: typescript-vim
 "==============================================================================================
-if neobundle#tap('leafgarland/typescript-vim')
+if neobundle#tap('typescript-vim')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['typescript'] }
   \ })
@@ -3726,9 +3726,9 @@ if neobundle#tap('leafgarland/typescript-vim')
 endif
 
 
-"=== Plugin: vim-jade
+"=== Plugin: typescript-tools
 "==============================================================================================
-if neobundle#tap('clausreinke/typescript-tools')
+if neobundle#tap('typescript-tools')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['typescript'] }
   \ })
