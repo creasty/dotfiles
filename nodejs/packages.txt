@@ -1,11 +1,5 @@
-bower
 cheerio
 chrome-remote-interface
 coffee-script
-coffeelint
 crconsole
-gulp
-http-server
-lodash
 speed-test
-webpack
