@@ -20,18 +20,12 @@ mv $DOTFILES_PATH/tex/texmf.cnf $TEXLIVE_TEXMR_PATH/web2c/texmf.cnf
 sudo $TEXLIVE_BIN_PATH/mktexlsr
 
 subsection "Setup tex to use Hiragino fonts"
-HIRAGINO_INSTALL_DIR=$TEXLIVE_TEXMR_PATH/fonts/opentype/hiragino
-sudo mkdir -p $HIRAGINO_INSTALL_DIR
-
-sudo ln -fs "/Library/Fonts/ヒラギノ明朝 Pro W3.otf" $HIRAGINO_INSTALL_DIR/HiraMinPro-W3.otf
-sudo ln -fs "/Library/Fonts/ヒラギノ明朝 Pro W6.otf" $HIRAGINO_INSTALL_DIR/HiraMinPro-W6.otf
-sudo ln -fs "/Library/Fonts/ヒラギノ丸ゴ Pro W4.otf" $HIRAGINO_INSTALL_DIR/HiraMaruPro-W4.otf
-sudo ln -fs "/Library/Fonts/ヒラギノ角ゴ Pro W3.otf" $HIRAGINO_INSTALL_DIR/HiraKakuPro-W3.otf
-sudo ln -fs "/Library/Fonts/ヒラギノ角ゴ Pro W6.otf" $HIRAGINO_INSTALL_DIR/HiraKakuPro-W6.otf
-sudo ln -fs "/Library/Fonts/ヒラギノ角ゴ Std W8.otf" $HIRAGINO_INSTALL_DIR/HiraKakuStd-W8.otf
-
-sudo $TEXLIVE_BIN_PATH/mktexlsr
-sudo $TEXLIVE_BIN_PATH/updmap-sys --setoption kanjiEmbed hiragino
+(
+  cd $TEXLIVE_PATH/2015/texmf-dist/scripts/cjk-gs-integrate
+  sudo perl cjk-gs-integrate.pl --link-texmf --force
+  sudo mktexlsr
+  sudo updmap-sys --setoption kanjiEmbed hiragino-elcapitan-pron
+)
 
 subsection "Make bst/bib directories"
 mkdir -p ~/Library/texmf/bibtex/bib
