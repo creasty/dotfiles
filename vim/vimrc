@@ -3372,15 +3372,13 @@ if neobundle#tap('vim-submode')
   call submode#enter_with('my_x', 'n', '',  'x', '"_x')
   call submode#map(       'my_x', 'n', 'r', 'x', '<Plug>(my-x)')
 
-  " FIXME
-  noremap <silent> <Plug>(my-ca) :<C-u>call <SID>better_undo('<Plug>SpeedDatingUp')<CR>
-  call submode#enter_with('my_ca', 'n', '',  '<C-a>', '<Plug>SpeedDatingUp')
+  noremap <silent> <Plug>(my-ca) :<C-u>call <SID>better_undo('<C-a>')<CR>
+  call submode#enter_with('my_ca', 'n', '',  '<C-a>', '<C-a>')
   call submode#map(       'my_ca', 'n', 'r', '<C-a>', '<Plug>(my-ca)')
 
-  " FIXME
-  noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<Plug>SpeedDatingDown')<CR>
-  call submode#enter_with('my_cx', 'n', '',  '<C-x>', '<Plug>SpeedDatingDown')
-  call submode#map(       'my_cx', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
+  noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
+  call submode#enter_with('my_ca', 'n', '',  '<C-x>', '<C-x>')
+  call submode#map(       'my_ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
 
 
   call neobundle#untap()
