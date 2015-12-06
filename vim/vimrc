@@ -3034,9 +3034,6 @@ if neobundle#tap('unite.vim')
       inoremap <buffer> <C-f> <Right>
       inoremap <buffer> <C-e> <End>
 
-      inoremap <expr> <silent> <buffer> ^
-        \ expand('#' . unite.prev_bufnr . ':h') . '/'
-
       nmap <buffer> <C-q> <Plug>(unite_exit)
       imap <buffer> <C-q> <Plug>(unite_exit)
       imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
@@ -3057,9 +3054,9 @@ if neobundle#tap('unite.vim')
     if getcwd() == $HOME
       Unite ghq
     elseif isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
-      Unite -hide-source-names -buffer-name=files -resume file_rec/git
+      Unite -hide-source-names -buffer-name=files file_rec/git
     else
-      Unite -hide-source-names -buffer-name=files -resume file_rec/async
+      Unite -hide-source-names -buffer-name=files file_rec/async
     endif
   endfunction
 
