@@ -990,9 +990,11 @@ cnoremap <C-f> <Right>
 cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
-" indent/outdent
-inoremap <S-Tab> <C-d>
-inoremap <C-Tab> <C-t>
+" indent / outdent
+imap <C-x><C-h> <C-x>h
+inoremap <C-x>h <C-d>
+imap <C-x><C-l> <C-x>l
+inoremap <C-x>l <C-t>
 
 " paste
 inoremap <C-v> <C-r><C-p>*
@@ -2123,6 +2125,13 @@ if neobundle#tap('lexima.vim')
     \ 'input': '<Esc>ddO',
   \ })
 
+  " member access
+  call lexima#add_rule({
+    \ 'char':  '<C-l>',
+    \ 'at':    '\w\(\.\|->\)\%#',
+    \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
+  \ })
+
 
   "  Backspace
   "-----------------------------------------------
@@ -2239,13 +2248,6 @@ if neobundle#tap('lexima.vim')
     \ 'char':  '<CR>',
     \ 'at':    '\(<[-=]\|[-=]>\) \%#',
     \ 'input': '<BS><CR><Tab>',
-  \ })
-
-  " member access
-  call lexima#add_rule({
-    \ 'char':  '<C-t>',
-    \ 'at':    '\w\(\.\|->\)\%#',
-    \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
   \ })
 
 
