@@ -990,12 +990,6 @@ cnoremap <C-f> <Right>
 cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
-" indent / outdent
-imap <C-x><C-h> <C-x>h
-inoremap <C-x>h <C-d>
-imap <C-x><C-l> <C-x>l
-inoremap <C-x>l <C-t>
-
 " paste
 inoremap <C-v> <C-r><C-p>*
 cnoremap <C-v> <C-r>*
@@ -3358,6 +3352,14 @@ if neobundle#tap('vim-submode')
   call submode#map(       'move-to-fold', 'n', '', 'j',  'zj')
   call submode#enter_with('move-to-fold', 'n', '', 'zk', 'zk')
   call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
+
+
+  "  Indent / outdent
+  "-----------------------------------------------
+  call submode#enter_with('indent', 'i', '', '<C-t>', '<Nop>')
+  call submode#leave_with('indent', 'i', '', '<C-t>')
+  call submode#map(       'indent', 'i', '', 'h', '<C-d>')
+  call submode#map(       'indent', 'i', '', 'l', '<C-t>')
 
 
   "  Better undo
