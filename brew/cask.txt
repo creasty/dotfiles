@@ -3,7 +3,7 @@ alfred
 android-studio
 anybar
 astah-community
-boot2docker
+dockertoolbox
 dropbox
 firefox
 flip4mac
