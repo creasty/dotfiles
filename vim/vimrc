@@ -3297,7 +3297,7 @@ endif
 "=== Plugin: vim-submode
 "==============================================================================================
 if neobundle#tap('vim-submode')
-  let g:submode_leave_with_key = 1
+  let g:submode_keep_leaving_key = 1
 
   "  Window resizing
   "-----------------------------------------------
