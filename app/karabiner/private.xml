@@ -96,10 +96,12 @@
       <name>Super mode</name>
       <identifier vk_config="true">private.super_mode</icentifier>
 
-      <appendix>A+H: Control-Left</appendix>
-      <appendix>A+L: Control-Right</appendix>
-      <appendix>A+J: Control-Tab</appendix>
-      <appendix>A+K: Shift-Control-Tab</appendix>
+      <appendix>A+H: Move to left space</appendix>
+      <appendix>A+L: Move to right space</appendix>
+      <appendix>A+J: Switch to next application</appendix>
+      <appendix>A+K: Switch to previous application</appendix>
+      <appendix>A+N: Switch to next window</appendix>
+      <appendix>A+B: Switch to previous window</appendix>
 
       <block>
         <modifier_not>
@@ -159,6 +161,19 @@
           __KeyToKey__
           KeyCode::K,
           KeyCode::TAB, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+
+        <autogen>
+          __KeyToKey__
+          KeyCode::N,
+          KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::B,
+          KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
           ModifierFlag::PRIVATE_SUPER_MODE,
         </autogen>
 
