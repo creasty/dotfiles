@@ -15,7 +15,7 @@ print_status $?
 #  Karabiner
 #-----------------------------------------------
 section "Setting Karabiner"
-cp -r $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/
+ln -sf $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/private.xml
 print_status $?
 
 
