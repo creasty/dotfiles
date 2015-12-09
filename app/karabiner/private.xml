@@ -5,6 +5,8 @@
     <equal>org.vim.MacVim</equal>
   </appdef>
 
+  <modifierdef>PRIVATE_SUPER_MODE</modifierdef>
+
   <replacementdef>
     <replacementname>EMACS_MODE_IGNORE_APPS</replacementname>
     <replacementvalue>
@@ -86,6 +88,85 @@
           --KeyToKey--
           KeyCode::SEMICOLON, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::JIS_KANA
+        </autogen>
+      </block>
+    </item>
+
+    <item>
+      <name>Super mode</name>
+      <identifier vk_config="true">private.super_mode</icentifier>
+
+      <appendix>A+H: Control-Left</appendix>
+      <appendix>A+L: Control-Right</appendix>
+      <appendix>A+J: Control-Tab</appendix>
+      <appendix>A+K: Shift-Control-Tab</appendix>
+
+      <block>
+        <modifier_not>
+          ModifierFlag::COMMAND_L,
+          ModifierFlag::COMMAND_R,
+          ModifierFlag::CONTROL_L,
+          ModifierFlag::CONTROL_R,
+          ModifierFlag::FN,
+          ModifierFlag::OPTION_L,
+          ModifierFlag::OPTION_R,
+          ModifierFlag::SHIFT_L,
+          ModifierFlag::SHIFT_R,
+        </modifier_not>
+
+        <autogen>
+          __KeyOverlaidModifier__
+          KeyCode::A,
+
+          @begin
+          KeyCode::VK_CONFIG_FORCE_ON_private_super_mode,
+          KeyCode::VK_MODIFIER_PRIVATE_SUPER_MODE,
+          @end
+
+          @begin
+          KeyCode::A,
+          @end
+        </autogen>
+      </block>
+
+      <block>
+        <modifier_only>ModifierFlag::PRIVATE_SUPER_MODE</modifier_only>
+
+        <autogen>
+          __BlockUntilKeyUp__
+          KeyCode::A
+        </autogen>
+
+        <autogen>
+          __KeyToKey__
+          KeyCode::H,
+          KeyCode::CURSOR_LEFT, ModifierFlag::CONTROL_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::L,
+          KeyCode::CURSOR_RIGHT, ModifierFlag::CONTROL_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::J,
+          KeyCode::TAB, ModifierFlag::COMMAND_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::K,
+          KeyCode::TAB, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+
+        <autogen>
+          __DropAllKeys__
+          ModifierFlag::PRIVATE_SUPER_MODE,
+
+          Option::DROPALLKEYS_DROP_KEY,
         </autogen>
       </block>
     </item>
