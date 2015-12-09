@@ -1828,13 +1828,6 @@ if neobundle#tap('vim-operator-replace')
 endif
 
 
-"=== Plugin: matchit
-"==============================================================================================
-if neobundle#tap('matchit')
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: smartchr
 "==============================================================================================
 if neobundle#tap('smartchr')
@@ -2714,13 +2707,6 @@ if neobundle#tap('vim-rengbang')
 endif
 
 
-"=== Plugin: vim-pasta
-"==============================================================================================
-if neobundle#tap('vim-pasta')
-  call neobundle#untap()
-endif
-
-
 "=== Plugin: mold.vim
 "==============================================================================================
 if neobundle#tap('mold.vim')
@@ -2909,13 +2895,6 @@ if neobundle#tap('vim-fugitive')
   autocmd vimrc BufReadPost fugitive://*
     \ set bufhidden=delete
 
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-repeat
-"==============================================================================================
-if neobundle#tap('vim-repeat')
   call neobundle#untap()
 endif
 
