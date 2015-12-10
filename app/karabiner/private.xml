@@ -187,12 +187,14 @@
     </item>
 
     <item>
-      <name>Tab moves</name>
-      <identifier>private.tab_moves</identifier>
+      <name>Tab controls</name>
+      <identifier>private.tab_controls</identifier>
       <not>{{EMACS_MODE_IGNORE_APPS}}</not>
 
       <appendix>Control-S Control-N: Move to next tab</appendix>
       <appendix>Control-S Control-B: Move to previous tab</appendix>
+      <appendix>Control-S Control-T: Open new tab</appendix>
+      <appendix>Control-S Control-D: Close tab</appendix>
 
       <autogen>
         __SimultaneousKeyPresses__
@@ -203,6 +205,16 @@
         __SimultaneousKeyPresses__
         KeyCode::S, KeyCode::B, ModifierFlag::CONTROL_L,
         KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+      </autogen>
+      <autogen>
+        __SimultaneousKeyPresses__
+        KeyCode::S, KeyCode::T, ModifierFlag::CONTROL_L,
+        KeyCode::T, ModifierFlag::COMMAND_L,
+      </autogen>
+      <autogen>
+        __SimultaneousKeyPresses__
+        KeyCode::S, KeyCode::D, ModifierFlag::CONTROL_L,
+        KeyCode::W, ModifierFlag::COMMAND_L,
       </autogen>
     </item>
 
