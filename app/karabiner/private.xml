@@ -1,11 +1,20 @@
 <?xml version="1.0"?>
 <root>
+  <!--
+  - Karabiner.app/Contents/Resources/include/checkbox
+  - Karabiner.app/Contents/Resources/appdef.xml
+  - Karabiner.app/Contents/Resources/modifierdef.xml
+
+  https://pqrs.org/osx/karabiner/xml.html.en
+  -->
+
   <appdef>
     <appname>MACVIM</appname>
     <equal>org.vim.MacVim</equal>
   </appdef>
 
   <modifierdef>PRIVATE_SUPER_MODE</modifierdef>
+  <modifierdef>PRIVATE_SKEY</modifierdef>
 
   <replacementdef>
     <replacementname>EMACS_MODE_IGNORE_APPS</replacementname>
@@ -180,7 +189,6 @@
         <autogen>
           __DropAllKeys__
           ModifierFlag::PRIVATE_SUPER_MODE,
-
           Option::DROPALLKEYS_DROP_KEY,
         </autogen>
       </block>
@@ -188,7 +196,7 @@
 
     <item>
       <name>Tab controls</name>
-      <identifier>private.tab_controls</identifier>
+      <identifier vk_config="true">private.tab_controls</identifier>
       <not>{{EMACS_MODE_IGNORE_APPS}}</not>
 
       <appendix>Control-S Control-N: Move to next tab</appendix>
@@ -197,25 +205,70 @@
       <appendix>Control-S Control-D: Close tab</appendix>
 
       <autogen>
-        __SimultaneousKeyPresses__
-        KeyCode::S, KeyCode::N, ModifierFlag::CONTROL_L,
-        KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+        __KeyOverlaidModifier__
+        KeyCode::S, ModifierFlag::CONTROL_L,
+
+        @begin
+        KeyCode::VK_CONFIG_FORCE_ON_private_tab_controls,
+        KeyCode::VK_STICKY_ACTIVE_MODIFIERS_FORCE_ON,
+        KeyCode::VK_STICKY_PRIVATE_SKEY,
+        @end
+
+        @begin
+        KeyCode::S, ModifierFlag::CONTROL_L,
+        @end
       </autogen>
-      <autogen>
-        __SimultaneousKeyPresses__
-        KeyCode::S, KeyCode::B, ModifierFlag::CONTROL_L,
-        KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
-      </autogen>
-      <autogen>
-        __SimultaneousKeyPresses__
-        KeyCode::S, KeyCode::T, ModifierFlag::CONTROL_L,
-        KeyCode::T, ModifierFlag::COMMAND_L,
-      </autogen>
-      <autogen>
-        __SimultaneousKeyPresses__
-        KeyCode::S, KeyCode::D, ModifierFlag::CONTROL_L,
-        KeyCode::W, ModifierFlag::COMMAND_L,
-      </autogen>
+
+      <block>
+        <modifier_only>ModifierFlag::PRIVATE_SKEY</modifier_only>
+
+        <autogen>
+          __KeyToKey__
+          KeyCode::N, ModifierFlag::CONTROL_L,
+          KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::N, ModifierFlag::NONE,
+          KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::B, ModifierFlag::CONTROL_L,
+          KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::B, ModifierFlag::NONE,
+          KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::T, ModifierFlag::CONTROL_L,
+          KeyCode::T, ModifierFlag::COMMAND_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::T, ModifierFlag::NONE,
+          KeyCode::T, ModifierFlag::COMMAND_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::D, ModifierFlag::CONTROL_L,
+          KeyCode::W, ModifierFlag::COMMAND_L,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::D, ModifierFlag::NONE,
+          KeyCode::W, ModifierFlag::COMMAND_L,
+        </autogen>
+
+        <autogen>
+          __DropAllKeys__
+          ModifierFlag::PRIVATE_SKEY,
+          Option::DROPALLKEYS_DROP_KEY,
+        </autogen>
+      </block>
     </item>
 
   </list>
