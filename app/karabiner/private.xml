@@ -186,5 +186,25 @@
       </block>
     </item>
 
+    <item>
+      <name>Tab moves</name>
+      <identifier>private.tab_moves</identifier>
+      <not>{{EMACS_MODE_IGNORE_APPS}}</not>
+
+      <appendix>Control-S Control-N: Move to next tab</appendix>
+      <appendix>Control-S Control-B: Move to previous tab</appendix>
+
+      <autogen>
+        __SimultaneousKeyPresses__
+        KeyCode::S, KeyCode::N, ModifierFlag::CONTROL_L,
+        KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+      </autogen>
+      <autogen>
+        __SimultaneousKeyPresses__
+        KeyCode::S, KeyCode::B, ModifierFlag::CONTROL_L,
+        KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+      </autogen>
+    </item>
+
   </list>
 </root>
