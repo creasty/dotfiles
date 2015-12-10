@@ -2,4 +2,4 @@
 
 BRANCH="$1"
 
-git fetch origin "$BRANCH" && git checkout "$BRANCH"
+git fetch origin "$BRANCH" && git checkout "$BRANCH" && git pull --ff --ff-only origin "$BRANCH"
