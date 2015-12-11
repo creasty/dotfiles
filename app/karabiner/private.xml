@@ -196,7 +196,7 @@
 
     <item>
       <name>Tab controls</name>
-      <identifier vk_config="true">private.tab_controls</identifier>
+      <identifier>private.tab_controls</identifier>
       <not>{{EMACS_MODE_IGNORE_APPS}}</not>
 
       <appendix>Control-S Control-N: Move to next tab</appendix>
@@ -209,13 +209,13 @@
         KeyCode::S, ModifierFlag::CONTROL_L,
 
         @begin
-        KeyCode::VK_CONFIG_FORCE_ON_private_tab_controls,
-        KeyCode::VK_STICKY_ACTIVE_MODIFIERS_FORCE_ON,
-        KeyCode::VK_STICKY_PRIVATE_SKEY,
+        KeyCode::S, ModifierFlag::CONTROL_L,
+        KeyCode::VK_MODIFIER_PRIVATE_SKEY,
         @end
 
         @begin
-        KeyCode::S, ModifierFlag::CONTROL_L,
+        KeyCode::VK_STICKY_ACTIVE_MODIFIERS_FORCE_ON,
+        KeyCode::VK_STICKY_PRIVATE_SKEY,
         @end
       </autogen>
 
@@ -229,7 +229,7 @@
         </autogen>
         <autogen>
           __KeyToKey__
-          KeyCode::N, ModifierFlag::NONE,
+          KeyCode::N,
           KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
         </autogen>
         <autogen>
@@ -239,7 +239,7 @@
         </autogen>
         <autogen>
           __KeyToKey__
-          KeyCode::B, ModifierFlag::NONE,
+          KeyCode::B,
           KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
         </autogen>
         <autogen>
@@ -249,7 +249,7 @@
         </autogen>
         <autogen>
           __KeyToKey__
-          KeyCode::T, ModifierFlag::NONE,
+          KeyCode::T,
           KeyCode::T, ModifierFlag::COMMAND_L,
         </autogen>
         <autogen>
@@ -259,7 +259,7 @@
         </autogen>
         <autogen>
           __KeyToKey__
-          KeyCode::D, ModifierFlag::NONE,
+          KeyCode::D,
           KeyCode::W, ModifierFlag::COMMAND_L,
         </autogen>
 
