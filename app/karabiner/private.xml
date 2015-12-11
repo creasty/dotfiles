@@ -105,12 +105,12 @@
       <name>Super mode</name>
       <identifier vk_config="true">private.super_mode</icentifier>
 
-      <appendix>A+H: Move to left space</appendix>
-      <appendix>A+L: Move to right space</appendix>
-      <appendix>A+J: Switch to next application</appendix>
-      <appendix>A+K: Switch to previous application</appendix>
-      <appendix>A+N: Switch to next window</appendix>
-      <appendix>A+B: Switch to previous window</appendix>
+      <appendix>S+H: Move to left space</appendix>
+      <appendix>S+L: Move to right space</appendix>
+      <appendix>S+J: Switch to next application</appendix>
+      <appendix>S+K: Switch to previous application</appendix>
+      <appendix>S+N: Switch to next window</appendix>
+      <appendix>S+B: Switch to previous window</appendix>
 
       <block>
         <modifier_not>
@@ -127,7 +127,7 @@
 
         <autogen>
           __KeyOverlaidModifier__
-          KeyCode::A,
+          KeyCode::S,
 
           @begin
           KeyCode::VK_CONFIG_FORCE_ON_private_super_mode,
@@ -135,7 +135,7 @@
           @end
 
           @begin
-          KeyCode::A,
+          KeyCode::S,
           @end
         </autogen>
       </block>
@@ -145,7 +145,7 @@
 
         <autogen>
           __BlockUntilKeyUp__
-          KeyCode::A
+          KeyCode::S
         </autogen>
 
         <autogen>
