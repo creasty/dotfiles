@@ -270,5 +270,25 @@
       </block>
     </item>
 
+    <item>
+      <name>Chrome</name>
+      <identifier>private.chrome</identifier>
+      <only>GOOGLE_CHROME</only>
+
+      <appendix>Control-I: History forward</appendix>
+      <appendix>Control-O: History back</appendix>
+
+      <autogen>
+        __KeyToKey__
+        KeyCode::I, ModifierFlag::CONTROL_L,
+        KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L,
+      </autogen>
+      <autogen>
+        __KeyToKey__
+        KeyCode::O, ModifierFlag::CONTROL_L,
+        KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L,
+      </autogen>
+    </item>
+
   </list>
 </root>
