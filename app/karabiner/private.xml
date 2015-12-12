@@ -103,7 +103,7 @@
 
     <item>
       <name>Super mode</name>
-      <identifier vk_config="true">private.super_mode</icentifier>
+      <identifier>private.super_mode</icentifier>
 
       <appendix>S+H: Move to left space</appendix>
       <appendix>S+L: Move to right space</appendix>
@@ -130,7 +130,6 @@
           KeyCode::S,
 
           @begin
-          KeyCode::VK_CONFIG_FORCE_ON_private_super_mode,
           KeyCode::VK_MODIFIER_PRIVATE_SUPER_MODE,
           @end
 
