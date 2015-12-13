@@ -208,6 +208,9 @@ else
   " insert #include<>
   NeoBundleLazy 'osyo-manga/vim-stargate'
 
+  " autocomplete Swift in Vim
+  NeoBundleLazy 'keith/sourcekittendaemon.vim'
+
 
   "  Utils
   "-----------------------------------------------
@@ -2877,6 +2880,19 @@ if neobundle#tap('vim-stargate')
   call neobundle#config({
     \ 'autoload': {
       \ 'commands': ['StargateInclude', 'StargateClearCache'],
+    \ }
+  \ })
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: sourcekittendaemon.vim
+"==============================================================================================
+if neobundle#tap('sourcekittendaemon.vim')
+  call neobundle#config({
+    \ 'autoload': {
+      \ 'filetypes': ['swift']
     \ }
   \ })
 
