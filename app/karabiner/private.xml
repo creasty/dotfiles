@@ -290,5 +290,16 @@
       </autogen>
     </item>
 
+    <item>
+      <name>Contorl-v to Cmd-V</name>
+      <identifier>private.cv</identifier>
+
+      <autogen>
+        __KeyToKey__
+        KeyCode::V, ModifierFlag::CONTROL_L,
+        KeyCode::V, ModifierFlag::COMMAND_L,
+      </autogen>
+    </item>
+
   </list>
 </root>
