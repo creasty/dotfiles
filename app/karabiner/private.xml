@@ -32,8 +32,10 @@
 
   <list>
     <item>
-      <name>Cmd-' to toggle open finder</name>
-      <identifier>private.open_finder</identifier>
+      <name>Application hotkey</name>
+      <identifier>private.app_hotkey</identifier>
+
+      <appendix>Cmd-' to toggle open finder</appendix>
 
       <block>
         <not>FINDER</not>
@@ -54,21 +56,24 @@
     </item>
 
     <item>
-      <name>Leave InsMode with EISUU (MacVim)</name>
-      <identifier>private.app_macvim_esc_with_eisuu</identifier>
+      <name>MacVim</name>
+      <identifier>private.macvim</identifier>
       <only>MACVIM</only>
+
+      <appendix>Leave InsMode with EISUU</appendix>
+
       <autogen>
-        --KeyToKey--
+        __KeyToKey__
         KeyCode::ESCAPE,
         KeyCode::ESCAPE, KeyCode::JIS_EISUU
       </autogen>
       <autogen>
-        --KeyToKey--
+        __KeyToKey__
         KeyCode::C, VK_CONTROL,
         KeyCode::C, VK_CONTROL, KeyCode::JIS_EISUU
       </autogen>
       <autogen>
-        --KeyToKey--
+        __KeyToKey__
         KeyCode::BRACKET_LEFT, VK_CONTROL,
         KeyCode::BRACKET_LEFT, VK_CONTROL, KeyCode::JIS_EISUU
       </autogen>
@@ -81,12 +86,12 @@
       <block>
         <inputsource_only>JAPANESE</inputsource_only>
         <autogen>
-          --KeyToKey--
+          __KeyToKey__
           KeyCode::SEMICOLON, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::JIS_EISUU
         </autogen>
         <autogen>
-          --KeyToKey--
+          __KeyToKey__
           KeyCode::SEMICOLON, ModifierFlag::NONE,
           KeyCode::JIS_EISUU
         </autogen>
@@ -94,7 +99,7 @@
       <block>
         <inputsource_not>JAPANESE</inputsource_not>
         <autogen>
-          --KeyToKey--
+          __KeyToKey__
           KeyCode::SEMICOLON, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::JIS_KANA
         </autogen>
