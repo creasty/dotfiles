@@ -30,7 +30,9 @@
     </replacementvalue>
   </replacementdef>
 
-  <list>
+  <item>
+    <name>Private</name>
+
     <item>
       <name>Application hotkey</name>
       <identifier>private.app_hotkey</identifier>
@@ -80,8 +82,11 @@
     </item>
 
     <item>
-      <name>Ctrl-; to toggle input source</name>
-      <identifier>private.ctrl_semicolon_toggle_input_source</identifier>
+      <name>Switch input source</name>
+      <identifier>private.switch_input_source</identifier>
+
+      <appendix>Ctrl-; to toggle</appendix>
+      <appendix>[KANA] ; to EISUU</appendix>
 
       <block>
         <inputsource_only>JAPANESE</inputsource_only>
@@ -306,5 +311,5 @@
       </autogen>
     </item>
 
-  </list>
+  </item>
 </root>
