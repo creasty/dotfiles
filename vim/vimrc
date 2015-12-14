@@ -2122,6 +2122,21 @@ if neobundle#tap('lexima.vim')
     \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
   \ })
 
+  " nesting
+  for pa in ['()', '[]', '{}']
+    call lexima#add_rule({
+      \ 'char':  '<C-l>',
+      \ 'at':    '\(...........\)\?' . escape(pa[1], '[]') . '\%#',
+      \ 'input': '<Esc>%i' . pa[0] . '<Esc><Right>%a' . pa[1],
+    \ })
+    call lexima#add_rule({
+      \ 'char':  '<C-l>',
+      \ 'at':    '\(...........\)\?\%#' . escape(pa[1], '[]'),
+      \ 'input': '<Esc><Right>%i' . pa[0] . '<Esc><Right>%i' . pa[1],
+    \ })
+  endfor
+  unlet pa
+
 
   "  Backspace
   "-----------------------------------------------
