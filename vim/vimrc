@@ -534,8 +534,9 @@ function! MyTitleText()
     call add(t, '[' . session . ']')
   endif
 
-  let path = substitute(expand('%:p'), $HOME, '~', '')
-  call add(t, path == '' ? '[No Name]' : path)
+  let path = expand('%:p')
+  let path = substitute((path != '') ? path : getcwd(), $HOME, '~', '')
+  call add(t, path)
 
   return join(t, ' ')
 endfunction
