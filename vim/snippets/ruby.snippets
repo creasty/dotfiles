@@ -72,7 +72,15 @@ abbr Lambda
 	->
 
 snippet pry
-  binding.pry
+	binding.pry
+
+snippet ].freeze
+abbr array freeze
+	].map(&:freeze).freeze
+
+snippet }.freeze
+abbr hash freeze
+	}.map { |k, v| [k, v.freeze] }.to_h.freeze
 
 
 #=== Rails
