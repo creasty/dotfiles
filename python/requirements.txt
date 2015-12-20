@@ -1,9 +1,10 @@
+aws-shell --ignore-installed six
+awscli
+glances
 howdoi
 locustio
 mitmproxy
 numpy
+pgcli
 protobuf
 pyamf
-glances
-pgcli
-aws-shell --ignore-installed six
