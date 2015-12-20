@@ -6,3 +6,4 @@ protobuf
 pyamf
 glances
 pgcli
+aws-shell --ignore-installed six
