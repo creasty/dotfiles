@@ -93,6 +93,7 @@ alias tex2pdf='ptex2pdf -l'
 alias enx='evernote-sandbox'
 alias ne='npm-exec'
 alias ql='qlmanage -p "$@" >& /dev/null'
+alias gk='grep-kill'
 
 alias maxscreen='screenresolution set 2560x1600x32@0'
 
