@@ -9,3 +9,4 @@ github.com/nsf/gocode
 github.com/golang/lint/golint
 code.google.com/p/rog-go/exp/cmd/godef
 golang.org/x/tools/cmd/gotype
+bitbucket.org/liamstask/goose/cmd/goose
