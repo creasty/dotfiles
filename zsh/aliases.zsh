@@ -19,6 +19,8 @@ alias vv='mvim'
 alias g='git'
 alias ag="ag --pager='less -R'"
 
+alias sort='LC_ALL=C sort'
+
 alias :q='exit'
 
 alias pbc='pbcopy'
