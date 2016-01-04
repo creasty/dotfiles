@@ -2515,7 +2515,7 @@ if neobundle#tap('lexima.vim')
   "-----------------------------------------------
   " chan
   call lexima#add_rule({
-    \ 'char':     'n',
+    \ 'char':     '<C-l>',
     \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
     \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
     \ 'filetype': ['go'],
