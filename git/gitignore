@@ -6,3 +6,4 @@ Thumb.db
 vendor/bundle
 .bundle
 .envrc
+tmp/
