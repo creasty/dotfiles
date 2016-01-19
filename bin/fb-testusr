@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+NAME="$1"
+
+if [ -z "$FACEBOOK_APP_ID" ]; then
+  echo "Set FACEBOOK_APP_ID" 1>&2
+  exit 1
+fi
+if [ -z "$FACEBOOK_APP_SECRET" ]; then
+  echo "Set FACEBOOK_APP_SECRET" 1>&2
+  exit 1
+fi
+
+curl -X POST "https://graph.facebook.com/$FACEBOOK_APP_ID/accounts/test-users" \
+  -d "access_token=$FACEBOOK_APP_SECRET" \
+  -d "name=${NAME:-"Yuki Tes"}" \
+  -d 'installed=true' \
+  -d 'locale=ja_JP' \
+  -d 'permissions=read_stream'
