@@ -535,7 +535,9 @@ function! MyTitleText()
   endif
 
   let path = expand('%:p')
-  let path = substitute((path != '') ? path : getcwd(), $HOME, '~', '')
+  let path = (path != '') ? path : getcwd()
+  let path = substitute(path, $HOME, '~', '')
+  let path = substitute(path, '\~/go/src/github.com', '~g', '')
   call add(t, path)
 
   return join(t, ' ')
