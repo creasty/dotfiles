@@ -10,16 +10,6 @@ Setup
 $ bash <(curl -L dotfiles.creasty.com/bootstrap)
 ```
 
-And configure your secret keys:
-
-```sh
-# environment variables
-$ vi zsh/secrets.zsh
-
-# AWS
-$ vi aws/credentials
-```
-
 
 Update
 ------

@@ -7,7 +7,6 @@ DEST_DIR="$HOME"
 
 LINKS=(
   aws/config:.aws/config
-  aws/credentials:.aws/credentials
   bash/bash_profile:.bash_profile
   bash/bashrc:.bashrc
   config/agignore:.agignore
