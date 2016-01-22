@@ -16,7 +16,7 @@ alias less='less -R'
 alias v='vim'
 alias vi='vim'
 alias vv='mvim'
-alias g='git'
+alias g='envcahin crst git'
 alias ag="ag --pager='less -R'"
 
 alias sort='LC_ALL=C sort'
