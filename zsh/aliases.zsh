@@ -34,6 +34,8 @@ alias skey='ssh-keygen -q -b 2048 -t rsa -N "" -C "" -f'
 alias randportn='ruby -e "p rand(1024..65535)"'
 alias randports='ruby -e "p rand(49152..65535)"'
 
+alias ev='envchain'
+
 
 #  Global
 #-----------------------------------------------
