@@ -1,34 +1,35 @@
 #!/usr/bin/env bash
 
-REPO="$(ghq list | peco)"
+HOST='github.com'
+
+ID="$1"
+SELECT="$2"
+REPO=
+
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  REPO="$(
+    git config --get remote.origin.url \
+      | grep "$HOST" \
+      | sed 's/^.*'"${HOST/\./\\.}"'[:\/]\(.*\)\.git$/\1/' \
+      | tr -d "\n"
+  )"
+  [ -n "$REPO" ] && REPO="$HOST/$REPO"
+fi
+
+if [ "$SELECT" = '-' ]; then
+  REPO="$(ghq list | grep "$HOST" | peco)"
+fi
+
 [ -z "$REPO" ] && exit
 
-COMMAND="$1"
-shift
-
-case "$COMMAND" in
-  i|issue)
-    if [ -n "$1" ]; then
-      open "https://$REPO/issues/$1"
-    else
-      open "https://$REPO/issues"
-    fi
-    ;;
-
-  p|pr)
-    if [ -n "$1" ]; then
-      open "https://$REPO/pull/$1"
-    else
-      open "https://$REPO/pulls"
-    fi
-    ;;
-
-  '')
-    open "https://$REPO"
-    ;;
-
-  *)
-    error "Command not found: $COMMAND"
-    exit 1
-    ;;
-esac
+if [[ "$ID" =~ ^(i|issue)$ ]]; then
+  open "https://$REPO/issues"
+elif [[ "$ID" =~ ^i[0-9]+$ ]]; then
+  open "https://$REPO/issues/${ID/i/}"
+elif [[ "$ID" =~ ^(p|pull)$ ]]; then
+  open "https://$REPO/pulls"
+elif [[ "$ID" =~ ^p[0-9]+$ ]]; then
+  open "https://$REPO/pull/${ID/p/}"
+else
+  open "https://$REPO"
+fi
