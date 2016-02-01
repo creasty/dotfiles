@@ -27,6 +27,7 @@ alias pbc='pbcopy'
 alias pbp='pbpaste'
 
 alias o='finder'
+alias c='see'
 
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
 

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+REPO="$(ghq list | peco)"
+[ -z "$REPO" ] && exit
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+  i|issue)
+    if [ -n "$1" ]; then
+      open "https://$REPO/issues/$1"
+    else
+      open "https://$REPO/issues"
+    fi
+    ;;
+
+  p|pr)
+    if [ -n "$1" ]; then
+      open "https://$REPO/pull/$1"
+    else
+      open "https://$REPO/pulls"
+    fi
+    ;;
+
+  '')
+    open "https://$REPO"
+    ;;
+
+  *)
+    error "Command not found: $COMMAND"
+    exit 1
+    ;;
+esac
