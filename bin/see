@@ -6,6 +6,11 @@ ID="$1"
 SELECT="$2"
 REPO=
 
+if [[ "$ID" =~ ^(g|global)$ ]]; then
+  open "https://$HOST/issues?q=sort:updated-desc+is:open+involves:creasty"
+  exit 0
+fi
+
 if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
   REPO="$(
     git config --get remote.origin.url \
