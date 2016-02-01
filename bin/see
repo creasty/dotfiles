@@ -16,7 +16,7 @@ if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
   [ -n "$REPO" ] && REPO="$HOST/$REPO"
 fi
 
-if [ "$SELECT" = '-' ]; then
+if [[ "$ID" = '-' || "$SELECT" = '-' ]]; then
   REPO="$(ghq list | grep "$HOST" | peco)"
 fi
 
