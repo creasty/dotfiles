@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 HOST='github.com'
+USER="$(git config --get github.user)"
 
 ID="$1"
 SELECT="$2"
 REPO=
 
 if [[ "$ID" =~ ^(g|global)$ ]]; then
-  open "https://$HOST/issues?q=sort:updated-desc+is:open+involves:creasty"
+  open "https://$HOST/issues?q=sort:updated-desc+is:open+involves:$USER"
   exit 0
 fi
 
