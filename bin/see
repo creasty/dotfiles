@@ -36,6 +36,8 @@ elif [[ "$ID" =~ ^(p|pull)$ ]]; then
   open "https://$REPO/pulls"
 elif [[ "$ID" =~ ^p[0-9]+$ ]]; then
   open "https://$REPO/pull/${ID/p/}"
+elif [[ "$ID" =~ ^(f|find)$ ]]; then
+  open "https://$REPO/find/master"
 else
   open "https://$REPO"
 fi
