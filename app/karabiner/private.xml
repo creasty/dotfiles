@@ -71,7 +71,7 @@
         <not>EVERNOTE</not>
         <autogen>
           __KeyToKey__
-          KeyCode::QUOTE, VK_COMMAND, VK_CONTROL | ModifierFlag::NONE,
+          KeyCode::QUOTE, VK_COMMAND | VK_CONTROL | ModifierFlag::NONE,
           KeyCode::VK_OPEN_URL_APP_Evernote
         </autogen>
       </block>
@@ -79,7 +79,7 @@
         <only>EVERNOTE</only>
         <autogen>
           __KeyToKey__
-          KeyCode::QUOTE, VK_COMMAND, VK_CONTROL | ModifierFlag::NONE,
+          KeyCode::QUOTE, VK_COMMAND | VK_CONTROL | ModifierFlag::NONE,
           KeyCode::H, VK_COMMAND
         </autogen>
       </block>
