@@ -326,6 +326,12 @@
         KeyCode::O, ModifierFlag::CONTROL_L | ModifierFlag::NONE,
         KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L,
       </autogen>
+
+      <autogen>
+        __KeyToKey__
+        KeyCode::I, VK_COMMAND | VK_SHIFT | ModifierFlag::NONE,
+        KeyCode::VK_NONE,
+      </autogen>
     </item>
 
   </item>
