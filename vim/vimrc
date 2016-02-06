@@ -1755,14 +1755,13 @@ if neobundle#tap('emmet-vim')
     \ }
   \ })
 
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:user_emmet_mode = 'i'
-    let g:user_emmet_leader_key = '<c-y>'
-    let g:user_emmet_settings = {
-      \ 'lang': 'ja',
-      \ 'indentation': '  ',
-    \ }
-  endfunction
+  let g:user_emmet_install_global = 0
+  let g:user_emmet_mode = 'i'
+  let g:user_emmet_leader_key = '<c-y>'
+  let g:user_emmet_settings = {
+    \ 'lang': 'ja',
+    \ 'indentation': '  ',
+  \ }
 
   call neobundle#untap()
 endif
@@ -2175,7 +2174,7 @@ if neobundle#tap('lexima.vim')
 
   function! SuperTabCompletion()
     if pumvisible()
-      return neocomplete#close_popup()
+      return "\<C-y>"
     elseif neosnippet#expandable_or_jumpable()
       return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
     elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
