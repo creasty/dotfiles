@@ -78,15 +78,7 @@ main() {
   clone_or_update_repo
 
   cd $DOTFILES_PATH
-
-  [ -f zsh/secrets.zsh ] || cp zsh/secrets.zsh{.sample,}
-  [ -f aws/credentials ] || cp aws/credentials{.sample,}
-
-  ./bootstrap.d/install
-  ./bootstrap.d/link
-  ./bootstrap.d/shell
-  ./bootstrap.d/app
-  # ./bootstrap.d/osx
+  make
 }
 
 main
