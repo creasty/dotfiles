@@ -13,6 +13,11 @@
     <equal>org.vim.MacVim</equal>
   </appdef>
 
+  <appdef>
+    <appname>EVERNOTE</appname>
+    <equal>com.evernote.Evernote</equal>
+  </appdef>
+
   <modifierdef>PRIVATE_SUPER_MODE</modifierdef>
   <modifierdef>PRIVATE_SKEY</modifierdef>
 
@@ -30,6 +35,11 @@
     </replacementvalue>
   </replacementdef>
 
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Evernote</name>
+    <url type="file">/Applications/Evernote.app</url>
+  </vkopenurldef>
+
   <item>
     <name>Private</name>
 
@@ -38,6 +48,7 @@
       <identifier>private.app_hotkey</identifier>
 
       <appendix>Cmd-' to toggle open finder</appendix>
+      <appendix>Cmd-Ctrl-' to toggle open Evernote</appendix>
 
       <block>
         <not>FINDER</not>
@@ -52,6 +63,23 @@
         <autogen>
           __KeyToKey__
           KeyCode::QUOTE, VK_COMMAND | ModifierFlag::NONE,
+          KeyCode::H, VK_COMMAND
+        </autogen>
+      </block>
+
+      <block>
+        <not>EVERNOTE</not>
+        <autogen>
+          __KeyToKey__
+          KeyCode::QUOTE, VK_COMMAND, VK_CONTROL | ModifierFlag::NONE,
+          KeyCode::VK_OPEN_URL_APP_Evernote
+        </autogen>
+      </block>
+      <block>
+        <only>EVERNOTE</only>
+        <autogen>
+          __KeyToKey__
+          KeyCode::QUOTE, VK_COMMAND, VK_CONTROL | ModifierFlag::NONE,
           KeyCode::H, VK_COMMAND
         </autogen>
       </block>
