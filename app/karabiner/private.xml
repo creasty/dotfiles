@@ -318,12 +318,12 @@
 
       <autogen>
         __KeyToKey__
-        KeyCode::I, ModifierFlag::CONTROL_L,
+        KeyCode::I, ModifierFlag::CONTROL_L | ModifierFlag::NONE,
         KeyCode::BRACKET_LEFT, ModifierFlag::COMMAND_L,
       </autogen>
       <autogen>
         __KeyToKey__
-        KeyCode::O, ModifierFlag::CONTROL_L,
+        KeyCode::O, ModifierFlag::CONTROL_L | ModifierFlag::NONE,
         KeyCode::BRACKET_RIGHT, ModifierFlag::COMMAND_L,
       </autogen>
     </item>
