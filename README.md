@@ -3,24 +3,20 @@
 
 ***Work it harder, make it better, do it faster, makes us stronger.***
 
-Setup
------
-
-```sh
-$ bash <(curl -L dotfiles.creasty.com/bootstrap)
-```
-
-
-Update
-------
-
-```sh
-$ ./bootstrap
-```
+<table style="border:none;">
+  <tr style="border:none;">
+    <td style="border:none;"><strong>Installation</strong></td>
+    <td style="border:none;"><code>bash <(curl -L <a href="http://dotfiles.creasty.com/bootstrap">dotfiles.creasty.com/bootstrap</a>)</code></td>
+  </tr>
+  <tr style="border:none;">
+    <td style="border:none;"><strong>Update</strong></td>
+    <td style="border:none;"><code>make update</code></td>
+  </tr>
+</table>
 
 
-Extra
------
+Extra: Manual settings
+----------------------
 
 - [Applications from Store](./docs/apps_from_store.md)
 - [System Preference](./docs/system_preference.md)

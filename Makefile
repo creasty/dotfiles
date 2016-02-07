@@ -19,3 +19,9 @@ app:
 .PHONY: osx
 osx:
 	@./bootstrap.d/osx
+
+.PHONY: update
+update:
+	@git pull origin master
+	@git submodule sync
+	@echo "Please run make"

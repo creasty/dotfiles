@@ -23,10 +23,12 @@ clone_or_update_repo() {
   if ! [ -d $DOTFILES_PATH/.git ]; then
     echo 'Cloning repo...'
     git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_PATH
+    cd $DOTFILES_PATH
+    make
   else
     echo 'Updating repo...'
     cd $DOTFILES_PATH
-    git pull origin master
+    make update
   fi
 }
 
@@ -72,13 +74,8 @@ check_os() {
 
 main() {
   print_header
-
   check_os
-
   clone_or_update_repo
-
-  cd $DOTFILES_PATH
-  make
 }
 
 main
