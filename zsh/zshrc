@@ -96,12 +96,12 @@ setopt cdable_vars
 
 #  Named directories
 #-----------------------------------------------
-hash -d dt=~/Desktop
-hash -d dl=~/Downloads
-hash -d dp=~/Dropbox
+hash -d t=~/Desktop
+hash -d l=~/Downloads
+hash -d d=~/Dropbox
 
-hash -d ghq=$(ghq root)
-hash -d github=$(ghq root)/github.com
+hash -d q=$(ghq root)
+hash -d g=$(ghq root)/github.com
 
 
 #  Fish shell like syntax highlighting
