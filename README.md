@@ -15,8 +15,18 @@
 </table>
 
 
-Extra: Manual settings
-----------------------
+Extra
+-----
+
+### Credentials
+
+I'm using [envchain](https://github.com/sorah/envchain) for managing secure credentials.
+
+```sh
+$ make envchain
+```
+
+### Manual settings
 
 - [Applications from Store](./docs/apps_from_store.md)
 - [System Preference](./docs/system_preference.md)
