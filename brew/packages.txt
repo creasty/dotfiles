@@ -37,6 +37,7 @@ gpg
 graphviz
 hicolor-icon-theme
 httpie
+https://raw.githubusercontent.com/sorah/envchain/master/brew/envchain.rb
 hub
 imagemagick
 irssi --with-perl=yes --with-proxy --with-socks
