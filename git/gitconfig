@@ -70,7 +70,7 @@
 
   st  = stash
   sp  = stash pop
-  v   = revert
+  v   = revert --no-edit
   p   = cherry-pick
   rb  = rebase
   rbm = rebase master
