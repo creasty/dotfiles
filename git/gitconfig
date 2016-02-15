@@ -132,11 +132,8 @@
   rev = https://{host}/{path}/commit/{commit}
 
 [url "git@github.com:"]
-  pushInsteadOf = git://github.com/
-  pushInsteadOf = https://github.com/
-
-[url "git://github.com/"]
   insteadOf = https://github.com/
+  insteadOf = git://github.com/
 
 [ghq]
   root = ~/go/src
