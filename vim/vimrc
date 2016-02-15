@@ -2839,6 +2839,8 @@ if neobundle#tap('neocomplete')
     \ setlocal omnifunc=xmlcomplete#CompleteTags
   autocmd vimrc FileType go
     \ setlocal omnifunc=gocomplete#Complete
+  autocmd vimrc FileType typescript
+    \ setlocal omnifunc=TSScompleteFunc
 
   function! neobundle#tapped.hooks.on_source(bundle)
     " cancel or accept
@@ -3747,10 +3749,12 @@ endif
 
 "=== Plugin: typescript-tools
 "==============================================================================================
-if neobundle#tap('typescript-tools')
+if neobundle#tap('typescript-tools.vim')
   call neobundle#config({
     \ 'autoload': { 'filetypes': ['typescript'] }
   \ })
+
+  " let g:TSS = ['bin/tss']
 
   call neobundle#untap()
 endif
