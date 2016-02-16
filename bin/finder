@@ -28,7 +28,9 @@ SCRIPT='
 
 PATH="${1:-.}"
 
-if [ -d "$PATH" ]; then
+if [[ "$PATH" =~ ^:[0-9]+(/.+)?$ ]]; then
+  $OPEN_BIN "http://localhost$PATH"
+elif [ -d "$PATH" ]; then
   $OSAS_BIN -e "$SCRIPT" "$(cd "$PATH"; pwd)" > /dev/null 2>&1
 else
   $OPEN_BIN "$@"
