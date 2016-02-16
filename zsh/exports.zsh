@@ -47,6 +47,11 @@ export PATH=$PATH:$TEXLIVE_BIN_PATH
 export GIT_MERGE_AUTOEDIT='no'
 
 
+#  Rails
+#-----------------------------------------------
+export DISABLE_SPRING=1
+
+
 #  Docker
 #-----------------------------------------------
 # $ docker-machine create --driver virtualbox local
