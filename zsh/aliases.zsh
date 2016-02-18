@@ -149,6 +149,13 @@ alias webkit2evernote='webkit2png -C -W 1920 -H 1200 --clipwidth=960 --clipheigh
 alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348 -s 0.5 -D ~/Desktop/ -d'
 
 
+#  Docker
+#-----------------------------------------------
+alias dk='docker'
+alias dkc='docker-compose'
+alias dkm='docker-machine'
+
+
 #  Ruby / Rails
 #-----------------------------------------------
 alias b='bundle'
