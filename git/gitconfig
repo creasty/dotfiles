@@ -27,8 +27,8 @@
   a    = ! git add -A -v `git rev-parse --show-toplevel`
   ap   = add -p
   c    = commit
-  cm   = commit -m
-  ac   = ! git a && git c -m
+  cm   = ! git a && git c -m
+  ccm  = commit -m
   ca   = commit --amend
   cam  = commit --amend -m
   cane = commit --amend --no-edit
