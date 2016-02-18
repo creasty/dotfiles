@@ -152,6 +152,12 @@ ZSH_HIGHLIGHT_STYLES[assign]=fg=yellow
 eval "$(direnv hook zsh)"
 
 
+#  Docker
+#-----------------------------------------------
+# docker-machine create --driver virtualbox local
+eval "$(docker-machine env local)"
+
+
 #  Apperance
 #-----------------------------------------------
 # set terminal title including current directory
