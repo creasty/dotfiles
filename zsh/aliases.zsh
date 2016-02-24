@@ -12,6 +12,7 @@ alias tree='tree -C'
 alias df='df -h'
 alias tf='tail -f'
 alias less='less -R'
+alias le='less -R'
 
 alias v='vim'
 alias vi='vim'
