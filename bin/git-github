@@ -129,8 +129,11 @@ create_issue() {
 }
 
 create_pull_request() {
-  local head="${1:-$HEAD}"
-  local base="${2:-master}"
+  local base="${1:-master}"
+  local head="${2:-$HEAD}"
+
+  local config_base="$(git config pr.base 2>/dev/null)"
+  [ -n "$config_base" ] && base="$config_base"
 
   local commits="$(git log --pretty=format:'%s' "${base}..${head}" | cat)"
   local last_commit="$(echo "$commits" | head -n 1)"
