@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  qa)
+    git push qa -f develop:master
+    ;;
+
+  st|stg|staging)
+    git push staging -f HEAD:master
+    ;;
+
+  *)
+    echo "Error" 1>&2
+    ;;
+esac

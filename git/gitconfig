@@ -120,6 +120,8 @@
   is = github mk-issue
   wr = browse-remote
 
+  y = deploy
+
 [issue]
   type = github
 
