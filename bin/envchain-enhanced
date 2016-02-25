@@ -1,0 +1,51 @@
+#!/usr/bin/env zsh
+
+set -e
+
+NAMESPACE="$1"
+shift
+COMMAND="$1"
+shift
+
+ENV_VARS=""
+
+if [ -z "$NAMESPACE" ]; then
+  echo 'Please specify namespace' 1>&2
+fi
+
+if [ "$NAMESPACE" != '-' ]; then
+  case "$COMMAND" in
+    set)
+      envchain -s "$NAMESPACE" $@
+      exit $?
+      ;;
+
+    ls)
+      envchain -l -v "$NAMESPACE"
+      exit $?
+      ;;
+
+    *)
+      ENV_VARS="$(envchain -l -v "$NAMESPACE")"
+  esac
+elif [ -f .env ]; then
+  ENV_VARS="$(cat .env)"
+else
+  echo 'No env configured'
+  exit 1
+fi
+
+if [ -n "$ENV_VARS" ]; then
+  set -o allexport
+  eval "$ENV_VARS"
+  set +o allexport
+fi
+
+# Resolve alias
+T="$(type "$COMMAND" 2>/dev/null || true)"
+if [[ "$T" =~ 'is an alias for' ]]; then
+  T=(`sed 's/.*is an alias for //' <<< "$T" | tr ' ' "\n"`)
+  ${T[@]} $@
+else
+  $COMMAND $@
+fi
