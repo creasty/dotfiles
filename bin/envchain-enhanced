@@ -13,6 +13,7 @@ if [ -z "$NAMESPACE" ]; then
   echo 'Please specify namespace' 1>&2
 fi
 
+# Envchain
 if [ "$NAMESPACE" != '-' ]; then
   case "$COMMAND" in
     set)
@@ -28,13 +29,14 @@ if [ "$NAMESPACE" != '-' ]; then
     *)
       ENV_VARS="$(envchain -l -v "$NAMESPACE")"
   esac
-elif [ -f .env ]; then
-  ENV_VARS="$(cat .env)"
-else
-  echo 'No env configured'
-  exit 1
 fi
 
+# Dotenv
+if [ -f .env ]; then
+  ENV_VARS="$ENV_VARS\n$(cat .env)"
+fi
+
+# Export
 if [ -n "$ENV_VARS" ]; then
   set -o allexport
   eval "$ENV_VARS"
