@@ -193,6 +193,9 @@ else
   " a genius template engine
   NeoBundle 'creasty/mold.vim'
 
+  " real time markdown preview plugin for vim
+  NeoBundleLazy 'miyakogi/livemark.vim'
+
 
   "  Completion
   "-----------------------------------------------
@@ -2760,6 +2763,27 @@ if neobundle#tap('mold.vim')
       call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin:: livemark.vim
+"==============================================================================================
+if neobundle#tap('livemark.vim')
+  call neobundle#config({
+    \ 'autoload': {
+      \ 'commands': 'LiveMark',
+    \ }
+  \ })
+
+  let g:livemark_browser_port = 8089
+  let g:livemark_vim_port = 8090
+
+  " let g:livemark_no_default_js = 1
+  " let g:livemark_no_default_css = 1
+  " let g:livemark_js_files = [expand('~/path/to/your/js_file.js')]
+  " let g:livemark_css_files = [expand('~/path/to/your/css_file.css')]
 
   call neobundle#untap()
 endif
