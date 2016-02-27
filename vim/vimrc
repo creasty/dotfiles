@@ -2776,6 +2776,7 @@ if neobundle#tap('livemark.vim')
     \ }
   \ })
 
+  let g:livemark_browser = 'open %'
   let g:livemark_browser_port = 8089
   let g:livemark_vim_port = 8090
 
