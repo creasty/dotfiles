@@ -89,10 +89,9 @@ call neobundle#begin(s:env.path.bundle)
 " package manager
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-let g:neobundle#log_filename               = s:env.path.bundle . '/.neobundle/neobundle.log'
-let g:neobundle#install_max_processes      = 4
-let g:neobundle#install_process_timeout    = 180
-let g:neobundle#types#git#enable_submodule = 0
+let g:neobundle#log_filename            = s:env.path.bundle . '/.neobundle/neobundle.log'
+let g:neobundle#install_max_processes   = 4
+let g:neobundle#install_process_timeout = 180
 
 if neobundle#has_cache()
   NeoBundleLoadCache
