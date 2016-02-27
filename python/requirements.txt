@@ -3,8 +3,11 @@ awscli
 glances
 howdoi
 locustio
+misaka
 mitmproxy
 numpy
 pgcli
 protobuf
 pyamf
+pygments
+tornado
