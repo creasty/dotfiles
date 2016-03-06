@@ -7,7 +7,7 @@ print_status "Installed"
 section "Installing golang"
 
 INSTALLED_VERSIONS="$(goenv versions)"
-DEFAULT_VERSION="$(< $DOTFILES_PATH/golang/version.txt)"
+DEFAULT_VERSION="$(< $DOTFILES_PATH/golang/.go-version)"
 
 cat $DOTFILES_PATH/golang/versions.txt \
   | {
