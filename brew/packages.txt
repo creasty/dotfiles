@@ -32,7 +32,6 @@ git
 git-flow
 git-ftp
 git-lfs
-go
 gpg
 graphviz
 hicolor-icon-theme

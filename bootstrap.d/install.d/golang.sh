@@ -4,6 +4,29 @@ anyenv install goenv
 exec $SHELL -l
 print_status "Installed"
 
+section "Installing golang"
+
+INSTALLED_VERSIONS="$(goenv versions)"
+DEFAULT_VERSION="$(< $DOTFILES_PATH/golang/version.txt)"
+
+cat $DOTFILES_PATH/golang/versions.txt \
+  | {
+    while read -r line; do
+      if ! [ -z "$line" ]; then
+        version="$line"
+
+        subsection "Golang v$version"
+
+        if [ -z "$(echo -n "$INSTALLED_VERSIONS" | grep $version)" ]; then
+          goenv install $version
+          print_status $?
+        else
+          print_info "Installed"
+        fi
+      fi
+    done
+  }
+
 
 section "Installing Golang packages"
 
