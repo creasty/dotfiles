@@ -28,6 +28,10 @@ cat $DOTFILES_PATH/golang/versions.txt \
   }
 
 
+section "Set global golang to v$DEFAULT_VERSION"
+goenv global $DEFAULT_VERSION
+print_status $?
+
 section "Installing Golang packages"
 
 cat $DOTFILES_PATH/golang/packages.txt | xargs -n 1 go get
