@@ -3298,7 +3298,7 @@ if neobundle#tap('vim-watchdogs')
     \ 'errorformat': '%f:%l:%c: %m,%W%f:%l: %m,%-G%.%#',
   \ }
   let g:quickrun_config['watchdogs_checker/ruby'] = {
-    \ 'command': 'ruby',
+    \ 'command': $HOME . '/.anyenv/envs/rbenv/shims/ruby',
     \ 'exec':    '%c -cw %o %s:p',
   \ }
 
