@@ -120,6 +120,7 @@ alias hosts='vi /etc/hosts'
 alias ip='ipconfig getifaddr en0 || ipconfig getifaddr en1'
 alias ipg='dig +short myip.opendns.com @resolver1.opendns.com'
 alias whois='whois -h whois-servers.net'
+alias flush-dns='sudo killall -HUP mDNSResponder'
 
 alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
