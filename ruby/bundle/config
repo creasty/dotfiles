@@ -1,2 +1,5 @@
 ---
 BUNDLE_BUILD__NOKOGIRI: "--use-system-libraries"
+BUNDLE_GEM__TEST: rspec
+BUNDLE_GEM__MIT: false
+BUNDLE_GEM__COC: false
