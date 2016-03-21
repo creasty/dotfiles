@@ -42,6 +42,7 @@ hub
 imagemagick
 irssi --with-perl=yes --with-proxy --with-socks
 jbig2dec
+jo
 jpeg
 jq
 libepoxy
