@@ -47,6 +47,11 @@
     <url type="file">/Applications/Alternote.app</url>
   </vkopenurldef>
 
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_SHELL_focus_menu_bar</name>
+    <url type="shell"><![CDATA[ ~/dotfiles/bin/focus-menu-bar ]]></url>
+  </vkopenurldef>
+
   <item>
     <name>Private</name>
 
@@ -156,6 +161,7 @@
       <appendix>S+K: Switch to previous application</appendix>
       <appendix>S+N: Switch to next window</appendix>
       <appendix>S+B: Switch to previous window</appendix>
+      <appendix>S+Space: Focus on menu bar</appendix>
 
       <block>
         <modifier_not>
@@ -227,6 +233,13 @@
           __KeyToKey__
           KeyCode::B,
           KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L,
+          ModifierFlag::PRIVATE_SUPER_MODE,
+        </autogen>
+
+        <autogen>
+          __KeyToKey__
+          KeyCode::SPACE,
+          KeyCode::VK_OPEN_URL_SHELL_focus_menu_bar,
           ModifierFlag::PRIVATE_SUPER_MODE,
         </autogen>
 
