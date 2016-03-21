@@ -1,5 +1,6 @@
 android-sdk
 ansible
+argon/mas/mas
 asciinema
 awscli --HEAD
 batik
