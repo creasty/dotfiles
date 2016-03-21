@@ -12,8 +12,6 @@ google-chrome
 google-hangouts
 google-japanese-ime
 growlnotify
-imagealpha
-imageoptim
 iterm2
 java7
 karabiner
