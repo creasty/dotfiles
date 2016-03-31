@@ -11,9 +11,20 @@ if [ -z "$FACEBOOK_APP_SECRET" ]; then
   exit 1
 fi
 
-curl -X POST "https://graph.facebook.com/$FACEBOOK_APP_ID/accounts/test-users" \
-  -d "access_token=$FACEBOOK_APP_SECRET" \
-  -d "name=${NAME:-"Yuki Tes"}" \
+ACCESS_TOKEN="$(
+  curl -X POST "https://graph.facebook.com/oauth/access_token" \
+    -d "client_id=$FACEBOOK_APP_ID" \
+    -d "client_secret=$FACEBOOK_APP_SECRET" \
+    -d 'grant_type=client_credentials' \
+    | cut -d'=' -f 2
+)"
+
+# Update https://developers.facebook.com/docs/graph-api/reference/v2.0/test-user/
+
+curl -X POST "https://graph.facebook.com/v2.0/$FACEBOOK_APP_ID/accounts/test-users" \
+  -d "access_token=$ACCESS_TOKEN" \
+  -d "name=${NAME:-"Tmp User"}" \
   -d 'installed=true' \
   -d 'locale=ja_JP' \
-  -d 'permissions=read_stream'
+  -d 'permissions=read_stream' \
+  | jq '{ id, email, password }'
