@@ -33,7 +33,7 @@ fi
 
 # Dotenv
 if [ -f .env ]; then
-  ENV_VARS="$ENV_VARS\n$(cat .env)"
+  ENV_VARS="$ENV_VARS\n$(cat .env | grep -v '^#')"
 fi
 
 # Export
