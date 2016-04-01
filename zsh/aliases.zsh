@@ -156,6 +156,11 @@ alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348
 alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
+alias dk-clean='docker rmi $(docker images -f "dangling=true" -q)'
+
+dk-open() {
+  open "http://$(docker-machine ip local)$@"
+}
 
 
 #  Ruby / Rails
