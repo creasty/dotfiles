@@ -18,6 +18,12 @@ for a in "$@"; do
     -*)
       OPTS=("${OPTS[@]}" "$a")
       ;;
+    m)
+      ARGS=("${ARGS[@]}" 'master')
+      ;;
+    d)
+      ARGS=("${ARGS[@]}" 'develop')
+      ;;
     *)
       ARGS=("${ARGS[@]}" "$a")
       ;;
