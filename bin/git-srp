@@ -12,38 +12,23 @@ set -o pipefail
 #       L: Lines of module
 #
 get_srp() {
-  local target=$1
+  local target="$1"
 
-  local blame="$(git --no-pager blame --line-porcelain $target)"
-  local r="$(
-    echo "$blame" \
-      | sed -n 's/^summary //p' \
-      | sort \
-      | uniq -c \
-      | sort -nr \
-      | wc -l
-  )"
-  local u="$(
-    echo "$blame" \
-      | sed -n 's/^author //p' \
-      | sort \
-      | uniq -c \
-      | sort -nr \
-      | wc -l
-  )"
+  local blame="$(git --no-pager blame -e "$target")"
+  local r="$(echo "$blame" | awk '!a[$1]++' | wc -l)"
+  local u="$(echo "$blame" | awk '!a[$2]++' | wc -l)"
   local l="$(cat $target | wc -l)"
 
-  echo $(($r + $u + ($l / 100 - 5))) $target
+  echo "$(($r + $u + ($l / 100 - 5)))" "$target"
 }
 
 get_files() {
-  git ls-files app lib config vendor script \
-    | grep -E '\.rb$'
+  git ls-files app lib | grep -E '\.rb$'  # For Rails
 }
 
 main() {
   for file in `get_files`; do
-    get_srp $file
+    get_srp "$file"
   done | sort -k1,1 -nr | head -n 30
 }
 
