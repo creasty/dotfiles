@@ -188,6 +188,9 @@ alias rdba='rake-db-migrate-all'
 rdbb() {
   bundle exec rake db:rollback STEP=$1
 }
+rdbd() {
+  bundle exec rake db:migrate:down VERSION=$1
+}
 
 alias rc='bundle exec rails c'
 alias rs='bundle exec rails s'
