@@ -591,8 +591,13 @@ set display+=uhex
 set list
 set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 
-" show wrap line break
-let &showbreak = '❮'
+" indent wrapped lines
+if has('linebreak')
+  set breakindent
+  let &showbreak = '❮❮'
+else
+  let &showbreak = '❮'
+end
 
 " conceal
 if has('conceal')
