@@ -1030,6 +1030,12 @@ nnoremap <silent> K ylpr<Enter>
 vnoremap < <gv
 vnoremap > >gv
 
+" indent/outdent
+inoremap <C-s><C-h> <C-d>
+inoremap <C-s><C-l> <C-t>
+inoremap <C-s>h <C-d>
+inoremap <C-s>l <C-t>
+
 " easy key
 nnoremap <Space>h g^
 nnoremap <Space>l g$
@@ -3395,16 +3401,6 @@ if neobundle#tap('vim-submode')
   call submode#map(       'move-to-fold', 'n', '', 'j',  'zj')
   call submode#enter_with('move-to-fold', 'n', '', 'zk', 'zk')
   call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
-
-
-  "  Indent / outdent
-  "-----------------------------------------------
-  call submode#enter_with('indent', 'i', '', '<C-t>', '<Nop>')
-  call submode#leave_with('indent', 'i', '', '<C-t>')
-  call submode#map(       'indent', 'i', '', '<C-h>', '<C-d>')
-  call submode#map(       'indent', 'i', '', '<C-l>', '<C-t>')
-  call submode#map(       'indent', 'i', '', 'h', '<C-d>')
-  call submode#map(       'indent', 'i', '', 'l', '<C-t>')
 
 
   "  Better undo
