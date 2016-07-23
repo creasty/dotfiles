@@ -2,5 +2,18 @@
 
 PKCS=$1
 
-openssl pkcs12 -in $PKCS -clcerts -nokeys -out cacert.pem
-openssl pkcs12 -in $PKCS -nocerts -nodes -out cacert.key
+openssl pkcs12 \
+  -in "$PKCS" \
+  -clcerts \
+  -nokeys \
+  -out cert.pem
+openssl pkcs12 \
+  -in "$PKCS" \
+  -nocerts \
+  -nodes \
+  -out cert.key
+openssl pkcs12 \
+  -in "$PKCS" \
+  -cacerts \
+  -nokeys \
+  -out cacert.pem
