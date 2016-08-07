@@ -32,7 +32,7 @@ function! s:vimrc_environment()
   let env.path = {
     \ 'dotfiles':       dotfiles_path,
     \ 'dein':           vim_path . '/dein',
-    \ 'dein_repo':      vim_path . '/dein/repo/github.com/Shougo/dein.vim',
+    \ 'dein_repo':      vim_path . '/dein/repos/github.com/Shougo/dein.vim',
     \ 'dein_toml':      vim_path . '/dein/dein.toml',
     \ 'dein_lazy_toml': vim_path . '/dein/dein_lazy.toml',
     \ 'local':          vim_path . '/locals',
