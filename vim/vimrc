@@ -30,13 +30,15 @@ function! s:vimrc_environment()
   let vim_path = dotfiles_path . '/vim'
 
   let env.path = {
-    \ 'dotfiles':  dotfiles_path,
-    \ 'bundle':    vim_path . '/bundle',
-    \ 'neobundle': vim_path . '/bundle/neobundle.vim',
-    \ 'local':     vim_path . '/locals',
-    \ 'dict':      vim_path . '/dict',
-    \ 'template':  vim_path . '/templates',
-    \ 'snippets':  vim_path . '/snippets',
+    \ 'dotfiles':       dotfiles_path,
+    \ 'dein':           vim_path . '/dein',
+    \ 'dein_repo':      vim_path . '/dein/repo/github.com/Shougo/dein.vim',
+    \ 'dein_toml':      vim_path . '/dein/dein.toml',
+    \ 'dein_lazy_toml': vim_path . '/dein/dein_lazy.toml',
+    \ 'local':          vim_path . '/locals',
+    \ 'dict':           vim_path . '/dict',
+    \ 'template':       vim_path . '/templates',
+    \ 'snippets':       vim_path . '/snippets',
   \ }
 
   let env.support = {
@@ -80,279 +82,27 @@ doautocmd User VimrcHookPre
 
 "=== Plugins
 "==============================================================================================
+set nocompatible
+
 if s:env.is_starting
-  let &g:rtp .= ',' . s:env.path.neobundle
+  let &g:rtp .= ',' . s:env.path.dein_repo
 endif
 
-call neobundle#begin(s:env.path.bundle)
+call dein#begin(s:env.path.dein)
 
-" package manager
-NeoBundleFetch 'Shougo/neobundle.vim'
+if dein#load_state(s:env.path.dein)
+  call dein#begin(s:env.path.dein)
 
-let g:neobundle#log_filename            = s:env.path.bundle . '/.neobundle/neobundle.log'
-let g:neobundle#install_max_processes   = 4
-let g:neobundle#install_process_timeout = 180
+  call dein#load_toml(s:env.path.dein_toml,      { 'lazy': 0 })
+  call dein#load_toml(s:env.path.dein_lazy_toml, { 'lazy': 1 })
 
-if neobundle#has_cache()
-  NeoBundleLoadCache
-else
-  " asynchronous execution plugin
-  NeoBundle 'Shougo/vimproc', {
-    \ 'build': {
-      \ 'windows': 'make -f make_mingw32.mak',
-      \ 'cygwin':  'make -f make_cygwin.mak',
-      \ 'mac':     'make -f make_mac.mak',
-      \ 'unix':    'make -f make_unix.mak',
-    \ },
-  \ }
-
-  "  Editing
-  "-----------------------------------------------
-  " define your own operator easily
-  NeoBundleLazy 'kana/vim-operator-user'
-
-  " create your own text objects
-  NeoBundleLazy 'kana/vim-textobj-user'
-
-  " text objects for indented blocks of lines
-  NeoBundle 'kana/vim-textobj-indent', { 'depends': ['kana/vim-textobj-user'] }
-
-  " adds text-objects for word-based columns
-  NeoBundle 'coderifous/textobj-word-column.vim'
-
-  " text objects for multiple types of parentheses
-  NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends': ['kana/vim-textobj-user'] }
-
-  " deleting, changing, and adding surroundings
-  NeoBundle 'surround.vim'
-
-  " f/t motions to highlight all possible choices
-  NeoBundle 'Lokaltog/vim-easymotion'
-
-  " commenting code
-  NeoBundle 'scrooloose/nerdcommenter'
-
-  " general quickrun-hook plugins
-  NeoBundle 'osyo-manga/shabadou.vim'
-
-  " update status line
-  NeoBundle 'KazuakiM/vim-qfstatusline'
-
-  " highlight quickfix errors
-  NeoBundle 'cohama/vim-hier'
-
-  " see quickfix, location list and Syntastic lists errors and warnings
-  NeoBundle 'dannyob/quickfixstatus'
-
-  " mark syntax error lines
-  NeoBundle 'KazuakiM/vim-qfsigns'
-
-  " async syntax checking
-  NeoBundle 'osyo-manga/vim-watchdogs'
-
-  " a simple, easy-to-use Vim alignment plugin
-  NeoBundleLazy 'junegunn/vim-easy-align'
-
-  " emmet for vim: HTML and CSS hi-speed coding
-  NeoBundleLazy 'mattn/emmet-vim'
-
-  " operator to escape HTML entities
-  NeoBundleLazy 'tyru/operator-html-escape.vim', { 'depends': ['kana/vim-operator-user'] }
-
-  " operator to camelize/decamelize a specified text
-  NeoBundleLazy 'tyru/operator-camelize.vim', { 'depends': ['kana/vim-operator-user'] }
-
-  " operator to evaluate a text object using Ruby
-  NeoBundleLazy 'rhysd/vim-operator-evalruby', { 'depends': ['kana/vim-operator-user'] }
-
-  " operator to replace text with register content
-  NeoBundleLazy 'kana/vim-operator-replace', { 'depends': ['kana/vim-operator-user'] }
-
-  " extended % matching
-  NeoBundle 'tmhedberg/matchit'
-
-  " insert several candidates with a single key
-  NeoBundleLazy 'smartchr'
-
-  " auto close parentheses and repeat by dot
-  NeoBundle 'cohama/lexima.vim', { 'depends': ['smartchr', 'Shougo/neocomplete'] }
-
-  " switch segments of text with predefined replacements
-  NeoBundleLazy 'AndrewRadev/switch.vim'
-
-  " maniplate selected text easily
-  NeoBundleLazy 't9md/vim-textmanip'
-
-  " sequencial numbering with pattern
-  NeoBundleLazy 'deris/vim-rengbang'
-
-  " pasting with indentation adjusted to paste destination
-  NeoBundle 'sickill/vim-pasta'
-
-  " a genius template engine
-  NeoBundle 'creasty/mold.vim'
-
-  " real time markdown preview plugin for vim
-  NeoBundleLazy 'miyakogi/livemark.vim'
-
-
-  "  Completion
-  "-----------------------------------------------
-  " next generation of auto completion framework
-  NeoBundleLazy 'Shougo/neocomplete'
-
-  " accurately completing C and C++ code
-  NeoBundleLazy 'Rip-Rip/clang_complete'
-
-  " adds snippet support
-  NeoBundleLazy 'Shougo/neosnippet', { 'depends': ['Shougo/neocomplete', 'mattn/emmet-vim'] }
-
-  " insert #include<>
-  NeoBundleLazy 'osyo-manga/vim-stargate'
-
-  " autocomplete Swift in Vim
-  NeoBundleLazy 'keith/sourcekittendaemon.vim'
-
-
-  "  Utils
-  "-----------------------------------------------
-  " a Git wrapper so awesome
-  NeoBundle 'tpope/vim-fugitive'
-
-  " enable repeating supported plugin maps with dot
-  NeoBundle 'tpope/vim-repeat'
-
-  " a tree explorer
-  NeoBundle 'scrooloose/nerdtree'
-
-  " miscellaneous auto-load Vim scripts (dependency of vim-session)
-  NeoBundleLazy 'xolox/vim-misc'
-
-  " extended session management
-  NeoBundle 'xolox/vim-session', { 'depends': ['xolox/vim-misc'] }
-
-  " unite and create user interfaces
-  NeoBundleLazy 'Shougo/unite.vim'
-
-  " source for ghq list
-  NeoBundleLazy 'sorah/unite-ghq', { 'depends': ['Shougo/unite.vim'] }
-
-  " open URI with browser
-  NeoBundleLazy 'tyru/open-browser.vim'
-
-  " hex editing system
-  NeoBundleLazy 'Shougo/vinarise.vim'
-
-  " pseudo clipboard register
-  NeoBundle 'kana/vim-fakeclip'
-
-  " switch to the missing file without interaction
-  NeoBundleLazy 'kana/vim-altr'
-
-  " run commands quickly
-  NeoBundle 'thinca/vim-quickrun'
-
-  " create your own submodes
-  NeoBundle 'kana/vim-submode'
-
-  " substitute preview
-  NeoBundle 'osyo-manga/vim-over'
-
-  " improved incremental searching
-  " NeoBundleLazy 'haya14busa/incsearch.vim'
-
-  " context filetype library
-  NeoBundleLazy 'Shougo/context_filetype.vim'
-
-  " switch filetype by context around cursor
-  NeoBundleLazy 'osyo-manga/vim-precious', { 'depends': ['Shougo/context_filetype.vim'] }
-
-  " perform the replacement in quickfix
-  NeoBundleLazy 'thinca/vim-qfreplace'
-
-  " command for the_silver_searcher
-  NeoBundleLazy 'rking/ag.vim'
-
-  " ctags generator
-  NeoBundle 'szw/vim-tags'
-
-
-  "  Appearance
-  "-----------------------------------------------
-  " toggle, display and navigate marks
-  NeoBundle 'kshenoy/vim-signature'
-
-  " search status
-  NeoBundle 'osyo-manga/vim-anzu'
-
-  " candle theme
-  NeoBundle 'creasty/candle.vim'
-
-
-  "  Language
-  "-----------------------------------------------
-  " syntax highlight for Haml
-  NeoBundleLazy 'tpope/vim-haml'
-
-  " syntax highlight for Markdown
-  NeoBundleLazy 'tpope/vim-markdown'
-
-  " syntax highlight for CoffeeScript
-  NeoBundleLazy 'kchmck/vim-coffee-script'
-
-  " syntax highlight for Ruby
-  NeoBundleLazy 'vim-ruby/vim-ruby'
-
-  " working with Ruby on Rails applications
-  NeoBundleLazy 'tpope/vim-rails'
-
-  " syntax highlight for Slim
-  NeoBundleLazy 'slim-template/vim-slim'
-
-  " syntax highlight for SCSS
-  NeoBundleLazy 'cakebaker/scss-syntax.vim'
-
-  " plugin for Cocoa/Objective-C development
-  NeoBundleLazy 'msanders/cocoa.vim'
-
-  " plugin for iOS development
-  NeoBundleLazy 'eraserhd/vim-ios'
-
-  " syntax highlight for Scala
-  NeoBundleLazy 'derekwyatt/vim-scala'
-
-  " syntax highlight for Clojure
-  NeoBundleLazy 'jondistad/vimclojure'
-
-  " syntax highlight for Haskell
-  NeoBundleLazy 'kana/vim-filetype-haskell'
-
-  " extra plugin for golang
-  NeoBundleLazy 'vim-jp/vim-go-extra'
-
-  " Elixir support for vim
-  NeoBundleLazy 'elixir-lang/vim-elixir'
-
-  " Vastly improved Javascript indentation and syntax support
-  NeoBundleLazy 'pangloss/vim-javascript'
-
-  " React JSX syntax highlighting and indenting
-  NeoBundle 'mxw/vim-jsx'
-
-  " Jade template engine syntax highlighting and indention
-  NeoBundleLazy 'digitaltoad/vim-jade'
-
-  " TypesSript syntax files for Vim
-  NeoBundleLazy 'leafgarland/typescript-vim'
-
-  " tools related to the TypeScript language
-  NeoBundleLazy 'clausreinke/typescript-tools.vim'
-
-
-  NeoBundleSaveCache
+  call dein#end()
+  call dein#save_state()
 endif
 
-call neobundle#end()
+if dein#check_install()
+  call dein#install()
+endif
 
 filetype plugin indent on
 
@@ -1455,7 +1205,7 @@ if s:env.support.identify
 
   command! -nargs=1 -complete=file ImageTagInsert call <SID>insert_image_tag(<f-args>)
 
-  if neobundle#tap('unite.vim')
+  if dein#tap('unite.vim')
     let s:unite_source = {
       \ 'name': 'image',
       \ 'default_action': { 'common': 'insert' },
@@ -1474,8 +1224,6 @@ if s:env.support.identify
 
     " call unite#define_source(s:unite_source)
     unlet s:unite_source
-
-    call neobundle#untap()
   endif
 endif
 
@@ -1644,39 +1392,28 @@ endfunction
 
 "=== Plugin: vim-textobj-multiblock
 "==============================================================================================
-if neobundle#tap('vim-textobj-multiblock')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands' : 'TextobjMultiblockDefaultKeyMappings',
-      \ 'mappings' : '<Plug>(textobj-multiblock-',
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    let g:textobj_multiblock_blocks = [
-      \ [ '(', ')' ],
-      \ [ '[', ']' ],
-      \ [ '{', '}' ],
-      \ [ '<', '>' ],
-      \ [ '"', '"' ],
-      \ [ "'", "'" ],
-      \ [ '「', '」' ],
-      \ [ '（', '）' ],
-    \ ]
-  endfunction
+if dein#tap('vim-textobj-multiblock')
+  let g:textobj_multiblock_blocks = [
+    \ [ '(', ')' ],
+    \ [ '[', ']' ],
+    \ [ '{', '}' ],
+    \ [ '<', '>' ],
+    \ [ '"', '"' ],
+    \ [ "'", "'" ],
+    \ [ '「', '」' ],
+    \ [ '（', '）' ],
+  \ ]
 
   omap ab <Plug>(textobj-multiblock-a)
   omap ib <Plug>(textobj-multiblock-i)
   xmap ab <Plug>(textobj-multiblock-a)
   xmap ib <Plug>(textobj-multiblock-i)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: surround.vim
 "==============================================================================================
-if neobundle#tap('surround.vim')
+if dein#tap('surround.vim')
   nmap ,( csw(
   nmap ,) csw)
   nmap ,{ csw{
@@ -1685,35 +1422,22 @@ if neobundle#tap('surround.vim')
   nmap ,] csw]
   nmap ,' csw'
   nmap ," csw"
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-easymotion
 "==============================================================================================
-if neobundle#tap('vim-easymotion')
+if dein#tap('vim-easymotion')
   let g:EasyMotion_leader_key = '<Space>'
   let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
   call candle#highlight('EasyMotionTarget', 'yellow', 'dark_yellow', 'underline')
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: nerdcommenter
 "==============================================================================================
-if neobundle#tap('nerdcommenter')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': [
-        \ ['n', 'gc'],
-        \ ['v', 'gc'],
-      \ ],
-    \ }
-  \ })
-
+if dein#tap('nerdcommenter')
   nmap gcc <Leader>c<Space>
   vmap gcc <Leader>cm
   nmap gcs <Leader>cs
@@ -1724,18 +1448,12 @@ if neobundle#tap('nerdcommenter')
   vmap gcI <Leader>c$
   nmap gcA <Leader>cA
   vmap gcA <Leader>cA
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-easy-align
 "==============================================================================================
-if neobundle#tap('vim-easy-align')
-  call neobundle#config({
-    \ 'autoload': { 'commands': ['EasyAlign'] },
-  \ })
-
+if dein#tap('vim-easy-align')
   let g:easy_align_delimiters = {
     \ '=': {
       \ 'pattern':       '===\|<=>\|=\~[#?]\?\|=>\|[:+/*!%^=><&|.-?]*=[#?]\?'
@@ -1753,21 +1471,12 @@ if neobundle#tap('vim-easy-align')
   \ }
 
   vnoremap <silent> L :EasyAlign<cr>
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: emmet-vim
 "==============================================================================================
-if neobundle#tap('emmet-vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'insert': 1,
-      \ 'function_prefix': 'emmet',
-    \ }
-  \ })
-
+if dein#tap('emmet-vim')
   let g:user_emmet_install_global = 0
   let g:user_emmet_mode = 'i'
   let g:user_emmet_leader_key = '<c-y>'
@@ -1775,99 +1484,49 @@ if neobundle#tap('emmet-vim')
     \ 'lang': 'ja',
     \ 'indentation': '  ',
   \ }
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: operator-html-escape.vim
 "==============================================================================================
-if neobundle#tap('operator-html-escape.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(operator-html-',
-    \ }
-  \ })
-
+if dein#tap('operator-html-escape.vim')
   vmap HE <Plug>(operator-html-escape)
   vmap HU <Plug>(operator-html-unescape)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: operator-html-escape.vim
 "==============================================================================================
-if neobundle#tap('operator-camelize.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': [
-        \ '<Plug>(operator-camelize)',
-        \ '<Plug>(operator-decamelize)',
-        \ '<Plug>(operator-camelize-toggle)',
-      \ ]
-    \ }
-  \ })
-
+if dein#tap('operator-camelize.vim')
   vmap C <Plug>(operator-camelize-toggle)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-operator-evalruby
 "==============================================================================================
-if neobundle#tap('vim-operator-evalruby')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(operator-evalruby)',
-    \ }
-  \ })
-
+if dein#tap('vim-operator-evalruby')
   vmap <Space>= <Plug>(operator-evalruby)
   nmap <Space>= va)<Plug>(operator-evalruby)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-operator-replace
 "==============================================================================================
-if neobundle#tap('vim-operator-replace')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(operator-replace)',
-    \ }
-  \ })
-
+if dein#tap('vim-operator-replace')
   map r <Plug>(operator-replace)
   noremap R r
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: smartchr
 "==============================================================================================
-if neobundle#tap('smartchr')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'insert': 1,
-      \ 'function_prefix': 'smartchr',
-    \ },
-  \ })
-
-  call neobundle#untap()
+if dein#tap('smartchr')
 endif
 
 
 "=== Plugin: lexima.vim
 "==============================================================================================
-if neobundle#tap('lexima.vim')
-  NeoBundleSource 'smartchr'
-  NeoBundleSource 'neocomplete'
-  NeoBundleSource 'neosnippet'
-
+if dein#tap('lexima.vim')
   call lexima#set_default_rules()
 
   let indents = "^\(\t\|  \)\+"
@@ -2625,21 +2284,12 @@ if neobundle#tap('lexima.vim')
     \ 'input': "\<C-u>Rename \<C-r>=expand('%:p') \<CR>",
     \ 'mode':  ':',
   \ })
-
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: switch.vim
 "==============================================================================================
-if neobundle#tap('switch.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': 'Switch',
-    \ }
-  \ })
-
+if dein#tap('switch.vim')
   let g:switch_custom_definitions = [
     \ {
       \ '''\(.\{-}\)''': '"\1"',
@@ -2661,24 +2311,15 @@ if neobundle#tap('switch.vim')
     \ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
     \ ['日', '土', '金', '木', '水', '火', '月'],
-    \ ['NeoBundle', 'NeoBundleLazy', 'NeoBundleDisable'],
   \ ]
 
   nnoremap <silent> - :Switch<CR>
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-textmanip
 "==============================================================================================
-if neobundle#tap('vim-textmanip')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(textmanip-',
-    \ }
-  \ })
-
+if dein#tap('vim-textmanip')
   let g:textmanip_enable_mappings = 0
 
   " move selection
@@ -2710,40 +2351,18 @@ if neobundle#tap('vim-textmanip')
       call helper.remove_trailing_WS(tm)
     endif
   endfunction
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-autoclose
-"==============================================================================================
-if neobundle#tap('vim-autoclose')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'insert': 1,
-    \ }
-  \ })
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-rengbang
 "==============================================================================================
-if neobundle#tap('vim-rengbang')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': 'RengBang',
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-rengbang')
 endif
 
 
 "=== Plugin: mold.vim
 "==============================================================================================
-if neobundle#tap('mold.vim')
+if dein#tap('mold.vim')
   " autocmd vimrc BufNewFile * call mold#load('', 1)
 
   autocmd vimrc User MoldTemplateLoadPre  call <SID>template_before_load()
@@ -2773,20 +2392,12 @@ if neobundle#tap('mold.vim')
       call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin:: livemark.vim
 "==============================================================================================
-if neobundle#tap('livemark.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': 'LiveMark',
-    \ }
-  \ })
-
+if dein#tap('livemark.vim')
   let g:livemark_browser = '"open %s"'
   let g:livemark_browser_port = 8089
   let g:livemark_vim_port = 8090
@@ -2795,20 +2406,12 @@ if neobundle#tap('livemark.vim')
   " let g:livemark_no_default_css = 1
   " let g:livemark_js_files = [expand('~/path/to/your/js_file.js')]
   " let g:livemark_css_files = [expand('~/path/to/your/css_file.css')]
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: neocomplete
 "==============================================================================================
-if neobundle#tap('neocomplete')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'insert': 1,
-    \ }
-  \ })
-
+if dein#tap('neocomplete')
   set completeopt& completeopt-=preview
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
@@ -2877,44 +2480,27 @@ if neobundle#tap('neocomplete')
   autocmd vimrc FileType typescript
     \ setlocal omnifunc=TSScompleteFunc
 
-  function! neobundle#tapped.hooks.on_source(bundle)
+  function! s:neocomplete_on_source() abort
     " cancel or accept
     imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=neocomplete#cancel_popup()\<CR>" : "\<Esc>"
     imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
   endfunction
 
-  call neobundle#untap()
+  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
+    \ 'call s:neocomplete_on_source()'
 endif
 
 
 "=== Plugin: clang_complete
 "==============================================================================================
-if neobundle#tap('clang_complete')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'filetypes': ['clang', 'objc'],
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('clang_complete')
 endif
 
 
 "=== Plugin: neosnippet
 "==============================================================================================
-if neobundle#tap('neosnippet')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['NeoSnippetEdit', 'NeoSnippetSource'],
-      \ 'filetypes': 'snippet',
-      \ 'insert': 1,
-      \ 'unite_sources': ['snippet', 'neosnippet/user', 'neosnippet/runtime'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
-    NeoBundleSource 'emmet-vim'
-
+if dein#tap('neosnippet')
+  function! s:neosnippet_on_source() abort
     let g:neosnippet#disable_select_mode_mappings = 0
     let g:neosnippet#enable_snipmate_compatibility = 1
     let g:neosnippet#snippets_directory = s:env.path.snippets
@@ -2925,39 +2511,26 @@ if neobundle#tap('neosnippet')
       \ exec '%s/<`\d\+:\?[^>]*`>//ge'
   endfunction
 
-  call neobundle#untap()
+  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
+    \ 'call s:neosnippet_on_source()'
 endif
 
 
 "=== Plugin: vim-stargate
 "==============================================================================================
-if neobundle#tap('vim-stargate')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['StargateInclude', 'StargateClearCache'],
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-stargate')
 endif
 
 
 "=== Plugin: sourcekittendaemon.vim
 "==============================================================================================
-if neobundle#tap('sourcekittendaemon.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'filetypes': ['swift']
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('sourcekittendaemon.vim')
 endif
 
 
 "=== Plugin: vim-fugitive
 "==============================================================================================
-if neobundle#tap('vim-fugitive')
+if dein#tap('vim-fugitive')
   autocmd vimrc User fugitive
     \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
     \   nnoremap <buffer> .. :edit %:h<CR> |
@@ -2965,68 +2538,24 @@ if neobundle#tap('vim-fugitive')
 
   autocmd vimrc BufReadPost fugitive://*
     \ set bufhidden=delete
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: nerdtree
 "==============================================================================================
-if neobundle#tap('nerdtree')
+if dein#tap('nerdtree')
   let g:NERDSpaceDelims = 1
   let g:NERDShutUp = 1
   let g:NERDTreeShowHidden = 1
   let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
   let g:NERDTreeAutoDeleteBuffer = 1
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-session
-"==============================================================================================
-if neobundle#tap('vim-session')
-  let g:session_autosave = 0
-  let g:session_autoload = 0
-  let g:session_default_to_last = 0
-  let g:session_default_overwrite = 1
-  let g:session_command_aliases = 1
-
-  let g:session_persist_colors = 0
-
-  set sessionoptions-=blank
-  set sessionoptions-=help
-  set sessionoptions-=options
-
-  nnoremap gs :OpenSession<Space>
-  nnoremap <Leader>sc :CloseSession<CR>
-  nnoremap <Leader>ss :SaveSession<CR>
-
-  " autocmd vimrc VimLeavePre *
-  "   \ call <SID>auto_save_session()
-
-  function! s:auto_save_session()
-    let session = fnamemodify(v:this_session, ':t')
-
-    if !empty(session)
-      :SaveSession
-    endif
-  endfunction
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: unite.vim
 "==============================================================================================
-if neobundle#tap('unite.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Unite'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
+if dein#tap('unite.vim')
+  function! s:unite_on_source() abort
     let g:unite_force_overwrite_statusline = 0
     let g:unite_enable_start_insert = 1
     let g:unite_winheight = 10
@@ -3113,52 +2642,32 @@ if neobundle#tap('unite.vim')
 
   nnoremap <silent> <Space>g :<C-u>Unite -buffer-name=search-buffer grep:.<CR>
 
-  call neobundle#untap()
+  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
+    \ 'call s:unite_on_source()'
 endif
 
 
 "=== Plugin: open-browser.vim
 "==============================================================================================
-if neobundle#tap('open-browser.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(openbrowser-',
-    \ }
-  \ })
-
+if dein#tap('open-browser.vim')
   " disable netrw's gx mapping.
   let g:netrw_nogx = 1
 
   nnoremap gx <Plug>(openbrowser-smart-search)
   vnoremap gx <Plug>(openbrowser-smart-search)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vinarise.vim
 "==============================================================================================
-if neobundle#tap('vinarise.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Vinarise', 'VinariseDump'],
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vinarise.vim')
 endif
 
 
 "=== Plugin: vim-altr
 "==============================================================================================
-if neobundle#tap('vim-altr')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(altr-',
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
+if dein#tap('vim-altr')
+  function! altr_on_source() abort
     " Header files
     call altr#define('%.c', '%.h', '%.m')
 
@@ -3186,13 +2695,14 @@ if neobundle#tap('vim-altr')
   nmap ga <Plug>(altr-forward)
   nmap gA <Plug>(altr-back)
 
-  call neobundle#untap()
+  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
+    \ 'call s:altr_on_source()'
 endif
 
 
 "=== Plugin: vim-quickrun
 "==============================================================================================
-if neobundle#tap('vim-quickrun')
+if dein#tap('vim-quickrun')
   let g:quickrun_config = {}
   let g:quickrun_config['_'] = {
     \ 'runner':                        'vimproc',
@@ -3278,14 +2788,12 @@ if neobundle#tap('vim-quickrun')
   "  Key
   "-----------------------------------------------
   nmap <Leader>r <Plug>(quickrun)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-watchdogs
 "==============================================================================================
-if neobundle#tap('vim-watchdogs')
+if dein#tap('vim-watchdogs')
   let g:watchdogs_check_BufWritePost_enable_on_wq = 0
 
   let g:quickrun_config = get(g:, 'quickrun_config', {})
@@ -3336,37 +2844,31 @@ if neobundle#tap('vim-watchdogs')
       \ let b:watchdogs_run_ileave = 0 |
     \ endif
   autocmd vimrc BufEnter * call <SID>watchdogs_run()
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-qfstatusline
 "==============================================================================================
-if neobundle#tap('vim-qfstatusline')
+if dein#tap('vim-qfstatusline')
   let g:Qfstatusline#Text = 0
   let g:Qfstatusline#UpdateCmd = function('RefreshStatusline')
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-qfsigns
 "==============================================================================================
-if neobundle#tap('vim-qfsigns')
+if dein#tap('vim-qfsigns')
   let g:qfsigns#Config = { 'id': '5051', 'name': 'QFErrorSign' }
 
   " ⚠ or ✗
   sign define QFErrorSign texthl=QFErrorSign text=✗
   call candle#highlight('QFErrorSign', 'red', '', '')
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-submode
 "==============================================================================================
-if neobundle#tap('vim-submode')
+if dein#tap('vim-submode')
   let g:submode_keep_leaving_key = 1
 
   "  Window resizing
@@ -3421,22 +2923,13 @@ if neobundle#tap('vim-submode')
   noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
   call submode#enter_with('my_ca', 'n', '',  '<C-x>', '<C-x>')
   call submode#map(       'my_ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
-
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-over
 "==============================================================================================
-if neobundle#tap('vim-over')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['OverCommandLine'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
+if dein#tap('vim-over')
+  function! s:over_on_source() abort
     let g:over_command_line_key_mappings = {
       \ "\<C-c>": "\<Esc>",
       \ "\<C-j>": "\<CR>",
@@ -3458,37 +2951,24 @@ if neobundle#tap('vim-over')
     endif
   endfunction
 
-  call neobundle#untap()
+  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
+    \ 'call s:over_on_source()'
 endif
 
 
 "=== Plugin: incsearch.vim
 "==============================================================================================
-if neobundle#tap('incsearch.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(incsearch-',
-    \ }
-  \ })
-
+if dein#tap('incsearch.vim')
   nmap /  <Plug>(incsearch-forward)
   nmap ?  <Plug>(incsearch-backward)
   nmap g/ <Plug>(incsearch-stay)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-precious
 "==============================================================================================
-if neobundle#tap('vim-precious')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'filetypes': ['html', 'markdown'],
-    \ }
-  \ })
-
-  function! neobundle#tapped.hooks.on_source(bundle)
+if dein#tap('vim-precious')
+  function! precious_on_source() abort
     let g:precious_enable_switchers = {
       \ '*':        { 'setfiletype': 0 },
       \ 'html':     { 'setfiletype': 1 },
@@ -3496,39 +2976,26 @@ if neobundle#tap('vim-precious')
     \ }
   endfunction
 
-  call neobundle#untap()
+  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
+    \ 'call s:precious_on_source()'
 endif
 
 
 "=== Plugin: vim-qfreplace
 "==============================================================================================
-if neobundle#tap('vim-qfreplace')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Qfreplace'],
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-qfreplace')
 endif
 
 
 "=== Plugin: ag.vim
 "==============================================================================================
-if neobundle#tap('ag.vim')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'commands': ['Ag'],
-    \ }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('ag.vim')
 endif
 
 
 "=== Plugin: vim-tags
 "==============================================================================================
-if neobundle#tap('vim-tags')
+if dein#tap('vim-tags')
   " set tags+=~/dotfiles/_tags/tags
 
   let g:vim_tags_auto_generate = 1
@@ -3546,242 +3013,130 @@ if neobundle#tap('vim-tags')
   \ ]
 
   nnoremap tg :TagsGenerate<CR>
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-signature
 "==============================================================================================
-if neobundle#tap('vim-signature')
+if dein#tap('vim-signature')
   " hide upper case marks
   let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyz'
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-anzu
 "==============================================================================================
-if neobundle#tap('vim-anzu')
-  call neobundle#config({
-    \ 'autoload': {
-      \ 'mappings': '<Plug>(anzu-',
-    \ }
-  \ })
-
+if dein#tap('vim-anzu')
   nmap n <Plug>(anzu-n-with-echo)
   nmap N <Plug>(anzu-N-with-echo)
   nmap * <Plug>(anzu-star-with-echo)
   nmap # <Plug>(anzu-sharp-with-echo)
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-haml
 "==============================================================================================
-if neobundle#tap('vim-haml')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['haml'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-haml')
 endif
 
 
 "=== Plugin: vim-markdown
 "==============================================================================================
-if neobundle#tap('vim-markdown')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['markdown'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-markdown')
 endif
 
 
 "=== Plugin: vim-coffee-script
 "==============================================================================================
-if neobundle#tap('vim-coffee-script')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['coffee'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-coffee-script')
 endif
 
 
 "=== Plugin: vim-ruby
 "==============================================================================================
-if neobundle#tap('vim-ruby')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['ruby'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-ruby')
 endif
 
 
 "=== Plugin: vim-rails
 "==============================================================================================
-if neobundle#tap('vim-rails')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['ruby'] }
-  \ })
-
+if dein#tap('vim-rails')
   nmap gr :R<CR>
-
-  call neobundle#untap()
-endif
-
-
-"=== Plugin: vim-slim
-"==============================================================================================
-if neobundle#tap('vim-slim')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['slim'] }
-  \ })
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: scss-syntax.vim
 "==============================================================================================
-if neobundle#tap('scss-syntax.vim')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['scss'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('scss-syntax.vim')
 endif
 
 
 "=== Plugin: cocoa.vim
 "==============================================================================================
-if neobundle#tap('cocoa.vim')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['objc'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('cocoa.vim')
 endif
 
 
 "=== Plugin: vim-ios
 "==============================================================================================
-if neobundle#tap('vim-ios')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['objc'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-ios')
 endif
 
 
 "=== Plugin: vim-scala
 "==============================================================================================
-if neobundle#tap('vim-scala')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['scala'] }
-  \ })
-
+if dein#tap('vim-scala')
   let g:scala_sort_across_groups = 1
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vimclojure
 "==============================================================================================
-if neobundle#tap('vimclojure')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['clojure'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vimclojure')
 endif
 
 
 "=== Plugin: vim-filetype-haskell
 "==============================================================================================
-if neobundle#tap('vim-filetype-haskell')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['haskell'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-filetype-haskell')
 endif
 
 
 "=== Plugin: vim-go-extra
 "==============================================================================================
-if neobundle#tap('vim-go-extra')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['go'] }
-  \ })
-
+if dein#tap('vim-go-extra')
   let g:gocomplete#system_function = 'vimproc#system2'
-
-  call neobundle#untap()
 endif
 
 
 "=== Plugin: vim-elixir
 "==============================================================================================
-if neobundle#tap('vim-elixir')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['elixir'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-elixir')
 endif
 
 
 "=== Plugin: vim-javascript
 "==============================================================================================
-if neobundle#tap('vim-javascript')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['javascript'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-javascript')
 endif
 
 
 "=== Plugin: vim-jade
 "==============================================================================================
-if neobundle#tap('vim-jade')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['jade'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('vim-jade')
 endif
 
 
 "=== Plugin: typescript-vim
 "==============================================================================================
-if neobundle#tap('typescript-vim')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['typescript'] }
-  \ })
-
-  call neobundle#untap()
+if dein#tap('typescript-vim')
 endif
 
 
 "=== Plugin: typescript-tools
 "==============================================================================================
-if neobundle#tap('typescript-tools.vim')
-  call neobundle#config({
-    \ 'autoload': { 'filetypes': ['typescript'] }
-  \ })
-
+if dein#tap('typescript-tools.vim')
   " let g:TSS = ['bin/tss']
-
-  call neobundle#untap()
 endif
 
 
