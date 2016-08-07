@@ -5,6 +5,7 @@ vim/bundle/*
 !vim/bundle/neobundle.vim
 vim/.netrwhist
 vim/init.vim
+vim/dein/*
 
 aws/credentials
 zsh/secrets.zsh
