@@ -88,8 +88,6 @@ if s:env.is_starting
   let &g:rtp .= ',' . s:env.path.dein_repo
 endif
 
-call dein#begin(s:env.path.dein)
-
 if dein#load_state(s:env.path.dein)
   call dein#begin(s:env.path.dein)
 
@@ -100,9 +98,9 @@ if dein#load_state(s:env.path.dein)
   call dein#save_state()
 endif
 
-if dein#check_install()
-  call dein#install()
-endif
+" if dein#check_install()
+"   call dein#install()
+" endif
 
 filetype plugin indent on
 
@@ -2486,8 +2484,7 @@ if dein#tap('neocomplete')
     imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
   endfunction
 
-  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
-    \ 'call s:neocomplete_on_source()'
+  call dein#set_hook('neocomplete', 'hook_source', function('<SID>neocomplete_on_source'))
 endif
 
 
@@ -2511,8 +2508,7 @@ if dein#tap('neosnippet')
       \ exec '%s/<`\d\+:\?[^>]*`>//ge'
   endfunction
 
-  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
-    \ 'call s:neosnippet_on_source()'
+  call dein#set_hook('neosnippet', 'hook_source', function('<SID>neosnippet_on_source'))
 endif
 
 
@@ -2642,8 +2638,7 @@ if dein#tap('unite.vim')
 
   nnoremap <silent> <Space>g :<C-u>Unite -buffer-name=search-buffer grep:.<CR>
 
-  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
-    \ 'call s:unite_on_source()'
+  call dein#set_hook('unite', 'hook_source', function('<SID>unite_on_source'))
 endif
 
 
@@ -2695,8 +2690,7 @@ if dein#tap('vim-altr')
   nmap ga <Plug>(altr-forward)
   nmap gA <Plug>(altr-back)
 
-  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
-    \ 'call s:altr_on_source()'
+  call dein#set_hook('vim-alter', 'hook_source', function('<SID>altr_on_source'))
 endif
 
 
@@ -2951,8 +2945,7 @@ if dein#tap('vim-over')
     endif
   endfunction
 
-  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
-    \ 'call s:over_on_source()'
+  call dein#set_hook('vim-over', 'hook_source', function('<SID>over_on_source'))
 endif
 
 
@@ -2976,8 +2969,7 @@ if dein#tap('vim-precious')
     \ }
   endfunction
 
-  execute 'autocmd vimrc User' 'dein#source#' . g:dein#name
-    \ 'call s:precious_on_source()'
+  call dein#set_hook('vim-precious', 'hook_source', function('<SID>precious_on_source'))
 endif
 
 

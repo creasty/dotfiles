@@ -86,6 +86,12 @@ repo = 'creasty/mold.vim'
 #  Utils
 #-----------------------------------------------
 [[plugins]]
+# unite and create user interfaces
+repo   = 'Shougo/unite.vim'
+on_cmd = ['Unite']
+lazy   = 1
+
+[[plugins]]
 # a Git wrapper so awesome
 repo = 'tpope/vim-fugitive'
 

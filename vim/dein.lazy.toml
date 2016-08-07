@@ -116,11 +116,6 @@ on_ft = ['swift']
 #  Utils
 #-----------------------------------------------
 [[plugins]]
-# unite and create user interfaces
-repo   = 'Shougo/unite.vim'
-on_cmd = ['Unite']
-
-[[plugins]]
 # source for ghq list
 repo    = 'sorah/unite-ghq'
 depends = ['Shougo/unite.vim']
