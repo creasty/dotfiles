@@ -34,7 +34,7 @@ function! s:vimrc_environment()
     \ 'dein':           vim_path . '/dein',
     \ 'dein_repo':      vim_path . '/dein/repos/github.com/Shougo/dein.vim',
     \ 'dein_toml':      vim_path . '/dein.toml',
-    \ 'dein_lazy_toml': vim_path . '/dein.lazy.toml',
+    \ 'dein_lazy_toml': vim_path . '/dein_lazy.toml',
     \ 'local':          vim_path . '/locals',
     \ 'dict':           vim_path . '/dict',
     \ 'template':       vim_path . '/templates',
@@ -89,7 +89,7 @@ if s:env.is_starting
 endif
 
 if dein#load_state(s:env.path.dein)
-  call dein#begin(s:env.path.dein)
+  call dein#begin(s:env.path.dein, [expand('<sfile>'), s:env.path.dein_toml, s:env.path.dein_lazy_toml])
 
   call dein#load_toml(s:env.path.dein_toml,      { 'lazy': 0 })
   call dein#load_toml(s:env.path.dein_lazy_toml, { 'lazy': 1 })

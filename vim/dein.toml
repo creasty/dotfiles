@@ -39,7 +39,10 @@ repo = 'Lokaltog/vim-easymotion'
 [[plugins]]
 # commenting code
 repo   = 'scrooloose/nerdcommenter'
-on_map = [['n', 'gc'], ['v', 'gc']]
+on_map = {
+  'n' = 'gc',
+  'v' = 'gc',
+}
 
 [[plugins]]
 # general quickrun-hook plugins
@@ -85,12 +88,6 @@ repo = 'creasty/mold.vim'
 
 #  Utils
 #-----------------------------------------------
-[[plugins]]
-# unite and create user interfaces
-repo   = 'Shougo/unite.vim'
-on_cmd = ['Unite']
-lazy   = 1
-
 [[plugins]]
 # a Git wrapper so awesome
 repo = 'tpope/vim-fugitive'
