@@ -22,7 +22,7 @@ hook_post_update = '''
 [[plugins]]
 # text objects for indented blocks of lines
 repo    = 'kana/vim-textobj-indent'
-depends = ['kana/vim-textobj-user']
+depends = ['vim-textobj-user']
 
 [[plugins]]
 # adds text-objects for word-based columns
@@ -75,7 +75,7 @@ repo = 'tmhedberg/matchit'
 [[plugins]]
 # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
-depends = ['smartchr', 'Shougo/neocomplete', 'Shougo/neosnippet']
+depends = ['smartchr', 'neocomplete', 'neosnippet']
 
 [[plugins]]
 # pasting with indentation adjusted to paste destination

@@ -54,7 +54,7 @@ endfunction
 let s:env = s:vimrc_environment()
 
 function! s:with_snr(name)
-  return '<SNR>' . s:env . '_' . a:name
+  return '<SNR>' . s:env.sid . '_' . a:name
 endfunction
 
 " unregister autocmds
@@ -2484,7 +2484,7 @@ if dein#tap('neocomplete')
     imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
   endfunction
 
-  call dein#set_hook('neocomplete', 'hook_source', function('<SID>neocomplete_on_source'))
+  call dein#set_hook('neocomplete', 'hook_source', function('s:neocomplete_on_source'))
 endif
 
 
@@ -2497,18 +2497,14 @@ endif
 "=== Plugin: neosnippet
 "==============================================================================================
 if dein#tap('neosnippet')
-  function! s:neosnippet_on_source() abort
-    let g:neosnippet#disable_select_mode_mappings = 0
-    let g:neosnippet#enable_snipmate_compatibility = 1
-    let g:neosnippet#snippets_directory = s:env.path.snippets
-    let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
+  let g:neosnippet#disable_select_mode_mappings = 0
+  let g:neosnippet#enable_snipmate_compatibility = 1
+  let g:neosnippet#snippets_directory = s:env.path.snippets
+  let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
 
-    " remove placeholders (hidden markers) before saving
-    autocmd vimrc BufWritePre *
-      \ exec '%s/<`\d\+:\?[^>]*`>//ge'
-  endfunction
-
-  call dein#set_hook('neosnippet', 'hook_source', function('<SID>neosnippet_on_source'))
+  " remove placeholders (hidden markers) before saving
+  autocmd vimrc BufWritePre *
+    \ exec '%s/<`\d\+:\?[^>]*`>//ge'
 endif
 
 
@@ -2638,7 +2634,7 @@ if dein#tap('unite.vim')
 
   nnoremap <silent> <Space>g :<C-u>Unite -buffer-name=search-buffer grep:.<CR>
 
-  call dein#set_hook('unite', 'hook_source', function('<SID>unite_on_source'))
+  call dein#set_hook('unite.vim', 'hook_source', function('s:unite_on_source'))
 endif
 
 
@@ -2662,7 +2658,7 @@ endif
 "=== Plugin: vim-altr
 "==============================================================================================
 if dein#tap('vim-altr')
-  function! altr_on_source() abort
+  function! s:altr_on_source() abort
     " Header files
     call altr#define('%.c', '%.h', '%.m')
 
@@ -2690,7 +2686,7 @@ if dein#tap('vim-altr')
   nmap ga <Plug>(altr-forward)
   nmap gA <Plug>(altr-back)
 
-  call dein#set_hook('vim-alter', 'hook_source', function('<SID>altr_on_source'))
+  call dein#set_hook('vim-altr', 'hook_source', function('s:altr_on_source'))
 endif
 
 
@@ -2945,7 +2941,7 @@ if dein#tap('vim-over')
     endif
   endfunction
 
-  call dein#set_hook('vim-over', 'hook_source', function('<SID>over_on_source'))
+  call dein#set_hook('vim-over', 'hook_source', function('s:over_on_source'))
 endif
 
 
@@ -2961,7 +2957,7 @@ endif
 "=== Plugin: vim-precious
 "==============================================================================================
 if dein#tap('vim-precious')
-  function! precious_on_source() abort
+  function! s:precious_on_source() abort
     let g:precious_enable_switchers = {
       \ '*':        { 'setfiletype': 0 },
       \ 'html':     { 'setfiletype': 1 },
@@ -2969,7 +2965,7 @@ if dein#tap('vim-precious')
     \ }
   endfunction
 
-  call dein#set_hook('vim-precious', 'hook_source', function('<SID>precious_on_source'))
+  call dein#set_hook('vim-precious', 'hook_source', function('s:precious_on_source'))
 endif
 
 

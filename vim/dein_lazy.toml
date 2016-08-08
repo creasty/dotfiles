@@ -2,16 +2,18 @@
 #-----------------------------------------------
 [[plugins]]
 # define your own operator easily
-repo = 'kana/vim-operator-user'
+repo  = 'kana/vim-operator-user'
+on_if = 1
 
 [[plugins]]
 # create your own text objects
-repo = 'kana/vim-textobj-user'
+repo  = 'kana/vim-textobj-user'
+on_if = 1
 
 [[plugins]]
 # text objects for multiple types of parentheses
 repo    = 'osyo-manga/vim-textobj-multiblock'
-depends = ['kana/vim-textobj-user']
+depends = ['vim-textobj-user']
 on_cmd  = ['TextobjMultiblockDefaultKeyMappings']
 on_map  = ['<Plug>(textobj-multiblock-']
 
@@ -29,13 +31,13 @@ on_func = ['emmet']
 [[plugins]]
 # operator to escape HTML entities
 repo    = 'tyru/operator-html-escape.vim'
-depends = ['kana/vim-operator-user']
+depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-html-']
 
 [[plugins]]
 # operator to camelize/decamelize a specified text
 repo    = 'tyru/operator-camelize.vim'
-depends = ['kana/vim-operator-user']
+depends = ['vim-operator-user']
 on_map = [
   '<Plug>(operator-camelize)',
   '<Plug>(operator-decamelize)',
@@ -45,13 +47,13 @@ on_map = [
 [[plugins]]
 # operator to evaluate a text object using Ruby
 repo    = 'rhysd/vim-operator-evalruby'
-depends = ['kana/vim-operator-user']
+depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-evalruby)']
 
 [[plugins]]
 # operator to replace text with register content
 repo    = 'kana/vim-operator-replace'
-depends = ['kana/vim-operator-user']
+depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-replace)']
 
 [[plugins]]
@@ -96,7 +98,7 @@ on_ft = ['clang', 'objc']
 [[plugins]]
 # adds snippet support
 repo      = 'Shougo/neosnippet'
-depends   = ['Shougo/neocomplete', 'mattn/emmet-vim']
+depends   = ['neocomplete', 'emmet-vim']
 on_cmd    = ['NeoSnippetEdit', 'NeoSnippetSource']
 on_ft     = 'snippet'
 on_i      = 1
@@ -123,7 +125,7 @@ on_cmd = ['Unite']
 [[plugins]]
 # source for ghq list
 repo      = 'sorah/unite-ghq'
-on_source = ['Shougo/unite.vim']
+on_source = ['unite.vim']
 
 [[plugins]]
 # open URI with browser
@@ -147,7 +149,7 @@ repo = 'Shougo/context_filetype.vim'
 [[plugins]]
 # switch filetype by context around cursor
 repo    = 'osyo-manga/vim-precious'
-depends = ['Shougo/context_filetype.vim']
+depends = ['context_filetype.vim']
 on_ft   = ['html', 'markdown']
 
 [[plugins]]
