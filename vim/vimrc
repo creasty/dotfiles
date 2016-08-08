@@ -1516,12 +1516,6 @@ if dein#tap('vim-operator-replace')
 endif
 
 
-"=== Plugin: smartchr
-"==============================================================================================
-if dein#tap('smartchr')
-endif
-
-
 "=== Plugin: lexima.vim
 "==============================================================================================
 if dein#tap('lexima.vim')
@@ -2352,12 +2346,6 @@ if dein#tap('vim-textmanip')
 endif
 
 
-"=== Plugin: vim-rengbang
-"==============================================================================================
-if dein#tap('vim-rengbang')
-endif
-
-
 "=== Plugin: mold.vim
 "==============================================================================================
 if dein#tap('mold.vim')
@@ -2489,12 +2477,6 @@ if dein#tap('neocomplete')
 endif
 
 
-"=== Plugin: clang_complete
-"==============================================================================================
-if dein#tap('clang_complete')
-endif
-
-
 "=== Plugin: neosnippet
 "==============================================================================================
 if dein#tap('neosnippet')
@@ -2506,18 +2488,6 @@ if dein#tap('neosnippet')
   " remove placeholders (hidden markers) before saving
   autocmd vimrc BufWritePre *
     \ exec '%s/<`\d\+:\?[^>]*`>//ge'
-endif
-
-
-"=== Plugin: vim-stargate
-"==============================================================================================
-if dein#tap('vim-stargate')
-endif
-
-
-"=== Plugin: sourcekittendaemon.vim
-"==============================================================================================
-if dein#tap('sourcekittendaemon.vim')
 endif
 
 
@@ -2647,12 +2617,6 @@ if dein#tap('open-browser.vim')
 
   nnoremap gx <Plug>(openbrowser-smart-search)
   vnoremap gx <Plug>(openbrowser-smart-search)
-endif
-
-
-"=== Plugin: vinarise.vim
-"==============================================================================================
-if dein#tap('vinarise.vim')
 endif
 
 
@@ -2970,18 +2934,6 @@ if dein#tap('vim-precious')
 endif
 
 
-"=== Plugin: vim-qfreplace
-"==============================================================================================
-if dein#tap('vim-qfreplace')
-endif
-
-
-"=== Plugin: ag.vim
-"==============================================================================================
-if dein#tap('ag.vim')
-endif
-
-
 "=== Plugin: vim-tags
 "==============================================================================================
 if dein#tap('vim-tags')
@@ -3023,52 +2975,10 @@ if dein#tap('vim-anzu')
 endif
 
 
-"=== Plugin: vim-haml
-"==============================================================================================
-if dein#tap('vim-haml')
-endif
-
-
-"=== Plugin: vim-markdown
-"==============================================================================================
-if dein#tap('vim-markdown')
-endif
-
-
-"=== Plugin: vim-coffee-script
-"==============================================================================================
-if dein#tap('vim-coffee-script')
-endif
-
-
-"=== Plugin: vim-ruby
-"==============================================================================================
-if dein#tap('vim-ruby')
-endif
-
-
 "=== Plugin: vim-rails
 "==============================================================================================
 if dein#tap('vim-rails')
   nmap gr :R<CR>
-endif
-
-
-"=== Plugin: scss-syntax.vim
-"==============================================================================================
-if dein#tap('scss-syntax.vim')
-endif
-
-
-"=== Plugin: cocoa.vim
-"==============================================================================================
-if dein#tap('cocoa.vim')
-endif
-
-
-"=== Plugin: vim-ios
-"==============================================================================================
-if dein#tap('vim-ios')
 endif
 
 
@@ -3079,46 +2989,10 @@ if dein#tap('vim-scala')
 endif
 
 
-"=== Plugin: vimclojure
-"==============================================================================================
-if dein#tap('vimclojure')
-endif
-
-
-"=== Plugin: vim-filetype-haskell
-"==============================================================================================
-if dein#tap('vim-filetype-haskell')
-endif
-
-
 "=== Plugin: vim-go-extra
 "==============================================================================================
 if dein#tap('vim-go-extra')
   let g:gocomplete#system_function = 'vimproc#system2'
-endif
-
-
-"=== Plugin: vim-elixir
-"==============================================================================================
-if dein#tap('vim-elixir')
-endif
-
-
-"=== Plugin: vim-javascript
-"==============================================================================================
-if dein#tap('vim-javascript')
-endif
-
-
-"=== Plugin: vim-jade
-"==============================================================================================
-if dein#tap('vim-jade')
-endif
-
-
-"=== Plugin: typescript-vim
-"==============================================================================================
-if dein#tap('typescript-vim')
 endif
 
 
