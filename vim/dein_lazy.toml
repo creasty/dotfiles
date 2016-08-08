@@ -1,41 +1,34 @@
 #  Editing
 #-----------------------------------------------
-[[plugins]]
-# define your own operator easily
+[[plugins]] # define your own operator easily
 repo  = 'kana/vim-operator-user'
 on_if = 1
 
-[[plugins]]
-# create your own text objects
+[[plugins]] # create your own text objects
 repo  = 'kana/vim-textobj-user'
 on_if = 1
 
-[[plugins]]
-# text objects for multiple types of parentheses
+[[plugins]] # text objects for multiple types of parentheses
 repo    = 'osyo-manga/vim-textobj-multiblock'
 depends = ['vim-textobj-user']
 on_cmd  = ['TextobjMultiblockDefaultKeyMappings']
 on_map  = ['<Plug>(textobj-multiblock-']
 
-[[plugins]]
-# a simple, easy-to-use Vim alignment plugin
+[[plugins]] # a simple, easy-to-use Vim alignment plugin
 repo   = 'junegunn/vim-easy-align'
 on_cmd = ['EasyAlign']
 
-[[plugins]]
-# emmet for vim: HTML and CSS hi-speed coding
+[[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo    = 'mattn/emmet-vim'
 on_i    = 1
 on_func = ['emmet']
 
-[[plugins]]
-# operator to escape HTML entities
+[[plugins]] # operator to escape HTML entities
 repo    = 'tyru/operator-html-escape.vim'
 depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-html-']
 
-[[plugins]]
-# operator to camelize/decamelize a specified text
+[[plugins]] # operator to camelize/decamelize a specified text
 repo    = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
 on_map = [
@@ -44,60 +37,50 @@ on_map = [
   '<Plug>(operator-camelize-toggle)',
 ]
 
-[[plugins]]
-# operator to evaluate a text object using Ruby
+[[plugins]] # operator to evaluate a text object using Ruby
 repo    = 'rhysd/vim-operator-evalruby'
 depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-evalruby)']
 
-[[plugins]]
-# operator to replace text with register content
+[[plugins]] # operator to replace text with register content
 repo    = 'kana/vim-operator-replace'
 depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-replace)']
 
-[[plugins]]
-# insert several candidates with a single key
+[[plugins]] # insert several candidates with a single key
 repo    = 'smartchr'
 on_func = ['smartchr']
 on_i    = 1
 
-[[plugins]]
-# switch segments of text with predefined replacements
+[[plugins]] # switch segments of text with predefined replacements
 repo   = 'AndrewRadev/switch.vim'
 on_cmd = ['Swift']
 
-[[plugins]]
-# maniplate selected text easily
+[[plugins]] # maniplate selected text easily
 repo   = 't9md/vim-textmanip'
 on_map = ['<Plug>(textmanip-']
 
-[[plugins]]
-# sequencial numbering with pattern
+[[plugins]] # sequencial numbering with pattern
 repo   = 'deris/vim-rengbang'
 on_cmd = ['RengBang']
 
-[[plugins]]
-# real time markdown preview plugin for vim
+[[plugins]] # real time markdown preview plugin for vim
 repo   = 'miyakogi/livemark.vim'
 on_cmd = ['LiveMark']
 
 
 #  Completion
 #-----------------------------------------------
-[[plugins]]
-# next generation of auto completion framework
+[[plugins]] # next generation of auto completion framework
 repo    = 'Shougo/neocomplete'
 depends = 'context_filetype.vim'
 on_i    = 1
 
-[[plugins]]
-# accurately completing C and C++ code
+[[plugins]] # accurately completing C and C++ code
 repo  = 'Rip-Rip/clang_complete'
 on_ft = ['clang', 'objc']
 
-[[plugins]]
-# adds snippet support
+[[plugins]] # adds snippet support
 repo      = 'Shougo/neosnippet'
 depends   = ['neocomplete', 'emmet-vim']
 on_cmd    = ['NeoSnippetEdit', 'NeoSnippetSource']
@@ -105,153 +88,124 @@ on_ft     = 'snippet'
 on_i      = 1
 on_source = ['snippet', 'neosnippet/user', 'neosnippet/runtime']
 
-[[plugins]]
-# insert #include<>
+[[plugins]] # insert #include<>
 repo   = 'osyo-manga/vim-stargate'
 on_cmd = ['StargateInclude', 'StargateClearCache']
 
-[[plugins]]
-# autocomplete Swift in Vim
+[[plugins]] # autocomplete Swift in Vim
 repo  = 'keith/sourcekittendaemon.vim'
 on_ft = ['swift']
 
 
 #  Utils
 #-----------------------------------------------
-[[plugins]]
-# unite and create user interfaces
+[[plugins]] # unite and create user interfaces
 repo   = 'Shougo/unite.vim'
 on_cmd = ['Unite']
 
-[[plugins]]
-# source for ghq list
+[[plugins]] # source for ghq list
 repo      = 'sorah/unite-ghq'
 on_source = ['unite.vim']
 
-[[plugins]]
-# open URI with browser
+[[plugins]] # open URI with browser
 repo   = 'tyru/open-browser.vim'
 on_map = ['<Plug>(openbrowser-']
 
-[[plugins]]
-# hex editing system
+[[plugins]] # hex editing system
 repo   = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']
 
-[[plugins]]
-# switch to the missing file without interaction
+[[plugins]] # switch to the missing file without interaction
 repo   = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']
 
-[[plugins]]
-# context filetype library
+[[plugins]] # context filetype library
 repo = 'Shougo/context_filetype.vim'
 
-[[plugins]]
-# switch filetype by context around cursor
+[[plugins]] # switch filetype by context around cursor
 repo    = 'osyo-manga/vim-precious'
 depends = ['context_filetype.vim']
 on_ft   = ['html', 'markdown']
 
-[[plugins]]
-# perform the replacement in quickfix
+[[plugins]] # perform the replacement in quickfix
 repo   = 'thinca/vim-qfreplace'
 on_cmd = ['Qfreplace']
 
-[[plugins]]
-# command for the_silver_searcher
+[[plugins]] # command for the_silver_searcher
 repo   = 'rking/ag.vim'
 on_cmd = ['Ag']
 
-# [[plugins]]
-# # improved incremental searching
+# [[plugins]] # improved incremental searching
 # repo   = 'haya14busa/incsearch.vim'
 # on_map = ['<Plug>(incsearch-']
 
 
 #  Language
 #-----------------------------------------------
-[[plugins]]
-# syntax highlight for Haml
+[[plugins]] # syntax highlight for Haml
 repo  = 'tpope/vim-haml'
 on_ft = ['haml']
 
-[[plugins]]
-# syntax highlight for Markdown
+[[plugins]] # syntax highlight for Markdown
 repo  = 'tpope/vim-markdown'
 on_ft = ['markdown']
 
-[[plugins]]
-# syntax highlight for CoffeeScript
+[[plugins]] # syntax highlight for CoffeeScript
 repo  = 'kchmck/vim-coffee-script'
 on_ft = ['coffee']
 
-[[plugins]]
-# syntax highlight for Ruby
+[[plugins]] # syntax highlight for Ruby
 repo  = 'vim-ruby/vim-ruby'
 on_ft = ['ruby']
 
-[[plugins]]
-# working with Ruby on Rails applications
+[[plugins]] # working with Ruby on Rails applications
 repo  = 'tpope/vim-rails'
 on_ft = ['ruby']
 
-[[plugins]]
-# syntax highlight for SCSS
+[[plugins]] # syntax highlight for SCSS
 repo  = 'cakebaker/scss-syntax.vim'
 on_ft = ['scss']
 
-[[plugins]]
-# plugin for Cocoa/Objective-C development
+[[plugins]] # plugin for Cocoa/Objective-C development
 repo  = 'msanders/cocoa.vim'
 on_ft = ['objc']
 
-[[plugins]]
-# plugin for iOS development
+[[plugins]] # plugin for iOS development
 repo  = 'eraserhd/vim-ios'
 on_ft = ['objc']
 
-[[plugins]]
-# syntax highlight for Scala
+[[plugins]] # syntax highlight for Scala
 repo  = 'derekwyatt/vim-scala'
 on_ft = ['scala']
 
-[[plugins]]
-# syntax highlight for Clojure
+[[plugins]] # syntax highlight for Clojure
 repo  = 'jondistad/vimclojure'
 on_ft = ['clojure']
 
-[[plugins]]
-# syntax highlight for Haskell
+[[plugins]] # syntax highlight for Haskell
 repo  = 'kana/vim-filetype-haskell'
 on_ft = ['haskell']
 
-[[plugins]]
-# extra plugin for golang
+[[plugins]] # extra plugin for golang
 repo  = 'vim-jp/vim-go-extra'
 on_ft = ['go']
 
-[[plugins]]
-# Elixir support for vim
+[[plugins]] # Elixir support for vim
 repo  = 'elixir-lang/vim-elixir'
 on_ft = ['elixir']
 
-[[plugins]]
-# Vastly improved Javascript indentation and syntax support
+[[plugins]] # Vastly improved Javascript indentation and syntax support
 repo  = 'pangloss/vim-javascript'
 on_ft = ['javascript']
 
-[[plugins]]
-# Jade template engine syntax highlighting and indention
+[[plugins]] # Jade template engine syntax highlighting and indention
 repo  = 'digitaltoad/vim-jade'
 on_ft = ['jade']
 
-[[plugins]]
-# TypesSript syntax files for Vim
+[[plugins]] # TypesSript syntax files for Vim
 repo  = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
 
-[[plugins]]
-# tools related to the TypeScript language
+[[plugins]] # tools related to the TypeScript language
 repo  = 'clausreinke/typescript-tools.vim'
 on_ft = ['typescript']

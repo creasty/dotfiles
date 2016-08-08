@@ -19,127 +19,100 @@ hook_post_update = '''
 
 #  Editing
 #-----------------------------------------------
-[[plugins]]
-# text objects for indented blocks of lines
+[[plugins]] # text objects for indented blocks of lines
 repo    = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
 
-[[plugins]]
-# adds text-objects for word-based columns
+[[plugins]] # adds text-objects for word-based columns
 repo = 'coderifous/textobj-word-column.vim'
 
-[[plugins]]
-# deleting, changing, and adding surroundings
+[[plugins]] # deleting, changing, and adding surroundings
 repo = 'surround.vim'
 
-[[plugins]]
-# f/t motions to highlight all possible choices
+[[plugins]] # f/t motions to highlight all possible choices
 repo = 'Lokaltog/vim-easymotion'
 
-[[plugins]]
-# commenting code
+[[plugins]] # commenting code
 repo   = 'scrooloose/nerdcommenter'
 on_map = {
   'n' = 'gc',
   'v' = 'gc',
 }
 
-[[plugins]]
-# general quickrun-hook plugins
+[[plugins]] # general quickrun-hook plugins
 repo = 'osyo-manga/shabadou.vim'
 
-[[plugins]]
-# update status line
+[[plugins]] # update status line
 repo = 'KazuakiM/vim-qfstatusline'
 
-[[plugins]]
-# highlight quickfix errors
+[[plugins]] # highlight quickfix errors
 repo = 'cohama/vim-hier'
 
-[[plugins]]
-# see quickfix, location list and Syntastic lists errors and warnings
+[[plugins]] # see quickfix, location list and Syntastic lists errors and warnings
 repo = 'dannyob/quickfixstatus'
 
-[[plugins]]
-# mark syntax error lines
+[[plugins]] # mark syntax error lines
 repo = 'KazuakiM/vim-qfsigns'
 
-[[plugins]]
-# async syntax checking
+[[plugins]] # async syntax checking
 repo = 'osyo-manga/vim-watchdogs'
 
-[[plugins]]
-# extended % matching
+[[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'
 
-[[plugins]]
-# auto close parentheses and repeat by dot
+[[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
 depends = ['smartchr', 'neocomplete', 'neosnippet']
 
-[[plugins]]
-# pasting with indentation adjusted to paste destination
+[[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
 
-[[plugins]]
-# a genius template engine
+[[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
 
 
 #  Utils
 #-----------------------------------------------
-[[plugins]]
-# a Git wrapper so awesome
+[[plugins]] # a Git wrapper so awesome
 repo = 'tpope/vim-fugitive'
 
-[[plugins]]
-# enable repeating supported plugin maps with dot
+[[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 
-[[plugins]]
-# a tree explorer
+[[plugins]] # a tree explorer
 repo = 'scrooloose/nerdtree'
 
-[[plugins]]
-# pseudo clipboard register
+[[plugins]] # pseudo clipboard register
 repo = 'kana/vim-fakeclip'
 
-[[plugins]]
-# run commands quickly
+[[plugins]] # run commands quickly
 repo = 'thinca/vim-quickrun'
 
-[[plugins]]
-# create your own submodes
+[[plugins]] # create your own submodes
 repo = 'kana/vim-submode'
 
-[[plugins]]
-# substitute preview
+[[plugins]] # substitute preview
 repo   = 'osyo-manga/vim-over'
 on_cmd = ['OverCommandLine']
 
-[[plugins]]
-# ctags generator
+[[plugins]] # ctags generator
 repo = 'szw/vim-tags'
 
 
 #  Appearance
 #-----------------------------------------------
-[[plugins]]
-# toggle, display and navigate marks
+[[plugins]] # toggle, display and navigate marks
 repo = 'kshenoy/vim-signature'
 
-[[plugins]]
-# search status
+[[plugins]] # search status
 repo   = 'osyo-manga/vim-anzu'
 on_map = ['<Plug>(anzu-']
 
-[[plugins]]
-# candle theme
+[[plugins]] # candle theme
 repo = 'creasty/candle.vim'
 
 
 #  Language
 #-----------------------------------------------
-[[plugins]]
-# React JSX syntax highlighting and indenting
+[[plugins]] # React JSX syntax highlighting and indenting
 repo = 'mxw/vim-jsx'
