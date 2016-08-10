@@ -72,8 +72,8 @@ on_cmd = ['LiveMark']
 #  Completion
 #-----------------------------------------------
 [[plugins]] # next generation of auto completion framework
-repo    = 'Shougo/neocomplete'
-depends = 'context_filetype.vim'
+repo    = 'Shougo/neocomplete.vim'
+depends = ['context_filetype.vim']
 on_i    = 1
 
 [[plugins]] # accurately completing C and C++ code
@@ -82,7 +82,7 @@ on_ft = ['clang', 'objc']
 
 [[plugins]] # adds snippet support
 repo      = 'Shougo/neosnippet'
-depends   = ['neocomplete', 'emmet-vim']
+depends   = ['neocomplete.vim', 'emmet-vim']
 on_cmd    = ['NeoSnippetEdit', 'NeoSnippetSource']
 on_ft     = 'snippet'
 on_i      = 1

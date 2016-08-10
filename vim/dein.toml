@@ -62,7 +62,7 @@ repo = 'tmhedberg/matchit'
 
 [[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
-depends = ['smartchr', 'neocomplete', 'neosnippet']
+depends = ['smartchr', 'neocomplete.vim', 'neosnippet']
 
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'

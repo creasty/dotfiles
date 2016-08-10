@@ -2421,9 +2421,9 @@ if dein#tap('livemark.vim')
 endif
 
 
-"=== Plugin: neocomplete
+"=== Plugin: neocomplete.vim
 "==============================================================================================
-if dein#tap('neocomplete')
+if dein#tap('neocomplete.vim')
   set completeopt& completeopt-=preview
 
   let g:neocomplete#enable_at_startup = 1
@@ -2499,7 +2499,7 @@ if dein#tap('neocomplete')
     imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
   endfunction
 
-  call dein#set_hook('neocomplete', 'hook_source', function('s:neocomplete_on_source'))
+  call dein#set_hook('neocomplete.vim', 'hook_source', function('s:neocomplete_on_source'))
 endif
 
 
