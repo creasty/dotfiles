@@ -3184,6 +3184,9 @@ if neobundle#tap('vim-altr')
 
     " Golang
     call altr#define('%.go', '%_test.go')
+
+    " Dotenv
+    call altr#define('.env', '.env.sample')
   endfunction
 
   nmap ga <Plug>(altr-forward)
