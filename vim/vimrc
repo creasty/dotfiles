@@ -3184,6 +3184,7 @@ if neobundle#tap('vim-altr')
 
     " Golang
     call altr#define('%.go', '%_test.go')
+    call altr#define('glide.yaml', 'glide.lock')
 
     " Dotenv
     call altr#define('.env', '.env.sample')
