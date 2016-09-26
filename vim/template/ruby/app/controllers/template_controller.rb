@@ -8,7 +8,7 @@ class_name = File.basename('FILE_NAME', '.rb')
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .delete('_')
 
-parent = (controller_name == 'ApplicationController') ?
+parent = (class_name == 'ApplicationController') ?
   'ActionController::Base' : 'ApplicationController'
 
 out = <<EOS.chomp
