@@ -3165,12 +3165,13 @@ if neobundle#tap('vim-altr')
     " Header files
     call altr#define('%.c', '%.h', '%.m')
 
-    " Rails
+    " Rails / Ruby
     call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
     call altr#define('app/%/%.rb', 'spec/%/%_spec.rb')
     call altr#define('lib/%.rb', 'spec/lib/%_spec.rb')
     call altr#define('%.html.haml', '%_smart_phone.html.haml')
     call altr#define('%.html.slim', '%_smart_phone.html.slim')
+    call altr#define('Gemfile', 'Gemfile.lock')
 
     " I18n
     call altr#define('locales/%/en.yml', 'locales/%/ja.yml')
@@ -3183,7 +3184,7 @@ if neobundle#tap('vim-altr')
     call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade')
 
     " Golang
-    call altr#define('%.go', '%_test.go')
+    call altr#define('%.go', '%_test.go', '%_ex_test.go')
     call altr#define('glide.yaml', 'glide.lock')
 
     " Dotenv
