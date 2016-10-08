@@ -61,7 +61,7 @@ __git_ps1() {
 
     b="$(git symbolic-ref --short HEAD 2>/dev/null)" ||
     b="$(git describe --tags --exact-match HEAD 2> /dev/null)" ||
-    b="$(cut -c1-7 "$g/HEAD" 2>/dev/null)..." ||
+    b="$(cut -c1-7 "$g/HEAD" 2>/dev/null)" ||
     b="unknown"
   fi
 

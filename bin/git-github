@@ -3,7 +3,8 @@
 REPO="$(
   git config --get remote.origin.url \
     | grep github.com \
-    | sed 's/^.*github\.com[:\/]\(.*\)\.git$/\1/' \
+    | sed 's/^.*github\.com[:\/]//' \
+    | sed 's/\(.*\)\.git$/\1/' \
     | tr -d "\n"
 )"
 

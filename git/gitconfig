@@ -62,6 +62,7 @@
   w  = show --diff-filter=M
   d  = diff --diff-filter=M
   dc = diff --diff-filter=M --cached
+  ds = diff --stat master HEAD
 
   l  = log --oneline
   lg = log --oneline --graph

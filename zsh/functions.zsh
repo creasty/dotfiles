@@ -242,3 +242,35 @@ peco_cd_repo() {
 }
 
 _register_keycommand '^q' peco_cd_repo
+
+
+#  Insert resource
+#-----------------------------------------------
+peco_insert_resource() {
+  local resource
+
+  case "$LBUFFER" in
+    'wtd-kube tags '*)            resource='kube-deployment' ;;
+    'wtd-kube edit deployment '*) resource='kube-deployment' ;;
+    'wtd-kube scale '*)           resource='kube-deployment' ;;
+    'wtd-kube '*)                 resource='kube-pod' ;;
+  esac
+
+  case "$resource" in
+    kube-deployment)
+      wtd-kube get deployment \
+        | _peco_select \
+        | awk '{ print $1 }' \
+        | _buffer_insert
+      ;;
+
+    kube-pod)
+      wtd-kube get po \
+        | _peco_select \
+        | awk '{ print $1 }' \
+        | _buffer_insert
+      ;;
+  esac
+}
+
+_register_keycommand '^o^r' peco_insert_resource

@@ -712,6 +712,9 @@ set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=0
 set shiftround
 
+" change soft-indent size
+command! -nargs=1 SoftTab :setl tabstop=<args> shiftwidth=<args>
+
 " virtualedit with freedom
 set virtualedit& virtualedit+=block
 
@@ -2653,12 +2656,13 @@ if dein#tap('vim-altr')
     " Header files
     call altr#define('%.c', '%.h', '%.m')
 
-    " Rails
+    " Rails / Ruby
     call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
     call altr#define('app/%/%.rb', 'spec/%/%_spec.rb')
     call altr#define('lib/%.rb', 'spec/lib/%_spec.rb')
     call altr#define('%.html.haml', '%_smart_phone.html.haml')
     call altr#define('%.html.slim', '%_smart_phone.html.slim')
+    call altr#define('Gemfile', 'Gemfile.lock')
 
     " I18n
     call altr#define('locales/%/en.yml', 'locales/%/ja.yml')
@@ -2671,7 +2675,11 @@ if dein#tap('vim-altr')
     call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade')
 
     " Golang
-    call altr#define('%.go', '%_test.go')
+    call altr#define('%.go', '%_test.go', '%_ex_test.go')
+    call altr#define('glide.yaml', 'glide.lock')
+
+    " Dotenv
+    call altr#define('.env', '.env.sample')
   endfunction
 
   nmap ga <Plug>(altr-forward)

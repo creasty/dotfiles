@@ -11,3 +11,4 @@ github.com/peco/peco/cmd/peco
 github.com/rakyll/boom
 github.com/tools/godep
 golang.org/x/tools/cmd/gotype
+github.com/Masterminds/glide
