@@ -2777,6 +2777,12 @@ if neobundle#tap('mold.vim')
     endif
   endfunction
 
+  command! -nargs=1 -complete=file Mkexec
+    \ :w! <args>
+    \ | :setf sh
+    \ | :Template
+    \ | :call vimproc#system('chmod +x ' . expand('%'))
+
   call neobundle#untap()
 endif
 
