@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
+CMD=kube
 REPO=github.com/wantedly/kube
-export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
 
-envchain wtd bundle exec kube $@
+ARGS=()
+for a in "$@"; do
+  ARGS=(${ARGS[@]} "$a")
+done
+
+export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
+envchain wtd bundle exec "$CMD" ${ARGS[@]}
