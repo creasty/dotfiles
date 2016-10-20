@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+#  Parse args
+#-----------------------------------------------
+METHOD=''
+REQ_PATH=''
+OPTIONS=('')
+ARGS=('')
+
+TOKEN_ID='access-token'
+API_ENV='development'
+AUTH_MODE='user'
+DEBUG_FLAG=0
+
+for a in "$@"; do
+  if [ -n "$REQ_PATH" ]; then
+    ARGS=(${ARGS[@]} "$a")
+    continue
+  fi
+
+  case "$a" in
+    -t*)
+      TOKEN_ID="${TOKEN_ID}-$(cut -c 3- <<< "$a")"
+      ;;
+    -p)
+      API_ENV='production'
+      ;;
+    -a)
+      AUTH_MODE='none'
+      ;;
+    -au)
+      AUTH_MODE='user'
+      ;;
+    -as)
+      AUTH_MODE='system'
+      ;;
+    -v)
+      DEBUG_FLAG=1
+      ;;
+    get|post|put|patch|delete)
+      METHOD="$(tr '[a-z]' '[A-Z]' <<< "$a")"
+      ;;
+    *)
+      REQ_PATH="$a"
+      ;;
+  esac
+done
+
+[ -z "$REQ_PATH" ] && exit 1
+
+#  Auth
+#-----------------------------------------------
+NAMESPACE="api.${API_ENV}"
+
+URL="$(git config "${NAMESPACE}.url")"
+if [ -z "$URL" ]; then
+  echo "TODO:  git config --set ${NAMESPACE}.url" 1>&2
+  exit 1
+fi
+
+case "$AUTH_MODE" in
+  user)
+    ACCESS_TOKEN="$(git config "${NAMESPACE}.${TOKEN_ID}")"
+    if [ -n "$ACCESS_TOKEN" ]; then
+      OPTIONS=(${OPTIONS[@]}
+        -H "Authorization: Token token=$ACCESS_TOKEN"
+      )
+    else
+      echo "WARN [NO VALUE]:  git config --set ${NAMESPACE}.${TOKEN_ID}" 1>&2
+    fi
+    ;;
+
+  system)
+    BASIC_AUTH_CRED="$(git config "${NAMESPACE}.basic-auth-cred")"
+    if [ -n "$BASIC_AUTH_CRED" ]; then
+      OPTIONS=(${OPTIONS[@]}
+        -u "$BASIC_AUTH_CRED"
+      )
+    else
+      echo "WARN [NO VALUE]:  git config --set ${NAMESPACE}.basic-auth-cred" 1>&2
+    fi
+    ;;
+esac
+
+#  Exec
+#-----------------------------------------------
+if [ "$DEBUG_FLAG" -eq 1 ]; then
+  echo "URL:        $URL"
+  echo "METHOD:     $METHOD"
+  echo "REQ_PATH:   $REQ_PATH"
+  echo "OPTIONS:    ${OPTIONS[@]}"
+  echo "ARGS:       ${ARGS[@]}"
+  echo "API_ENV:    $API_ENV"
+  echo "AUTH_MODE:  $AUTH_MODE"
+else
+  curl \
+    "${OPTIONS[@]}" \
+    -H 'Content-Type: application/json' \
+    -X "$METHOD" \
+    "$URL/$REQ_PATH" \
+    ${ARGS[@]}
+fi
