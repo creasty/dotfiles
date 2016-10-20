@@ -64,4 +64,4 @@ snippet trap
 	trap 'trap - EXIT; at_exit; exit -1' SIGHUP SIGINT SIGTERM
 
 snippet cdrt
-	cd "$(dirname $0)/.."
+	cd "$(dirname \$0)/.."
