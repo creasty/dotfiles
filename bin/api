@@ -55,15 +55,15 @@ done
 #-----------------------------------------------
 NAMESPACE="api.${API_ENV}"
 
-URL="$(git config "${NAMESPACE}.url")"
+URL="$(git config "${NAMESPACE}.url" 2> /dev/null || true)"
 if [ -z "$URL" ]; then
-  echo "TODO:  git config --set ${NAMESPACE}.url" 1>&2
+  echo "WARN [NO VALUE]:  git config --set ${NAMESPACE}.url" 1>&2
   exit 1
 fi
 
 case "$AUTH_MODE" in
   user)
-    ACCESS_TOKEN="$(git config "${NAMESPACE}.${TOKEN_ID}")"
+    ACCESS_TOKEN="$(git config "${NAMESPACE}.${TOKEN_ID}" 2> /dev/null || true)"
     if [ -n "$ACCESS_TOKEN" ]; then
       OPTIONS=(${OPTIONS[@]}
         -H "Authorization: Token token=$ACCESS_TOKEN"
@@ -74,7 +74,7 @@ case "$AUTH_MODE" in
     ;;
 
   system)
-    BASIC_AUTH_CRED="$(git config "${NAMESPACE}.basic-auth-cred")"
+    BASIC_AUTH_CRED="$(git config "${NAMESPACE}.basic-auth-cred" 2> /dev/null || true)"
     if [ -n "$BASIC_AUTH_CRED" ]; then
       OPTIONS=(${OPTIONS[@]}
         -u "$BASIC_AUTH_CRED"
