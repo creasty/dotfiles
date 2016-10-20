@@ -40,6 +40,10 @@ for a in "$@"; do
     -v)
       DEBUG_FLAG=1
       ;;
+    -*)
+      echo "Unknown option: $a" 1>&2
+      exit 1
+      ;;
     get|post|put|patch|delete)
       METHOD="$(tr '[a-z]' '[A-Z]' <<< "$a")"
       ;;
