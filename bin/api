@@ -3,11 +3,44 @@
 set -eu
 set -o pipefail
 
+
+#  Utils
+#-----------------------------------------------
+do_help() {
+  cat <<HELP
+api <options> [get|post|put|patch|delete] \$path
+
+OPTIONS:
+  -t{name}    Select other variation of access tokens
+  -p          Use a \`production\` server (default is \`development\`)
+  -a          Request without any authentication method
+  -au         Request with user's access token
+  -as         Request with system credentials (basic auth)
+  -v          Debug
+  -h          Show help
+
+COMMANDS:
+  api help    Show help
+
+GIT CONFIG:
+  api.{env}.url
+  api.{env}.access-token
+  api.{env}.access-token-{variation}
+  api.{env}.basic-auth-cred
+HELP
+  exit 0
+}
+
+warn() {
+  printf "\e[0;31m[WARN]\e[0m $@\n" 1>&2
+}
+
+
 #  Parse args
 #-----------------------------------------------
 METHOD=''
 REQ_PATH=''
-OPTIONS=('')
+OPTIONS=('-s')
 ARGS=('')
 
 TOKEN_ID='access-token'
@@ -22,6 +55,9 @@ for a in "$@"; do
   fi
 
   case "$a" in
+    help|-h)
+      do_help
+      ;;
     -t*)
       TOKEN_ID="${TOKEN_ID}-$(cut -c 3- <<< "$a")"
       ;;
@@ -55,13 +91,14 @@ done
 
 [ -z "$REQ_PATH" ] && exit 1
 
+
 #  Auth
 #-----------------------------------------------
 NAMESPACE="api.${API_ENV}"
 
 URL="$(git config "${NAMESPACE}.url" 2> /dev/null || true)"
 if [ -z "$URL" ]; then
-  echo "WARN [NO VALUE]:  git config --set ${NAMESPACE}.url" 1>&2
+  warn "(no value)  git config --set ${NAMESPACE}.url"
   exit 1
 fi
 
@@ -73,7 +110,7 @@ case "$AUTH_MODE" in
         -H "Authorization: Token token=$ACCESS_TOKEN"
       )
     else
-      echo "WARN [NO VALUE]:  git config --set ${NAMESPACE}.${TOKEN_ID}" 1>&2
+      warn "(no value)  git config --set ${NAMESPACE}.${TOKEN_ID}"
     fi
     ;;
 
@@ -84,10 +121,11 @@ case "$AUTH_MODE" in
         -u "$BASIC_AUTH_CRED"
       )
     else
-      echo "WARN [NO VALUE]:  git config --set ${NAMESPACE}.basic-auth-cred" 1>&2
+      warn "(no value)  git config --set ${NAMESPACE}.basic-auth-cred"
     fi
     ;;
 esac
+
 
 #  Exec
 #-----------------------------------------------
