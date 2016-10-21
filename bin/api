@@ -95,7 +95,7 @@ CONFIG_BASIC_AUTH_CRED_KEY="api.${API_ENV}.basic-auth-cred"
 
 URL="$(git config "$CONFIG_URL_KEY" 2> /dev/null || true)"
 if [ -z "$URL" ]; then
-  fatal "No value for $CONFIG_URL_KEY\n\tRun:  git config --set $CONFIG_URL_KEY"
+  fatal "No value for $CONFIG_URL_KEY\n\tRun:  git config --set $CONFIG_URL_KEY \$value"
 fi
 
 case "$AUTH_MODE" in
@@ -106,7 +106,7 @@ case "$AUTH_MODE" in
         -H "Authorization: Token token=$ACCESS_TOKEN"
       )
     else
-      fatal "No value for $CONFIG_ACCESS_TOKEN_KEY\n\tRun:  git config --set $CONFIG_ACCESS_TOKEN_KEY"
+      fatal "No value for $CONFIG_ACCESS_TOKEN_KEY\n\tRun:  git config --set $CONFIG_ACCESS_TOKEN_KEY \$value"
     fi
     ;;
 
@@ -117,7 +117,7 @@ case "$AUTH_MODE" in
         -u "$BASIC_AUTH_CRED"
       )
     else
-      fatal "No value for $CONFIG_BASIC_AUTH_CRED_KEY\n\tRun:  git config --set $CONFIG_BASIC_AUTH_CRED_KEY"
+      fatal "No value for $CONFIG_BASIC_AUTH_CRED_KEY\n\tRun:  git config --set $CONFIG_BASIC_AUTH_CRED_KEY \$value"
     fi
     ;;
 esac
