@@ -30,8 +30,9 @@ HELP
   exit 0
 }
 
-warn() {
-  printf "\e[0;31m[WARN]\e[0m $@\n" 1>&2
+fatal() {
+  printf "\e[0;31m[ERROR]\e[0m $@\n" 1>&2
+  exit 1
 }
 
 
@@ -88,34 +89,35 @@ done
 
 #  Auth
 #-----------------------------------------------
-NAMESPACE="api.${API_ENV}"
+CONFIG_URL_KEY="api.${API_ENV}.url"
+CONFIG_ACCESS_TOKEN_KEY="api.${API_ENV}.${TOKEN_ID}"
+CONFIG_BASIC_AUTH_CRED_KEY="api.${API_ENV}.basic-auth-cred"
 
-URL="$(git config "${NAMESPACE}.url" 2> /dev/null || true)"
+URL="$(git config "$CONFIG_URL_KEY" 2> /dev/null || true)"
 if [ -z "$URL" ]; then
-  warn "(no value)  git config --set ${NAMESPACE}.url"
-  exit 1
+  fatal "No value for $CONFIG_URL_KEY\n\tRun:  git config --set $CONFIG_URL_KEY"
 fi
 
 case "$AUTH_MODE" in
   user)
-    ACCESS_TOKEN="$(git config "${NAMESPACE}.${TOKEN_ID}" 2> /dev/null || true)"
+    ACCESS_TOKEN="$(git config "$CONFIG_ACCESS_TOKEN_KEY" 2> /dev/null || true)"
     if [ -n "$ACCESS_TOKEN" ]; then
       OPTIONS=(${OPTIONS[@]}
         -H "Authorization: Token token=$ACCESS_TOKEN"
       )
     else
-      warn "(no value)  git config --set ${NAMESPACE}.${TOKEN_ID}"
+      fatal "No value for $CONFIG_ACCESS_TOKEN_KEY\n\tRun:  git config --set $CONFIG_ACCESS_TOKEN_KEY"
     fi
     ;;
 
   system)
-    BASIC_AUTH_CRED="$(git config "${NAMESPACE}.basic-auth-cred" 2> /dev/null || true)"
+    BASIC_AUTH_CRED="$(git config "$CONFIG_BASIC_AUTH_CRED_KEY" 2> /dev/null || true)"
     if [ -n "$BASIC_AUTH_CRED" ]; then
       OPTIONS=(${OPTIONS[@]}
         -u "$BASIC_AUTH_CRED"
       )
     else
-      warn "(no value)  git config --set ${NAMESPACE}.basic-auth-cred"
+      fatal "No value for $CONFIG_BASIC_AUTH_CRED_KEY\n\tRun:  git config --set $CONFIG_BASIC_AUTH_CRED_KEY"
     fi
     ;;
 esac
