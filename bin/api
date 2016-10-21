@@ -15,7 +15,7 @@ OPTIONS:
   -s          Request with system's credentials (basic auth)
   -u{name}    Request with user's credentials (access token)
               {name} -- select other variation of access tokens
-  -v          Debug
+  -x          Debug
   -h          Show help
 
 COMMANDS:
@@ -40,7 +40,7 @@ fatal() {
 #-----------------------------------------------
 METHOD=''
 REQ_PATH=''
-OPTIONS=('-s' '-v')
+OPTIONS=('-sv')
 ARGS=('')
 
 TOKEN_ID='access-token'
@@ -70,7 +70,7 @@ for a in "$@"; do
     -s)
       AUTH_MODE='system'
       ;;
-    -v)
+    -x)
       DEBUG_FLAG=1
       ;;
     -*)
@@ -126,7 +126,7 @@ esac
 #  Regulate
 #-----------------------------------------------
 METHOD=${METHOD:=GET}
-[ "${REQ_PATH:1:1}" != "/" ] && REQ_PATH="/$REQ_PATH"
+[ "${REQ_PATH:0:1}" != "/" ] && REQ_PATH="/$REQ_PATH"
 [ "${URL: -1}" == "/" ] && URL="${URL:0:-1}"
 
 
@@ -140,6 +140,27 @@ if [ "$DEBUG_FLAG" -eq 1 ]; then
   echo "ARGS:       ${ARGS[@]}"
   echo "API_ENV:    $API_ENV"
   echo "AUTH_MODE:  $AUTH_MODE"
+
+  qoptions=''
+  for opt in "${OPTIONS[@]}"; do
+    qopt="$(printf "%q" "$opt")"
+    [ "$qopt" != "$opt" ] && qopt="\"${opt//\"/\\\"}\""
+    [ "${qopt:0:1}" == "-" ] && qopt=" \\
+  $qopt" || qopt=" $qopt \\"
+
+    qoptions="${qoptions}${qopt}"
+  done
+
+  [ ${#ARGS} -gt 0 ] && args_sep=" \\
+  " || args_sep=""
+
+  cat <<CURL
+
+curl$qoptions
+  -H 'Content-Type: application/json' \\
+  -X "$METHOD" \\
+  "$URL$REQ_PATH"$args_sep${ARGS[@]}
+CURL
 else
   [ -z "$REQ_PATH" ] && exit 1  # Validate
 
@@ -147,6 +168,6 @@ else
     "${OPTIONS[@]}" \
     -H 'Content-Type: application/json' \
     -X "$METHOD" \
-    "$URL$REQ_PATH" \
+    "${URL}${REQ_PATH}" \
     ${ARGS[@]}
 fi
