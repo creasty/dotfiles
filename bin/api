@@ -40,7 +40,7 @@ fatal() {
 #-----------------------------------------------
 METHOD=''
 REQ_PATH=''
-OPTIONS=('-s')
+OPTIONS=('-s' '-v')
 ARGS=('')
 
 TOKEN_ID='access-token'
