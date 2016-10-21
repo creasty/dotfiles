@@ -161,13 +161,13 @@ curl$qoptions
   -X "$METHOD" \\
   "$URL$REQ_PATH"$args_sep${ARGS[@]}
 CURL
-else
-  [ -z "$REQ_PATH" ] && exit 1  # Validate
-
+elif [ -n "$REQ_PATH" ]; then
   curl \
     "${OPTIONS[@]}" \
     -H 'Content-Type: application/json' \
     -X "$METHOD" \
     "${URL}${REQ_PATH}" \
     ${ARGS[@]}
+else
+  exit 1
 fi
