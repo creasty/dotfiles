@@ -11,11 +11,10 @@ do_help() {
 api <options> [get|post|put|patch|delete] \$path
 
 OPTIONS:
-  -t{name}    Select other variation of access tokens
   -p          Use a \`production\` server (default is \`development\`)
-  -a          Request without any authentication method
-  -au         Request with user's access token
-  -as         Request with system credentials (basic auth)
+  -s          Request with system's credentials (basic auth)
+  -u{name}    Request with user's credentials (access token)
+              {name} -- select other variation of access tokens
   -v          Debug
   -h          Show help
 
@@ -25,7 +24,7 @@ COMMANDS:
 GIT CONFIG:
   api.{env}.url
   api.{env}.access-token
-  api.{env}.access-token-{variation}
+  api.{env}.access-token-{name}
   api.{env}.basic-auth-cred
 HELP
   exit 0
@@ -45,7 +44,7 @@ ARGS=('')
 
 TOKEN_ID='access-token'
 API_ENV='development'
-AUTH_MODE='user'
+AUTH_MODE='none'
 DEBUG_FLAG=0
 
 for a in "$@"; do
@@ -58,19 +57,16 @@ for a in "$@"; do
     help|-h)
       do_help
       ;;
-    -t*)
-      TOKEN_ID="${TOKEN_ID}-$(cut -c 3- <<< "$a")"
-      ;;
     -p)
       API_ENV='production'
       ;;
-    -a)
-      AUTH_MODE='none'
-      ;;
-    -au)
+    -u*)
       AUTH_MODE='user'
+      if [ ${#a} -gt 2 ]; then
+        TOKEN_ID="${TOKEN_ID}-${a:2}"
+      fi
       ;;
-    -as)
+    -s)
       AUTH_MODE='system'
       ;;
     -v)
@@ -88,8 +84,6 @@ for a in "$@"; do
       ;;
   esac
 done
-
-[ -z "$REQ_PATH" ] && exit 1
 
 
 #  Auth
@@ -127,21 +121,30 @@ case "$AUTH_MODE" in
 esac
 
 
+#  Regulate
+#-----------------------------------------------
+METHOD=${METHOD:=GET}
+[ "${REQ_PATH:1:1}" != "/" ] && REQ_PATH="/$REQ_PATH"
+[ "${URL: -1}" == "/" ] && URL="${URL:0:-1}"
+
+
 #  Exec
 #-----------------------------------------------
 if [ "$DEBUG_FLAG" -eq 1 ]; then
   echo "URL:        $URL"
-  echo "METHOD:     $METHOD"
   echo "REQ_PATH:   $REQ_PATH"
+  echo "METHOD:     $METHOD"
   echo "OPTIONS:    ${OPTIONS[@]}"
   echo "ARGS:       ${ARGS[@]}"
   echo "API_ENV:    $API_ENV"
   echo "AUTH_MODE:  $AUTH_MODE"
 else
+  [ -z "$REQ_PATH" ] && exit 1  # Validate
+
   curl \
     "${OPTIONS[@]}" \
     -H 'Content-Type: application/json' \
     -X "$METHOD" \
-    "$URL/$REQ_PATH" \
+    "$URL$REQ_PATH" \
     ${ARGS[@]}
 fi
