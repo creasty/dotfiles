@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 set -eu
 set -o pipefail
@@ -46,11 +46,13 @@ ARGS=('')
 TOKEN_ID='access-token'
 API_ENV='development'
 AUTH_MODE='none'
+CONTENT_TYPE='json'
 DEBUG_FLAG=0
 
 for a in "$@"; do
   if [ -n "$REQ_PATH" ]; then
     ARGS=(${ARGS[@]} "$a")
+    [ "$a" = '-F' ] && CONTENT_TYPE='form'
     continue
   fi
 
@@ -86,6 +88,12 @@ for a in "$@"; do
   esac
 done
 
+case "$CONTENT_TYPE" in
+  json)
+    OPTIONS=(${OPTIONS[@]} -H 'Content-Type: application/json')
+  ;;
+esac
+
 
 #  Auth
 #-----------------------------------------------
@@ -102,9 +110,7 @@ case "$AUTH_MODE" in
   user)
     ACCESS_TOKEN="$(git config "$CONFIG_ACCESS_TOKEN_KEY" 2> /dev/null || true)"
     if [ -n "$ACCESS_TOKEN" ]; then
-      OPTIONS=(${OPTIONS[@]}
-        -H "Authorization: Token token=$ACCESS_TOKEN"
-      )
+      OPTIONS=(${OPTIONS[@]} -H "Authorization: Token token=$ACCESS_TOKEN")
     else
       fatal "No value for $CONFIG_ACCESS_TOKEN_KEY\n\tRun:  git config --set $CONFIG_ACCESS_TOKEN_KEY \$value"
     fi
@@ -113,9 +119,7 @@ case "$AUTH_MODE" in
   system)
     BASIC_AUTH_CRED="$(git config "$CONFIG_BASIC_AUTH_CRED_KEY" 2> /dev/null || true)"
     if [ -n "$BASIC_AUTH_CRED" ]; then
-      OPTIONS=(${OPTIONS[@]}
-        -u "$BASIC_AUTH_CRED"
-      )
+      OPTIONS=(${OPTIONS[@]} -u "$BASIC_AUTH_CRED")
     else
       fatal "No value for $CONFIG_BASIC_AUTH_CRED_KEY\n\tRun:  git config --set $CONFIG_BASIC_AUTH_CRED_KEY \$value"
     fi
@@ -127,26 +131,28 @@ esac
 #-----------------------------------------------
 METHOD=${METHOD:=GET}
 [ "${REQ_PATH:0:1}" != "/" ] && REQ_PATH="/$REQ_PATH"
-[ "${URL: -1}" == "/" ] && URL="${URL:0:-1}"
+[ "${URL: -1}" = "/" ] && URL="${URL:0:-1}"
 
 
 #  Exec
 #-----------------------------------------------
 if [ "$DEBUG_FLAG" -eq 1 ]; then
-  echo "URL:        $URL"
-  echo "REQ_PATH:   $REQ_PATH"
-  echo "METHOD:     $METHOD"
-  echo "OPTIONS:    ${OPTIONS[@]}"
-  echo "ARGS:       ${ARGS[@]}"
-  echo "API_ENV:    $API_ENV"
-  echo "AUTH_MODE:  $AUTH_MODE"
+  echo "URL:          $URL"
+  echo "REQ_PATH:     $REQ_PATH"
+  echo "METHOD:       $METHOD"
+  echo "OPTIONS:      ${OPTIONS[@]}"
+  echo "ARGS:         ${ARGS[@]}"
+  echo "API_ENV:      $API_ENV"
+  echo "AUTH_MODE:    $AUTH_MODE"
+  echo "CONTENT_TYPE: $CONTENT_TYPE"
 
   qoptions=''
   for opt in "${OPTIONS[@]}"; do
     qopt="$(printf "%q" "$opt")"
+    echo "<$qopt>"
     [ "$qopt" != "$opt" ] && qopt="\"${opt//\"/\\\"}\""
-    [ "${qopt:0:1}" == "-" ] && qopt=" \\
-  $qopt" || qopt=" $qopt \\"
+    [ "${qopt:0:1}" = "-" ] && qopt=" \\
+  $qopt" || qopt=" $qopt"
 
     qoptions="${qoptions}${qopt}"
   done
@@ -156,17 +162,15 @@ if [ "$DEBUG_FLAG" -eq 1 ]; then
 
   cat <<CURL
 
-curl$qoptions
-  -H 'Content-Type: application/json' \\
+curl
   -X "$METHOD" \\
-  "$URL$REQ_PATH"$args_sep${ARGS[@]}
+  "$URL$REQ_PATH"${qoptions}${args_sep}${ARGS[@]}
 CURL
 elif [ -n "$REQ_PATH" ]; then
   curl \
-    "${OPTIONS[@]}" \
-    -H 'Content-Type: application/json' \
     -X "$METHOD" \
     "${URL}${REQ_PATH}" \
+    ${OPTIONS[@]} \
     ${ARGS[@]}
 else
   exit 1
