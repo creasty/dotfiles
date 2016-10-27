@@ -22,6 +22,11 @@ case "${ARGS[0]}" in
       exit $?
     fi
     ;;
+
+  oneoff)
+    ${CMD[@]} run -i --tty --rm ubuntu --image=ubuntu --restart=Never -- bash
+    exit $?
+    ;;
 esac
 
 ${CMD[@]} ${ARGS[@]}
