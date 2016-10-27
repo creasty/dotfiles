@@ -9,4 +9,19 @@ for a in "$@"; do
 done
 
 export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
-envchain wtd bundle exec "$CMD" ${ARGS[@]}
+CMD=(envchain wtd bundle exec "$CMD")
+
+case "${ARGS[0]}" in
+  xlogs)
+    if [ -n "${ARGS[1]}" ]; then
+      ${CMD[@]} get po -l role="${ARGS[1]}" --output=name 2>/dev/null \
+        | sed -e 's#pod/##g' \
+        | tr -d "\r" \
+        | parallel -a - ${CMD[@]} logs '\\-f'
+
+      exit $?
+    fi
+    ;;
+esac
+
+${CMD[@]} ${ARGS[@]}
