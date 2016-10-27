@@ -104,17 +104,31 @@ fi
 CONFIG_URL_KEY="api.${API_ENV}.url"
 CONFIG_ACCESS_TOKEN_KEY="api.${API_ENV}.${TOKEN_ID}"
 CONFIG_BASIC_AUTH_CRED_KEY="api.${API_ENV}.basic-auth-cred"
+CONFIG_TOKEN_HEADER_KEY="api.${API_ENV}.token-header"
 
 URL="$(git config "$CONFIG_URL_KEY" 2> /dev/null || true)"
 if [ -z "$URL" ]; then
   fatal "No value for $CONFIG_URL_KEY\n\tRun:  git config --set $CONFIG_URL_KEY \$value"
 fi
 
+TOKEN_HEADER_MODE="$(git config "$CONFIG_TOKEN_HEADER_KEY" 2> /dev/null || true)"
+[ -z "$TOKEN_HEADER_MODE" ] && TOKEN_HEADER_MODE='token'
+
+TOKEN_HEADER=''
+case "$TOKEN_HEADER_MODE" in
+  bearer)
+    TOKEN_HEADER='Authorization: Bearer %s'
+    ;;
+  token)
+    TOKEN_HEADER='Authorization: Token token=%s'
+    ;;
+esac
+
 case "$AUTH_MODE" in
   user)
     ACCESS_TOKEN="$(git config "$CONFIG_ACCESS_TOKEN_KEY" 2> /dev/null || true)"
     if [ -n "$ACCESS_TOKEN" ]; then
-      OPTIONS=(${OPTIONS[@]} -H "Authorization: Token token=$ACCESS_TOKEN")
+      OPTIONS=(${OPTIONS[@]} -H "$(printf "$TOKEN_HEADER" "$ACCESS_TOKEN")")
     else
       fatal "No value for $CONFIG_ACCESS_TOKEN_KEY\n\tRun:  git config --set $CONFIG_ACCESS_TOKEN_KEY \$value"
     fi
@@ -141,14 +155,15 @@ METHOD=${METHOD:=GET}
 #  Exec
 #-----------------------------------------------
 if [ "$DEBUG_FLAG" -eq 1 ]; then
-  echo "URL:          $URL"
-  echo "REQ_PATH:     $REQ_PATH"
-  echo "METHOD:       $METHOD"
-  echo "OPTIONS:      ${OPTIONS[@]}"
-  echo "ARGS:         ${ARGS[@]}"
-  echo "API_ENV:      $API_ENV"
-  echo "AUTH_MODE:    $AUTH_MODE"
-  echo "CONTENT_TYPE: $CONTENT_TYPE"
+  echo "URL:               $URL"
+  echo "REQ_PATH:          $REQ_PATH"
+  echo "METHOD:            $METHOD"
+  echo "OPTIONS:           ${OPTIONS[@]}"
+  echo "ARGS:              ${ARGS[@]}"
+  echo "API_ENV:           $API_ENV"
+  echo "AUTH_MODE:         $AUTH_MODE"
+  echo "CONTENT_TYPE:      $CONTENT_TYPE"
+  echo "TOKEN_HEADER_MODE: $TOKEN_HEADER_MODE"
 
   qoptions=''
   for opt in "${OPTIONS[@]}"; do
