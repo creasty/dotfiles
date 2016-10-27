@@ -63,6 +63,12 @@ for a in "$@"; do
     -p)
       API_ENV='production'
       ;;
+    -u=*)
+      AUTH_MODE='user_custom'
+      if [ ${#a} -gt 3 ]; then
+        TOKEN_ID="${a:3}"
+      fi
+      ;;
     -u*)
       AUTH_MODE='user'
       if [ ${#a} -gt 2 ]; then
@@ -125,6 +131,10 @@ case "$TOKEN_HEADER_MODE" in
 esac
 
 case "$AUTH_MODE" in
+  user_custom)
+    OPTIONS=(${OPTIONS[@]} -H "$(printf "$TOKEN_HEADER" "$TOKEN_ID")")
+    ;;
+
   user)
     ACCESS_TOKEN="$(git config "$CONFIG_ACCESS_TOKEN_KEY" 2> /dev/null || true)"
     if [ -n "$ACCESS_TOKEN" ]; then
