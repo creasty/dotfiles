@@ -1,32 +1,37 @@
 #!/usr/bin/env zsh
+#> api <options> [get|post|put|patch|delete] $path
+#>
+#> OPTIONS:
+#>   -p          Use a `production` server (default is `development`)
+#>   -s          Request with system's credentials (basic auth)
+#>   -u{name}    Request with user's credentials (access token)
+#>               {name} -- select other variation of access tokens
+#>   -u={token}  Request with custom user's credentials (access token)
+#>               {token} -- specify custom access token
+#>   -x          Debug
+#>   -h          Show help
+#>
+#> COMMANDS:
+#>   api help    Show help
+#>
+#> GIT CONFIG:
+#>   api.{env}.url
+#>   api.{env}.access-token
+#>   api.{env}.access-token-{name}
+#>   api.{env}.basic-auth-cred
 
 set -eu
 set -o pipefail
+
+__FILE__="$(dirname $0)/$(basename $0)"
 
 
 #  Utils
 #-----------------------------------------------
 do_help() {
-  cat <<HELP
-api <options> [get|post|put|patch|delete] \$path
-
-OPTIONS:
-  -p          Use a \`production\` server (default is \`development\`)
-  -s          Request with system's credentials (basic auth)
-  -u{name}    Request with user's credentials (access token)
-              {name} -- select other variation of access tokens
-  -x          Debug
-  -h          Show help
-
-COMMANDS:
-  api help    Show help
-
-GIT CONFIG:
-  api.{env}.url
-  api.{env}.access-token
-  api.{env}.access-token-{name}
-  api.{env}.basic-auth-cred
-HELP
+  cat "$__FILE__" \
+    | grep '^#>' \
+    | sed -e 's/#> //g' -e 's/#>//g'
   exit 0
 }
 
@@ -105,17 +110,20 @@ if [ -p /dev/stdin ]; then
 fi
 
 
-#  Auth
+#  Url
 #-----------------------------------------------
 CONFIG_URL_KEY="api.${API_ENV}.url"
-CONFIG_ACCESS_TOKEN_KEY="api.${API_ENV}.${TOKEN_ID}"
-CONFIG_BASIC_AUTH_CRED_KEY="api.${API_ENV}.basic-auth-cred"
-CONFIG_TOKEN_HEADER_KEY="api.${API_ENV}.token-header"
 
 URL="$(git config "$CONFIG_URL_KEY" 2> /dev/null || true)"
 if [ -z "$URL" ]; then
   fatal "No value for $CONFIG_URL_KEY\n\tRun:  git config --set $CONFIG_URL_KEY \$value"
 fi
+
+#  Auth
+#-----------------------------------------------
+CONFIG_ACCESS_TOKEN_KEY="api.${API_ENV}.${TOKEN_ID}"
+CONFIG_BASIC_AUTH_CRED_KEY="api.${API_ENV}.basic-auth-cred"
+CONFIG_TOKEN_HEADER_KEY="api.${API_ENV}.token-header"
 
 TOKEN_MODE="$(git config "$CONFIG_TOKEN_HEADER_KEY" 2> /dev/null || true)"
 [ -z "$TOKEN_MODE" ] && TOKEN_MODE='token'
