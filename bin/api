@@ -94,6 +94,10 @@ case "$CONTENT_TYPE" in
   ;;
 esac
 
+if [ -p /dev/stdin ]; then
+  OPTIONS=(${OPTIONS[@]} -d '@-')
+fi
+
 
 #  Auth
 #-----------------------------------------------
