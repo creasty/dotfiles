@@ -3,30 +3,33 @@
 CMD=kube
 REPO=github.com/wantedly/kube
 
+set -o allexport
+eval "$(envchain -l -v wtd)"
+set +o allexport
+
+export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
+
 ARGS=()
 for a in "$@"; do
   ARGS=(${ARGS[@]} "$a")
 done
 
-export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
-CMD=(envchain wtd bundle exec "$CMD")
-
 case "${ARGS[0]}" in
   xlogs)
     if [ -n "${ARGS[1]}" ]; then
-      ${CMD[@]} get po -l role="${ARGS[1]}" --output=name 2>/dev/null \
-        | sed -e 's#pod/##g' \
-        | tr -d "\r" \
-        | parallel -a - ${CMD[@]} logs '\\-f'
+      bundle exec "$CMD" get po -l role="${ARGS[1]}" 2>/dev/null \
+        | tail -n +2 \
+        | awk '{ print $1 }' \
+        | parallel --delay 1 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
 
       exit $?
     fi
     ;;
 
   oneoff)
-    ${CMD[@]} run -i --tty --rm ubuntu --image=ubuntu --restart=Never -- bash
+    bundle exec "$CMD" run -i --tty --rm ubuntu --image=ubuntu --restart=Never -- bash
     exit $?
     ;;
 esac
 
-${CMD[@]} ${ARGS[@]}
+bundle exec "$CMD" ${ARGS[@]}
