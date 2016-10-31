@@ -14,21 +14,33 @@ for a in "$@"; do
   ARGS=(${ARGS[@]} "$a")
 done
 
+xlogs() {
+  [ -z "${ARGS[1]}" ] && return
+
+  bundle exec "$CMD" get po -l role="$1" 2>/dev/null \
+    | tail -n +2 \
+    | awk '{ print $1 }' \
+    | parallel --delay 2 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
+
+  exit $?
+}
+
+oneoff() {
+  local image="${1:-koudaiii/curl}"
+  local run_cmd="${2:-bash}"
+  local name="creasty-oneoff-$RANDOM"
+
+  bundle exec "$CMD" run -i --tty --rm "$name" --image="$image" --restart=Never -- "$run_cmd"
+  exit $?
+}
+
 case "${ARGS[0]}" in
   xlogs)
-    if [ -n "${ARGS[1]}" ]; then
-      bundle exec "$CMD" get po -l role="${ARGS[1]}" 2>/dev/null \
-        | tail -n +2 \
-        | awk '{ print $1 }' \
-        | parallel --delay 1 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
-
-      exit $?
-    fi
+    xlogs "${ARGS[1]}"
     ;;
 
   oneoff)
-    bundle exec "$CMD" run -i --tty --rm ubuntu --image=ubuntu --restart=Never -- bash
-    exit $?
+    oneoff ${ARGS[@]}
     ;;
 esac
 
