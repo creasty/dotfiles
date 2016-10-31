@@ -26,8 +26,8 @@ xlogs() {
 }
 
 oneoff() {
-  local image="${1:-koudaiii/curl}"
-  local run_cmd="${2:-bash}"
+  local image="${2:-koudaiii/curl}"
+  local run_cmd="${3:-bash}"
   local name="creasty-oneoff-$RANDOM"
 
   bundle exec "$CMD" run -i --tty --rm "$name" --image="$image" --restart=Never -- "$run_cmd"
