@@ -15,7 +15,7 @@ for a in "$@"; do
 done
 
 xlogs() {
-  [ -z "${ARGS[1]}" ] && return
+  [ -z "$1" ] && return
 
   bundle exec "$CMD" get po -l role="$1" 2>/dev/null \
     | tail -n +2 \
