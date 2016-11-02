@@ -348,6 +348,9 @@ else
   " tools related to the TypeScript language
   NeoBundleLazy 'clausreinke/typescript-tools.vim'
 
+  " syntax highlight for ace
+  NeoBundleLazy 'yosssi/vim-ace'
+
 
   NeoBundleSaveCache
 endif
@@ -3795,6 +3798,17 @@ if neobundle#tap('typescript-tools.vim')
   \ })
 
   " let g:TSS = ['bin/tss']
+
+  call neobundle#untap()
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('vim-ace')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['ace'] }
+  \ })
 
   call neobundle#untap()
 endif
