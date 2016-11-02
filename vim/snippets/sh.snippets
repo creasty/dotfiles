@@ -65,3 +65,15 @@ snippet trap
 
 snippet cdrt
 	cd "$(dirname \$0)/.."
+
+snippet envchain
+	set -o allexport
+	eval "$(envchain -l -v wtd)"
+	set +o allexport
+
+snippet dotenv
+	if [ -f .env ]; then
+		set -o allexport
+		eval "$(cat .env | grep -v '^#')"
+		set +o allexport
+	fi
