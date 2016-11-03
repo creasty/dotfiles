@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+REPO="$(
+  git config --get remote.origin.url \
+    | grep github.com \
+    | sed 's/^.*github\.com[:\/]//' \
+    | sed 's/\(.*\)\.git$/\1/' \
+    | tr -d "\n"
+)"
+
+if [ -z "$REPO" ]; then
+  echo 'Remote origin is not hosted at github.com' 1>&2
+  exit 1
+fi
+
+BASE="$(git config pr.base 2>/dev/null || true)"
+BASE="${BASE:-master}"
+HEAD="$(git symbolic-ref --short HEAD)"
+
+git auto-ref push
+open "https://github.com/$REPO/compare/$BASE...$HEAD"
