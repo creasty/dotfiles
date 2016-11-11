@@ -52,6 +52,7 @@ TOKEN_ID='access-token'
 API_ENV='development'
 AUTH_MODE='none'
 CONTENT_TYPE='json'
+SYSTEM_USER_ID=0
 DEBUG_FLAG=0
 
 for a in "$@"; do
@@ -80,8 +81,11 @@ for a in "$@"; do
         TOKEN_ID="${TOKEN_ID}-${a:2}"
       fi
       ;;
-    -s)
+    -s*)
       AUTH_MODE='system'
+      if [ ${#a} -gt 2 ]; then
+        SYSTEM_USER_ID="${a:2}"
+      fi
       ;;
     -x)
       DEBUG_FLAG=1
@@ -156,6 +160,10 @@ case "$AUTH_MODE" in
     BASIC_AUTH_CRED="$(git config "$CONFIG_BASIC_AUTH_CRED_KEY" 2> /dev/null || true)"
     if [ -n "$BASIC_AUTH_CRED" ]; then
       OPTIONS=(${OPTIONS[@]} -u "$BASIC_AUTH_CRED")
+
+      if [ "$SYSTEM_USER_ID" -gt 0 ]; then
+        OPTIONS=(${OPTIONS[@]} -H "Current-User-Id: $SYSTEM_USER_ID")
+      fi
     else
       fatal "No value for $CONFIG_BASIC_AUTH_CRED_KEY\n\tRun:  git config --set $CONFIG_BASIC_AUTH_CRED_KEY \$value"
     fi
@@ -173,13 +181,14 @@ METHOD=${METHOD:=GET}
 #  Exec
 #-----------------------------------------------
 if [ "$DEBUG_FLAG" -eq 1 ]; then
-  echo "URL:          $URL"
-  echo "REQ_PATH:     $REQ_PATH"
-  echo "METHOD:       $METHOD"
-  echo "API_ENV:      $API_ENV"
-  echo "AUTH_MODE:    $AUTH_MODE"
-  echo "CONTENT_TYPE: $CONTENT_TYPE"
-  echo "TOKEN_MODE:   $TOKEN_MODE"
+  echo "URL:            $URL"
+  echo "REQ_PATH:       $REQ_PATH"
+  echo "METHOD:         $METHOD"
+  echo "API_ENV:        $API_ENV"
+  echo "AUTH_MODE:      $AUTH_MODE"
+  echo "CONTENT_TYPE:   $CONTENT_TYPE"
+  echo "TOKEN_MODE:     $TOKEN_MODE"
+  echo "SYSTEM_USER_ID: $SYSTEM_USER_ID"
 
   qoptions=''
   for opt in "${OPTIONS[@]}"; do
