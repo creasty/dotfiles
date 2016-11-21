@@ -20,7 +20,7 @@ xlogs() {
   bundle exec "$CMD" get po -l role="$1" 2>/dev/null \
     | tail -n +2 \
     | awk '{ print $1 }' \
-    | parallel --delay 2 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
+    | parallel --delay 5 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
 
   exit $?
 }
