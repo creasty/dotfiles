@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 unescape() {
-  cat | ruby -ruri -e 'print URI.unescape(STDIN.read)'
+  cat | ruby -rcgi -e 'print CGI.unescape(STDIN.read)'
 }
 
 preformat() {
