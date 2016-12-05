@@ -162,7 +162,7 @@ case "$AUTH_MODE" in
       OPTIONS=(${OPTIONS[@]} -u "$BASIC_AUTH_CRED")
 
       if [ "$SYSTEM_USER_ID" -gt 0 ]; then
-        OPTIONS=(${OPTIONS[@]} -H "Current-User-Id: $SYSTEM_USER_ID")
+        OPTIONS=(${OPTIONS[@]} -H "X-Current-User-Id: $SYSTEM_USER_ID")
       fi
     else
       fatal "No value for $CONFIG_BASIC_AUTH_CRED_KEY\n\tRun:  git config --set $CONFIG_BASIC_AUTH_CRED_KEY \$value"
