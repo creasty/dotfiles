@@ -1,28 +1,8 @@
-#  Oh my zsh
-#-----------------------------------------------
-ZSH=$HOME/.oh-my-zsh
 ZSH_CUSTOM=$HOME/.zsh
 
-plugins=(
-  brew
-  bundler
-  gem
-  git
-  git-flow
-  npm
-  pod
-  pow
-  powder
-  rails
-  rbenv
-  ruby
-  linux
-  osx
-  zsh-syntax-highlighting
-  k
-)
-
-source $ZSH/oh-my-zsh.sh
+#  Plugins
+#-----------------------------------------------
+source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 #  Base
@@ -92,6 +72,9 @@ setopt auto_param_keys
 
 # ommittable ~
 setopt cdable_vars
+
+# enable expansion in PROMPT
+setopt prompt_subst
 
 
 #  Named directories

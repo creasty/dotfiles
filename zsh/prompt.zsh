@@ -1,4 +1,5 @@
-autoload colors
+autoload -Uz colors
+colors
 
 __gitdir() {
   if [ -z "${1-}" ]; then
