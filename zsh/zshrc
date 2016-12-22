@@ -95,6 +95,9 @@ setopt auto_param_keys
 # ommittable ~
 setopt cdable_vars
 
+# enable expansion in PROMPT
+setopt prompt_subst
+
 
 #  Named directories
 #-----------------------------------------------
