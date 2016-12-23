@@ -209,3 +209,7 @@ on_ft = ['typescript']
 [[plugins]] # tools related to the TypeScript language
 repo  = 'clausreinke/typescript-tools.vim'
 on_ft = ['typescript']
+
+[[plugins]] # vim syntax highlighting for ace templates
+repo  = 'yosssi/vim-ace'
+on_ft = ['ace']
