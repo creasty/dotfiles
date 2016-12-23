@@ -3,7 +3,7 @@ ZSH_CUSTOM=$HOME/.zsh
 zmodload -i zsh/mathfunc
 zmodload -i zsh/complist
 
-for file in $DOTFILES_PATH/zsh/{exports,aliases,functions,prompt}.zsh; do
+for file in $DOTFILES_PATH/zsh/{exports,aliases,functions,prompt,term}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
@@ -205,40 +205,3 @@ eval "$(direnv hook zsh)"
 #-----------------------------------------------
 # docker-machine create --driver virtualbox local
 eval "$(docker-machine env local)"
-
-
-#  Apperance
-#-----------------------------------------------
-# set terminal title including current directory
-case "${TERM}" in
-  kterm*|xterm)
-    precmd() {
-      echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-    }
-    ;;
-esac
-
-
-#  Nortify done
-#-----------------------------------------------
-local COMMAND=""
-local COMMAND_TIME=""
-
-precmd() {
-  if [ "$COMMAND_TIME" -ne "0" ] ; then
-    local d=`date +%s`
-    d=`expr $d - $COMMAND_TIME`
-    if [ "$d" -ge "30" ] ; then
-      COMMAND="$COMMAND "
-      which growlnotify > /dev/null 2>&1 && growlnotify -t "${${(s: :)COMMAND}[1]}" -m "$COMMAND";
-    fi
-  fi
-  COMMAND="0"
-  COMMAND_TIME="0"
-}
-preexec () {
-  COMMAND="${1}"
-  if [ "`perl -e 'print($ARGV[0]=~/ssh|^vi/)' $COMMAND`" -ne 1 ] ; then
-    COMMAND_TIME=`date +%s`
-  fi
-}
