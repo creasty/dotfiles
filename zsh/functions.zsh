@@ -279,9 +279,7 @@ peco_cd_repo() {
     }
 }
 
-# _register_keycommand '^q' peco_cd_repo
-bindkey -r '^q'
-_register_keycommand '^q^q' peco_cd_repo
+_register_keycommand '^q' peco_cd_repo
 
 
 #  Insert resource
