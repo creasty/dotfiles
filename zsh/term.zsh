@@ -1,13 +1,11 @@
 #  Title
 #-----------------------------------------------
-function title {
+title() {
   emulate -L zsh
   setopt prompt_subst
 
   [[ "$EMACS" == *term* ]] && return
 
-  # if $2 is unset use $1 as default
-  # if it is set and empty, leave it as is
   : ${2=$1}
 
   case "$TERM" in
@@ -23,8 +21,8 @@ function title {
         print -Pn "\e]2;$2:q\a" # set window name
         print -Pn "\e]1;$1:q\a" # set tab name
       else
-        # Try to use terminfo to set the title
-        # If the feature is available set title
+        # try to use terminfo to set the title
+        # if the feature is available set title
         if [[ -n "$terminfo[fsl]" ]] && [[ -n "$terminfo[tsl]" ]]; then
           echoti tsl
           print -Pn "$1"
@@ -35,30 +33,20 @@ function title {
   esac
 }
 
-# Runs before showing the prompt
-function title_precmd {
+title_precmd() {
   emulate -L zsh
 
-  local ZSH_THEME_TERM_TAB_TITLE_IDLE="%15<..<%~%<<" #15 char left truncated PWD
-  local ZSH_THEME_TERM_TITLE_IDLE="%n@%m: %~"
-
-  title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
+  title '%~%<<' '%n@%m: %~'
 }
-
-# Runs before executing the command
-function title_preexec {
+title_preexec() {
   emulate -L zsh
   setopt extended_glob
 
-  if [[ "$DISABLE_AUTO_TITLE" == true ]]; then
-    return
-  fi
-
   # cmd name only, or if this is sudo or ssh, the next cmd
-  local CMD=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
-  local LINE="${2:gs/%/%%}"
+  local cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
+  local line="${2:gs/%/%%}"
 
-  title '$CMD' '%100>...>$LINE%<<'
+  title '$cmd' '%100>...>$line%<<'
 }
 
 precmd_functions+=(title_precmd)
