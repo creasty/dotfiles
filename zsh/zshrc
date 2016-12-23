@@ -1,5 +1,6 @@
 ZSH_CUSTOM=$HOME/.zsh
 
+
 #  Plugins
 #-----------------------------------------------
 source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -22,6 +23,11 @@ zstyle ':completion:*:match:*' original only
 setopt share_history
 setopt inc_append_history
 setopt hist_ignore_space
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
 
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -38,6 +44,15 @@ setopt print_eight_bit
 
 # command correct edition before each completion attempt
 # setopt correct
+
+# perform the cd for a directory command
+setopt auto_cd
+
+# stop pushing multiple copies of the same directory onto the stack
+setopt pushd_ignore_dups
+
+# swap the meaning of cd +1 and cd -1
+setopt pushdminus
 
 # auto directory pushd that you can get dirs list by cd -[tab]
 setopt auto_pushd
@@ -72,6 +87,9 @@ setopt cdable_vars
 
 # enable expansion in PROMPT
 setopt prompt_subst
+
+# recognize comments
+setopt interactivecomments
 
 
 #  Named directories

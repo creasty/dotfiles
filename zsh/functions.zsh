@@ -40,6 +40,7 @@ bindkey "^[m" copy-prev-shell-word
 #==============================================================================================
 _register_keycommand() {
   zle -N $2
+  bindkey -r "$1"
   bindkey "$1" $2
 }
 
