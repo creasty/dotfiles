@@ -3,7 +3,7 @@ ZSH_CUSTOM=$HOME/.zsh
 zmodload -i zsh/mathfunc
 zmodload -i zsh/complist
 
-for file in $DOTFILES_PATH/zsh/{exports,aliases,functions,prompt,term}.zsh; do
+for file in $DOTFILES_PATH/zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
