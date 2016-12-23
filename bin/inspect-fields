@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+unescape() {
+  cat | ruby -rcgi -e 'print CGI.unescape(STDIN.read)'
+}
+
+preformat() {
+  local data="$(cat \
+    | tr -d ' ' \
+    | sed -e 's/^.*fields=//g' \
+    | sed -e 's/&.*$//g'
+  )"
+  data="${data//\[/\n[\n}"
+  data="${data//,/,\n}"
+  data="${data//\]/\n]}"
+  echo -e "$data"
+}
+
+indent() {
+  local buf=""
+  local level=""
+
+  while read -r line; do
+    [ -z "$line" ] && continue
+
+    if [ "$line" == '[' ]; then
+      buf="${buf}${line}"
+      level="$level  "
+      continue
+    fi
+
+    if [ "${line:0:1}" == ']' ]; then
+      level="${level:2}"
+    fi
+
+    buf="${buf}\n${level}${line}"
+  done
+
+  echo -e "$buf"
+}
+
+cat \
+  | unescape \
+  | preformat \
+  | indent

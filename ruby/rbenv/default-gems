@@ -3,12 +3,8 @@ bundler
 awesome_print
 fancy_irb
 find_t
-git-browse-remote
-herdic
 hirb
 interactive_editor
-octokit
-powder
 pry
 rails
 synx

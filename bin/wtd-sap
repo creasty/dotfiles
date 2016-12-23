@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
+CMD=sap
 REPO=github.com/wantedly/sap
 
-cd "$(ghq root)/$REPO"
-envchain wtd bundle exec sap $@
+ARGS=()
+for a in "$@"; do
+  ARGS=(${ARGS[@]} "$a")
+done
+
+export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
+envchain wtd bundle exec "$CMD" ${ARGS[@]}

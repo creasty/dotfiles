@@ -1,54 +1,33 @@
-#  Oh my zsh
-#-----------------------------------------------
-ZSH=$HOME/.oh-my-zsh
 ZSH_CUSTOM=$HOME/.zsh
 
-plugins=(
-  brew
-  bundler
-  gem
-  git
-  git-flow
-  npm
-  pod
-  pow
-  powder
-  rails
-  rbenv
-  ruby
-  linux
-  osx
-  zsh-syntax-highlighting
-  k
-)
-
-source $ZSH/oh-my-zsh.sh
-
-
-#  Base
-#-----------------------------------------------
-# load math functions
 zmodload -i zsh/mathfunc
+zmodload -i zsh/complist
 
-# completion
+for file in $DOTFILES_PATH/zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
+
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi
+
+
+#  Plugins
+#-----------------------------------------------
+source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 fpath=($ZSH_CUSTOM/zsh-completions/src $fpath)
 fpath=($ZSH_CUSTOM/completions $fpath)
 autoload -Uz compinit
 compinit
 
-zstyle ':completion:*:match:*' original only
 
-# history
-setopt share_history
-setopt inc_append_history
-setopt hist_ignore_space
-
+#  Base
+#-----------------------------------------------
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
-
-# emacs like keybind
-bindkey -e
 
 # disable r command so that I can use r-lang one
 disable r
@@ -56,11 +35,30 @@ disable r
 
 #  Options
 #-----------------------------------------------
+# history
+setopt share_history
+setopt inc_append_history
+setopt hist_ignore_space
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
+
 # print japanese chars
 setopt print_eight_bit
 
 # command correct edition before each completion attempt
 # setopt correct
+
+# perform the cd for a directory command
+setopt auto_cd
+
+# stop pushing multiple copies of the same directory onto the stack
+setopt pushd_ignore_dups
+
+# swap the meaning of cd +1 and cd -1
+setopt pushdminus
 
 # auto directory pushd that you can get dirs list by cd -[tab]
 setopt auto_pushd
@@ -92,6 +90,57 @@ setopt auto_param_keys
 
 # ommittable ~
 setopt cdable_vars
+
+# enable expansion in PROMPT
+setopt prompt_subst
+
+# recognize comments
+setopt interactivecomments
+
+# completion
+unsetopt menu_complete
+unsetopt flowcontrol
+setopt auto_menu
+setopt complete_in_word
+setopt always_to_end
+
+
+#  Completion
+#-----------------------------------------------
+WORDCHARS=''
+
+# should this be in keybindings?
+bindkey -M menuselect '^o' accept-and-infer-next-history
+
+zstyle ':completion:*:match:*' original only
+
+zstyle ':completion:*:*:*:*:*' menu select
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+
+# disable named-directories autocompletion
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+
+# use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
+
+# don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+  adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
+  clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
+  gkrellmd gopher hacluster haldaemon halt hsqldb ident junkbust kdm \
+  ldap lp mail mailman mailnull man messagebus  mldonkey mysql nagios \
+  named netdump news nfsnobody nobody nscd ntp nut nx obsrun openvpn \
+  operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
+  rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
+  usbmux uucp vcsa wwwrun xfs '_*'
+
+# unless we really want to
+zstyle '*' single-ignored show
 
 
 #  Named directories
@@ -156,40 +205,3 @@ eval "$(direnv hook zsh)"
 #-----------------------------------------------
 # docker-machine create --driver virtualbox local
 eval "$(docker-machine env local)"
-
-
-#  Apperance
-#-----------------------------------------------
-# set terminal title including current directory
-case "${TERM}" in
-  kterm*|xterm)
-    precmd() {
-      echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-    }
-    ;;
-esac
-
-
-#  Nortify done
-#-----------------------------------------------
-local COMMAND=""
-local COMMAND_TIME=""
-
-precmd() {
-  if [ "$COMMAND_TIME" -ne "0" ] ; then
-    local d=`date +%s`
-    d=`expr $d - $COMMAND_TIME`
-    if [ "$d" -ge "30" ] ; then
-      COMMAND="$COMMAND "
-      which growlnotify > /dev/null 2>&1 && growlnotify -t "${${(s: :)COMMAND}[1]}" -m "$COMMAND";
-    fi
-  fi
-  COMMAND="0"
-  COMMAND_TIME="0"
-}
-preexec () {
-  COMMAND="${1}"
-  if [ "`perl -e 'print($ARGV[0]=~/ssh|^vi/)' $COMMAND`" -ne 1 ] ; then
-    COMMAND_TIME=`date +%s`
-  fi
-}

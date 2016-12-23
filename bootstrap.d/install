@@ -22,7 +22,6 @@ INSTALLERS=(
 
   redis
   rsense
-  elasticsearch
 )
 
 for installer in "${INSTALLERS[@]}"; do

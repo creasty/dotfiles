@@ -2407,6 +2407,8 @@ if dein#tap('mold.vim')
       call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
+
+  call neobundle#untap()
 endif
 
 
@@ -3034,6 +3036,17 @@ endif
 "==============================================================================================
 if dein#tap('typescript-tools.vim')
   " let g:TSS = ['bin/tss']
+endif
+
+
+"=== Plugin: vim-jade
+"==============================================================================================
+if neobundle#tap('vim-ace')
+  call neobundle#config({
+    \ 'autoload': { 'filetypes': ['ace'] }
+  \ })
+
+  call neobundle#untap()
 endif
 
 

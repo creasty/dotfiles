@@ -1,3 +1,41 @@
+#=== Key bindings
+#==============================================================================================
+# Make sure that the terminal is in application mode when zle is active, since
+# only then values from $terminfo are valid
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+  function zle-line-init() {
+    echoti smkx
+  }
+  function zle-line-finish() {
+    echoti rmkx
+  }
+  zle -N zle-line-init
+  zle -N zle-line-finish
+fi
+
+# emacs like keybind
+bindkey -e
+
+# do history expansion by <Space>
+bindkey ' ' magic-space
+
+# delete backward by <Backspace>
+bindkey '^?' backward-delete-char
+
+# delete forward by <Delete>
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
+bindkey "\e[3~" delete-char
+
+# Edit the current command line in $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
+
+# paste last word
+bindkey '^o^w' copy-prev-shell-word
+
+
 #=== Helper
 #==============================================================================================
 _register_keycommand() {

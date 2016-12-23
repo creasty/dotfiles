@@ -1,4 +1,0 @@
-royrusso/elasticsearch-HQ
-mobz/elasticsearch-head
-elasticsearch/elasticsearch-analysis-kuromoji/2.2.0
-polyfractal/elasticsearch-inquisitor

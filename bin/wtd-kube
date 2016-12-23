@@ -1,6 +1,47 @@
 #!/usr/bin/env bash
 
+CMD=kube
 REPO=github.com/wantedly/kube
+
+set -o allexport
+eval "$(envchain -l -v wtd)"
+set +o allexport
+
 export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
 
-envchain wtd bundle exec kube $@
+ARGS=()
+for a in "$@"; do
+  ARGS=(${ARGS[@]} "$a")
+done
+
+xlogs() {
+  [ -z "$1" ] && return
+
+  bundle exec "$CMD" get po -l role="$1" 2>/dev/null \
+    | tail -n +2 \
+    | awk '{ print $1 }' \
+    | parallel --delay 5 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
+
+  exit $?
+}
+
+oneoff() {
+  local image="${2:-koudaiii/curl}"
+  local run_cmd="${3:-bash}"
+  local name="creasty-oneoff-$RANDOM"
+
+  bundle exec "$CMD" run -i --tty --rm "$name" --image="$image" --restart=Never -- "$run_cmd"
+  exit $?
+}
+
+case "${ARGS[0]}" in
+  xlogs)
+    xlogs "${ARGS[1]}"
+    ;;
+
+  oneoff)
+    oneoff ${ARGS[@]}
+    ;;
+esac
+
+bundle exec "$CMD" ${ARGS[@]}
