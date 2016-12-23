@@ -36,7 +36,7 @@ title() {
 title_precmd() {
   emulate -L zsh
 
-  title '%~%<<' '%n@%m: %~'
+  title '%~' '%n@%m: %~'
 }
 title_preexec() {
   emulate -L zsh
