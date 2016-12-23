@@ -1,13 +1,10 @@
 android-sdk
-ansible
 argon/mas/mas
-asciinema
 awscli --HEAD
 batik
 binutils
 cabal-install
 chisel
-chrome-cli
 clib
 clisp
 cloc
@@ -15,9 +12,7 @@ ctags
 ctags-objc-ja --HEAD --enable-japanese-support
 curl --with-ssl --with-libssh2
 direnv
-elasticsearch
 elixir
-envchain
 eot-utils
 fontconfig
 fontforge
@@ -30,17 +25,11 @@ gettext
 ghc
 ghostscript
 git
-git-flow
-git-ftp
 git-lfs
 gpg
 graphviz
-hicolor-icon-theme
-httpie
 https://raw.githubusercontent.com/sorah/envchain/master/brew/envchain.rb
-hub
 imagemagick
-irssi --with-perl=yes --with-proxy --with-socks
 jbig2dec
 jo
 jpeg
@@ -54,7 +43,6 @@ lua
 luajit
 luarocks
 macvim --HEAD --with-luajit
-mdp
 memcached
 mercurial
 mongodb
@@ -65,7 +53,6 @@ nkf
 opencv
 optipng
 osquery
-packer
 parallel
 pcre
 phantomjs
