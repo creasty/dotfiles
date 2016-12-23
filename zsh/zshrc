@@ -3,6 +3,15 @@ ZSH_CUSTOM=$HOME/.zsh
 zmodload -i zsh/mathfunc
 zmodload -i zsh/complist
 
+for file in $DOTFILES_PATH/zsh/{exports,aliases,functions,prompt}.zsh; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
+
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi
+
 
 #  Plugins
 #-----------------------------------------------
