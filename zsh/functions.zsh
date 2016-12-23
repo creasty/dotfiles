@@ -32,15 +32,14 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
 
-# file rename magick
-bindkey "^[m" copy-prev-shell-word
+# paste last word
+bindkey '^o^w' copy-prev-shell-word
 
 
 #=== Helper
 #==============================================================================================
 _register_keycommand() {
   zle -N $2
-  bindkey -r "$1"
   bindkey "$1" $2
 }
 
@@ -280,7 +279,9 @@ peco_cd_repo() {
     }
 }
 
-_register_keycommand '^q' peco_cd_repo
+# _register_keycommand '^q' peco_cd_repo
+bindkey -r '^q'
+_register_keycommand '^q^q' peco_cd_repo
 
 
 #  Insert resource
