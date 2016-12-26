@@ -74,6 +74,7 @@ on_cmd = ['LiveMark']
 [[plugins]] # next generation of auto completion framework
 repo    = 'Shougo/neocomplete.vim'
 depends = ['context_filetype.vim']
+rev     = '4dc8531e999f00e955f81248d6131132e6fe6917'
 on_i    = 1
 
 [[plugins]] # accurately completing C and C++ code
