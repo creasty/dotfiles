@@ -2292,7 +2292,7 @@ if dein#tap('lexima.vim')
 
   function! SuperTabCompletion()
     if pumvisible()
-      return "\<C-y>"
+      return "\<C-r>=neocomplete#close_popup()\<CR>"  " \<C-y> is buggy
     elseif neosnippet#expandable_or_jumpable()
       return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
     elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
