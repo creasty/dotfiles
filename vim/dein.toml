@@ -66,6 +66,9 @@ repo = 'tmhedberg/matchit'
 repo    = 'cohama/lexima.vim'
 depends = ['smartchr', 'neocomplete.vim', 'neosnippet']
 
+[[plugins]] # next generation of auto completion framework
+repo = 'Shougo/neocomplete.vim'
+
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
 
