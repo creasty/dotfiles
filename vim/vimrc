@@ -1857,27 +1857,6 @@ if dein#tap('lexima.vim')
   unlet epa
 
 
-  "  Super tab completion
-  "-----------------------------------------------
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    '\%#',
-    \ 'input': '<C-r>=SuperTabCompletion()<CR>',
-  \ })
-
-  function! SuperTabCompletion()
-    if pumvisible()
-      return "\<C-y>"
-    elseif neosnippet#expandable_or_jumpable()
-      return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
-    elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
-      return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-    else
-      return "\<Tab>"
-    endif
-  endfunction
-
-
   "  Arrows
   "-----------------------------------------------
   for width in ['-', '=']
@@ -2305,6 +2284,23 @@ if dein#tap('lexima.vim')
     \ 'input': "\<C-u>Rename \<C-r>=expand('%:p') \<CR>",
     \ 'mode':  ':',
   \ })
+
+
+  "  Super tab completion
+  "-----------------------------------------------
+  imap <silent> <expr> <Tab> SuperTabCompletion()
+
+  function! SuperTabCompletion()
+    if pumvisible()
+      return "\<C-y>"
+    elseif neosnippet#expandable_or_jumpable()
+      return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
+    elseif &ft =~ 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
+      return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
+    else
+      return "\<C-r>=lexima#expand('<TAB>', 'i')\<CR>"
+    endif
+  endfunction
 endif
 
 
@@ -2496,13 +2492,9 @@ if dein#tap('neocomplete.vim')
   autocmd vimrc FileType typescript
     \ setlocal omnifunc=TSScompleteFunc
 
-  function! s:neocomplete_on_source() abort
-    " cancel or accept
-    imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=neocomplete#cancel_popup()\<CR>" : "\<Esc>"
-    imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
-  endfunction
-
-  call dein#set_hook('neocomplete.vim', 'hook_source', function('s:neocomplete_on_source'))
+  " cancel or accept
+  imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=neocomplete#cancel_popup()\<CR>" : "\<Esc>"
+  imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
 endif
 
 
