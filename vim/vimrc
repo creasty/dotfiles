@@ -1860,9 +1860,9 @@ if dein#tap('lexima.vim')
   "  Super tab completion
   "-----------------------------------------------
   call lexima#add_rule({
-    \ 'char':     '<Tab>',
-    \ 'at':       '\%#',
-    \ 'input':    '<C-r>=SuperTabCompletion()<CR>',
+    \ 'char':  '<Tab>',
+    \ 'at':    '\%#',
+    \ 'input': '<C-r>=SuperTabCompletion()<CR>',
   \ })
 
   function! SuperTabCompletion()
@@ -2729,53 +2729,6 @@ if dein#tap('vim-quickrun')
     \ 'exec':    '%c %o %s %a',
   \ }
 
-
-  "  Rspec outputter
-  "-----------------------------------------------
-  let rspec_outputter = quickrun#outputter#buffer#new()
-
-  function! rspec_outputter.start(session)
-    call call(quickrun#outputter#buffer#new().start,  [a:session],  self)
-  endfunction
-
-  function! rspec_outputter.finish(session)
-    call matchadd('RSpecGreen', '^[\.F]*\.[\.F]*$')
-    call matchadd('RSpecGreen', '^.*, 0 failures$')
-    call matchadd('RSpecRed', '^.*, [1-9]* failures.*$')
-    call matchadd('RSpecRed', '^.*, 1 failure.*$')
-    call matchadd('RSpecRed', '^ *(.*$')
-    call matchadd('RSpecRed', '^ *expected.*$')
-    call matchadd('RSpecRed', '^ *got.*$')
-    call matchadd('RSpecRed', '^ *Failure/Error:.*$')
-    call matchadd('RSpecRed', '^.*(FAILED - [0-9]*)$')
-    call matchadd('RSpecRed', '^rspec .*:.*$')
-    call matchadd('RSpecComment', ' # .*$')
-    call matchadd('RSpecNormal', '^Failures:')
-    call matchadd('RSpecNormal', '^Finished')
-    call matchadd('RSpecNormal', '^Failed')
-
-    call call(quickrun#outputter#buffer#new().finish,  [a:session], self)
-  endfunction
-
-  call candle#highlight('RSpecGreen', 'green', '', '')
-  call candle#highlight('RSpecRed', 'red', '', '')
-  call candle#highlight('RSpecComment', 'aqua', '', '')
-  call candle#highlight('RSpecNormal', 'foreground', '', '')
-
-  call quickrun#register_outputter('rspec_outputter', rspec_outputter)
-
-
-  "  Config
-  "-----------------------------------------------
-  function! <SID>quickrun_rspec_config()
-    let b:quickrun_config = { 'type': 'ruby.rspec' }
-  endfunction
-
-  autocmd vimrc BufReadPost *_spec.rb call <SID>quickrun_rspec_config()
-
-
-  "  Key
-  "-----------------------------------------------
   nmap <Leader>r <Plug>(quickrun)
 endif
 
