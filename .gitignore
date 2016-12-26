@@ -3,6 +3,7 @@
 vim/sessions/*
 vim/bundle/*
 !vim/bundle/neobundle.vim
+!vim/bundle/NeoBundle.lock
 vim/.netrwhist
 vim/init.vim
 
