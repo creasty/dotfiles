@@ -6,6 +6,8 @@ source $DOTFILES_PATH/lib/helpers.sh
 INSTALLERS_PATH=$DOTFILES_PATH/bootstrap.d/install.d
 
 INSTALLERS=(
+  vim
+
   xcode_cli
   homebrew
   anyenv
