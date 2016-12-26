@@ -7,9 +7,6 @@
 [submodule "zsh/zsh-completions"]
 	path = zsh/zsh-completions
 	url = git://github.com/zsh-users/zsh-completions.git
-[submodule "vim/bundle/neobundle.vim"]
-	path = vim/bundle/neobundle.vim
-	url = https://github.com/Shougo/neobundle.vim.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
