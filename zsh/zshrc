@@ -8,10 +8,6 @@ for file in $DOTFILES_PATH/zsh/src/{exports,aliases,functions,prompt,term}.zsh; 
 done
 unset file
 
-if [ -d $HOME/.anyenv ]; then
-  eval "$(anyenv init -)"
-fi
-
 
 #  Plugins
 #-----------------------------------------------
