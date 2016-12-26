@@ -2407,8 +2407,6 @@ if dein#tap('mold.vim')
       call setpos('.', b:mold_saved_cursor)
     endif
   endfunction
-
-  call neobundle#untap()
 endif
 
 
