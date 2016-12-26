@@ -814,12 +814,9 @@ inoremap <C-s>h <C-d>
 inoremap <C-s>l <C-t>
 
 " easy key
-nnoremap <Space>h g^
-nnoremap <Space>l g$
-nnoremap <Space>m %
 vnoremap <Space>h g^
 vnoremap <Space>l g$
-vnoremap <Space>m %
+nnoremap <Space>m %
 
 " insert blank lines without going into insert mode
 nnoremap <Space>o mZo<Esc>`ZmZ
