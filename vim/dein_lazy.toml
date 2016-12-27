@@ -37,11 +37,6 @@ on_map = [
   '<Plug>(operator-camelize-toggle)',
 ]
 
-[[plugins]] # operator to evaluate a text object using Ruby
-repo    = 'rhysd/vim-operator-evalruby'
-depends = ['vim-operator-user']
-on_map  = ['<Plug>(operator-evalruby)']
-
 [[plugins]] # operator to replace text with register content
 repo    = 'kana/vim-operator-replace'
 depends = ['vim-operator-user']
@@ -63,10 +58,6 @@ on_map = ['<Plug>(textmanip-']
 [[plugins]] # sequencial numbering with pattern
 repo   = 'deris/vim-rengbang'
 on_cmd = ['RengBang']
-
-[[plugins]] # real time markdown preview plugin for vim
-repo   = 'miyakogi/livemark.vim'
-on_cmd = ['LiveMark']
 
 
 #  Completion
@@ -129,10 +120,6 @@ on_cmd = ['Qfreplace']
 [[plugins]] # command for the_silver_searcher
 repo   = 'rking/ag.vim'
 on_cmd = ['Ag']
-
-# [[plugins]] # improved incremental searching
-# repo   = 'haya14busa/incsearch.vim'
-# on_map = ['<Plug>(incsearch-']
 
 
 #  Language
