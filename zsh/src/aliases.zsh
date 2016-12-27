@@ -156,10 +156,6 @@ alias es='elasticsearch -Xms1g -Xmx2g -Des.script.disable_dynamic=false'
 #-----------------------------------------------
 alias aart='java -jar ~/dotfiles/lib/jitac.jar'
 
-alias webkit2png='webkit2png -F -d -D ~/Desktop/'
-alias webkit2evernote='webkit2png -C -W 1920 -H 1200 --clipwidth=960 --clipheight=600 -s 0.5 -D ~/Desktop/ -d'
-alias webkit2blog='webkit2png -C -W 1474 -H 696 --clipwidth=737 --clipheight=348 -s 0.5 -D ~/Desktop/ -d'
-
 
 #  Docker
 #-----------------------------------------------
