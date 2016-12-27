@@ -1,7 +1,0 @@
-creasty/homebrew-creasty
-homebrew/boneyard
-homebrew/dupes
-homebrew/science
-josegonzalez/php
-neovim/neovim
-supermomonga/homebrew-splhack

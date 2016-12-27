@@ -1,3 +1,0 @@
-ianheggie/rbenv-binstubs
-sstephenson/rbenv-default-gems
-sstephenson/rbenv-gem-rehash

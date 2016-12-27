@@ -1,3 +1,0 @@
-cabal-install
-erd
-pandoc
