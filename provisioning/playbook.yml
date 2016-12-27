@@ -1,0 +1,9 @@
+- name:       Creasty's development environment
+  hosts:      127.0.0.1
+  connection: local
+
+  vars:
+    dotfiles_path: ~/dotfiles
+
+  roles:
+    - roles/sample
