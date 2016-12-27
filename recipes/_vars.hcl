@@ -105,7 +105,7 @@ brew {
     "pstree",
     "python3",
     "q",
-    "r", // require xquartz to be installed
+    "r", // require xquartz to be installed",
     "ranger",
     "redis",
     "rsense",
