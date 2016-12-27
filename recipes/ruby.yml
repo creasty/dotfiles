@@ -1,9 +1,0 @@
-- task: ruby
-  versions:
-    - 2.3
-
-- task: ruby.rbenv
-  plugins:
-    - ianheggie/rbenv-binstubs
-    - sstephenson/rbenv-default-gems
-    - sstephenson/rbenv-gem-rehash

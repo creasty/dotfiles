@@ -1,5 +1,0 @@
-- task: haskell.packages
-  packages:
-    - cabal-install
-    - erd
-    - pandoc
