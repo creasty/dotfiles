@@ -1,8 +1,6 @@
 adobe-creative-cloud
 alfred
 android-studio
-anybar
-astah-community
 dockertoolbox
 dropbox
 firefox
@@ -20,12 +18,9 @@ qlcolorcode
 qlmarkdown
 qlstephen
 quicklook-json
-seil
 sequel-pro
 skype
 sophos-antivirus-home-edition
-transmission
-truecrypt
 vagrant
 vault
 virtualbox
