@@ -1,0 +1,11 @@
+- task: lua.packages
+  packages:
+    - md5
+    - stdlib
+    - lgi
+    - lpeg
+    - luaexpat
+    - inspect
+    - luaepnf
+    - luarepl
+    - cassowary

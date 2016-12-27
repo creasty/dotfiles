@@ -1,0 +1,4 @@
+- task: sh
+  title: Set up Automator
+  command:
+    cp -r $APP_DIR/automator/*.workflow ~/Library/Services/

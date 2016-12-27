@@ -1,0 +1,19 @@
+- task: python
+  versions:
+    - 2.7
+    - 3
+
+- task: python.packages
+  packages:
+    - aws-shell --ignore-installed six
+    - awscli
+    - glances
+    - locustio
+    - misaka
+    - mitmproxy
+    - numpy
+    - pgcli
+    - protobuf
+    - pyamf
+    - pygments
+    - tornado

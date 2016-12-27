@@ -1,0 +1,2 @@
+- task: launch_agent
+  files: app/launch_agent/*.plist

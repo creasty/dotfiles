@@ -1,0 +1,4 @@
+- task: sh
+  title: Configure Karabiner
+  command: |
+    ln -sf $APP_DIR/karabiner/private.xml ~/Library/Application\ Support/Karabiner/private.xml

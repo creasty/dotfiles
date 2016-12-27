@@ -1,0 +1,4 @@
+- task: sh
+  title: Copy fonts
+  command: |
+    cp -r $APP_DIR/font/* ~/Library/Fonts

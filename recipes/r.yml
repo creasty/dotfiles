@@ -1,0 +1,16 @@
+- task: r.packages
+  packages:
+    - e1071
+    - ggplot2
+    - glmnet
+    - Hmisc
+    - igraph
+    - lme4
+    - lubridate
+    - plyr
+    - RCurl
+    - reshape
+    - RJSONIO
+    - scales
+    - tm
+    - XML

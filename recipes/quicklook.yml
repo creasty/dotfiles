@@ -1,0 +1,4 @@
+- task: sh
+  title: Reload QuickLook
+  command: |
+    qlmanage -r
