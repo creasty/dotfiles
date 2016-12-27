@@ -54,10 +54,6 @@ export GIT_MERGE_AUTOEDIT='no'
 export DISABLE_SPRING=1
 
 
-#  Iruka
+#  Tmux
 #-----------------------------------------------
-export IRUKA_MACHINE=172.17.8.101
-export IRUKA_ETCD_MACHINES=http://172.17.8.101:4001
-export IRUKA_FLEET_API_URL=http://172.17.8.101:4002
-export IRUKA_DOCKER_HOST=http://172.17.8.101:2375
-export IRUKA_API_URL=http://127.0.0.1:8080
+TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts

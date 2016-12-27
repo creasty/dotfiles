@@ -27,35 +27,22 @@ alias sort='LC_ALL=C sort'
 
 alias :q='exit'
 
-alias pbc='pbcopy'
-alias pbp='pbpaste'
-
-alias o='finder'
-alias c='see'
-
-alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
-
-alias skey='ssh-keygen -q -b 2048 -t rsa -N "" -C "" -f'
-alias randportn='ruby -e "p rand(1024..65535)"'
-alias randports='ruby -e "p rand(49152..65535)"'
-
-alias ev='envchain-enhanced'
-
 
 #  Global
 #-----------------------------------------------
 alias -g A='| awk'
 alias -g C='| cat'
 alias -g D='| sed'
-alias -g E='> /dev/null 2>&1'
-alias -g G='| grep'
+alias -g G='| ag'
 alias -g H='| head'
 alias -g J='| jq .'
 alias -g JL='| jq -C . | less'
 alias -g L='| less'
 alias -g N='> /dev/null'
+alias -g NN='> /dev/null 2>&1'
 alias -g S='| sort'
 alias -g W='| wc'
+alias -g WL='| wc -l'
 alias -g X='| xargs'
 alias -g X1='| xargs -n 1'
 alias -g P='| peco'
@@ -95,29 +82,36 @@ _run_java() {
 alias -s java='_run_java'
 
 
-#  Applications
+#  Bin
 #-----------------------------------------------
+alias pbc='pbcopy'
+alias pbp='pbpaste'
+alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
+alias skey='ssh-keygen -q -b 2048 -t rsa -N "" -C "" -f'
+
+alias o='finder'
+alias c='see'
+alias ev='envchain-enhanced'
+alias ne='npm-exec'
+alias gk='grep-kill'
+alias rdba='rake-db-migrate-all'
+alias maxscreen='screenresolution set 2560x1600x32@0'
+
+alias aart='java -jar ~/dotfiles/lib/jitac.jar'
+
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
 alias tex2pdf='ptex2pdf -l'
-alias enx='evernote-sandbox'
-alias ne='npm-exec'
 alias ql='qlmanage -p "$@" >& /dev/null'
-alias gk='grep-kill'
-
-alias maxscreen='screenresolution set 2560x1600x32@0'
+alias mas='reattach-to-user-namespace mas'
+alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
+alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
   $cmd -i "$1" -o "${1}.${2:-png}"
 }
-
-TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
-alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
-alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
-
-alias mas='reattach-to-user-namespace mas'
 
 
 #  Networks
@@ -127,34 +121,23 @@ alias ip='ipconfig getifaddr en0 || ipconfig getifaddr en1'
 alias ipg='dig +short myip.opendns.com @resolver1.opendns.com'
 alias whois='whois -h whois-servers.net'
 alias flush-dns='sudo killall -HUP mDNSResponder'
+alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 ipf() {
   curl "ipinfo.io/$1" | jq .
 }
 
-alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-
 
 #  Servers
 #-----------------------------------------------
-alias pyserver="python -m SimpleHTTPServer"
-alias nserver="http-server -p"
+alias redis-server='redis-server /usr/local/etc/redis.conf'
+alias pg-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
 
 rbserver() {
   local port=${1:-5000}
   ruby -rwebrick -e "WEBrick::HTTPServer.new(DocumentRoot: './', Port: $port).start"
 }
-
-alias redis-server='redis-server /usr/local/etc/redis.conf'
-alias pg-server='postgres -D /usr/local/var/postgres > /dev/null 2>&1 &'
-
-alias es='elasticsearch -Xms1g -Xmx2g -Des.script.disable_dynamic=false'
-
-
-#  Scripts
-#-----------------------------------------------
-alias aart='java -jar ~/dotfiles/lib/jitac.jar'
 
 
 #  Docker
@@ -162,7 +145,10 @@ alias aart='java -jar ~/dotfiles/lib/jitac.jar'
 alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
-alias dk-clean='docker rmi $(docker images -f "dangling=true" -q)'
+
+dk-clean() {
+  docker rmi $(docker images -f "dangling=true" -q)
+}
 
 dk-open() {
   open "http://$(docker-machine ip local)$@"
@@ -188,8 +174,6 @@ alias rdbm='bundle exec rake db:migrate'
 alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
 alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
-
-alias rdba='rake-db-migrate-all'
 
 rdbb() {
   bundle exec rake db:rollback STEP=$1
