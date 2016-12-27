@@ -671,20 +671,6 @@ if s:env.support.ag
 endif
 
 
-"=== Diff
-"==============================================================================================
-set diffexpr=MyDiff()
-function! MyDiff()
-  let opt =
-    \ (&diffopt =~ 'iwhite') ? '-b '
-    \ : ''
-
-  call system('git-diff-normal ' . opt . v:fname_in . ' ' . v:fname_new . ' > ' . v:fname_out)
-
-  redraw!
-endfunction
-
-
 "=== Fast <C-o> hack
 "==============================================================================================
 function! s:insert_enter()
