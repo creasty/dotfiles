@@ -1,6 +1,5 @@
 .DS_Store
 
-vim/sessions/*
 vim/.netrwhist
 vim/init.vim
 vim/dein/*
