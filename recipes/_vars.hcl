@@ -104,8 +104,8 @@ brew {
     "postgresql",
     "pstree",
     "python3",
-    q
-    "r  # require xquartz to be installed",
+    "q",
+    "r", // require xquartz to be installed
     "ranger",
     "redis",
     "rsense",
@@ -253,12 +253,9 @@ ruby {
 }
 
 vagrant {
-  images = [
-    {
-      name = "centos7"
-      image = "https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box"
-    }
-  ]
+  box "centos7" {
+    image = "https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box"
+  }
 
   plugins = [
     "sahara",
