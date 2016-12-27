@@ -98,10 +98,6 @@ repo = 'thinca/vim-quickrun'
 [[plugins]] # create your own submodes
 repo = 'kana/vim-submode'
 
-[[plugins]] # substitute preview
-repo   = 'osyo-manga/vim-over'
-on_cmd = ['OverCommandLine']
-
 [[plugins]] # ctags generator
 repo = 'szw/vim-tags'
 

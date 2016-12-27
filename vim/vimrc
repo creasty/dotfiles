@@ -1515,14 +1515,6 @@ if dein#tap('operator-camelize.vim')
 endif
 
 
-"=== Plugin: vim-operator-evalruby
-"==============================================================================================
-if dein#tap('vim-operator-evalruby')
-  vmap <Space>= <Plug>(operator-evalruby)
-  nmap <Space>= va)<Plug>(operator-evalruby)
-endif
-
-
 "=== Plugin: vim-operator-replace
 "==============================================================================================
 if dein#tap('vim-operator-replace')
@@ -2392,20 +2384,6 @@ if dein#tap('mold.vim')
 endif
 
 
-"=== Plugin:: livemark.vim
-"==============================================================================================
-if dein#tap('livemark.vim')
-  let g:livemark_browser = '"open %s"'
-  let g:livemark_browser_port = 8089
-  let g:livemark_vim_port = 8090
-
-  " let g:livemark_no_default_js = 1
-  " let g:livemark_no_default_css = 1
-  " let g:livemark_js_files = [expand('~/path/to/your/js_file.js')]
-  " let g:livemark_css_files = [expand('~/path/to/your/css_file.css')]
-endif
-
-
 "=== Plugin: neocomplete.vim
 "==============================================================================================
 if dein#tap('neocomplete.vim')
@@ -2843,44 +2821,6 @@ if dein#tap('vim-submode')
   noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
   call submode#enter_with('my_ca', 'n', '',  '<C-x>', '<C-x>')
   call submode#map(       'my_ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
-endif
-
-
-"=== Plugin: vim-over
-"==============================================================================================
-if dein#tap('vim-over')
-  function! s:over_on_source() abort
-    let g:over_command_line_key_mappings = {
-      \ "\<C-c>": "\<Esc>",
-      \ "\<C-j>": "\<CR>",
-    \ }
-    let g:over#command_line#paste_escape_chars = '\\/.*$^~'
-  endfunction
-
-  cnoremap <expr> / <SID>MyOverCommandLine()
-
-  function! s:MyOverCommandLine()
-    let line = getcmdtype() . getcmdline()
-
-    if line == ':'
-      return "OverCommandLine\<CR>%s/"
-    elseif line == ":'<,'>"
-      return "OverCommandLine\<CR>\<C-u>'<,'>s/"
-    else
-      return '/'
-    endif
-  endfunction
-
-  call dein#set_hook('vim-over', 'hook_source', function('s:over_on_source'))
-endif
-
-
-"=== Plugin: incsearch.vim
-"==============================================================================================
-if dein#tap('incsearch.vim')
-  nmap /  <Plug>(incsearch-forward)
-  nmap ?  <Plug>(incsearch-backward)
-  nmap g/ <Plug>(incsearch-stay)
 endif
 
 
