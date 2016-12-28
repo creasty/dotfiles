@@ -1,3 +1,8 @@
+- name: create directory
+  file:
+    dest:  '{{ home_path }}/Library/Fonts'
+    state: directory
+
 - name: copy fonts
   copy:
     src:  '{{ item }}'

@@ -23,4 +23,5 @@
     # - roles/vim
     # - roles/tex
     # - roles/vagrant
-    - roles/fonts
+    # - roles/fonts
+    - roles/karabiner
