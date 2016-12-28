@@ -10,3 +10,4 @@
     # - roles/link
     # - roles/shell
     # - roles/homebrew
+    - roles/anyenv
