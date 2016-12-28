@@ -28,4 +28,5 @@
     - roles/automator
     - roles/launch_agent
     - roles/osx
+    - roles/mas
     - roles/envchain

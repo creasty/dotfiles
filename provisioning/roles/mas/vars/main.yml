@@ -1,0 +1,24 @@
+# List installed apps by
+#
+#   $ mas list
+#
+mas_applications:
+  - 445279824   # ColorChooser
+  - 477970167   # SnapRuler
+  - 406056744   # Evernote
+  - 409183694   # Keynote
+  - 540348655   # Monosnap
+  - 425955336   # Skitch
+  - 425424353   # The Unarchiver
+  - 1076860635  # Sync
+  - 443987910   # 1Password
+  - 467939042   # Growl
+  - 975937182   # Fantastical 2
+  - 497799835   # Xcode
+  - 412448059   # ForkLift
+  - 409203825   # Numbers
+  - 1031280567  # Postico
+  - 1065907486  # CiderTV
+  - 803453959   # Slack
+  - 928494006   # PopHub
+  - 458034879   # Dash
