@@ -1,0 +1,11 @@
+- name: create directory
+  file:
+    dest:  '{{ home_path }}/Library/Services'
+    state: directory
+
+- name: copy workflows
+  copy:
+    src:  '{{ item }}'
+    dest: '{{ home_path }}/Library/Services/'
+  with_items:
+    - 'New File.workflow'

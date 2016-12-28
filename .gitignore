@@ -12,4 +12,6 @@ tmux/plugins/*
 tmux/resurrect/*
 !tmux/plugins/tpm
 
+provisioning/playbook.retry
+
 !.gitkeep

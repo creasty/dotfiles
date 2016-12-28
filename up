@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+export DOTFILES_PATH="$HOME/dotfiles"
+
+
+#=== Utils
+#==============================================================================================
+compare_versions() {
+  declare -a v1=(${1//./ })
+  declare -a v2=(${2//./ })
+  local i=""
+
+  for (( i=${#v1[@]}; i<${#v2[@]}; i++ )); do
+    v1[i]=0
+  done
+
+  for (( i=0; i<${#v1[@]}; i++ )); do
+    if [[ -z ${v2[i]} ]]; then
+      v2[i]=0
+    fi
+
+    if (( 10#${v1[i]} > 10#${v2[i]} )); then
+      printf ">"
+      return 0
+    fi
+
+    if (( 10#${v1[i]} < 10#${v2[i]} )); then
+      printf "<"
+      return 0
+    fi
+  done
+
+  printf "="
+}
+
+
+#=== Steps
+#==============================================================================================
+print_header() {
+  printf "\e[34m"
+  echo '------------------------------------------------------------------'
+  echo '                      __      __  _____ __                        '
+  echo '                 ____/ /___  / /_/ __(_) /__  _____               '
+  echo '                / __  / __ \/ __/ /_/ / / _ \/ ___/               '
+  echo '               / /_/ / /_/ / /_/ __/ / /  __(__  )                '
+  echo '               \__,_/\____/\__/_/ /_/_/\___/____/                 '
+  echo '                                                                  '
+  echo '                Harder, Better, Faster, Stronger                  '
+  echo '                                                                  '
+  echo '                  github.com/creasty/dotfiles                     '
+  echo '                                                                  '
+  echo '------------------------------------------------------------------'
+  printf "\e[0m\n"
+}
+
+check_os() {
+  if [ "$(uname -s)" == "Darwin" ]; then
+    if [ $(compare_versions "$(sw_vers -productVersion)" "10.9") == '<' ]; then
+      echo "Sorry, this script is intended only for OS X 10.9.0+"
+      exit 1
+    fi
+  else
+    echo "Sorry, this script is intended only for OS X"
+    exit 1
+  fi
+}
+
+clone_or_update_repo() {
+  local git_dir="$DOTFILES_PATH/.git"
+
+  if ! [ -d "$git_dir" ]; then
+    echo 'Cloning repo...'
+    git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_PATH
+    echo 'done'
+  else
+    echo 'Updating repo...'
+    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD)" == "master" ]; then
+      git --git-dir="$git_dir" pull origin master
+      git --git-dir="$git_dir" submodule sync
+      echo 'done'
+    else
+      echo 'skip'
+    fi
+  fi
+}
+
+setup_xcode() {
+  echo 'Setting up Xcode...'
+
+  sudo expect -c '
+    set timeout 5
+    spawn xcodebuild -license
+
+    expect {
+      -exact "for more" {
+        send "G"
+        exp_continue
+      }
+
+      -exact "agree, print, cancel" {
+        send "agree\n"
+        exp_continue
+      }
+
+      -exact "You can view the license agreements" {
+        exit 0
+      }
+    }
+  ' > /dev/null
+
+  echo 'done'
+}
+
+install_homebrew() {
+  command -v 'brew' > /dev/null 2>&1 && return
+
+  echo 'Installing homebrew...'
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  echo 'done'
+}
+
+install_ansible() {
+  command -v 'ansible' > /dev/null 2>&1 && return
+
+  echo 'Installing ansible...'
+  brew install ansible
+  echo 'done'
+}
+
+run_provisioning() {
+  echo 'Provisioning...'
+  $DOTFILES_PATH/provisioning/run.sh
+  echo 'done'
+}
+
+
+#=== Entrypoint
+#==============================================================================================
+main() {
+  print_header
+  check_os
+  clone_or_update_repo
+  setup_xcode
+  install_homebrew
+  install_ansible
+  run_provisioning
+}
+
+main

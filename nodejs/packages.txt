@@ -1,6 +1,0 @@
-cheerio
-chrome-remote-interface
-coffee-script
-crconsole
-speed-test
-typescript-tools

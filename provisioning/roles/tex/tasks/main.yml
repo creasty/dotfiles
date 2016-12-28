@@ -1,0 +1,7 @@
+- name: check presence of texlive
+  stat:
+    path: '{{ texlive_path }}'
+  register: texlive_stat
+
+- include: real_main.yml
+  when: texlive_stat.stat.exists

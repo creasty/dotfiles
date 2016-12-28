@@ -1,0 +1,18 @@
+- name: create tmp file
+  command: mktemp
+  register: mktemp
+
+- name: create package installer
+  template:
+    src:  'installer.r'
+    dest: '{{ mktemp.stdout }}'
+
+- name: install packages
+  command: |
+    r --file '{{ mktemp.stdout }}'
+  ignore_errors: yes
+
+- name: delete tmp file
+  file:
+    dest:  '{{ mktemp.stdout }}'
+    state: absent

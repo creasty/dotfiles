@@ -1,0 +1,14 @@
+- name: create directory
+  file:
+    dest:  '{{ home_path }}/Library/Application Support/Karabiner'
+    state: directory
+
+- name: copy private.xml
+  copy:
+    src:  private.xml
+    dest: '{{ home_path }}/Library/Application Support/Karabiner'
+
+- name: configure
+  command: |
+    /Applications/Karabiner.app/Contents/Library/bin/karabiner set '{{ item.key }}' '{{ item.value }}'
+  with_dict: '{{ settings }}'

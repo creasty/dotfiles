@@ -1,0 +1,14 @@
+- name: fetch anyenv repo
+  git:
+    repo: https://github.com/riywo/anyenv
+    dest: '{{ anyenv_dir }}'
+
+- name: create plugins dir
+  file:
+    dest:  '{{ anyenv_plugins_dir }}'
+    state: directory
+
+- name: fetch anyenv update repo
+  git:
+    repo: https://github.com/znz/anyenv-update.git
+    dest: '{{ anyenv_plugins_dir }}/anyenv-update'

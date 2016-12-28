@@ -1,0 +1,37 @@
+- name: check goenv
+  command: |
+    which goenv
+  register: which_goenv
+  ignore_errors: yes
+
+- name: install goenv
+  command: |
+    anyenv install goenv
+  when: which_goenv.rc > 0
+
+- name: get installed versions
+  command: |
+    goenv versions
+  register: installed_versions
+
+- name: install golang
+  command: |
+    goenv install '{{ item }}'
+  when: |
+    go_versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ go_versions }}'
+
+- name: set global golang
+  command: |
+    goenv global '{{ go_versions[0] }}'
+  when: go_versions
+
+- name: install packages
+  command: |
+     go get -u '{{ item }}'
+  with_items: '{{ packages }}'
+  when: packages
+
+- name: configure gocode
+  command: |
+    gocode set autobuild true

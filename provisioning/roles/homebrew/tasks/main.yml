@@ -1,0 +1,30 @@
+- name: update homebrew
+  homebrew:
+    update_homebrew: yes
+
+- name: fetch cask
+  homebrew_tap:
+    tap:   caskroom/cask
+    state: present
+
+- name: install cask applications
+  homebrew_cask:
+    name:  '{{ item.name | default(item) }}'
+    state: '{{ item.state | default("present") }}'
+  with_items: '{{ applications }}'
+  when: applications
+
+- name: tap external homebrew repos
+  homebrew_tap:
+    tap:   '{{ item }}'
+    state: present
+  with_items: '{{ repositories }}'
+  when: repositories
+
+- name: install homebrew packages
+  homebrew:
+    name:            '{{ item.name | default(item) }}'
+    state:           '{{ item.state | default("present") }}'
+    install_options: '{{ item.install_options | default("") }}'
+  with_items: '{{ packages }}'
+  when: packages

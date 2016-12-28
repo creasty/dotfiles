@@ -1,0 +1,21 @@
+- name: signout mas
+  command: |
+    mas signout
+  ignore_errors: yes
+
+- name: signin to mas
+  command: |
+    mas signin '{{ appstore_id }}' '{{ appstore_password }}'
+  ignore_errors: yes
+  register: mas_signin
+
+- name: install applications
+  command: |
+    mas install '{{ item }}'
+  with_items: '{{ mas_applications }}'
+  when: mas_applications and mas_signin.get('rc') == 0
+
+- name: upgrade applications
+  command: |
+    mas upgrade
+  when: mas_signin.get('rc') == 0

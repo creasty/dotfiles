@@ -1,0 +1,2 @@
+anyenv_dir:         '{{ home_path }}/.anyenv'
+anyenv_plugins_dir: '{{ home_path }}/.anyenv/plugins'

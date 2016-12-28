@@ -1,0 +1,16 @@
+- name: get namespace
+  command: |
+    envchain -l '{{ item.key }}'
+  register: envchain
+  with_dict: '{{ namespace_envs }}'
+  loop_control:
+    label: '{{ item.key }}'
+  when: namespace_envs
+
+- name: check namespace envs
+  debug:
+    msg: 'Run: envchain --set {{ item.item.key }} {{ item.item.value | join(" ") }}'
+  when: item.stderr != ''
+  with_items: '{{ envchain.results }}'
+  loop_control:
+    label: '{{ item.item.key }}'

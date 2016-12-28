@@ -1,0 +1,34 @@
+- name: check ndenv
+  command: |
+    which ndenv
+  register: which_ndenv
+  ignore_errors: yes
+
+- name: install ndenv
+  command: |
+    anyenv install ndenv
+  when: which_ndenv.rc > 0
+
+- name: get installed versions
+  command: |
+    ndenv versions
+  register: installed_versions
+
+- name: install nodejs
+  command: |
+    ndenv install '{{ item }}'
+  when: |
+    nodejs_versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ nodejs_versions }}'
+
+- name: set global nodejs
+  command: |
+    ndenv global '{{ nodejs_versions[0] }}'
+  when: nodejs_versions
+
+- name: install npm packages
+  npm:
+    name:   '{{ item }}'
+    global: yes
+  with_items: '{{ node_packages }}'
+  when: node_packages

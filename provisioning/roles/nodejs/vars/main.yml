@@ -1,0 +1,7 @@
+nodejs_versions:
+  - 7.2.1
+
+node_packages:
+  - coffee-script
+  - speed-test
+  - typescript-tools

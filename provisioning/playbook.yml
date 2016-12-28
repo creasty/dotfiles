@@ -1,0 +1,32 @@
+- name:       Creasty's development environment
+  hosts:      127.0.0.1
+  connection: local
+
+  vars:
+    home_path:     '{{ lookup("env", "HOME") }}'
+    dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
+
+  roles:
+    - roles/link
+    - roles/shell
+    - roles/homebrew
+    - roles/anyenv
+    - roles/ruby
+    - roles/nodejs
+    - roles/r
+    # - roles/haskell
+    - roles/lua
+    - roles/python
+    - roles/golang
+    - roles/java
+    - roles/redis
+    - roles/vim
+    # - roles/tex
+    - roles/vagrant
+    - roles/fonts
+    - roles/karabiner
+    - roles/automator
+    - roles/launch_agent
+    - roles/osx
+    - roles/mas
+    - roles/envchain

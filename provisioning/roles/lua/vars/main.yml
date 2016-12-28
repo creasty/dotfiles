@@ -1,0 +1,9 @@
+packages:
+  - md5
+  - stdlib
+  - lpeg
+  - luaexpat
+  - inspect
+  - luaepnf
+  - luarepl
+  - cassowary

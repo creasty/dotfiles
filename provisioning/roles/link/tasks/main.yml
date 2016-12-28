@@ -1,0 +1,7 @@
+- name: create symlinks
+  file:
+    src:   '{{ dotfiles_path }}/{{ item.key }}'
+    dest:  '{{ home_path }}/{{ item.value }}'
+    state: link
+  with_dict: '{{ link_mappings }}'
+  when: link_mappings
