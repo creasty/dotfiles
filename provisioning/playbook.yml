@@ -12,4 +12,5 @@
     # - roles/homebrew
     # - roles/anyenv
     # - roles/ruby
-    - roles/nodejs
+    # - roles/nodejs
+    - roles/vagrant

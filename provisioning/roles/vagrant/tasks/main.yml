@@ -1,0 +1,23 @@
+- name: get installed boxes
+  command: |
+    vagrant box list
+  register: installed_boxes
+
+- name: install box
+  command: |
+    vagrant box add '{{ item.key }}' '{{ item.value }}'
+  when: |
+    boxes and installed_boxes.stdout.find(item.key) == -1
+  with_dict: '{{ boxes }}'
+
+- name: get installed plugins
+  command: |
+    vagrant plugin list
+  register: installed_plugins
+
+- name: install plugin
+  command: |
+    vagrant plugin install '{{ item }}'
+  when: |
+    plugins and installed_plugins.stdout.find(item) == -1
+  with_items: '{{ plugins }}'
