@@ -11,4 +11,5 @@
     # - roles/shell
     # - roles/homebrew
     # - roles/anyenv
-    - roles/ruby
+    # - roles/ruby
+    - roles/nodejs
