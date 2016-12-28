@@ -73,7 +73,7 @@ clone_or_update_repo() {
 
   if ! [ -d "$git_dir" ]; then
     echo 'Cloning repo...'
-    git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_PATH
+    git clone --recursive git://github.com/creasty/dotfiles.git $DOTFILES_PATH
     echo 'done'
   else
     echo 'Updating repo...'
