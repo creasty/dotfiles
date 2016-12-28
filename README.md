@@ -1,6 +1,8 @@
 dotfiles
 ========
 
+[![Build Status](https://travis-ci.org/creasty/dotfiles.svg?branch=master)](https://travis-ci.org/creasty/dotfiles)
+
 Work it harder, make it better, do it faster, makes us stronger.
 
 
