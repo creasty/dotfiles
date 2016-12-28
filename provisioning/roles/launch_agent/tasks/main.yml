@@ -1,0 +1,17 @@
+- name: create directory
+  file:
+    dest:  '{{ home_path }}/Library/LaunchAgents'
+    state: directory
+
+- name: copy launch agents
+  copy:
+    src:  '{{ item }}'
+    dest: '{{ home_path }}/Library/LaunchAgents/'
+  with_fileglob:
+    - '*.plist'
+
+- name: load launch agents
+  command: |
+    launchctl load "{{ home_path }}/Library/LaunchAgents/{{ item }}"
+  with_fileglob:
+    - '*.plist'

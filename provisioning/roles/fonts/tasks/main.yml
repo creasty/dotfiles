@@ -6,7 +6,7 @@
 - name: copy fonts
   copy:
     src:  '{{ item }}'
-    dest: '{{ home_path }}/Library/Fonts'
+    dest: '{{ home_path }}/Library/Fonts/'
   with_fileglob:
     - '*.otf'
     - '*.ttf'

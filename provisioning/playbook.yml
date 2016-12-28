@@ -25,4 +25,5 @@
     # - roles/vagrant
     # - roles/fonts
     # - roles/karabiner
-    - roles/automator
+    # - roles/automator
+    - roles/launch_agent
