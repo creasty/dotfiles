@@ -27,4 +27,5 @@
     # - roles/karabiner
     # - roles/automator
     # - roles/launch_agent
-    - roles/osx
+    # - roles/osx
+    - roles/envchain
