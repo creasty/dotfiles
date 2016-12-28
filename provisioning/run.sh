@@ -2,4 +2,4 @@
 
 cd "$(dirname $0)"
 
-ansible-playbook -i 'localhost,' playbook.yml
+ansible-playbook -i 'localhost,' --check playbook.yml
