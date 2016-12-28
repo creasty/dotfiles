@@ -3,7 +3,9 @@
   connection: local
 
   vars:
-    dotfiles_path: ~/dotfiles
+    home_path:     '{{ lookup("env", "HOME") }}'
+    dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
 
   roles:
     - roles/sample
+    - roles/link
