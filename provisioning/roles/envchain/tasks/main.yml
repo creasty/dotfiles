@@ -8,8 +8,8 @@
   when: namespace_envs
 
 - name: check namespace envs
-  command: |
-    echo envchain --set '{{ item.item.key }}' {{ item.item.value | join(' ') }}  # FIXME
+  debug:
+    msg: 'Run: envchain --set {{ item.item.key }} {{ item.item.value | join(" ") }}'
   when: item.stderr != ''
   with_items: '{{ envchain.results }}'
   loop_control:
