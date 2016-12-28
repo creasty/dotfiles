@@ -31,3 +31,7 @@
      go get -u '{{ item }}'
   with_items: '{{ packages }}'
   when: packages
+
+- name: configure gocode
+  command: |
+    gocode set autobuild true
