@@ -1,0 +1,22 @@
+- name: check luaenv
+  command: |
+    which luaenv
+  register: which_luaenv
+  ignore_errors: True
+
+- name: install luaenv
+  command: |
+    anyenv install luaenv
+  when: which_luaenv.rc > 0
+
+- name: get installed packages
+  command: |
+    luarocks list
+  register: installed_packages
+
+- name: install packages
+  command: |
+     luarocks install '{{ item }}'
+  when: |
+    packages and installed_packages.stdout.find(item) == -1
+  with_items: '{{ packages }}'

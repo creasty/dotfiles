@@ -14,5 +14,6 @@
     # - roles/ruby
     # - roles/nodejs
     # - roles/r
-    - roles/haskell
+    # - roles/haskell
+    - roles/lua
     # - roles/vagrant
