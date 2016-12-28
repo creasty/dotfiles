@@ -9,9 +9,7 @@ Sync up
 
 <pre><code>$ bash <(curl -L <a href="http://dotfiles.creasty.com/bootstrap">dotfiles.creasty.com/up</a>)</code></pre>
 
-
-Manual settings
----------------
+### Manual settings
 
 - [System Preference](./docs/system_preference.md)
 
