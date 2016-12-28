@@ -1,3 +1,17 @@
+- name: search zsh bin path
+  command: |
+    which zsh
+  register: which_zsh
+  ignore_errors: True
+
+- debug:
+    msg: '{{ which_zsh.stdout }}'
+
+- name: add zsh to /etc/shells
+  lineinfile:
+    dest: /etc/shells
+    line: '{{ which_zsh.stdout }}'
+
 - name: check presence of /etc/zshenv
   stat: path=/etc/zshenv
   register: zshenv_stat
@@ -9,9 +23,9 @@
 
 - name: change login shell to zsh
   command: |
-    chpass -s '{{ zsh_bin }}'
+    chpass -s '{{ which_zsh.stdout }}'
   register: chpass_result
   until: chpass_result.rc == 0
   retries: 3
   when: |
-    lookup("env", "SHELL") != zsh_bin
+    lookup("env", "SHELL") != which_zsh.stdout
