@@ -7,6 +7,6 @@
     dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
 
   roles:
-    # - roles/sample
     # - roles/link
-    - roles/shell
+    # - roles/shell
+    # - roles/homebrew
