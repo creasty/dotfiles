@@ -24,4 +24,5 @@
     # - roles/tex
     # - roles/vagrant
     # - roles/fonts
-    - roles/karabiner
+    # - roles/karabiner
+    - roles/automator
