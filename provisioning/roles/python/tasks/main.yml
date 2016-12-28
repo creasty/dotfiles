@@ -23,17 +23,15 @@
 
 - name: set global python
   command: |
-    rbenv global '{{ python_versions[0] }}'
+    pyenv global '{{ python_versions[0] }}'
   when: python_versions
 
-- name: get installed packages
-  command: |
-    pip list --format=columns
-  register: installed_packages
-
 - name: install packages
-  command: |
-     pip install '{{ item }}'
-  when: |
-    packages and installed_packages.stdout.find(item) == -1
+  pip:
+    name:               '{{ item.name | default(item) }}'
+    extra_args:         '{{ item.extra_args | default("") }}'
+    state:              latest
+    virtualenv_command: pyenv
+  become: True
   with_items: '{{ packages }}'
+  when: packages

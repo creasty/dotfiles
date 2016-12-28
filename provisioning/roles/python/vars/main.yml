@@ -1,9 +1,9 @@
 python_versions:
-  - '2.7'
-  - '3'
+  - 2.7.3
+  - 3.5.0
 
 packages:
-  - aws-shell --ignore-installed six
+  - { name: 'aws-shell', extra_args: '--ignore-installed six' }
   - awscli
   - glances
   - locustio
