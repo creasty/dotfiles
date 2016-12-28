@@ -1,0 +1,17 @@
+- name: check presence of /etc/zshenv
+  stat: path=/etc/zshenv
+  register: zshenv_stat
+
+- name: Rename /etc/zshenv
+  command: |
+    sudo mv /etc/zshenv /etc/_zshenv
+  when: zshenv_stat.stat.exists
+
+- name: change login shell to zsh
+  command: |
+    chpass -s '{{ zsh_bin }}'
+  register: chpass_result
+  until: chpass_result.rc == 0
+  retries: 3
+  when: |
+    lookup("env", "SHELL") != zsh_bin
