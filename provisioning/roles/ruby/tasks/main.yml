@@ -1,0 +1,34 @@
+- name: check rbenv
+  command: |
+    which rbenv
+  register: which_rbenv
+  ignore_errors: True
+
+- name: install rbenv
+  command: |
+    anyenv install rbenv
+  when: which_rbenv.rc > 0
+
+- name: install plugins
+  git:
+    repo: 'https://github.com/{{ item }}.git'
+    dest: '{{ rbenv_plugins_dir }}/{{ item }}'
+  with_items: '{{ rbenv_plugins }}'
+  when: rbenv_plugins
+
+- name: get installed versions
+  command: |
+    rbenv versions
+  register: installed_versions
+
+- name: install ruby
+  command: |
+    rbenv install '{{ item }}'
+  when: |
+    ruby_versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ ruby_versions }}'
+
+- name: set global ruby
+  command: |
+    rbenv global '{{ ruby_versions[0] }}'
+  when: ruby_versions

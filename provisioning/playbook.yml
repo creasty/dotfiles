@@ -10,4 +10,5 @@
     # - roles/link
     # - roles/shell
     # - roles/homebrew
-    - roles/anyenv
+    # - roles/anyenv
+    - roles/ruby

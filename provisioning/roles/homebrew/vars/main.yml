@@ -100,7 +100,6 @@ packages:
   - r  # require xquartz to be installed
   - ranger
   - redis
-  - rsense
   - ruby-build
   - sbt
   - scala
