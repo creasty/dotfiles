@@ -1,0 +1,40 @@
+# You can export your settings by
+#
+#   $ /Applications/Karabiner.app/Contents/Library/bin/karabiner export | grep '^$cli'
+#
+settings:
+  option.emacsmode_controlAE: 1
+  option.emacsmode_controlD_nomodifiers: 1
+  option.emacsmode_controlH: 1
+  option.emacsmode_controlPNBF_nomodifiers: 1
+  parameter.acceleration_of_pointer: 2
+  parameter.maximum_speed_of_pointer: 10
+  parameter.maximum_speed_of_scroll: 10
+  parameter.mouse_key_scroll_natural_direction: 1
+  parameter.mousekey_high_speed_of_pointer: 40
+  parameter.mousekey_high_speed_of_scroll: 30
+  parameter.mousekey_initial_wait_of_pointer: 10
+  parameter.mousekey_initial_wait_of_scroll: 10
+  parameter.mousekey_repeat_wait_of_pointer: 5
+  parameter.mousekey_repeat_wait_of_scroll: 5
+  private.app_hotkey: 1
+  private.app_macvim_esc_with_eisuu: 1
+  private.chrome: 1
+  private.ctrl_semicolon_toggle_input_source: 1
+  private.cv: 1
+  private.jp_semicolon_eisuu: 1
+  private.l_key_eisuu: 1
+  private.macvim: 1
+  private.open_finder: 1
+  private.space_mode: 1
+  private.space_mode_enable: 1
+  private.super_mode: 1
+  private.switch_input_source: 1
+  private.tab_controls: 1
+  private.us_l: 1
+  remap.controlJ2return: 1
+  remap.doublepresscommandQ: 1
+  remap.mouse_keys_mode_2: 1
+  remap.sticky_shiftR: 1
+  repeat.initial_wait: 200
+  repeat.wait: 5
