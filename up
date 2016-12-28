@@ -85,7 +85,27 @@ clone_or_update_repo() {
 
 setup_xcode() {
   echo 'Setting up Xcode...'
-  sudo xcodebuild -license
+  sudo expect -c '
+    set timeout 5
+    spawn xcodebuild -license
+
+    expect {
+      -exact "for more" {
+        send "G"
+        exp_continue
+      }
+
+      -exact "agree, print, cancel" {
+        send "agree\n"
+        exp_continue
+      }
+
+      -exact "You can view the license agreements" {
+        exit 0
+      }
+    }
+  ' > /dev/null
+
   echo 'done'
 }
 
