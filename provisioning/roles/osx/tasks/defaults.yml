@@ -7,7 +7,6 @@
     type:   int
     value:  1
 
-
 - name: general | increase window resize speed for Cocoa applications
   osx_defaults:
     domain: NSGlobalDomain
@@ -157,9 +156,9 @@
 - name: input device | set language and text formats (2/5)
   osx_defaults:
     domain: NSGlobalDomain
-    key: AppleLocale
-    type: string
-    value: 'en_JP@currency=JPY'
+    key:    AppleLocale
+    type:   string
+    value:  'en_JP@currency=JPY'
 
 - name: input device | set language and text formats (3/5)
   osx_defaults:
