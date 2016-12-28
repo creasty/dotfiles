@@ -2,7 +2,7 @@
   command: |
     which jenv
   register: which_jenv
-  ignore_errors: True
+  ignore_errors: yes
 
 - name: install jenv
   command: |

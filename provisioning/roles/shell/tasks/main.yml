@@ -2,7 +2,7 @@
   command: |
     which zsh
   register: which_zsh
-  ignore_errors: True
+  ignore_errors: yes
 
 - debug:
     msg: '{{ which_zsh.stdout }}'

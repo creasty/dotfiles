@@ -2,7 +2,7 @@
   command: |
     which rbenv
   register: which_rbenv
-  ignore_errors: True
+  ignore_errors: yes
 
 - name: install rbenv
   command: |

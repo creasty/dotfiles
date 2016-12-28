@@ -10,7 +10,7 @@
 - name: configure texmf
   command: |
     '{{ texlive_bin_path }}/mktexlsr'
-  become: True
+  become: yes
 
 - name: setup tex to use hiragino fonts
   command: |
@@ -19,13 +19,13 @@
     updmap-sys --setoption kanjiEmbed hiragino-elcapitan-pron
   args:
     chdir: '{{ texlive_path }}/2015/texmf-dist/scripts/cjk-gs-integrate'
-  become: True
+  become: yes
 
 - name: make bst/bib directories
   file:
     dest:    '{{ item }}'
     state:   directory
-    recurse: True
+    recurse: yes
   with_items:
     - '{{ home_path }}/Library/texmf/bibtex/bib'
     - '{{ home_path }}/Library/texmf/bibtex/bst'

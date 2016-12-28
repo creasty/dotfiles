@@ -5,7 +5,7 @@
 - name: disable the sound effects on boot
   command: |
     nvram SystemAudioVolume=' '
-  become: True
+  become: yes
 
 - name: show the ~/Library folder
   command: |

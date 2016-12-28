@@ -2,7 +2,7 @@
   command: |
     which ndenv
   register: which_ndenv
-  ignore_errors: True
+  ignore_errors: yes
 
 - name: install ndenv
   command: |
@@ -29,6 +29,6 @@
 - name: install npm packages
   npm:
     name:   '{{ item }}'
-    global: True
+    global: yes
   with_items: '{{ node_packages }}'
   when: node_packages

@@ -2,7 +2,7 @@
   command: |
     which pyenv
   register: which_pyenv
-  ignore_errors: True
+  ignore_errors: yes
 
 - name: install pyenv
   command: |
@@ -32,6 +32,6 @@
     extra_args:         '{{ item.extra_args | default("") }}'
     state:              latest
     virtualenv_command: pyenv
-  become: True
+  become: yes
   with_items: '{{ packages }}'
   when: packages
