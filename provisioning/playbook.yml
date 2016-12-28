@@ -19,5 +19,6 @@
     # - roles/python
     # - roles/golang
     # - roles/java
-    - roles/redis
+    # - roles/redis
+    - roles/vim
     # - roles/vagrant
