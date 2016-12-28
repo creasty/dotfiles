@@ -4,7 +4,7 @@
 
 - name: copy texmf
   copy:
-    src:  '{{ dotfiles_path }}/tex/texmf.cnf'
+    src:  texmf.cnf
     dest: '{{ texlive_texmr_path }}/web2c/texmf.cnf'
 
 - name: configure texmf
