@@ -26,4 +26,5 @@
     # - roles/fonts
     # - roles/karabiner
     # - roles/automator
-    - roles/launch_agent
+    # - roles/launch_agent
+    - roles/osx

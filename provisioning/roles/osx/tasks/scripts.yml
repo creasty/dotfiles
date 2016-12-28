@@ -1,0 +1,19 @@
+- name: reload quicklook
+  command: |
+    qlmanage -r
+
+- name: disable the sound effects on boot
+  command: |
+    nvram SystemAudioVolume=' '
+  become: True
+
+- name: show the ~/Library folder
+  command: |
+    chflags nohidden ~/Library
+
+- name: restart affected app
+  command: |
+    killall '{{ item }}'
+  with_items:
+    - Dock
+    - Finder
