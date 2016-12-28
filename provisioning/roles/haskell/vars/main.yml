@@ -1,0 +1,4 @@
+packages:
+  - cabal-install
+  - erd
+  - pandoc

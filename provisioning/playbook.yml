@@ -13,5 +13,6 @@
     # - roles/anyenv
     # - roles/ruby
     # - roles/nodejs
-    - roles/r
+    # - roles/r
+    - roles/haskell
     # - roles/vagrant

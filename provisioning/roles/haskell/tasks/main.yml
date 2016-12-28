@@ -1,0 +1,15 @@
+- name: update cabal
+  command: |
+    cabal update
+
+- name: get installed packages
+  command: |
+    cabal list --installed --simple-output
+  register: installed_packages
+
+- name: install packages
+  command: |
+    cabal install --allow-newer=base '{{ item }}'
+  when: |
+    packages and installed_packages.stdout.find(item) == -1
+  with_items: '{{ packages }}'
