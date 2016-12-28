@@ -7,7 +7,7 @@ Work it harder, make it better, do it faster, makes us stronger.
 Sync up
 -------
 
-<pre><code>$ bash <(curl -L <a href="http://dotfiles.creasty.com/bootstrap">dotfiles.creasty.com/up</a>)</code></pre>
+<pre><code>$ bash <(curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a>)</code></pre>
 
 ### Manual settings
 
