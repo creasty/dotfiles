@@ -17,5 +17,6 @@
     # - roles/haskell
     # - roles/lua
     # - roles/python
-    - roles/golang
+    # - roles/golang
+    - roles/java
     # - roles/vagrant

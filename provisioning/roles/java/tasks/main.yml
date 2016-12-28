@@ -1,0 +1,10 @@
+- name: check jenv
+  command: |
+    which jenv
+  register: which_jenv
+  ignore_errors: True
+
+- name: install jenv
+  command: |
+    anyenv install jenv
+  when: which_jenv.rc > 0
