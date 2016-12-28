@@ -15,5 +15,6 @@
     # - roles/nodejs
     # - roles/r
     # - roles/haskell
-    - roles/lua
+    # - roles/lua
+    - roles/python
     # - roles/vagrant

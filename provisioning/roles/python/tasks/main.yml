@@ -1,0 +1,39 @@
+- name: check pyenv
+  command: |
+    which pyenv
+  register: which_pyenv
+  ignore_errors: True
+
+- name: install pyenv
+  command: |
+    anyenv install pyenv
+  when: which_pyenv.rc > 0
+
+- name: get installed versions
+  command: |
+    pyenv versions
+  register: installed_versions
+
+- name: install python
+  command: |
+    pyenv install '{{ item }}'
+  when: |
+    python_versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ python_versions }}'
+
+- name: set global python
+  command: |
+    rbenv global '{{ python_versions[0] }}'
+  when: python_versions
+
+- name: get installed packages
+  command: |
+    pip list --format=columns
+  register: installed_packages
+
+- name: install packages
+  command: |
+     pip install '{{ item }}'
+  when: |
+    packages and installed_packages.stdout.find(item) == -1
+  with_items: '{{ packages }}'
