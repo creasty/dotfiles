@@ -76,8 +76,8 @@ clone_or_update_repo() {
     git clone --recursive git@github.com:creasty/dotfiles.git $DOTFILES_PATH
   else
     echo 'Updating repo...'
-    # git --git-dir="$git_dir" checkout master
-    # git --git-dir="$git_dir" pull origin master
+    git --git-dir="$git_dir" checkout master
+    git --git-dir="$git_dir" pull origin master
   fi
 
   echo 'done'
