@@ -20,5 +20,6 @@
     # - roles/golang
     # - roles/java
     # - roles/redis
-    - roles/vim
+    # - roles/vim
+    # - roles/tex
     # - roles/vagrant
