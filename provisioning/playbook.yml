@@ -7,26 +7,26 @@
     dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
 
   roles:
-    # - roles/link
-    # - roles/shell
-    # - roles/homebrew
-    # - roles/anyenv
-    # - roles/ruby
-    # - roles/nodejs
-    # - roles/r
-    # # - roles/haskell
-    # - roles/lua
-    # - roles/python
-    # - roles/golang
-    # - roles/java
-    # - roles/redis
-    # - roles/vim
-    # # - roles/tex
-    # - roles/vagrant
-    # - roles/fonts
-    # - roles/karabiner
-    # - roles/automator
-    # - roles/launch_agent
-    # - roles/osx
-    # - roles/mas
+    - roles/link
+    - roles/shell
+    - roles/homebrew
+    - roles/anyenv
+    - roles/ruby
+    - roles/nodejs
+    - roles/r
+    # - roles/haskell
+    - roles/lua
+    - roles/python
+    - roles/golang
+    - roles/java
+    - roles/redis
+    - roles/vim
+    # - roles/tex
+    - roles/vagrant
+    - roles/fonts
+    - roles/karabiner
+    - roles/automator
+    - roles/launch_agent
+    - roles/osx
+    - roles/mas
     - roles/envchain
