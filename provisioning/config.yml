@@ -279,8 +279,8 @@ lua:
     - cassowary
 
 mas:
-  appstore_id: ''
-  appstore_password: ''
+  appstore_id:       '{{ secrets.mas.appstore_id }}'
+  appstore_password: '{{ secrets.mas.appstore_password }}'
 
   # List installed apps by
   #

@@ -13,5 +13,6 @@ tmux/resurrect/*
 !tmux/plugins/tpm
 
 provisioning/playbook.retry
+provisioning/secrets.yml
 
 !.gitkeep
