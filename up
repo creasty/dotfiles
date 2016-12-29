@@ -90,11 +90,15 @@ clone_or_update_repo() {
 setup_xcode() {
   echo 'Setting up Xcode...'
 
+  local has_error=0
+
   sudo expect -c '
-    set timeout 5
+    set timeout 3
     spawn xcodebuild -license
 
     expect {
+      timeout { exit 2 }
+
       -exact "for more" {
         send "G"
         exp_continue
@@ -109,7 +113,9 @@ setup_xcode() {
         exit 0
       }
     }
-  ' > /dev/null
+  ' > /dev/null || has_error=1
+
+  [ $has_error -eq 1 ] && sudo xcodebuild -license
 
   echo 'done'
 }
