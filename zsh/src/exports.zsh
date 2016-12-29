@@ -56,4 +56,4 @@ export DISABLE_SPRING=1
 
 #  Tmux
 #-----------------------------------------------
-TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
+export TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
