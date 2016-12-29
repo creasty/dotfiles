@@ -6,8 +6,6 @@ vim/dein/*
 
 aws/credentials
 
-tags/tags
-
 tmux/plugins/*
 tmux/resurrect/*
 !tmux/plugins/tpm

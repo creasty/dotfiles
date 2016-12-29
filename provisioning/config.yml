@@ -7,7 +7,7 @@ anyenv:
   envs_dir:    '{{ home_path }}/.anyenv/envs'
 
 automator:
-  workflows_dir: '{{ dotfiles_path }}/automator'
+  workflows_dir: '{{ dotfiles_path }}/app/automator'
 
   workflows:
     - 'New File.workflow'
@@ -32,8 +32,8 @@ envchain:
 
 font:
   glob:
-    - '{{ dotfiles_path }}/font/*.otf'
-    - '{{ dotfiles_path }}/font/*.ttf'
+    - '{{ dotfiles_path }}/app/font/*.otf'
+    - '{{ dotfiles_path }}/app/font/*.ttf'
 
 golang:
   versions:
@@ -179,7 +179,7 @@ homebrew:
     - zsh
 
 karabiner:
-  private_xml_path: '{{ dotfiles_path }}/karabiner/private.xml'
+  private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'
 
   # You can export your settings by
   #
@@ -223,7 +223,7 @@ karabiner:
     repeat.wait: 5
 
 launch_agent:
-  plist_dir: '{{ dotfiles_path }}/launch_agent'
+  plist_dir: '{{ dotfiles_path }}/app/launch_agent'
 
 link:
   aws/config:                             .aws/config
