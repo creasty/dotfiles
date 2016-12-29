@@ -1,3 +1,6 @@
+- set_fact:
+    homebrew: {}
+
 - name: update homebrew
   homebrew:
     update_homebrew: yes
@@ -11,20 +14,20 @@
   homebrew_cask:
     name:  '{{ item.name | default(item) }}'
     state: '{{ item.state | default("present") }}'
-  with_items: '{{ applications }}'
-  when: applications
+  with_items: '{{ homebrew.applications }}'
+  when: homebrew.applications
 
 - name: tap external homebrew repos
   homebrew_tap:
     tap:   '{{ item }}'
     state: present
-  with_items: '{{ repositories }}'
-  when: repositories
+  with_items: '{{ homebrew.repositories }}'
+  when: homebrew.repositories
 
 - name: install homebrew packages
   homebrew:
     name:            '{{ item.name | default(item) }}'
     state:           '{{ item.state | default("present") }}'
     install_options: '{{ item.install_options | default("") }}'
-  with_items: '{{ packages }}'
-  when: packages
+  with_items: '{{ homebrew.packages }}'
+  when: homebrew.packages
