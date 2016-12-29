@@ -3,7 +3,12 @@
 set -eu
 set -o pipefail
 
-export DOTFILES_PATH="$HOME/dotfiles"
+DOTFILES_PATH="$HOME/dotfiles"
+
+ARGS=()
+for a in "$@"; do
+  ARGS=(${ARGS[@]} "$a")
+done
 
 
 #=== Utils
@@ -138,7 +143,7 @@ install_ansible() {
 
 run_provisioning() {
   echo 'Provisioning...'
-  $DOTFILES_PATH/provisioning/run.sh
+  $DOTFILES_PATH/provisioning/run.sh ${ARGS[@]}
   echo 'done'
 }
 

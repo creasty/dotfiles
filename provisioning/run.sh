@@ -2,4 +2,9 @@
 
 cd "$(dirname $0)"
 
-ansible-playbook -i 'localhost,' playbook.yml --ask-become-pass
+ARGS=()
+for a in "$@"; do
+  ARGS=(${ARGS[@]} "$a")
+done
+
+ansible-playbook -i 'localhost,' playbook.yml --ask-become-pass ${ARGS[@]}
