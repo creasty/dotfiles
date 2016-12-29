@@ -8,5 +8,13 @@ branches:
   only:
     - master
 
+env:
+  global:
+    - DOTFILES_NOEDIT_SECRETS=1
+
+before_script:
+  - pwd
+  - ls
+
 script:
   - ./up
