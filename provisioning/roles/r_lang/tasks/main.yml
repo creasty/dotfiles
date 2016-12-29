@@ -6,11 +6,13 @@
   template:
     src:  'installer.r'
     dest: '{{ mktemp.stdout }}'
+  when: r_lang.packages
 
 - name: install packages
   command: |
     r --file '{{ mktemp.stdout }}'
   ignore_errors: yes
+  when: r_lang.packages
 
 - name: delete tmp file
   file:
