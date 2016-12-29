@@ -1,3 +1,6 @@
+- set_fact:
+    haskell: {}
+
 - name: update cabal
   command: |
     cabal update
@@ -11,5 +14,5 @@
   command: |
     cabal install --allow-newer=base '{{ item }}'
   when: |
-    packages and installed_packages.stdout.find(item) == -1
-  with_items: '{{ packages }}'
+    haskell.packages and installed_packages.stdout.find(item) == -1
+  with_items: '{{ haskell.packages }}'
