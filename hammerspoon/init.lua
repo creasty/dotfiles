@@ -1,5 +1,5 @@
-local window = require("window")
-local util = require("util")
+local window   = require("window")
+local util     = require("util")
 local superkey = require("superkey")
 
 hs.window.animationDuration = 0
@@ -41,7 +41,6 @@ end)
 --     end,
 -- })
 
-
-hs.hotkey.bind({"cmd", "shift"}, "K", function()
-    hs.alert.show(hs.application.frontmostApplication():name())
-end)
+-- hs.hotkey.bind({"cmd", "shift"}, "K", function()
+--     hs.alert.show(hs.application.frontmostApplication():name())
+-- end)
