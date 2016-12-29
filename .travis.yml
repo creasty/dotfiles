@@ -8,5 +8,8 @@ branches:
   only:
     - master
 
+before_script:
+  - cp ./provisioning/secrets{.sample,}.yml
+
 script:
   - ./up
