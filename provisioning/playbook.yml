@@ -7,16 +7,24 @@
     dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
 
   roles:
+    #  basic
+    #-----------------------------------------------
     - role: link
       tags: ['basic', 'link']
     - role: shell
       tags: ['basic', 'shell']
+
+    #  install
+    #-----------------------------------------------
     - role: homebrew
       tags: ['install', 'homebrew']
     - role: mas
       tags: ['install', 'mas']
     - role: anyenv
       tags: ['install', 'anyenv']
+
+    #  lang
+    #-----------------------------------------------
     - role: ruby
       tags: ['lang', 'ruby']
     - role: nodejs
@@ -33,6 +41,9 @@
       tags: ['lang', 'golang']
     - role: java
       tags: ['lang', 'java']
+
+    #  app
+    #-----------------------------------------------
     - role: redis
       tags: ['app', 'redis']
     - role: vim
@@ -45,10 +56,16 @@
       tags: ['app', 'karabiner']
     - role: automator
       tags: ['app', 'automator']
+
+    #  system
+    #-----------------------------------------------
     - role: launch_agent
       tags: ['system', 'launch_agent']
     - role: osx
       tags: ['system', 'osx']
+
+    #  other
+    #-----------------------------------------------
     - role: fonts
       tags: ['other', 'fonts']
     - role: envchain
