@@ -1,3 +1,6 @@
+- set_fact:
+    ruby: {}
+
 - name: check rbenv
   command: |
     which rbenv
@@ -12,9 +15,9 @@
 - name: install plugins
   git:
     repo: 'https://github.com/{{ item }}.git'
-    dest: '{{ rbenv_plugins_dir }}/{{ item }}'
-  with_items: '{{ rbenv_plugins }}'
-  when: rbenv_plugins
+    dest: '{{ ruby.plugins_dir }}/{{ item }}'
+  with_items: '{{ ruby.plugins }}'
+  when: ruby.plugins_dir and ruby.plugins
 
 - name: get installed versions
   command: |
@@ -25,10 +28,10 @@
   command: |
     rbenv install '{{ item }}'
   when: |
-    ruby_versions and installed_versions.stdout.find(item) == -1
-  with_items: '{{ ruby_versions }}'
+    ruby.versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ ruby.versions }}'
 
 - name: set global ruby
   command: |
-    rbenv global '{{ ruby_versions[0] }}'
-  when: ruby_versions
+    rbenv global '{{ ruby.versions[0] }}'
+  when: ruby.versions

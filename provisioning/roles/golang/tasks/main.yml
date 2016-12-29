@@ -1,3 +1,6 @@
+- set_fact:
+    golang: {}
+
 - name: check goenv
   command: |
     which goenv
@@ -18,19 +21,19 @@
   command: |
     goenv install '{{ item }}'
   when: |
-    go_versions and installed_versions.stdout.find(item) == -1
-  with_items: '{{ go_versions }}'
+    golang.versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ golang.versions }}'
 
 - name: set global golang
   command: |
-    goenv global '{{ go_versions[0] }}'
-  when: go_versions
+    goenv global '{{ golang.versions[0] }}'
+  when: golang.versions
 
 - name: install packages
   command: |
      go get -u '{{ item }}'
-  with_items: '{{ packages }}'
-  when: packages
+  with_items: '{{ golang.packages }}'
+  when: golang.packages
 
 - name: configure gocode
   command: |

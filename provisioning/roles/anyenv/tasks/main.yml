@@ -1,14 +1,20 @@
+- set_fact:
+    anyenv: {}
+
 - name: fetch anyenv repo
   git:
     repo: https://github.com/riywo/anyenv
-    dest: '{{ anyenv_dir }}'
+    dest: '{{ anyenv.dir }}'
+  when: anyenv.dir
 
 - name: create plugins dir
   file:
-    dest:  '{{ anyenv_plugins_dir }}'
+    dest:  '{{ anyenv.plugins_dir }}'
     state: directory
+  when: anyenv.plugins_dir
 
 - name: fetch anyenv update repo
   git:
     repo: https://github.com/znz/anyenv-update.git
-    dest: '{{ anyenv_plugins_dir }}/anyenv-update'
+    dest: '{{ anyenv.plugins_dir }}/anyenv-update'
+  when: anyenv.plugins_dir

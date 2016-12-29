@@ -1,3 +1,6 @@
+- set_fact:
+    vagrant: {}
+
 - name: get installed boxes
   command: |
     vagrant box list
@@ -7,8 +10,8 @@
   command: |
     vagrant box add '{{ item.key }}' '{{ item.value }}'
   when: |
-    boxes and installed_boxes.stdout.find(item.key) == -1
-  with_dict: '{{ boxes }}'
+    vagrant.boxes and installed_boxes.stdout.find(item.key) == -1
+  with_dict: '{{ vagrant.boxes }}'
 
 - name: get installed plugins
   command: |
@@ -19,5 +22,5 @@
   command: |
     vagrant plugin install '{{ item }}'
   when: |
-    plugins and installed_plugins.stdout.find(item) == -1
-  with_items: '{{ plugins }}'
+    vagrant.plugins and installed_plugins.stdout.find(item) == -1
+  with_items: '{{ vagrant.plugins }}'

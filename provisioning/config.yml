@@ -1,0 +1,378 @@
+home_path:     '{{ lookup("env", "HOME") }}'
+dotfiles_path: '{{ home_path }}/dotfiles'
+
+anyenv:
+  dir:         '{{ home_path }}/.anyenv'
+  plugins_dir: '{{ home_path }}/.anyenv/plugins'
+  envs_dir:    '{{ home_path }}/.anyenv/envs'
+
+automator:
+  workflows_dir: '{{ dotfiles_path }}/app/automator'
+
+  workflows:
+    - 'New File.workflow'
+
+envchain:
+  crst:
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - GITHUB_ACCESS_TOKEN
+    - ATLAS_TOKEN
+
+  wtd:
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - REGISTRY_AWS_KEY
+    - REGISTRY_AWS_SECRET
+    - FACEBOOK_APP_ID
+    - FACEBOOK_APP_SECRET
+    - BASIC_AUTH_USERNAME
+    - BASIC_AUTH_PASSWORD
+    - AWS_REGION
+
+font:
+  glob:
+    - '{{ dotfiles_path }}/app/font/*.otf'
+    - '{{ dotfiles_path }}/app/font/*.ttf'
+
+golang:
+  versions:
+    - 1.7.1
+
+  packages:
+    - bitbucket.org/liamstask/goose/cmd/goose
+    - github.com/b4b4r07/gomi
+    - github.com/codegangsta/gin
+    - github.com/golang/lint/golint
+    - github.com/govend/govend
+    - github.com/laurent22/massren
+    - github.com/motemen/ghq
+    - github.com/nsf/gocode
+    - github.com/peco/peco/cmd/peco
+    - github.com/rakyll/boom
+    - golang.org/x/tools/cmd/gotype
+    - github.com/Masterminds/glide
+
+haskell:
+  packages:
+    - cabal-install
+    - erd
+    - pandoc
+
+homebrew:
+  applications:
+    - adobe-creative-cloud
+    - alfred
+    - android-studio
+    - docker
+    - dropbox
+    - firefox
+    - flip4mac
+    - flux
+    - google-chrome
+    - google-hangouts
+    - google-japanese-ime
+    - growlnotify
+    - iterm2
+    - karabiner
+    - ngrok
+    - qlcolorcode
+    - qlmarkdown
+    - qlstephen
+    - quicklook-json
+    - sequel-pro
+    - skype
+    - vagrant
+    - virtualbox
+    - webpquicklook
+    - xquartz
+
+  repositories:
+    - creasty/homebrew-creasty
+    - homebrew/boneyard
+    - homebrew/dupes
+    - homebrew/science
+    - josegonzalez/php
+    - supermomonga/homebrew-splhack
+
+  packages:
+    - android-sdk
+    - argon/mas/mas
+    - { name: 'awscli', state: 'head' }
+    - batik
+    - binutils
+    - cabal-install
+    - chisel
+    - clib
+    - clisp
+    - cloc
+    - ctags
+    - { name: 'ctags-objc-ja', state: 'head', install_options: '--enable-japanese-support' }
+    - { name: 'curl', install_options: '--with-ssl --with-libssh2' }
+    - direnv
+    - elixir
+    - eot-utils
+    - fontconfig
+    - fontforge
+    - freetype
+    - fswatch
+    - gcutil
+    - gdb
+    - gdbm
+    - gettext
+    - ghc
+    - ghostscript
+    - git
+    - git-lfs
+    - gpg
+    - graphviz
+    - envchain
+    - imagemagick
+    - jbig2dec
+    - jo
+    - jpeg
+    - jq
+    - libepoxy
+    - libiconv
+    - libpcap
+    - libxml2
+    - libxslt
+    - lua
+    - luajit
+    - { name: 'macvim', state: 'head', install_options: '--with-luajit' }
+    - memcached
+    - mercurial
+    - mongodb
+    - mysql
+    - ngrep
+    - nkf
+    - opencv
+    - optipng
+    - osquery
+    - parallel
+    - pcre
+    - phantomjs
+    - php55
+    - plantuml
+    - postgresql
+    - pstree
+    - python3
+    - q
+    - r  # require xquartz to be installed
+    - ranger
+    - redis
+    - ruby-build
+    - sbt
+    - scala
+    - sqlite
+    - terraform
+    - the_silver_searcher
+    - tig
+    - tmux
+    - tree
+    - typesafe-activator
+    - { name: 'vim', state: 'head', install_options: '--disable-nls --override-system-vi --with-luajit' }
+    - w3m
+    - webkit2png
+    - { name: 'wget', install_options: '--enable-iri' }
+    - xctool
+    - zsh
+
+karabiner:
+  private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'
+
+  # You can export your settings by
+  #
+  #   $ /Applications/Karabiner.app/Contents/Library/bin/karabiner export | grep '^$cli'
+  #
+  settings:
+    option.emacsmode_controlAE: 1
+    option.emacsmode_controlD_nomodifiers: 1
+    option.emacsmode_controlH: 1
+    option.emacsmode_controlPNBF_nomodifiers: 1
+    parameter.acceleration_of_pointer: 2
+    parameter.maximum_speed_of_pointer: 10
+    parameter.maximum_speed_of_scroll: 10
+    parameter.mouse_key_scroll_natural_direction: 1
+    parameter.mousekey_high_speed_of_pointer: 40
+    parameter.mousekey_high_speed_of_scroll: 30
+    parameter.mousekey_initial_wait_of_pointer: 10
+    parameter.mousekey_initial_wait_of_scroll: 10
+    parameter.mousekey_repeat_wait_of_pointer: 5
+    parameter.mousekey_repeat_wait_of_scroll: 5
+    private.app_hotkey: 1
+    private.app_macvim_esc_with_eisuu: 1
+    private.chrome: 1
+    private.ctrl_semicolon_toggle_input_source: 1
+    private.cv: 1
+    private.jp_semicolon_eisuu: 1
+    private.l_key_eisuu: 1
+    private.macvim: 1
+    private.open_finder: 1
+    private.space_mode: 1
+    private.space_mode_enable: 1
+    private.super_mode: 1
+    private.switch_input_source: 1
+    private.tab_controls: 1
+    private.us_l: 1
+    remap.controlJ2return: 1
+    remap.doublepresscommandQ: 1
+    remap.mouse_keys_mode_2: 1
+    remap.sticky_shiftR: 1
+    repeat.initial_wait: 200
+    repeat.wait: 5
+
+launch_agent:
+  plist_dir: '{{ dotfiles_path }}/app/launch_agent'
+
+link:
+  aws/config:                             .aws/config
+  bash/bash_profile:                      .bash_profile
+  bash/bashrc:                            .bashrc
+  config/agignore:                        .agignore
+  config/ansible.cfg:                     .ansible.cfg
+  config/coffeelintrc:                    .coffeelintrc
+  config/ctags:                           .ctags
+  config/curlrc:                          .curlrc
+  config/lldbinit:                        .lldbinit
+  config/pgclirc:                         .pgclirc
+  config/ranger/colorschemes/original.py: .config/ranger/colorschemes/original.py
+  config/ranger/rc.conf:                  .config/ranger/rc.conf
+  dotssh:                                 .dotssh
+  git/gitconfig:                          .gitconfig
+  git/gitignore:                          .gitignore
+  peco:                                   .peco
+  ruby/gemrc:                             .gemrc
+  ruby/irbrc:                             .irbrc
+  ruby/pryrc:                             .pryrc
+  ruby/railsrc:                           .railsrc
+  ruby/rbenv/default-gems:                .anyenv/envs/rbenv/default-gems
+  ruby/rspec:                             .rspec
+  ruby/bundle/config:                     .bundle/config
+  tmux/tmux.conf:                         .tmux.conf
+  tmux:                                   .tmux
+  vim/gvimrc:                             .gvimrc
+  vim/vimrc:                              .vimrc
+  vim:                                    .vim
+  zsh/zshenv:                             .zshenv
+  zsh/zshrc:                              .zshrc
+  zsh:                                    .zsh
+
+lua:
+  plugins_dir: '{{ anyenv.envs_dir }}/luaenv/plugins'
+
+  plugins:
+    - cehoffman/lua-build
+    - xpol/luaenv-luarocks
+
+  versions:
+    - 5.2.1
+
+  packages:
+    - md5
+    - stdlib
+    - lpeg
+    - luaexpat
+    - inspect
+    - luaepnf
+    - luarepl
+    - cassowary
+
+mas:
+  appstore_id:       '{{ secrets.mas.appstore_id }}'
+  appstore_password: '{{ secrets.mas.appstore_password }}'
+
+  # List installed apps by
+  #
+  #   $ mas list
+  #
+  applications:
+    - 445279824   # ColorChooser
+    - 477970167   # SnapRuler
+    - 406056744   # Evernote
+    - 409183694   # Keynote
+    - 540348655   # Monosnap
+    - 425955336   # Skitch
+    - 425424353   # The Unarchiver
+    - 1076860635  # Sync
+    - 443987910   # 1Password
+    - 467939042   # Growl
+    - 975937182   # Fantastical 2
+    - 497799835   # Xcode
+    - 412448059   # ForkLift
+    - 409203825   # Numbers
+    - 1031280567  # Postico
+    - 1065907486  # CiderTV
+    - 803453959   # Slack
+    - 928494006   # PopHub
+    - 458034879   # Dash
+
+nodejs:
+  versions:
+    - 7.2.1
+
+  packages:
+    - coffee-script
+    - speed-test
+    - typescript-tools
+
+python:
+  versions:
+    - 2.7.3
+    - 3.5.0
+
+  packages:
+    - { name: 'aws-shell', extra_args: '--ignore-installed six' }
+    - awscli
+    - glances
+    - locustio
+    - misaka
+    - mitmproxy
+    - numpy
+    - pgcli
+    - protobuf
+    - pyamf
+    - pygments
+    - tornado
+
+r_lang:
+  packages:
+    - ggplot2
+    - e1071
+    - glmnet
+    - Hmisc
+    - igraph
+    - lme4
+    - lubridate
+    - plyr
+    - RCurl
+    - reshape
+    - RJSONIO
+    - scales
+    - tm
+    - XML
+
+ruby:
+  versions:
+    - 2.3.0
+
+  plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
+
+  plugins:
+    - ianheggie/rbenv-binstubs
+    - sstephenson/rbenv-default-gems
+    - sstephenson/rbenv-gem-rehash
+
+tex:
+  texlive_path:       /usr/local/texlive
+  texlive_bin_path:   /usr/local/texlive/2015/bin/universal-darwin
+  texlive_texmr_path: /usr/local/texlive/texmf-local
+
+vagrant:
+  boxes:
+    centos70: https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box
+
+  plugins:
+    - sahara
+    - dotenv
+    - vagrant-share

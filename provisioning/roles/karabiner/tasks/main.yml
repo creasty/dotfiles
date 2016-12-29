@@ -1,3 +1,6 @@
+- set_fact:
+    karabiner: {}
+
 - name: create directory
   file:
     dest:  '{{ home_path }}/Library/Application Support/Karabiner'
@@ -5,10 +8,12 @@
 
 - name: copy private.xml
   copy:
-    src:  private.xml
+    src:  '{{ karabiner.private_xml_path }}'
     dest: '{{ home_path }}/Library/Application Support/Karabiner'
+  when: karabiner.private_xml_path
 
 - name: configure
   command: |
     /Applications/Karabiner.app/Contents/Library/bin/karabiner set '{{ item.key }}' '{{ item.value }}'
-  with_dict: '{{ settings }}'
+  with_dict: '{{ karabiner.settings }}'
+  when: karabiner.settings

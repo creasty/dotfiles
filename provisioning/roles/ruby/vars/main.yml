@@ -1,9 +1,0 @@
-ruby_versions:
-  - 2.3.0
-
-rbenv_plugins_dir: '{{ home_path }}/.anyenv/envs/rbenv/plugins'
-
-rbenv_plugins:
-  - ianheggie/rbenv-binstubs
-  - sstephenson/rbenv-default-gems
-  - sstephenson/rbenv-gem-rehash

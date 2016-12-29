@@ -3,7 +3,12 @@
 set -eu
 set -o pipefail
 
-export DOTFILES_PATH="$HOME/dotfiles"
+DOTFILES_PATH="$HOME/dotfiles"
+
+ARGS=('')
+for a in "$@"; do
+  ARGS=(${ARGS[@]} "$a")
+done
 
 
 #=== Utils
@@ -77,24 +82,45 @@ clone_or_update_repo() {
     echo 'done'
   else
     echo 'Updating repo...'
-    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD)" == "master" ]; then
-      git --git-dir="$git_dir" pull origin master
-      git --git-dir="$git_dir" submodule sync
-      echo 'done'
-    else
-      echo 'skip'
+
+    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD)" != "master" ]; then
+      echo 'skip (working on a non-master branch)'
+      return
     fi
+
+    if ! git diff --no-ext-diff --quiet --exit-code; then
+      echo 'skip (unstaged changes present)'
+      return
+    fi
+
+    if ! git diff-index --cached --quiet HEAD --; then
+      echo 'skip (uncommitted changes present)'
+      return
+    fi
+
+    git --git-dir="$git_dir" pull origin master
+    git --git-dir="$git_dir" submodule sync
+    echo 'done'
   fi
 }
 
-setup_xcode() {
-  echo 'Setting up Xcode...'
+check_xcode_license_approved() {
+  echo 'Agreeing to Xcode license...'
+
+  local has_error=0
+
+  if ! [[ "$(/usr/bin/xcrun clang 2>&1 || true)" =~ 'license' ]]; then
+    echo 'skip (already approved)'
+    return
+  fi
 
   sudo expect -c '
-    set timeout 5
+    set timeout 3
     spawn xcodebuild -license
 
     expect {
+      timeout { exit 2 }
+
       -exact "for more" {
         send "G"
         exp_continue
@@ -109,7 +135,9 @@ setup_xcode() {
         exit 0
       }
     }
-  ' > /dev/null
+  ' > /dev/null || has_error=1
+
+  [ $has_error -eq 1 ] && sudo xcodebuild -license
 
   echo 'done'
 }
@@ -132,7 +160,7 @@ install_ansible() {
 
 run_provisioning() {
   echo 'Provisioning...'
-  $DOTFILES_PATH/provisioning/run.sh
+  $DOTFILES_PATH/provisioning/run.sh ${ARGS[@]}
   echo 'done'
 }
 
@@ -143,7 +171,7 @@ main() {
   print_header
   check_os
   clone_or_update_repo
-  setup_xcode
+  check_xcode_license_approved
   install_homebrew
   install_ansible
   run_provisioning
