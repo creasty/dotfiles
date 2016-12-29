@@ -1,3 +1,6 @@
+- set_fact:
+    lua: {}
+
 - name: check luaenv
   command: |
     which luaenv
@@ -9,6 +12,30 @@
     anyenv install luaenv
   when: which_luaenv.rc > 0
 
+- name: install plugins
+  git:
+    repo: 'https://github.com/{{ item }}.git'
+    dest: '{{ lua.plugins_dir }}/{{ item }}'
+  with_items: '{{ lua.plugins }}'
+  when: lua.plugins_dir and lua.plugins
+
+- name: get installed versions
+  command: |
+    luaenv versions
+  register: installed_versions
+
+- name: install lua
+  command: |
+    luaenv install '{{ item }}'
+  when: |
+    lua.versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ lua.versions }}'
+
+- name: set global lua
+  command: |
+    luaenv global '{{ lua.versions[0] }}'
+  when: lua.versions
+
 - name: get installed packages
   command: |
     luarocks list
@@ -18,5 +45,5 @@
   command: |
      luarocks install '{{ item }}'
   when: |
-    packages and installed_packages.stdout.find(item) == -1
-  with_items: '{{ packages }}'
+    lua.packages and installed_packages.stdout.find(item) == -1
+  with_items: '{{ lua.packages }}'
