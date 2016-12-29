@@ -83,17 +83,17 @@ clone_or_update_repo() {
   else
     echo 'Updating repo...'
 
-    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD)" != "master" ]; then
+    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD 2> /dev/null)" != "master" ]; then
       echo 'skip (working on a non-master branch)'
       return
     fi
 
-    if ! git diff --no-ext-diff --quiet --exit-code; then
+    if ! git --git-dir="$git_dir" diff --no-ext-diff --quiet --exit-code > /dev/null 2>&1; then
       echo 'skip (unstaged changes present)'
       return
     fi
 
-    if ! git diff-index --cached --quiet HEAD --; then
+    if ! git --git-dir="$git_dir" diff-index --cached --quiet HEAD -- > /dev/null 2>&1; then
       echo 'skip (uncommitted changes present)'
       return
     fi
