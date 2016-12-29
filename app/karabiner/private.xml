@@ -146,7 +146,7 @@
 
     <item>
       <name>Super mode</name>
-      <identifier>private.super_mode</icentifier>
+      <identifier>private.super_mode</identifier>
 
       <appendix>S+H: Move to left space</appendix>
       <appendix>S+L: Move to right space</appendix>
