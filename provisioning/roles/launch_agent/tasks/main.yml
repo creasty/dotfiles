@@ -1,3 +1,6 @@
+- set_fact:
+    launch_agent: {}
+
 - name: create directory
   file:
     dest:  '{{ home_path }}/Library/LaunchAgents'
@@ -7,11 +10,17 @@
   copy:
     src:  '{{ item }}'
     dest: '{{ home_path }}/Library/LaunchAgents/'
+  loop_control:
+    label: '{{ item | basename }}'
   with_fileglob:
-    - '*.plist'
+    - '{{ launch_agent.plist_dir }}/*.plist'
+  when: launch_agent.plist_dir
 
 - name: load launch agents
   command: |
-    launchctl load "{{ home_path }}/Library/LaunchAgents/{{ item }}"
+    launchctl load "{{ home_path }}/Library/LaunchAgents/{{ item | basename }}"
+  loop_control:
+    label: '{{ item | basename }}'
   with_fileglob:
-    - '*.plist'
+    - '{{ launch_agent.plist_dir }}/*.plist'
+  when: launch_agent.plist_dir
