@@ -29,8 +29,8 @@
       tags: ['lang', 'ruby']
     - role: nodejs
       tags: ['lang', 'nodejs']
-    - role: r
-      tags: ['lang', 'r']
+    - role: r_lang
+      tags: ['lang', 'r_lang']
     - role: haskell
       tags: ['lang', 'haskell']
     - role: lua
@@ -66,7 +66,7 @@
 
     #  other
     #-----------------------------------------------
-    - role: fonts
-      tags: ['other', 'fonts']
+    - role: font
+      tags: ['other', 'font']
     - role: envchain
       tags: ['other', 'envchain']
