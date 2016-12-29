@@ -73,6 +73,7 @@ homebrew:
     - google-hangouts
     - google-japanese-ime
     - growlnotify
+    - hammerspoon
     - iterm2
     - karabiner
     - ngrok
@@ -183,7 +184,7 @@ karabiner:
 
   # You can export your settings by
   #
-  #   $ /Applications/Karabiner.app/Contents/Library/bin/karabiner export | grep '^$cli'
+  #   $ /Applications/Karabiner.app/Contents/Library/bin/karabiner export | awk '/^\$cli/ { print $3 ": " $4 }'
   #
   settings:
     option.emacsmode_controlAE: 1
@@ -200,9 +201,7 @@ karabiner:
     parameter.mousekey_initial_wait_of_scroll: 10
     parameter.mousekey_repeat_wait_of_pointer: 5
     parameter.mousekey_repeat_wait_of_scroll: 5
-    private.app_hotkey: 1
     private.app_macvim_esc_with_eisuu: 1
-    private.chrome: 1
     private.ctrl_semicolon_toggle_input_source: 1
     private.cv: 1
     private.jp_semicolon_eisuu: 1
@@ -241,14 +240,15 @@ link:
   dotssh:                                 .dotssh
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
+  hammerspoon:                            .hammerspoon
   peco:                                   .peco
+  ruby/bundle/config:                     .bundle/config
   ruby/gemrc:                             .gemrc
   ruby/irbrc:                             .irbrc
   ruby/pryrc:                             .pryrc
   ruby/railsrc:                           .railsrc
   ruby/rbenv/default-gems:                .anyenv/envs/rbenv/default-gems
   ruby/rspec:                             .rspec
-  ruby/bundle/config:                     .bundle/config
   tmux/tmux.conf:                         .tmux.conf
   tmux:                                   .tmux
   vim/gvimrc:                             .gvimrc
