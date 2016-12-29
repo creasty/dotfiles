@@ -7,7 +7,10 @@ for a in "$@"; do
   ARGS=(${ARGS[@]} "$a")
 done
 
-[ -f ./secrets.yml ] || cp ./secrets{.sample,}.yml
+if ! [ -f ./secrets.yml ]; then
+  cp ./secrets{.sample,}.yml
+  vim ./secrets.yml
+fi
 
 ansible-playbook \
   -i 'localhost,' \
