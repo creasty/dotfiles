@@ -87,15 +87,20 @@ clone_or_update_repo() {
       git --git-dir="$git_dir" submodule sync
       echo 'done'
     else
-      echo 'skip'
+      echo 'skip (working on a non-master branch)'
     fi
   fi
 }
 
-setup_xcode() {
-  echo 'Setting up Xcode...'
+check_xcode_license_approved() {
+  echo 'Agreeing to Xcode license...'
 
   local has_error=0
+
+  if ! [[ "$(/usr/bin/xcrun clang 2>&1 || true)" =~ 'license' ]]; then
+    echo 'skip (already approved)'
+    return
+  fi
 
   sudo expect -c '
     set timeout 3
@@ -154,7 +159,7 @@ main() {
   print_header
   check_os
   clone_or_update_repo
-  setup_xcode
+  check_xcode_license_approved
   install_homebrew
   install_ansible
   run_provisioning
