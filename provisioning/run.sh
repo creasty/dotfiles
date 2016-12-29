@@ -2,7 +2,7 @@
 
 cd "$(dirname $0)"
 
-ARGS=()
+ARGS=('')
 for a in "$@"; do
   ARGS=(${ARGS[@]} "$a")
 done

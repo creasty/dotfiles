@@ -5,7 +5,7 @@ set -o pipefail
 
 DOTFILES_PATH="$HOME/dotfiles"
 
-ARGS=()
+ARGS=('')
 for a in "$@"; do
   ARGS=(${ARGS[@]} "$a")
 done
