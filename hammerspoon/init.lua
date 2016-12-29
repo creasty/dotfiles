@@ -14,6 +14,9 @@ hs.hotkey.bind({"cmd", "alt", "shift"}, "up", window:resize("TR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "right", window:resize("BR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "down", window:resize("BL"))
 
+util:toggleApp({"cmd"}, "'", "com.apple.finder")
+util:toggleApp({"cmd", "ctrl"}, "'", "com.evernote.Evernote")
+
 -- util:emacsRemapKey({"ctrl"}, "c", {}, "escape")
 -- util:emacsRemapKey({"ctrl"}, "h", {}, "delete")
 -- util:emacsRemapKey({"ctrl"}, "d", {}, "forwarddelete")

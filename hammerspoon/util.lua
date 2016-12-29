@@ -63,6 +63,18 @@ function Util:remapKey(lmodifiers, lkey, rmodifiers, rkey)
     hs.hotkey.bind(lmodifiers, lkey, handler, nil, handler)
 end
 
+function Util:toggleApp(modifiers, key, bundleId)
+    hs.hotkey.bind(modifiers, key, function()
+        local app = hs.application.frontmostApplication()
+
+        if app:bundleID() == bundleId then
+            app:hide()
+        else
+            hs.application.launchOrFocusByBundleID(bundleId)
+        end
+    end)
+end
+
 -- function Util:emacsRemapKey(lmodifiers, lkey, rmodifiers, rkey)
 --     hs.hotkey.new(lmodifiers, lkey, function()
 --         hs.eventtap.keyStroke(rmodifiers, rkey)
@@ -78,6 +90,10 @@ end
 --         handler:disable()
 --     end
 -- end
+--
+-- wf_finder = wf.new(false):setAppFilter('Finder', {allowTitles=1})
+-- wf_finder:subscribe(wf.windowFocused, function() return_bind:enable() end)
+-- wf_finder:subscribe(wf.windowUnfocused, function() return_bind:disable() end)
 
 -- hs.application.watcher.new(handleGlobalAppEvent):start()
 
