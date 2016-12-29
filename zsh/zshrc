@@ -200,4 +200,4 @@ eval "$(direnv hook zsh)"
 #  Docker
 #-----------------------------------------------
 # docker-machine create --driver virtualbox local
-eval "$(docker-machine env local)"
+# eval "$(docker-machine env local)"

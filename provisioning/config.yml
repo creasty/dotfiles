@@ -64,7 +64,7 @@ homebrew:
     - adobe-creative-cloud
     - alfred
     - android-studio
-    - boot2docker # docker-toolbox? docker for mac?
+    - docker
     - dropbox
     - firefox
     - flip4mac
