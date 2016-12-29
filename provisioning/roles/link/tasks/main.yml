@@ -1,7 +1,10 @@
+- set_fact:
+    link: {}
+
 - name: create symlinks
   file:
     src:   '{{ dotfiles_path }}/{{ item.key }}'
     dest:  '{{ home_path }}/{{ item.value }}'
     state: link
-  with_dict: '{{ link_mappings }}'
-  when: link_mappings
+  with_dict: '{{ link }}'
+  when: link
