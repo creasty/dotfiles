@@ -9,7 +9,7 @@ done
 
 if ! [ -f ./secrets.yml ]; then
   cp ./secrets{.sample,}.yml
-  [ -z "$CI" ] && vim ./secrets.yml
+  # vim ./secrets.yml
 fi
 
 ansible-playbook \
