@@ -1,3 +1,5 @@
+![creasty's dotfiles](./docs/visual.jpg)
+
 dotfiles
 ========
 
