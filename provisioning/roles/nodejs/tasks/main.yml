@@ -1,3 +1,6 @@
+- set_fact:
+    nodejs: {}
+
 - name: check ndenv
   command: |
     which ndenv
@@ -18,17 +21,17 @@
   command: |
     ndenv install '{{ item }}'
   when: |
-    nodejs_versions and installed_versions.stdout.find(item) == -1
-  with_items: '{{ nodejs_versions }}'
+    nodejs.versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ nodejs.versions }}'
 
 - name: set global nodejs
   command: |
-    ndenv global '{{ nodejs_versions[0] }}'
-  when: nodejs_versions
+    ndenv global '{{ nodejs.versions[0] }}'
+  when: nodejs.versions
 
 - name: install npm packages
   npm:
     name:   '{{ item }}'
     global: yes
-  with_items: '{{ node_packages }}'
-  when: node_packages
+  with_items: '{{ nodejs.packages }}'
+  when: nodejs.packages
