@@ -1,4 +1,5 @@
 local window = require("window")
+local util = require("util")
 
 hs.window.animationDuration = 0
 
@@ -15,3 +16,5 @@ hs.hotkey.bind({"cmd", "alt", "shift"}, "Left", window:resize("TL"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "Up", window:resize("TR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "Right", window:resize("BR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "Down", window:resize("BL"))
+
+util:remapKey({'ctrl'}, 'c', {}, 'escape')
