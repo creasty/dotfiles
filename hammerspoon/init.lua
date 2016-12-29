@@ -1,11 +1,8 @@
 local window = require("window")
 local util = require("util")
+local superkey = require("superkey")
 
 hs.window.animationDuration = 0
-
-hs.hotkey.bind({"cmd", "shift"}, "K", function()
-    hs.alert.show(hs.application.frontmostApplication():bundleID())
-end)
 
 hs.hotkey.bind({"cmd", "alt"}, "/", window:resize(""))
 hs.hotkey.bind({"cmd", "alt"}, "Left", window:resize("L"))
@@ -17,4 +14,17 @@ hs.hotkey.bind({"cmd", "alt", "shift"}, "Up", window:resize("TR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "Right", window:resize("BR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "Down", window:resize("BL"))
 
-util:remapKey({'ctrl'}, 'c', {}, 'escape')
+util:remapKey({"ctrl"}, "c", {}, "escape")
+
+
+-- superkey("t", {
+--     h = function(e)
+--         print('th')
+--     end,
+-- })
+
+
+-- hs.alert.show(hs.application.frontmostApplication():bundleID())
+--hs.hotkey.bind({}, "K", function()
+--    print(superKeyFlag["t"])
+--end)
