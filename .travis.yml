@@ -13,8 +13,7 @@ env:
     - DOTFILES_NOEDIT_SECRETS=1
 
 before_script:
-  - pwd
-  - ls
+  - cp . $HOME/dotfiles
 
 script:
   - ./up
