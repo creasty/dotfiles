@@ -1,13 +1,16 @@
 local util = require("util")
 
-local events = {hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp}
+local EVENTS = {
+    hs.eventtap.event.types.keyDown,
+    hs.eventtap.event.types.keyUp,
+}
 
 return function(baseKey, handlers)
     local isActive = false
     local isConsumed = false
     local isLocked = false
 
-    hs.eventtap.new(events, function(e)
+    hs.eventtap.new(EVENTS, function(e)
         local flags = e:getFlags()
         if (flags.cmd or flags.alt or flags.shift or flags.ctrl or flags.fn) then
             return
