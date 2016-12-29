@@ -1,3 +1,6 @@
+- set_fact:
+    automator: {}
+
 - name: create directory
   file:
     dest:  '{{ home_path }}/Library/Services'
@@ -5,7 +8,7 @@
 
 - name: copy workflows
   copy:
-    src:  '{{ item }}'
+    src:  '{{ automator.workflows_dir }}/{{ item }}'
     dest: '{{ home_path }}/Library/Services/'
-  with_items:
-    - 'New File.workflow'
+  with_items: '{{ automator.workflows }}'
+  when: automator.workflows_dir and automator.workflows
