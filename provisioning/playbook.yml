@@ -7,26 +7,49 @@
     dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
 
   roles:
-    - roles/link
-    - roles/shell
-    - roles/homebrew
-    - roles/anyenv
-    - roles/ruby
-    - roles/nodejs
-    - roles/r
-    # - roles/haskell
-    - roles/lua
-    - roles/python
-    - roles/golang
-    - roles/java
-    - roles/redis
-    - roles/vim
-    # - roles/tex
-    - roles/vagrant
-    - roles/fonts
-    - roles/karabiner
-    - roles/automator
-    - roles/launch_agent
-    - roles/osx
-    - roles/mas
-    - roles/envchain
+    - role: link
+      tags: ['basic', 'link']
+    - role: shell
+      tags: ['basic', 'shell']
+    - role: homebrew
+      tags: ['install', 'homebrew']
+    - role: mas
+      tags: ['install', 'mas']
+    - role: anyenv
+      tags: ['install', 'anyenv']
+    - role: ruby
+      tags: ['lang', 'ruby']
+    - role: nodejs
+      tags: ['lang', 'nodejs']
+    - role: r
+      tags: ['lang', 'r']
+    - role: haskell
+      tags: ['lang', 'haskell']
+    - role: lua
+      tags: ['lang', 'lua']
+    - role: python
+      tags: ['lang', 'python']
+    - role: golang
+      tags: ['lang', 'golang']
+    - role: java
+      tags: ['lang', 'java']
+    - role: redis
+      tags: ['app', 'redis']
+    - role: vim
+      tags: ['app', 'vim']
+    - role: tex
+      tags: ['app', 'tex']
+    - role: vagrant
+      tags: ['app', 'vagrant']
+    - role: karabiner
+      tags: ['app', 'karabiner']
+    - role: automator
+      tags: ['app', 'automator']
+    - role: launch_agent
+      tags: ['system', 'launch_agent']
+    - role: osx
+      tags: ['system', 'osx']
+    - role: fonts
+      tags: ['other', 'fonts']
+    - role: envchain
+      tags: ['other', 'envchain']
