@@ -4,6 +4,7 @@ dotfiles_path: '{{ home_path }}/dotfiles'
 anyenv:
   dir:         '{{ home_path }}/.anyenv'
   plugins_dir: '{{ home_path }}/.anyenv/plugins'
+  envs_dir:    '{{ home_path }}/.anyenv/envs'
 
 automator:
   workflows_dir: '{{ dotfiles_path }}/automator'
@@ -258,7 +259,7 @@ link:
   zsh:                                    .zsh
 
 lua:
-  plugins_dir: '{{ home_path }}/.anyenv/envs/luaenv/plugins'
+  plugins_dir: '{{ anyenv.envs_dir }}/luaenv/plugins'
 
   plugins:
     - cehoffman/lua-build
@@ -355,7 +356,7 @@ ruby:
   versions:
     - 2.3.0
 
-  plugins_dir: '{{ home_path }}/.anyenv/envs/rbenv/plugins'
+  plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
 
   plugins:
     - ianheggie/rbenv-binstubs
