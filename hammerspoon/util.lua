@@ -63,26 +63,22 @@ function Util:remapKey(lmodifiers, lkey, rmodifiers, rkey)
     hs.hotkey.bind(lmodifiers, lkey, handler, nil, handler)
 end
 
-function Util:emacsRemapKey(lmodifiers, lkey, rmodifiers, rkey)
-    local isLocked = false
+-- function Util:emacsRemapKey(lmodifiers, lkey, rmodifiers, rkey)
+--     hs.hotkey.new(lmodifiers, lkey, function()
+--         hs.eventtap.keyStroke(rmodifiers, rkey)
+--     end)
+-- end
+--
+-- local function handleGlobalAppEvent(name, event, app)
+--     local bundleId = app:bundleID()
+--
+--     if event == hs.application.watcher.activated and not EMACS_APPLICATIONS[bundleId] then
+--         handler:enable()
+--     else
+--         handler:disable()
+--     end
+-- end
 
-    local handler = function()
-        if isLocked then
-            return
-        end
-
-        local bundleId = hs.application.frontmostApplication():bundleID()
-
-        if EMACS_APPLICATIONS[bundleId] then
-            isLocked = true
-            hs.eventtap.keyStroke(lmodifiers, lkey)
-            isLocked = false
-        else
-            hs.eventtap.keyStroke(rmodifiers, rkey)
-        end
-    end
-
-    -- hs.hotkey.bind(lmodifiers, lkey, handler, nil, handler)
-end
+-- hs.application.watcher.new(handleGlobalAppEvent):start()
 
 return Util
