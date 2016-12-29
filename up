@@ -93,7 +93,7 @@ clone_or_update_repo() {
       return
     fi
 
-    if git rev-parse --quiet --verify HEAD >/dev/null; then
+    if ! git diff-index --cached --quiet HEAD --; then
       echo 'skip (uncommitted changes present)'
       return
     fi
