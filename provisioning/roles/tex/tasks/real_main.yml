@@ -1,15 +1,15 @@
 - name: update software
   command: |
-    sudo '{{ texlive_bin_path }}/tlmgr' update --self --all
+    sudo '{{ tex.texlive_bin_path }}/tlmgr' update --self --all
 
 - name: copy texmf
   copy:
     src:  texmf.cnf
-    dest: '{{ texlive_texmr_path }}/web2c/texmf.cnf'
+    dest: '{{ tex.texlive_texmr_path }}/web2c/texmf.cnf'
 
 - name: configure texmf
   command: |
-    '{{ texlive_bin_path }}/mktexlsr'
+    '{{ tex.texlive_bin_path }}/mktexlsr'
   become: yes
 
 - name: setup tex to use hiragino fonts
@@ -18,7 +18,7 @@
     mktexlsr
     updmap-sys --setoption kanjiEmbed hiragino-elcapitan-pron
   args:
-    chdir: '{{ texlive_path }}/2015/texmf-dist/scripts/cjk-gs-integrate'
+    chdir: '{{ tex.texlive_path }}/2015/texmf-dist/scripts/cjk-gs-integrate'
   become: yes
 
 - name: make bst/bib directories

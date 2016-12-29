@@ -1,7 +1,26 @@
+- set_fact:
+    tex: {}
+
 - name: check presence of texlive
   stat:
-    path: '{{ texlive_path }}'
+    path: '{{ tex.texlive_path }}'
   register: texlive_stat
+  when: tex.texlive_path
+
+- name: check presence of texlive bin
+  stat:
+    path: '{{ tex.texlive_bin_path }}'
+  register: texlive_bin_stat
+  when: tex.texlive_bin_path
+
+- name: check presence of texlive texmr
+  stat:
+    path: '{{ tex.texlive_texmr_path }}'
+  register: texlive_texmr_stat
+  when: tex.texlive_texmr_path
 
 - include: real_main.yml
-  when: texlive_stat.stat.exists
+  when: |
+    (texlive_stat.get('stat') and texlive_stat.stat.exists)
+    and (texlive_bin_stat.get('stat') and texlive_bin_stat.stat.exists)
+    and (texlive_texmr_stat.get('stat') and texlive_texmr_stat.stat.exists)
