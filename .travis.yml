@@ -8,8 +8,9 @@ branches:
   only:
     - master
 
-before_script:
-  - cp ./provisioning/secrets{.sample,}.yml
+env:
+  global:
+    - DOTFILES_NOEDIT_SECRETS=1
 
 script:
   - ./up
