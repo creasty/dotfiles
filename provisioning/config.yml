@@ -73,6 +73,7 @@ homebrew:
     - google-hangouts
     - google-japanese-ime
     - growlnotify
+    - hammerspoon
     - iterm2
     - karabiner
     - ngrok
@@ -241,14 +242,15 @@ link:
   dotssh:                                 .dotssh
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
+  hammerspoon:                            .hammerspoon
   peco:                                   .peco
+  ruby/bundle/config:                     .bundle/config
   ruby/gemrc:                             .gemrc
   ruby/irbrc:                             .irbrc
   ruby/pryrc:                             .pryrc
   ruby/railsrc:                           .railsrc
   ruby/rbenv/default-gems:                .anyenv/envs/rbenv/default-gems
   ruby/rspec:                             .rspec
-  ruby/bundle/config:                     .bundle/config
   tmux/tmux.conf:                         .tmux.conf
   tmux:                                   .tmux
   vim/gvimrc:                             .gvimrc
