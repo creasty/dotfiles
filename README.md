@@ -3,6 +3,8 @@
 dotfiles
 ========
 
+![last build on 2016-12-30](https://img.shields.io/badge/build-2016--12--30-green.svg) ![OS X 10.9+](https://img.shields.io/badge/os-osx%2010.9%2B-blue.svg) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](./LICENSE.txt)
+
 A powerful development environment for full-stack engineers.  
 Work it harder, make it better, do it faster, makes us stronger.
 
