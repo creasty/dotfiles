@@ -20,7 +20,9 @@ Automated provisioning by [ansible](https://www.ansible.com/).
 
 - anyenv
 - automator
+- elixir
 - envchain
+- erlang
 - font
 - golang
 - haskell
@@ -37,6 +39,7 @@ Automated provisioning by [ansible](https://www.ansible.com/).
 - r_lang
 - redis
 - ruby
+- scala
 - shell
 - tex
 - vagrant
