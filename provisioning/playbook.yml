@@ -4,7 +4,7 @@
 
   vars:
     home_path:     '{{ lookup("env", "HOME") }}'
-    dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
+    dotfiles_path: '{{ home_path }}/dotfiles'
 
   roles:
     #  basic
