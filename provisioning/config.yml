@@ -111,6 +111,7 @@ homebrew:
     - { name: 'awscli', state: 'head' }
     - batik
     - binutils
+    - cabal-install
     - chisel
     - clib
     - clisp
