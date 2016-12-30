@@ -93,7 +93,6 @@ homebrew:
     - homebrew/boneyard
     - homebrew/dupes
     - homebrew/science
-    - josegonzalez/php
     - supermomonga/homebrew-splhack
 
   packages:
@@ -153,7 +152,6 @@ homebrew:
     - parallel
     - pcre
     - phantomjs
-    - php55
     - plantuml
     - postgresql
     - pstree
