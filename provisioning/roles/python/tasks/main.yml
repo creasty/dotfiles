@@ -12,11 +12,6 @@
     anyenv install pyenv
   when: which_pyenv.rc > 0
 
-- name: refresh anyenv
-  command: |
-    eval "$(anyenv init -)"
-  when: which_pyenv.rc > 0
-
 - name: get installed versions
   command: |
     pyenv versions

@@ -19,11 +19,6 @@
   with_items: '{{ lua.plugins }}'
   when: lua.plugins_dir and lua.plugins
 
-- name: refresh anyenv
-  command: |
-    eval "$(anyenv init -)"
-  when: which_luaenv.rc > 0
-
 - name: get installed versions
   command: |
     luaenv versions
