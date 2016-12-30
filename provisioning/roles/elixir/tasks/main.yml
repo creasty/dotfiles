@@ -1,0 +1,30 @@
+- set_fact:
+    elixir: {}
+
+- name: check exenv
+  command: |
+    which exenv
+  register: which_exenv
+  ignore_errors: yes
+
+- name: install exenv
+  command: |
+    anyenv install exenv
+  when: which_exenv.rc > 0
+
+- name: get installed versions
+  command: |
+    exenv versions
+  register: installed_versions
+
+- name: install elixir
+  command: |
+    exenv install '{{ item }}'
+  when: |
+    elixir.versions and installed_versions.stdout.find(item) == -1
+  with_items: '{{ elixir.versions }}'
+
+- name: set global elixir
+  command: |
+    exenv global '{{ elixir.versions[0] }}'
+  when: elixir.versions
