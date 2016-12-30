@@ -27,7 +27,7 @@
     erlenv releases
   register: installed_versions
 
-- include: ./install.yml
+- include: install.yml
   vars:
     version: '{{ item }}'
   when: |
