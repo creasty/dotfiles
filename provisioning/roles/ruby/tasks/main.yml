@@ -19,6 +19,11 @@
   with_items: '{{ ruby.plugins }}'
   when: ruby.plugins_dir and ruby.plugins
 
+- name: refresh anyenv
+  command: |
+    eval "$(anyenv init -)"
+  when: which_rbenv.rc > 0
+
 - name: get installed versions
   command: |
     rbenv versions

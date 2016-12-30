@@ -12,6 +12,11 @@
     anyenv install scalaenv
   when: which_scalaenv.rc > 0
 
+- name: refresh anyenv
+  command: |
+    eval "$(anyenv init -)"
+  when: which_scalaenv.rc > 0
+
 - name: get installed scala versions
   command: |
     scalaenv versions

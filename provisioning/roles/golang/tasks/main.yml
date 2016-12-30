@@ -12,6 +12,11 @@
     anyenv install goenv
   when: which_goenv.rc > 0
 
+- name: refresh anyenv
+  command: |
+    eval "$(anyenv init -)"
+  when: which_goenv.rc > 0
+
 - name: get installed versions
   command: |
     goenv versions

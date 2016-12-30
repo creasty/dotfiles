@@ -17,6 +17,11 @@
     ndenv versions
   register: installed_versions
 
+- name: refresh anyenv
+  command: |
+    eval "$(anyenv init -)"
+  when: which_ndenv.rc > 0
+
 - name: install nodejs
   command: |
     ndenv install '{{ item }}'

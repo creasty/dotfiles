@@ -8,3 +8,8 @@
   command: |
     anyenv install jenv
   when: which_jenv.rc > 0
+
+- name: refresh anyenv
+  command: |
+    eval "$(anyenv init -)"
+  when: which_jenv.rc > 0
