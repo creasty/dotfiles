@@ -41,6 +41,10 @@
       tags: ['lang', 'golang']
     - role: java
       tags: ['lang', 'java']
+    - role: erlang
+      tags: ['lang', 'erlang']
+    - role: elixir
+      tags: ['lang', 'elixir']
 
     #  app
     #-----------------------------------------------

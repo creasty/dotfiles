@@ -12,6 +12,16 @@ automator:
   workflows:
     - 'New File.workflow'
 
+elixir:
+  versions:
+    - 1.3.4
+
+erlang:
+  releases_dir: '{{ anyenv.envs_dir }}/erlenv/releases'
+
+  versions:
+    - '19.1'
+
 envchain:
   crst:
     - AWS_ACCESS_KEY_ID
@@ -110,7 +120,6 @@ homebrew:
     - { name: 'ctags-objc-ja', state: 'head', install_options: '--enable-japanese-support' }
     - { name: 'curl', install_options: '--with-ssl --with-libssh2' }
     - direnv
-    - elixir
     - eot-utils
     - fontconfig
     - fontforge
