@@ -169,8 +169,6 @@ homebrew:
     - ranger
     - redis
     - ruby-build
-    - sbt
-    - scala
     - sqlite
     - terraform
     - the_silver_searcher
@@ -368,6 +366,13 @@ ruby:
     - ianheggie/rbenv-binstubs
     - sstephenson/rbenv-default-gems
     - sstephenson/rbenv-gem-rehash
+
+scala:
+  versions:
+    - scala-2.12.0
+
+  sbt_versions:
+    - sbt-0.13.13
 
 tex:
   texlive_path:       /usr/local/texlive

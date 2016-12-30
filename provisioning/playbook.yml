@@ -45,6 +45,8 @@
       tags: ['lang', 'erlang']
     - role: elixir
       tags: ['lang', 'elixir']
+    - role: scala
+      tags: ['lang', 'scala']
 
     #  app
     #-----------------------------------------------
