@@ -11,8 +11,8 @@
     #-----------------------------------------------
     - role: link
       tags: ['basic', 'link']
-    - role: shell
-      tags: ['basic', 'shell']
+    - role: zsh
+      tags: ['basic', 'zsh']
 
     #  install
     #-----------------------------------------------

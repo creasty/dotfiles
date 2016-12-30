@@ -40,10 +40,10 @@ Automated provisioning by [ansible](https://www.ansible.com/).
 - redis
 - ruby
 - scala
-- shell
 - tex
 - vagrant
 - vim
+- zsh
 
 And manually,
 
