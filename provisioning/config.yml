@@ -149,7 +149,6 @@ homebrew:
     - lua
     - luajit
     - { name: 'macvim', state: 'head', install_options: '--with-luajit' }
-    - memcached
     - mercurial
     - mongodb
     - mysql
