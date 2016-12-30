@@ -35,6 +35,11 @@ export PATH=$ANYENV_DIR/envs/jenv/shims:$PATH
 export PATH=$ANYENV_DIR/envs/luaenv/shims:$PATH
 export PATH=$ANYENV_DIR/envs/pyenv/shims:$PATH
 export PATH=$ANYENV_DIR/envs/goenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/erlenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/exenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/hsenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/sbtenv/shims:$PATH
+export PATH=$ANYENV_DIR/envs/scalaenv/shims:$PATH
 
 export PATH=$DOTFILES_PATH/bin:$PATH
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
