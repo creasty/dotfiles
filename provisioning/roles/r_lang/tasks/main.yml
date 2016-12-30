@@ -2,19 +2,21 @@
   command: mktemp
   register: mktemp
 
-- name: create package installer
-  template:
-    src:  'installer.r'
-    dest: '{{ mktemp.stdout }}'
-  when: r_lang.packages
+- block:
+    - name: create package installer
+      template:
+        src:  'installer.r'
+        dest: '{{ mktemp.stdout }}'
+      when: r_lang.packages
 
-- name: install packages
-  command: |
-    r --file '{{ mktemp.stdout }}'
-  ignore_errors: yes
-  when: r_lang.packages
+    - name: install packages
+      command: |
+        r --file '{{ mktemp.stdout }}'
+      ignore_errors: yes
+      when: r_lang.packages
 
-- name: delete tmp file
-  file:
-    dest:  '{{ mktemp.stdout }}'
-    state: absent
+  always:
+    - name: delete tmp file
+      file:
+        dest:  '{{ mktemp.stdout }}'
+        state: absent
