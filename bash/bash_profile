@@ -57,3 +57,10 @@ export GIT_MERGE_AUTOEDIT='no'
 #  Rails
 #-----------------------------------------------
 export DISABLE_SPRING=1
+
+
+#  Anyenv
+#-----------------------------------------------
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi
