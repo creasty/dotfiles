@@ -3,30 +3,30 @@
 
 - name: check pyenv
   command: |
-    which pyenv
+    bash -lc 'which pyenv'
   register: which_pyenv
   ignore_errors: yes
 
 - name: install pyenv
   command: |
-    anyenv install pyenv
+    bash -lc 'anyenv install pyenv'
   when: which_pyenv.rc > 0
 
 - name: get installed versions
   command: |
-    pyenv versions
+    bash -lc 'pyenv versions'
   register: installed_versions
 
 - name: install python
   command: |
-    pyenv install '{{ item }}'
+    bash -lc 'pyenv install {{ item | quote }}'
   when: |
     python.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ python.versions }}'
 
 - name: set global python
   command: |
-    pyenv global '{{ python.versions[0] }}'
+    bash -lc 'pyenv global {{ python.versions[0] | quote }}'
   when: python.versions
 
 - name: install packages
