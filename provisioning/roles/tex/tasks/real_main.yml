@@ -19,6 +19,9 @@
     updmap-sys --setoption kanjiEmbed hiragino-elcapitan-pron
   args:
     chdir: '{{ tex.texlive_path }}/2015/texmf-dist/scripts/cjk-gs-integrate'
+  environment:
+    PATH: '{{ ansible_env.PATH }}:{{ tex.texlive_bin_path }}'
+
   become: yes
 
 - name: make bst/bib directories

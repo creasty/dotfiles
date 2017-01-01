@@ -42,7 +42,7 @@ export PATH=$ANYENV_DIR/envs/sbtenv/shims:$PATH
 export PATH=$ANYENV_DIR/envs/scalaenv/shims:$PATH
 
 export PATH=$DOTFILES_PATH/bin:$PATH
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:$HOME/.cabal/bin
 export PATH=$PATH:$TEXLIVE_BIN_PATH
