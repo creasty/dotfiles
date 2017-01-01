@@ -3,38 +3,38 @@
 
 - name: check goenv
   command: |
-    bash -ic 'which goenv'
+    bash -lc 'which goenv'
   register: which_goenv
   ignore_errors: yes
 
 - name: install goenv
   command: |
-    bash -ic 'anyenv install goenv'
+    bash -lc 'anyenv install goenv'
   when: which_goenv.rc > 0
 
 - name: get installed versions
   command: |
-    bash -ic 'goenv versions'
+    bash -lc 'goenv versions'
   register: installed_versions
 
 - name: install golang
   command: |
-    bash -ic 'goenv install {{ item | quote }}'
+    bash -lc 'goenv install {{ item | quote }}'
   when: |
     golang.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ golang.versions }}'
 
 - name: set global golang
   command: |
-    bash -ic 'goenv global {{ golang.versions[0] | quote }}'
+    bash -lc 'goenv global {{ golang.versions[0] | quote }}'
   when: golang.versions
 
 - name: install packages
   command: |
-     bash -ic 'go get -u {{ item | quote }}'
+     bash -lc 'go get -u {{ item | quote }}'
   with_items: '{{ golang.packages }}'
   when: golang.packages
 
 - name: configure gocode
   command: |
-    bash -ic 'gocode set autobuild true'
+    bash -lc 'gocode set autobuild true'

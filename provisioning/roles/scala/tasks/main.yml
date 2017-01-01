@@ -3,58 +3,58 @@
 
 - name: check scalaenv
   command: |
-    bash -ic 'which scalaenv'
+    bash -lc 'which scalaenv'
   register: which_scalaenv
   ignore_errors: yes
 
 - name: install scalaenv
   command: |
-    bash -ic 'anyenv install scalaenv'
+    bash -lc 'anyenv install scalaenv'
   when: which_scalaenv.rc > 0
 
 - name: get installed scala versions
   command: |
-    bash -ic 'scalaenv versions'
+    bash -lc 'scalaenv versions'
   register: installed_versions
 
 - name: install scala
   command: |
-    bash -ic 'scalaenv install {{ item | quote }}'
+    bash -lc 'scalaenv install {{ item | quote }}'
   when: |
     scala.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ scala.versions }}'
 
 - name: set global scala
   command: |
-    bash -ic 'scalaenv global {{ scala.versions[0] | quote }}'
+    bash -lc 'scalaenv global {{ scala.versions[0] | quote }}'
   when: scala.versions
 
 #  sbt
 #-----------------------------------------------
 - name: check sbtenv
   command: |
-    bash -ic 'which sbtenv'
+    bash -lc 'which sbtenv'
   register: which_sbtenv
   ignore_errors: yes
 
 - name: install sbtenv
   command: |
-    bash -ic 'anyenv install sbtenv'
+    bash -lc 'anyenv install sbtenv'
   when: which_sbtenv.rc > 0
 
 - name: get installed sbt versions
   command: |
-    bash -ic 'sbtenv versions'
+    bash -lc 'sbtenv versions'
   register: installed_sbt_versions
 
 - name: install sbt
   command: |
-    bash -ic 'sbtenv install {{ item | quote }}'
+    bash -lc 'sbtenv install {{ item | quote }}'
   when: |
     scala.sbt_versions and installed_sbt_versions.stdout.find(item) == -1
   with_items: '{{ scala.sbt_versions }}'
 
 - name: set global sbt
   command: |
-    bash -ic 'sbtenv global {{ scala.sbt_versions[0] | quote }}'
+    bash -lc 'sbtenv global {{ scala.sbt_versions[0] | quote }}'
   when: scala.sbt_versions

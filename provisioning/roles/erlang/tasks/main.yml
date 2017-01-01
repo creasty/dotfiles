@@ -13,18 +13,18 @@
 
 - name: check erlenv
   command: |
-    bash -ic 'which erlenv'
+    bash -lc 'which erlenv'
   register: which_erlenv
   ignore_errors: yes
 
 - name: install erlenv
   command: |
-    bash -ic 'anyenv install erlenv'
+    bash -lc 'anyenv install erlenv'
   when: which_erlenv.rc > 0
 
 - name: get installed versions
   command: |
-    bash -ic 'erlenv releases'
+    bash -lc 'erlenv releases'
   register: installed_versions
 
 - include: install.yml
@@ -36,9 +36,9 @@
 
 - name: set global erlang
   command: |
-    bash -ic 'erlenv global {{ erlang.versions[0] | quote}}'
+    bash -lc 'erlenv global {{ erlang.versions[0] | quote}}'
   when: erlang.versions
 
 - name: rehash
   command: |
-    bash -ic 'erlenv rehash'
+    bash -lc 'erlenv rehash'

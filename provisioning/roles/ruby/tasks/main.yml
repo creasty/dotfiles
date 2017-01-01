@@ -3,13 +3,13 @@
 
 - name: check rbenv
   command: |
-    bash -ic 'which rbenv'
+    bash -lc 'which rbenv'
   register: which_rbenv
   ignore_errors: yes
 
 - name: install rbenv
   command: |
-    bash -ic 'anyenv install rbenv'
+    bash -lc 'anyenv install rbenv'
   when: which_rbenv.rc > 0
 
 - name: install plugins
@@ -21,17 +21,17 @@
 
 - name: get installed versions
   command: |
-    bash -ic 'rbenv versions'
+    bash -lc 'rbenv versions'
   register: installed_versions
 
 - name: install ruby
   command: |
-    bash -ic 'rbenv install {{ item | quote }}'
+    bash -lc 'rbenv install {{ item | quote }}'
   when: |
     ruby.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ ruby.versions }}'
 
 - name: set global ruby
   command: |
-    bash -ic 'rbenv global {{ ruby.versions[0] | quote }}'
+    bash -lc 'rbenv global {{ ruby.versions[0] | quote }}'
   when: ruby.versions

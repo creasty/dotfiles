@@ -3,13 +3,13 @@
 
 - name: check luaenv
   command: |
-    bash -ic 'which luaenv'
+    bash -lc 'which luaenv'
   register: which_luaenv
   ignore_errors: yes
 
 - name: install luaenv
   command: |
-    bash -ic 'anyenv install luaenv'
+    bash -lc 'anyenv install luaenv'
   when: which_luaenv.rc > 0
 
 - name: install plugins
@@ -21,29 +21,29 @@
 
 - name: get installed versions
   command: |
-    bash -ic 'luaenv versions'
+    bash -lc 'luaenv versions'
   register: installed_versions
 
 - name: install lua
   command: |
-    bash -ic 'luaenv install {{ item | quote }}'
+    bash -lc 'luaenv install {{ item | quote }}'
   when: |
     lua.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ lua.versions }}'
 
 - name: set global lua
   command: |
-    bash -ic 'luaenv global {{ lua.versions[0] | quote }}'
+    bash -lc 'luaenv global {{ lua.versions[0] | quote }}'
   when: lua.versions
 
 - name: get installed packages
   command: |
-    bash -ic 'luarocks list'
+    bash -lc 'luarocks list'
   register: installed_packages
 
 - name: install packages
   command: |
-     bash -ic 'luarocks install {{ item | quote }}'
+     bash -lc 'luarocks install {{ item | quote }}'
   when: |
     lua.packages and installed_packages.stdout.find(item) == -1
   with_items: '{{ lua.packages }}'
