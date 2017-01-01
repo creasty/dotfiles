@@ -29,17 +29,9 @@ export ANYENV_DIR=$HOME/.anyenv
 export PATH=/usr/local/bin:$PATH
 
 export PATH=$ANYENV_DIR/bin:$PATH
-export PATH=$ANYENV_DIR/envs/rbenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/ndenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/jenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/luaenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/pyenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/goenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/erlenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/exenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/hsenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/sbtenv/shims:$PATH
-export PATH=$ANYENV_DIR/envs/scalaenv/shims:$PATH
+for c in rbenv, ndenv, jenv, luaenv, pyenv, goenv, erlenv, exenv, hsenv, sbtenv, scalaenv; do
+  export PATH=$ANYENV_DIR/envs/$c/shims:$PATH
+done
 
 export PATH=$DOTFILES_PATH/bin:$PATH
 export PATH=$PATH:$GOPATH/bin
