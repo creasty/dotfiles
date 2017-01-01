@@ -3,23 +3,23 @@
 
 - name: signout mas
   command: |
-    mas signout
+    bash -ic 'mas signout'
   ignore_errors: yes
 
 - name: signin to mas
   command: |
-    mas signin '{{ mas.appstore_id }}' '{{ mas.appstore_password }}'
+    bash -ic 'mas signin {{ mas.appstore_id | quote }} {{ mas.appstore_password | quote }}'
   ignore_errors: yes
   register: mas_signin
   when: mas.appstore_id and mas.appstore_password
 
 - name: install applications
   command: |
-    mas install '{{ item }}'
+    bash -ic 'mas install {{ item | quote }}'
   with_items: '{{ mas.applications }}'
   when: mas.applications and mas_signin.get('rc') == 0
 
 - name: upgrade applications
   command: |
-    mas upgrade
+    bash -ic 'mas upgrade'
   when: mas_signin.get('rc') == 0

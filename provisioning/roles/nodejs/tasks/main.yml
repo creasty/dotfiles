@@ -3,30 +3,30 @@
 
 - name: check ndenv
   command: |
-    which ndenv
+    bash -ic 'which ndenv'
   register: which_ndenv
   ignore_errors: yes
 
 - name: install ndenv
   command: |
-    anyenv install ndenv
+    bash -ic 'anyenv install ndenv'
   when: which_ndenv.rc > 0
 
 - name: get installed versions
   command: |
-    ndenv versions
+    bash -ic 'ndenv versions'
   register: installed_versions
 
 - name: install nodejs
   command: |
-    ndenv install '{{ item }}'
+    bash -ic 'ndenv install {{ item | quote }}'
   when: |
     nodejs.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ nodejs.versions }}'
 
 - name: set global nodejs
   command: |
-    ndenv global '{{ nodejs.versions[0] }}'
+    bash -ic 'ndenv global {{ nodejs.versions[0] | quote }}'
   when: nodejs.versions
 
 - name: install npm packages
