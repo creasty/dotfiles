@@ -1,10 +1,22 @@
 - set_fact:
     link: {}
 
+- name: allocate parent directories
+  file:
+    dest:    '{{ home_path }}/{{ item }}'
+    state:   directory
+    recurse: yes
+  loop_control:
+    label: '~/{{ item }}'
+  when: link and item != ""
+  with_items: '{{ link.values() | map("dirname") | unique | list }}'
+
 - name: create symlinks
   file:
     src:   '{{ dotfiles_path }}/{{ item.key }}'
     dest:  '{{ home_path }}/{{ item.value }}'
     state: link
+  loop_control:
+    label: '{{ item.value }}'
   with_dict: '{{ link }}'
   when: link
