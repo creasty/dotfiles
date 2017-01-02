@@ -154,6 +154,7 @@ homebrew:
     - opencv
     - optipng
     - osquery
+    - packer
     - parallel
     - pcre
     - phantomjs
@@ -178,7 +179,6 @@ homebrew:
     - webkit2png
     - { name: 'wget', install_options: '--enable-iri' }
     - xctool
-    - zsh
 
 karabiner:
   private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'

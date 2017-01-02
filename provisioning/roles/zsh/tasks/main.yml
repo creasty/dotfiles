@@ -1,3 +1,8 @@
+- name: install zsh
+  homebrew:
+    name:  zsh
+    state: present
+
 - name: search zsh bin path
   command: |
     which zsh

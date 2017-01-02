@@ -14,6 +14,8 @@
     #-----------------------------------------------
     - role: link
       tags: ['basic', 'link']
+    - role: ssh
+      tags: ['basic', 'ssh']
     - role: zsh
       tags: ['basic', 'zsh']
 
