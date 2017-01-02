@@ -1,19 +1,17 @@
-- name: create .ssh
+- name: create directories
   file:
     dest:  '{{ home_path }}/.ssh'
     mode:  0700
     state: directory
+  with_items:
+    - '.ssh'
+    - '.ssh/config.d'
+    - '.ssh/keys'
 
 - name: create config
   file:
     dest: '{{ home_path }}/.ssh/config'
     mode: 0600
-
-- name: create config.d
-  file:
-    dest:  '{{ home_path }}/.ssh/config.d'
-    mode:  0700
-    state: directory
 
 - name: copy common config
   copy:
