@@ -90,7 +90,11 @@ Cloning repo...
 Cloning into '/Users/vagrant/dotfiles'...
 ```
 
-4\. Clean up.
+4\. Provide secrets
+
+When an editor comes up, fill the entries.
+
+5\. Clean up.
 
 ```hcl
 $ vagrant sandbox rollback
