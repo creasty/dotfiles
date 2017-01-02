@@ -40,14 +40,26 @@ Automated provisioning by [ansible](https://www.ansible.com/).
 - redis
 - ruby
 - scala
+- ssh
 - tex
 - vagrant
 - vim
 - zsh
 
-And manually,
 
-- [System Preference](./docs/system_preference.md)
+Manual
+------
+
+1. Prepare credentials (TBA)
+2. Run bootstrap script (TBA)
+3. [Customize "System Preference"](./docs/system_preference.md)
+
+
+Testing
+-------
+
+By using [boxcutter/macos](https://github.com/boxcutter/macos) and vagrant, you can test the provisioning on a clean environment.  
+Read the [document](./test) for details.
 
 
 Author
