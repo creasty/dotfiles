@@ -161,7 +161,6 @@ homebrew:
     - plantuml
     - postgresql
     - pstree
-    - python3
     - q
     - r  # require xquartz to be installed
     - ranger
@@ -323,8 +322,9 @@ python:
     - 3.5.0
 
   packages:
-    - { name: 'aws-shell', extra_args: '--ignore-installed six' }
     - awscli
+    - { name: 'aws-shell', extra_args: '--ignore-installed six' }
+    - cryptography
     - glances
     - locustio
     - misaka
