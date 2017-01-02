@@ -201,3 +201,10 @@ eval "$(direnv hook zsh)"
 #-----------------------------------------------
 # docker-machine create --driver virtualbox local
 # eval "$(docker-machine env local)"
+
+
+#  Anyenv
+#-----------------------------------------------
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi
