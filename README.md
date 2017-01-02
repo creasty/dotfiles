@@ -65,4 +65,13 @@ Read the [document](./test) for details.
 Author
 ------
 
-Yuki Iwanaga [@creasty](https://github.com/creasty)
+<table>
+  <tr align="center">
+    <td>
+      <img src="https://avatars2.githubusercontent.com/u/1695538?v=3&s=100" alt="">
+    </td>
+  </tr>
+  <tr align="center">
+    <td>Yuki Iwanaga<br><a href="https://github.com/creasty">@creasty</a></td>
+  </tr>
+</table>
