@@ -1,0 +1,8 @@
+Host va_*
+  User vagrant
+  IdentityFile ~/.vagrant.d/insecure_private_key
+
+Host 192.168.33.*
+  User vagrant
+  IdentityFile ~/.vagrant.d/insecure_private_key
+
