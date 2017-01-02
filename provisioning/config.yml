@@ -154,6 +154,7 @@ homebrew:
     - opencv
     - optipng
     - osquery
+    - packer
     - parallel
     - pcre
     - phantomjs
