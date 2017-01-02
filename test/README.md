@@ -89,3 +89,14 @@ osx-10_11:~ vagrant$ bash <(curl -L dotfiles.creasty.com/up)
 Cloning repo...
 Cloning into '/Users/vagrant/dotfiles'...
 ```
+
+4\. Clean up.
+
+```hcl
+$ vagrant sandbox rollback
+
+# or
+
+$ vagrant halt
+$ vagrant sandbox off
+```
