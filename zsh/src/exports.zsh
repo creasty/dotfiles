@@ -38,6 +38,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/usr/local/heroku/bin
 export PATH=$PATH:$HOME/.cabal/bin
 export PATH=$PATH:$TEXLIVE_BIN_PATH
+export PATH=$PATH:$HOME/google-cloud-sdk/bin
 
 
 #  Git
