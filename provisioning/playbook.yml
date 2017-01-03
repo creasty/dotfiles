@@ -55,6 +55,8 @@
 
     #  app
     #-----------------------------------------------
+    - role: gc_sdk
+      tags: ['app', 'gc_sdk']
     - role: redis
       tags: ['app', 'redis']
     - role: vim
