@@ -13,7 +13,7 @@ unset file
 #-----------------------------------------------
 source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-fpath=($ZSH_CUSTOM/zsh-completions/src $fpath)
+fpath=($ZSH_CUSTOM/plugins/zsh-completions/src $fpath)
 fpath=($ZSH_CUSTOM/completions $fpath)
 autoload -Uz compinit
 compinit

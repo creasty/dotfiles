@@ -4,6 +4,9 @@
 [submodule "zsh/plugins/zsh-autosuggestions"]
 	path = zsh/plugins/zsh-autosuggestions
 	url = git://github.com/tarruda/zsh-autosuggestions.git
+[submodule "zsh/plugins/zsh-completions"]
+	path = zsh/plugins/zsh-completions
+	url = git://github.com/zsh-users/zsh-completions.git
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = git://github.com/tmux-plugins/tpm.git
