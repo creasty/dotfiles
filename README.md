@@ -24,6 +24,7 @@ Automated provisioning by [ansible](https://www.ansible.com/).
 - envchain
 - erlang
 - font
+- gc_ask
 - golang
 - haskell
 - homebrew
