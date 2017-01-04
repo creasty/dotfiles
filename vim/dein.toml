@@ -25,6 +25,13 @@ hook_post_update = '''
 repo    = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
 
+[[plugins]] # create your own text objects
+repo = 'kana/vim-textobj-user'
+
+[[plugins]] # text objects for multiple types of parentheses
+repo    = 'osyo-manga/vim-textobj-multiblock'
+depends = ['vim-textobj-user']
+
 [[plugins]] # adds text-objects for word-based columns
 repo = 'coderifous/textobj-word-column.vim'
 

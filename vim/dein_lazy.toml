@@ -4,16 +4,6 @@
 repo  = 'kana/vim-operator-user'
 on_if = 1
 
-[[plugins]] # create your own text objects
-repo  = 'kana/vim-textobj-user'
-on_if = 1
-
-[[plugins]] # text objects for multiple types of parentheses
-repo    = 'osyo-manga/vim-textobj-multiblock'
-depends = ['vim-textobj-user']
-on_cmd  = ['TextobjMultiblockDefaultKeyMappings']
-on_map  = ['<Plug>(textobj-multiblock-']
-
 [[plugins]] # a simple, easy-to-use Vim alignment plugin
 repo   = 'junegunn/vim-easy-align'
 on_cmd = ['EasyAlign']
