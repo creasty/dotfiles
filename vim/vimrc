@@ -550,7 +550,7 @@ function! MyStatusLine(w, cw)
 
     if !empty(branch)
       let branch = substitute(branch, '^\([fhr]\)\(eature\|otfix\|elease\)/', '\1/', '')
-      let s .= ' @ ' . branch
+      let s .= ' 𝙗 ' . branch
     endif
   endif
 
@@ -559,9 +559,7 @@ function! MyStatusLine(w, cw)
 
   if active && enough_width
     " file type & encoding
-    let s .= ' '
-    let s .= (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
-    let s .= ' '
+    let s .= ' 𝙛𝙩 ' . (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc) . ' '
 
     " cursor
     let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
@@ -2668,16 +2666,13 @@ if dein#tap('neomake')
     \ 'texthl': 'NeomakeErrorSign',
   \ }
   let g:neomake_warning_sign = {
-    \ 'text':   '!',
+    \ 'text':   '∆',
     \ 'texthl': 'NeomakeWarningSign',
   \ }
   let g:neomake_message_sign = {
-    \ 'text':   '>',
+    \ 'text':   '►',
     \ 'texthl': 'NeomakeMessageSign',
   \ }
-
-  " ⚠
-  " ➤
 
   call candle#highlight('NeomakeErrorSign', 'red', '', '')
   call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
