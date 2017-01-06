@@ -1,6 +1,5 @@
-
 " fonts
-set guifont=Monaco\ for\ Powerline:h12
+set guifont=Monaco:h12
 
 " maximize window
 set lines=999 columns=9999
