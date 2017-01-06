@@ -715,12 +715,12 @@ endif
 " edit and apply vimrc
 command! EditVimrc edit $MYVIMRC
 
-autocmd vimrc BufWritePost *vimrc
-  \ source $MYVIMRC |
-  \ if s:env.is_gui |
-    \ source $MYGVIMRC |
-  \ endif |
-  \ doautocmd User VimrcReloadPost
+" autocmd vimrc BufWritePost *vimrc
+"   \ source $MYVIMRC |
+"   \ if s:env.is_gui |
+"     \ source $MYGVIMRC |
+"   \ endif |
+"   \ doautocmd User VimrcReloadPost
 
 " toggle paste mode
 command! Pt :set paste!
