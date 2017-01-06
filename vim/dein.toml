@@ -57,11 +57,9 @@ repo = 'tmhedberg/matchit'
 [[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
 depends = ['smartchr', 'neocomplete.vim', 'neosnippet']
-# rev = '93cfcf83c72edf431f21f5a757201264eed97ae5'
 
 [[plugins]] # next generation of auto completion framework
 repo = 'Shougo/neocomplete.vim'
-# rev = '4dc8531e999f00e955f81248d6131132e6fe6917'
 
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'

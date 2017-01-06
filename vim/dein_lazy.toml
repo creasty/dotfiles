@@ -64,10 +64,6 @@ on_ft     = 'snippet'
 on_i      = 1
 on_source = ['snippet', 'neosnippet/user', 'neosnippet/runtime']
 
-[[plugins]] # insert #include<>
-repo   = 'osyo-manga/vim-stargate'
-on_cmd = ['StargateInclude', 'StargateClearCache']
-
 [[plugins]] # autocomplete Swift in Vim
 repo  = 'keith/sourcekittendaemon.vim'
 on_ft = ['swift']
