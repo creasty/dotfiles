@@ -48,23 +48,8 @@ on_map = {
   'v' = 'gc',
 }
 
-[[plugins]] # general quickrun-hook plugins
-repo = 'osyo-manga/shabadou.vim'
-
-[[plugins]] # update status line
-repo = 'KazuakiM/vim-qfstatusline'
-
-[[plugins]] # highlight quickfix errors
-repo = 'cohama/vim-hier'
-
-[[plugins]] # see quickfix, location list and Syntastic lists errors and warnings
-repo = 'dannyob/quickfixstatus'
-
-[[plugins]] # mark syntax error lines
-repo = 'KazuakiM/vim-qfsigns'
-
-[[plugins]] # async syntax checking
-repo = 'osyo-manga/vim-watchdogs'
+[[plugins]] # async :make and linting framework for neovim/vim
+repo = 'neomake/neomake'
 
 [[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'

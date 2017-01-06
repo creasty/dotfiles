@@ -2689,78 +2689,29 @@ if dein#tap('vim-quickrun')
 endif
 
 
-"=== Plugin: vim-watchdogs
+"=== Plugin: Neomake
 "==============================================================================================
-if dein#tap('vim-watchdogs')
-  let g:watchdogs_check_BufWritePost_enable_on_wq = 0
-
-  let g:quickrun_config = get(g:, 'quickrun_config', {})
-
-  let g:quickrun_config['watchdogs_checker/_'] = {
-    \ 'outputter/quickfix/open_cmd':            '',
-    \ 'hook/qfstatusline_update/enable_exit':   1,
-    \ 'hook/qfstatusline_update/priority_exit': 4,
-    \ 'hook/qfsigns_update/enable_exit':        1,
-    \ 'hook/qfsigns_update/priority_exit':      3,
+if dein#tap('neomake')
+  let g:neomake_error_sign = {
+    \ 'text':   '✗',
+    \ 'texthl': 'NeomakeErrorSign',
+  }
+  let g:neomake_warning_sign = {
+    \ 'text':   '!',
+    \ 'texthl': 'NeomakeWarningSign',
   \ }
-  let g:quickrun_config['go/watchdogs_checker'] = {
-    \ 'type': (
-      \ executable('gofmt') ? 'watchdogs_checker/gofmt' :
-      \ executable('go') ? 'watchdogs_checker/go_vet' : ''
-    \ ),
-  \ }
-  let g:quickrun_config['watchdogs_checker/gotype'] = {
-    \ 'command':     'gotype',
-    \ 'exec':        '%c %o %s:p',
-    \ 'errorformat': '%f:%l:%c: %m,%W%f:%l: %m,%-G%.%#',
-  \ }
-  let g:quickrun_config['watchdogs_checker/ruby'] = {
-    \ 'command': $HOME . '/.anyenv/envs/rbenv/shims/ruby',
-    \ 'exec':    '%c -cw %o %s:p',
+  let g:neomake_message_sign = {
+    \ 'text':   '>',
+    \ 'texthl': 'NeomakeMessageSign',
   \ }
 
-  call watchdogs#setup(g:quickrun_config)
+  call candle#highlight('NeomakeErrorSign', 'red', '', '')
+  call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
+  call candle#highlight('NeomakeMessageSign', 'green', '', '')
 
-  function! s:watchdogs_run()
-    try
-      if 'n' ==# mode()
-        :WatchdogsRunSilent
-        let b:watchdogs_heir_shown = 1
-      elseif b:watchdogs_heir_shown
-        :HierClear
-        let b:watchdogs_heir_shown = 0
-      endif
-    endtry
-  endfunction
+  " ⚠
 
-  autocmd vimrc User AutoSavePost call <SID>watchdogs_run()
-  autocmd vimrc InsertEnter * let b:watchdogs_run_ileave = 0
-  autocmd vimrc InsertLeave * let b:watchdogs_run_ileave = 1
-  autocmd vimrc CursorHold *
-    \ if get(b:, 'watchdogs_run_ileave', 0) |
-      \ call <SID>watchdogs_run() |
-      \ let b:watchdogs_run_ileave = 0 |
-    \ endif
-  autocmd vimrc BufEnter * call <SID>watchdogs_run()
-endif
-
-
-"=== Plugin: vim-qfstatusline
-"==============================================================================================
-if dein#tap('vim-qfstatusline')
-  let g:Qfstatusline#Text = 0
-  let g:Qfstatusline#UpdateCmd = function('RefreshStatusline')
-endif
-
-
-"=== Plugin: vim-qfsigns
-"==============================================================================================
-if dein#tap('vim-qfsigns')
-  let g:qfsigns#Config = { 'id': '5051', 'name': 'QFErrorSign' }
-
-  " ⚠ or ✗
-  sign define QFErrorSign texthl=QFErrorSign text=✗
-  call candle#highlight('QFErrorSign', 'red', '', '')
+  autocmd vimrc User AutoSavePost Neomake
 endif
 
 
