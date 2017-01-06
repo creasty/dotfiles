@@ -580,14 +580,6 @@ function! MyStatusLine(w, cw)
     let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
     let s .= '%l:%c ∙ %p%%'
     let s .= ' %#StatusLine#'
-
-    " syntastic
-    if exists('*qfstatusline#Update')
-      let synerr = qfstatusline#Update()
-      if !empty(synerr)
-        let s .= '%#StatusLineError# ' . substitute(synerr, '^Error: ', '', '') . ' %#StatusLine#'
-      endif
-    endif
   endif
 
   return s
@@ -598,7 +590,6 @@ autocmd vimrc VimEnter,Syntax *
   \ | call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
   \ | call candle#highlight('StatusLineRight', 'background', 'selection', '')
   \ | call candle#highlight('StatusLineRightActive', 'window', 'foreground', '')
-  \ | call candle#highlight('StatusLineError', 'background', 'red', '')
 
 let s:prev_status_line_mode = 'n'
 
