@@ -173,7 +173,7 @@ homebrew:
     - tmux
     - tree
     - typesafe-activator
-    - { name: 'vim', state: 'head', install_options: '--disable-nls --override-system-vi --with-luajit' }
+    - { name: 'vim', install_options: '--without-nls --with-override-system-vi --with-luajit' }
     - w3m
     - webkit2png
     - { name: 'wget', install_options: '--enable-iri' }
