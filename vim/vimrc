@@ -481,18 +481,6 @@ autocmd vimrc VimEnter,Syntax *
 
 "  Statusline
 "-----------------------------------------------
-let s:powerline_font_chars = {
-  \ 'sepl':   ['>', "\u2b80"],
-  \ 'sepr':   ['<', "\u2b82"],
-  \ 'subl':   ['>', "\u2b81"],
-  \ 'subr':   ['>', "\u2b83"],
-  \ 'lock':   ['!', "\u2b64"],
-  \ 'branch': ['~', "\u2b60"],
-  \ 'ft':     "\u2b62\u2b63",
-\ }
-
-let s:status_line_rich_icon = 1 " s:env.is_gui
-
 function! RefreshStatusline()
   let cw = winnr()
 
@@ -544,7 +532,7 @@ function! MyStatusLine(w, cw)
   endif
 
   let flag = ''
-  let flag .= getbufvar(bufnr, '&readonly') ? s:powerline_font_chars['lock'][s:status_line_rich_icon] : ''
+  let flag .= getbufvar(bufnr, '&readonly') ? '!' : ''
   let flag .= getbufvar(bufnr, '&mod') ? '+' : ''
 
   if !empty(flag)
@@ -562,7 +550,7 @@ function! MyStatusLine(w, cw)
 
     if !empty(branch)
       let branch = substitute(branch, '^\([fhr]\)\(eature\|otfix\|elease\)/', '\1/', '')
-      let s .= ' ' . s:powerline_font_chars['branch'][s:status_line_rich_icon] . ' ' . branch
+      let s .= ' @ ' . branch
     endif
   endif
 
@@ -572,8 +560,7 @@ function! MyStatusLine(w, cw)
   if active && enough_width
     " file type & encoding
     let s .= ' '
-    let s .= (s:status_line_rich_icon ? s:powerline_font_chars['ft'] . ' ' : '')
-      \ . (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
+    let s .= (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc)
     let s .= ' '
 
     " cursor
