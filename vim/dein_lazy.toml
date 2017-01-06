@@ -79,10 +79,6 @@ on_cmd = ['Unite']
 repo      = 'sorah/unite-ghq'
 on_source = ['unite.vim']
 
-[[plugins]] # open URI with browser
-repo   = 'tyru/open-browser.vim'
-on_map = ['<Plug>(openbrowser-']
-
 [[plugins]] # hex editing system
 repo   = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']

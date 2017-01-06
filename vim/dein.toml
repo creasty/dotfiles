@@ -70,9 +70,6 @@ repo = 'creasty/mold.vim'
 
 #  Utils
 #-----------------------------------------------
-[[plugins]] # a Git wrapper so awesome
-repo = 'tpope/vim-fugitive'
-
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 

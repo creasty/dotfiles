@@ -545,15 +545,6 @@ function! MyStatusLine(w, cw)
     let s .= ' ' . unite#get_status_string()
   endif
 
-  if active && is_file && enough_width
-    let branch = fugitive#head()
-
-    if !empty(branch)
-      let branch = substitute(branch, '^\([fhr]\)\(eature\|otfix\|elease\)/', '\1/', '')
-      let s .= ' 𝙗 ' . branch
-    endif
-  endif
-
   " space
   let s .= '%='
 
@@ -2445,19 +2436,6 @@ if dein#tap('neosnippet')
 endif
 
 
-"=== Plugin: vim-fugitive
-"==============================================================================================
-if dein#tap('vim-fugitive')
-  autocmd vimrc User fugitive
-    \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-    \   nnoremap <buffer> .. :edit %:h<CR> |
-    \ endif
-
-  autocmd vimrc BufReadPost fugitive://*
-    \ set bufhidden=delete
-endif
-
-
 "=== Plugin: nerdtree
 "==============================================================================================
 if dein#tap('nerdtree')
@@ -2560,17 +2538,6 @@ if dein#tap('unite.vim')
   nnoremap <silent> <Space>g :<C-u>Unite -buffer-name=search-buffer grep:.<CR>
 
   call dein#set_hook('unite.vim', 'hook_source', function('s:unite_on_source'))
-endif
-
-
-"=== Plugin: open-browser.vim
-"==============================================================================================
-if dein#tap('open-browser.vim')
-  " disable netrw's gx mapping.
-  let g:netrw_nogx = 1
-
-  nnoremap gx <Plug>(openbrowser-smart-search)
-  vnoremap gx <Plug>(openbrowser-smart-search)
 endif
 
 
