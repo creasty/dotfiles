@@ -1,6 +1,6 @@
 ![creasty's dotfiles](./docs/visual.jpg)
 
-dotfiles ![OS X 10.9+](https://img.shields.io/badge/platform-osx%2010.9%2B-lightgray.svg) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](./LICENSE.txt)
+dotfiles ![OS X 10.9+](https://img.shields.io/badge/platform-OSX%2010.9%2B-lightgray.svg) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](./LICENSE.txt)
 ========
 
 A powerful development environment for full-stack engineers.  
