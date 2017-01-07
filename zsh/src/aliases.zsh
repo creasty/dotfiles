@@ -96,7 +96,7 @@ alias ev='envchain-enhanced'
 alias ne='npm-exec'
 alias gk='grep-kill'
 alias rdba='rake-db-migrate-all'
-alias maxscreen='screenresolution set 2560x1600x32@0'
+alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
 
 alias va='vagrant'
 alias an='ansible'
