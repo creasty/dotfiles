@@ -10,6 +10,8 @@ Work it harder, make it better, do it faster, makes us stronger.
 
 <pre><code>$ bash <(curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a>)</code></pre>
 
+Read a [detailed manual](./docs/README.md) for setting up a new computer.
+
 
 What's included
 ---------------
@@ -23,19 +25,23 @@ elixir      golang      java        link        nodejs      redis       scala   
 </code></pre>
 
 
-Manual
-------
-
-1. Prepare credentials (TBA)
-2. Run bootstrap script (TBA)
-3. [Customize "System Preference"](./docs/system_preference.md)
-
-
 Testing
 -------
 
 By using [boxcutter/macos](https://github.com/boxcutter/macos) and vagrant, you can test the provisioning on a clean environment.  
 Read the [document](./provisioning/test) for details.
+
+
+Screenshots
+-----------
+
+**Tmux + ZSH**
+
+![](./docs/images/screenshots/tmux.png)
+
+**Vim**
+
+![](./docs/images/screenshots/vim.png)
 
 
 Author
