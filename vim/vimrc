@@ -115,6 +115,8 @@ if s:env.is_starting
   let &g:rtp .= ',' . s:env.path.dein_repo
 endif
 
+let g:dein#_plugins = {}
+
 if dein#load_state(s:env.path.dein)
   call dein#begin(s:env.path.dein, [expand('<sfile>'), s:env.path.dein_toml, s:env.path.dein_lazy_toml])
 
@@ -125,9 +127,9 @@ if dein#load_state(s:env.path.dein)
   call dein#save_state()
 endif
 
-" if dein#check_install()
-"   call dein#install()
-" endif
+if dein#check_install()
+  call dein#install()
+endif
 
 filetype plugin indent on
 
@@ -333,7 +335,10 @@ set updatetime=200
 set background=dark
 set t_Co=256
 syntax enable
-colorscheme candle
+
+if dein#tap('candle.vim')
+  colorscheme candle
+endif
 
 " always show statusline
 set laststatus=2
@@ -415,15 +420,17 @@ endfunction
 
 "  Custom highlight
 "-----------------------------------------------
-" highlight full-width space
-call candle#highlight('ZenkakuSpace', '', 'dark_red', '')
-autocmd vimrc BufWinEnter,WinEnter *
-  \ call matchadd('ZenkakuSpace', '　')
+if dein#tap('candle.vim')
+  " highlight full-width space
+  call candle#highlight('ZenkakuSpace', '', 'dark_red', '')
+  autocmd vimrc BufWinEnter,WinEnter *
+    \ call matchadd('ZenkakuSpace', '　')
 
-" highlight trailing spaces
-call candle#highlight('TrailingSpace', '', 'line', '')
-autocmd vimrc BufWinEnter,WinEnter *
-  \ call matchadd('TrailingSpace', '\s\+$')
+  " highlight trailing spaces
+  call candle#highlight('TrailingSpace', '', 'line', '')
+  autocmd vimrc BufWinEnter,WinEnter *
+    \ call matchadd('TrailingSpace', '\s\+$')
+endif
 
 
 "  Sign column
@@ -445,8 +452,6 @@ endfunction
 
 "  Tabline
 "-----------------------------------------------
-set tabline=%!MyTabLine()
-
 function! MyTabLine()
   let s = ''
   let current = tabpagenr()
@@ -475,15 +480,23 @@ function! MyTabLine()
   return s
 endfunction
 
-autocmd vimrc VimEnter,Syntax *
-  \ call candle#highlight('TabLineNr', 'selection', 'window', '')
-  \ | call candle#highlight('TabLineNrSel', 'comment', 'foreground', '')
+if dein#tap('candle.vim')
+  set tabline=%!MyTabLine()
+
+  autocmd vimrc VimEnter,Syntax *
+    \ call candle#highlight('TabLineNr', 'selection', 'window', '')
+    \ | call candle#highlight('TabLineNrSel', 'comment', 'foreground', '')
+endif
 
 
 "  Statusline
 "-----------------------------------------------
 function! RefreshStatusline()
   let cw = winnr()
+
+  if !dein#tap('candle.vim')
+    return
+  endif
 
   for nr in range(1, winnr('$'))
     call setwinvar(nr, '&statusline', '%!MyStatusLine(' . nr . ', ' . cw . ')')
@@ -562,37 +575,39 @@ function! MyStatusLine(w, cw)
   return s
 endfunction
 
-autocmd vimrc VimEnter,Syntax *
-  \ call candle#highlight('StatusLineLeft', 'selection', 'window', '')
-  \ | call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
-  \ | call candle#highlight('StatusLineRight', 'background', 'selection', '')
-  \ | call candle#highlight('StatusLineRightActive', 'window', 'foreground', '')
+if dein#tap('candle.vim')
+  autocmd vimrc VimEnter,Syntax *
+    \ call candle#highlight('StatusLineLeft', 'selection', 'window', '')
+    \ | call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
+    \ | call candle#highlight('StatusLineRight', 'background', 'selection', '')
+    \ | call candle#highlight('StatusLineRightActive', 'window', 'foreground', '')
 
-let s:prev_status_line_mode = 'n'
+  let s:prev_status_line_mode = 'n'
 
-function! s:change_status_line_for_mode(m)
-  if s:prev_status_line_mode == a:m
-    return
-  endif
-  let s:prev_status_line_mode = a:m
+  function! s:change_status_line_for_mode(m)
+    if s:prev_status_line_mode == a:m
+      return
+    endif
+    let s:prev_status_line_mode = a:m
 
-  let color =
-    \ a:m == 'i' ? 'blue' :
-    \ a:m == 'v' ? 'orange' :
-    \ a:m == 'r' ? 'purple' :
-    \ 'green'
+    let color =
+      \ a:m == 'i' ? 'blue' :
+      \ a:m == 'v' ? 'orange' :
+      \ a:m == 'r' ? 'purple' :
+      \ 'green'
 
-  call candle#highlight('StatusLineLeftActive', '', color, '')
+    call candle#highlight('StatusLineLeftActive', '', color, '')
 
-  return ''
-endfunction
+    return ''
+  endfunction
 
-autocmd vimrc InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
-autocmd vimrc InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
+  autocmd vimrc InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
+  autocmd vimrc InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
 
-nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
-nnoremap <expr> V <SID>change_status_line_for_mode('v') . 'V'
-nnoremap <expr> <C-v> <SID>change_status_line_for_mode('v') . "\<C-v>"
+  nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
+  nnoremap <expr> V <SID>change_status_line_for_mode('v') . 'V'
+  nnoremap <expr> <C-v> <SID>change_status_line_for_mode('v') . "\<C-v>"
+endif
 
 
 "=== Search
@@ -1328,7 +1343,9 @@ if dein#tap('vim-easymotion')
   let g:EasyMotion_leader_key = '<Space>'
   let g:EasyMotion_keys = 'hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
 
-  call candle#highlight('EasyMotionTarget', 'yellow', 'dark_yellow', 'underline')
+  if dein#tap('candle.vim')
+    call candle#highlight('EasyMotionTarget', 'yellow', 'dark_yellow', 'underline')
+  endif
 endif
 
 
@@ -2557,9 +2574,11 @@ if dein#tap('neomake')
     \ 'texthl': 'NeomakeMessageSign',
   \ }
 
-  call candle#highlight('NeomakeErrorSign', 'red', '', '')
-  call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
-  call candle#highlight('NeomakeMessageSign', 'green', '', '')
+  if dein#tap('candle.vim')
+    call candle#highlight('NeomakeErrorSign', 'red', '', '')
+    call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
+    call candle#highlight('NeomakeMessageSign', 'green', '', '')
+  endif
 
   let g:neomake_ruby_mri_exe = $HOME . '/.anyenv/envs/rbenv/shims/ruby'
 
