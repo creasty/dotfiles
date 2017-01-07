@@ -20,8 +20,6 @@ alias le='less -R'
 alias v='vim'
 alias vi='vim'
 alias vv='mvim'
-alias g='envchain crst git'
-alias ag="ag --pager='less -R'"
 
 alias sort='LC_ALL=C sort'
 
@@ -84,6 +82,9 @@ alias -s java='_run_java'
 
 #  Bin
 #-----------------------------------------------
+alias g='envchain crst git'
+alias ag="ag --pager='less -R'"
+
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
@@ -111,6 +112,12 @@ erd() {
   local cmd=$HOME/.cabal/bin/erd
   $cmd -i "$1" -o "${1}.${2:-png}"
 }
+
+compdef g='git'
+compdef va='vagrant'
+compdef an='ansible'
+compdef anp='ansible-playbook'
+compdef anv='ansible-vault'
 
 
 #  Networks
@@ -153,7 +160,6 @@ dk-open() {
   open "http://$(docker-machine ip local)$@"
 }
 
-
 #  Ruby / Rails
 #-----------------------------------------------
 alias b='bundle'
@@ -188,6 +194,9 @@ alias rs2='bundle exec rails s -p 3002'
 alias rs3='bundle exec rails s -p 3003'
 alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
+
+compdef b='bundle'
+compdef rk='rake'
 
 
 #  Play framework

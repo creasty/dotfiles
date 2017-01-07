@@ -1,24 +1,23 @@
+#  Load
+#-----------------------------------------------
 zmodload -i zsh/mathfunc
 zmodload -i zsh/complist
 
-for file in $DOTFILES_PATH/zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
-  [ -r "$file" ] && [ -f "$file" ] && source "$file"
-done
-unset file
-
-
-#  Plugins
-#-----------------------------------------------
-source $DOTFILES_PATH/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 fpath=(
-  $DOTFILES_PATH/zsh/plugins/zsh-completions/src
-  $DOTFILES_PATH/zsh/completions
+  ~/.zsh/plugins/zsh-completions/src
+  ~/.zsh/completions
   $fpath
 )
 
 autoload -Uz compinit
 compinit
+
+for file in ~/.zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
 
 
 #  Base
