@@ -36,6 +36,10 @@ let g:loaded_logipat           = 1
 let g:loaded_tutor_mode_plugin = 1
 let g:loaded_man               = 1
 
+" runtime plugins
+let g:omni_sql_no_default_maps = 1
+let g:tex_flavor = 'latex'
+
 " s:env
 function! s:vimrc_environment()
   let env = {}
@@ -862,12 +866,6 @@ endfunction
 " q:
 nnoremap q: :q
 nnoremap <Space>: q:
-
-
-"=== Runtime plugins
-"==============================================================================================
-let g:omni_sql_no_default_maps = 1
-let g:tex_flavor = 'latex'
 
 
 "=== Utils
