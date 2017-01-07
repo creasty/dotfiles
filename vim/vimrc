@@ -2505,6 +2505,9 @@ if dein#tap('vim-altr')
 
     " Dotenv
     call altr#define('.env', '.env.sample')
+
+    " Vim
+    call altr#define('dein.toml', 'dein_lazy.toml')
   endfunction
 
   nmap ga <Plug>(altr-forward)
