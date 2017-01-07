@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-source "$(dirname $0)/../lib/helpers.sh"
+section() {
+  printf "\e[33m==> $1\e[0m\n"
+}
 
 # one of `networksetup -listallnetworkservices`
 NETWORKSERVICE=Wi-Fi
