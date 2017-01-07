@@ -547,7 +547,7 @@ function! MyStatusLine(w, cw)
 
   if active && enough_width
     " file type & encoding
-    let s .= ' 𝙛𝙩 ' . (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc) . ' '
+    let s .= ' ' . (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc) . ' '
 
     " cursor
     let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
@@ -833,9 +833,6 @@ autocmd vimrc BufReadPost *
     \ exe "normal! g`\"" |
   \ endif
 
-" reset previous marks
-" autocmd vimrc BufReadPost * delmarks!
-
 " numbering selection in visual-block mode
 nnoremap <silent> sc :ContinuousNumber <C-a><CR>
 vnoremap <silent> sc :ContinuousNumber <C-a><CR>
@@ -928,9 +925,6 @@ function! s:delete_or_trash(file)
 endfunction
 
 command! -nargs=0 Delete call <SID>delete_or_trash(expand('%:p')) | enew!
-
-" insert relative path
-cnoremap <C-l> <C-r>=expand('%:h') . '/' <CR>
 
 " rename current file name
 command! -nargs=1 -complete=file Rename f <args> | w | call delete(expand('#'))
