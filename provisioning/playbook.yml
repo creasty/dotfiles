@@ -79,7 +79,5 @@
 
     #  other
     #-----------------------------------------------
-    - role: font
-      tags: ['other', 'font']
     - role: envchain
       tags: ['other', 'envchain']

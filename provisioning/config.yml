@@ -37,11 +37,6 @@ envchain:
     - BASIC_AUTH_PASSWORD
     - AWS_REGION
 
-font:
-  glob:
-    - '{{ dotfiles_path }}/app/font/*.otf'
-    - '{{ dotfiles_path }}/app/font/*.ttf'
-
 golang:
   versions:
     - 1.7.1
