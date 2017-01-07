@@ -10,3 +10,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = git://github.com/tmux-plugins/tpm.git
+[submodule "provisioning/test/macos"]
+	path = provisioning/test/macos
+	url = git://github.com/boxcutter/macos.git

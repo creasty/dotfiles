@@ -60,7 +60,7 @@ Testing
 -------
 
 By using [boxcutter/macos](https://github.com/boxcutter/macos) and vagrant, you can test the provisioning on a clean environment.  
-Read the [document](./test) for details.
+Read the [document](./provisioning/test) for details.
 
 
 Author

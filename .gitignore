@@ -12,8 +12,7 @@ tmux/resurrect/*
 
 provisioning/playbook.retry
 provisioning/secrets.yml
-
-test/image/*
-test/.vagrant
+provisioning/test/image/*
+provisioning/test/.vagrant
 
 !.gitkeep
