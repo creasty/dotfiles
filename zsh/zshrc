@@ -199,12 +199,6 @@ ZSH_HIGHLIGHT_STYLES[assign]=fg=yellow
 eval "$(direnv hook zsh)"
 
 
-#  Docker
-#-----------------------------------------------
-# docker-machine create --driver virtualbox local
-# eval "$(docker-machine env local)"
-
-
 #  Anyenv
 #-----------------------------------------------
 if [ -d $HOME/.anyenv ]; then
