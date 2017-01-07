@@ -166,6 +166,7 @@ homebrew:
     - ranger
     - redis
     - ruby-build
+    - screenresolution
     - sqlite
     - terraform
     - the_silver_searcher
