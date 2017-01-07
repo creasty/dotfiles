@@ -97,8 +97,6 @@ alias gk='grep-kill'
 alias rdba='rake-db-migrate-all'
 alias maxscreen='screenresolution set 2560x1600x32@0'
 
-alias aart='java -jar ~/dotfiles/lib/jitac.jar'
-
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
