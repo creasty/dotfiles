@@ -13,11 +13,6 @@ repo    = 'mattn/emmet-vim'
 on_i    = 1
 on_func = ['emmet']
 
-[[plugins]] # operator to escape HTML entities
-repo    = 'tyru/operator-html-escape.vim'
-depends = ['vim-operator-user']
-on_map  = ['<Plug>(operator-html-']
-
 [[plugins]] # operator to camelize/decamelize a specified text
 repo    = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
@@ -86,14 +81,6 @@ on_cmd = ['Vinarise', 'VinariseDump']
 [[plugins]] # switch to the missing file without interaction
 repo   = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']
-
-[[plugins]] # context filetype library
-repo = 'Shougo/context_filetype.vim'
-
-[[plugins]] # switch filetype by context around cursor
-repo    = 'osyo-manga/vim-precious'
-depends = ['context_filetype.vim']
-on_ft   = ['html', 'markdown']
 
 [[plugins]] # perform the replacement in quickfix
 repo   = 'thinca/vim-qfreplace'

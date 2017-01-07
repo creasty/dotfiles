@@ -1388,14 +1388,6 @@ endif
 
 "=== Plugin: operator-html-escape.vim
 "==============================================================================================
-if dein#tap('operator-html-escape.vim')
-  vmap HE <Plug>(operator-html-escape)
-  vmap HU <Plug>(operator-html-unescape)
-endif
-
-
-"=== Plugin: operator-html-escape.vim
-"==============================================================================================
 if dein#tap('operator-camelize.vim')
   vmap C <Plug>(operator-camelize-toggle)
 endif
@@ -2595,14 +2587,6 @@ if dein#tap('vim-submode')
   call submode#map(       'winsize', 'n', '', '+',      '<C-w>-')
 
 
-  "  Tabpage navigation
-  "-----------------------------------------------
-  call submode#enter_with('changetab', 'n', '', 'gt', 'gt')
-  call submode#map(       'changetab', 'n', '', 't',  'gt')
-  call submode#enter_with('changetab', 'n', '', 'gT', 'gT')
-  call submode#map(       'changetab', 'n', '', 'T',  'gT')
-
-
   "  Macro
   "-----------------------------------------------
   call submode#enter_with('macro', 'n', '', '@@', '@@')
@@ -2635,21 +2619,6 @@ if dein#tap('vim-submode')
   noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
   call submode#enter_with('my_ca', 'n', '',  '<C-x>', '<C-x>')
   call submode#map(       'my_ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
-endif
-
-
-"=== Plugin: vim-precious
-"==============================================================================================
-if dein#tap('vim-precious')
-  function! s:precious_on_source() abort
-    let g:precious_enable_switchers = {
-      \ '*':        { 'setfiletype': 0 },
-      \ 'html':     { 'setfiletype': 1 },
-      \ 'markdown': { 'setfiletype': 1 },
-    \ }
-  endfunction
-
-  call dein#set_hook('vim-precious', 'hook_source', function('s:precious_on_source'))
 endif
 
 
