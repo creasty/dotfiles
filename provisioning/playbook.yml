@@ -76,8 +76,3 @@
       tags: ['system', 'launchagent']
     - role: osx
       tags: ['system', 'osx']
-
-    #  other
-    #-----------------------------------------------
-    - role: envchain
-      tags: ['other', 'envchain']

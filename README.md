@@ -21,7 +21,6 @@ Automated provisioning by [ansible](https://www.ansible.com/).
 - anyenv
 - automator
 - elixir
-- envchain
 - erlang
 - gcp
 - golang
