@@ -1,3 +1,6 @@
+- set_fact:
+    rlang: {}
+
 - name: create tmp file
   command: mktemp
   register: mktemp
@@ -7,13 +10,13 @@
       template:
         src:  'installer.r'
         dest: '{{ mktemp.stdout }}'
-      when: r_lang.packages
+      when: rlang.packages
 
     - name: install packages
       command: |
         r --file '{{ mktemp.stdout }}'
       ignore_errors: yes
-      when: r_lang.packages
+      when: rlang.packages
 
   always:
     - name: delete tmp file

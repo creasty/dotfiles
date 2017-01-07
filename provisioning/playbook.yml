@@ -34,8 +34,8 @@
       tags: ['lang', 'ruby']
     - role: nodejs
       tags: ['lang', 'nodejs']
-    - role: r_lang
-      tags: ['lang', 'r_lang']
+    - role: rlang
+      tags: ['lang', 'rlang']
     - role: haskell
       tags: ['lang', 'haskell']
     - role: lua
@@ -55,8 +55,8 @@
 
     #  app
     #-----------------------------------------------
-    - role: gc_sdk
-      tags: ['app', 'gc_sdk']
+    - role: gcp
+      tags: ['app', 'gcp']
     - role: redis
       tags: ['app', 'redis']
     - role: vim
@@ -72,8 +72,8 @@
 
     #  system
     #-----------------------------------------------
-    - role: launch_agent
-      tags: ['system', 'launch_agent']
+    - role: launchagent
+      tags: ['system', 'launchagent']
     - role: osx
       tags: ['system', 'osx']
 

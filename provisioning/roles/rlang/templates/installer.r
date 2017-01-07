@@ -1,7 +1,7 @@
 options(repos=structure(c(CRAN="http://cran.stat.auckland.ac.nz/")))
 
 cran.packages <- c(
-{% for package in r_lang.packages %}
+{% for package in rlang.packages %}
   "{{ package }}",
 {% endfor %}
 )

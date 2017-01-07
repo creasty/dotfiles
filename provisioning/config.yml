@@ -217,7 +217,7 @@ karabiner:
     repeat.initial_wait: 200
     repeat.wait: 5
 
-launch_agent:
+launchagent:
   plist_dir: '{{ dotfiles_path }}/app/launch_agent'
 
 link:
@@ -332,7 +332,7 @@ python:
     - pygments
     - tornado
 
-r_lang:
+rlang:
   packages:
     - ggplot2
     - e1071

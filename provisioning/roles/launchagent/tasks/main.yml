@@ -1,5 +1,5 @@
 - set_fact:
-    launch_agent: {}
+    launchagent: {}
 
 - name: create directory
   file:
@@ -13,8 +13,8 @@
   loop_control:
     label: '{{ item | basename }}'
   with_fileglob:
-    - '{{ launch_agent.plist_dir }}/*.plist'
-  when: launch_agent.plist_dir
+    - '{{ launchagent.plist_dir }}/*.plist'
+  when: launchagent.plist_dir
 
 - name: load launch agents
   command: |
@@ -23,8 +23,8 @@
   loop_control:
     label: '{{ item | basename }}'
   with_fileglob:
-    - '{{ launch_agent.plist_dir }}/*.plist'
+    - '{{ launchagent.plist_dir }}/*.plist'
   until: launchctl_load.stderr == "" or launchctl_load.stderr.find("already loaded") != -1
   retries: 1
   delay: 0
-  when: launch_agent.plist_dir
+  when: launchagent.plist_dir
