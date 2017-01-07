@@ -16,34 +16,11 @@ What's included
 
 Automated provisioning by [ansible](https://www.ansible.com/).
 
-<pre><code>$ ls <a href="https://github.com/creasty/dotfiles/tree/master/provisioning/roles">./provisioning/roles</a></code></pre>
-
-- anyenv
-- automator
-- elixir
-- erlang
-- gcp
-- golang
-- haskell
-- homebrew
-- java
-- karabiner
-- launchagent
-- link
-- lua
-- mas
-- nodejs
-- osx
-- python
-- redis
-- rlang
-- ruby
-- scala
-- ssh
-- tex
-- vagrant
-- vim
-- zsh
+<pre><code>$ ls <a href="https://github.com/creasty/dotfiles/tree/master/provisioning/roles">./provisioning/roles</a>
+anyenv      erlang      haskell     karabiner   lua         osx         rlang       ssh         vim
+automator   gcp         homebrew    launchagent mas         python      ruby        tex         zsh
+elixir      golang      java        link        nodejs      redis       scala       vagrant
+</code></pre>
 
 
 Manual
