@@ -5,4 +5,3 @@ Host va_*
 Host 192.168.33.*
   User vagrant
   IdentityFile ~/.vagrant.d/insecure_private_key
-
