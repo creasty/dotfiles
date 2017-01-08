@@ -1,6 +1,6 @@
 - name: create directories
   file:
-    dest:  '{{ home_path }}/.ssh'
+    dest:  '{{ home_path }}/{{ item }}'
     mode:  0700
     state: directory
   with_items:
