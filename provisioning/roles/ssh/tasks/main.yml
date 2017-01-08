@@ -8,11 +8,6 @@
     - '.ssh/config.d'
     - '.ssh/keys'
 
-- name: create config
-  file:
-    dest: '{{ home_path }}/.ssh/config'
-    mode: 0600
-
 - name: copy common config
   copy:
     src:  '{{ item }}'
@@ -21,6 +16,8 @@
   with_fileglob:
     - '_*'
 
-- name: merge configs
-  shell: |
-    cat {{ home_path | quote }}/.ssh/config.d/* > {{ home_path | quote }}/.ssh/config
+- name: assemble config.d
+  assemble:
+    src:  '{{ home_path }}/.ssh/config.d'
+    dest: '{{ home_path }}/.ssh/config'
+    mode: 0600
