@@ -8,15 +8,33 @@
     recurse: yes
   loop_control:
     label: '~/{{ item }}'
-  when: link and item != ""
+  when: item != ""
   with_items: '{{ link.values() | map("dirname") | unique | list }}'
+
+- name: check destinations
+  stat:
+    path: '{{ home_path }}/{{ item.value }}'
+  loop_control:
+    label: '{{ item.value }}'
+  with_dict: '{{ link }}'
+  register: dest_stat
+
+- name: create backup files
+  command: |
+    cp -f \
+      {{ home_path | quote }}/{{ item.item.value | quote }} \
+      {{ home_path | quote }}/{{ item.item.value | quote }}.bak
+  when: item.stat.exists and not item.stat.islnk
+  loop_control:
+    label: '{{ item.item.value }}'
+  with_items: '{{ dest_stat.results }}'
 
 - name: create symlinks
   file:
     src:   '{{ dotfiles_path }}/{{ item.key }}'
     dest:  '{{ home_path }}/{{ item.value }}'
     state: link
+    force: yes
   loop_control:
     label: '{{ item.value }}'
   with_dict: '{{ link }}'
-  when: link
