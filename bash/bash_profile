@@ -29,7 +29,7 @@ export ANYENV_DIR=$HOME/.anyenv
 export PATH=/usr/local/bin:$PATH
 
 export PATH=$ANYENV_DIR/bin:$PATH
-for c in rbenv, ndenv, jenv, luaenv, pyenv, goenv, erlenv, exenv, hsenv, sbtenv, scalaenv; do
+for c in rbenv ndenv jenv luaenv pyenv goenv erlenv exenv hsenv sbtenv scalaenv; do
   export PATH=$ANYENV_DIR/envs/$c/shims:$PATH
 done
 

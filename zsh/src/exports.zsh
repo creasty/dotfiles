@@ -27,12 +27,7 @@ export ANYENV_DIR=$HOME/.anyenv
 
 # path
 export PATH=/usr/local/bin:$PATH
-
 export PATH=$ANYENV_DIR/bin:$PATH
-for c in rbenv, ndenv, jenv, luaenv, pyenv, goenv, erlenv, exenv, hsenv, sbtenv, scalaenv; do
-  export PATH=$ANYENV_DIR/envs/$c/shims:$PATH
-done
-
 export PATH=$DOTFILES_PATH/bin:$PATH
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/usr/local/heroku/bin
