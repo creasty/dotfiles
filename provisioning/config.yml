@@ -296,8 +296,8 @@ nodejs:
 
 python:
   versions:
-    - 2.7.3
     - 3.5.0
+    - 2.7.3
 
   packages:
     - awscli
