@@ -2184,21 +2184,47 @@ if dein#tap('switch.vim')
       \ '"\(.\{-}\)"':   '''\1''',
       \ ':\(\w\+\)':     '''\1''',
     \ },
-    \ ['public', 'protected', 'private'],
-    \ ['on', 'off'],
-    \ ['yes', 'no'],
-    \ ['it', 'xit'],
-    \ ['describe', 'xdescribe'],
-    \ ['context', 'xcontext'],
-    \ ['senario', 'xsenario'],
-    \ ['and', 'or'],
-    \ ['if', 'unless'],
-    \ ['TRUE', 'FALSE'],
-    \ ['ON', 'OFF'],
-    \ ['YES', 'NO'],
-    \ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    \ ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'],
-    \ ['日', '土', '金', '木', '水', '火', '月'],
+    \ {
+      \ '\<public\>': 'protected',
+      \ '\<protected\>': 'private',
+      \ '\<private\>': 'public',
+    \ },
+    \ {
+      \ '\<\(it\|describe\|context\|senario\)\>': 'x\1',
+      \ '\<x\(it\|describe\|context\|senario\)\>': '\1',
+    \ },
+    \ {
+      \ '\<and\>': 'or',
+      \ '\<or\>': 'and',
+    \ },
+    \ {
+      \ '\<if\>': 'unless',
+      \ '\<unless\>': 'if',
+    \ },
+    \ {
+      \ '\<true\>': 'false',
+      \ '\<false\>': 'true',
+    \ },
+    \ {
+      \ '\<TRUE\>': 'FALSE',
+      \ '\<FALSE\>': 'TRUE',
+    \ },
+    \ {
+      \ '\<on\>': 'off',
+      \ '\<off\>': 'on',
+    \ },
+    \ {
+      \ '\<ON\>': 'OFF',
+      \ '\<OFF\>': 'ON',
+    \ },
+    \ {
+      \ '\<yes\>': 'no',
+      \ '\<no\>': 'yes',
+    \ },
+    \ {
+      \ '\<YES\>': 'NO',
+      \ '\<NO\>': 'YES',
+    \ },
   \ ]
 
   nnoremap <silent> - :Switch<CR>
