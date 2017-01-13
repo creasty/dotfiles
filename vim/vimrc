@@ -2159,9 +2159,9 @@ if dein#tap('lexima.vim')
 
   "  Super tab completion
   "-----------------------------------------------
-  imap <silent> <expr> <Tab> SuperTabCompletion()
+  imap <silent> <expr> <Tab> <SID>super_tab_completion()
 
-  function! SuperTabCompletion()
+  function! s:super_tab_completion()
     if pumvisible()
       return "\<C-r>=neocomplete#close_popup()\<CR>"  " \<C-y> is buggy
     elseif neosnippet#expandable_or_jumpable()
