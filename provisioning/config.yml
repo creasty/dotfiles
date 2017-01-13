@@ -313,6 +313,8 @@ python:
     - pyamf
     - pygments
     - tornado
+    - vim-vint
+    - yamllint
 
 rlang:
   packages:
