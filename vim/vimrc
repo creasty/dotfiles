@@ -2586,7 +2586,7 @@ if dein#tap('neomake')
   let g:neomake_ruby_mri_exe = $HOME . '/.anyenv/envs/rbenv/shims/ruby'
 
   autocmd vimrc User AutoSavePost Neomake
-  autocmd vimrc BufEnter,BufReadPost,BufWritePost * Neomake
+  autocmd vimrc BufEnter,BufReadPost,BufWritePost,InsertLeave * Neomake
 endif
 
 
