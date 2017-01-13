@@ -29,6 +29,15 @@
     bash -lc 'pyenv global {{ python.versions[0] | quote }}'
   when: python.versions
 
+- name: rehash
+  shell: |
+    if [ -f "$DOTSHIM_FILE" ]; then
+      rm -f "$DOTSHIM_FILE"
+    fi
+    bash -lc 'pyenv rehash'
+  environment:
+    DOTSHIM_FILE: '{{ anyenv.envs_dir }}/pyenv/.pyenv-shim'
+
 - name: install packages
   pip:
     name:               '{{ item.name | default(item) }}'
