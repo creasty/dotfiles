@@ -96,7 +96,6 @@ alias ev='envchain-enhanced'
 alias ne='npm-exec'
 alias gk='grep-kill'
 alias rdba='rake-db-migrate-all'
-alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
 
 alias va='vagrant'
 alias an='ansible'
@@ -108,10 +107,11 @@ alias ql='qlmanage -p "$@" >& /dev/null'
 alias mas='reattach-to-user-namespace mas'
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
 alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
+alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
-  $cmd -i "$1" -o "${1}.${2:-png}"
+  $cmd -i "$1" -o "${1/.er/}.${2:-png}"
 }
 
 compdef g='git'
