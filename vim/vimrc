@@ -2182,7 +2182,9 @@ if dein#tap('switch.vim')
     \ {
       \ '''\(.\{-}\)''': '"\1"',
       \ '"\(.\{-}\)"':   '''\1''',
-      \ ':\(\w\+\)':     '''\1''',
+    \ },
+    \ {
+      \ ':\(\w\+\)': '''\1''',
     \ },
     \ {
       \ '\<public\>': 'protected',
@@ -2227,7 +2229,76 @@ if dein#tap('switch.vim')
     \ },
   \ ]
 
-  nnoremap <silent> - :Switch<CR>
+  function! Switch() abort
+    let line = getline('.')
+    let pos = col('.') - 1
+    let max = len(line) - 1
+
+    let before = []
+    let after = []
+
+    let i = pos
+    while i >= 0
+      let c = line[i]
+      let c1 = i > 0 ? line[i - 1] : ''
+
+      if (c == "'" || c == '"') && c1 != '\'
+          call add(before, [c, i])
+      endif
+
+      let i -= 1
+    endwhile
+
+    let i = pos
+    while i <= max
+      let c = line[i]
+      let c1 = pos < i ? line[i - 1] : ''
+
+      if (c == "'" || c == '"') && c1 != '\'
+          call add(after, [c, i])
+      endif
+
+      let i += 1
+    endwhile
+
+    let b = len(before) - 1
+    let a = len(after) - 1
+
+    " echomsg '[' join(before, ', ') '], [' join(after, ', ') ']'
+
+    while b >= 0
+      while a >= 0
+        echomsg before[b][0] after[a][0]
+        let q = before[b][0]
+        if q == after[a][0]
+          let [start_pos, end_pos] = [before[b][1], after[a][1]]
+          let q_opp = q == '"' ? "'" : '"'
+
+          let buf = ''
+          if 0 <= start_pos - 1
+            let buf .= line[0 : start_pos - 1]
+          endif
+          let buf .= q_opp
+          if start_pos < end_pos - 1 && start_pos + 1 < end_pos
+            let buf .= substitute(line[start_pos + 1 : end_pos - 1], q_opp, q, 'g')
+          endif
+          let buf .= q_opp
+          if end_pos + 1 <= max
+            let buf .= line[end_pos + 1 : max]
+          endif
+
+          call setline('.', buf)
+          return
+        endif
+        let a -= 1
+      endwhile
+      let b -= 1
+    endwhile
+
+    :Switch
+  endfunction
+
+  nnoremap <silent> - :call Switch()<CR>
 endif
 
 
