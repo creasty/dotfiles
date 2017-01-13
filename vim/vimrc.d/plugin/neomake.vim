@@ -6,6 +6,10 @@ let g:neomake_warning_sign = {
   \ 'text':   '∆',
   \ 'texthl': 'NeomakeWarningSign',
 \ }
+let g:neomake_info_sign = {
+  \ 'text':   '▸',
+  \ 'texthl': 'NeomakeInfoSign',
+\ }
 let g:neomake_message_sign = {
   \ 'text':   '▸',
   \ 'texthl': 'NeomakeMessageSign',
@@ -14,6 +18,7 @@ let g:neomake_message_sign = {
 if dein#tap('candle.vim')
   call candle#highlight('NeomakeErrorSign', 'red', '', '')
   call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
+  call candle#highlight('NeomakeInfoSign', 'blue', '', '')
   call candle#highlight('NeomakeMessageSign', 'green', '', '')
 endif
 
