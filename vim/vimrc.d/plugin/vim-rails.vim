@@ -1,0 +1,1 @@
+nmap gr :R<CR>

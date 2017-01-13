@@ -42,38 +42,38 @@ let g:tex_flavor = 'latex'
 
 " g:env
 function! s:vimrc_environment()
-  let env = {}
+  let l:env = {}
 
-  let env.is_starting = has('vim_starting')
-  let env.is_gui = has('gui_running')
+  let l:env.is_starting = has('vim_starting')
+  let l:env.is_gui = has('gui_running')
 
-  let env.hostname = substitute(hostname(), '[^\w.]', '', '')
+  let l:env.hostname = substitute(hostname(), '[^\w.]', '', '')
 
-  let env.sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_vimrc_environment$')
+  let l:env.sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_vimrc_environment$')
 
-  let dotfiles_path = $HOME . '/dotfiles'
-  let vim_path = dotfiles_path . '/vim'
+  let l:dotfiles_path = $HOME . '/dotfiles'
+  let l:vim_path = l:dotfiles_path . '/vim'
 
-  let env.path = {
-    \ 'dotfiles':       dotfiles_path,
-    \ 'dein':           vim_path . '/dein',
-    \ 'dein_repo':      vim_path . '/dein/repos/github.com/Shougo/dein.vim',
-    \ 'dein_toml':      vim_path . '/dein.toml',
-    \ 'dein_lazy_toml': vim_path . '/dein_lazy.toml',
-    \ 'vimrcd':         vim_path . '/vimrc.d',
-    \ 'dict':           vim_path . '/dict',
-    \ 'template':       vim_path . '/templates',
-    \ 'snippets':       vim_path . '/snippets',
+  let l:env.path = {
+    \ 'dotfiles':       l:dotfiles_path,
+    \ 'dein':           l:vim_path . '/dein',
+    \ 'dein_repo':      l:vim_path . '/dein/repos/github.com/Shougo/dein.vim',
+    \ 'dein_toml':      l:vim_path . '/dein.toml',
+    \ 'dein_lazy_toml': l:vim_path . '/dein_lazy.toml',
+    \ 'vimrcd':         l:vim_path . '/vimrc.d',
+    \ 'dict':           l:vim_path . '/dict',
+    \ 'template':       l:vim_path . '/templates',
+    \ 'snippets':       l:vim_path . '/snippets',
   \ }
 
-  let env.support = {
+  let l:env.support = {
     \ 'ag':        executable('ag'),
     \ 'identify':  executable('identify'),
     \ 'osascript': executable('osascript'),
     \ 'autochdir': exists('+autochdir'),
   \ }
 
-  return env
+  return l:env
 endfunction
 
 let g:env = s:vimrc_environment()
@@ -83,10 +83,12 @@ function! s:with_snr(name)
 endfunction
 
 function! s:load_file(file)
-  let file = g:env.path.vimrcd . '/' . a:file . '.vim'
+  let l:file = g:env.path.vimrcd . '/' . a:file . '.vim'
 
-  if filereadable(file)
-    execute 'source ' . file
+  if filereadable(l:file)
+    execute 'source ' . l:file
+  else
+    echomsg 'file not readable:' l:file
   endif
 endfunction
 
@@ -138,7 +140,6 @@ call s:load_file('custom/last_closed_buffer')
 call s:load_file('custom/project_dir')
 call s:load_file('custom/text_objects')
 
-
 if dein#tap('vim-textobj-multiblock')
   call s:load_file('plugin/vim-textobj-multiblock')
 endif
@@ -158,7 +159,7 @@ if dein#tap('emmet-vim')
   call s:load_file('plugin/emmet-vim')
 endif
 if dein#tap('operator-camelize.vim')
-  call s:load_file('plugin/operator-camelize.vim')
+  call s:load_file('plugin/operator-camelize')
 endif
 if dein#tap('vim-operator-replace')
   call s:load_file('plugin/vim-operator-replace')
@@ -166,638 +167,57 @@ endif
 if dein#tap('lexima.vim')
   call s:load_file('plugin/lexima')
 endif
-
-
-"=== Plugin: switch.vim
-"==============================================================================================
 if dein#tap('switch.vim')
-  let g:switch_custom_definitions = [
-    \ {
-      \ ':\(\w\+\)': '''\1''',
-    \ },
-    \ {
-      \ '\<\(\w\+\): \(\s*\)': '''\1'' \2=> ',
-      \ '''\(\w\+\)'' \(\s*\)=> ': '\1: \2',
-    \ },
-    \ {
-      \ '\<public\>': 'protected',
-      \ '\<protected\>': 'private',
-      \ '\<private\>': 'public',
-    \ },
-    \ {
-      \ '\<\(it\|describe\|context\|senario\)\>': 'x\1',
-      \ '\<x\(it\|describe\|context\|senario\)\>': '\1',
-    \ },
-    \ {
-      \ '\<and\>': 'or',
-      \ '\<or\>': 'and',
-    \ },
-    \ {
-      \ '\<if\>': 'unless',
-      \ '\<unless\>': 'if',
-    \ },
-    \ {
-      \ '\<true\>': 'false',
-      \ '\<false\>': 'true',
-    \ },
-    \ {
-      \ '\<TRUE\>': 'FALSE',
-      \ '\<FALSE\>': 'TRUE',
-    \ },
-    \ {
-      \ '\<on\>': 'off',
-      \ '\<off\>': 'on',
-    \ },
-    \ {
-      \ '\<ON\>': 'OFF',
-      \ '\<OFF\>': 'ON',
-    \ },
-    \ {
-      \ '\<yes\>': 'no',
-      \ '\<no\>': 'yes',
-    \ },
-    \ {
-      \ '\<YES\>': 'NO',
-      \ '\<NO\>': 'YES',
-    \ },
-  \ ]
-
-  function! s:switch() abort
-    let line = getline('.')
-    let pos = col('.') - 1
-    let max = len(line) - 1
-
-    let before = []
-    let after = []
-
-    let i = pos
-    while i >= 0
-      let c = line[i]
-      let c1 = i > 0 ? line[i - 1] : ''
-
-      if (c == "'" || c == '"') && c1 != '\'
-          call add(before, [c, i])
-      endif
-
-      let i -= 1
-    endwhile
-
-    let i = pos
-    while i <= max
-      let c = line[i]
-      let c1 = pos < i ? line[i - 1] : ''
-
-      if (c == "'" || c == '"') && c1 != '\'
-          call add(after, [c, i])
-      endif
-
-      let i += 1
-    endwhile
-
-    let b = len(before) - 1
-    let a = len(after) - 1
-
-    " echomsg '[' join(before, ', ') '], [' join(after, ', ') ']'
-
-    while b >= 0
-      while a >= 0
-        echomsg before[b][0] after[a][0]
-        let q = before[b][0]
-        if q == after[a][0]
-          let [start_pos, end_pos] = [before[b][1], after[a][1]]
-          let q_opp = q == '"' ? "'" : '"'
-
-          let buf = ''
-          if 0 <= start_pos - 1
-            let buf .= line[0 : start_pos - 1]
-          endif
-          let buf .= q_opp
-          if start_pos < end_pos - 1 && start_pos + 1 < end_pos
-            let _buf = line[start_pos + 1 : end_pos - 1]
-            let _buf = substitute(_buf, '\\' . q_opp, '<-switchquote->', 'g')
-            let _buf = substitute(_buf, q_opp, q, 'g')
-            let _buf = substitute(_buf, '<-switchquote->', '\\' . q_opp, 'g')
-            let buf .= _buf
-          endif
-          let buf .= q_opp
-          if end_pos + 1 <= max
-            let buf .= line[end_pos + 1 : max]
-          endif
-
-          call setline('.', buf)
-          return
-        endif
-        let a -= 1
-      endwhile
-      let b -= 1
-    endwhile
-
-    :Switch
-  endfunction
-
-  nnoremap <silent> - :call <SID>switch()<CR>
+  call s:load_file('plugin/switch')
 endif
-
-
-"=== Plugin: vim-textmanip
-"==============================================================================================
 if dein#tap('vim-textmanip')
-  let g:textmanip_enable_mappings = 0
-
-  " move selection
-  vmap <C-j> <Plug>(textmanip-move-down)
-  vmap <C-k> <Plug>(textmanip-move-up)
-  vmap <C-h> <Plug>(textmanip-move-left)
-  vmap <C-l> <Plug>(textmanip-move-right)
-
-  " duplicate line
-  vmap <Space><C-j> <Plug>(textmanip-duplicate-down)
-  vmap <Space><C-k> <Plug>(textmanip-duplicate-up)
-  vmap <Space><C-h> <Plug>(textmanip-duplicate-left)
-  vmap <Space><C-l> <Plug>(textmanip-duplicate-right)
-
-  let g:textmanip_hooks = {}
-
-  function! g:textmanip_hooks.finish(tm)
-    let tm = a:tm
-    let helper = textmanip#helper#get()
-    if tm.linewise
-      " if filetype is `html` automatically indent
-      if &ft ==# 'html'
-        call helper.indent(tm)
-      endif
-    else
-      " When blockwise move/duplicate, remove trailing white space.
-      " To use this feature without feeling counterintuitive,
-      " I recommend you to ':set virtualedit=block',
-      call helper.remove_trailing_WS(tm)
-    endif
-  endfunction
+  call s:load_file('plugin/vim-textmanip')
 endif
-
-
-"=== Plugin: mold.vim
-"==============================================================================================
 if dein#tap('mold.vim')
-  " autocmd vimrc BufNewFile * call mold#load('', 1)
-
-  autocmd vimrc User MoldTemplateLoadPre  call <SID>template_before_load()
-  autocmd vimrc User MoldTemplateLoadPost call <SID>template_after_load()
-
-  let s:mold_template_macro = {
-    \ 'FILE_PATH': "\\=expand('%:p')",
-    \ 'FILE_NAME': "\\=expand('%:t')",
-    \ 'FULL_NAME': "Yuki Iwanaga",
-    \ 'USER_NAME': "Creasty",
-  \ }
-
-  function! s:template_before_load()
-    let b:mold_saved_cursor = getcurpos()
-  endfunction
-
-  function! s:template_after_load()
-    for [macro, def] in items(s:mold_template_macro)
-      silent exec '%s/\<' . macro . '\>/' . def . '/ge'
-    endfor
-
-    silent! :%!erb -T '-'
-
-    if search('<+CURSOR+>')
-      execute 'normal! "_da>'
-    else
-      call setpos('.', b:mold_saved_cursor)
-    endif
-  endfunction
+  call s:load_file('plugin/mold')
 endif
-
-
-"=== Plugin: neocomplete.vim
-"==============================================================================================
 if dein#tap('neocomplete.vim')
-  set completeopt& completeopt-=preview
-
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#disable_auto_complete = 0
-  let g:neocomplete#enable_auto_select = 1
-  let g:neocomplete#enable_insert_char_pre = 1
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-  let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax'
-  let g:neocomplete#lock_buffer_name_pattern = '\.log\|\.log\.\|.*quickrun.*\|.jax'
-
-  let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default':    '',
-    \ 'vimshell':   $HOME . '/.vimshell_hist',
-    \ 'ruby':       g:env.path.dict . '/ruby.dict',
-    \ 'java':       g:env.path.dict . '/java.dict',
-    \ 'javascript': g:env.path.dict . '/javascript.dict',
-    \ 'coffee':     g:env.path.dict . '/javascript.dict',
-    \ 'html':       g:env.path.dict . '/html.dict',
-    \ 'php':        g:env.path.dict . '/php.dict',
-    \ 'objc':       g:env.path.dict . '/objc.dict',
-    \ 'swift':      g:env.path.dict . '/swift.dict',
-    \ 'perl':       g:env.path.dict . '/perl.dict',
-    \ 'scala':      g:env.path.dict . '/scala.dict',
-  \ }
-
-  " keyword patterns
-  let g:neocomplete#keyword_patterns = get(g:, 'neocomplete#keyword_patterns', {})
-  let g:neocomplete#keyword_patterns._ = '\h\w*'
-  let g:neocomplete#keyword_patterns.perl = '\h\w*->\h\w*\|\h\w*::\w*'
-
-  " input patterns
-  let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
-  let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-  let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\%(\w\|\/\)*'
-  let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-  let g:neocomplete#sources#omni#input_patterns.typescript = '\h\w*\|[^. \t]\.\w*'
-
-  " omni
-  let g:neocomplete#force_overwrite_completefunc = 1
-  let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
-  let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-  let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-  let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-  let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-
-  " clang
-  let g:clang_complete_auto = 0
-  let g:clang_auto_select = 0
-  let g:clang_use_library = 1
-
-  " omni completion
-  autocmd vimrc FileType css
-    \ setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd vimrc FileType html,markdown
-    \ setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd vimrc FileType javascript
-    \ setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd vimrc FileType python
-    \ setlocal omnifunc=pythoncomplete#Complete
-  autocmd vimrc FileType xml
-    \ setlocal omnifunc=xmlcomplete#CompleteTags
-  autocmd vimrc FileType go
-    \ setlocal omnifunc=gocomplete#Complete
-  autocmd vimrc FileType typescript
-    \ setlocal omnifunc=TSScompleteFunc
-
-  " cancel or accept
-  imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=neocomplete#cancel_popup()\<CR>" : "\<Esc>"
-  imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=neocomplete#close_popup()\<CR>" : "\<CR>"
+  call s:load_file('plugin/neocomplete')
 endif
-
-
-"=== Plugin: neosnippet
-"==============================================================================================
 if dein#tap('neosnippet')
-  let g:neosnippet#disable_select_mode_mappings = 0
-  let g:neosnippet#enable_snipmate_compatibility = 1
-  let g:neosnippet#snippets_directory = g:env.path.snippets
-  let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
-
-  " remove placeholders (hidden markers) before saving
-  autocmd vimrc BufWritePre *
-    \ exec '%s/<`\d\+:\?[^>]*`>//ge'
+  call s:load_file('plugin/neosnippet')
 endif
-
-
-"=== Plugin: nerdtree
-"==============================================================================================
 if dein#tap('nerdtree')
-  let g:NERDSpaceDelims = 1
-  let g:NERDShutUp = 1
-  let g:NERDTreeShowHidden = 1
-  let g:NERDTreeIgnore = ['\~$', '\.sass-cache$', '\.git$']
-  let g:NERDTreeAutoDeleteBuffer = 1
+  call s:load_file('plugin/nerdtree')
 endif
-
-
-"=== Plugin: unite.vim
-"==============================================================================================
 if dein#tap('unite.vim')
-  function! s:unite_on_source() abort
-    let g:unite_force_overwrite_statusline = 0
-    let g:unite_enable_start_insert = 1
-    let g:unite_winheight = 10
-    let g:unite_enable_ignore_case = 1
-    let g:unite_enable_smart_case = 1
-    let g:unite_source_rec_min_cache_files = 50
-    let g:unite_source_rec_max_cache_files = 30000
-    let g:unite_source_history_yank_enable = 1
-
-    let ignore_globs = unite#sources#rec#define()[0]['ignore_globs'] + [
-      \ '.tags',
-      \ '*.jpg', '*.jpeg', '*.png', '*.gif', '*.pdf', '*.ttf', '*.otf', '*.eot', '*.woff', '*.svg', '*.svgz',
-      \ 'tmp/**', 'cache/**', 'public/system/**', 'vendor/bundle/**',
-      \ 'node_modules/**', 'bower_components/**',
-      \ 'Godeps/**',
-    \ ]
-
-    call unite#custom#source(
-      \ join([
-        \ 'file',
-        \ 'file_rec',
-        \ 'file_rec/async',
-        \ 'file_rec/git',
-        \ 'grep',
-      \ ], ','),
-      \ 'ignore_globs',
-      \ ignore_globs
-    \ )
-
-    call unite#custom#profile('source/grep', 'context', {
-      \ 'no_quit':  1,
-      \ 'no_empty': 1,
-    \ })
-
-    if g:env.support.ag
-      let g:unite_source_grep_command       = 'ag'
-      let g:unite_source_grep_default_opts  = '--nogroup --nocolor --column'
-      let g:unite_source_grep_recursive_opt = ''
-    endif
-
-    autocmd vimrc FileType unite call s:unite_my_settings()
-
-    function! s:unite_my_settings()
-      let unite = unite#get_current_unite()
-
-      call clearmatches()
-
-      imap <buffer> <C-h> <BS>
-      inoremap <buffer> <C-d> <Del>
-      inoremap <buffer> <C-b> <Left>
-      inoremap <buffer> <C-f> <Right>
-      inoremap <buffer> <C-e> <End>
-
-      nmap <buffer> <C-q> <Plug>(unite_exit)
-      imap <buffer> <C-q> <Plug>(unite_exit)
-      imap <buffer> <C-k> <Plug>(unite_delete_backward_line)
-      imap <buffer> <C-a> <Plug>(unite_move_head)
-      imap <buffer> <C-j> <Plug>(unite_do_default_action)
-      imap <buffer> <C-l> <Plug>(unite_redraw)
-
-      if unite.buffer_name =~# '^search'
-        nnoremap <silent><buffer><expr> r unite#do_action('replace')
-      else
-        nnoremap <silent><buffer><expr> r unite#do_action('rename')
-      endif
-    endfunction
-
-  endfunction
-
-  function! s:dispatch_unite_file_rec_async_or_git()
-    if getcwd() == $HOME
-      Unite ghq
-    elseif isdirectory(get(b:, 'current_root_directory', '.') . '/.git')
-      Unite -hide-source-names -buffer-name=files file_rec/git
-    else
-      Unite -hide-source-names -buffer-name=files file_rec/async
-    endif
-  endfunction
-
-  nnoremap <silent> <C-q> :<C-u>call <SID>dispatch_unite_file_rec_async_or_git()<CR>
-  nnoremap <silent> <Space><C-q>a :Unite -hide-source-names -buffer-name=files file_rec/async<CR>
-  nnoremap <silent> <Space>p :Unite -hide-source-names history/yank<CR>
-  imap <silent> <C-x><C-v> <C-o><Space>p
-
-  nnoremap <silent> <Space>g :<C-u>Unite -buffer-name=search-buffer grep:.<CR>
-
-  call dein#set_hook('unite.vim', 'hook_source', function('s:unite_on_source'))
+  call s:load_file('plugin/unite')
 endif
-
-
-"=== Plugin: vim-altr
-"==============================================================================================
 if dein#tap('vim-altr')
-  function! s:altr_on_source() abort
-    " Header files
-    call altr#define('%.c', '%.h', '%.m')
-
-    " Rails / Ruby
-    call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
-    call altr#define('app/%/%.rb', 'spec/%/%_spec.rb')
-    call altr#define('lib/%.rb', 'spec/lib/%_spec.rb')
-    call altr#define('%.html.haml', '%_smart_phone.html.haml')
-    call altr#define('%.html.slim', '%_smart_phone.html.slim')
-    call altr#define('Gemfile', 'Gemfile.lock')
-
-    " I18n
-    call altr#define('locales/%/en.yml', 'locales/%/ja.yml')
-    call altr#define('locales/%.en.yml', 'locales/%.ja.yml')
-    call altr#define('locales/en.json', 'locales/ja.json')
-    call altr#define('locales/%/en.json', 'locales/%/ja.json')
-
-    " Frontend
-    call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
-    call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade')
-
-    " Golang
-    call altr#define('%.go', '%_test.go', '%_ex_test.go')
-    call altr#define('glide.yaml', 'glide.lock')
-
-    " Dotenv
-    call altr#define('.env', '.env.sample')
-
-    " Vim
-    call altr#define('dein.toml', 'dein_lazy.toml')
-  endfunction
-
-  nmap ga <Plug>(altr-forward)
-  nmap gA <Plug>(altr-back)
-
-  call dein#set_hook('vim-altr', 'hook_source', function('s:altr_on_source'))
+  call s:load_file('plugin/vim-altr')
 endif
-
-
-"=== Plugin: vim-quickrun
-"==============================================================================================
 if dein#tap('vim-quickrun')
-  let g:quickrun_config = {}
-  let g:quickrun_config['_'] = {
-    \ 'runner':                        'vimproc',
-    \ 'outputter/buffer/split':        ':botright 15sp',
-    \ 'outputter/buffer/running_mark': '',
-  \ }
-  let g:quickrun_config['ruby.rspec'] = {
-    \ 'type':    'ruby.rspec',
-    \ 'command': 'rspec',
-    \ 'cmdopt':  'bundle exec',
-    \ 'exec':    '%o %c %s',
-  \ }
-  let g:quickrun_config['markdown'] = {
-    \ 'outputter': 'null',
-    \ 'command':   'open',
-    \ 'cmdopt':    '-a',
-    \ 'args':      'Marked',
-    \ 'exec':      '%c %o %a %s',
-  \ }
-  let g:quickrun_config['javascript'] = {
-    \ 'command': 'node',
-  \ }
-  let g:quickrun_config['coffee'] = {
-    \ 'command': 'coffee',
-    \ 'exec':    ['%c -cbp %s | node'],
-  \ }
-  let g:quickrun_config['swift'] = {
-    \ 'command': 'xcrun',
-    \ 'cmdopt':  'swift',
-    \ 'exec':    '%c %o %s',
-  \ }
-  let g:quickrun_config['scala'] = {
-    \ 'command': 'scala',
-    \ 'cmdopt':  '-deprecation -feature',
-    \ 'exec':    '%c %o %s %a',
-  \ }
-
-  nmap <Leader>r <Plug>(quickrun)
+  call s:load_file('plugin/vim-quickrun')
 endif
-
-
-"=== Plugin: neomake
-"==============================================================================================
 if dein#tap('neomake')
-  let g:neomake_error_sign = {
-    \ 'text':   '✗',
-    \ 'texthl': 'NeomakeErrorSign',
-  \ }
-  let g:neomake_warning_sign = {
-    \ 'text':   '∆',
-    \ 'texthl': 'NeomakeWarningSign',
-  \ }
-  let g:neomake_message_sign = {
-    \ 'text':   '▸',
-    \ 'texthl': 'NeomakeMessageSign',
-  \ }
-
-  if dein#tap('candle.vim')
-    call candle#highlight('NeomakeErrorSign', 'red', '', '')
-    call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
-    call candle#highlight('NeomakeMessageSign', 'green', '', '')
-  endif
-
-  let g:neomake_ruby_mri_exe = $HOME . '/.anyenv/envs/rbenv/shims/ruby'
-
-  autocmd vimrc User AutoSavePost Neomake
-  autocmd vimrc BufEnter,BufReadPost,BufWritePost,InsertLeave * Neomake
+  call s:load_file('plugin/neomake')
 endif
-
-
-"=== Plugin: vim-submode
-"==============================================================================================
 if dein#tap('vim-submode')
-  let g:submode_keep_leaving_key = 1
-
-  "  Window resizing
-  "-----------------------------------------------
-  call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
-  call submode#map(       'winsize', 'n', '', '>',      '<C-w>>')
-  call submode#enter_with('winsize', 'n', '', '<C-w><', '<C-w><')
-  call submode#map(       'winsize', 'n', '', '<',      '<C-w><')
-  call submode#enter_with('winsize', 'n', '', '<C-w>+', '<C-w>-')
-  call submode#map(       'winsize', 'n', '', '-',      '<C-w>+')
-  call submode#enter_with('winsize', 'n', '', '<C-w>-', '<C-w>+')
-  call submode#map(       'winsize', 'n', '', '+',      '<C-w>-')
-
-
-  "  Macro
-  "-----------------------------------------------
-  call submode#enter_with('macro', 'n', '', '@@', '@@')
-  call submode#map(       'macro', 'n', '', '@',  '@@')
-
-
-  "  Fold navigation
-  "-----------------------------------------------
-  call submode#enter_with('move-to-fold', 'n', '', 'zj', 'zj')
-  call submode#map(       'move-to-fold', 'n', '', 'j',  'zj')
-  call submode#enter_with('move-to-fold', 'n', '', 'zk', 'zk')
-  call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
-
-
-  "  Better undo
-  "-----------------------------------------------
-  function! s:better_undo(key)
-    undojoin
-    exec 'normal!' a:key
-  endfunction
-
-  noremap <silent> <Plug>(my-x) :<C-u>call <SID>better_undo('"_x')<CR>
-  call submode#enter_with('my_x', 'n', '',  'x', '"_x')
-  call submode#map(       'my_x', 'n', 'r', 'x', '<Plug>(my-x)')
-
-  noremap <silent> <Plug>(my-ca) :<C-u>call <SID>better_undo('<C-a>')<CR>
-  call submode#enter_with('my_ca', 'n', '',  '<C-a>', '<C-a>')
-  call submode#map(       'my_ca', 'n', 'r', '<C-a>', '<Plug>(my-ca)')
-
-  noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
-  call submode#enter_with('my_ca', 'n', '',  '<C-x>', '<C-x>')
-  call submode#map(       'my_ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
+  call s:load_file('plugin/vim-submode')
 endif
-
-
-"=== Plugin: vim-tags
-"==============================================================================================
 if dein#tap('vim-tags')
-  let g:vim_tags_auto_generate = 1
-  let g:vim_tags_main_file = '.tags'
-  let g:vim_tags_gems_tags_command = '{CTAGS} -R {OPTIONS} `rbenv exec bundle show --paths` 2>/dev/null'
-
-  let g:vim_tags_directories = [
-    \ '.git',
-    \ '.hg',
-    \ '.svn',
-    \ '.vimprojectroot',
-    \ '.bzr',
-    \ '_darcs',
-    \ 'CVS',
-  \ ]
-
-  nnoremap tg :TagsGenerate<CR>
+  call s:load_file('plugin/vim-tags')
 endif
-
-
-"=== Plugin: vim-signature
-"==============================================================================================
 if dein#tap('vim-signature')
-  " hide upper case marks
-  let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyz'
+  call s:load_file('plugin/vim-signature')
 endif
-
-
-"=== Plugin: vim-anzu
-"==============================================================================================
 if dein#tap('vim-anzu')
-  nmap n <Plug>(anzu-n-with-echo)
-  nmap N <Plug>(anzu-N-with-echo)
-  nmap * <Plug>(anzu-star-with-echo)
-  nmap # <Plug>(anzu-sharp-with-echo)
+  call s:load_file('plugin/vim-anzu')
 endif
-
-
-"=== Plugin: vim-rails
-"==============================================================================================
 if dein#tap('vim-rails')
-  nmap gr :R<CR>
+  call s:load_file('plugin/vim-rails')
 endif
-
-
-"=== Plugin: vim-scala
-"==============================================================================================
 if dein#tap('vim-scala')
-  let g:scala_sort_across_groups = 1
+  call s:load_file('plugin/vim-scala')
 endif
-
-
-"=== Plugin: vim-go-extra
-"==============================================================================================
 if dein#tap('vim-go-extra')
-  let g:gocomplete#system_function = 'vimproc#system2'
+  call s:load_file('plugin/vim-go-extra')
 endif
-
-
-"=== Plugin: typescript-tools
-"==============================================================================================
 if dein#tap('typescript-tools.vim')
-  " let g:TSS = ['bin/tss']
+  call s:load_file('plugin/typescript-tools')
 endif
