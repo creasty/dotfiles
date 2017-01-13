@@ -12,14 +12,14 @@ command! -bang -nargs=? Euc
 command! CleanBuffers :call <SID>clean_buffers()
 
 function! s:clean_buffers()
-  redir => bufs
+  redir => l:bufs
     silent buffers
   redir END
 
-  for ibuf in split(bufs, "\n")
-    let t = matchlist(ibuf, '\v^\s*(\d+)([^"]*)')
-    if t[2] !~# '[#a+]'
-      exec 'bdelete' t[1]
+  for l:ibuf in split(l:bufs, "\n")
+    let l:t = matchlist(l:ibuf, '\v^\s*(\d+)([^"]*)')
+    if l:t[2] !~# '[#a+]'
+      exec 'bdelete' l:t[1]
     endif
   endfor
 endfunction
@@ -36,17 +36,17 @@ endfunction
 
 " delete current file
 function! s:delete_or_trash(file)
-  let trash_dir = $HOME . '/.Trash'
-  let file = fnameescape(a:file)
+  let l:trash_dir = $HOME . '/.Trash'
+  let l:file = fnameescape(a:file)
 
-  if empty(file)
+  if empty(l:file)
     return
   endif
 
-  if isdirectory(trash_dir)
-    call vimproc#system('mv ' . file . ' ' . trash_dir)
+  if isdirectory(l:trash_dir)
+    call vimproc#system('mv ' . l:file . ' ' . l:trash_dir)
   else
-    call delete(file)
+    call delete(l:file)
   endif
 endfunction
 
@@ -63,16 +63,16 @@ nnoremap g9 :PrevFile<CR>
 nnoremap g0 :NextFile<CR>
 
 function! s:next_file(direction)
-  let path = expand('%:p')
-  let directory = fnamemodify(path, ':h')
+  let l:path = expand('%:p')
+  let l:directory = fnamemodify(l:path, ':h')
 
-  let paths = split(globpath(directory, '*'), "\n")
-  let files = filter(paths, '!isdirectory(v:val)')
-  let n = len(files)
-  let idx = index(files, path)
+  let l:paths = split(globpath(l:directory, '*'), "\n")
+  let l:files = filter(l:paths, '!isdirectory(v:val)')
+  let l:n = len(l:files)
+  let l:idx = index(l:files, l:path)
 
-  if idx >= 0
-    exec 'edit' fnameescape(files[(idx + a:direction) % n])
+  if l:idx >= 0
+    exec 'edit' fnameescape(l:files[(l:idx + a:direction) % l:n])
   endif
 endfunction
 

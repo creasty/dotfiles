@@ -211,11 +211,11 @@ vnoremap <expr> I <SID>force_blockwise_visual('I')
 vnoremap <expr> A <SID>force_blockwise_visual('A')
 
 function! s:force_blockwise_visual(next_key)
-  let m = mode()
+  let l:m = mode()
 
-  if m == 'v'
+  if l:m ==# 'v'
     return "\<C-v>" . a:next_key
-  elseif m == 'V'
+  elseif l:m ==# 'V'
     return "\<C-v>0o$" . a:next_key
   else
     return a:next_key

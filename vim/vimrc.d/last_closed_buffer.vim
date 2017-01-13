@@ -19,11 +19,11 @@ function! s:lcb_remember_on_leave()
 endfunction
 
 function! s:lcb_restore()
-  let nr = get(g:lcb_closed, 0, 0)
+  let l:nr = get(g:lcb_closed, 0, 0)
   let g:lcb_closed = g:lcb_closed[1:]
 
-  if nr > 0 && bufexists(nr)
-    exec 'buffer' nr
+  if l:nr > 0 && bufexists(l:nr)
+    exec 'buffer' l:nr
   endif
 endfunction
 

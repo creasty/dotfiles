@@ -16,20 +16,20 @@ let s:root_patterns = [
 \ ]
 
 function! s:get_root_directory()
-  let dir_current_file = fnameescape(expand('%:p:h'))
+  let l:dir_current_file = fnameescape(expand('%:p:h'))
 
-  for pattern in s:root_patterns
-    if stridx(pattern, '/') != -1
-      let match = finddir(pattern, dir_current_file . ';')
+  for l:pattern in s:root_patterns
+    if stridx(l:pattern, '/') != -1
+      let l:match = finddir(l:pattern, l:dir_current_file . ';')
 
-      if !empty(match)
-        return fnamemodify(match, ':p:h:h')
+      if !empty(l:match)
+        return fnamemodify(l:match, ':p:h:h')
       endif
     else
-      let match = findfile(pattern, dir_current_file . ';')
+      let l:match = findfile(l:pattern, l:dir_current_file . ';')
 
-      if !empty(match)
-        return fnamemodify(match, ':p:h')
+      if !empty(l:match)
+        return fnamemodify(l:match, ':p:h')
       endif
     endif
   endfor
@@ -42,13 +42,13 @@ function! s:can_change_directory()
 endfunction
 
 function! s:change_directory(dir)
-  let edir = fnameescape(a:dir)
+  let l:edir = fnameescape(a:dir)
 
-  exec 'setlocal path-=' . edir
+  exec 'setlocal path-=' . l:edir
   let b:current_root_directory = a:dir
-  exec 'setlocal path+=' . edir
+  exec 'setlocal path+=' . l:edir
 
-  exec 'lcd ' . edir
+  exec 'lcd ' . l:edir
 endfunction
 
 function! s:change_to_root_directory()
@@ -56,15 +56,15 @@ function! s:change_to_root_directory()
     return
   endif
 
-  let dir = s:get_root_directory()
+  let l:dir = s:get_root_directory()
 
-  if empty(dir)
+  if empty(l:dir)
     " change directory for non project files
     " let dir = expand('%:p:h')
     return
   endif
 
-  call s:change_directory(dir)
+  call s:change_directory(l:dir)
 endfunction
 
 autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter *

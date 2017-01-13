@@ -10,7 +10,7 @@ if !g:env.is_gui && exists('$ITERM_PROFILE')
 endif
 
 " use comma as leader
-let mapleader = ','
+let g:mapleader = ','
 
 " split to right / bottom
 set splitright
@@ -39,7 +39,7 @@ set backspace=indent,eol,start
 set formatoptions& formatoptions+=lmoq
 
 " no beeps
-set vb t_vb=
+set visualbell t_vb=
 
 " initial dir of explorer
 set browsedir=buffer
@@ -79,7 +79,7 @@ set complete=k
 set clipboard=unnamed
 
 " inc/decrement
-set nf=alpha,hex
+set nrformats=alpha,hex
 
 " disable IME
 set imdisable

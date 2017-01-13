@@ -65,23 +65,23 @@ set foldlevelstart=20
 set foldtext=CustomFoldText()
 
 function! CustomFoldText()
-  let fs = v:foldstart
+  let l:fs = v:foldstart
 
-  while getline(fs) =~ '^\s*$' | let fs = nextnonblank(fs + 1)
+  while getline(l:fs) =~# '^\s*$' | let l:fs = nextnonblank(l:fs + 1)
   endwhile
 
-  if fs > v:foldend
-    let line = getline(v:foldstart)
+  if l:fs > v:foldend
+    let l:line = getline(v:foldstart)
   else
-    let line = substitute(getline(fs), '\t', repeat(' ', &tabstop), 'g')
+    let l:line = substitute(getline(l:fs), '\t', repeat(' ', &tabstop), 'g')
   endif
 
-  let w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let l:w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
 
-  let lineCounter = ' (' . (1 + v:foldend - v:foldstart) . ')'
-  let expansion = repeat(' ', w - strwidth(lineCounter . line))
+  let l:linecounter = ' (' . (1 + v:foldend - v:foldstart) . ')'
+  let l:expansion = repeat(' ', l:w - strwidth(l:linecounter . l:line))
 
-  return line . expansion . lineCounter
+  return l:line . l:expansion . l:linecounter
 endfunction
 
 
@@ -108,11 +108,11 @@ sign define mydummy
 autocmd vimrc BufEnter * call <SID>add_dummy_sign()
 
 function! s:add_dummy_sign()
-  let bufnr = bufnr('')
+  let l:bufnr = bufnr('')
 
-  if !getbufvar(bufnr, 'my_dummy_sign')
-    exec 'sign place 9999 line=1 name=mydummy buffer=' . bufnr
-    call setbufvar(bufnr, 'my_dummy_sign', 1)
+  if !getbufvar(l:bufnr, 'my_dummy_sign')
+    exec 'sign place 9999 line=1 name=mydummy buffer=' . l:bufnr
+    call setbufvar(l:bufnr, 'my_dummy_sign', 1)
   endif
 endfunction
 
@@ -122,60 +122,60 @@ endfunction
 set title titlestring=%{MyTitleText()}
 
 function! MyTitleText()
-  let t = []
+  let l:t = []
 
   if !empty(v:servername)
-    let name = substitute(v:servername, 'VIM', '', '')
-    if name == ''
-      let name = '0'
+    let l:name = substitute(v:servername, 'VIM', '', '')
+    if l:name ==# ''
+      let l:name = '0'
     endif
-    call add(t, '$' . name . ':')
+    call add(l:t, '$' . l:name . ':')
   endif
 
-  let session = fnamemodify(v:this_session, ':t:r')
+  let l:session = fnamemodify(v:this_session, ':t:r')
 
-  if session != ''
-    call add(t, '[' . session . ']')
+  if l:session !=# ''
+    call add(l:t, '[' . l:session . ']')
   endif
 
-  let path = expand('%:p')
-  let path = (path != '') ? path : getcwd()
-  let path = substitute(path, $HOME, '~', '')
-  let path = substitute(path, '\~/go/src/github.com', '~g', '')
-  call add(t, path)
+  let l:path = expand('%:p')
+  let l:path = (l:path !=# '') ? l:path : getcwd()
+  let l:path = substitute(l:path, $HOME, '~', '')
+  let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
+  call add(l:t, l:path)
 
-  return join(t, ' ')
+  return join(l:t, ' ')
 endfunction
 
 
 "  Tabline
 "-----------------------------------------------
 function! MyTabLine()
-  let s = ''
-  let current = tabpagenr()
+  let l:s = ''
+  let l:current = tabpagenr()
 
-  for i in range(tabpagenr('$'))
-    let tabnr = i + 1 " range() starts at 0
-    let winnr = tabpagewinnr(tabnr)
-    let buflist = tabpagebuflist(tabnr)
-    let bufnr = buflist[winnr - 1]
-    let bufname = fnamemodify(bufname(bufnr), ':t')
+  for l:i in range(tabpagenr('$'))
+    let l:tabnr = l:i + 1 " range() starts at 0
+    let l:winnr = tabpagewinnr(l:tabnr)
+    let l:buflist = tabpagebuflist(l:tabnr)
+    let l:bufnr = l:buflist[l:winnr - 1]
+    let l:bufname = fnamemodify(bufname(l:bufnr), ':t')
 
-    let s .= '%' . tabnr . 'T'
-    let s .= (tabnr == current ? '%#TabLineNrSel#' : '%#TabLineNr#')
-    let s .= ' ' . tabnr
-    let s .= '%#TabLineFill#'
-    let s .= (tabnr == current ? '%#TabLineSel#' : '%#TabLine#')
+    let l:s .= '%' . l:tabnr . 'T'
+    let l:s .= (l:tabnr ==# l:current ? '%#TabLineNrSel#' : '%#TabLineNr#')
+    let l:s .= ' ' . l:tabnr
+    let l:s .= '%#TabLineFill#'
+    let l:s .= (l:tabnr ==# l:current ? '%#TabLineSel#' : '%#TabLine#')
 
-    let s .= empty(bufname) ? ' [No Name] ' : ' ' . bufname . ' '
-    if getbufvar(bufnr, "&mod")
-      let s .= '+ '
+    let l:s .= empty(l:bufname) ? ' [No Name] ' : ' ' . l:bufname . ' '
+    if getbufvar(l:bufnr, '&mod')
+      let l:s .= '+ '
     endif
   endfor
 
-  let s .= '%#TabLineFill#'
+  let l:s .= '%#TabLineFill#'
 
-  return s
+  return l:s
 endfunction
 
 if dein#tap('candle.vim')
@@ -190,87 +190,87 @@ endif
 "  Statusline
 "-----------------------------------------------
 function! RefreshStatusline()
-  let cw = winnr()
+  let l:cw = winnr()
 
   if !dein#tap('candle.vim')
     return
   endif
 
-  for nr in range(1, winnr('$'))
-    call setwinvar(nr, '&statusline', '%!MyStatusLine(' . nr . ', ' . cw . ')')
+  for l:nr in range(1, winnr('$'))
+    call setwinvar(l:nr, '&statusline', '%!MyStatusLine(' . l:nr . ', ' . l:cw . ')')
   endfor
 endfunction
 
 autocmd vimrc VimEnter,WinEnter,BufWinEnter * call RefreshStatusline()
 
 function! MyStatusLine(w, cw)
-  let s = ''
+  let l:s = ''
 
-  let bufnr = winbufnr(a:w)
-  let _bufname = bufname(bufnr)
-  let bufmodified = getbufvar(bufnr, '&mod')
-  let active = (a:w == a:cw)
-  let width = winwidth(a:w)
-  let ft = getbufvar(bufnr, '&ft')
-  let enough_width = (width > 70)
+  let l:bufnr = winbufnr(a:w)
+  let l:_bufname = bufname(l:bufnr)
+  let l:bufmodified = getbufvar(l:bufnr, '&mod')
+  let l:active = (a:w == a:cw)
+  let l:width = winwidth(a:w)
+  let l:ft = getbufvar(l:bufnr, '&ft')
+  let l:enough_width = (l:width > 70)
 
-  let bufname =
-    \ empty(_bufname) ? '[No Name]' :
-    \ _bufname == '__Tagbar__' ? 'Tagbar' :
-    \ _bufname =~ '__Gundo\|NERD_tree' || ft == 'nerdtree' ? 'File' :
-    \ ft == 'unite' ? 'Unite' :
-    \ ft == 'help' ? 'Help' :
+  let l:bufname =
+    \ empty(l:_bufname) ? '[No Name]' :
+    \ l:_bufname ==# '__Tagbar__' ? 'Tagbar' :
+    \ l:_bufname =~# '__Gundo\|NERD_tree' || l:ft ==# 'nerdtree' ? 'File' :
+    \ l:ft ==# 'unite' ? 'Unite' :
+    \ l:ft ==# 'help' ? 'Help' :
     \ ''
 
-  let is_file = empty(bufname)
+  let l:is_file = empty(l:bufname)
 
-  if is_file
-    let bufname = fnamemodify(_bufname, ':t')
+  if l:is_file
+    let l:bufname = fnamemodify(l:_bufname, ':t')
   endif
 
   " file name
-  let s .= '%#StatusLineLeft' . (active ? 'Active' : '') . '# '
+  let l:s .= '%#StatusLineLeft' . (l:active ? 'Active' : '') . '# '
 
-  if is_file
-    let s .= '#' . bufnr
-    let s .= ' '
+  if l:is_file
+    let l:s .= '#' . l:bufnr
+    let l:s .= ' '
   endif
 
-  if active || !is_file
-    let s .= bufname
+  if l:active || !l:is_file
+    let l:s .= l:bufname
   else
-    let head = fnamemodify(_bufname, ':h:t')
-    let s .= (empty(head) || head == '.' ? '' : head . '/') . bufname
+    let l:head = fnamemodify(l:_bufname, ':h:t')
+    let l:s .= (empty(l:head) || l:head ==# '.' ? '' : l:head . '/') . l:bufname
   endif
 
-  let flag = ''
-  let flag .= getbufvar(bufnr, '&readonly') ? '!' : ''
-  let flag .= getbufvar(bufnr, '&mod') ? '+' : ''
+  let l:flag = ''
+  let l:flag .= getbufvar(l:bufnr, '&readonly') ? '!' : ''
+  let l:flag .= getbufvar(l:bufnr, '&mod') ? '+' : ''
 
-  if !empty(flag)
-    let s .= ' ' . flag
+  if !empty(l:flag)
+    let l:s .= ' ' . l:flag
   endif
 
-  let s .= ' %#StatusLine#'
+  let l:s .= ' %#StatusLine#'
 
-  if active && ft == 'unite'
-    let s .= ' ' . unite#get_status_string()
+  if l:active && l:ft ==# 'unite'
+    let l:s .= ' ' . unite#get_status_string()
   endif
 
   " space
-  let s .= '%='
+  let l:s .= '%='
 
-  if active && enough_width
+  if l:active && l:enough_width
     " file type & encoding
-    let s .= ' ' . (ft == '' ? 'plain' : ft) . ' ∙ ' . (empty(&fenc) ? 'utf-8' : &fenc) . ' '
+    let l:s .= ' ' . (l:ft ==# '' ? 'plain' : l:ft) . ' ∙ ' . (empty(&fileencoding) ? 'utf-8' : &fileencoding) . ' '
 
     " cursor
-    let s .= '%#StatusLineRight' . (active ? 'Active' : '') . '# '
-    let s .= '%l:%c ∙ %p%%'
-    let s .= ' %#StatusLine#'
+    let l:s .= '%#StatusLineRight' . (l:active ? 'Active' : '') . '# '
+    let l:s .= '%l:%c ∙ %p%%'
+    let l:s .= ' %#StatusLine#'
   endif
 
-  return s
+  return l:s
 endfunction
 
 if dein#tap('candle.vim')
@@ -288,13 +288,13 @@ if dein#tap('candle.vim')
     endif
     let s:prev_status_line_mode = a:m
 
-    let color =
-      \ a:m == 'i' ? 'blue' :
-      \ a:m == 'v' ? 'orange' :
-      \ a:m == 'r' ? 'purple' :
+    let l:color =
+      \ a:m ==# 'i' ? 'blue' :
+      \ a:m ==# 'v' ? 'orange' :
+      \ a:m ==# 'r' ? 'purple' :
       \ 'green'
 
-    call candle#highlight('StatusLineLeftActive', '', color, '')
+    call candle#highlight('StatusLineLeftActive', '', l:color, '')
 
     return ''
   endfunction
