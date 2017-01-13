@@ -132,6 +132,7 @@ filetype plugin indent on
 call s:load_file('base/encoding')
 call s:load_file('base/base')
 call s:load_file('base/appearance')
+call s:load_file('base/tab_and_status')
 call s:load_file('base/editing')
 call s:load_file('base/utils')
 
