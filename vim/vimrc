@@ -2280,7 +2280,11 @@ if dein#tap('switch.vim')
           endif
           let buf .= q_opp
           if start_pos < end_pos - 1 && start_pos + 1 < end_pos
-            let buf .= substitute(line[start_pos + 1 : end_pos - 1], q_opp, q, 'g')
+            let _buf = line[start_pos + 1 : end_pos - 1]
+            let _buf = substitute(_buf, '\\' . q_opp, '<-switchquote->', 'g')
+            let _buf = substitute(_buf, q_opp, q, 'g')
+            let _buf = substitute(_buf, '<-switchquote->', '\\' . q_opp, 'g')
+            let buf .= _buf
           endif
           let buf .= q_opp
           if end_pos + 1 <= max
