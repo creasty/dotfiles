@@ -102,9 +102,9 @@ function! s:switch() abort
         let l:buf .= l:q_opp
         if l:start_pos < l:end_pos - 1 && l:start_pos + 1 < l:end_pos
           let l:_buf = l:line[l:start_pos + 1 : l:end_pos - 1]
-          let l:_buf = substitute(l:_buf, '\\' . l:q_opp, '<-switchquote->', 'g')
-          let l:_buf = substitute(l:_buf, l:q_opp, l:q, 'g')
-          let l:_buf = substitute(l:_buf, '<-switchquote->', '\\' . l:q_opp, 'g')
+          let l:_buf = substitute(l:_buf, '\\' . l:q_opp, l:q_opp, 'g')
+          let l:_buf = substitute(l:_buf, l:q_opp, '\\' . l:q_opp, 'g')
+          let l:_buf = substitute(l:_buf, '\\' . l:q, l:q, 'g')
           let l:buf .= l:_buf
         endif
         let l:buf .= l:q_opp
