@@ -314,7 +314,6 @@ python:
     - pygments
     - tornado
     - vim-vint
-    - yamllint
 
 rlang:
   packages:
