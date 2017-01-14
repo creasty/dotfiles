@@ -41,9 +41,9 @@ set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 " indent wrapped lines
 if has('linebreak')
   set breakindent
-  let &showbreak = '∙∙∙∙'
+  let &showbreak = '   ›'
 else
-  let &showbreak = '❮'
+  let &showbreak = '›'
 end
 
 " conceal
