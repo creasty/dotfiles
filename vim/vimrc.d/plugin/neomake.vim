@@ -24,20 +24,25 @@ endif
 
 let g:neomake_ruby_mri_exe = $HOME . '/.anyenv/envs/rbenv/shims/ruby'
 
-function! s:neomake()
-  if 'n' !=# mode()
-    return
-  endif
+function! s:neomake(ileave)
+  if a:ileave
+    if !get(b:, 'neomake_run_ileave', 0)
+      return
+    endif
 
-  Neomake
+    let b:neomake_run_ileave = 0
+    Neomake
+  else
+    if 'n' !=# mode()
+      return
+    endif
+
+    Neomake
+  endif
 endfunction
 
-autocmd vimrc User AutoSavePost call <SID>neomake()
+autocmd vimrc User AutoSavePost call <SID>neomake(0)
 autocmd vimrc InsertEnter * let b:neomake_run_ileave = 0
 autocmd vimrc InsertLeave * let b:neomake_run_ileave = 1
-autocmd vimrc CursorHold *
-  \ if get(b:, 'neomake_run_ileave', 0) |
-    \ Neomake |
-    \ let b:neomake_run_ileave = 0 |
-  \ endif
-autocmd vimrc BufEnter,BufWritePost * call <SID>neomake()
+autocmd vimrc CursorHold * call <SID>neomake(1)
+autocmd vimrc BufEnter,BufWritePost * call <SID>neomake(0)
