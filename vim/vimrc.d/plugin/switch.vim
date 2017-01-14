@@ -57,36 +57,84 @@ function! s:switch() abort
   let l:before = []
   let l:after = []
 
+  " collect quotes before cursor
   let l:i = l:pos
   while l:i >= 0
     let l:c = l:line[l:i]
     let l:c1 = l:i > 0 ? l:line[l:i - 1] : ''
 
     if (l:c ==# "'" || l:c ==# '"') && l:c1 !=# '\'
-        call add(l:before, [l:c, l:i])
+      call add(l:before, [l:c, l:i])
     endif
 
     let l:i -= 1
   endwhile
 
+  let l:bl = len(l:before)
+
+  " collect quotes after cursor
   let l:i = l:pos
   while l:i <= l:max
     let l:c = l:line[l:i]
     let l:c1 = l:pos < l:i ? l:line[l:i - 1] : ''
 
     if (l:c ==# "'" || l:c ==# '"') && l:c1 !=# '\'
-        call add(l:after, [l:c, l:i])
+      call add(l:after, [l:c, l:i])
     endif
 
     let l:i += 1
   endwhile
 
-  let l:b = len(l:before) - 1
-  let l:a = len(l:after) - 1
+  let l:al = len(l:after)
 
   " echomsg '[' join(l:before, ', ') '], [' join(l:after, ', ') ']'
 
+  " squash complete pairs before cursor
+  if l:bl >= 3
+    let l:last = ''
+    let l:lastpos = 0
+
+    let l:i = l:bl - 1
+    while l:i >= 0
+      if l:last ==# ''
+        let l:last = l:before[l:i][0]
+      elseif l:last ==# l:before[l:i][0]
+        let l:lastpos = l:i
+        let l:last = ''
+      endif
+
+      let l:i -= 1
+    endwhile
+
+    let l:before = l:before[0 : l:lastpos - 1]
+    let l:bl = len(l:before)
+  endif
+
+  " squash complete pairs after cursor
+  if l:al >= 3
+    let l:last = ''
+    let l:lastpos = 0
+
+    let l:i = l:al - 1
+    while l:i >= 0
+      if l:last ==# ''
+        let l:last = l:after[l:i][0]
+      elseif l:last ==# l:after[l:i][0]
+        let l:lastpos = l:i
+        let l:last = ''
+      endif
+
+      let l:i -= 1
+    endwhile
+
+    let l:after = l:after[0 : l:lastpos - 1]
+    let l:al = len(l:after)
+  endif
+
+  " search for the most outer pair around cursor
+  let l:b = l:bl - 1
   while l:b >= 0
+    let l:a = l:al - 1
     while l:a >= 0
       " echomsg l:before[l:b][0] l:after[l:a][0]
 
@@ -120,6 +168,7 @@ function! s:switch() abort
     let l:b -= 1
   endwhile
 
+  " fallback to switch.vim
   :Switch
 endfunction
 
