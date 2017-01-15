@@ -14,7 +14,7 @@ Read the [detailed manual](./docs/README.md) for setting up a new computer.
 What's included
 ---------------
 
-Automated provisioning by [ansible](https://www.ansible.com/).
+Automated provisioning by ansible.
 
 <pre><code>$ ls <a href="https://github.com/creasty/dotfiles/tree/master/provisioning/roles">./provisioning/roles</a>
 anyenv      erlang      haskell     karabiner   lua         osx         rlang       ssh         vim
