@@ -211,6 +211,7 @@ link:
   config/coffeelintrc:                    .coffeelintrc
   config/ctags:                           .ctags
   config/curlrc:                          .curlrc
+  config/gocode/config.json:              .config/gocode/config.json
   config/lldbinit:                        .lldbinit
   config/pgclirc:                         .pgclirc
   config/ranger/colorschemes/original.py: .config/ranger/colorschemes/original.py

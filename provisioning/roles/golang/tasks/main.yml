@@ -34,7 +34,3 @@
      bash -lc 'go get -u {{ item | quote }}'
   with_items: '{{ golang.packages }}'
   when: golang.packages
-
-- name: configure gocode
-  command: |
-    bash -lc 'gocode set autobuild true'
