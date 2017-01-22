@@ -15,6 +15,7 @@ env:
 before_script:
   - ln -sf $PWD $HOME/dotfiles
   - echo -n "$SSH_PRIVATE_KEY" | base64 -D > ~/.ssh/id_rsa
+  - chmod 0600 ~/.ssh/id_rsa
   - eval "$(ssh-agent -s)"
   - ssh-add ~/.ssh/id_rsa
 
