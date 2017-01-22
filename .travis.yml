@@ -11,6 +11,7 @@ branches:
 env:
   global:
     - DOTFILES_NOEDIT_SECRETS=1
+    - SKIP_TAGS=zsh
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
@@ -21,4 +22,4 @@ before_script:
   - ssh-add ~/.ssh/id_rsa
 
 script:
-  - ./up --skip-tags=zsh
+  - ./up --skip-tags="$SKIP_TAGS"
