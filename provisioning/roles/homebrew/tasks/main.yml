@@ -35,3 +35,4 @@
 - name: fix readline version
   command: |
     brew switch readline 6.3.8
+  ignore_errors: True
