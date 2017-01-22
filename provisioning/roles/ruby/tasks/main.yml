@@ -24,6 +24,14 @@
     bash -lc 'rbenv versions'
   register: installed_versions
 
+- name: install dependencies
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - openssl
+    - readline
+
 - name: get openssl dir
   command: |
     brew --prefix openssl
