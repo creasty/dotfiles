@@ -21,7 +21,6 @@ before_script:
   - ssh-add ~/.ssh/id_rsa
 
   - rm -rf ~/.anyenv
-  - ls -la ~
 
 script:
   - ./up --skip-tags=zsh
