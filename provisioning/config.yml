@@ -129,6 +129,7 @@ homebrew:
     - ngrep
     - nkf
     - opencv
+    - openssl
     - optipng
     - osquery
     - packer
