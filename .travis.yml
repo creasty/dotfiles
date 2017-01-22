@@ -20,7 +20,6 @@ before_script:
   - eval "$(ssh-agent -s)"
   - ssh-add ~/.ssh/id_rsa
 
-  - rm -rf ~/.anyenv
-
 script:
+  - rm -rf ~/.anyenv
   - ./up --skip-tags=zsh
