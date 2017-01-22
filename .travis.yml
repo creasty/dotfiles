@@ -20,4 +20,4 @@ before_script:
   - ssh-add ~/.ssh/id_rsa
 
 script:
-  - ./up
+  - ./up --skip-tags zsh
