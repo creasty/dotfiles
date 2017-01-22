@@ -21,7 +21,7 @@
 
 - name: create backup files
   command: |
-    cp -f \
+    cp -Rf \
       {{ home_path | quote }}/{{ item.item.value | quote }} \
       {{ home_path | quote }}/{{ item.item.value | quote }}.bak
   when: item.stat.exists and not item.stat.islnk
