@@ -42,6 +42,7 @@
 
     - name: add id_rsa
       command: |
-        ssh-add {{ home_path | quote }}/.ssh/id_rsa
+        eval "$(ssh-agent -s)" \
+        && ssh-add {{ home_path | quote }}/.ssh/id_rsa
 
   when: not id_rsa_stat.stat.exists
