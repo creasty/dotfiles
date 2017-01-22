@@ -23,3 +23,30 @@
     mode:          0600
     ignore_hidden: yes
     delimiter:     "\n"
+
+- name: check id_rsa
+  stat:
+    path: '{{ home_path }}/.ssh/id_rsa'
+  register: id_rsa_stat
+
+- block:
+    - name: create id_rsa
+      command:
+        ssh-keygen \
+          -q \
+          -b 2048 \
+          -t rsa \
+          -N "" \
+          -C "" \
+          -f {{ home_path | quote }}/.ssh/id_rsa
+
+    - name: set mode for id_rsa
+      file:
+        dest: '{{ home_path }}/.ssh/id_rsa'
+        mode: 0600
+
+    - name: create id_rsa
+      command:
+        ssh-add {{ home_path | quote }}/.ssh/id_rsa
+
+  when: not id_rsa_stat.stat.exists
