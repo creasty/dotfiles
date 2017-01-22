@@ -31,7 +31,7 @@
 
 - block:
     - name: create id_rsa
-      command:
+      command: |
         ssh-keygen \
           -q \
           -b 2048 \
@@ -40,13 +40,8 @@
           -C "" \
           -f {{ home_path | quote }}/.ssh/id_rsa
 
-    - name: set mode for id_rsa
-      file:
-        dest: '{{ home_path }}/.ssh/id_rsa'
-        mode: 0600
-
     - name: add id_rsa
-      command:
+      command: |
         ssh-add {{ home_path | quote }}/.ssh/id_rsa
 
   when: not id_rsa_stat.stat.exists
