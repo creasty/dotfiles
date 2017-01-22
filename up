@@ -5,6 +5,7 @@ set -o pipefail
 
 : ${DOTFILES_PATH:="$HOME/dotfiles"}
 : ${DOTFILES_BRANCH:=master}
+: ${DOTFILES_FETCH:=1}
 
 ARGS=('')
 for a in "$@"; do
@@ -80,6 +81,8 @@ check_os() {
 
 clone_or_update_repo() {
   local git_dir="$DOTFILES_PATH/.git"
+
+  [ "$DOTFILES_FETCH" -eq 0 ] && return
 
   if ! [ -d "$git_dir" ]; then
     echo 'Cloning repo...'
