@@ -14,6 +14,17 @@ env:
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
+  - echo -n "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+  - |
+    ssh-keygen \
+      -q \
+      -b 2048 \
+      -t rsa \
+      -N "" \
+      -C "" \
+      -f ~/.ssh/id_rsa
+  - eval "$(ssh-agent -s)"
+  - ssh-add ~/.ssh/id_rsa
 
 script:
   - ./up
