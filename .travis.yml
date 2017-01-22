@@ -11,6 +11,7 @@ branches:
 env:
   global:
     - DOTFILES_NOEDIT_SECRETS=1
+    - DOTFILES_FETCH=0
 
 before_script:
   - mkdir $HOME/dotfiles
