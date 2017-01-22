@@ -14,8 +14,8 @@ env:
     - DOTFILES_FETCH=0
 
 before_script:
-  - mkdir $HOME/dotfiles
   - ln -sf $PWD $HOME/dotfiles
 
 script:
+  - ls $HOME/dotfiles
   - ./up
