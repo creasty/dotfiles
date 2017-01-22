@@ -1,6 +1,3 @@
-home_path:     '{{ lookup("env", "HOME") }}'
-dotfiles_path: '{{ home_path }}/dotfiles'
-
 anyenv:
   dir:         '{{ home_path }}/.anyenv'
   plugins_dir: '{{ home_path }}/.anyenv/plugins'
@@ -12,28 +9,15 @@ automator:
   workflows:
     - 'New File.workflow'
 
-envchain:
-  crst:
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
-    - GITHUB_ACCESS_TOKEN
-    - ATLAS_TOKEN
+elixir:
+  versions:
+    - 1.3.4
 
-  wtd:
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
-    - REGISTRY_AWS_KEY
-    - REGISTRY_AWS_SECRET
-    - FACEBOOK_APP_ID
-    - FACEBOOK_APP_SECRET
-    - BASIC_AUTH_USERNAME
-    - BASIC_AUTH_PASSWORD
-    - AWS_REGION
+erlang:
+  releases_dir: '{{ anyenv.envs_dir }}/erlenv/releases'
 
-font:
-  glob:
-    - '{{ dotfiles_path }}/app/font/*.otf'
-    - '{{ dotfiles_path }}/app/font/*.ttf'
+  versions:
+    - '19.1'
 
 golang:
   versions:
@@ -73,6 +57,7 @@ homebrew:
     - google-hangouts
     - google-japanese-ime
     - growlnotify
+    - hammerspoon
     - iterm2
     - karabiner
     - ngrok
@@ -92,7 +77,6 @@ homebrew:
     - homebrew/boneyard
     - homebrew/dupes
     - homebrew/science
-    - josegonzalez/php
     - supermomonga/homebrew-splhack
 
   packages:
@@ -110,13 +94,11 @@ homebrew:
     - { name: 'ctags-objc-ja', state: 'head', install_options: '--enable-japanese-support' }
     - { name: 'curl', install_options: '--with-ssl --with-libssh2' }
     - direnv
-    - elixir
     - eot-utils
     - fontconfig
     - fontforge
     - freetype
     - fswatch
-    - gcutil
     - gdb
     - gdbm
     - gettext
@@ -132,6 +114,7 @@ homebrew:
     - jo
     - jpeg
     - jq
+    - kubectl
     - libepoxy
     - libiconv
     - libpcap
@@ -140,7 +123,6 @@ homebrew:
     - lua
     - luajit
     - { name: 'macvim', state: 'head', install_options: '--with-luajit' }
-    - memcached
     - mercurial
     - mongodb
     - mysql
@@ -149,21 +131,19 @@ homebrew:
     - opencv
     - optipng
     - osquery
+    - packer
     - parallel
     - pcre
     - phantomjs
-    - php55
     - plantuml
     - postgresql
     - pstree
-    - python3
     - q
     - r  # require xquartz to be installed
     - ranger
     - redis
     - ruby-build
-    - sbt
-    - scala
+    - screenresolution
     - sqlite
     - terraform
     - the_silver_searcher
@@ -171,19 +151,18 @@ homebrew:
     - tmux
     - tree
     - typesafe-activator
-    - { name: 'vim', state: 'head', install_options: '--disable-nls --override-system-vi --with-luajit' }
+    - { name: 'vim', install_options: '--without-nls --with-override-system-vi --with-luajit' }
     - w3m
     - webkit2png
     - { name: 'wget', install_options: '--enable-iri' }
     - xctool
-    - zsh
 
 karabiner:
   private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'
 
   # You can export your settings by
   #
-  #   $ /Applications/Karabiner.app/Contents/Library/bin/karabiner export | grep '^$cli'
+  #   $ /Applications/Karabiner.app/Contents/Library/bin/karabiner export | awk '/^\$cli/ { print $3 ": " $4 }'
   #
   settings:
     option.emacsmode_controlAE: 1
@@ -200,9 +179,7 @@ karabiner:
     parameter.mousekey_initial_wait_of_scroll: 10
     parameter.mousekey_repeat_wait_of_pointer: 5
     parameter.mousekey_repeat_wait_of_scroll: 5
-    private.app_hotkey: 1
     private.app_macvim_esc_with_eisuu: 1
-    private.chrome: 1
     private.ctrl_semicolon_toggle_input_source: 1
     private.cv: 1
     private.jp_semicolon_eisuu: 1
@@ -222,7 +199,7 @@ karabiner:
     repeat.initial_wait: 200
     repeat.wait: 5
 
-launch_agent:
+launchagent:
   plist_dir: '{{ dotfiles_path }}/app/launch_agent'
 
 link:
@@ -234,6 +211,7 @@ link:
   config/coffeelintrc:                    .coffeelintrc
   config/ctags:                           .ctags
   config/curlrc:                          .curlrc
+  config/gocode/config.json:              .config/gocode/config.json
   config/lldbinit:                        .lldbinit
   config/pgclirc:                         .pgclirc
   config/ranger/colorschemes/original.py: .config/ranger/colorschemes/original.py
@@ -241,14 +219,15 @@ link:
   dotssh:                                 .dotssh
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
+  hammerspoon:                            .hammerspoon
   peco:                                   .peco
+  ruby/bundle/config:                     .bundle/config
   ruby/gemrc:                             .gemrc
   ruby/irbrc:                             .irbrc
   ruby/pryrc:                             .pryrc
   ruby/railsrc:                           .railsrc
   ruby/rbenv/default-gems:                .anyenv/envs/rbenv/default-gems
   ruby/rspec:                             .rspec
-  ruby/bundle/config:                     .bundle/config
   tmux/tmux.conf:                         .tmux.conf
   tmux:                                   .tmux
   vim/gvimrc:                             .gvimrc
@@ -318,12 +297,13 @@ nodejs:
 
 python:
   versions:
-    - 2.7.3
     - 3.5.0
+    - 2.7.3
 
   packages:
-    - { name: 'aws-shell', extra_args: '--ignore-installed six' }
     - awscli
+    - { name: 'aws-shell', extra_args: '--ignore-installed six' }
+    - cryptography
     - glances
     - locustio
     - misaka
@@ -334,8 +314,9 @@ python:
     - pyamf
     - pygments
     - tornado
+    - vim-vint
 
-r_lang:
+rlang:
   packages:
     - ggplot2
     - e1071
@@ -362,6 +343,13 @@ ruby:
     - ianheggie/rbenv-binstubs
     - sstephenson/rbenv-default-gems
     - sstephenson/rbenv-gem-rehash
+
+scala:
+  versions:
+    - scala-2.12.0
+
+  sbt_versions:
+    - sbt-0.13.13
 
 tex:
   texlive_path:       /usr/local/texlive

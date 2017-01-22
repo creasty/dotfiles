@@ -1,10 +1,10 @@
 - name: check jenv
   command: |
-    which jenv
+    bash -lc 'which jenv'
   register: which_jenv
   ignore_errors: yes
 
 - name: install jenv
   command: |
-    anyenv install jenv
+    bash -lc 'anyenv install jenv'
   when: which_jenv.rc > 0

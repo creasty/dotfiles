@@ -77,3 +77,60 @@ snippet dotenv
 		eval "$(cat .env | grep -v '^#')"
 		set +o allexport
 	fi
+
+snippet +section
+	section() {
+		printf "\e[33m==> \$1\e[0m\n"
+	}
+
+snippet +subsection
+	subsection() {
+		printf "\e[34m--> \$1\e[0m\n"
+	}
+
+snippet +ask
+	ask() {
+		echo -n "\$1"
+		read REPLY
+	}
+
+snippet +ask_for_confirmation
+	ask_for_confirmation() {
+		ask "\$1 [yN] "
+	}
+
+snippet +answer_is_yes
+	answer_is_yes() {
+		if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+			return 0
+		else
+			return 1
+		fi
+	}
+
+snippet +print_error
+	print_error() {
+		printf "\e[0;31m[Error]\e[0m $@\n" 1>&2
+	}
+
+snippet +print_success
+	print_success() {
+		printf "\e[0;32m[Success]\e[0m $@\n"
+	}
+
+snippet +print_info
+	print_info() {
+		printf "\e[0;34m[Info]\e[0m $@\n"
+	}
+
+snippet +print_status
+	print_status() {
+		if [ \$1 -eq 0 ]; then
+			print_success "\${2:-"OK"}"
+		else
+			print_info "\${2:-"Done with error"}"
+		fi
+	}
+
+snippet command
+	command -v "${0}"

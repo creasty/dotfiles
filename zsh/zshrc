@@ -1,22 +1,23 @@
-ZSH_CUSTOM=$HOME/.zsh
-
+#  Load
+#-----------------------------------------------
 zmodload -i zsh/mathfunc
 zmodload -i zsh/complist
 
-for file in $DOTFILES_PATH/zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
+source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+fpath=(
+  ~/.zsh/plugins/zsh-completions/src
+  ~/.zsh/completions
+  $fpath
+)
+
+autoload -Uz compinit
+compinit
+
+for file in ~/.zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
-
-
-#  Plugins
-#-----------------------------------------------
-source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-fpath=($ZSH_CUSTOM/zsh-completions/src $fpath)
-fpath=($ZSH_CUSTOM/completions $fpath)
-autoload -Uz compinit
-compinit
 
 
 #  Base
@@ -197,7 +198,8 @@ ZSH_HIGHLIGHT_STYLES[assign]=fg=yellow
 eval "$(direnv hook zsh)"
 
 
-#  Docker
+#  Anyenv
 #-----------------------------------------------
-# docker-machine create --driver virtualbox local
-# eval "$(docker-machine env local)"
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi

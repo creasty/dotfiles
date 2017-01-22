@@ -25,6 +25,13 @@ hook_post_update = '''
 repo    = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
 
+[[plugins]] # create your own text objects
+repo = 'kana/vim-textobj-user'
+
+[[plugins]] # text objects for multiple types of parentheses
+repo    = 'osyo-manga/vim-textobj-multiblock'
+depends = ['vim-textobj-user']
+
 [[plugins]] # adds text-objects for word-based columns
 repo = 'coderifous/textobj-word-column.vim'
 
@@ -41,23 +48,8 @@ on_map = {
   'v' = 'gc',
 }
 
-[[plugins]] # general quickrun-hook plugins
-repo = 'osyo-manga/shabadou.vim'
-
-[[plugins]] # update status line
-repo = 'KazuakiM/vim-qfstatusline'
-
-[[plugins]] # highlight quickfix errors
-repo = 'cohama/vim-hier'
-
-[[plugins]] # see quickfix, location list and Syntastic lists errors and warnings
-repo = 'dannyob/quickfixstatus'
-
-[[plugins]] # mark syntax error lines
-repo = 'KazuakiM/vim-qfsigns'
-
-[[plugins]] # async syntax checking
-repo = 'osyo-manga/vim-watchdogs'
+[[plugins]] # async :make and linting framework for neovim/vim
+repo = 'neomake/neomake'
 
 [[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'
@@ -65,11 +57,9 @@ repo = 'tmhedberg/matchit'
 [[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
 depends = ['smartchr', 'neocomplete.vim', 'neosnippet']
-# rev = '93cfcf83c72edf431f21f5a757201264eed97ae5'
 
 [[plugins]] # next generation of auto completion framework
 repo = 'Shougo/neocomplete.vim'
-# rev = '4dc8531e999f00e955f81248d6131132e6fe6917'
 
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
@@ -80,9 +70,6 @@ repo = 'creasty/mold.vim'
 
 #  Utils
 #-----------------------------------------------
-[[plugins]] # a Git wrapper so awesome
-repo = 'tpope/vim-fugitive'
-
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 

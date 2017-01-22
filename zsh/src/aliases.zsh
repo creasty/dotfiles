@@ -20,8 +20,6 @@ alias le='less -R'
 alias v='vim'
 alias vi='vim'
 alias vv='mvim'
-alias g='envchain crst git'
-alias ag="ag --pager='less -R'"
 
 alias sort='LC_ALL=C sort'
 
@@ -84,6 +82,9 @@ alias -s java='_run_java'
 
 #  Bin
 #-----------------------------------------------
+alias g='envchain crst git'
+alias ag="ag --pager='less -R'"
+
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
@@ -95,23 +96,29 @@ alias ev='envchain-enhanced'
 alias ne='npm-exec'
 alias gk='grep-kill'
 alias rdba='rake-db-migrate-all'
-alias maxscreen='screenresolution set 2560x1600x32@0'
-
-alias aart='java -jar ~/dotfiles/lib/jitac.jar'
 
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
+alias anv='ansible-vault'
+alias gl='glide'
 alias tex2pdf='ptex2pdf -l'
 alias ql='qlmanage -p "$@" >& /dev/null'
 alias mas='reattach-to-user-namespace mas'
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
 alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
+alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
 
 erd() {
   local cmd=$HOME/.cabal/bin/erd
-  $cmd -i "$1" -o "${1}.${2:-png}"
+  $cmd -i "$1" -o "${1/.er/}.${2:-png}"
 }
+
+compdef g='git'
+compdef va='vagrant'
+compdef an='ansible'
+compdef anp='ansible-playbook'
+compdef anv='ansible-vault'
 
 
 #  Networks
@@ -154,7 +161,6 @@ dk-open() {
   open "http://$(docker-machine ip local)$@"
 }
 
-
 #  Ruby / Rails
 #-----------------------------------------------
 alias b='bundle'
@@ -189,6 +195,9 @@ alias rs2='bundle exec rails s -p 3002'
 alias rs3='bundle exec rails s -p 3003'
 alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
+
+compdef b='bundle'
+compdef rk='rake'
 
 
 #  Play framework

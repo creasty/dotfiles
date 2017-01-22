@@ -1,0 +1,25 @@
+- name: create directories
+  file:
+    dest:  '{{ home_path }}/{{ item }}'
+    mode:  0700
+    state: directory
+  with_items:
+    - '.ssh'
+    - '.ssh/config.d'
+    - '.ssh/keys'
+
+- name: copy common config
+  copy:
+    src:  '{{ item }}'
+    dest: '{{ home_path }}/.ssh/config.d/'
+    mode: 0600
+  with_fileglob:
+    - '_*'
+
+- name: assemble config.d
+  assemble:
+    src:           '{{ home_path }}/.ssh/config.d'
+    dest:          '{{ home_path }}/.ssh/config'
+    mode:          0600
+    ignore_hidden: yes
+    delimiter:     "\n"

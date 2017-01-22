@@ -4,15 +4,20 @@
 
   vars:
     home_path:     '{{ lookup("env", "HOME") }}'
-    dotfiles_path: '{{ lookup("env", "HOME") }}/dotfiles'
+    dotfiles_path: '{{ home_path }}/dotfiles'
+
+  environment:
+    PATH: '/usr/local/bin:{{ lookup("env", "PATH") }}'
 
   roles:
     #  basic
     #-----------------------------------------------
     - role: link
       tags: ['basic', 'link']
-    - role: shell
-      tags: ['basic', 'shell']
+    - role: ssh
+      tags: ['basic', 'ssh']
+    - role: zsh
+      tags: ['basic', 'zsh']
 
     #  install
     #-----------------------------------------------
@@ -29,8 +34,8 @@
       tags: ['lang', 'ruby']
     - role: nodejs
       tags: ['lang', 'nodejs']
-    - role: r_lang
-      tags: ['lang', 'r_lang']
+    - role: rlang
+      tags: ['lang', 'rlang']
     - role: haskell
       tags: ['lang', 'haskell']
     - role: lua
@@ -41,9 +46,17 @@
       tags: ['lang', 'golang']
     - role: java
       tags: ['lang', 'java']
+    - role: erlang
+      tags: ['lang', 'erlang']
+    - role: elixir
+      tags: ['lang', 'elixir']
+    - role: scala
+      tags: ['lang', 'scala']
 
     #  app
     #-----------------------------------------------
+    - role: gcp
+      tags: ['app', 'gcp']
     - role: redis
       tags: ['app', 'redis']
     - role: vim
@@ -59,14 +72,7 @@
 
     #  system
     #-----------------------------------------------
-    - role: launch_agent
-      tags: ['system', 'launch_agent']
+    - role: launchagent
+      tags: ['system', 'launchagent']
     - role: osx
       tags: ['system', 'osx']
-
-    #  other
-    #-----------------------------------------------
-    - role: font
-      tags: ['other', 'font']
-    - role: envchain
-      tags: ['other', 'envchain']

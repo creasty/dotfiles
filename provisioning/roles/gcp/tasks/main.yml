@@ -1,0 +1,51 @@
+- name: check presence of a sdk directory
+  stat:
+    path: '{{ home_path }}/google-cloud-sdk'
+  register: sdk_stat
+
+- block:
+    - name: create a temporay directory
+      command: mktemp -d
+      register: mktemp
+
+    - name: download sdk
+      get_url:
+        url: https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
+        dest: '{{ mktemp.stdout }}/google-cloud-sdk.tar.gz'
+
+    - name: unarchive package
+      shell: |
+        if ! [ -d ./google-cloud-sdk ]; then
+          tar xzf google-cloud-sdk.tar.gz
+        fi
+      args:
+        chdir: '{{ mktemp.stdout }}'
+
+    - name: move
+      command: |
+        mv {{ mktemp.stdout | quote }}/google-cloud-sdk {{ home_path | quote }}/
+
+  always:
+    - name: delete tmp directory
+      file:
+        dest:  '{{ mktemp.stdout }}'
+        state: absent
+
+  when: not (sdk_stat.get('stat') and sdk_stat.stat.exists)
+
+- name: check presence of bin
+  stat:
+    path: '{{ home_path }}/google-cloud-sdk/bin/gcloud'
+  register: bin_stat
+
+- name: install
+  shell: |
+      bash ./install.sh \
+      --command-completion false \
+      --path-update false \
+      --usage-reporting false
+  args:
+    chdir: '{{ home_path }}/google-cloud-sdk'
+  environment:
+    CLOUDSDK_CORE_DISABLE_PROMPTS: 1
+  when: not (bin_stat.get('stat') and bin_stat.stat.exists)

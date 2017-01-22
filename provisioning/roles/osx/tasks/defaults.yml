@@ -7,7 +7,7 @@
     type:   int
     value:  1
 
-- name: general | increase window resize speed for Cocoa applications
+- name: general | increase window resize speed
   osx_defaults:
     domain: NSGlobalDomain
     key:    NSWindowResizeTime
@@ -28,7 +28,7 @@
     type:   bool
     value:  true
 
-- name: general | automatically quit printer app once the print jobs complete
+- name: general | automatically quit the printer app after complete
   osx_defaults:
     domain: com.apple.print.PrintingPrefs
     key:    'Quit When Finished'
@@ -49,14 +49,14 @@
     type:   string
     value:  none
 
-- name: general | disable smart quotes and dashes as they're annoying when typing code (1/2)
+- name: general | disable smart quotes
   osx_defaults:
     domain: NSGlobalDomain
     key:    NSAutomaticQuoteSubstitutionEnabled
     type:   bool
     value:  false
 
-- name: general | disable smart quotes and dashes as they're annoying when typing code (2/2)
+- name: general | disable smart dashes
   osx_defaults:
     domain: NSGlobalDomain
     key:    NSAutomaticDashSubstitutionEnabled
@@ -288,12 +288,12 @@
 
 #=== Dock
 #==============================================================================================
-- name: dock | set the icon size of Dock items to 25 pixels
+- name: dock | set the icon size of Dock items
   osx_defaults:
     domain: com.apple.dock
     key:    tilesize
     type:   float
-    value:  25.0
+    value:  16.0
 
 - name: dock | minimize windows into their application's icon
   osx_defaults:

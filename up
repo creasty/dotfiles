@@ -46,18 +46,22 @@ compare_versions() {
 #==============================================================================================
 print_header() {
   printf "\e[34m"
-  echo '------------------------------------------------------------------'
-  echo '                      __      __  _____ __                        '
-  echo '                 ____/ /___  / /_/ __(_) /__  _____               '
-  echo '                / __  / __ \/ __/ /_/ / / _ \/ ___/               '
-  echo '               / /_/ / /_/ / /_/ __/ / /  __(__  )                '
-  echo '               \__,_/\____/\__/_/ /_/_/\___/____/                 '
-  echo '                                                                  '
-  echo '                Harder, Better, Faster, Stronger                  '
-  echo '                                                                  '
-  echo '                  github.com/creasty/dotfiles                     '
-  echo '                                                                  '
-  echo '------------------------------------------------------------------'
+  echo '--------------------------------------------------------------------------------'
+  echo '                                                                                '
+  echo '                 888          888     .d888 d8b 888                             '
+  echo '                 888          888    d88P"  Y8P 888                             '
+  echo '                 888          888    888        888                             '
+  echo '             .d88888  .d88b.  888888 888888 888 888  .d88b.  .d8888b            '
+  echo '            d88" 888 d88""88b 888    888    888 888 d8P  Y8b 88K                '
+  echo '            888  888 888  888 888    888    888 888 88888888 "Y8888b.           '
+  echo '            Y88b 888 Y88..88P Y88b.  888    888 888 Y8b.          X88           '
+  echo '             "Y88888  "Y88P"   "Y888 888    888 888  "Y8888   88888P"           '
+  echo '                                                                                '
+  echo '                       Harder, Better, Faster, Stronger                         '
+  echo '                                                                                '
+  echo '                         github.com/creasty/dotfiles                            '
+  echo '                                                                                '
+  echo '--------------------------------------------------------------------------------'
   printf "\e[0m\n"
 }
 
@@ -83,17 +87,17 @@ clone_or_update_repo() {
   else
     echo 'Updating repo...'
 
-    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD)" != "master" ]; then
+    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD 2> /dev/null)" != "master" ]; then
       echo 'skip (working on a non-master branch)'
       return
     fi
 
-    if ! git diff --no-ext-diff --quiet --exit-code; then
+    if ! git --git-dir="$git_dir" diff --no-ext-diff --quiet --exit-code > /dev/null 2>&1; then
       echo 'skip (unstaged changes present)'
       return
     fi
 
-    if ! git diff-index --cached --quiet HEAD --; then
+    if ! git --git-dir="$git_dir" diff-index --cached --quiet HEAD -- > /dev/null 2>&1; then
       echo 'skip (uncommitted changes present)'
       return
     fi
@@ -146,7 +150,7 @@ install_homebrew() {
   command -v 'brew' > /dev/null 2>&1 && return
 
   echo 'Installing homebrew...'
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null
   echo 'done'
 }
 
