@@ -73,11 +73,9 @@ homebrew:
     - xquartz
 
   repositories:
-    # - creasty/homebrew-creasty
     - homebrew/boneyard
     - homebrew/dupes
     - homebrew/science
-    # - supermomonga/homebrew-splhack
 
   packages:
     - android-sdk
@@ -91,7 +89,6 @@ homebrew:
     - clisp
     - cloc
     - ctags
-    # - { name: 'ctags-objc-ja', state: 'head', install_options: '--enable-japanese-support' }
     - { name: 'curl', install_options: '--with-ssl --with-libssh2' }
     - direnv
     - eot-utils
