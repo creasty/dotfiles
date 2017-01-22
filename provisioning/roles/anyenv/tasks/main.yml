@@ -5,7 +5,7 @@
   file:
     dest:  ~/.anyenv
     state: absent
-  when: lookup("env", "CI") == "true"
+  when: is_ci
 
 - name: fetch anyenv repo
   git:
