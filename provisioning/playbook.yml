@@ -18,6 +18,7 @@
       tags: ['basic', 'ssh']
     - role: zsh
       tags: ['basic', 'zsh']
+      when: lookup("env", "CI") != "true"
 
     #  install
     #-----------------------------------------------
