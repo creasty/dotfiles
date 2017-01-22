@@ -14,7 +14,7 @@ env:
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
-  - echo -n "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+  - echo -n "$SSH_PRIVATE_KEY" | base64 -D > ~/.ssh/id_rsa
   - |
     ssh-keygen \
       -q \
