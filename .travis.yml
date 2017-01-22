@@ -11,11 +11,10 @@ branches:
 env:
   global:
     - DOTFILES_NOEDIT_SECRETS=1
-    - DOTFILES_BRANCH=ci
 
 before_script:
   - mkdir $HOME/dotfiles
-  - cp -r . $HOME/dotfiles
+  - ln -sf $PWD $HOME/dotfiles
 
 script:
-  - bash <(curl -L dotfiles.creasty.com/up)
+  - ./up

@@ -45,7 +45,7 @@
         dest: '{{ home_path }}/.ssh/id_rsa'
         mode: 0600
 
-    - name: create id_rsa
+    - name: add id_rsa
       command:
         ssh-add {{ home_path | quote }}/.ssh/id_rsa
 
