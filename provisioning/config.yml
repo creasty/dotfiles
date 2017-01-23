@@ -83,7 +83,6 @@ homebrew:
     - { name: 'awscli', state: 'head' }
     - batik
     - binutils
-    - cabal-install
     - chisel
     - clib
     - clisp
@@ -99,7 +98,6 @@ homebrew:
     - gdb
     - gdbm
     - gettext
-    - ghc
     - ghostscript
     - git
     - git-lfs
@@ -111,15 +109,11 @@ homebrew:
     - jo
     - jpeg
     - jq
-    - kubectl
     - libepoxy
     - libiconv
     - libpcap
     - libxml2
     - libxslt
-    - lua
-    - luajit
-    - { name: 'macvim', state: 'head', install_options: '--with-luajit' }
     - mercurial
     - mongodb
     - mysql
@@ -140,7 +134,6 @@ homebrew:
     - r  # require xquartz to be installed
     - ranger
     - redis
-    - ruby-build
     - screenresolution
     - sqlite
     - terraform
@@ -149,7 +142,6 @@ homebrew:
     - tmux
     - tree
     - typesafe-activator
-    - { name: 'vim', install_options: '--without-nls --with-override-system-vi --with-luajit' }
     - w3m
     - webkit2png
     - { name: 'wget', install_options: '--enable-iri' }

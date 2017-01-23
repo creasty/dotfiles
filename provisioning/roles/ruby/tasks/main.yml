@@ -24,11 +24,12 @@
     bash -lc 'rbenv versions'
   register: installed_versions
 
-- name: install dependencies
+- name: install dependency
   homebrew:
     name:  '{{ item }}'
     state: present
   with_items:
+    - ruby-build
     - openssl
     - readline
 
