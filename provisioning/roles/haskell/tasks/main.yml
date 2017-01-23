@@ -1,6 +1,14 @@
 - set_fact:
     haskell: {}
 
+- name: install dependency
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - cabal-install
+    - ghc
+
 - name: update cabal
   command: |
     cabal update

@@ -1,6 +1,12 @@
 - set_fact:
     anyenv: {}
 
+- name: remove ~/.anyenv
+  file:
+    dest:  ~/.anyenv
+    state: absent
+  when: is_ci
+
 - name: fetch anyenv repo
   git:
     repo: https://github.com/riywo/anyenv

@@ -1,3 +1,8 @@
+- name: install kubectl
+  homebrew:
+    name:  kubectl
+    state: present
+
 - name: check presence of a sdk directory
   stat:
     path: '{{ home_path }}/google-cloud-sdk'

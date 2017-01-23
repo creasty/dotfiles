@@ -24,9 +24,30 @@
     bash -lc 'rbenv versions'
   register: installed_versions
 
+- name: install dependency
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - ruby-build
+    - openssl
+    - readline
+
+- name: get openssl dir
+  command: |
+    brew --prefix openssl
+  register: openssl_dir
+
+- name: get readline dir
+  command: |
+    brew --prefix readline
+  register: readline_dir
+
 - name: install ruby
   command: |
     bash -lc 'rbenv install {{ item | quote }}'
+  environment:
+    RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }}'
   when: |
     ruby.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ ruby.versions }}'

@@ -3,7 +3,8 @@
 set -eu
 set -o pipefail
 
-DOTFILES_PATH="$HOME/dotfiles"
+: ${DOTFILES_PATH:="$HOME/dotfiles"}
+: ${DOTFILES_BRANCH:=master}
 
 ARGS=('')
 for a in "$@"; do
@@ -80,11 +81,7 @@ check_os() {
 clone_or_update_repo() {
   local git_dir="$DOTFILES_PATH/.git"
 
-  if ! [ -d "$git_dir" ]; then
-    echo 'Cloning repo...'
-    git clone --recursive git://github.com/creasty/dotfiles.git $DOTFILES_PATH
-    echo 'done'
-  else
+  if [ -d "$git_dir" ]; then
     echo 'Updating repo...'
 
     if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD 2> /dev/null)" != "master" ]; then
@@ -104,6 +101,10 @@ clone_or_update_repo() {
 
     git --git-dir="$git_dir" pull origin master
     git --git-dir="$git_dir" submodule sync
+    echo 'done'
+  elif ! [ -d "$DOTFILES_PATH" ]; then
+    echo 'Cloning repo...'
+    git clone --recursive git://github.com/creasty/dotfiles.git --branch $DOTFILES_BRANCH $DOTFILES_PATH
     echo 'done'
   fi
 }

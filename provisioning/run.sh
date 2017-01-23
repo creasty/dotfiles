@@ -15,7 +15,7 @@ done
 
 if ! [ -f ./secrets.yml ]; then
   cp ./secrets{.sample,}.yml
-  vim ./secrets.yml
+  [ "${DOTFILES_NOEDIT_SECRETS:-0}" -eq 0 ] && vim ./secrets.yml
 fi
 
 if [ -n "${TMUX:-}" ] && command -v $RTUN > /dev/null 2>&1; then

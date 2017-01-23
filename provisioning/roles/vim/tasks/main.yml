@@ -3,3 +3,23 @@
     repo:   https://github.com/Shougo/dein.vim
     dest:   '{{ dotfiles_path }}/vim/dein/repos/github.com/Shougo/dein.vim'
     update: False
+
+- name: install dependency
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - lua
+    - luajit
+
+- name: install macvim
+  homebrew:
+    name:            macvim
+    state:           present
+    install_options: '--with-luajit'
+
+- name: install vim
+  homebrew:
+    name:            vim
+    state:           present
+    install_options: '--without-nls --with-override-system-vi --with-luajit'

@@ -1,0 +1,25 @@
+language:  objective-c
+os:        osx
+osx_image: xcode7.3  # OS X 10.11 (https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
+
+sudo: required
+
+branches:
+  only:
+    - null # FIXME: to master
+
+env:
+  global:
+    - DOTFILES_NOEDIT_SECRETS=1
+    - SKIP_TAGS=zsh
+
+before_script:
+  - ln -sf $PWD $HOME/dotfiles
+
+  - echo -n "$SSH_PRIVATE_KEY" | base64 -D > ~/.ssh/id_rsa
+  - chmod 0600 ~/.ssh/id_rsa
+  - eval "$(ssh-agent -s)"
+  - ssh-add ~/.ssh/id_rsa
+
+script:
+  - ./up --skip-tags="$SKIP_TAGS" -vvvv

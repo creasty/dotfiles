@@ -31,7 +31,3 @@
     install_options: '{{ item.install_options | default("") }}'
   with_items: '{{ homebrew.packages }}'
   when: homebrew.packages
-
-- name: fix readline version
-  command: |
-    brew switch readline 6.3.8

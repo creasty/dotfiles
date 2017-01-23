@@ -1,6 +1,13 @@
 - set_fact:
     scala: {}
 
+- name: install dependency
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - typesafe-activator
+
 - name: check scalaenv
   command: |
     bash -lc 'which scalaenv'
