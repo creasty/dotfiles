@@ -85,7 +85,6 @@ homebrew:
     - binutils
     - chisel
     - clib
-    - clisp
     - cloc
     - ctags
     - { name: 'curl', install_options: '--with-ssl --with-libssh2' }
@@ -120,7 +119,6 @@ homebrew:
     - ngrep
     - nkf
     - opencv
-    - openssl
     - optipng
     - osquery
     - packer
@@ -141,7 +139,6 @@ homebrew:
     - tig
     - tmux
     - tree
-    - typesafe-activator
     - w3m
     - webkit2png
     - { name: 'wget', install_options: '--enable-iri' }

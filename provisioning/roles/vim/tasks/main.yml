@@ -15,9 +15,11 @@
 - name: install macvim
   homebrew:
     name:            macvim
+    state:           present
     install_options: '--with-luajit'
 
 - name: install vim
   homebrew:
     name:            vim
+    state:           present
     install_options: '--without-nls --with-override-system-vi --with-luajit'
