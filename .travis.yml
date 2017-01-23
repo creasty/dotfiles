@@ -22,4 +22,4 @@ before_script:
   - ssh-add ~/.ssh/id_rsa
 
 script:
-  - ./up --skip-tags="$SKIP_TAGS"
+  - ./up --skip-tags="$SKIP_TAGS" -vvv
