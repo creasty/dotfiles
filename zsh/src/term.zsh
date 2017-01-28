@@ -56,29 +56,31 @@ add-zsh-hook preexec title_preexec
 #  Nortify done
 #-----------------------------------------------
 local notify_prev_command=""
-local notify_prev_executed_at=""
 local notify_prev_timestamp=0
 
 notify_preexec() {
   notify_prev_command="$1"
-  notify_prev_executed_at="$(date +'%Y/%m/%d %H:%M:%S')"
   notify_prev_timestamp=`date +'%s'`
 }
 
 notify_precmd() {
   local code=$?
 
-  [ $notify_prev_timestamp -eq 0 ] && return
+  local command="$notify_prev_command"
+  local timestamp=$notify_prev_timestamp
+  notify_prev_command=""
+  notify_prev_timestamp=0
+
+  [ $timestamp -eq 0 ] && return
   [ $code -ne 130 ] && [ $code -ne 146 ] || return
   command -v 'envchain' > /dev/null 2>&1 || return
 
-  local now=`date +'%s'`
-  local elapsed_time=$(($now - $notify_prev_timestamp))
+  local elapsed_time=$((`date +'%s'` - $timestamp))
   [ $elapsed_time -gt 30 ] || return
 
   ruby -r json -e '
     begin
-      command, status, executed_at, elapsed_time = ARGV
+      command, status, elapsed_time = ARGV
       success = status.to_i.zero?
 
       {
@@ -95,17 +97,7 @@ notify_precmd() {
               },
               {
                 title: "hostname",
-                value: `hostname`,
-                short: true
-              },
-              {
-                title: "user",
-                value: ENV["USER"],
-                short: true
-              },
-              {
-                title: "executed at",
-                value: executed_at,
+                value: "%s@%s" % [ENV["USER"], `hostname`],
                 short: true
               },
               {
@@ -119,7 +111,7 @@ notify_precmd() {
       }.tap { |payload| puts payload.to_json }
     end
   ' \
-  "$notify_prev_command" "$code" "$notify_prev_executed_at" "$elapsed_time" \
+  "$command" "$code" "$elapsed_time" \
     | ( envchain crst slack-notifier & disown ) >/dev/null 2>&1 3>&1
 }
 
