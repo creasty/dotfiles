@@ -66,8 +66,9 @@ notify_preexec() {
 notify_precmd() {
   local code=$?
 
-  [ $TTYIDLE -gt 3 ] || return
+  [ $TTYIDLE -gt 30 ] || return
   [ $code -ne 130 ] && [ $code -ne 146 ] || return
+  command -v 'envchain' > /dev/null 2>&1 || return
 
   ruby -r json -e '
     begin
