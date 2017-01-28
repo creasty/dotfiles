@@ -96,7 +96,7 @@ notify_precmd() {
                 short: false
               },
               {
-                title: "hostname",
+                title: "computer",
                 value: "%s@%s" % [ENV["USER"], `hostname`],
                 short: true
               },
