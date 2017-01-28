@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+cat \
+  | jq -c . \
+  | curl \
+    -X POST \
+    "$SLACK_WEBHOOK_URL" \
+    -H 'Content-type: application/json' \
+    -d @-

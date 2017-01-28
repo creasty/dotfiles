@@ -49,33 +49,72 @@ title_preexec() {
   title '$cmd' '%100>...>$line%<<'
 }
 
-precmd_functions+=(title_precmd)
-preexec_functions+=(title_preexec)
+add-zsh-hook precmd title_precmd
+add-zsh-hook preexec title_preexec
 
 
 #  Nortify done
 #-----------------------------------------------
-local COMMAND=""
-local COMMAND_TIME=""
+local notify_prev_command=""
+local notify_prev_executed_at=""
+
+notify_preexec() {
+  notify_prev_command="$2"
+  notify_prev_executed_at="$(date +'%Y/%m/%d %H:%M:%S')"
+}
 
 notify_precmd() {
-  if [ "$COMMAND_TIME" -ne "0" ] ; then
-    local d=`date +%s`
-    d=`expr $d - $COMMAND_TIME`
-    if [ "$d" -ge "30" ] ; then
-      COMMAND="$COMMAND "
-      which growlnotify > /dev/null 2>&1 && growlnotify -t "${${(s: :)COMMAND}[1]}" -m "$COMMAND";
-    fi
-  fi
-  COMMAND="0"
-  COMMAND_TIME="0"
-}
-notify_preexec() {
-  COMMAND="${1}"
-  if [ "`perl -e 'print($ARGV[0]=~/ssh|^vi/)' $COMMAND`" -ne 1 ] ; then
-    COMMAND_TIME=`date +%s`
-  fi
+  local code=$?
+
+  [ $TTYIDLE -gt 3 ] || return
+  [ $code -ne 130 ] && [ $code -ne 146 ] || return
+
+  ruby -r json -e '
+    begin
+      command, status, executed_at, elapsed_time = ARGV
+      success = status.to_i.zero?
+
+      {
+        text: (success ? ":white_check_mark: Command finished: %s" : ":warning: Command failed: %s") % [command],
+        attachments: [
+          {
+            color: success ? "good" : "danger",
+            mrkdwn_in: ["fields"],
+            fields: [
+              {
+                title: "directory",
+                value: "`%s`" % [ENV["PWD"]],
+                short: false
+              },
+              {
+                title: "hostname",
+                value: `hostname`,
+                short: true
+              },
+              {
+                title: "user",
+                value: ENV["USER"],
+                short: true
+              },
+              {
+                title: "executed at",
+                value: executed_at,
+                short: true
+              },
+              {
+                title: "elapsed time",
+                value: "%d seconds" % [elapsed_time.to_i],
+                short: true
+              }
+            ]
+          }
+        ]
+      }.tap { |payload| puts payload.to_json }
+    end
+  ' \
+  "$notify_prev_command" "$code" "$notify_prev_executed_at" "$TTYIDLE" \
+    | ( envchain crst slack-notifier & disown ) >/dev/null 2>&1 3>&1
 }
 
-precmd_functions+=(notify_precmd)
-preexec_functions+=(notify_preexec)
+add-zsh-hook precmd notify_precmd
+add-zsh-hook preexec notify_preexec
