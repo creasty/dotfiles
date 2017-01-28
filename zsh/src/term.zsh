@@ -60,7 +60,7 @@ local notify_prev_executed_at=""
 local notify_prev_timestamp=0
 
 notify_preexec() {
-  notify_prev_command="$2"
+  notify_prev_command="$1"
   notify_prev_executed_at="$(date +'%Y/%m/%d %H:%M:%S')"
   notify_prev_timestamp=`date +'%s'`
 }
