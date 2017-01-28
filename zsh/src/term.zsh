@@ -57,18 +57,24 @@ add-zsh-hook preexec title_preexec
 #-----------------------------------------------
 local notify_prev_command=""
 local notify_prev_executed_at=""
+local notify_prev_timestamp=0
 
 notify_preexec() {
   notify_prev_command="$2"
   notify_prev_executed_at="$(date +'%Y/%m/%d %H:%M:%S')"
+  notify_prev_timestamp=`date +'%s'`
 }
 
 notify_precmd() {
   local code=$?
 
-  [ $TTYIDLE -gt 30 ] || return
+  [ $notify_prev_timestamp -eq 0 ] && return
   [ $code -ne 130 ] && [ $code -ne 146 ] || return
   command -v 'envchain' > /dev/null 2>&1 || return
+
+  local now=`date +'%s'`
+  local elapsed_time=$(($now - $notify_prev_timestamp))
+  [ $elapsed_time -gt 30 ] || return
 
   ruby -r json -e '
     begin
@@ -113,7 +119,7 @@ notify_precmd() {
       }.tap { |payload| puts payload.to_json }
     end
   ' \
-  "$notify_prev_command" "$code" "$notify_prev_executed_at" "$TTYIDLE" \
+  "$notify_prev_command" "$code" "$notify_prev_executed_at" "$elapsed_time" \
     | ( envchain crst slack-notifier & disown ) >/dev/null 2>&1 3>&1
 }
 
