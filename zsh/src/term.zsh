@@ -84,7 +84,11 @@ notify_precmd() {
       success = status.to_i.zero?
 
       {
-        text: (success ? ":white_check_mark: Command finished: %s" : ":warning: Command failed: %s") % [command],
+        text: "%s %s: ```%s```" % [
+          (success ? ":white_check_mark:" : ":warning:"),
+          (success ? "Command finished" : "Command failed"),
+          command,
+        ],
         attachments: [
           {
             color: success ? "good" : "danger",
