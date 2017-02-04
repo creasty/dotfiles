@@ -170,10 +170,15 @@ nmap <C-w><C-c> <Nop>
 nnoremap <C-w>c <Nop>
 
 nmap <C-w><C-d> <C-w>d
-nnoremap <C-w>d :close<CR>
+nnoremap <C-w>d :quit<CR>
 
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
+
+if g:env.is_gui
+  nmap <C-w><C-o> <C-w>o
+  nnoremap <C-w>o :maca newWindow:<CR>
+end
 
 " tmux
 nmap <C-s> <C-w>

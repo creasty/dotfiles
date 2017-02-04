@@ -43,11 +43,12 @@ nmap <ScrollWheelRight> <nop>
 nmap <S-ScrollWheelRight> <nop>
 nmap <C-ScrollWheelRight> <nop>
 
-" use option as meta key
-set macmeta
-
 " make tabs more readable
 set guitablabel=%N\ %t%M
+
+" new window menu
+menu File.New\ Window <Nop>
+macm File.New\ Window action=newWindow: key=<D-n>
 
 " send print jobs to Preview.app
 set printexpr=system('open\ -a\ Preview\ '.v:fname_in)\ +\ v:shell_error
