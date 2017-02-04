@@ -12,14 +12,14 @@
     - lua
     - luajit
 
-- name: install macvim
-  homebrew:
-    name:            macvim
-    state:           present
-    install_options: '--with-luajit --with-python3'
-
 - name: install vim
   homebrew:
     name:            vim
     state:           present
-    install_options: '--without-nls --with-override-system-vi --with-luajit --with-python3'
+    install_options: '--without-nls --with-override-system-vi --with-lua --with-luajit --with-python3'
+
+- name: install macvim
+  homebrew:
+    name:            macvim
+    state:           present
+    install_options: '--with-lua --with-luajit --with-python3'
