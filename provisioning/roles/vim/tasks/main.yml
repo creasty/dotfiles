@@ -23,3 +23,10 @@
     name:            macvim
     state:           present
     install_options: '--with-lua --with-luajit --with-python3'
+
+- name: link macvim
+  file:
+    src:   /usr/local/opt/macvim/MacVim.app
+    dest:  '{{ home_path }}/Applications/MacVim.app'
+    state: link
+    force: yes
