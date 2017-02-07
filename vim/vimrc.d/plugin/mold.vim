@@ -19,7 +19,7 @@ function! s:template_after_load()
     silent exec '%s/\<' . l:macro . '\>/' . l:def . '/ge'
   endfor
 
-  silent! :!erb -T '-'
+  " silent! read !erb -T '-'  " FIXME
 
   if search('<+CURSOR+>')
     execute 'normal! "_da>'
