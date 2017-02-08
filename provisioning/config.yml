@@ -124,7 +124,6 @@ homebrew:
     - pcre
     - phantomjs
     - plantuml
-    - postgresql
     - pstree
     - q
     - ranger

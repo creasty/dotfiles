@@ -139,7 +139,6 @@ ipf() {
 #  Servers
 #-----------------------------------------------
 alias redis-server='redis-server /usr/local/etc/redis.conf'
-alias pg-server='pg_ctl -D /usr/local/var/postgres start -l /dev/null'
 
 rbserver() {
   local port=${1:-5000}

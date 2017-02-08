@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+NAME=global_postgres
+IMAGE=postgres:9.6.1-alpine
+
+docker rm $NAME 2> /dev/null || true
+
+docker run \
+  -p 5432:5432 \
+  --name $NAME \
+  -e POSTGRES_USER=$USER \
+  -e POSTGRES_PASSWORD= \
+  -v ~/docker/postgres:/var/lib/postgresql/data \
+  -d \
+  $IMAGE
+
+# docker exec -it $NAME psql --username=postgres
+# docker exec -it $NAME createdb --username=postgres $DB
