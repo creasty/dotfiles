@@ -93,6 +93,7 @@ homebrew:
     - name: 'curl'        # Get a file from an HTTP, HTTPS or FTP server
       install_options: '--with-ssl --with-libssh2'
     - direnv              # Load/unload environment variables based on $PWD
+    - envchain            # Secure your credentials in environment variables
     - eot-utils           # Tools to convert fonts from OTF/TTF to EOT format
     - fontconfig          # XML-based font configuration API for X Windows
     - fontforge           # Command-line outline and bitmap font editor/converter
@@ -106,7 +107,6 @@ homebrew:
     - git-lfs             # Git extension for versioning large files
     - gpg                 # GNU Privacy Guard: a free PGP replacement
     - graphviz            # Graph visualization software from AT&T and Bell Labs
-    - envchain            # Secure your credentials in environment variables
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
