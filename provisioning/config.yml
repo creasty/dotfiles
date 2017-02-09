@@ -125,7 +125,6 @@ homebrew:
     - pstree
     - q
     - ranger
-    - redis
     - screenresolution
     - sqlite
     - terraform

@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#> redis-server <command>
+#>
+#> COMMANDS:
+#>     redis-server start
+#>     redis-server stop
+#>     redis-server destroy
+#>     redis-server cli
+
+set -eu
+set -o pipefail
+
+__FILE__="$(dirname $0)/$(basename $0)"
+
+NAME=the_redis
+IMAGE=redis:3.0.7-alpine
+
+
+#  Utils
+#-----------------------------------------------
+do_help() {
+  cat "$__FILE__" \
+    | grep '^#>' \
+    | sed -e 's/#> //g' -e 's/#>//g'
+  exit 0
+}
+
+
+#  Commands
+#-----------------------------------------------
+server_stop() {
+  echo "==> Stopping server"
+  docker stop $NAME
+}
+
+server_start() {
+  echo "==> Starting server"
+  docker start $NAME || server_create
+}
+
+server_destory() {
+  echo "==> Destroying server"
+  docker rm $NAME
+}
+
+server_create() {
+  echo "==> Creating server"
+  docker run \
+    -p 6379:6379 \
+    --name $NAME \
+    -v ~/docker/redis:/data \
+    -d \
+    $IMAGE
+}
+
+exec_cli() {
+  docker exec -it $NAME redis-cli
+}
+
+exec_telnet() {
+  telnet localhost 6379
+}
+
+
+#  Entrypoint
+#-----------------------------------------------
+COMMAND="${1:-}"
+shift || true
+
+case "$COMMAND" in
+  start)
+    server_start
+    ;;
+  stop)
+    server_stop
+    ;;
+  destroy)
+    server_destory
+    ;;
+  cli)
+    exec_cli
+    ;;
+  cli)
+    exec_telnet
+    ;;
+  *)
+    do_help
+    ;;
+esac
