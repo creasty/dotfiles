@@ -57,11 +57,11 @@ server_create() {
 }
 
 exec_psql() {
-  docker exec -it $NAME psql --username=postgres
+  docker exec -it $NAME psql --username=$USER
 }
 
 exec_createdb() {
-  docker exec -it $NAME createdb --username=postgres "$1"
+  docker exec -it $NAME createdb --username=$USER "$1"
 }
 
 
