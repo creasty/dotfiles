@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-#> pg-server <command>
+#> mysql-server <command>
 #>
 #> COMMANDS:
-#>     pg-server start
-#>     pg-server stop
-#>     pg-server destroy
-#>     pg-server psql
-#>     pg-server createdb $dbname
+#>     mysql-server start
+#>     mysql-server stop
+#>     mysql-server destroy
+#>     mysql-server psql
+#>     mysql-server createdb $dbname
 
 set -eu
 set -o pipefail
 
 __FILE__="$(dirname $0)/$(basename $0)"
 
-NAME=the_postgres
-IMAGE=postgres:9.6.1-alpine
+NAME=the_mysql
+IMAGE=mysql:8.0
 
 
 #  Utils
@@ -47,21 +47,12 @@ server_destory() {
 server_create() {
   echo "==> Creating server"
   docker run \
-    -p 5432:5432 \
+    -p 3306:3306 \
     --name $NAME \
-    -e POSTGRES_USER=$USER \
-    -e POSTGRES_PASSWORD= \
-    -v ~/docker/postgres:/var/lib/postgresql/data \
+    -e MYSQL_ROOT_PASSWORD= \
+    -v ~/docker/mysql:/var/lib/mysql \
     -d \
     $IMAGE
-}
-
-exec_psql() {
-  docker exec -it $NAME psql --username=$USER
-}
-
-exec_createdb() {
-  docker exec -it $NAME createdb --username=$USER "$1"
 }
 
 
@@ -79,12 +70,6 @@ case "$COMMAND" in
     ;;
   destroy)
     server_destory
-    ;;
-  psql)
-    exec_psql
-    ;;
-  createdb)
-    exec_createdb "$1"
     ;;
   *)
     do_help

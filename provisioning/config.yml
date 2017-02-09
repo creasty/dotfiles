@@ -112,8 +112,6 @@ homebrew:
     - libxml2
     - libxslt
     - mercurial
-    - mongodb
-    - mysql
     - ngrep
     - nkf
     - opencv
