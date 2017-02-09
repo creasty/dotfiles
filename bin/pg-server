@@ -2,18 +2,18 @@
 #> pg-server <command>
 #>
 #> COMMANDS:
-#>     pg_server start
-#>     pg_server stop
-#>     pg_server destroy
-#>     pg_server psql
-#>     pg_server createdb $dbname
+#>     pg-server start
+#>     pg-server stop
+#>     pg-server destroy
+#>     pg-server psql
+#>     pg-server createdb $dbname
 
 set -eu
 set -o pipefail
 
 __FILE__="$(dirname $0)/$(basename $0)"
 
-NAME=global_postgres
+NAME=the_postgres
 IMAGE=postgres:9.6.1-alpine
 
 
@@ -31,17 +31,17 @@ do_help() {
 #-----------------------------------------------
 server_stop() {
   echo "==> Stopping server"
-  docker stop $NAME 2> /dev/null || true
+  docker stop $NAME || true
 }
 
 server_start() {
   echo "==> Starting server"
-  docker start $NAME 2> /dev/null || server_run
+  docker start $NAME || server_create
 }
 
 server_destory() {
   echo "==> Destroying server"
-  docker rm $NAME 2> /dev/null || true
+  docker rm $NAME || true
 }
 
 server_create() {
