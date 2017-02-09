@@ -114,12 +114,6 @@ erd() {
   $cmd -i "$1" -o "${1/.er/}.${2:-png}"
 }
 
-compdef g='git'
-compdef va='vagrant'
-compdef an='ansible'
-compdef anp='ansible-playbook'
-compdef anv='ansible-vault'
-
 
 #  Networks
 #-----------------------------------------------
@@ -194,9 +188,6 @@ alias rs2='bundle exec rails s -p 3002'
 alias rs3='bundle exec rails s -p 3003'
 alias rs4='bundle exec rails s -p 3004'
 alias rs5='bundle exec rails s -p 3005'
-
-compdef b='bundle'
-compdef rk='rake'
 
 
 #  Play framework
