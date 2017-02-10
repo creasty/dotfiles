@@ -10,8 +10,6 @@
 set -eu
 set -o pipefail
 
-__FILE__="$(dirname $0)/$(basename $0)"
-
 NAME=the_redis
 IMAGE=redis:3.0.7-alpine
 
@@ -19,7 +17,7 @@ IMAGE=redis:3.0.7-alpine
 #  Utils
 #-----------------------------------------------
 do_help() {
-  cat "$__FILE__" \
+  cat "$0" \
     | grep '^#>' \
     | sed -e 's/#> //g' -e 's/#>//g'
   exit 0
