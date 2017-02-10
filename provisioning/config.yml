@@ -106,7 +106,8 @@ homebrew:
     - git                 # Distributed revision control system
     - git-lfs             # Git extension for versioning large files
     - gpg                 # GNU Privacy Guard: a free PGP replacement
-    - graphviz            # Graph visualization software from AT&T and Bell Labs
+    - name: 'graphviz'    # Graph visualization software from AT&T and Bell Labs
+      install_options: '--with-pango'
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
