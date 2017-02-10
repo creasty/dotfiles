@@ -132,5 +132,13 @@ snippet +print_status
 		fi
 	}
 
+snippet +help
+	help() {
+		cat "\$0" \
+			| grep '^#>' \
+			| sed -e 's/#> //g' -e 's/#>//g'
+		exit 0
+	}${0}
+
 snippet command
 	command -v "${0}"
