@@ -80,7 +80,7 @@ case "$COMMAND" in
   cli)
     exec_cli
     ;;
-  cli)
+  telnet)
     exec_telnet
     ;;
   *)
