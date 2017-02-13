@@ -25,23 +25,19 @@ golang:
 
   packages:
     - bitbucket.org/liamstask/goose/cmd/goose
-    - github.com/b4b4r07/gomi
-    - github.com/codegangsta/gin
+    - github.com/Masterminds/glide
     - github.com/golang/lint/golint
-    - github.com/govend/govend
     - github.com/laurent22/massren
     - github.com/motemen/ghq
     - github.com/nsf/gocode
     - github.com/peco/peco/cmd/peco
     - github.com/rakyll/boom
     - golang.org/x/tools/cmd/gotype
-    - github.com/Masterminds/glide
 
 haskell:
   packages:
     - cabal-install
     - erd
-    - pandoc
 
 homebrew:
   applications:
