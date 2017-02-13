@@ -45,7 +45,7 @@ server_create() {
   docker run \
     -p 3306:3306 \
     --name $NAME \
-    -e MYSQL_ROOT_PASSWORD= \
+    -e MYSQL_ROOT_PASSWORD=password \
     -v ~/docker/mysql:/var/lib/mysql \
     -d \
     $IMAGE
