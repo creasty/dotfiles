@@ -195,6 +195,7 @@ link:
   config/curlrc:                          .curlrc
   config/gocode/config.json:              .config/gocode/config.json
   config/lldbinit:                        .lldbinit
+  config/peco:                            .peco
   config/pgclirc:                         .pgclirc
   config/ranger/colorschemes/original.py: .config/ranger/colorschemes/original.py
   config/ranger/rc.conf:                  .config/ranger/rc.conf
@@ -202,7 +203,6 @@ link:
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
   hammerspoon:                            .hammerspoon
-  peco:                                   .peco
   ruby/bundle/config:                     .bundle/config
   ruby/gemrc:                             .gemrc
   ruby/irbrc:                             .irbrc
