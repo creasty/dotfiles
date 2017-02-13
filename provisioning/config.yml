@@ -104,8 +104,8 @@ homebrew:
     - gpg                 # GNU Privacy Guard: a free PGP replacement
     - name: 'graphviz'    # Graph visualization software from AT&T and Bell Labs
       install_options: '--with-pango'
-    - imagemagick         # Tools and libraries to manipulate images in many formats
     - icu4c               # C/C++ and Java libraries for Unicode and globalization
+    - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
     - jpeg                # Image manipulation library
