@@ -336,8 +336,7 @@ tex:
   texlive_texmr_path: /usr/local/texlive/texmf-local
 
 vagrant:
-  boxes:
-    centos70: https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box
+  boxes: {}
 
   plugins:
     - sahara
