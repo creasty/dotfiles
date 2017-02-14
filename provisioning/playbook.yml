@@ -58,8 +58,6 @@
     #-----------------------------------------------
     - role: gcp
       tags: ['app', 'gcp']
-    - role: redis
-      tags: ['app', 'redis']
     - role: vim
       tags: ['app', 'vim']
     - role: tex

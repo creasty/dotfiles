@@ -1,5 +1,0 @@
-- name: daemonize redis
-  lineinfile:
-    dest:   /usr/local/etc/redis.conf
-    regexp: '^daemonize'
-    line:   'daemonize yes'
