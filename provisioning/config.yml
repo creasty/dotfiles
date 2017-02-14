@@ -278,7 +278,8 @@ python:
 
   packages:
     - awscli
-    - { name: 'aws-shell', extra_args: '--ignore-installed six' }
+    - name: 'aws-shell'
+      extra_args: '--ignore-installed six'
     - cryptography
     - glances
     - locustio
