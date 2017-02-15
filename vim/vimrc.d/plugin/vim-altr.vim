@@ -18,7 +18,7 @@ function! s:altr_on_source() abort
 
   " Frontend
   call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
-  call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade')
+  call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade', '%.ace')
 
   " Golang
   call altr#define('%.go', '%_test.go', '%_ex_test.go')
