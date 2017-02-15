@@ -14,7 +14,7 @@ fpath=(
 autoload -Uz compinit
 compinit
 
-for file in ~/.zsh/src/{exports,aliases,functions,prompt,term}.zsh; do
+for file in ~/.zsh/src/{functions,prompt,term}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
@@ -196,10 +196,3 @@ ZSH_HIGHLIGHT_STYLES[assign]=fg=yellow
 #  Direnv
 #-----------------------------------------------
 eval "$(direnv hook zsh)"
-
-
-#  Anyenv
-#-----------------------------------------------
-if [ -d $HOME/.anyenv ]; then
-  eval "$(anyenv init -)"
-fi

@@ -1,6 +1,13 @@
-export DOTFILES_PATH="$HOME/dotfiles"
-
+#  Load
+#-----------------------------------------------
 for file in ~/.zsh/src/{exports,aliases}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
+
+
+#  Anyenv
+#-----------------------------------------------
+if [ -d $HOME/.anyenv ]; then
+  eval "$(anyenv init -)"
+fi
