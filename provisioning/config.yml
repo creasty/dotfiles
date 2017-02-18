@@ -277,14 +277,10 @@ python:
     - '2.7.3'
 
   packages:
-    - awscli
-    - name: 'aws-shell'
-      extra_args: '--ignore-installed six'
     - cryptography
     - glances
     - locustio
     - misaka
-    - mitmproxy
     - numpy
     - pgcli
     - protobuf
@@ -340,3 +336,11 @@ vagrant:
     - sahara
     - dotenv
     - vagrant-share
+
+whalebrew:
+  version: '0.0.4'
+  bin_path: /usr/local/bin/whalebrew
+
+  packages:
+    - whalebrew/awscli
+    - whalebrew/mitmproxy

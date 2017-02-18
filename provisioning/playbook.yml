@@ -24,6 +24,8 @@
     #-----------------------------------------------
     - role: homebrew
       tags: ['install', 'homebrew']
+    - role: whalebrew
+      tags: ['install', 'whalebrew']
     - role: mas
       tags: ['install', 'mas']
     - role: anyenv
