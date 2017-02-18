@@ -119,7 +119,6 @@ homebrew:
     - nkf                 # Network Kanji code conversion Filter (NKF)
     - optipng             # PNG file optimizer
     - osquery             # SQL powered operating system instrumentation and analytics
-    - packer              # Tool for creating identical machine images for multiple platforms
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
     - phantomjs           # Headless WebKit scriptable with a JavaScript API
@@ -344,3 +343,4 @@ whalebrew:
   packages:
     - whalebrew/awscli
     - whalebrew/mitmproxy
+    - whalebrew/packer
