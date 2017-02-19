@@ -62,8 +62,8 @@
       tags: ['app', 'gcp']
     - role: vim
       tags: ['app', 'vim']
-    - role: tex
-      tags: ['app', 'tex']
+    # - role: tex
+    #   tags: ['app', 'tex']
     - role: vagrant
       tags: ['app', 'vagrant']
     - role: karabiner
