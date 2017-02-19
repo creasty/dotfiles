@@ -144,6 +144,15 @@ dk-open() {
   open "http://$(docker-machine ip local)$@"
 }
 
+
+#  Google Cloud SDK
+#-----------------------------------------------
+alias gcloud='google-cloud-sdk gcloud'
+alias gsutil='google-cloud-sdk gsutil'
+alias bq='google-cloud-sdk bq'
+alias kubectl='google-cloud-sdk kubectl'
+
+
 #  Ruby / Rails
 #-----------------------------------------------
 alias b='bundle'
