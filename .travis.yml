@@ -2,9 +2,6 @@ language:  objective-c
 os:        osx
 osx_image: xcode7.3  # OS X 10.11 (https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
 
-services:
-  - docker
-
 sudo: required
 
 branches:
@@ -14,7 +11,7 @@ branches:
 env:
   global:
     - DOTFILES_NOEDIT_SECRETS=1
-    - SKIP_TAGS=zsh,ruby
+    - SKIP_TAGS=whalebrew,zsh,ruby
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
