@@ -110,8 +110,7 @@ alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
 
 erd() {
-  local cmd=$HOME/.cabal/bin/erd
-  $cmd -i "$1" -o "${1/.er/}.${2:-png}"
+  docker run -it -v "$(pwd)":/workdir -w /workdir creasty/erd -i "$1" -o "${1/.er/}.${2:-png}"
 }
 
 

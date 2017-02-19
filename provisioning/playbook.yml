@@ -37,14 +37,14 @@
       tags: ['lang', 'ruby']
     - role: nodejs
       tags: ['lang', 'nodejs']
-    - role: haskell
-      tags: ['lang', 'haskell']
     - role: lua
       tags: ['lang', 'lua']
     - role: python
       tags: ['lang', 'python']
     - role: golang
       tags: ['lang', 'golang']
+    # - role: haskell
+    #   tags: ['lang', 'haskell']
     # - role: rlang
     #   tags: ['lang', 'rlang']
     # - role: java
