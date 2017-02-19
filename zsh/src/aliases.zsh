@@ -110,8 +110,7 @@ alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
 
 erd() {
-  local cmd=$HOME/.cabal/bin/erd
-  $cmd -i "$1" -o "${1/.er/}.${2:-png}"
+  $DOTFILES_PATH/bin/erd -i "$1" -o "${1/.er/}.${2:-png}"
 }
 
 
@@ -144,6 +143,15 @@ dk-clean() {
 dk-open() {
   open "http://$(docker-machine ip local)$@"
 }
+
+
+#  Google Cloud SDK
+#-----------------------------------------------
+alias gcloud='google-cloud-sdk gcloud'
+alias gsutil='google-cloud-sdk gsutil'
+alias bq='google-cloud-sdk bq'
+alias kubectl='google-cloud-sdk kubectl'
+
 
 #  Ruby / Rails
 #-----------------------------------------------
