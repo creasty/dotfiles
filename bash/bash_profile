@@ -25,24 +25,36 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # anyenv
 export ANYENV_DIR=$HOME/.anyenv
 
-# path
+# tmux
+export TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
+
+
+#  Search path
+#-----------------------------------------------
+# local
 export PATH=/usr/local/bin:$PATH
 
+# anyenv
 export PATH=$ANYENV_DIR/bin:$PATH
-for c in rbenv ndenv jenv luaenv pyenv goenv erlenv exenv hsenv sbtenv scalaenv; do
-  export PATH=$ANYENV_DIR/envs/$c/shims:$PATH
-done
 
+# dotfiles
 export PATH=$DOTFILES_PATH/bin:$PATH
+
+# golang
 export PATH=$PATH:$GOPATH/bin
+
+# heroku
 export PATH=$PATH:/usr/local/heroku/bin
+
+# haskell
 export PATH=$PATH:$HOME/.cabal/bin
+
+# tex
 export PATH=$PATH:$TEXLIVE_BIN_PATH
 
 
 #  Git
 #-----------------------------------------------
-# no need to edit merge commit message, bitch
 export GIT_MERGE_AUTOEDIT='no'
 
 

@@ -25,28 +25,39 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # anyenv
 export ANYENV_DIR=$HOME/.anyenv
 
-# path
+# tmux
+export TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
+
+
+#  Search path
+#-----------------------------------------------
+# local
 export PATH=/usr/local/bin:$PATH
+
+# anyenv
 export PATH=$ANYENV_DIR/bin:$PATH
+
+# dotfiles
 export PATH=$DOTFILES_PATH/bin:$PATH
+
+# golang
 export PATH=$PATH:$GOPATH/bin
+
+# heroku
 export PATH=$PATH:/usr/local/heroku/bin
+
+# haskell
 export PATH=$PATH:$HOME/.cabal/bin
+
+# tex
 export PATH=$PATH:$TEXLIVE_BIN_PATH
-export PATH=$PATH:$HOME/google-cloud-sdk/bin
 
 
 #  Git
 #-----------------------------------------------
-# no need to edit merge commit message, bitch
 export GIT_MERGE_AUTOEDIT='no'
 
 
 #  Rails
 #-----------------------------------------------
 export DISABLE_SPRING=1
-
-
-#  Tmux
-#-----------------------------------------------
-export TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
