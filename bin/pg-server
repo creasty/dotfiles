@@ -7,6 +7,7 @@
 #>     pg-server destroy
 #>     pg-server psql
 #>     pg-server createdb $dbname
+#>     pg-server ping
 
 set -eu
 set -o pipefail
@@ -62,6 +63,15 @@ exec_createdb() {
   docker exec -it $NAME createdb --username=$USER "$1"
 }
 
+exec_ping() {
+  docker exec -it $NAME psql --username=$USER -c 'select 1;' 2>&1 > /dev/null
+  if [ $? -eq 0 ]; then
+    echo 'running'
+  else
+    echo 'not running'
+  fi
+}
+
 
 #  Entrypoint
 #-----------------------------------------------
@@ -83,6 +93,9 @@ case "$COMMAND" in
     ;;
   createdb)
     exec_createdb "$1"
+    ;;
+  ping)
+    exec_ping
     ;;
   *)
     do_help
