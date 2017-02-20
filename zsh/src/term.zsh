@@ -76,7 +76,7 @@ notify_precmd() {
   command -v 'envchain' > /dev/null 2>&1 || return
 
   local elapsed_time=$((`date +'%s'` - $timestamp))
-  [ $elapsed_time -gt 3 ] || return
+  [ $elapsed_time -gt 30 ] || return
 
   if [ $code -eq 0 ]; then
     command="✅ $command"
