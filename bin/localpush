@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+RTUN='reattach-to-user-namespace'
+CMD=('osascript')
+if [ -n "${TMUX:-}" ] && command -v $RTUN > /dev/null 2>&1; then
+  CMD=($RTUN ${CMD[@]})
+fi
+
+ruby -r json -e '
+  title, desc = ARGV
+  script = "display notification %s" % [desc.to_json]
+  script << " with title %s" % [title.to_json] if title
+  puts script
+' "$1" "${2:-}" | ${CMD[@]}

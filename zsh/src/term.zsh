@@ -76,47 +76,15 @@ notify_precmd() {
   command -v 'envchain' > /dev/null 2>&1 || return
 
   local elapsed_time=$((`date +'%s'` - $timestamp))
-  [ $elapsed_time -gt 30 ] || return
+  [ $elapsed_time -gt 3 ] || return
 
-  ruby -r json -e '
-    begin
-      command, status, elapsed_time = ARGV
-      success = status.to_i.zero?
+  if [ $code -eq 0 ]; then
+    command="✅ $command"
+  else
+    command="⚠️ $command"
+  fi
 
-      {
-        text: "%s %s: ```%s```" % [
-          (success ? ":white_check_mark:" : ":warning:"),
-          (success ? "Command finished" : "Command failed"),
-          command,
-        ],
-        attachments: [
-          {
-            color: success ? "good" : "danger",
-            mrkdwn_in: ["fields"],
-            fields: [
-              {
-                title: "directory",
-                value: "`%s`" % [ENV["PWD"]],
-                short: false
-              },
-              {
-                title: "computer",
-                value: "%s@%s" % [ENV["USER"], `hostname`],
-                short: true
-              },
-              {
-                title: "elapsed time",
-                value: "%d seconds" % [elapsed_time.to_i],
-                short: true
-              }
-            ]
-          }
-        ]
-      }.tap { |payload| puts payload.to_json }
-    end
-  ' \
-  "$command" "$code" "$elapsed_time" \
-    | ( envchain crst slack-notifier & disown ) >/dev/null 2>&1 3>&1
+  localpush "$command" "$elapsed_time seconds" > /dev/null 2>&1
 }
 
 add-zsh-hook precmd notify_precmd
