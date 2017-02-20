@@ -341,5 +341,8 @@ whalebrew:
 
   packages:
     - whalebrew/awscli
+    - whalebrew/erd
+    - whalebrew/google-cloud-sdk
     - whalebrew/mitmproxy
     - whalebrew/packer
+    - whalebrew/plantuml
