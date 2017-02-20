@@ -3,6 +3,12 @@
 set -eu
 set -o pipefail
 
+copy2clipboard() {
+  if command -v pbcopy > /dev/null 2>&1; then
+    echo -n "$1" | pbcopy
+  fi
+}
+
 REPO="$(
   git config --get remote.origin.url \
     | grep github.com \
@@ -20,5 +26,9 @@ BASE="$(git config pr.base 2>/dev/null || true)"
 BASE="${BASE:-master}"
 HEAD="$(git symbolic-ref --short HEAD)"
 
+URL="https://github.com/$REPO/compare/$BASE...$HEAD?expand=1"
+
 git auto-ref push
-open "https://github.com/$REPO/compare/$BASE...$HEAD?expand=1"
+echo "$URL"
+copy2clipboard "$URL"
+# open "$URL"
