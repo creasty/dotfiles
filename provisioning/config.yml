@@ -132,6 +132,7 @@ homebrew:
     - tmux                # Terminal multiplexer
     - tree                # Display directories as trees (with optional color/HTML output)
     - w3m                 # Pager/text based browser
+    - wantedly/tools/sap  # Go implementation of Sap(SSH-Capistano)
     - webkit2png          # Create screenshots of webpages from the terminal
     - name: 'wget'        # Internet file retriever
       install_options: '--enable-iri'
