@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-#> pg-server <command>
+#> postgres <command>
 #>
 #> COMMANDS:
-#>     pg-server start
-#>     pg-server stop
-#>     pg-server destroy
-#>     pg-server psql
-#>     pg-server createdb $dbname
-#>     pg-server ping
+#>     postgres start
+#>     postgres stop
+#>     postgres destroy
+#>     postgres psql
+#>     postgres createdb $dbname
+#>     postgres ping
 
 set -eu
 set -o pipefail
 
-NAME=the_postgres
+NAME=the-postgres
 IMAGE=postgres:9.6.1-alpine
 
 
@@ -64,11 +64,10 @@ exec_createdb() {
 }
 
 exec_ping() {
-  docker exec -it $NAME psql --username=$USER -c 'select 1;' 2>&1 > /dev/null
-  if [ $? -eq 0 ]; then
-    echo 'running'
+  if docker exec -it $NAME psql --username=$USER -c 'select 1;' > /dev/null 2>&1; then
+    echo 'ready'
   else
-    echo 'not running'
+    echo 'not ready'
   fi
 }
 
@@ -79,25 +78,11 @@ COMMAND="${1:-}"
 shift || true
 
 case "$COMMAND" in
-  start)
-    server_start
-    ;;
-  stop)
-    server_stop
-    ;;
-  destroy)
-    server_destory
-    ;;
-  psql)
-    exec_psql
-    ;;
-  createdb)
-    exec_createdb "$1"
-    ;;
-  ping)
-    exec_ping
-    ;;
-  *)
-    do_help
-    ;;
+  start)    server_start ;;
+  stop)     server_stop ;;
+  destroy)  server_destory ;;
+  psql)     exec_psql ;;
+  createdb) exec_createdb "$1" ;;
+  ping)     exec_ping ;;
+  *)        do_help ;;
 esac

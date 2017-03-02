@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-#> redis-server <command>
+#> redis <command>
 #>
 #> COMMANDS:
-#>     redis-server start
-#>     redis-server stop
-#>     redis-server destroy
-#>     redis-server cli
+#>     redis start
+#>     redis stop
+#>     redis destroy
+#>     redis cli
 
 set -eu
 set -o pipefail
 
-NAME=the_redis
+NAME=the-redis
 IMAGE=redis:3.0.7-alpine
 
 
@@ -55,10 +55,6 @@ exec_cli() {
   docker exec -it $NAME redis-cli
 }
 
-exec_telnet() {
-  telnet localhost 6379
-}
-
 
 #  Entrypoint
 #-----------------------------------------------
@@ -66,22 +62,9 @@ COMMAND="${1:-}"
 shift || true
 
 case "$COMMAND" in
-  start)
-    server_start
-    ;;
-  stop)
-    server_stop
-    ;;
-  destroy)
-    server_destory
-    ;;
-  cli)
-    exec_cli
-    ;;
-  telnet)
-    exec_telnet
-    ;;
-  *)
-    do_help
-    ;;
+  start)   server_start ;;
+  stop)    server_stop ;;
+  destroy) server_destory ;;
+  cli)     exec_cli ;;
+  *)       do_help ;;
 esac
