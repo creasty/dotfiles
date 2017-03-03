@@ -77,8 +77,6 @@ homebrew:
   packages:
     - android-sdk         # Android API libraries and developer tools
     - argon/mas/mas       # Mac App Store command-line interface
-    - name: 'awscli'      # Official Amazon AWS command-line interface
-      state: 'head'
     - batik               # Java-based toolkit for SVG images
     - binutils            # FSF Binutils for native development
     - chisel              # Collection of LLDB commands to assist debugging iOS apps
@@ -103,7 +101,6 @@ homebrew:
     - gpg                 # GNU Privacy Guard: a free PGP replacement
     - name: 'graphviz'    # Graph visualization software from AT&T and Bell Labs
       install_options: '--with-pango'
-    - icu4c               # C/C++ and Java libraries for Unicode and globalization
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
@@ -117,11 +114,8 @@ homebrew:
     - ngrep               # Network grep
     - nkf                 # Network Kanji code conversion Filter (NKF)
     - optipng             # PNG file optimizer
-    - osquery             # SQL powered operating system instrumentation and analytics
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
-    - phantomjs           # Headless WebKit scriptable with a JavaScript API
-    - plantuml            # Draw UML diagrams
     - pstree              # Show ps output as a tree
     - q                   # Treat text as a database
     - ranger              # File browser
@@ -131,8 +125,6 @@ homebrew:
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - tree                # Display directories as trees (with optional color/HTML output)
-    - w3m                 # Pager/text based browser
-    - wantedly/tools/sap  # Go implementation of Sap(SSH-Capistano)
     - webkit2png          # Create screenshots of webpages from the terminal
     - name: 'wget'        # Internet file retriever
       install_options: '--enable-iri'
