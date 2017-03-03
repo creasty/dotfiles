@@ -341,9 +341,9 @@ whalebrew:
   bin_path: /usr/local/bin/whalebrew
 
   packages:
+    - creasty/erd
+    - creasty/google-cloud-sdk
+    - creasty/plantuml
     - whalebrew/awscli
-    - whalebrew/erd
-    - whalebrew/google-cloud-sdk
     - whalebrew/mitmproxy
     - whalebrew/packer
-    - whalebrew/plantuml
