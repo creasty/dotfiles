@@ -82,8 +82,6 @@ homebrew:
     - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
     - ctags               # Reimplementation of ctags(1)
-    - name: 'curl'        # Get a file from an HTTP, HTTPS or FTP server
-      install_options: '--with-ssl --with-libssh2'
     - direnv              # Load/unload environment variables based on $PWD
     - envchain            # Secure your credentials in environment variables
     - eot-utils           # Tools to convert fonts from OTF/TTF to EOT format
@@ -98,8 +96,6 @@ homebrew:
     - git                 # Distributed revision control system
     - git-lfs             # Git extension for versioning large files
     - gpg                 # GNU Privacy Guard: a free PGP replacement
-    - name: 'graphviz'    # Graph visualization software from AT&T and Bell Labs
-      install_options: '--with-pango'
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
@@ -115,7 +111,6 @@ homebrew:
     - optipng             # PNG file optimizer
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
-    - pstree              # Show ps output as a tree
     - q                   # Treat text as a database
     - ranger              # File browser
     - screenresolution    # Get, set, and list display resolution
@@ -124,8 +119,6 @@ homebrew:
     - tmux                # Terminal multiplexer
     - tree                # Display directories as trees (with optional color/HTML output)
     - webkit2png          # Create screenshots of webpages from the terminal
-    - name: 'wget'        # Internet file retriever
-      install_options: '--enable-iri'
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
 
   private_packages:
