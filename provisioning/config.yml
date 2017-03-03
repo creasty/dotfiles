@@ -138,6 +138,10 @@ homebrew:
       install_options: '--enable-iri'
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
 
+    # Private packages
+    - name: wantedly/tools/sap # Go implementation of Sap(SSH-Capistano)
+      skip_on_ci: true
+
 
 karabiner:
   private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'

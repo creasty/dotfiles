@@ -29,5 +29,5 @@
     name:            '{{ item.name | default(item) }}'
     state:           '{{ item.state | default("present") }}'
     install_options: '{{ item.install_options | default("") }}'
+  when: homebrew.packages and not (item.skip_on_ci | default(False) | bool)
   with_items: '{{ homebrew.packages }}'
-  when: homebrew.packages
