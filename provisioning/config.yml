@@ -131,7 +131,6 @@ homebrew:
   private_packages:
     - wantedly/tools/sap # Go implementation of Sap(SSH-Capistano)
 
-
 karabiner:
   private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'
 
