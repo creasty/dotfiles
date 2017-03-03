@@ -14,13 +14,9 @@ Read the [detailed manual](./docs/README.md) for setting up a new computer.
 Screenshots
 -----------
 
-**Tmux + ZSH**
-
-![](./docs/images/screenshots/tmux.png)
-
-**Vim**
-
-![](./docs/images/screenshots/vim.png)
+| Tmux + ZSH | Vim |
+|---|---|
+| ![](./docs/images/screenshots/tmux.png) | ![](./docs/images/screenshots/vim.png) |
 
 
 Author
