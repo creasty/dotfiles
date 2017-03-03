@@ -120,7 +120,6 @@ homebrew:
     - ranger              # File browser
     - screenresolution    # Get, set, and list display resolution
     - sqlite              # Command-line interface for SQLite
-    - terraform           # Tool to build, change, and version infrastructure
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - tree                # Display directories as trees (with optional color/HTML output)
@@ -129,9 +128,8 @@ homebrew:
       install_options: '--enable-iri'
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
 
-    # Private packages
-    - name: wantedly/tools/sap # Go implementation of Sap(SSH-Capistano)
-      skip_on_ci: true
+  private_packages:
+    - wantedly/tools/sap # Go implementation of Sap(SSH-Capistano)
 
 
 karabiner:
