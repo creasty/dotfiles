@@ -24,7 +24,6 @@ golang:
     - '1.7.1'
 
   packages:
-    - bitbucket.org/liamstask/goose/cmd/goose
     - github.com/Masterminds/glide
     - github.com/golang/lint/golint
     - github.com/laurent22/massren
