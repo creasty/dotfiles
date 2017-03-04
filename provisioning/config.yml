@@ -31,7 +31,6 @@ golang:
     - github.com/nsf/gocode
     - github.com/peco/peco/cmd/peco
     - github.com/rakyll/boom
-    - golang.org/x/tools/cmd/gotype
 
 haskell:
   packages:
