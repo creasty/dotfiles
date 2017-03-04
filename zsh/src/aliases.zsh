@@ -136,6 +136,8 @@ alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
 
+alias de='dev/compose'
+
 dk-clean() {
   docker rmi $@ $(docker images -f "dangling=true" -q)
 }
