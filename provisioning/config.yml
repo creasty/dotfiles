@@ -330,3 +330,4 @@ whalebrew:
     - whalebrew/awscli
     - whalebrew/mitmproxy
     - whalebrew/packer
+    - whalebrew/terraform
