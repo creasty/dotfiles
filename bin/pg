@@ -35,7 +35,19 @@ server_stop() {
 
 server_start() {
   echo "==> Starting server"
-  docker start $NAME || server_create
+  docker start $NAME 2>/dev/null || server_create
+
+  echo "==> Waiting for ready"
+  while true; do
+    sleep 5
+    if _ping; then
+      echo
+      echo "ready"
+      break
+    else
+      printf '.'
+    fi
+  done
 }
 
 server_destory() {
@@ -63,8 +75,12 @@ exec_createdb() {
   docker exec -it $NAME createdb --username=$USER "$1"
 }
 
+_ping() {
+  docker exec -it $NAME psql --username=$USER -c 'select 1;' > /dev/null 2>&1
+}
+
 exec_ping() {
-  if docker exec -it $NAME psql --username=$USER -c 'select 1;' > /dev/null 2>&1; then
+  if _ping; then
     echo 'ready'
   else
     echo 'not ready'
