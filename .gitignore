@@ -1,5 +1,7 @@
 .DS_Store
 
+.travis.key
+
 vim/.netrwhist
 vim/init.vim
 vim/dein/*
