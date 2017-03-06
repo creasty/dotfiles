@@ -23,3 +23,8 @@ before_script:
 
 script:
   - ./up --skip-tags="$SKIP_TAGS" -vvvv
+
+notifications:
+  email: false
+  slack:
+    secure: hEYbhNFw2o9hZV1+AbJIWP/4Sg5+wT7Oz2VydBVjyqRh1njdI4ntqsmC+NUmaqr3ory3AJTf+TZmAfySPk2eR2Ifudgk+MeBypt706l3UBxV0u+gVnXVpl8Yh0XklInE6+xIt95o3+uzH41xKDhDM8Pac4cWbaDao7eQz/9BBTTexfG2gijWPOUnbVpzztoHjdvSJoLq7CBMLbBti3yYIpX0/v9ekVfKPA8EcSuwPigaZtWbQOx368nGlZDAOrp1o8aMSK+ojUtWRvDhkflr7jCu3xHpAZe/y3ZDvYPgCQQuoXibZvIIYdcvVOt0/+1sq5Srod1yhZi48/mPNOrxZC9uwG0FZdkWFZkLrWSYIBWDXvrUEJawSKxbCaYEYZz1C5J0JkVxfM08UnvGzOMBk6a5tOtL6v0E/kxHZ066f35Qo9VnXIl8MHGEA9TpvbBDheva3+Rumu2DOg0AirnznR2JZcggcnu9jvNYWLsXgG1yf+g02NWVJi9PCzXo53pUi5KUutZFvhH6JSi/Jsfi/omu6/0PeHBFknu8XwgNM+Ynp8iSZKWFhQiAWwDwcWbNpYqJOoEW5kvCfmItFmb6yVFQ2/eXs/5F64VEAg8ZGV2mOXGObJi3zfghkhLfyRZucoxSagnJtHao3qdQz0qiejtBPTTDTB+T8L1tSqFmE7M=
