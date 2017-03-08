@@ -34,6 +34,16 @@ oneoff() {
   exit $?
 }
 
+new-repo() {
+  local repo="$1"
+  local visibility="${2:-private}"
+  bundle exec "$CMD" qucli create "$repo" --visibility="$visibility"
+  bundle exec "$CMD" qucli add-team "$repo" infrastructure --role=admin
+  bundle exec "$CMD" qucli add-team "$repo" developer --role=write
+  bundle exec "$CMD" qucli add-user "$repo" wantedly+wantedlybot --role=write
+  bundle exec "$CMD" qucli get "$repo"
+}
+
 case "${ARGS[0]}" in
   xlogs)
     xlogs "${ARGS[1]}"
@@ -41,6 +51,10 @@ case "${ARGS[0]}" in
 
   oneoff)
     oneoff ${ARGS[@]}
+    ;;
+
+  new-repo)
+    new-repo "${ARGS[@]}"
     ;;
 esac
 
