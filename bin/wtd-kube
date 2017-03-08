@@ -28,8 +28,6 @@ oneoff() {
 new-repo() {
   local repo="$1"
   local visibility="${2:-private}"
-  echo "$repo ($visibility)"
-  exit
   bundle exec kube qucli create "$repo" --visibility="$visibility"
   bundle exec kube qucli add-team "$repo" infrastructure --role=admin
   bundle exec kube qucli add-team "$repo" developer --role=write
