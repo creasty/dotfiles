@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-CMD=kube
 REPO=github.com/wantedly/kube
 
 set -o allexport
@@ -17,12 +16,10 @@ done
 xlogs() {
   [ -z "$1" ] && return
 
-  bundle exec "$CMD" get po -l role="$1" 2>/dev/null \
+  bundle exec kube get po -l role="$1" 2>/dev/null \
     | tail -n +2 \
     | awk '{ print $1 }' \
-    | parallel --delay 5 -a - -j 1000% -u bundle exec "$CMD" logs '\\-f'
-
-  exit $?
+    | parallel --delay 5 -a - -j 1000% -u bundle exec kube logs '\\-f'
 }
 
 oneoff() {
@@ -30,32 +27,23 @@ oneoff() {
   local run_cmd="${3:-bash}"
   local name="creasty-oneoff-$RANDOM"
 
-  bundle exec "$CMD" run -i --tty --rm "$name" --image="$image" --restart=Never -- "$run_cmd"
-  exit $?
+  bundle exec kube run -i --tty --rm "$name" --image="$image" --restart=Never -- "$run_cmd"
 }
 
 new-repo() {
   local repo="$1"
   local visibility="${2:-private}"
-  bundle exec "$CMD" qucli create "$repo" --visibility="$visibility"
-  bundle exec "$CMD" qucli add-team "$repo" infrastructure --role=admin
-  bundle exec "$CMD" qucli add-team "$repo" developer --role=write
-  bundle exec "$CMD" qucli add-user "$repo" wantedly+wantedlybot --role=write
-  bundle exec "$CMD" qucli get "$repo"
+  bundle exec kube qucli create "$repo" --visibility="$visibility"
+  bundle exec kube qucli add-team "$repo" infrastructure --role=admin
+  bundle exec kube qucli add-team "$repo" developer --role=write
+  bundle exec kube qucli add-user "$repo" wantedly+wantedlybot --role=write
+  bundle exec kube qucli get "$repo"
 }
 
 case "${ARGS[0]}" in
-  xlogs)
-    xlogs "${ARGS[1]}"
-    ;;
+  xlogs)    xlogs "${ARGS[1]}" ;;
+  oneoff)   oneoff ${ARGS[@]} ;;
+  new-repo) new-repo "${ARGS[@]}" ;;
 
-  oneoff)
-    oneoff ${ARGS[@]}
-    ;;
-
-  new-repo)
-    new-repo "${ARGS[@]}"
-    ;;
+  *) bundle exec kube ${ARGS[@]} ;;
 esac
-
-bundle exec "$CMD" ${ARGS[@]}
