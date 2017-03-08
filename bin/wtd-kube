@@ -8,11 +8,6 @@ set +o allexport
 
 export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
 
-ARGS=()
-for a in "$@"; do
-  ARGS=(${ARGS[@]} "$a")
-done
-
 xlogs() {
   [ -z "$1" ] && return
 
@@ -33,6 +28,8 @@ oneoff() {
 new-repo() {
   local repo="$1"
   local visibility="${2:-private}"
+  echo "$repo ($visibility)"
+  exit
   bundle exec kube qucli create "$repo" --visibility="$visibility"
   bundle exec kube qucli add-team "$repo" infrastructure --role=admin
   bundle exec kube qucli add-team "$repo" developer --role=write
@@ -40,10 +37,10 @@ new-repo() {
   bundle exec kube qucli get "$repo"
 }
 
-case "${ARGS[0]}" in
-  xlogs)    xlogs "${ARGS[1]}" ;;
-  oneoff)   oneoff ${ARGS[@]} ;;
-  new-repo) new-repo "${ARGS[@]}" ;;
+case "$1" in
+  xlogs)    xlogs "${@:2}" ;;
+  oneoff)   oneoff "${@:2}" ;;
+  new-repo) new-repo "${@:2}" ;;
 
-  *) bundle exec kube ${ARGS[@]} ;;
+  *) bundle exec kube "$@" ;;
 esac
