@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -eu
+set -o pipefail
+
+
 REPO=github.com/wantedly/kube
 
 set -o allexport
