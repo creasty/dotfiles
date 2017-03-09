@@ -3,13 +3,7 @@
 set -eu
 set -o pipefail
 
-
 REPO=github.com/wantedly/kube
-
-set -o allexport
-eval "$(envchain -l -v wtd)"
-set +o allexport
-
 export BUNDLE_GEMFILE="$(ghq root)/$REPO/Gemfile"
 
 xlogs() {
