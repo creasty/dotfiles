@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 
 repository_age() {
-  git log --reverse --pretty=oneline --format="%ar" | head -n 1 | sed 's/ago//'
+  git log --reverse --pretty=oneline --format="%ar" \
+    | head -n 1 \
+    | sed 's/ago//'
 }
 
-contributer_count() {
-  git shortlog -n -s --all | awk '{ print substr($0, index($0, $2)) " (" $1 ")" }'
+contributor_count() {
+  git shortlog -n -s \
+    | wc -l \
+    | tr -d ' '
+}
+
+contributors() {
+  git shortlog -n -s \
+    | awk '{ printf("%12d  %s\n", $1, substr($0, index($0, $2))) }' \
+    | head -n 20
 }
 
 total_commit_count() {
@@ -13,25 +23,27 @@ total_commit_count() {
 }
 
 file_count() {
-  git ls-files | wc -l | tr -d ' '
+  git ls-files \
+    | wc -l \
+    | tr -d ' '
 }
 
 active_days() {
-  git log --pretty='format: %ai' $1 | cut -d ' ' -f 2 | uniq | awk '
-    { sum += 1 }
-    END { print sum }
-  '
+  git log --pretty='format: %ai' $1 \
+    | cut -d ' ' -f 2 \
+    | uniq \
+    | awk ' { sum += 1 } END { print sum }'
 }
 
 labeled() {
-  printf "\e[37m$1\e[0m $2\n"
+  printf "\e[37m%12s\e[0m  %s\n" "$1" "$2"
 }
 
-labeled '    Age' "$(repository_age)"
-labeled ' Active' "$(active_days) days"
-labeled '  Files' "$(file_count)"
-labeled 'Commits' "$(total_commit_count)"
+labeled 'Age'          "$(repository_age)"
+labeled 'Active'       "$(active_days) days"
+labeled 'Files'        "$(file_count)"
+labeled 'Commits'      "$(total_commit_count)"
+labeled 'Contributors' "$(contributor_count)"
 
 echo
-labeled 'Contributers'
-contributer_count | sed 's/^/  /'
+contributors
