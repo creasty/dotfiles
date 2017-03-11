@@ -325,7 +325,6 @@ whalebrew:
 
   packages:
     - creasty/erd
-    - creasty/google-cloud-sdk
     - creasty/plantuml
     - whalebrew/awscli
     - whalebrew/mitmproxy

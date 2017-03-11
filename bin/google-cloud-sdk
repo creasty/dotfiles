@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+docker run \
+  --rm \
+  -it \
+  -w /workdir \
+  -v `pwd`:/workdir \
+  -e "K8S_SERVER=${K8S_SERVER:-}" \
+  -e "K8S_TOKEN=${K8S_TOKEN:-}" \
+  google/cloud-sdk:latest \
+  "$@"
