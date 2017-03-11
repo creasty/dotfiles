@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Top-like interface for container metrics
+# https://github.com/bcicen/ctop
+
+set -eu
+set -o pipefail
+
+docker run \
+  --rm \
+  -it \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --name ctop \
+  quay.io/vektorlab/ctop:latest
