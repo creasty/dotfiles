@@ -139,7 +139,17 @@ alias dkm='docker-machine'
 alias de='dev/compose'
 
 dk-clean() {
-  docker rmi $@ $(docker images -f "dangling=true" -q)
+  docker ps \
+    -a \
+    --filter status=exited \
+    --format '{{ .Names }}' \
+    | grep -v 'volume$' \
+    | xargs docker rm
+
+  docker images \
+    -f "dangling=true" \
+    -q \
+    | xargs docker rmi
 }
 
 dk-open() {
