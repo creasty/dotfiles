@@ -7,7 +7,8 @@
 #>     postgres destroy
 #>     postgres psql
 #>     postgres createdb $dbname
-#>     postgres ping
+#>     postgres status
+#>     postgres logs
 
 set -eu
 set -o pipefail
@@ -28,6 +29,10 @@ do_help() {
 
 #  Commands
 #-----------------------------------------------
+_ping() {
+  docker exec -it $NAME psql --username=$USER -c 'select 1;' > /dev/null 2>&1
+}
+
 server_stop() {
   echo "==> Stopping server"
   docker stop $NAME
@@ -75,15 +80,19 @@ exec_createdb() {
   docker exec -it $NAME createdb --username=$USER "$1"
 }
 
-_ping() {
-  docker exec -it $NAME psql --username=$USER -c 'select 1;' > /dev/null 2>&1
+exec_logs() {
+  docker logs -f $NAME
 }
 
-exec_ping() {
-  if _ping; then
-    echo 'ready'
+exec_status() {
+  if docker ps | grep $NAME > /dev/null; then
+    if _ping; then
+      echo 'ready'
+    else
+      echo 'not ready'
+    fi
   else
-    echo 'not ready'
+    echo 'not running'
   fi
 }
 
@@ -99,6 +108,7 @@ case "$COMMAND" in
   destroy)  server_destory ;;
   psql)     exec_psql ;;
   createdb) exec_createdb "$1" ;;
-  ping)     exec_ping ;;
+  status)   exec_status ;;
+  logs)     exec_logs ;;
   *)        do_help ;;
 esac
