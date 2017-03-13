@@ -121,7 +121,8 @@ homebrew:
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
 
   private_packages:
-    - wantedly/tools/sap # Go implementation of Sap(SSH-Capistano)
+    - wantedly/tools/sap  # Go implementation of Sap(SSH-Capistano)
+    - wantedly/tools/kube # Go implementation of Kube(CLI tool to execute kubectl over SSH)
 
 karabiner:
   private_xml_path: '{{ dotfiles_path }}/app/karabiner/private.xml'
