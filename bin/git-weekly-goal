@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require 'uri'
+
+URI.parse('https://github.com/wantedly/yashima/issues/new')
+  .tap { |u|
+    u.query = URI.encode_www_form(
+      title:  '%s - %s Creasty' % [0, 6 * 86400].map { |t| (Time.now + t).strftime('%Y/%m/%d') },
+      labels: 'Weekly Goal',
+    )
+  }
+  .tap { |u| break u.to_s }
+  .tap { |u| system('open', u) }

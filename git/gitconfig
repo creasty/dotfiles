@@ -121,6 +121,7 @@
   pr = github-compare
   is = github mk-issue
   wr = browse-remote
+  wg = weekly-goal
 
   y = deploy
 
