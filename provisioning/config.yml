@@ -325,9 +325,9 @@ whalebrew:
   bin_path: /usr/local/bin/whalebrew
 
   packages:
-    - creasty/erd
     - creasty/plantuml
     - whalebrew/awscli
+    - whalebrew/erd
     - whalebrew/mitmproxy
     - whalebrew/packer
     - whalebrew/terraform
