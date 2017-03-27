@@ -243,4 +243,4 @@ alias xct='xctool'
 #-----------------------------------------------
 alias sap='envchain wtd sap'
 alias valec='envchain wtd valec'
-alias kube='envchain wtd kube'
+alias kube='envchain wtd wtd-kube'
