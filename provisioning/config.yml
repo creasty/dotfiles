@@ -80,6 +80,7 @@ homebrew:
     - chisel              # Collection of LLDB commands to assist debugging iOS apps
     - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
+    - creasty/tools/rid   # Run commands in container as if were native
     - ctags               # Reimplementation of ctags(1)
     - direnv              # Load/unload environment variables based on $PWD
     - envchain            # Secure your credentials in environment variables
