@@ -136,8 +136,6 @@ alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
 
-alias de='dev/compose'
-
 dk-clean() {
   docker ps \
     -a \
@@ -150,10 +148,6 @@ dk-clean() {
     -f "dangling=true" \
     -q \
     | xargs docker rmi
-}
-
-dk-open() {
-  open "http://$(docker-machine ip local)$@"
 }
 
 
