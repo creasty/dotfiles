@@ -51,7 +51,7 @@ homebrew:
     - google-japanese-ime
     - hammerspoon
     - iterm2
-    - karabiner
+    # - karabiner
     - ngrok
     - qlcolorcode
     - qlmarkdown
