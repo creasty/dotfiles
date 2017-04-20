@@ -38,6 +38,7 @@ haskell:
 
 homebrew:
   applications:
+    - android-sdk
     - adobe-creative-cloud
     - alfred
     - android-studio
@@ -73,7 +74,6 @@ homebrew:
   #   $ for name in `pbpaste`; do echo "$name # $(brew info $name | sed -n '2p')"; done
   #
   packages:
-    - android-sdk         # Android API libraries and developer tools
     - argon/mas/mas       # Mac App Store command-line interface
     - batik               # Java-based toolkit for SVG images
     - binutils            # FSF Binutils for native development
