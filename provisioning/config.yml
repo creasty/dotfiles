@@ -77,6 +77,7 @@ homebrew:
     - argon/mas/mas       # Mac App Store command-line interface
     - batik               # Java-based toolkit for SVG images
     - binutils            # FSF Binutils for native development
+    - carthage            # Decentralized dependency manager for Cocoa
     - chisel              # Collection of LLDB commands to assist debugging iOS apps
     - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
@@ -300,6 +301,9 @@ ruby:
     - ianheggie/rbenv-binstubs
     - sstephenson/rbenv-default-gems
     - sstephenson/rbenv-gem-rehash
+
+swift:
+  swiftlint_version: 0.13.2
 
 scala:
   versions:

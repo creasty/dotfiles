@@ -43,6 +43,8 @@
       tags: ['lang', 'python']
     - role: golang
       tags: ['lang', 'golang']
+    - role: swift
+      tags: ['lang', 'swift']
     # - role: haskell
     #   tags: ['lang', 'haskell']
     # - role: rlang
