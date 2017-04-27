@@ -45,7 +45,7 @@ hi link swiftFuncIdentifer Identifier
 
 "=== Keywords
 "==============================================================================================
-syn keyword swiftKeyword class convenience deinit enum extension import init let protocol static struct subscript typealias var
+syn keyword swiftKeyword class convenience deinit enum extension import init let protocol static struct subscript typealias var guard
 syn keyword swiftKeyword break case continue default do else fallthrough if in for return switch where while
 syn keyword swiftKeyword as dynamicType is new super self Self Type
 syn keyword swiftKeyword associativity didSet get infix inout left mutating none nonmutating operator override postfix precedence prefix right set unowned unowned(safe) unowned(unsafe) weak willSet
@@ -56,7 +56,7 @@ syn keyword swiftBoolean true false
 hi link swiftBoolean Boolean
 
 syn keyword swiftConstant nil __COLUMN__ __FILE__ __FUNCTION__ __LINE__
-hi link swiftNil Constant
+hi link swiftConstant Constant
 
 
 "=== Literals
