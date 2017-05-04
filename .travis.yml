@@ -10,6 +10,7 @@ branches:
 
 env:
   global:
+    - HOMEBREW_VERBOSE=1
     - DOTFILES_NOEDIT_SECRETS=1
     - SKIP_TAGS=whalebrew,zsh,ruby
 
