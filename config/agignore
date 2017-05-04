@@ -6,6 +6,8 @@ Godeps
 node_modules
 bower_components
 public/system
+Carthage
+Pods
 
 *.jpg
 *.jpeg
