@@ -38,9 +38,9 @@ haskell:
 
 homebrew:
   applications:
-    - android-sdk
     - adobe-creative-cloud
     - alfred
+    - android-sdk
     - android-studio
     - docker
     - dropbox
