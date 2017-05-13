@@ -8,6 +8,8 @@ docker run \
   -it \
   -w /workdir \
   -v `pwd`:/workdir \
+  -v $HOME/.config/gcloud:/.config/gcloud \
+  -v $HOME/.kube:/.kube \
   -e "K8S_SERVER=${K8S_SERVER:-}" \
   -e "K8S_TOKEN=${K8S_TOKEN:-}" \
   google/cloud-sdk:latest \
