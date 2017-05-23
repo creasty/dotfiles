@@ -52,7 +52,8 @@ homebrew:
     - google-japanese-ime
     - hammerspoon
     - iterm2
-    # - karabiner
+    - name: karabiner
+      install_options: --no-binaries
     - ngrok
     - qlcolorcode
     - qlmarkdown

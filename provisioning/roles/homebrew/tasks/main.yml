@@ -12,8 +12,9 @@
 
 - name: install cask applications
   homebrew_cask:
-    name:  '{{ item.name | default(item) }}'
-    state: '{{ item.state | default("present") }}'
+    name:            '{{ item.name | default(item) }}'
+    state:           '{{ item.state | default("present") }}'
+    install_options: '{{ item.install_options | default("") }}'
   with_items: '{{ homebrew.applications }}'
   when: homebrew.applications
 
