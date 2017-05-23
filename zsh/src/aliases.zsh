@@ -92,7 +92,7 @@ alias skey='ssh-keygen -q -b 2048 -t rsa -N "" -C "" -f'
 
 alias o='finder'
 alias c='see'
-alias ev='envchain-enhanced'
+alias ev='envchain'
 alias ne='npm-exec'
 alias gk='grep-kill'
 alias rdba='rake-db-migrate-all'
