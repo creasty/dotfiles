@@ -4,6 +4,7 @@
 
 [github]
   user = creasty
+  privatekey = ~/.ssh/keys/github
 
 [core]
   editor       = /usr/local/bin/vim
