@@ -136,6 +136,20 @@
 
 #=== Input device
 #==============================================================================================
+- name: input device | key repeat
+  osx_defaults:
+    domain: NSGlobalDomain
+    key:    KeyRepeat
+    type:   float
+    value:  0.3 # 0.3Hz = 5ms
+
+- name: input device | delay until repeat
+  osx_defaults:
+    domain: NSGlobalDomain
+    key:    InitialKeyRepeat
+    type:   int
+    value:  12 # 12Hz = 200ms
+
 - name: input device | enable full keyboard access for all controls
   osx_defaults:
     domain: NSGlobalDomain
