@@ -150,6 +150,13 @@
     type:   int
     value:  12 # 12Hz = 200ms
 
+- name: input device | disable accents popup
+  osx_defaults:
+    domain: NSGlobalDomain
+    key:    ApplePressAndHoldEnabled
+    type:   bool
+    value:  false
+
 - name: input device | enable full keyboard access for all controls
   osx_defaults:
     domain: NSGlobalDomain
