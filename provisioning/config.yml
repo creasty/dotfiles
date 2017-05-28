@@ -52,6 +52,7 @@ homebrew:
     - google-japanese-ime
     - hammerspoon
     - iterm2
+    - jetbrains-toolbox
     - ngrok
     - qlcolorcode
     - qlmarkdown
