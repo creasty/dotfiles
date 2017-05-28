@@ -1,6 +1,4 @@
-local window   = require("window")
-local util     = require("util")
-local superkey = require("superkey")
+local window = require("window")
 
 hs.window.animationDuration = 0
 
@@ -13,34 +11,3 @@ hs.hotkey.bind({"cmd", "alt", "shift"}, "left", window:resize("TL"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "up", window:resize("TR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "right", window:resize("BR"))
 hs.hotkey.bind({"cmd", "alt", "shift"}, "down", window:resize("BL"))
-
-util:toggleApp({"cmd"}, "'", "com.apple.finder")
-util:toggleApp({"cmd", "ctrl"}, "'", "com.evernote.Evernote")
-
-util:withinApp({"ctrl"}, "i", "Google Chrome", function()
-  hs.eventtap.keyStroke({"cmd"}, "]")
-end)
-util:withinApp({"ctrl"}, "o", "Google Chrome", function()
-  hs.eventtap.keyStroke({"cmd"}, "[")
-end)
-
--- util:emacsRemapKey({"ctrl"}, "c", {}, "escape")
--- util:emacsRemapKey({"ctrl"}, "h", {}, "delete")
--- util:emacsRemapKey({"ctrl"}, "d", {}, "forwarddelete")
--- util:emacsRemapKey({"ctrl"}, "j", {}, "return")
--- util:emacsRemapKey({"ctrl"}, "p", {}, "up")
--- util:emacsRemapKey({"ctrl"}, "n", {}, "down")
--- util:emacsRemapKey({"ctrl"}, "f", {}, "left")
--- util:emacsRemapKey({"ctrl"}, "b", {}, "right")
--- util:emacsRemapKey({"ctrl"}, "a", {"cmd"}, "left")
--- util:emacsRemapKey({"ctrl"}, "a", {"cmd"}, "right")
-
--- superkey("t", {
---     h = function(e)
---         print('th')
---     end,
--- })
-
--- hs.hotkey.bind({"cmd", "shift"}, "K", function()
---     hs.alert.show(hs.application.frontmostApplication():name())
--- end)
