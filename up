@@ -151,7 +151,7 @@ fix_permission() {
   [ -d /usr/local ] || mkdir -p /usr/local
 
   echo 'Fixing permission of /usr/local...'
-  sudo chmod -R $(whoami) /usr/local
+  sudo chown -R $(whoami) /usr/local
   echo 'done'
 }
 
