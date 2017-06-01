@@ -8,7 +8,7 @@
     is_ci:         '{{ lookup("env", "CI") | bool }}'
 
   environment:
-    PATH: '/usr/local/bin:{{ lookup("env", "PATH") }}'
+    PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ anyenv.envs_dir }}/ndenv/shims:{{ anyenv.envs_dir }}/luaenv/shims:{{ anyenv.envs_dir }}/pyenv/shims:{{ anyenv.envs_dir }}/goenv/shims:{{ lookup("env", "PATH") }}'
 
   roles:
     #  preinstall
