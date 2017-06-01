@@ -11,6 +11,11 @@
     PATH: '/usr/local/bin:{{ lookup("env", "PATH") }}'
 
   roles:
+    #  preinstall
+    #-----------------------------------------------
+    - role: anyenv
+      tags: ['install', 'anyenv']
+
     #  basic
     #-----------------------------------------------
     - role: link
@@ -24,8 +29,6 @@
     #-----------------------------------------------
     - role: homebrew
       tags: ['install', 'homebrew']
-    - role: anyenv
-      tags: ['install', 'anyenv']
     - role: whalebrew
       tags: ['install', 'whalebrew']
     - role: mas
