@@ -16,6 +16,7 @@
   lineinfile:
     dest: /etc/shells
     line: '{{ which_zsh.stdout }}'
+  become: yes
 
 - name: check presence of /etc/zshenv
   stat: path=/etc/zshenv
