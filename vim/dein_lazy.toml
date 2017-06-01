@@ -28,7 +28,7 @@ depends = ['vim-operator-user']
 on_map  = ['<Plug>(operator-replace)']
 
 [[plugins]] # insert several candidates with a single key
-repo    = 'smartchr'
+repo    = 'vim-scripts/smartchr'
 on_func = ['smartchr']
 on_i    = 1
 
