@@ -24,12 +24,12 @@
     #-----------------------------------------------
     - role: homebrew
       tags: ['install', 'homebrew']
+    - role: anyenv
+      tags: ['install', 'anyenv']
     - role: whalebrew
       tags: ['install', 'whalebrew']
     - role: mas
       tags: ['install', 'mas']
-    - role: anyenv
-      tags: ['install', 'anyenv']
 
     #  lang
     #-----------------------------------------------
