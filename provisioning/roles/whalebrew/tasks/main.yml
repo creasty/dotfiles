@@ -14,8 +14,8 @@
     mode: 0755
   when: whalebrew.version and not (whalebrew_stat.get('stat') and whalebrew_stat.stat.exists)
 
-- name: install packages
-  command: |
-    bash -lc 'whalebrew install {{ item }}'
-  with_items: '{{ whalebrew.packages }}'
-  when: whalebrew.packages
+# - name: install packages
+#   command: |
+#     bash -lc 'whalebrew install {{ item }}'
+#   with_items: '{{ whalebrew.packages }}'
+#   when: whalebrew.packages
