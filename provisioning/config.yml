@@ -40,8 +40,8 @@ homebrew:
   applications:
     - adobe-creative-cloud
     - alfred
-    - android-sdk
-    - android-studio
+    # - android-sdk
+    # - android-studio
     - docker
     - dropbox
     - firefox
