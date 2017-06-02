@@ -51,6 +51,7 @@ homebrew:
     - google-hangouts
     - google-japanese-ime
     - hammerspoon
+    - istat-menus
     - iterm2
     - jetbrains-toolbox
     - ngrok
