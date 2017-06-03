@@ -42,11 +42,9 @@ homebrew:
     - alfred
     # - android-sdk
     # - android-studio
+    - creasty/tools/keyboard
     - docker
     - dropbox
-    - firefox
-    - flip4mac
-    - flux
     - google-chrome
     - google-hangouts
     - google-japanese-ime
@@ -123,10 +121,6 @@ homebrew:
     - tree                # Display directories as trees (with optional color/HTML output)
     - webkit2png          # Create screenshots of webpages from the terminal
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
-
-  private_packages:
-    - wantedly/tools/sap  # Go implementation of Sap(SSH-Capistano)
-    - wantedly/tools/kube # Go implementation of Kube(CLI tool to execute kubectl over SSH)
 
 launchagent:
   plist_dir: '{{ dotfiles_path }}/app/launch_agent'

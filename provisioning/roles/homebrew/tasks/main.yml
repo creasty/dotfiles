@@ -32,11 +32,3 @@
     install_options: '{{ item.install_options | default("") }}'
   with_items: '{{ homebrew.packages }}'
   when: homebrew.packages
-
-- name: install homebrew private packages
-  homebrew:
-    name:            '{{ item.name | default(item) }}'
-    state:           '{{ item.state | default("present") }}'
-    install_options: '{{ item.install_options | default("") }}'
-  with_items: '{{ homebrew.packages }}'
-  when: homebrew.packages and not is_ci
