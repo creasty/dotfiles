@@ -85,6 +85,7 @@ homebrew:
     - creasty/tools/rid   # Run commands in container as if were native
     - ctags               # Reimplementation of ctags(1)
     - direnv              # Load/unload environment variables based on $PWD
+    - dtan4/tools/k8sec   # CLI tool to manage Kubernetes Secrets easily
     - envchain            # Secure your credentials in environment variables
     - eot-utils           # Tools to convert fonts from OTF/TTF to EOT format
     - fontconfig          # XML-based font configuration API for X Windows
