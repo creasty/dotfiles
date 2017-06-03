@@ -149,6 +149,7 @@ check_xcode_license_approved() {
 
 fix_permission() {
   [ -d /usr/local ] || mkdir -p /usr/local
+  [ "$(stat -f '%Su' /usr/local)" = "$(whoami)" ] && return  # GNU: stat -c '%U'
 
   echo 'Fixing permission of /usr/local...'
   sudo chown -R $(whoami) /usr/local
