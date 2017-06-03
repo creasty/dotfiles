@@ -48,7 +48,6 @@ homebrew:
     - google-chrome
     - google-hangouts
     - google-japanese-ime
-    - hammerspoon
     - istat-menus
     - iterm2
     - jetbrains-toolbox
@@ -143,7 +142,6 @@ link:
   dotssh:                                 .dotssh
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
-  hammerspoon:                            .hammerspoon
   ruby/bundle/config:                     .bundle/config
   ruby/gemrc:                             .gemrc
   ruby/irbrc:                             .irbrc
