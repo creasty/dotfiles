@@ -48,7 +48,7 @@ homebrew:
     - alfred
     # - android-sdk
     # - android-studio
-    - creasty/tools/keyboard
+    - keyboard
     - docker
     - dropbox
     - google-chrome
