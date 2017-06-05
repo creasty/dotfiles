@@ -67,8 +67,6 @@
       tags: ['app', 'vim']
     - role: vagrant
       tags: ['app', 'vagrant']
-    - role: automator
-      tags: ['app', 'automator']
     # - role: tex
     #   tags: ['app', 'tex']
 
