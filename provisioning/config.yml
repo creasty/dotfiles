@@ -63,6 +63,7 @@ homebrew:
     - webpquicklook
 
   repositories:
+    - creasty/tools
     - homebrew/boneyard
     - homebrew/dupes
     - homebrew/science
