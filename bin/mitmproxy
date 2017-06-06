@@ -1,0 +1,4 @@
+#!/usr/bin/env whalebrew
+image: whalebrew/mitmproxy
+ports:
+- 8080:8080

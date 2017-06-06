@@ -280,11 +280,3 @@ vagrant:
 whalebrew:
   version: '0.0.4'
   bin_path: /usr/local/bin/whalebrew
-
-  packages:
-    - creasty/plantuml
-    - whalebrew/awscli
-    - whalebrew/erd
-    - whalebrew/mitmproxy
-    - whalebrew/packer
-    - whalebrew/terraform
