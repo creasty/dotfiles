@@ -121,6 +121,7 @@ homebrew:
     - tree                # Display directories as trees (with optional color/HTML output)
     - webkit2png          # Create screenshots of webpages from the terminal
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
+    - yarn                # JavaScript package manager
 
 launchagent:
   plist_dir: '{{ dotfiles_path }}/app/launch_agent'
