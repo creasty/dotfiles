@@ -132,7 +132,6 @@ link:
   config/agignore:                        .agignore
   config/ansible.cfg:                     .ansible.cfg
   config/aws/config:                      .aws/config
-  config/coffeelintrc:                    .coffeelintrc
   config/ctags:                           .ctags
   config/curlrc:                          .curlrc
   config/gocode/config.json:              .config/gocode/config.json
