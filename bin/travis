@@ -1,0 +1,4 @@
+#!/usr/bin/env whalebrew
+image: whalebrew/travis
+volumes:
+- ~/.travis:/.travis
