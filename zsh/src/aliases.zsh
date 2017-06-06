@@ -123,7 +123,10 @@ alias whois='whois -h whois-servers.net'
 alias flush-dns='sudo killall -HUP mDNSResponder'
 alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-alias rbserver="ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: %s{.}, Port: (ARGV[0] || 5000).to_i).start'"
+
+rbserver() {
+  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: (ARGV[0] || 5000).to_i).start'
+}
 
 ipf() {
   curl "ipinfo.io/$1" | jq .
