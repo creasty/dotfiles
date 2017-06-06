@@ -110,7 +110,7 @@ alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 alias maxscreen='screenresolution set 2880x1800x32@0 || screenresolution set 2560x1600x32@0'  # screenresolution list
 
 erd() {
-  /usr/local/bin/erd -i "$1" -o "${1/.er/}.${2:-png}"
+  $DOTFILES_PATH/bin/erd -i "$1" -o "${1/.er/}.${2:-png}"
 }
 
 
