@@ -107,10 +107,10 @@ alias ql='qlmanage -p "$@" >& /dev/null'
 alias mas='reattach-to-user-namespace mas'
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
 alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
-alias maxscreen='screenresolution set 2560x1600x32@0'  # screenresolution list
+alias maxscreen='screenresolution set 2880x1800x32@0 || screenresolution set 2560x1600x32@0'  # screenresolution list
 
 erd() {
-  /usr/local/bin/erd -i "$1" -o "${1/.er/}.${2:-png}"
+  $DOTFILES_PATH/bin/erd -i "$1" -o "${1/.er/}.${2:-png}"
 }
 
 
@@ -123,7 +123,10 @@ alias whois='whois -h whois-servers.net'
 alias flush-dns='sudo killall -HUP mDNSResponder'
 alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-alias rbserver="ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: %s{.}, Port: (ARGV[0] || 5000).to_i).start'"
+
+rbserver() {
+  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: (ARGV[0] || 5000).to_i).start'
+}
 
 ipf() {
   curl "ipinfo.io/$1" | jq .
