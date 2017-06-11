@@ -43,9 +43,6 @@ export PATH=$DOTFILES_PATH/bin:$PATH
 # golang
 export PATH=$PATH:$GOPATH/bin
 
-# heroku
-export PATH=$PATH:/usr/local/heroku/bin
-
 # haskell
 export PATH=$PATH:$HOME/.cabal/bin
 
