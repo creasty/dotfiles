@@ -54,6 +54,7 @@ homebrew:
     - google-chrome
     - google-hangouts
     - google-japanese-ime
+    - imageoptim
     - istat-menus
     - iterm2
     - jetbrains-toolbox
