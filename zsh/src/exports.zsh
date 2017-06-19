@@ -14,11 +14,6 @@ export DOTFILES_PATH="$HOME/dotfiles"
 # golang
 export GOPATH=$HOME/go
 
-# tex
-export TEXLIVE_PATH=/usr/local/texlive
-export TEXLIVE_BIN_PATH=$TEXLIVE_PATH/2015/bin/universal-darwin
-export TEXLIVE_TEXMR_PATH=$TEXLIVE_PATH/texmf-local
-
 # android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
@@ -42,12 +37,6 @@ export PATH=$DOTFILES_PATH/bin:$PATH
 
 # golang
 export PATH=$PATH:$GOPATH/bin
-
-# haskell
-export PATH=$PATH:$HOME/.cabal/bin
-
-# tex
-export PATH=$PATH:$TEXLIVE_BIN_PATH
 
 
 #  Git

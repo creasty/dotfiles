@@ -14,11 +14,6 @@ export DOTFILES_PATH="$HOME/dotfiles"
 # golang
 export GOPATH=$HOME/go
 
-# tex
-export TEXLIVE_PATH=/usr/local/texlive
-export TEXLIVE_BIN_PATH=$TEXLIVE_PATH/2015/bin/universal-darwin
-export TEXLIVE_TEXMR_PATH=$TEXLIVE_PATH/texmf-local
-
 # android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
@@ -46,12 +41,6 @@ export PATH=$PATH:$GOPATH/bin
 # heroku
 export PATH=$PATH:/usr/local/heroku/bin
 
-# haskell
-export PATH=$PATH:$HOME/.cabal/bin
-
-# tex
-export PATH=$PATH:$TEXLIVE_BIN_PATH
-
 
 #  Git
 #-----------------------------------------------
@@ -68,6 +57,7 @@ export DISABLE_SPRING=1
 if [ -d $HOME/.anyenv ] && command -v 'anyenv' > /dev/null 2>&1; then
   eval "$(anyenv init -)"
 fi
+
 
 #  Aliases
 #-----------------------------------------------
