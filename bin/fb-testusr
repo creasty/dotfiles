@@ -11,8 +11,10 @@ ACCESS_TOKEN="$(
     -d "client_id=$FACEBOOK_APP_ID" \
     -d "client_secret=$FACEBOOK_APP_SECRET" \
     -d 'grant_type=client_credentials' \
-    | cut -d'=' -f 2
+    | jq -r '.access_token'
 )"
+
+echo "token:    $ACCESS_TOKEN"
 
 RES="$(
   curl -X POST "https://graph.facebook.com/v2.8/$FACEBOOK_APP_ID/accounts/test-users" \
@@ -24,9 +26,11 @@ RES="$(
     -d 'permissions=read_stream'
 )"
 
-echo "$RES" | jq -r '.email'
-
 USER_ID="$(echo "$RES" | jq -r '.id' | tr -d "\n")"
+EMAIL="$(jq -r '.email' <<< "$RES")"
+
+echo "id:       $USER_ID"
+echo "email:    $EMAIL"
 
 curl -X POST "https://graph.facebook.com/v2.8/$USER_ID" \
   -s \
@@ -34,4 +38,4 @@ curl -X POST "https://graph.facebook.com/v2.8/$USER_ID" \
   -d "password=$FACEBOOK_APP_TEST_PASSWORD" \
   > /dev/null
 
-echo "$FACEBOOK_APP_TEST_PASSWORD"
+echo "password: $FACEBOOK_APP_TEST_PASSWORD"
