@@ -1,4 +1,8 @@
-#!/usr/bin/env whalebrew
-image: whalebrew/mitmproxy
-ports:
-- 8080:8080
+#!/usr/bin/env bash
+
+docker run \
+  --rm \
+  -it \
+  -v ~/.mitmproxy:/root/.mitmproxy \
+  -p 8080:8080 \
+  whalebrew/mitmproxy
