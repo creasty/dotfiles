@@ -5,4 +5,4 @@ docker run \
   -it \
   -v ~/.mitmproxy:/root/.mitmproxy \
   -p 8080:8080 \
-  whalebrew/mitmproxy
+  creasty/mitmproxy:latest
