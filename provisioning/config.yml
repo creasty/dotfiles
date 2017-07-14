@@ -3,12 +3,6 @@ anyenv:
   plugins_dir: '{{ home_path }}/.anyenv/plugins'
   envs_dir:    '{{ home_path }}/.anyenv/envs'
 
-automator:
-  workflows_dir: '{{ dotfiles_path }}/app/automator'
-
-  workflows:
-    - 'New File.workflow'
-
 golang:
   versions:
     - '1.7.1'
@@ -157,16 +151,16 @@ mas:
   #   $ mas list
   #
   applications:
-    - '406056744'   # Evernote
-    - '540348655'   # Monosnap
-    - '425424354'   # The Unarchiver
-    - '443987910'   # 1Password
-    - '975937182'   # Fantastical 2
-    - '497799835'   # Xcode
-    - '412448059'   # ForkLift
-    - '1031280567'  # Postico
-    - '803453959'   # Slack
-    - '928494006'   # PopHub
+    - '406056744'  # Evernote
+    - '540348655'  # Monosnap
+    - '425424354'  # The Unarchiver
+    - '443987910'  # 1Password
+    - '975937182'  # Fantastical 2
+    - '497799835'  # Xcode
+    - '412448059'  # ForkLift
+    - '1031280567' # Postico
+    - '803453959'  # Slack
+    - '928494006'  # PopHub
 
 nodejs:
   versions:
@@ -208,11 +202,6 @@ ruby:
 
 swift:
   swiftlint_version: 0.13.2
-
-tex:
-  texlive_path:       /usr/local/texlive
-  texlive_bin_path:   /usr/local/texlive/2015/bin/universal-darwin
-  texlive_texmr_path: /usr/local/texlive/texmf-local
 
 vagrant:
   boxes: {}
