@@ -1,2 +1,8 @@
-#!/usr/bin/env whalebrew
-image: whalebrew/packer
+#!/usr/bin/env bash
+
+docker run \
+  --rm \
+  -it \
+  -v "$(pwd)":/workdir \
+  hashicorp/packer:latest \
+  "$@"

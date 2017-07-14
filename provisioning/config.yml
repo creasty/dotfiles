@@ -279,7 +279,3 @@ vagrant:
     - sahara
     - dotenv
     - vagrant-share
-
-whalebrew:
-  version: '0.0.4'
-  bin_path: /usr/local/bin/whalebrew
