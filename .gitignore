@@ -6,8 +6,6 @@ vim/.netrwhist
 vim/init.vim
 vim/dein/*
 
-aws/credentials
-
 tmux/plugins/*
 tmux/resurrect/*
 !tmux/plugins/tpm
