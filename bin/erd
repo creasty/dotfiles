@@ -1,2 +1,7 @@
-#!/usr/bin/env whalebrew
-image: whalebrew/erd
+#!/usr/bin/env bash
+
+docker run \
+  --rm \
+  -it \
+  -w "$(pwd)":/workdir /
+  creasty/erd:latest
