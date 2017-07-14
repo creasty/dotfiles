@@ -5,5 +5,4 @@ docker run \
   -it \
   -v "$(pwd)":/workdir \
   creasty/packer:latest \
-  -- \
   "$@"

@@ -6,5 +6,4 @@ docker run \
   -v ~/.travis:/.travis \
   -v "$(pwd):/workdir" \
   creasty/travis:latest \
-  -- \
   "$@"

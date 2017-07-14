@@ -3,5 +3,6 @@
 docker run \
   --rm \
   -it \
-  -w "$(pwd)":/workdir /
-  creasty/erd:latest
+  -w "$(pwd)":/workdir \
+  creasty/erd:latest \
+  "$@"
