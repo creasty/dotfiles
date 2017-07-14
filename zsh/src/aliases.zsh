@@ -109,10 +109,6 @@ alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
 alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 alias maxscreen='screenresolution set 2880x1800x32@0 || screenresolution set 2560x1600x32@0'  # screenresolution list
 
-erd() {
-  $DOTFILES_PATH/bin/erd -i "$1" -o "${1/.er/}.${2:-png}"
-}
-
 
 #  Networks
 #-----------------------------------------------
@@ -240,4 +236,6 @@ alias xct='xctool'
 #-----------------------------------------------
 alias sap='envchain wtd sap'
 alias valec='envchain wtd valec'
-alias kube='envchain wtd wtd-kube'
+alias kube='envchain wtd kube'
+alias kube-oneoff='envchain wtd kube-oneoff'
+alias qucli='envchain wtd qucli'

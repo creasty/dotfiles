@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
+IN_FILE="$1"
+OUT_FILE_EXT="${2:-png}"
+
+OUT_FILE="${IN_FILE/.er/}.${OUT_FILE_EXT}"
+
 docker run \
   --rm \
   -it \
   -w "$(pwd)":/workdir \
   creasty/erd:latest \
-  "$@"
+  -- \
+  -i "$IN_FILE" \
+  -o "$OUT_FILE"
