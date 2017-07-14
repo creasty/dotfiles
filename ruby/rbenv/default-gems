@@ -1,11 +1,6 @@
 bundler
 
-awesome_print
-fancy_irb
 find_t
-hirb
-interactive_editor
 pry
 rails
 synx
-xcpretty
