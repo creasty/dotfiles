@@ -158,7 +158,6 @@ nodejs:
 
   packages:
     - coffee-script
-    - speed-test
 
 python:
   versions:
