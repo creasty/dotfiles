@@ -9,16 +9,6 @@ automator:
   workflows:
     - 'New File.workflow'
 
-elixir:
-  versions:
-    - '1.3.4'
-
-erlang:
-  releases_dir: '{{ anyenv.envs_dir }}/erlenv/releases'
-
-  versions:
-    - '19.1'
-
 golang:
   versions:
     - '1.7.1'
@@ -31,10 +21,6 @@ golang:
     - github.com/nsf/gocode
     - github.com/peco/peco/cmd/peco
     - github.com/rakyll/boom
-
-haskell:
-  packages:
-    - cabal-install
 
 homebrew:
   repositories:
@@ -162,26 +148,6 @@ link:
   zsh/zshrc:                              .zshrc
   zsh:                                    .zsh
 
-lua:
-  plugins_dir: '{{ anyenv.envs_dir }}/luaenv/plugins'
-
-  plugins:
-    - cehoffman/lua-build
-    - xpol/luaenv-luarocks
-
-  versions:
-    - '5.2.1'
-
-  packages:
-    - md5
-    - stdlib
-    - lpeg
-    - luaexpat
-    - inspect
-    - luaepnf
-    - luarepl
-    - cassowary
-
 mas:
   appstore_id:       '{{ secrets.mas.appstore_id }}'
   appstore_password: '{{ secrets.mas.appstore_password }}'
@@ -229,23 +195,6 @@ python:
     - tornado
     - vim-vint
 
-rlang:
-  packages:
-    - ggplot2
-    - e1071
-    - glmnet
-    - Hmisc
-    - igraph
-    - lme4
-    - lubridate
-    - plyr
-    - RCurl
-    - reshape
-    - RJSONIO
-    - scales
-    - tm
-    - XML
-
 ruby:
   versions:
     - '2.3.0'
@@ -259,13 +208,6 @@ ruby:
 
 swift:
   swiftlint_version: 0.13.2
-
-scala:
-  versions:
-    - scala-2.12.0
-
-  sbt_versions:
-    - sbt-0.13.13
 
 tex:
   texlive_path:       /usr/local/texlive
