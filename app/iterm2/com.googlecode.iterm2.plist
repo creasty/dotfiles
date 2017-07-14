@@ -327,6 +327,8 @@
 	<integer>39</integer>
 	<key>HotkeyCode</key>
 	<integer>39</integer>
+	<key>HotkeyMigratedFromSingleToMulti</key>
+	<true/>
 	<key>HotkeyModifiers</key>
 	<integer>262401</integer>
 	<key>IRMemory</key>
@@ -381,10 +383,12 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>4490 949 620 392 2880 -360 3840 2138 </string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>387 1072 796 473 0 0 2880 1778 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>2880 -360 3839 2138 2880 -360 3840 2138 </string>
+	<string>0 4 2880 1774 0 0 2880 1778 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 4 2880 1774 0 0 2880 1778 </string>
 	<key>NeverWarnAboutShortLivedSessions_00CE52AA-E97C-408F-AE73-50ABE1085D03</key>
@@ -1303,7 +1307,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-06-15T10:31:44Z</date>
+	<date>2017-06-30T07:57:59Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -1353,6 +1357,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.15</string>
+	<string>3.1.beta.5</string>
 </dict>
 </plist>

@@ -1,4 +1,7 @@
-#!/usr/bin/env whalebrew
-image: whalebrew/travis
-volumes:
-- ~/.travis:/.travis
+#!/usr/bin/env bash
+
+docker run \
+  --rm \
+  -it \
+  -v ~/.travis:/.travis \
+  creasty/travis:latest
