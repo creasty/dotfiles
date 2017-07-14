@@ -55,10 +55,8 @@ homebrew:
   #
   packages:
     - argon/mas/mas       # Mac App Store command-line interface
-    - batik               # Java-based toolkit for SVG images
     - binutils            # FSF Binutils for native development
     - carthage            # Decentralized dependency manager for Cocoa
-    - chisel              # Collection of LLDB commands to assist debugging iOS apps
     - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
     - creasty/tools/rid   # Run commands in container as if were native
@@ -91,17 +89,12 @@ homebrew:
     - libxslt             # C XSLT library for GNOME
     - ngrep               # Network grep
     - nkf                 # Network Kanji code conversion Filter (NKF)
-    - optipng             # PNG file optimizer
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
-    - q                   # Treat text as a database
-    - ranger              # File browser
     - screenresolution    # Get, set, and list display resolution
-    - sqlite              # Command-line interface for SQLite
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - tree                # Display directories as trees (with optional color/HTML output)
-    - webkit2png          # Create screenshots of webpages from the terminal
     - webp                # Image format providing lossless and lossy compression for web images
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
     - yarn                # JavaScript package manager
@@ -118,11 +111,8 @@ link:
   config/ctags:                           .ctags
   config/curlrc:                          .curlrc
   config/gocode/config.json:              .config/gocode/config.json
-  config/lldbinit:                        .lldbinit
   config/peco:                            .peco
   config/pgclirc:                         .pgclirc
-  config/ranger/colorschemes/original.py: .config/ranger/colorschemes/original.py
-  config/ranger/rc.conf:                  .config/ranger/rc.conf
   dotssh:                                 .dotssh
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
@@ -169,29 +159,17 @@ nodejs:
   packages:
     - coffee-script
     - speed-test
-    - typescript-tools
 
 python:
   versions:
     - '3.5.0'
-    - '2.7.3'
 
   packages:
-    - cryptography
-    - glances
-    - locustio
-    - misaka
-    - numpy
-    - pgcli
-    - protobuf
-    - pyamf
-    - pygments
-    - tornado
     - vim-vint
 
 ruby:
   versions:
-    - '2.3.0'
+    - '2.4.1'
 
   plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
 
