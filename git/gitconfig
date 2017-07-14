@@ -58,6 +58,8 @@
   pl = auto-ref pull
   pu = auto-ref push
   sy = aggressive-sync
+  pr = github-compare
+  y  = deploy
 
   s  = status -s
   w  = show --diff-filter=M
@@ -81,17 +83,6 @@
 
   sm  = submodule
   smu = submodule update --remote
-
-  f  = flow
-  fi = flow init
-  fs = flow feature start
-  ff = flow feature finish
-  fl = flow feature list
-  rs = flow release start
-  rf = flow release finish
-  xs = flow hotfix start
-  xf = flow hotfix finish
-  xl = flow hotfix list
 
   res  = reset --soft
   res0 = reset --soft HEAD
@@ -117,14 +108,6 @@
   ecf = ! vim -p `git ls-files --unmerged | cut -f2 | sort -u`
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
   dmb = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
-
-  # pr = github mk-pr
-  pr = github-compare
-  is = github mk-issue
-  wr = browse-remote
-  wg = weekly-goal
-
-  y = deploy
 
 [issue]
   type = github

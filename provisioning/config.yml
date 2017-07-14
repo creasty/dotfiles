@@ -3,22 +3,6 @@ anyenv:
   plugins_dir: '{{ home_path }}/.anyenv/plugins'
   envs_dir:    '{{ home_path }}/.anyenv/envs'
 
-automator:
-  workflows_dir: '{{ dotfiles_path }}/app/automator'
-
-  workflows:
-    - 'New File.workflow'
-
-elixir:
-  versions:
-    - '1.3.4'
-
-erlang:
-  releases_dir: '{{ anyenv.envs_dir }}/erlenv/releases'
-
-  versions:
-    - '19.1'
-
 golang:
   versions:
     - '1.7.1'
@@ -31,10 +15,6 @@ golang:
     - github.com/nsf/gocode
     - github.com/peco/peco/cmd/peco
     - github.com/rakyll/boom
-
-haskell:
-  packages:
-    - cabal-install
 
 homebrew:
   repositories:
@@ -75,10 +55,8 @@ homebrew:
   #
   packages:
     - argon/mas/mas       # Mac App Store command-line interface
-    - batik               # Java-based toolkit for SVG images
     - binutils            # FSF Binutils for native development
     - carthage            # Decentralized dependency manager for Cocoa
-    - chisel              # Collection of LLDB commands to assist debugging iOS apps
     - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
     - creasty/tools/rid   # Run commands in container as if were native
@@ -111,17 +89,12 @@ homebrew:
     - libxslt             # C XSLT library for GNOME
     - ngrep               # Network grep
     - nkf                 # Network Kanji code conversion Filter (NKF)
-    - optipng             # PNG file optimizer
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
-    - q                   # Treat text as a database
-    - ranger              # File browser
     - screenresolution    # Get, set, and list display resolution
-    - sqlite              # Command-line interface for SQLite
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - tree                # Display directories as trees (with optional color/HTML output)
-    - webkit2png          # Create screenshots of webpages from the terminal
     - webp                # Image format providing lossless and lossy compression for web images
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
     - yarn                # JavaScript package manager
@@ -138,11 +111,8 @@ link:
   config/ctags:                           .ctags
   config/curlrc:                          .curlrc
   config/gocode/config.json:              .config/gocode/config.json
-  config/lldbinit:                        .lldbinit
   config/peco:                            .peco
   config/pgclirc:                         .pgclirc
-  config/ranger/colorschemes/original.py: .config/ranger/colorschemes/original.py
-  config/ranger/rc.conf:                  .config/ranger/rc.conf
   dotssh:                                 .dotssh
   git/gitconfig:                          .gitconfig
   git/gitignore:                          .gitignore
@@ -162,26 +132,6 @@ link:
   zsh/zshrc:                              .zshrc
   zsh:                                    .zsh
 
-lua:
-  plugins_dir: '{{ anyenv.envs_dir }}/luaenv/plugins'
-
-  plugins:
-    - cehoffman/lua-build
-    - xpol/luaenv-luarocks
-
-  versions:
-    - '5.2.1'
-
-  packages:
-    - md5
-    - stdlib
-    - lpeg
-    - luaexpat
-    - inspect
-    - luaepnf
-    - luarepl
-    - cassowary
-
 mas:
   appstore_id:       '{{ secrets.mas.appstore_id }}'
   appstore_password: '{{ secrets.mas.appstore_password }}'
@@ -191,16 +141,16 @@ mas:
   #   $ mas list
   #
   applications:
-    - '406056744'   # Evernote
-    - '540348655'   # Monosnap
-    - '425424354'   # The Unarchiver
-    - '443987910'   # 1Password
-    - '975937182'   # Fantastical 2
-    - '497799835'   # Xcode
-    - '412448059'   # ForkLift
-    - '1031280567'  # Postico
-    - '803453959'   # Slack
-    - '928494006'   # PopHub
+    - '406056744'  # Evernote
+    - '540348655'  # Monosnap
+    - '425424354'  # The Unarchiver
+    - '443987910'  # 1Password
+    - '975937182'  # Fantastical 2
+    - '497799835'  # Xcode
+    - '412448059'  # ForkLift
+    - '1031280567' # Postico
+    - '803453959'  # Slack
+    - '928494006'  # PopHub
 
 nodejs:
   versions:
@@ -208,47 +158,17 @@ nodejs:
 
   packages:
     - coffee-script
-    - speed-test
-    - typescript-tools
 
 python:
   versions:
     - '3.5.0'
-    - '2.7.3'
 
   packages:
-    - cryptography
-    - glances
-    - locustio
-    - misaka
-    - numpy
-    - pgcli
-    - protobuf
-    - pyamf
-    - pygments
-    - tornado
     - vim-vint
-
-rlang:
-  packages:
-    - ggplot2
-    - e1071
-    - glmnet
-    - Hmisc
-    - igraph
-    - lme4
-    - lubridate
-    - plyr
-    - RCurl
-    - reshape
-    - RJSONIO
-    - scales
-    - tm
-    - XML
 
 ruby:
   versions:
-    - '2.3.0'
+    - '2.4.1'
 
   plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
 
@@ -259,18 +179,6 @@ ruby:
 
 swift:
   swiftlint_version: 0.13.2
-
-scala:
-  versions:
-    - scala-2.12.0
-
-  sbt_versions:
-    - sbt-0.13.13
-
-tex:
-  texlive_path:       /usr/local/texlive
-  texlive_bin_path:   /usr/local/texlive/2015/bin/universal-darwin
-  texlive_texmr_path: /usr/local/texlive/texmf-local
 
 vagrant:
   boxes: {}

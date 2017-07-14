@@ -12,7 +12,7 @@ env:
   global:
     - HOMEBREW_VERBOSE=1
     - DOTFILES_NOEDIT_SECRETS=1
-    - SKIP_TAGS=whalebrew,zsh,ruby
+    - SKIP_TAGS=zsh,ruby
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles

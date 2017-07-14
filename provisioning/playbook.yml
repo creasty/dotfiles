@@ -8,7 +8,7 @@
     is_ci:         '{{ lookup("env", "CI") | bool }}'
 
   environment:
-    PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ anyenv.envs_dir }}/ndenv/shims:{{ anyenv.envs_dir }}/luaenv/shims:{{ anyenv.envs_dir }}/pyenv/shims:{{ anyenv.envs_dir }}/goenv/shims:{{ lookup("env", "PATH") }}'
+    PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ anyenv.envs_dir }}/ndenv/shims:{{ anyenv.envs_dir }}/pyenv/shims:{{ anyenv.envs_dir }}/goenv/shims:{{ lookup("env", "PATH") }}'
 
   roles:
     #  pre
@@ -36,26 +36,12 @@
       tags: ['lang', 'ruby']
     - role: nodejs
       tags: ['lang', 'nodejs']
-    - role: lua
-      tags: ['lang', 'lua']
     - role: python
       tags: ['lang', 'python']
     - role: golang
       tags: ['lang', 'golang']
     - role: swift
       tags: ['lang', 'swift']
-    # - role: haskell
-    #   tags: ['lang', 'haskell']
-    # - role: rlang
-    #   tags: ['lang', 'rlang']
-    # - role: java
-    #   tags: ['lang', 'java']
-    # - role: erlang
-    #   tags: ['lang', 'erlang']
-    # - role: elixir
-    #   tags: ['lang', 'elixir']
-    # - role: scala
-    #   tags: ['lang', 'scala']
 
     #  app
     #-----------------------------------------------
@@ -63,8 +49,6 @@
       tags: ['app', 'vim']
     - role: vagrant
       tags: ['app', 'vagrant']
-    # - role: tex
-    #   tags: ['app', 'tex']
 
     #  system
     #-----------------------------------------------
