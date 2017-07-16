@@ -159,6 +159,8 @@ alias bq='google-cloud-sdk bq'
 alias kubectl='google-cloud-sdk kubectl'
 alias ku='kubectl'
 
+alias gcloud-setup='ev crst gcloud-setup'
+
 
 #  Ruby / Rails
 #-----------------------------------------------

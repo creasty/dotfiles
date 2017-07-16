@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+google-cloud-sdk gcloud config set compute/zone "$GCLOUD_DEFAULT_ZONE"
+google-cloud-sdk gcloud config set project "$GCLOUD_DEFAULT_PROJECT"
+
+google-cloud-sdk gcloud auth login
+google-cloud-sdk gcloud auth application-default login
+
+google-cloud-sdk gcloud container clusters get-credentials cluster-1 --zone "$GCLOUD_DEFAULT_ZONE" --project "$GCLOUD_DEFAULT_PROJECT"
