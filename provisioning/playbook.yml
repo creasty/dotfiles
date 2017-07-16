@@ -11,13 +11,10 @@
     PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ anyenv.envs_dir }}/ndenv/shims:{{ anyenv.envs_dir }}/pyenv/shims:{{ anyenv.envs_dir }}/goenv/shims:{{ lookup("env", "PATH") }}'
 
   roles:
-    #  pre
-    #-----------------------------------------------
-    - role: anyenv
-      tags: ['pre', 'anyenv']
-
     #  basic
     #-----------------------------------------------
+    - role: anyenv
+      tags: ['basic', 'anyenv']
     - role: link
       tags: ['basic', 'link']
     - role: ssh
@@ -56,8 +53,5 @@
       tags: ['system', 'launchagent']
     - role: osx
       tags: ['system', 'osx']
-
-    #  post
-    #-----------------------------------------------
     - role: zsh
-      tags: ['post', 'zsh']
+      tags: ['system', 'zsh']
