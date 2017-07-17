@@ -3,7 +3,8 @@
 docker run \
   --rm \
   -it \
+  -w /workdir \
+  -v "$(pwd)":/workdir \
   -v ~/.travis:/.travis \
-  -v "$(pwd):/workdir" \
   creasty/travis:latest \
   "$@"

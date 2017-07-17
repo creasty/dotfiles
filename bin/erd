@@ -8,7 +8,8 @@ OUT_FILE="${IN_FILE/.er/}.${OUT_FILE_EXT}"
 docker run \
   --rm \
   -it \
-  -w "$(pwd)":/workdir \
+  -w /workdir \
+  -v "$(pwd)":/workdir \
   creasty/erd:latest \
   -- \
   -i "$IN_FILE" \
