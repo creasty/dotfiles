@@ -45,6 +45,7 @@ homebrew:
     - quicklook-json
     - sequel-pro
     - skype
+    - transmit
     - vagrant
     - virtualbox
     - webpquicklook
@@ -147,7 +148,6 @@ mas:
     - '443987910'  # 1Password
     - '975937182'  # Fantastical 2
     - '497799835'  # Xcode
-    - '412448059'  # ForkLift
     - '1031280567' # Postico
     - '803453959'  # Slack
     - '928494006'  # PopHub
