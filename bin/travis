@@ -5,6 +5,6 @@ docker run \
   -it \
   -w /workdir \
   -v "$(pwd)":/workdir \
-  -v ~/.travis:/.travis \
+  -v "$HOME/.travis":/root/.travis \
   creasty/travis:latest \
   "$@"
