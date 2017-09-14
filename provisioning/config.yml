@@ -26,9 +26,9 @@ homebrew:
   applications:
     - adobe-creative-cloud
     - alfred
-    # - android-sdk
-    # - android-studio
-    - keyboard
+    #- android-sdk
+    #- android-studio
+    - appcleaner
     - docker
     - dropbox
     - google-chrome
@@ -38,6 +38,7 @@ homebrew:
     - istat-menus
     - iterm2
     - jetbrains-toolbox
+    - keyboard
     - ngrok
     - qlcolorcode
     - qlmarkdown
@@ -46,6 +47,7 @@ homebrew:
     - sequel-pro
     - skype
     - transmit
+    - tunnelbare
     - vagrant
     - virtualbox
     - webpquicklook
