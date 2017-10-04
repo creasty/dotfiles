@@ -25,23 +25,22 @@
   default = current
 
 [alias]
-  a    = ! git add -A -v `git rev-parse --show-toplevel`
+  a    = add
   ap   = add -p
+  aa   = ! git add -A -v `git rev-parse --show-toplevel`
   c    = commit
-  cm   = ! git a && git c -m
-  ccm  = commit -m
+  cm   = commit -m
   ca   = commit --amend
   cam  = commit --amend -m
   cane = commit --amend --no-edit
   ce   = commit --allow-empty -m
-
-  t = tag
 
   r   = remote
   ra  = remote add
   ru  = remote set-url
   ruo = remote set-url origin
 
+  t  = tag
   b  = branch
   bd = branch -D
   bm = branch -m
@@ -71,13 +70,13 @@
   lg = log --oneline --graph
   ll = ! git --no-pager log -1 HEAD
 
-  m  = merge
-  mf = merge FETCH_HEAD
+  st = stash
+  sp = stash pop
+  v  = revert --no-edit
+  p  = cherry-pick
 
-  st  = stash
-  sp  = stash pop
-  v   = revert --no-edit
-  p   = cherry-pick
+  m   = merge
+  mf  = merge FETCH_HEAD
   rb  = rebase
   rbm = rebase master
 
