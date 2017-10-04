@@ -190,12 +190,12 @@ rdbd() {
 }
 
 alias rc='bundle exec rails c'
-alias rs='bundle exec rails s'
-alias rs1='bundle exec rails s -p 3001'
-alias rs2='bundle exec rails s -p 3002'
-alias rs3='bundle exec rails s -p 3003'
-alias rs4='bundle exec rails s -p 3004'
-alias rs5='bundle exec rails s -p 3005'
+alias rs='bundle exec rails s -b 0.0.0.0'
+alias rs1='bundle exec rails s -b 0.0.0.0 -p 3001'
+alias rs2='bundle exec rails s -b 0.0.0.0 -p 3002'
+alias rs3='bundle exec rails s -b 0.0.0.0 -p 3003'
+alias rs4='bundle exec rails s -b 0.0.0.0 -p 3004'
+alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
 
 
 #  Play framework
