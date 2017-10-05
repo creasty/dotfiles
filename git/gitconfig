@@ -25,9 +25,8 @@
   default = current
 
 [alias]
-  a    = add
+  a    = smart-add
   ap   = add -p
-  aa   = ! git add -A -v `git rev-parse --show-toplevel`
   c    = commit
   cm   = commit -m
   ca   = commit --amend

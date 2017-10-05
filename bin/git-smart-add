@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+if [ $# -eq 0 ]; then
+  git add -A -v `git rev-parse --show-toplevel`
+else
+  git add "$@"
+fi
