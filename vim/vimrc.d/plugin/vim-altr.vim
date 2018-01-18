@@ -11,8 +11,9 @@ function! s:altr_on_source() abort
   call altr#define('Gemfile', 'Gemfile.lock')
 
   " I18n
-  call altr#define('locales/%/en.yml', 'locales/%/ja.yml')
-  call altr#define('locales/%.en.yml', 'locales/%.ja.yml')
+  call altr#define('locales/%/en.yml', 'locales/%/ja.yml', 'locales/%/zh-HK.yml')
+  call altr#define('locales/%.en.yml', 'locales/%.ja.yml', 'locales/%.zh-HK.yml')
+  call altr#define('locales/en.yml', 'locales/ja.yml', 'locales/zh-HK.yml')
   call altr#define('locales/en.json', 'locales/ja.json')
   call altr#define('locales/%/en.json', 'locales/%/ja.json')
 
