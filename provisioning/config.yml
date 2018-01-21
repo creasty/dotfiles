@@ -9,6 +9,7 @@ golang:
 
   packages:
     - github.com/Masterminds/glide
+    - github.com/golang/dep/cmd/dep
     - github.com/golang/lint/golint
     - github.com/laurent22/massren
     - github.com/motemen/ghq
