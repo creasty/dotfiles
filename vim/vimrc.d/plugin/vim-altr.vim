@@ -24,6 +24,13 @@ function! s:altr_on_source() abort
   " Golang
   call altr#define('%.go', '%_test.go', '%_ex_test.go')
   call altr#define('glide.yaml', 'glide.lock')
+  call altr#define('Gopkg.toml', 'Gopkg.lock')
+  call altr#define('default.yml', 'development.yml', 'qa.yml', 'production.yml')
+  call altr#define('%.dowm.sql', '%.up.sql')
+
+  " Docker
+  call altr#define('docker-compose.yml', 'Dockerfile')
+  call altr#define('script/ci-build', 'script/ci-deploy', '.travis.yml')
 
   " Dotenv
   call altr#define('.env', '.env.sample')

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+REPO="$1"
+VISIBILITY="$2"
+
+kube qucli create "$REPO" --visibility="$VISIBILITY"
+kube qucli add-team "$REPO" infrastructure --role=admin
+kube qucli add-team "$REPO" developer --role=write
+kube qucli add-user "$REPO" wantedly+wantedlybot --role=write
+kube qucli get "$REPO"
