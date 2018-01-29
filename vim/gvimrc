@@ -1,5 +1,6 @@
 " fonts
 set guifont=Monaco:h12
+command! -nargs=1 Font :set guifont=Monaco:h<args>
 
 " maximize window
 set lines=999 columns=9999
