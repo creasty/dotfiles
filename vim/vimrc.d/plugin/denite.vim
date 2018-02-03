@@ -27,10 +27,11 @@ function! s:denite_on_source() abort
   " actions
   call denite#custom#map('_', '<Tab>', '<denite:choose_action>', 'noremap')
   call denite#custom#map('_', '<CR>', '<denite:do_action:default>', 'noremap')
+  call denite#custom#map('_', '<C-r>', '<denite:restart>', 'noremap')
   call denite#custom#map('insert', '<C-v>', '<denite:paste_from_register>', 'noremap')
   call denite#custom#map('insert', '<C-l>', '<denite:redraw>', 'noremap')
   call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>', 'noremap')
-  call denite#custom#map('normal', '<Esc>', '<denite:leave_mode>', 'noremap')
+  call denite#custom#map('insert', '<C-z>', '<denite:suspend>', 'noremap')
   call denite#custom#map('normal', 'i', '<denite:enter_mode:insert>', 'noremap')
   call denite#custom#map('normal', '<C-b>', '<denite:scroll_page_backwards>', 'noremap')
   call denite#custom#map('normal', '<C-d>', '<denite:scroll_window_downwards>', 'noremap')
@@ -45,15 +46,18 @@ function! s:denite_on_source() abort
   " quit
   call denite#custom#map('insert', '<C-q>', '<denite:quit>', 'noremap')
   call denite#custom#map('normal', '<C-q>', '<denite:quit>', 'noremap')
+  call denite#custom#map('normal', '<Esc>', '<denite:quit>', 'noremap')
 
   " use ag
-  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
   call denite#custom#var('grep', 'command', ['ag'])
   call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
   call denite#custom#var('grep', 'recursive_opts', [])
   call denite#custom#var('grep', 'pattern_opt', [])
   call denite#custom#var('grep', 'separator', ['--'])
   call denite#custom#var('grep', 'final_opts', [])
+
+  " file_rec
+  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 
   " change ignore_globs
   let l:ignore_globs = [
@@ -70,12 +74,21 @@ function! s:denite_on_source() abort
 endfunction
 call dein#set_hook('denite.nvim', 'hook_source', function('s:denite_on_source'))
 
+let b:denite_last_cwd = ''
+
 function! s:open_best_denite()
-  if getcwd() == $HOME
-    Denite -resume -buffer-name=ghq ghq
-  else
-    Denite -resume -buffer-name=file_rec file_rec
-  endif
+  let l:is_home = (getcwd() == $HOME)
+  let l:is_same_dir = (getcwd() == b:denite_last_cwd)
+  let b:denite_last_cwd = getcwd()
+
+  let l:source = l:is_home ? 'ghq' : 'file_rec'
+  let l:resume = l:is_same_dir ? '-resume' : ''
+
+  exec 'Denite'
+    \ '-buffer-name=' . l:source
+    \ l:resume
+    \ '-refresh'
+    \ l:source
 endfunction
 
 nnoremap <silent> <C-q> :<C-u>call <SID>open_best_denite()<CR>
