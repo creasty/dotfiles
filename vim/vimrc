@@ -186,8 +186,8 @@ endif
 if dein#tap('nerdtree')
   call s:load_file('plugin/nerdtree')
 endif
-if dein#tap('unite.vim')
-  call s:load_file('plugin/unite')
+if dein#tap('denite.nvim')
+  call s:load_file('plugin/denite')
 endif
 if dein#tap('vim-altr')
   call s:load_file('plugin/vim-altr')
