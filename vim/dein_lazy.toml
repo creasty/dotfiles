@@ -82,11 +82,6 @@ on_map = ['<Plug>(altr-']
 repo   = 'thinca/vim-qfreplace'
 on_cmd = ['Qfreplace']
 
-[[plugins]] # command for the_silver_searcher
-repo   = 'rking/ag.vim'
-on_cmd = ['Ag']
-
-
 #  Language
 #-----------------------------------------------
 [[plugins]] # syntax highlight for Haml
