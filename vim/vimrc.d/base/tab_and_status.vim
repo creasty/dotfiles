@@ -69,6 +69,7 @@ function! MyStatusLine(w, cw)
     \ l:_bufname ==# '__Tagbar__' ? 'Tagbar' :
     \ l:_bufname =~# '__Gundo\|NERD_tree' || l:ft ==# 'nerdtree' ? 'File' :
     \ l:ft ==# 'unite' ? 'Unite' :
+    \ l:ft ==# 'denite' ? 'Denite' :
     \ l:ft ==# 'help' ? 'Help' :
     \ ''
 
@@ -105,6 +106,10 @@ function! MyStatusLine(w, cw)
 
   if l:active && l:ft ==# 'unite'
     let l:s .= ' ' . unite#get_status_string()
+  endif
+
+  if l:active && l:ft ==# 'denite'
+    let l:s .= ' ' . denite#get_status('sources')
   endif
 
   " space
