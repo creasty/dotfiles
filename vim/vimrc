@@ -147,12 +147,6 @@ endif
 if dein#tap('surround.vim')
   call s:load_file('plugin/surround')
 endif
-if dein#tap('vim-easymotion')
-  call s:load_file('plugin/vim-easymotion')
-endif
-if dein#tap('nerdcommenter')
-  call s:load_file('plugin/nerdcommenter')
-endif
 if dein#tap('vim-easy-align')
   call s:load_file('plugin/vim-easy-align')
 endif

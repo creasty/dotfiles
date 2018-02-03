@@ -21,21 +21,8 @@ repo = 'kana/vim-textobj-user'
 repo    = 'osyo-manga/vim-textobj-multiblock'
 depends = ['vim-textobj-user']
 
-[[plugins]] # adds text-objects for word-based columns
-repo = 'coderifous/textobj-word-column.vim'
-
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'vim-scripts/surround.vim'
-
-[[plugins]] # f/t motions to highlight all possible choices
-repo = 'Lokaltog/vim-easymotion'
-
-[[plugins]] # commenting code
-repo   = 'scrooloose/nerdcommenter'
-on_map = {
-  'n' = 'gc',
-  'v' = 'gc',
-}
 
 [[plugins]] # async :make and linting framework for neovim/vim
 repo = 'neomake/neomake'
