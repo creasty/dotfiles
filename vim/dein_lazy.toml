@@ -70,10 +70,6 @@ on_ft = ['swift']
 repo   = 'Shougo/denite.nvim'
 on_cmd = ['Denite']
 
-[[plugins]]
-repo      = 'Jagua/vim-denite-ghq'
-on_source = ['denite.nvim']
-
 [[plugins]] # hex editing system
 repo   = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']
