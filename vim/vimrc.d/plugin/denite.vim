@@ -1,11 +1,9 @@
 function! s:denite_on_source() abort
   " default options
-  for l:name in ['default', 'ghq', 'file_rec', 'grep']
-    call denite#custom#option(l:name, 'statusline', v:false)
-    call denite#custom#option(l:name, 'highlight_matched_range', 'Normal')
-    call denite#custom#option(l:name, 'highlight_matched_char', 'Constant')
-    call denite#custom#option(l:name, 'use_default_mappings', v:false)
-  endfor
+  call denite#custom#option('_', 'statusline', v:false)
+  call denite#custom#option('_', 'highlight_matched_range', 'Normal')
+  call denite#custom#option('_', 'highlight_matched_char', 'Constant')
+  call denite#custom#option('_', 'use_default_mappings', v:false)
 
   " cursor
   call denite#custom#map('insert', '<C-a>', '<denite:move_caret_to_head>', 'noremap')
