@@ -14,7 +14,6 @@ function! s:denite_on_source() abort
 
   " actions
   call denite#custom#map('insert', '<C-v>', '<denite:paste_from_register>', 'noremap')
-  call denite#custom#map('insert', '<C-y>', '<denite:assign_previous_text>', 'noremap')
   call denite#custom#map('insert', '<Tab>', '<denite:choose_action>', 'noremap')
   call denite#custom#map('insert', '<C-l>', '<denite:redraw>', 'noremap')
 
@@ -47,9 +46,9 @@ endfunction
 
 function! s:open_best_denite()
   if getcwd() == $HOME
-    Denite -no-statusline -default-action=cd ghq
+    Denite -no-statusline -highlight-matched-range=Normal -highlight-matched-char=Constant ghq
   else
-    Denite -no-statusline file_rec
+    Denite -no-statusline -highlight-matched-range=Normal -highlight-matched-char=Constant file_rec
   endif
 endfunction
 
