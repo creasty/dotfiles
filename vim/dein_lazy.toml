@@ -66,13 +66,21 @@ on_ft = ['swift']
 
 #  Utils
 #-----------------------------------------------
-[[plugins]] # unite and create user interfaces
-repo   = 'Shougo/unite.vim'
-on_cmd = ['Unite']
+# [[plugins]] # unite and create user interfaces
+# repo   = 'Shougo/unite.vim'
+# on_cmd = ['Unite']
+#
+# [[plugins]] # source for ghq list
+# repo      = 'sorah/unite-ghq'
+# on_source = ['unite.vim']
 
-[[plugins]] # source for ghq list
-repo      = 'sorah/unite-ghq'
-on_source = ['unite.vim']
+[[plugins]]
+repo   = 'Shougo/denite.nvim'
+on_cmd = ['Denite']
+
+[[plugins]]
+repo      = 'Jagua/vim-denite-ghq'
+on_source = ['denite.nvim']
 
 [[plugins]] # hex editing system
 repo   = 'Shougo/vinarise.vim'
