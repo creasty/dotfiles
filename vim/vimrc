@@ -189,6 +189,9 @@ endif
 if dein#tap('unite.vim')
   call s:load_file('plugin/unite')
 endif
+if dein#tap('denite.nvim')
+  call s:load_file('plugin/denite')
+endif
 if dein#tap('vim-altr')
   call s:load_file('plugin/vim-altr')
 endif
