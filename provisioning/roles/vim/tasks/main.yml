@@ -11,12 +11,6 @@
   with_items:
     - lua
 
-- name: install vim
-  homebrew:
-    name:            vim
-    state:           present
-    install_options: '--without-nls --with-override-system-vi --with-lua --with-python3'
-
 - name: install macvim
   homebrew:
     name:            macvim
@@ -27,5 +21,12 @@
   file:
     src:   /usr/local/opt/macvim/MacVim.app
     dest:  /Applications/MacVim.app
+    state: link
+    force: yes
+
+- name: link vim binary
+  file:
+    src:   /usr/local/opt/macvim/MacVim.app/Contents/bin/vim
+    dest:  /usr/local/bin/vim
     state: link
     force: yes
