@@ -152,7 +152,7 @@ fix_permission() {
   [ "$(stat -f '%Su' /usr/local)" = "$(whoami)" ] && return  # GNU: stat -c '%U'
 
   echo 'Fixing permission of /usr/local...'
-  sudo chown -R $(whoami) /usr/local
+  sudo chown -R $(whoami) /usr/local || echo 'warn: might be incomplete'
   echo 'done'
 }
 
