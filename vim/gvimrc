@@ -1,3 +1,6 @@
+" remove unecessary menus
+let g:did_install_default_menus = 1
+
 " fonts
 set guifont=Monaco:h12
 command! -nargs=1 Font :set guifont=Monaco:h<args>
