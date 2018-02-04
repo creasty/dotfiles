@@ -51,13 +51,13 @@ on_cmd = ['RengBang']
 repo  = 'Rip-Rip/clang_complete'
 on_ft = ['clang', 'objc']
 
-[[plugins]] # adds snippet support
-repo      = 'Shougo/neosnippet'
-depends   = ['neocomplete.vim', 'emmet-vim']
-on_cmd    = ['NeoSnippetEdit', 'NeoSnippetSource']
-on_ft     = 'snippet'
-on_i      = 1
-on_source = ['snippet', 'neosnippet/user', 'neosnippet/runtime']
+# [[plugins]] # adds snippet support
+# repo      = 'Shougo/neosnippet'
+# depends   = ['neocomplete.vim', 'emmet-vim']
+# on_cmd    = ['NeoSnippetEdit', 'NeoSnippetSource']
+# on_ft     = 'snippet'
+# on_i      = 1
+# on_source = ['snippet', 'neosnippet/user', 'neosnippet/runtime']
 
 [[plugins]] # autocomplete Swift in Vim
 repo  = 'keith/sourcekittendaemon.vim'
