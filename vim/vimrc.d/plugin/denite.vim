@@ -89,5 +89,5 @@ endfunction
 
 nnoremap <silent> <C-q> :<C-u>call <SID>open_best_denite()<CR>
 
-command! Ag :Denite -mode=normal -buffer-name=grep grep
-command! AgLast :Denite -mode=normal -buffer-name=grep -resume grep
+command! Ag :Denite -mode=normal -buffer-name=grep -resume grep
+nnoremap <Space>/ :Ag<CR>
