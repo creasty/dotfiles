@@ -34,6 +34,10 @@ function! s:neomake(ileave)
     return
   endif
 
+  if !filereadable(expand('%:p'))
+    return
+  endif
+
   Neomake
 endfunction
 
