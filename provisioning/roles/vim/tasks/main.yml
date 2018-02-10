@@ -10,11 +10,20 @@
     state: present
 
 - name: install neovim python lib
-  pip3:
-    executable: pip3
-    name:       neovim
+  pip:
+    executable: /usr/local/bin/pip3
+    name:       '{{ item }}'
     state:      latest
+  with_items:
+    - neovim
+    - solargraph-utils.py
   become: yes
+
+- name: rehash
+  command: |
+    bash -lc 'gem install solargraph'
+    bash -lc 'yard gems'
+    bash -lc 'yard config --gem-install-yri'
 
 - name: install macvim
   homebrew:

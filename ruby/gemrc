@@ -1,8 +1,11 @@
-update_sources: true
-backtrace:      true
-verbose:        true
-jobs:           4
-
-gem:     --no-document
-install: --no-document --verbose
-update:  --no-document --verbose
+---
+:backtrace: false
+:bulk_threshold: 1000
+:sources:
+- https://rubygems.org/
+:update_sources: true
+:verbose: true
+jobs: 4
+gem: "--no-document"
+install: "--verbose --document=yri"
+update: "--no-document --verbose"
