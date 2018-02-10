@@ -14,7 +14,3 @@ let g:deoplete#auto_complete_delay = 0
 let g:deoplete#auto_complete_start_length = 1
 
 call deoplete#custom#source('buffer', 'min_pattern_length', 3)
-
-" cancel or accept
-imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=deoplete#undo_completion()\<CR>" : "\<Esc>"
-imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=deoplete#close_popup()\<CR>" : "\<CR>"
