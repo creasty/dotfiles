@@ -51,10 +51,12 @@ on_func = ['emmet']
 repo = 'joereynolds/vim-minisnip'
 on_i = 1
 
-[[plugins]] # accurately completing C and C++ code
-repo  = 'Rip-Rip/clang_complete'
-on_ft = ['clang', 'objc']
-on_i  = 1
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+on_i = 1
+hook_source = '''
+let g:echodoc#enable_at_startup = 1
+'''
 
 [[plugins]]
 repo    = 'Shougo/neco-vim'
@@ -66,6 +68,9 @@ on_i    = 1
 repo    = 'Shougo/neco-syntax'
 depends = ['deoplete.nvim']
 on_i    = 1
+hook_source = '''
+let g:necosyntax#min_keyword_length = 3
+'''
 
 [[plugins]]
 repo    = 'joereynolds/deoplete-minisnip'
@@ -78,6 +83,9 @@ depends = ['deoplete.nvim']
 build   = 'make'
 on_i    = 1
 on_ft   = ['go']
+hook_source = '''
+let g:deoplete#sources#go#gocode_binary = $HOME . '/go/bin/gocode'
+'''
 
 [[plugins]]
 repo = 'zchee/deoplete-clang'
