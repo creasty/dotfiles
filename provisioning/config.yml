@@ -104,34 +104,34 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/app/launch_agent'
 
 link:
-  bash/bash_profile:                      .bash_profile
-  bash/bashrc:                            .bashrc
-  config/agignore:                        .agignore
-  config/ansible.cfg:                     .ansible.cfg
-  config/aws/config:                      .aws/config
-  config/ctags:                           .ctags
-  config/curlrc:                          .curlrc
-  config/gocode/config.json:              .config/gocode/config.json
-  config/peco:                            .peco
-  config/pgclirc:                         .pgclirc
-  dotssh:                                 .dotssh
-  git/gitconfig:                          .gitconfig
-  git/gitignore:                          .gitignore
-  ruby/bundle/config:                     .bundle/config
-  ruby/gemrc:                             .gemrc
-  ruby/irbrc:                             .irbrc
-  ruby/pryrc:                             .pryrc
-  ruby/railsrc:                           .railsrc
-  ruby/rbenv/default-gems:                .anyenv/envs/rbenv/default-gems
-  ruby/rspec:                             .rspec
-  tmux/tmux.conf:                         .tmux.conf
-  tmux:                                   .tmux
-  vim/gvimrc:                             .gvimrc
-  vim/vimrc:                              .vimrc
-  vim:                                    .vim
-  zsh/zshenv:                             .zshenv
-  zsh/zshrc:                              .zshrc
-  zsh:                                    .zsh
+  bash/bash_profile:         .bash_profile
+  bash/bashrc:               .bashrc
+  config/agignore:           .agignore
+  config/ansible.cfg:        .ansible.cfg
+  config/aws/config:         .aws/config
+  config/ctags:              .ctags
+  config/curlrc:             .curlrc
+  config/gocode/config.json: .config/gocode/config.json
+  config/peco:               .peco
+  config/pgclirc:            .pgclirc
+  dotssh:                    .dotssh
+  git/gitconfig:             .gitconfig
+  git/gitignore:             .gitignore
+  ruby/bundle/config:        .bundle/config
+  ruby/gemrc:                .gemrc
+  ruby/irbrc:                .irbrc
+  ruby/pryrc:                .pryrc
+  ruby/railsrc:              .railsrc
+  ruby/rbenv/default-gems:   .anyenv/envs/rbenv/default-gems
+  ruby/rspec:                .rspec
+  tmux/tmux.conf:            .tmux.conf
+  tmux:                      .tmux
+  vim/gvimrc:                .gvimrc
+  vim/vimrc:                 .vimrc
+  vim:                       .vim
+  zsh/zshenv:                .zshenv
+  zsh/zshrc:                 .zshrc
+  zsh:                       .zsh
 
 mas:
   appstore_id:       '{{ secrets.mas.appstore_id }}'

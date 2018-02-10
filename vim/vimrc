@@ -203,15 +203,3 @@ endif
 if dein#tap('vim-anzu')
   call s:load_file('plugin/vim-anzu')
 endif
-if dein#tap('vim-rails')
-  call s:load_file('plugin/vim-rails')
-endif
-if dein#tap('vim-scala')
-  call s:load_file('plugin/vim-scala')
-endif
-if dein#tap('vim-go-extra')
-  call s:load_file('plugin/vim-go-extra')
-endif
-if dein#tap('typescript-tools.vim')
-  call s:load_file('plugin/typescript-tools')
-endif

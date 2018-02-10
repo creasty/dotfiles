@@ -10,12 +10,12 @@ build = 'make'
 
 #  Editing
 #-----------------------------------------------
+[[plugins]] # create your own text objects
+repo = 'kana/vim-textobj-user'
+
 [[plugins]] # text objects for indented blocks of lines
 repo    = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
-
-[[plugins]] # create your own text objects
-repo = 'kana/vim-textobj-user'
 
 [[plugins]] # text objects for multiple types of parentheses
 repo    = 'osyo-manga/vim-textobj-multiblock'
@@ -39,10 +39,6 @@ repo = 'creasty/mold.vim'
 
 #  Completion
 #-----------------------------------------------
-[[plugins]] # auto close parentheses and repeat by dot
-repo    = 'cohama/lexima.vim'
-depends = ['smartchr', 'deoplete.nvim', 'vim-minisnip']
-
 [[plugins]] # dark powered asynchronous completion framework for neovim/vim8
 repo    = 'Shougo/deoplete.nvim'
 depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
@@ -54,6 +50,10 @@ if   = "!has('nvim')"
 [[plugins]]
 repo = 'roxma/vim-hug-neovim-rpc'
 if   = "!has('nvim')"
+
+[[plugins]] # auto close parentheses and repeat by dot
+repo    = 'cohama/lexima.vim'
+depends = ['smartchr', 'deoplete.nvim', 'vim-minisnip']
 
 
 #  Utils

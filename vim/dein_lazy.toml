@@ -124,6 +124,7 @@ on_map = ['<Plug>(altr-']
 repo   = 'thinca/vim-qfreplace'
 on_cmd = ['Qfreplace']
 
+
 #  Language
 #-----------------------------------------------
 [[plugins]] # syntax highlight for Haml
@@ -138,10 +139,6 @@ on_ft = ['markdown']
 repo  = 'kchmck/vim-coffee-script'
 on_ft = ['coffee']
 
-[[plugins]] # syntax highlight for Ruby
-repo  = 'vim-ruby/vim-ruby'
-on_ft = ['ruby']
-
 [[plugins]] # working with Ruby on Rails applications
 repo  = 'tpope/vim-rails'
 on_ft = ['ruby']
@@ -150,45 +147,28 @@ on_ft = ['ruby']
 repo  = 'cakebaker/scss-syntax.vim'
 on_ft = ['scss']
 
-[[plugins]] # plugin for Cocoa/Objective-C development
-repo  = 'msanders/cocoa.vim'
-on_ft = ['objc']
-
-[[plugins]] # plugin for iOS development
-repo  = 'eraserhd/vim-ios'
-on_ft = ['objc']
-
 [[plugins]] # syntax highlight for Scala
 repo  = 'derekwyatt/vim-scala'
 on_ft = ['scala']
-
-[[plugins]] # syntax highlight for Clojure
-repo  = 'jondistad/vimclojure'
-on_ft = ['clojure']
+hook_source = '''
+let g:scala_sort_across_groups = 1
+'''
 
 [[plugins]] # syntax highlight for Haskell
 repo  = 'kana/vim-filetype-haskell'
 on_ft = ['haskell']
 
-[[plugins]] # Elixir support for vim
-repo  = 'elixir-lang/vim-elixir'
-on_ft = ['elixir']
-
 [[plugins]] # Vastly improved Javascript indentation and syntax support
 repo  = 'pangloss/vim-javascript'
 on_ft = ['javascript']
-
-[[plugins]] # Jade template engine syntax highlighting and indention
-repo  = 'digitaltoad/vim-jade'
-on_ft = ['jade']
 
 [[plugins]] # TypesSript syntax files for Vim
 repo  = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
 
-[[plugins]] # tools related to the TypeScript language
-repo  = 'clausreinke/typescript-tools.vim'
-on_ft = ['typescript']
+[[plugins]] # Jade template engine syntax highlighting and indention
+repo  = 'digitaltoad/vim-jade'
+on_ft = ['jade']
 
 [[plugins]] # vim syntax highlighting for ace templates
 repo  = 'yosssi/vim-ace'
