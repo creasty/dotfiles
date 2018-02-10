@@ -44,7 +44,7 @@ function! s:delete_or_trash(file)
   endif
 
   if isdirectory(l:trash_dir)
-    call vimproc#system('mv ' . l:file . ' ' . l:trash_dir)
+    call job_start(['mv', l:file, l:trash_dir])
   else
     call delete(l:file)
   endif
@@ -86,7 +86,7 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
 " automatically change input source
 if g:env.support.osascript
   autocmd vimrc FocusGained *
-    \ call vimproc#system("osascript -e 'tell application \"System Events\" to key code 102'")
+    \ call job_start(['osascript', '-e', 'tell application "System Events" to key code 102'])
 endif
 
 " inspect syntax

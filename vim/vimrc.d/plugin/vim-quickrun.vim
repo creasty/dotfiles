@@ -1,6 +1,6 @@
 let g:quickrun_config = {}
 let g:quickrun_config['_'] = {
-  \ 'runner':                        'vimproc',
+  \ 'runner':                        'job',
   \ 'outputter/buffer/split':        ':botright 15sp',
   \ 'outputter/buffer/running_mark': '',
 \ }

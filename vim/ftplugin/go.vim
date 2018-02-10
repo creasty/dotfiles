@@ -7,7 +7,7 @@ augroup END
 
 function! s:auto_go_fmt(path)
   if !empty(a:path)
-    call vimproc#system('gofmt -s -w ' . fnameescape(a:path))
+    call job_start(['gofmt', '-s', '-w', a:path])
   endif
 endfunction
 
