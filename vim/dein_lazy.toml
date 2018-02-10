@@ -99,6 +99,12 @@ depends = ['deoplete.nvim']
 on_i    = 1
 on_ft   = ['ruby']
 
+# [[plugins]]
+# repo    = 'autozimu/LanguageClient-neovim'
+# rev     = 'next'
+# build   = 'bash install.sh'
+# depends = ['deoplete.nvim']
+
 
 #  Utils
 #-----------------------------------------------

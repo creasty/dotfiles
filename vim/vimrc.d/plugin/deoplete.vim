@@ -12,8 +12,7 @@ let g:deoplete#enable_yarp = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_complete_delay = 0
 let g:deoplete#auto_complete_start_length = 1
-" let g:deoplete#complete_method = 'omnifunc'
-"
+
 call deoplete#custom#source('buffer', 'min_pattern_length', 3)
 
 " cancel or accept
