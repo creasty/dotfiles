@@ -1,6 +1,8 @@
+let g:minisnip_backrefmarker = '='
+
 " disable default mappings
-map <Nop> <Plug>(minisnip)
-map <Nop> <Plug>(minisnip-complete)
+map <Plug>(minisnip-nop) <Plug>(minisnip)
+map <Plug>(minisnip-complete-nop) <Plug>(minisnip-complete)
 
 " remove placeholders before saving
 autocmd vimrc BufWritePre *
