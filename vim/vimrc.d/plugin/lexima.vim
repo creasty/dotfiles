@@ -741,9 +741,9 @@ imap <silent> <expr> <Tab> <SID>super_tab_completion()
 
 function! s:super_tab_completion()
   if pumvisible()
-    return "\<C-r>=deocomplete#close_popup()\<CR>"  " \<C-y> is buggy
-  elseif neosnippet#expandable_or_jumpable()
-    return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
+    return "\<C-r>=deoplete#close_popup()\<CR>"  " \<C-y> is buggy
+  elseif minisnip#ShouldTrigger()
+     return "\<C-r>=minisnip#complete()\<CR>"
   elseif &filetype =~# 'x\?html\|xml\|haml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
   else

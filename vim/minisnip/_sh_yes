@@ -1,0 +1,11 @@
+ask_for_confirmation() {
+  ask "{{++}} [yN] "
+}
+
+answer_is_yes() {
+  if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    return 0
+  else
+    return 1
+  fi
+}

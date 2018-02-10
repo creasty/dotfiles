@@ -1,0 +1,6 @@
+help() {
+  cat "$0" \
+    | grep '^#>' \
+    | sed -e 's/#> //g' -e 's/#>//g'
+  exit 0
+}

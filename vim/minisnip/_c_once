@@ -1,0 +1,6 @@
+#ifndef {{+~toupper('__' . substitute(expand('%:t'), '\W\+', '_', 'g'))+}}
+#define {{+~toupper('__' . substitute(expand('%:t'), '\W\+', '_', 'g'))+}}
+
+{{++}}
+
+#endif /* end of include guard: /* end of include guard: $1 */ */

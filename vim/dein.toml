@@ -41,7 +41,7 @@ repo = 'creasty/mold.vim'
 #-----------------------------------------------
 [[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
-depends = ['smartchr', 'deoplete.nvim', 'neosnippet']
+depends = ['smartchr', 'deoplete.nvim', 'vim-minisnip']
 
 [[plugins]] # dark powered asynchronous completion framework for neovim/vim8
 repo    = 'Shougo/deoplete.nvim'
@@ -54,6 +54,13 @@ if   = "!has('nvim')"
 [[plugins]]
 repo = 'roxma/vim-hug-neovim-rpc'
 if   = "!has('nvim')"
+
+[[plugins]]
+repo    = 'joereynolds/deoplete-minisnip'
+depends = ['deoplete.nvim', 'vim-minisnip']
+
+[[plugins]]
+repo = 'joereynolds/vim-minisnip'
 
 [[plugins]]
 repo    = 'Shougo/neco-syntax'
