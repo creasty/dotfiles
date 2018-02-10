@@ -20,9 +20,6 @@ golang:
 homebrew:
   repositories:
     - creasty/tools
-    - homebrew/boneyard
-    - homebrew/dupes
-    - homebrew/science
 
   applications:
     - adobe-creative-cloud

@@ -4,29 +4,43 @@
     dest:   '{{ dotfiles_path }}/vim/dein/repos/github.com/Shougo/dein.vim'
     update: False
 
-- name: install dependency
+- name: install python3
   homebrew:
-    name:  '{{ item }}'
+    name:  python3
     state: present
+
+- name: install neovim python lib
+  pip:
+    executable: /usr/local/bin/pip3
+    name:       '{{ item }}'
+    state:      latest
   with_items:
-    - lua
+    - neovim
+    - solargraph-utils.py
+  become: yes
+
+- name: rehash
+  command: |
+    bash -lc 'gem install solargraph'
+    bash -lc 'yard gems'
+    bash -lc 'yard config --gem-install-yri'
 
 - name: install macvim
   homebrew:
     name:            macvim
     state:           present
-    install_options: '--with-lua --with-python3 --HEAD'
+    install_options: '--HEAD --with-python3 --override-system-vim'
 
-- name: link macvim
-  file:
-    src:   /usr/local/opt/macvim/MacVim.app
-    dest:  /Applications/MacVim.app
-    state: link
-    force: yes
-
-- name: link vim binary
-  file:
-    src:   /usr/local/opt/macvim/MacVim.app/Contents/bin/vim
-    dest:  /usr/local/bin/vim
-    state: link
-    force: yes
+# - name: link macvim
+#   file:
+#     src:   /usr/local/opt/macvim/MacVim.app
+#     dest:  /Applications/MacVim.app
+#     state: link
+#     force: yes
+#
+# - name: link vim binary
+#   file:
+#     src:   /usr/local/opt/macvim/MacVim.app/Contents/bin/vim
+#     dest:  /usr/local/bin/vim
+#     state: link
+#     force: yes

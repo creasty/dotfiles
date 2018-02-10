@@ -8,11 +8,6 @@ on_if = 1
 repo   = 'junegunn/vim-easy-align'
 on_cmd = ['EasyAlign']
 
-[[plugins]] # emmet for vim: HTML and CSS hi-speed coding
-repo    = 'mattn/emmet-vim'
-on_i    = 1
-on_func = ['emmet']
-
 [[plugins]] # operator to camelize/decamelize a specified text
 repo    = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
@@ -47,21 +42,68 @@ on_cmd = ['RengBang']
 
 #  Completion
 #-----------------------------------------------
-[[plugins]] # accurately completing C and C++ code
-repo  = 'Rip-Rip/clang_complete'
-on_ft = ['clang', 'objc']
+[[plugins]] # emmet for vim: HTML and CSS hi-speed coding
+repo    = 'mattn/emmet-vim'
+on_i    = 1
+on_func = ['emmet']
 
-[[plugins]] # adds snippet support
-repo      = 'Shougo/neosnippet'
-depends   = ['neocomplete.vim', 'emmet-vim']
-on_cmd    = ['NeoSnippetEdit', 'NeoSnippetSource']
-on_ft     = 'snippet'
-on_i      = 1
-on_source = ['snippet', 'neosnippet/user', 'neosnippet/runtime']
+[[plugins]]
+repo = 'joereynolds/vim-minisnip'
+on_i = 1
 
-[[plugins]] # autocomplete Swift in Vim
-repo  = 'keith/sourcekittendaemon.vim'
-on_ft = ['swift']
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+on_i = 1
+hook_source = '''
+let g:echodoc#enable_at_startup = 1
+'''
+
+[[plugins]]
+repo    = 'Shougo/neco-vim'
+depends = ['deoplete.nvim']
+on_ft   = ['vim']
+on_i    = 1
+
+[[plugins]]
+repo    = 'Shougo/neco-syntax'
+depends = ['deoplete.nvim']
+on_i    = 1
+hook_source = '''
+let g:necosyntax#min_keyword_length = 3
+'''
+
+[[plugins]]
+repo    = 'joereynolds/deoplete-minisnip'
+depends = ['deoplete.nvim', 'vim-minisnip']
+on_i    = 1
+
+[[plugins]]
+repo    = 'zchee/deoplete-go'
+depends = ['deoplete.nvim']
+build   = 'make'
+on_i    = 1
+on_ft   = ['go']
+hook_source = '''
+let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-clang'
+depends = ['deoplete.nvim']
+on_i    = 1
+on_ft   = ['c', 'cpp', 'objc', 'objcpp']
+
+[[plugins]]
+repo    = 'uplus/deoplete-solargraph'
+depends = ['deoplete.nvim']
+on_i    = 1
+on_ft   = ['ruby']
+
+# [[plugins]]
+# repo    = 'autozimu/LanguageClient-neovim'
+# rev     = 'next'
+# build   = 'bash install.sh'
+# depends = ['deoplete.nvim']
 
 
 #  Utils
@@ -127,10 +169,6 @@ on_ft = ['clojure']
 [[plugins]] # syntax highlight for Haskell
 repo  = 'kana/vim-filetype-haskell'
 on_ft = ['haskell']
-
-[[plugins]] # extra plugin for golang
-repo  = 'vim-jp/vim-go-extra'
-on_ft = ['go']
 
 [[plugins]] # Elixir support for vim
 repo  = 'elixir-lang/vim-elixir'

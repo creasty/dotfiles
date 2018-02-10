@@ -63,7 +63,6 @@ function! s:vimrc_environment()
     \ 'vimrcd':         l:vim_path . '/vimrc.d',
     \ 'dict':           l:vim_path . '/dict',
     \ 'template':       l:vim_path . '/templates',
-    \ 'snippets':       l:vim_path . '/snippets',
   \ }
 
   let l:env.support = {
@@ -171,11 +170,11 @@ endif
 if dein#tap('mold.vim')
   call s:load_file('plugin/mold')
 endif
-if dein#tap('neocomplete.vim')
-  call s:load_file('plugin/neocomplete')
+if dein#tap('deoplete.nvim')
+  call s:load_file('plugin/deoplete')
 endif
-if dein#tap('neosnippet')
-  call s:load_file('plugin/neosnippet')
+if dein#tap('vim-minisnip')
+  call s:load_file('plugin/vim-minisnip')
 endif
 if dein#tap('nerdtree')
   call s:load_file('plugin/nerdtree')

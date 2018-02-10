@@ -30,18 +30,30 @@ repo = 'neomake/neomake'
 [[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'
 
-[[plugins]] # auto close parentheses and repeat by dot
-repo    = 'cohama/lexima.vim'
-depends = ['smartchr', 'neocomplete.vim', 'neosnippet']
-
-[[plugins]] # next generation of auto completion framework
-repo = 'Shougo/neocomplete.vim'
-
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
 
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
+
+
+#  Completion
+#-----------------------------------------------
+[[plugins]] # auto close parentheses and repeat by dot
+repo    = 'cohama/lexima.vim'
+depends = ['smartchr', 'deoplete.nvim', 'vim-minisnip']
+
+[[plugins]] # dark powered asynchronous completion framework for neovim/vim8
+repo    = 'Shougo/deoplete.nvim'
+depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
+
+[[plugins]] # yet another remote plugin framework for neovim
+repo = 'roxma/nvim-yarp'
+if   = "!has('nvim')"
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+if   = "!has('nvim')"
 
 
 #  Utils

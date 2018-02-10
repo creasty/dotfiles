@@ -6,7 +6,7 @@ let s:opx     = '\(' . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . '\)'
 
 "  Disable lexima inside string literal
 "-----------------------------------------------
-function! s:disable_lexima_inside_string(char)
+function! s:disable_lexima_inside_string(char) abort
   call lexima#add_rule({
     \ 'char':  a:char,
     \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
@@ -25,13 +25,87 @@ function! s:disable_lexima_inside_string(char)
   \ })
 endfunction
 
-function! s:disable_lexima_inside_regexp(char)
+function! s:disable_lexima_inside_regexp(char) abort
   call lexima#add_rule({
     \ 'char':  a:char,
     \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
     \ 'input': a:char,
   \ })
 endfunction
+
+
+"  Expanders
+"-----------------------------------------------
+function! ExpandMarkdownTitleLine(char) abort
+  let l:text = getline(line('.') - 1)
+
+  if l:text =~# '^\(\t\|  \)*[-=]\s'
+    return a:char . ' '
+  else
+    return repeat(a:char, strwidth(l:text))
+  endif
+endfunction
+
+function! ExpandSectionHeader(level, trigger, token) abort
+  let l:line = getline(line('.'))
+  let l:m = matchlist(l:line, '^\(\s*\)' . a:trigger . '\s*\(.*\)')
+
+  if empty(l:m)
+    return
+  endif
+
+  let l:indent = get(l:m, 1, '')
+  let l:text = get(l:m, 2, '')
+
+  let l:cursor = '<vim:expand_section_header:cursor>'
+  let l:lines = ['', '']
+
+  if a:level == 1
+    let l:lines[0] = l:indent . a:token . '=== ' . l:text . l:cursor
+    let l:lines[1] = l:indent . a:token . repeat('=', 94)
+  else
+    let l:lines[0] = l:indent . a:token . ' ' . l:text . l:cursor
+    let l:lines[1] = l:indent . a:token . repeat('-', 47)
+  endif
+
+  call setline('.', l:lines[0])
+  call append(line('.'), l:lines[1])
+
+  if search(l:cursor)
+    execute 'normal! "_da>'
+  end
+endfunction
+
+
+"  Section headers
+"-----------------------------------------------
+let s:rules = {
+  \ '//': [],
+  \ '#':  [],
+  \ '/':  ['haml'],
+  \ '%':  ['tex'],
+  \ '"':  ['vim'],
+\ }
+for [s:token, s:filetype] in items(s:rules)
+  let s:t1 = s:token[0]
+  let s:t2 = s:token[0] . s:token[0]
+
+  call lexima#add_rule({
+    \ 'char':     '<Tab>',
+    \ 'at':       '^\s*' . s:t1 . '\%#',
+    \ 'input':    "<Esc>:call ExpandSectionHeader(1, '" . s:t1 . "', '" . s:token . "')<CR>a",
+    \ 'filetype': s:filetype,
+  \ })
+  call lexima#add_rule({
+    \ 'char':     '<Tab>',
+    \ 'at':       '^\s*' . s:t2 . '\%#',
+    \ 'input':    "<Esc>:call ExpandSectionHeader(2, '" . s:t2 . "', '" . s:token . "')<CR>a",
+    \ 'filetype': s:filetype,
+  \ })
+endfor
+unlet s:token
+unlet s:filetype
+unlet s:rules
 
 
 "  Quotes
@@ -665,21 +739,11 @@ for s:d in ['-', '=']
   call lexima#add_rule({
     \ 'char':     s:d,
     \ 'at':       '^\%#',
-    \ 'input':    "<C-r>=MarkdownTitleLine('" . s:d . "')<CR>",
+    \ 'input':    "<C-r>=ExpandMarkdownTitleLine('" . s:d . "')<CR>",
     \ 'filetype': ['markdown'],
   \ })
 endfor
 unlet s:d
-
-function! MarkdownTitleLine(char)
-  let l:text = getline(line('.') - 1)
-
-  if l:text =~# '^\(\t\|  \)*[-=]\s'
-    return a:char . ' '
-  else
-    return repeat(a:char, strwidth(l:text))
-  endif
-endfunction
 
 
 "  Command mode
@@ -741,10 +805,10 @@ imap <silent> <expr> <Tab> <SID>super_tab_completion()
 
 function! s:super_tab_completion()
   if pumvisible()
-    return "\<C-r>=neocomplete#close_popup()\<CR>"  " \<C-y> is buggy
-  elseif neosnippet#expandable_or_jumpable()
-    return "\<C-g>u" . neosnippet#mappings#expand_or_jump_impl()
-  elseif &filetype =~# 'x\?html\|xml\|haml\|slim\|s\?css\|markdown' && emmet#isExpandable()
+    return "\<C-r>=deoplete#close_popup()\<CR>"
+  elseif minisnip#ShouldTrigger()
+     return "\<Esc>:call minisnip#Minisnip()\<CR>"
+  elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
   else
     return "\<C-r>=lexima#expand('<TAB>', 'i')\<CR>"

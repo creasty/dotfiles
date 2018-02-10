@@ -1,0 +1,7 @@
+print_status() {
+  if [ \$1 -eq 0 ]; then
+    print_success "\${2:-"OK"}"
+  else
+    print_info "\${2:-"Done with error"}"
+  fi
+}{{++}}
