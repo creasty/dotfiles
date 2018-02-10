@@ -55,21 +55,6 @@ if   = "!has('nvim')"
 repo = 'roxma/vim-hug-neovim-rpc'
 if   = "!has('nvim')"
 
-[[plugins]]
-repo    = 'joereynolds/deoplete-minisnip'
-depends = ['deoplete.nvim', 'vim-minisnip']
-
-[[plugins]]
-repo = 'joereynolds/vim-minisnip'
-
-[[plugins]]
-repo    = 'Shougo/neco-syntax'
-depends = ['deoplete.nvim']
-
-[[plugins]]
-repo    = 'Shougo/neco-vim'
-depends = ['deoplete.nvim']
-
 # [[plugins]]
 # repo    = 'autozimu/LanguageClient-neovim'
 # rev     = 'next'

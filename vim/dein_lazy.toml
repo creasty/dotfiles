@@ -47,9 +47,49 @@ repo    = 'mattn/emmet-vim'
 on_i    = 1
 on_func = ['emmet']
 
+[[plugins]]
+repo = 'joereynolds/vim-minisnip'
+on_i = 1
+
 [[plugins]] # accurately completing C and C++ code
 repo  = 'Rip-Rip/clang_complete'
 on_ft = ['clang', 'objc']
+on_i  = 1
+
+[[plugins]]
+repo    = 'Shougo/neco-vim'
+depends = ['deoplete.nvim']
+on_ft   = ['vim']
+on_i    = 1
+
+[[plugins]]
+repo    = 'Shougo/neco-syntax'
+depends = ['deoplete.nvim']
+on_i    = 1
+
+[[plugins]]
+repo    = 'joereynolds/deoplete-minisnip'
+depends = ['deoplete.nvim', 'vim-minisnip']
+on_i    = 1
+
+[[plugins]]
+repo    = 'zchee/deoplete-go'
+depends = ['deoplete.nvim']
+build   = 'make'
+on_i    = 1
+on_ft   = ['go']
+
+[[plugins]]
+repo = 'zchee/deoplete-clang'
+depends = ['deoplete.nvim']
+on_i    = 1
+on_ft   = ['c', 'cpp', 'objc', 'objcpp']
+
+[[plugins]]
+repo    = 'uplus/deoplete-solargraph'
+depends = ['deoplete.nvim']
+on_i    = 1
+on_ft   = ['ruby']
 
 
 #  Utils
@@ -115,10 +155,6 @@ on_ft = ['clojure']
 [[plugins]] # syntax highlight for Haskell
 repo  = 'kana/vim-filetype-haskell'
 on_ft = ['haskell']
-
-[[plugins]] # extra plugin for golang
-repo  = 'vim-jp/vim-go-extra'
-on_ft = ['go']
 
 [[plugins]] # Elixir support for vim
 repo  = 'elixir-lang/vim-elixir'
