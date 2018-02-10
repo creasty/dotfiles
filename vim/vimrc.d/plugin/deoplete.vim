@@ -1,11 +1,13 @@
-function! s:deoplete_on_source() abort
-  let g:deoplete#enable_at_startup = 1
-  let g:deoplete#enable_yarp = 1
-  let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_yarp = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_start_length = 1
+" let g:deoplete#complete_method = 'omnifunc'
 
-  call deoplete#custom#source('buffer', 'min_pattern_length', 3)
-endfunction
-call dein#set_hook('deoplete.nvim', 'hook_source', function('s:deoplete_on_source'))
+" let g:necosyntax#min_keyword_length = 3
+
+call deoplete#custom#source('buffer', 'min_pattern_length', 3)
 
 " cancel or accept
 imap <silent> <expr> <C-c> pumvisible() ? "\<C-r>=deoplete#undo_completion()\<CR>" : "\<Esc>"

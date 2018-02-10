@@ -8,11 +8,6 @@ on_if = 1
 repo   = 'junegunn/vim-easy-align'
 on_cmd = ['EasyAlign']
 
-[[plugins]] # emmet for vim: HTML and CSS hi-speed coding
-repo    = 'mattn/emmet-vim'
-on_i    = 1
-on_func = ['emmet']
-
 [[plugins]] # operator to camelize/decamelize a specified text
 repo    = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
@@ -47,6 +42,11 @@ on_cmd = ['RengBang']
 
 #  Completion
 #-----------------------------------------------
+[[plugins]] # emmet for vim: HTML and CSS hi-speed coding
+repo    = 'mattn/emmet-vim'
+on_i    = 1
+on_func = ['emmet']
+
 [[plugins]] # accurately completing C and C++ code
 repo  = 'Rip-Rip/clang_complete'
 on_ft = ['clang', 'objc']
@@ -58,10 +58,6 @@ on_ft = ['clang', 'objc']
 # on_ft     = 'snippet'
 # on_i      = 1
 # on_source = ['snippet', 'neosnippet/user', 'neosnippet/runtime']
-
-[[plugins]] # autocomplete Swift in Vim
-repo  = 'keith/sourcekittendaemon.vim'
-on_ft = ['swift']
 
 
 #  Utils
