@@ -8,21 +8,27 @@ autocmd vimrc CursorHold,InsertLeave * call <SID>auto_save()
 command! AutoSaveToggle :call <SID>auto_save_toggle()
 
 function! s:auto_save()
-  if g:auto_save >= 1
-    let l:was_modified = &modified
+  if g:auto_save == 0
+    return
+  end
+  let l:was_modified = &modified
 
-    doautocmd User AutoSavePre
-    silent! wa
+  doautocmd User AutoSavePre
+  silent! wa
 
-    if l:was_modified && !&modified
-      let g:auto_save = 0
-      try
-        doautocmd User AutoSavePost
-      finally
-        let g:auto_save = 1
-      endtry
-      echo '(AutoSaved at ' . strftime('%H:%M:%S') . ')'
-    endif
+  if !l:was_modified || &modified
+    return
+  endif
+
+  let g:auto_save = 0
+  try
+    doautocmd User AutoSavePost
+  finally
+    let g:auto_save = 1
+  endtry
+
+  if mode() !=# 'i'
+    echo '(AutoSaved at ' . strftime('%H:%M:%S') . ')'
   endif
 endfunction
 
