@@ -4,4 +4,4 @@ print_status() {
   else
     print_info "\${2:-"Done with error"}"
   fi
-}
+}{{++}}

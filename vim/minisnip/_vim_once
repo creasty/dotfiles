@@ -1,5 +1,7 @@
-if exists('g:loaded_{{++}}')
+if exists('g:loaded_{{+~tolower(substitute(expand('%:t'), '\W\+', '_', 'g'))+}}')
   finish
 endif
 
-let g:loaded_{{++}} = 1
+let g:loaded_{{+~=1+}} = 1
+
+{{++}}

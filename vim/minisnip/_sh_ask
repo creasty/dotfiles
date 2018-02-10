@@ -1,4 +1,4 @@
 ask() {
   echo -n "\$1"
   read REPLY
-}
+}{{++}}

@@ -1,3 +1,3 @@
 print_error() {
   printf "\e[0;31m[Error]\e[0m $@\n" 1>&2
-}
+}{{++}}
