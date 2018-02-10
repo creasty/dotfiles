@@ -1,6 +1,6 @@
 #  Base
 #-----------------------------------------------
-[[plugins]]
+[[plugins]] # dark powered vim/neovim plugin manager
 repo = 'Shougo/dein.vim'
 
 
@@ -43,7 +43,7 @@ depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
 repo = 'roxma/nvim-yarp'
 if   = "!has('nvim')"
 
-[[plugins]]
+[[plugins]] # a compatibility layer for neovim rpc client working on vim8
 repo = 'roxma/vim-hug-neovim-rpc'
 if   = "!has('nvim')"
 

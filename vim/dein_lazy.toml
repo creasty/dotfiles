@@ -47,24 +47,24 @@ repo    = 'mattn/emmet-vim'
 on_i    = 1
 on_func = ['emmet']
 
-[[plugins]]
+[[plugins]] # lightweight snippet manager
 repo = 'joereynolds/vim-minisnip'
 on_i = 1
 
-[[plugins]]
+[[plugins]] # displays function signatures from completions in the command line
 repo = 'Shougo/echodoc.vim'
 on_i = 1
 hook_source = '''
 let g:echodoc#enable_at_startup = 1
 '''
 
-[[plugins]]
+[[plugins]] # vim source for neocomplete/deoplete
 repo    = 'Shougo/neco-vim'
 depends = ['deoplete.nvim']
 on_ft   = ['vim']
 on_i    = 1
 
-[[plugins]]
+[[plugins]] # syntax source for neocomplete/deoplete/ncm
 repo    = 'Shougo/neco-syntax'
 depends = ['deoplete.nvim']
 on_i    = 1
@@ -72,12 +72,12 @@ hook_source = '''
 let g:necosyntax#min_keyword_length = 3
 '''
 
-[[plugins]]
+[[plugins]] # deoplete source for vim-minisnip
 repo    = 'joereynolds/deoplete-minisnip'
 depends = ['deoplete.nvim', 'vim-minisnip']
 on_i    = 1
 
-[[plugins]]
+[[plugins]] # asynchronous Go completion for Neovim. deoplete source for Go
 repo    = 'zchee/deoplete-go'
 depends = ['deoplete.nvim']
 build   = 'make'
@@ -87,19 +87,19 @@ hook_source = '''
 let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
 '''
 
-[[plugins]]
+[[plugins]] # deoplete.nvim source for c/c++/obj-c/obj-c++ with clang-python3
 repo = 'zchee/deoplete-clang'
 depends = ['deoplete.nvim']
 on_i    = 1
 on_ft   = ['c', 'cpp', 'objc', 'objcpp']
 
-[[plugins]]
+[[plugins]] # deoplete.nvim source for Ruby with solargraph
 repo    = 'uplus/deoplete-solargraph'
 depends = ['deoplete.nvim']
 on_i    = 1
 on_ft   = ['ruby']
 
-# [[plugins]]
+# [[plugins]] # Language Server Protocol (LSP) support for vim and neovim
 # repo    = 'autozimu/LanguageClient-neovim'
 # rev     = 'next'
 # build   = 'bash install.sh'
@@ -108,7 +108,7 @@ on_ft   = ['ruby']
 
 #  Utils
 #-----------------------------------------------
-[[plugins]]
+[[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
 repo   = 'Shougo/denite.nvim'
 on_cmd = ['Denite']
 
