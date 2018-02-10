@@ -9,7 +9,7 @@ class_name = File.basename('FILE_NAME', '.rb')
   .delete('_')
 
 out = <<EOS.chomp
-class #{[*namespaces, class_name].join('::')} < ActiveRecord::Base
+class #{[*namespaces, class_name].join('::')} < ApplicationRecord
 
   <+CURSOR+>
 
