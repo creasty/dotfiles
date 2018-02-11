@@ -58,12 +58,6 @@ hook_source = '''
 let g:echodoc#enable_at_startup = 1
 '''
 
-[[plugins]] # vim source for neocomplete/deoplete
-repo    = 'Shougo/neco-vim'
-depends = ['deoplete.nvim']
-on_ft   = ['vim']
-on_i    = 1
-
 [[plugins]] # syntax source for neocomplete/deoplete/ncm
 repo    = 'Shougo/neco-syntax'
 depends = ['deoplete.nvim']
@@ -75,6 +69,12 @@ let g:necosyntax#min_keyword_length = 3
 [[plugins]] # deoplete source for vim-minisnip
 repo    = 'joereynolds/deoplete-minisnip'
 depends = ['deoplete.nvim', 'vim-minisnip']
+on_i    = 1
+
+[[plugins]] # vim source for neocomplete/deoplete
+repo    = 'Shougo/neco-vim'
+depends = ['deoplete.nvim']
+on_ft   = ['vim']
 on_i    = 1
 
 [[plugins]] # asynchronous Go completion for Neovim. deoplete source for Go
@@ -120,10 +120,6 @@ on_cmd = ['Vinarise', 'VinariseDump']
 repo   = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']
 
-[[plugins]] # perform the replacement in quickfix
-repo   = 'thinca/vim-qfreplace'
-on_cmd = ['Qfreplace']
-
 
 #  Language
 #-----------------------------------------------
@@ -138,10 +134,6 @@ on_ft = ['markdown']
 [[plugins]] # syntax highlight for CoffeeScript
 repo  = 'kchmck/vim-coffee-script'
 on_ft = ['coffee']
-
-[[plugins]] # working with Ruby on Rails applications
-repo  = 'tpope/vim-rails'
-on_ft = ['ruby']
 
 [[plugins]] # syntax highlight for SCSS
 repo  = 'cakebaker/scss-syntax.vim'
