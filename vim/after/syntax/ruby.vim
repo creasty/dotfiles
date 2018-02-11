@@ -1,4 +1,4 @@
-" General
+"  General
 "-----------------------------------------------
 syn keyword rubyAttribute class_attribute
 syn keyword rubyAttribute attr_internal attr_internal_accessor attr_internal_reader attr_internal_writer
@@ -8,7 +8,7 @@ syn keyword rubyMacro alias_attribute concern concerning delegate delegate_missi
 
 syn keyword rubyHelper logger
 
-" Mailer
+"  Mailer
 "-----------------------------------------------
 syn keyword rubyResponse mail render
 syn match   rubyResponse "\<headers\>"
@@ -16,7 +16,7 @@ syn match   rubyHelper "\<headers\[\@="
 syn keyword rubyHelper attachments
 syn keyword rubyMacro default helper helper_attr helper_method layout
 
-" Model
+"  Model
 "-----------------------------------------------
 syn keyword rubyMacro accepts_nested_attributes_for attr_readonly attribute enum serialize store store_accessor
 syn keyword rubyMacro default_scope scope
@@ -31,7 +31,7 @@ syn keyword rubyCallback after_find after_initialize after_touch
 syn keyword rubyMacro validates validate has_secure_password has_secure_token
 syn keyword rubyMacro included class_methods
 
-" Controller
+"  Controller
 "-----------------------------------------------
 syn keyword rubyHelper params request response session headers cookies flash render_to_string
 syn keyword rubyMacro helper helper_attr helper_method filter layout serialize exempt_from_layout filter_parameter_logging hide_action cache_sweeper protect_from_forgery caches_page cache_page caches_action expire_page expire_action
@@ -41,7 +41,7 @@ syn match   rubyResponse '\<respond_to\>\ze[( ] *\%([&{]\|do\>\)'
 syn keyword rubyResponse render head redirect_to redirect_back respond_with
 syn keyword rubyCallback before_filter append_before_filter prepend_before_filter after_filter append_after_filter prepend_after_filter around_filter append_around_filter prepend_around_filter skip_before_filter skip_after_filter skip_filter before_action append_before_action prepend_before_action after_action append_after_action prepend_after_action around_action append_around_action prepend_around_action skip_before_action skip_after_action skip_action
 
-" Migration
+"  Migration
 "-----------------------------------------------
 syn keyword rubySchema create_table change_table drop_table rename_table create_join_table drop_join_table
 syn keyword rubySchema add_column rename_column change_column change_column_default change_column_null remove_column remove_columns
@@ -52,7 +52,7 @@ syn keyword rubySchema add_index remove_index rename_index
 syn keyword rubySchema enable_extension reversible revert
 syn keyword rubySchema execute transaction
 
-" Routes
+"  Routes
 "-----------------------------------------------
 syn keyword rubyRoute resource resources collection member new nested shallow
 syn keyword rubyRoute match get put patch post delete root mount
@@ -61,7 +61,7 @@ syn keyword rubyRoute concern concerns
 syn keyword rubyRoute direct resolve
 syn keyword rubyHelper redirect
 
-" Spec
+"  Spec
 "-----------------------------------------------
 syn keyword rubyTestMacro before after around background setup teardown
 syn keyword rubyTestMacro context describe feature shared_context shared_examples shared_examples_for containedin=rubyKeywordAsMethod
@@ -75,7 +75,7 @@ syn keyword rubyTestHelper all field_labeled find find_all find_button find_by_i
 syn keyword rubyTestAction evaluate_script execute_script go_back go_forward open_new_window save_and_open_page save_and_open_screenshot save_page save_screenshot switch_to_frame switch_to_window visit window_opened_by within within_element within_fieldset within_frame within_table within_window
 syn keyword rubyTestAction attach_file check choose click_button click_link click_link_or_button click_on fill_in select uncheck unselect
 
-" Highlights
+"  Highlights
 "-----------------------------------------------
 hi def link rubyEntity           rubyMacro
 hi def link rubyEntities         rubyMacro

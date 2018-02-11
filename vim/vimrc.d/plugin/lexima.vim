@@ -66,7 +66,7 @@ function! ExpandSectionHeader(level, trigger, token) abort
     let l:lines[0] = l:indent . a:token . '=== ' . l:text . l:cursor
     let l:lines[1] = l:indent . a:token . repeat('=', 94)
   else
-    let l:lines[0] = l:indent . a:token . ' ' . l:text . l:cursor
+    let l:lines[0] = l:indent . a:token . '  ' . l:text . l:cursor
     let l:lines[1] = l:indent . a:token . repeat('-', 47)
   endif
 
