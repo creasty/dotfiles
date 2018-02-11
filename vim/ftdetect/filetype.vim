@@ -3,26 +3,12 @@ augroup custom_filetypes
 
   "  Remap
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.er     setf conf
-  autocmd BufNewFile,BufRead *.m      setf objc
-  autocmd BufNewFile,BufRead *.md     setf markdown
-  autocmd BufNewFile,BufRead *.pde    setf processing
-  autocmd BufNewFile,BufRead *.coffee setf coffee  " wtf?
+  autocmd BufNewFile,BufRead *.er  setf conf
+  autocmd BufNewFile,BufRead *.m   setf objc
+  autocmd BufNewFile,BufRead *.md  setf markdown
+  autocmd BufNewFile,BufRead *.pde setf processing
 
-  autocmd FileType objcpp setlocal ft=objc
-
-
-  "  Fix rails' assets pipeline
-  "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.scss,*.css.scss setf scss
-  autocmd BufNewFile,BufRead *.html.haml       setf haml
-  autocmd BufNewFile,BufRead *.html.slim       setf slim
-  autocmd BufNewFile,BufRead *.js.coffee       setf coffee
-
-  autocmd FileType scss.css  setlocal ft=scss
-  autocmd FileType coffee.js setlocal ft=coffee
-  autocmd FileType slim.html setlocal ft=slim
-  autocmd FileType haml.html setlocal ft=haml
+  autocmd FileType objcpp setf objc
 
 
   "  Based on filename or extension
@@ -42,27 +28,27 @@ augroup custom_filetypes
 
   "  Subtypes
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *_spec.rb setf ruby.rspec
+  autocmd BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
 
 
   "  Shortcuts
   "-----------------------------------------------
   autocmd FileType js setlocal ft=javascript
   autocmd FileType ts setlocal ft=typescript
-  autocmd FileType cs setlocal ft=coffee
+  autocmd FileType cf setlocal ft=coffee
   autocmd FileType md setlocal ft=markdown
 
 
   "  Header file
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.h call s:FTheader()
+  autocmd BufNewFile,BufRead *.h call s:detect_header_filetype()
 
-  func! s:FTheader()
-    if match(getline(1, min([line("$"), 200])), '@interface\|@end\|@class\|\#import\|Foundation/') > -1
+  func! s:detect_header_filetype()
+    if match(getline(1, min([line('$'), 200])), '@interface\|@end\|@class\|\#import\|Foundation/') > -1
       setf objc
-    elseif exists("c_syntax_for_h")
+    elseif exists('c_syntax_for_h')
       setf c
-    elseif exists("ch_syntax_for_h")
+    elseif exists('ch_syntax_for_h')
       setf ch
     else
       setf cpp
