@@ -20,6 +20,8 @@ golang:
 homebrew:
   repositories:
     - creasty/tools
+    - koudaiii/tools
+    - dtan4/tools
 
   applications:
     - adobe-creative-cloud
@@ -55,50 +57,51 @@ homebrew:
   #   $ for name in `pbpaste`; do echo "$name # $(brew info $name | sed -n '2p')"; done
   #
   packages:
-    - argon/mas/mas       # Mac App Store command-line interface
-    - binutils            # FSF Binutils for native development
-    - carthage            # Decentralized dependency manager for Cocoa
-    - clib                # Package manager for C programming
-    - cloc                # Statistics utility to count lines of code
-    - creasty/tools/rid   # Run commands in container as if were native
-    - ctags               # Reimplementation of ctags(1)
-    - direnv              # Load/unload environment variables based on $PWD
-    - dtan4/tools/k8sec   # CLI tool to manage Kubernetes Secrets easily
-    - envchain            # Secure your credentials in environment variables
-    - eot-utils           # Tools to convert fonts from OTF/TTF to EOT format
-    - fontconfig          # XML-based font configuration API for X Windows
-    - fontforge           # Command-line outline and bitmap font editor/converter
-    - freetype            # Software library to render fonts
-    - fswatch             # Monitor a directory for changes and run a shell command
-    - gdb                 # GNU debugger
-    - gdbm                # GNU database manager
-    - gettext             # GNU internationalization (i18n) and localization (l10n) library
-    - ghostscript         # Interpreter for PostScript and PDF
-    - git                 # Distributed revision control system
-    - git-lfs             # Git extension for versioning large files
-    - gpg                 # GNU Privacy Guard: a free PGP replacement
-    - heroku              # Everything you need to get started with Heroku
-    - imagemagick         # Tools and libraries to manipulate images in many formats
-    - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
-    - jo                  # JSON output from a shell
-    - jpeg                # Image manipulation library
-    - jq                  # Lightweight and flexible command-line JSON processor
-    - libepoxy            # Library for handling OpenGL function pointer management
-    - libiconv            # Conversion library
-    - libpcap             # Portable library for network traffic capture
-    - libxml2             # GNOME XML library
-    - libxslt             # C XSLT library for GNOME
-    - ngrep               # Network grep
-    - nkf                 # Network Kanji code conversion Filter (NKF)
-    - parallel            # GNU parallel shell command
-    - pcre                # Perl compatible regular expressions library
-    - screenresolution    # Get, set, and list display resolution
-    - the_silver_searcher # Code-search similar to ack
-    - tmux                # Terminal multiplexer
-    - tree                # Display directories as trees (with optional color/HTML output)
-    - webp                # Image format providing lossless and lossy compression for web images
-    - xctool              # Drop-in replacement for xcodebuild with a few extra features
-    - yarn                # JavaScript package manager
+    - argon/mas/mas        # Mac App Store command-line interface
+    - binutils             # FSF Binutils for native development
+    - carthage             # Decentralized dependency manager for Cocoa
+    - clib                 # Package manager for C programming
+    - cloc                 # Statistics utility to count lines of code
+    - creasty/tools/rid    # Run commands in container as if were native
+    - ctags                # Reimplementation of ctags(1)
+    - direnv               # Load/unload environment variables based on $PWD
+    - dtan4/tools/k8sec    # CLI tool to manage Kubernetes Secrets easily
+    - envchain             # Secure your credentials in environment variables
+    - eot-utils            # Tools to convert fonts from OTF/TTF to EOT format
+    - fontconfig           # XML-based font configuration API for X Windows
+    - fontforge            # Command-line outline and bitmap font editor/converter
+    - freetype             # Software library to render fonts
+    - fswatch              # Monitor a directory for changes and run a shell command
+    - gdb                  # GNU debugger
+    - gdbm                 # GNU database manager
+    - gettext              # GNU internationalization (i18n) and localization (l10n) library
+    - ghostscript          # Interpreter for PostScript and PDF
+    - git                  # Distributed revision control system
+    - git-lfs              # Git extension for versioning large files
+    - gpg                  # GNU Privacy Guard: a free PGP replacement
+    - heroku               # Everything you need to get started with Heroku
+    - imagemagick          # Tools and libraries to manipulate images in many formats
+    - jbig2dec             # JBIG2 decoder and library (for monochrome documents)
+    - jo                   # JSON output from a shell
+    - jpeg                 # Image manipulation library
+    - jq                   # Lightweight and flexible command-line JSON processor
+    - koudaiii/tools/qucli # Manage repositories in Quay.io
+    - libepoxy             # Library for handling OpenGL function pointer management
+    - libiconv             # Conversion library
+    - libpcap              # Portable library for network traffic capture
+    - libxml2              # GNOME XML library
+    - libxslt              # C XSLT library for GNOME
+    - ngrep                # Network grep
+    - nkf                  # Network Kanji code conversion Filter (NKF)
+    - parallel             # GNU parallel shell command
+    - pcre                 # Perl compatible regular expressions library
+    - screenresolution     # Get, set, and list display resolution
+    - the_silver_searcher  # Code-search similar to ack
+    - tmux                 # Terminal multiplexer
+    - tree                 # Display directories as trees (with optional color/HTML output)
+    - webp                 # Image format providing lossless and lossy compression for web images
+    - xctool               # Drop-in replacement for xcodebuild with a few extra features
+    - yarn                 # JavaScript package manager
 
 launchagent:
   plist_dir: '{{ dotfiles_path }}/app/launch_agent'
