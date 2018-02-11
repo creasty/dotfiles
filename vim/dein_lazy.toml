@@ -39,25 +39,23 @@ on_map = ['<Plug>(textmanip-']
 repo   = 'deris/vim-rengbang'
 on_cmd = ['RengBang']
 
+[[plugins]] # lightweight snippet manager
+repo = 'joereynolds/vim-minisnip'
+on_i = 1
 
-#  Completion
-#-----------------------------------------------
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo    = 'mattn/emmet-vim'
 on_i    = 1
 on_func = ['emmet']
 
-[[plugins]] # lightweight snippet manager
-repo = 'joereynolds/vim-minisnip'
-on_i = 1
+[[plugins]] # auto close parentheses and repeat by dot
+repo    = 'cohama/lexima.vim'
+depends = ['smartchr', 'deoplete.nvim', 'vim-minisnip']
+on_i    = 1
 
-[[plugins]] # displays function signatures from completions in the command line
-repo = 'Shougo/echodoc.vim'
-on_i = 1
-hook_source = '''
-let g:echodoc#enable_at_startup = 1
-'''
 
+#  Completion
+#-----------------------------------------------
 [[plugins]] # syntax source for neocomplete/deoplete/ncm
 repo    = 'Shougo/neco-syntax'
 depends = ['deoplete.nvim']
