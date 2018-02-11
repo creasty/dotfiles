@@ -84,9 +84,3 @@ on_map = ['<Plug>(anzu-']
 
 [[plugins]] # candle theme
 repo = 'creasty/candle.vim'
-
-
-#  Language
-#-----------------------------------------------
-[[plugins]] # React JSX syntax highlighting and indenting
-repo = 'mxw/vim-jsx'

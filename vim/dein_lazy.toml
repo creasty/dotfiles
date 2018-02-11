@@ -154,6 +154,10 @@ on_ft = ['haskell']
 repo  = 'pangloss/vim-javascript'
 on_ft = ['javascript']
 
+[[plugins]] # React JSX syntax pretty highlighting for vim
+repo = 'maxmellon/vim-jsx-pretty'
+on_ft = ['javascript', 'typescript']
+
 [[plugins]] # TypesSript syntax files for Vim
 repo  = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
