@@ -47,6 +47,10 @@ if   = "!has('nvim')"
 repo    = 'Shougo/deoplete.nvim'
 depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
 
+[[plugins]] # auto close parentheses and repeat by dot
+repo    = 'cohama/lexima.vim'
+depends = ['deoplete.nvim'] # smartchr, vim-minisnip, emmet
+
 
 #  Utils
 #-----------------------------------------------
