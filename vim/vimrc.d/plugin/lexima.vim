@@ -533,7 +533,7 @@ for s:at in [
     \ 'char':     '<CR>',
     \ 'at':       s:at,
     \ 'input':    '<CR>end<Esc>O',
-    \ 'filetype': ['ruby'],
+    \ 'filetype': ['ruby', 'ruby.rspec'],
   \ })
 endfor
 unlet s:at
@@ -542,7 +542,7 @@ call lexima#add_rule({
   \ 'char':     '<CR>',
   \ 'at':       '\<\%(if\|unless\)\>.*\%#',
   \ 'input':    '<CR>end<Esc>O',
-  \ 'filetype': ['ruby'],
+  \ 'filetype': ['ruby', 'ruby.rspec'],
   \ 'syntax':   ['rubyConditionalExpression']
 \ })
 
@@ -551,13 +551,13 @@ call lexima#add_rule({
   \ 'char':     '<Bar>',
   \ 'at':       '\({\|do\)\s*\%#',
   \ 'input':    '<Bar><Bar><Left>',
-  \ 'filetype': ['ruby'],
+  \ 'filetype': ['ruby', 'ruby.rspec'],
 \ })
 call lexima#add_rule({
   \ 'char':     '<Bar>',
   \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
   \ 'input':    '<Right>',
-  \ 'filetype': ['ruby'],
+  \ 'filetype': ['ruby', 'ruby.rspec'],
 \ })
 
 " lambda
@@ -565,7 +565,7 @@ call lexima#add_rule({
   \ 'char':     '(',
   \ 'at':       '\(........\)\?-> \%#',
   \ 'input':    '<BS>()<Left>',
-  \ 'filetype': ['ruby'],
+  \ 'filetype': ['ruby', 'ruby.rspec'],
 \ })
 
 
