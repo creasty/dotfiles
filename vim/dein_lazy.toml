@@ -81,10 +81,10 @@ repo = 'zchee/deoplete-clang'
 depends = ['deoplete.nvim']
 on_ft   = ['c', 'cpp', 'objc', 'objcpp']
 
-[[plugins]] # deoplete.nvim source for Ruby with solargraph
-repo    = 'uplus/deoplete-solargraph'
-depends = ['deoplete.nvim']
-on_ft   = ['ruby', 'ruby.rspec']
+# [[plugins]] # deoplete.nvim source for Ruby with solargraph
+# repo    = 'uplus/deoplete-solargraph'
+# depends = ['deoplete.nvim']
+# on_ft   = ['ruby', 'ruby.rspec']
 
 # [[plugins]] # Language Server Protocol (LSP) support for vim and neovim
 # repo    = 'autozimu/LanguageClient-neovim'
