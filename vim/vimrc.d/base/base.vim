@@ -88,7 +88,9 @@ set imdisable
 set nohidden
 
 " use Blowfish algorithm
-set cryptmethod=blowfish
+if exists('&cryptmethod')
+  set cryptmethod=blowfish
+endif
 
 " wildcard settings
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -112,9 +114,6 @@ set incsearch
 
 " match highlight
 set hlsearch
-
-" make regex a little easier to type
-" set magic
 
 " dim match highlight
 nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
