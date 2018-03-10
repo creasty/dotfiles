@@ -104,7 +104,7 @@ homebrew:
     - yarn                 # JavaScript package manager
 
 launchagent:
-  plist_dir: '{{ dotfiles_path }}/app/launch_agent'
+  plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
   bash/bash_profile:         .bash_profile
