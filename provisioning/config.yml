@@ -145,7 +145,6 @@ mas:
   #   $ mas list
   #
   applications:
-    - '406056744'  # Evernote
     - '540348655'  # Monosnap
     - '425424354'  # The Unarchiver
     - '443987910'  # 1Password

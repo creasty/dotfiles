@@ -8,8 +8,6 @@ Work it harder, make it better, do it faster, makes us stronger.
 
 <pre><code>$ bash <(curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a>)</code></pre>
 
-Read the [detailed manual](./docs/README.md) for setting up a new computer.
-
 
 Screenshots
 -----------
