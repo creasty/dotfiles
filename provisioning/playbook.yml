@@ -37,8 +37,6 @@
       tags: ['lang', 'python']
     - role: golang
       tags: ['lang', 'golang']
-    - role: swift
-      tags: ['lang', 'swift']
 
     #  app
     #-----------------------------------------------

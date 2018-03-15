@@ -96,6 +96,7 @@ homebrew:
     - parallel             # GNU parallel shell command
     - pcre                 # Perl compatible regular expressions library
     - screenresolution     # Get, set, and list display resolution
+    - swiftlint            # Tool to enforce Swift style and conventions
     - the_silver_searcher  # Code-search similar to ack
     - tmux                 # Terminal multiplexer
     - tree                 # Display directories as trees (with optional color/HTML output)
@@ -178,9 +179,6 @@ ruby:
     - ianheggie/rbenv-binstubs
     - sstephenson/rbenv-default-gems
     - sstephenson/rbenv-gem-rehash
-
-swift:
-  swiftlint_version: 0.24.2
 
 vagrant:
   boxes: {}
