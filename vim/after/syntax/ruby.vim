@@ -52,14 +52,6 @@ syn keyword rubySchema add_index remove_index rename_index
 syn keyword rubySchema enable_extension reversible revert
 syn keyword rubySchema execute transaction
 
-"  Routes
-"-----------------------------------------------
-syn keyword rubyRoute resource resources collection member new nested shallow
-syn keyword rubyRoute match get put patch post delete root mount
-syn keyword rubyRoute scope controller namespace constraints defaults
-syn keyword rubyRoute concern concerns
-syn keyword rubyRoute direct resolve
-syn keyword rubyHelper redirect
 
 "  Spec
 "-----------------------------------------------
@@ -80,22 +72,11 @@ syn keyword rubyTestAction attach_file check choose click_button click_link clic
 hi def link rubyEntity           rubyMacro
 hi def link rubyEntities         rubyMacro
 hi def link rubyExceptionHandler rubyMacro
-hi def link rubyValidation       rubyMacro
 hi def link rubyCallback         rubyMacro
-hi def link rubyRakeMacro        rubyMacro
 hi def link rubyTestMacro        rubyMacro
-hi def link rubyMacro            Macro
-hi def link rubyRoute            rubyControl
+hi def link rubyMacro            Function
 hi def link rubySchema           rubyControl
 hi def link rubyResponse         rubyControl
-hi def link rubyUrlHelper        rubyHelper
-hi def link rubyViewHelper       rubyHelper
 hi def link rubyTestHelper       rubyHelper
-hi def link rubyUserAssertion    rubyAssertion
-hi def link rubyAssertion        rubyException
 hi def link rubyTestAction       rubyControl
 hi def link rubyHelper           Function
-hi def link sprocketsPreProc     PreProc
-hi def link sprocketsInclude     Include
-hi def link sprocketsIncludedDir sprocketsIncluded
-hi def link sprocketsIncluded    String
