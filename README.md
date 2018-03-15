@@ -1,6 +1,6 @@
 ![creasty's dotfiles](./docs/visual.jpg)
 
-dotfiles [![Build Status](https://travis-ci.org/creasty/dotfiles.svg?branch=master)](https://travis-ci.org/creasty/dotfiles) ![macOS Sierra 10.12](https://img.shields.io/badge/platform-macOS%20Sierra%2010.12-lightgray.svg) [![License](https://img.shields.io/github/license/creasty/dotfiles.svg)](./LICENSE.txt)
+dotfiles [![Build Status](https://travis-ci.org/creasty/dotfiles.svg?branch=master)](https://travis-ci.org/creasty/dotfiles) ![macOS High Sierra 10.13](https://img.shields.io/badge/platform-macOS-lightgray.svg) [![License](https://img.shields.io/github/license/creasty/dotfiles.svg)](./LICENSE.txt)
 ========
 
 A powerful development environment for full-stack engineers.  
