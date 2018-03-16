@@ -1,2 +1,2 @@
-- include: defaults.yml
-- include: scripts.yml
+- import_tasks: defaults.yml
+- import_tasks: scripts.yml
