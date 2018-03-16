@@ -147,15 +147,6 @@ check_xcode_license_approved() {
   echo 'done'
 }
 
-fix_permission() {
-  [ -d /usr/local ] || mkdir -p /usr/local
-  [ "$(stat -f '%Su' /usr/local)" = "$(whoami)" ] && return  # GNU: stat -c '%U'
-
-  echo 'Fixing permission of /usr/local...'
-  sudo chown -R $(whoami) /usr/local || echo 'warn: might be incomplete'
-  echo 'done'
-}
-
 install_homebrew() {
   command -v 'brew' > /dev/null 2>&1 && return
 
@@ -186,7 +177,6 @@ main() {
   check_os
   clone_or_update_repo
   check_xcode_license_approved
-  fix_permission
   install_homebrew
   install_ansible
   run_provisioning
