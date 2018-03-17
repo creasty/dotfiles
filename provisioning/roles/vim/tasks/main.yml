@@ -36,7 +36,7 @@
   homebrew:
     name:            macvim
     state:           present
-    install_options: HEAD,with-python3,override-system-vim
+    install_options: with-python3,override-system-vim
 
 - name: link app
   file:
