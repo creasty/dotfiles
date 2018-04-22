@@ -55,7 +55,6 @@
 
   pl = auto-ref pull
   pu = auto-ref push
-  sy = aggressive-sync
   pr = github-compare
   y  = deploy
 
