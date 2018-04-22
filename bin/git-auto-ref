@@ -1,34 +1,7 @@
 #!/usr/bin/env bash
 
-DEFAULT_REMOTE=origin
-DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
-
-SUB_COMMAND="$1"
-
-shift
-
-ARGS=()
-OPTS=()
-
-for a in "$@"; do
-  case "$a" in
-    --ff|-ff|f)
-      OPTS=("${OPTS[@]}" '--ff --ff-only')
-      ;;
-    -*)
-      OPTS=("${OPTS[@]}" "$a")
-      ;;
-    m)
-      ARGS=("${ARGS[@]}" 'master')
-      ;;
-    d)
-      ARGS=("${ARGS[@]}" 'develop')
-      ;;
-    *)
-      ARGS=("${ARGS[@]}" "$a")
-      ;;
-  esac
-done
+set -eu
+set -o pipefail
 
 # one of:
 #
@@ -36,18 +9,40 @@ done
 # `remote:branch`
 # `:branch`
 # `branch`
-TARGET="${ARGS[0]}"
+REMOTE=''
+BRANCH=''
+DEFAULT_REMOTE=origin
+DEFAULT_BRANCH=$(git symbolic-ref --short HEAD)
 
-if [[ "$TARGET" = *:* ]]; then
-  REMOTE="${TARGET%%:*}"
-  BRANCH="${TARGET#*:}"
-else
-  REMOTE=""
-  BRANCH="$TARGET"
+OPTS=('')
+SUB_COMMAND="$1"
+
+for a in "${@:2}"; do
+  case "$a" in
+    -*)
+      OPTS=("${OPTS[@]}" "$a")
+      ;;
+    m)
+      BRANCH='master'
+      ;;
+    d)
+      BRANCH='develop'
+      ;;
+    *:*)
+      REMOTE="${a%%:*}"
+      BRANCH="${a#*:}"
+      ;;
+    *)
+      BRANCH="$a"
+  esac
+done
+
+if [ "$SUB_COMMAND" = 'pull' ] && [ -z "$BRANCH" ] && [[ "$DEFAULT_BRANCH" =~ master|develop ]]; then
+  OPTS=("${OPTS[@]}" '--ff' '--ff-only')
 fi
 
-[ -z "$REMOTE" ] && REMOTE="$DEFAULT_REMOTE"
-[ -z "$BRANCH" ] && BRANCH="$DEFAULT_BRANCH"
+: ${REMOTE:="$DEFAULT_REMOTE"}
+: ${BRANCH:="$DEFAULT_BRANCH"}
 
 COMMAND=(git)
 COMMAND=(${COMMAND[@]} $SUB_COMMAND)
