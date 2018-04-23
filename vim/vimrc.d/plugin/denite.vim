@@ -83,7 +83,6 @@ function! s:open_best_denite()
   exec 'Denite'
     \ '-buffer-name=' . l:source
     \ l:resume
-    \ '-refresh'
     \ l:source
 endfunction
 
