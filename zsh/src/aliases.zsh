@@ -43,6 +43,7 @@ alias -g W='| wc'
 alias -g WL='| wc -l'
 alias -g X='| xargs'
 alias -g X1='| xargs -n 1'
+alias -g XL='| tr "\n" "\0" | xargs -0'
 alias -g P='| peco'
 
 
