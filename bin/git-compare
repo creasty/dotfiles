@@ -3,4 +3,10 @@
 set -eu
 set -o pipefail
 
-git cherry -v "${1:-master}"
+DEFAULT_BASE='master'
+
+if git branch | grep -w develop > /dev/null; then
+  DEFAULT_BASE='develop'
+fi
+
+git cherry -v "${1:-"$DEFAULT_BASE"}"
