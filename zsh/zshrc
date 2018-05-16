@@ -101,6 +101,10 @@ setopt auto_menu
 setopt complete_in_word
 setopt always_to_end
 
+# disable bracketed paste mode
+# @see https://github.com/peco/peco/issues/417
+# unset zle_bracketed_paste # still buggy...
+
 
 #  Completion
 #-----------------------------------------------
