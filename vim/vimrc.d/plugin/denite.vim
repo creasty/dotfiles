@@ -26,7 +26,7 @@ function! s:denite_on_source() abort
   call denite#custom#map('_', '<CR>', '<denite:do_action:default>', 'noremap')
   call denite#custom#map('_', '<C-r>', '<denite:restart>', 'noremap')
   call denite#custom#map('_', '<C-j>', '<denite:do_action:default>', 'noremap')
-  call denite#custom#map('insert', '<C-v>', '<denite:paste_from_register>', 'noremap')
+  call denite#custom#map('insert', '<C-v>', '<denite:paste_from_default_register>', 'noremap')
   call denite#custom#map('insert', '<C-l>', '<denite:redraw>', 'noremap')
   call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>', 'noremap')
   call denite#custom#map('insert', '<C-z>', '<denite:suspend>', 'noremap')
