@@ -21,4 +21,6 @@ endfunction
 autocmd vim_ftplugin_go FocusLost,BufLeave *.go
   \ call <SID>auto_gofmt(expand('%:p'))
 
-command! GoImports :call system('goimports -w ' . shellescape(expand('%:p')))
+command! GoImports
+  \ call system('goimports -w ' . shellescape(expand('%:p')))
+  \ | e
