@@ -22,7 +22,7 @@ function! s:altr_on_source() abort
   call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade', '%.ace')
 
   " Golang
-  call altr#define('%.go', '%_test.go', '%_ex_test.go')
+  call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
   call altr#define('glide.yaml', 'glide.lock')
   call altr#define('Gopkg.toml', 'Gopkg.lock')
   call altr#define('default.yml', 'development.yml', 'qa.yml', 'production.yml')
