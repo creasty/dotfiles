@@ -91,6 +91,13 @@
     type:   bool
     value:  true
 
+- name: general | touch bar
+  osx_defaults:
+    domain: com.apple.touchbar.agent
+    key:    PresentationModeGlobal
+    type:   string
+    value:  fullControlStrip
+
 - name: general | skin (1/6)
   osx_defaults:
     domain: NSGlobalDomain
