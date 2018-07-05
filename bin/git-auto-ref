@@ -37,8 +37,12 @@ for a in "${@:2}"; do
   esac
 done
 
-if [ "$SUB_COMMAND" = 'pull' ] && [ -z "$BRANCH" ] && [[ "$DEFAULT_BRANCH" =~ master|develop ]]; then
-  OPTS=("${OPTS[@]}" '--ff' '--ff-only')
+if [ "$SUB_COMMAND" = 'pull' ] && [ -z "$BRANCH" ]; then
+  OPTS=("${OPTS[@]}" '--ff')
+
+  if [[ "$DEFAULT_BRANCH" =~ master|develop ]]; then
+    OPTS=("${OPTS[@]}" '--ff-only')
+  fi
 fi
 
 : ${REMOTE:="$DEFAULT_REMOTE"}
