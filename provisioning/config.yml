@@ -146,14 +146,17 @@ mas:
   #   $ mas list
   #
   applications:
-    - '540348655'  # Monosnap
+    - '1031280567' # Postico
+    - '1091189122' # Bear
     - '425424354'  # The Unarchiver
     - '443987910'  # 1Password
-    - '975937182'  # Fantastical 2
     - '497799835'  # Xcode
-    - '1031280567' # Postico
+    - '540348655'  # Monosnap
     - '803453959'  # Slack
+    - '904280696'  # Things3
     - '928494006'  # PopHub
+    - '957734279'  # TogglDesktop
+    - '975937182'  # Fantastical 2
 
 nodejs:
   versions:
