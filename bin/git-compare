@@ -4,9 +4,13 @@ set -eu
 set -o pipefail
 
 DEFAULT_BASE='master'
-
 if git branch | grep -w develop > /dev/null; then
   DEFAULT_BASE='develop'
 fi
 
-git cherry -v "${1:-"$DEFAULT_BASE"}"
+DEFAULT_HEAD="$(git symbolic-ref --short HEAD)"
+
+BASE="${1:-"$DEFAULT_BASE"}"
+HEAD="${2:-"$DEFAULT_HEAD"}"
+
+git cherry -v "$BASE" "$HEAD"
