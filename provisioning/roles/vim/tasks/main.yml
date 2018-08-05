@@ -11,7 +11,7 @@
 
 - name: install neovim python library
   pip:
-    # executable: /usr/local/bin/pip3
+    executable: /usr/local/opt/python3/libexec/bin/pip
     name:       neovim
     state:      latest
   become: yes
@@ -19,7 +19,7 @@
 - name: install solargraph
   block:
     - pip:
-        # executable: /usr/local/bin/pip3
+        executable: /usr/local/opt/python3/libexec/bin/pip
         name:       solargraph-utils.py
         state:      latest
       become: yes
