@@ -166,7 +166,7 @@ nodejs:
 
 python:
   versions:
-    - '3.7.0'
+    - '3.7.0b3'
 
   packages:
     - vim-vint
