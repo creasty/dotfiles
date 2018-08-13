@@ -238,7 +238,6 @@ alias xct='xctool'
 
 #  Wantedly
 #-----------------------------------------------
-alias sap='envchain wtd sap'
 alias valec='envchain wtd valec'
 alias kube='envchain wtd kube'
 alias kube-oneoff='envchain wtd kube-oneoff'

@@ -38,6 +38,9 @@ export PATH=$DOTFILES_PATH/bin:$PATH
 # golang
 export PATH=$PATH:$GOPATH/bin
 
+# wantedly
+export PATH=$PATH:$HOME/.wantedly/bin
+
 
 #  Git
 #-----------------------------------------------
