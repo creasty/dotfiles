@@ -7,11 +7,13 @@ golang:
   packages:
     - github.com/golang/dep/cmd/dep
     - github.com/golang/lint/golint
-    - github.com/laurent22/massren
+    - github.com/golang/mock/mockgen
     - github.com/motemen/ghq
     - github.com/nsf/gocode
     - github.com/peco/peco/cmd/peco
     - github.com/rakyll/boom
+    - golang.org/x/tools/cmd/goimports
+    - golang.org/x/tools/cmd/stringer
 
 homebrew:
   repositories:
@@ -87,6 +89,7 @@ homebrew:
     - libpcap              # Portable library for network traffic capture
     - libxml2              # GNOME XML library
     - libxslt              # C XSLT library for GNOME
+    - massren              # Easily rename multiple files using your text editor
     - ngrep                # Network grep
     - nkf                  # Network Kanji code conversion Filter (NKF)
     - parallel             # GNU parallel shell command
