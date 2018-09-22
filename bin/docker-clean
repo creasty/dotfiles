@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+docker ps \
+  -a \
+  --filter status=exited \
+  --format '{{ .Names }}' \
+  | grep -v 'volume$' \
+  | xargs docker rm
+
+docker images \
+  -f "dangling=true" \
+  -q \
+  | xargs docker rmi

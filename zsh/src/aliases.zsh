@@ -96,13 +96,11 @@ alias c='see'
 alias ev='envchain'
 alias ne='npm-exec'
 alias gk='grep-kill'
-alias rdba='rake-db-migrate-all'
 
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
 alias anv='ansible-vault'
-alias gl='glide'
 alias ql='qlmanage -p "$@" >& /dev/null'
 alias mas='reattach-to-user-namespace mas'
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
@@ -110,6 +108,11 @@ alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
 alias maxscreen='screenresolution set 2880x1800x32@0 || screenresolution set 2560x1600x32@0'  # screenresolution list
 
 alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
+
+ssh() {
+  cat ~/.ssh/config.d/* > ~/.ssh/config
+  [ $# -gt 0 ] && \ssh "$@"
+}
 
 
 #  Networks
@@ -136,19 +139,7 @@ alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
 
-dk-clean() {
-  docker ps \
-    -a \
-    --filter status=exited \
-    --format '{{ .Names }}' \
-    | grep -v 'volume$' \
-    | xargs docker rm
-
-  docker images \
-    -f "dangling=true" \
-    -q \
-    | xargs docker rmi
-}
+alias dk-clean='docker-clean'
 
 
 #  Google Cloud SDK
@@ -157,9 +148,10 @@ alias gcloud='google-cloud-sdk gcloud'
 alias gsutil='google-cloud-sdk gsutil'
 alias bq='google-cloud-sdk bq'
 alias kubectl='google-cloud-sdk kubectl'
-alias ku='kubectl'
 
-alias gcloud-setup='ev crst gcloud-setup'
+alias ku='kubectl'
+alias ku-oneshot='kubectl-oneshot'
+alias ku-saconfig='kubectl-saconfig'
 
 
 #  Ruby / Rails
@@ -197,12 +189,7 @@ alias rs3='bundle exec rails s -b 0.0.0.0 -p 3003'
 alias rs4='bundle exec rails s -b 0.0.0.0 -p 3004'
 alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
 
-
-#  Play framework
-#-----------------------------------------------
-alias act='activator'
-alias actr='activator run'
-alias actt='activator test'
+alias rdba='rake-db-migrate-all'
 
 
 #  Make
@@ -240,5 +227,3 @@ alias xct='xctool'
 #-----------------------------------------------
 alias valec='envchain wtd valec'
 alias kube='envchain wtd kube'
-alias kube-oneoff='envchain wtd kube-oneoff'
-alias qucli='envchain wtd qucli'
