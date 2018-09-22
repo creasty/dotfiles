@@ -119,7 +119,6 @@ link:
   config/gocode/config.json: .config/gocode/config.json
   config/peco:               .peco
   config/pgclirc:            .pgclirc
-  dotssh:                    .dotssh
   git/gitconfig:             .gitconfig
   git/gitignore:             .gitignore
   ruby/bundle/config:        .bundle/config
