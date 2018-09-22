@@ -128,8 +128,11 @@ tmk() {
 #  Load .env
 #-----------------------------------------------
 load-env() {
+  local envchain_ns="${1:-}"
+
   set -o allexport
-  source .env
+  [ -r .env ] && source .env
+  [ -n "$envchain_ns" ] && envchain -l -v "$envchain_ns"
   set +o allexport
 }
 
@@ -230,19 +233,6 @@ peco_insert_commit() {
 _register_keycommand '^o^l' peco_insert_commit
 
 
-#  Insert issue
-#-----------------------------------------------
-peco_insert_issue() {
-  git github ls-issue \
-    | _peco_select \
-    | cut -d ' ' -f 1 \
-    | cut -c 2- \
-    | _buffer_insert_lines
-}
-
-_register_keycommand '^o^i' peco_insert_issue
-
-
 #  History
 #-----------------------------------------------
 peco_history() {
@@ -280,22 +270,22 @@ peco_insert_resource() {
   local resource
 
   case "$LBUFFER" in
-    'wtd-kube tags '*)            resource='kube-deployment' ;;
-    'wtd-kube edit deployment '*) resource='kube-deployment' ;;
-    'wtd-kube scale '*)           resource='kube-deployment' ;;
-    'wtd-kube '*)                 resource='kube-pod' ;;
+    'kube tags '*)            resource='kube-deployment' ;;
+    'kube edit deployment '*) resource='kube-deployment' ;;
+    'kube scale '*)           resource='kube-deployment' ;;
+    'kube '*)                 resource='kube-pod' ;;
   esac
 
   case "$resource" in
     kube-deployment)
-      wtd-kube get deployment \
+      kube get deployment \
         | _peco_select \
         | awk '{ print $1 }' \
         | _buffer_insert
       ;;
 
     kube-pod)
-      wtd-kube get po \
+      kube get po \
         | _peco_select \
         | awk '{ print $1 }' \
         | _buffer_insert

@@ -96,13 +96,11 @@ alias c='see'
 alias ev='envchain'
 alias ne='npm-exec'
 alias gk='grep-kill'
-alias rdba='rake-db-migrate-all'
 
 alias va='vagrant'
 alias an='ansible'
 alias anp='ansible-playbook'
 alias anv='ansible-vault'
-alias gl='glide'
 alias ql='qlmanage -p "$@" >& /dev/null'
 alias mas='reattach-to-user-namespace mas'
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
@@ -141,19 +139,7 @@ alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
 
-dk-clean() {
-  docker ps \
-    -a \
-    --filter status=exited \
-    --format '{{ .Names }}' \
-    | grep -v 'volume$' \
-    | xargs docker rm
-
-  docker images \
-    -f "dangling=true" \
-    -q \
-    | xargs docker rmi
-}
+alias dk-clean='docker-clean'
 
 
 #  Google Cloud SDK
@@ -202,6 +188,8 @@ alias rs2='bundle exec rails s -b 0.0.0.0 -p 3002'
 alias rs3='bundle exec rails s -b 0.0.0.0 -p 3003'
 alias rs4='bundle exec rails s -b 0.0.0.0 -p 3004'
 alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
+
+alias rdba='rake-db-migrate-all'
 
 
 #  Make
