@@ -11,23 +11,27 @@
 
 - name: install neovim python library
   pip:
-    executable: /usr/local/opt/python3/libexec/bin/pip
+    executable: pip3
     name:       neovim
     state:      latest
   become: yes
 
-- name: install solargraph
-  block:
-    - pip:
-        executable: /usr/local/opt/python3/libexec/bin/pip
+- name: install vim-vint
+  pip:
+    executable: pip3
+    name:       vim-vint
+    state:      latest
+  become: yes
+
+- block:
+    - name: install solargraph | install python library
+      pip:
+        executable: pip3
         name:       solargraph-utils.py
         state:      latest
       become: yes
-    - pip:
-        name:  solargraph-utils.py
-        state: latest
-      become: yes
-    - command: |
+    - name: install solargraph | install ruby gem
+      command: |
         bash -lc 'gem install solargraph'
         bash -lc 'yard gems'
         bash -lc 'yard config --gem-install-yri'
@@ -36,7 +40,7 @@
   homebrew:
     name:            macvim
     state:           present
-    install_options: with-python3,override-system-vim
+    install_options: with-override-system-vim
 
 - name: link app
   file:

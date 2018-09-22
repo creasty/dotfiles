@@ -94,6 +94,8 @@ homebrew:
     - nkf                  # Network Kanji code conversion Filter (NKF)
     - parallel             # GNU parallel shell command
     - pcre                 # Perl compatible regular expressions library
+    - protobuf             # Protocol buffers (Google's data interchange format)
+    - python               # Interpreted, interactive, object-oriented programming language
     - screenresolution     # Get, set, and list display resolution
     - swiftlint            # Tool to enforce Swift style and conventions
     - the_silver_searcher  # Code-search similar to ack
@@ -163,13 +165,6 @@ nodejs:
 
   packages:
     - coffee-script
-
-python:
-  versions:
-    - '3.7.0b3'
-
-  packages:
-    - vim-vint
 
 ruby:
   versions:
