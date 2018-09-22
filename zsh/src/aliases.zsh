@@ -162,9 +162,10 @@ alias gcloud='google-cloud-sdk gcloud'
 alias gsutil='google-cloud-sdk gsutil'
 alias bq='google-cloud-sdk bq'
 alias kubectl='google-cloud-sdk kubectl'
-alias ku='kubectl'
 
-alias gcloud-setup='ev crst gcloud-setup'
+alias ku='kubectl'
+alias ku-oneshot='kubectl-oneshot'
+alias ku-saconfig='kubectl-saconfig'
 
 
 #  Ruby / Rails
@@ -203,13 +204,6 @@ alias rs4='bundle exec rails s -b 0.0.0.0 -p 3004'
 alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
 
 
-#  Play framework
-#-----------------------------------------------
-alias act='activator'
-alias actr='activator run'
-alias actt='activator test'
-
-
 #  Make
 #-----------------------------------------------
 alias gmake='make'
@@ -245,5 +239,3 @@ alias xct='xctool'
 #-----------------------------------------------
 alias valec='envchain wtd valec'
 alias kube='envchain wtd kube'
-alias kube-oneoff='envchain wtd kube-oneoff'
-alias qucli='envchain wtd qucli'
