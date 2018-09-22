@@ -19,7 +19,6 @@ golang:
 homebrew:
   repositories:
     - creasty/tools
-    - koudaiii/tools
     - dtan4/tools
 
   applications:
@@ -84,7 +83,6 @@ homebrew:
     - jo                   # JSON output from a shell
     - jpeg                 # Image manipulation library
     - jq                   # Lightweight and flexible command-line JSON processor
-    - koudaiii/tools/qucli # Manage repositories in Quay.io
     - libepoxy             # Library for handling OpenGL function pointer management
     - libiconv             # Conversion library
     - libpcap              # Portable library for network traffic capture
@@ -98,7 +96,6 @@ homebrew:
     - protobuf             # Protocol buffers (Google's data interchange format)
     - python               # Interpreted, interactive, object-oriented programming language
     - screenresolution     # Get, set, and list display resolution
-    - swiftlint            # Tool to enforce Swift style and conventions
     - the_silver_searcher  # Code-search similar to ack
     - tmux                 # Terminal multiplexer
     - tree                 # Display directories as trees (with optional color/HTML output)
