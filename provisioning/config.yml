@@ -95,7 +95,7 @@ homebrew:
     - parallel             # GNU parallel shell command
     - pcre                 # Perl compatible regular expressions library
     - protobuf             # Protocol buffers (Google's data interchange format)
-    - python3              # Interpreted, interactive, object-oriented programming language
+    - python               # Interpreted, interactive, object-oriented programming language
     - screenresolution     # Get, set, and list display resolution
     - swiftlint            # Tool to enforce Swift style and conventions
     - the_silver_searcher  # Code-search similar to ack
