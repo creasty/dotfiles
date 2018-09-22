@@ -111,6 +111,11 @@ alias maxscreen='screenresolution set 2880x1800x32@0 || screenresolution set 256
 
 alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
 
+ssh() {
+  cat ~/.ssh/config.d/* > ~/.ssh/config
+  [ $# -gt 0 ] && \ssh "$@"
+}
+
 
 #  Networks
 #-----------------------------------------------
