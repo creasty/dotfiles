@@ -5,15 +5,16 @@ anyenv:
 
 golang:
   packages:
+    # tools
+    - github.com/motemen/ghq
+    - github.com/peco/peco/cmd/peco
+    - github.com/rakyll/boom
+
+    # dev tools
     - github.com/golang/dep/cmd/dep
     - github.com/golang/lint/golint
     - github.com/golang/mock/mockgen
-    - github.com/motemen/ghq
     - github.com/nsf/gocode
-    - github.com/peco/peco/cmd/peco
-    - github.com/rakyll/boom
-    - golang.org/x/tools/cmd/goimports
-    - golang.org/x/tools/cmd/stringer
 
 homebrew:
   repositories:

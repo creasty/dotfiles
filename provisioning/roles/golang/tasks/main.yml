@@ -11,3 +11,18 @@
      bash -lc 'go get -u {{ item | quote }}'
   with_items: '{{ golang.packages }}'
   when: golang.packages
+
+- block:
+    - name: optimize goimports | install
+      command: |
+        bash -lc 'go get -u {{ item | quote }}'
+      with_items:
+        - github.com/monochromegane/dragon-imports/...
+        - github.com/pwaller/goimports-update-ignore
+        - golang.org/x/tools/cmd/goimports
+    - name: optimize goimports | run goimports-update-ignore
+      command: |
+        bash -lc 'goimports-update-ignore -max-depth 5'
+    - name: optimize goimports | run dragon-imports
+      command: |
+        bash -lc 'dragon-imports'

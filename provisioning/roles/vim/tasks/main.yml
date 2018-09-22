@@ -24,13 +24,13 @@
   become: yes
 
 - block:
-    - name: install solargraph | install python library
+    - name: solargraph | install python library
       pip:
         executable: pip3
         name:       solargraph-utils.py
         state:      latest
       become: yes
-    - name: install solargraph | install ruby gem
+    - name: solargraph | install ruby gem
       command: |
         bash -lc 'gem install solargraph'
         bash -lc 'yard gems'
