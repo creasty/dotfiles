@@ -232,4 +232,4 @@ nnoremap q: :q
 nnoremap <Space>: q:
 
 " dotfiles
-command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles_path)
+command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles)

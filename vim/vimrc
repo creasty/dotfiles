@@ -35,7 +35,6 @@ let g:loaded_LogiPat            = 1
 let g:loaded_logipat            = 1
 let g:loaded_tutor_mode_plugin  = 1
 let g:loaded_man                = 1
-let g:did_install_default_menus = 1
 
 " runtime plugins
 let g:omni_sql_no_default_maps = 1
