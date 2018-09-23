@@ -1,4 +1,4 @@
-if g:env.support.autochdir
+if exists('+autochdir')
   set noautochdir
 endif
 

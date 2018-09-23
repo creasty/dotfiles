@@ -35,7 +35,7 @@ set virtualedit& virtualedit+=block
 set formatoptions-=ro
 
 " remove a comment leader when joining lines
-if g:env.is_gui
+if has('gui_running')
   set formatoptions+=j
 endif
 
@@ -175,7 +175,7 @@ nnoremap <C-w>d :quit<CR>
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
 
-if g:env.is_gui
+if has('gui_running')
   nmap <C-w><C-o> <C-w>o
   nnoremap <C-w>o :maca newWindow:<CR>
 end
@@ -232,4 +232,4 @@ nnoremap q: :q
 nnoremap <Space>: q:
 
 " dotfiles
-command! Dotfiles :exec 'lcd' fnameescape($DOTFILES_PATH)
+command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles_path)

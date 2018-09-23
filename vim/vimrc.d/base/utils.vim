@@ -84,7 +84,7 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
   \ endif
 
 " automatically change input source
-if g:env.support.osascript
+if executable('osascript')
   autocmd vimrc FocusGained *
     \ call job_start(['osascript', '-e', 'tell application "System Events" to key code 102'])
 endif

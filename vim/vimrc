@@ -45,14 +45,11 @@ let g:tex_flavor = 'latex'
 function! s:vimrc_environment()
   let l:env = {}
 
-  let l:env.is_starting = has('vim_starting')
-  let l:env.is_gui = has('gui_running')
+  let l:dotfiles_path = $DOTFILES_PATH
+  if empty(l:dotfiles_path)
+    let l:dotfiles_path = $HOME . '/dotfiles'
+  endif
 
-  let l:env.hostname = substitute(hostname(), '[^\w.]', '', '')
-
-  let l:env.sid = matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_vimrc_environment$')
-
-  let l:dotfiles_path = $HOME . '/dotfiles'
   let l:vim_path = l:dotfiles_path . '/vim'
 
   let l:env.path = {
@@ -62,25 +59,12 @@ function! s:vimrc_environment()
     \ 'dein_toml':      l:vim_path . '/dein.toml',
     \ 'dein_lazy_toml': l:vim_path . '/dein_lazy.toml',
     \ 'vimrcd':         l:vim_path . '/vimrc.d',
-    \ 'dict':           l:vim_path . '/dict',
-    \ 'template':       l:vim_path . '/templates',
-  \ }
-
-  let l:env.support = {
-    \ 'ag':        executable('ag'),
-    \ 'identify':  executable('identify'),
-    \ 'osascript': executable('osascript'),
-    \ 'autochdir': exists('+autochdir'),
   \ }
 
   return l:env
 endfunction
 
 let g:env = s:vimrc_environment()
-
-function! s:with_snr(name)
-  return '<SNR>' . g:env.sid . '_' . a:name
-endfunction
 
 function! s:load_file(file)
   let l:file = g:env.path.vimrcd . '/' . a:file . '.vim'
@@ -104,7 +88,7 @@ if &compatible
   set nocompatible
 endif
 
-if g:env.is_starting
+if has('vim_starting')
   let &g:rtp .= ',' . g:env.path.dein_repo
 endif
 

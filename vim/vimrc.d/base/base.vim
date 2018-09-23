@@ -1,5 +1,5 @@
 " change cursor shape in iTerm
-if !g:env.is_gui && exists('$ITERM_PROFILE')
+if !has('gui_running') && exists('$ITERM_PROFILE')
   if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
@@ -135,7 +135,7 @@ cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 
 " ag
-if g:env.support.ag
+if executable('ag')
   set grepprg=ag\ --nogroup\ -iS
   set grepformat=%f:%l:%m
 endif
