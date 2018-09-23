@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+docker run \
+  --rm \
+  -it \
+  -w /workdir \
+  -v ~/docker/r-base:/workdir \
+  r-base:latest \
+  "$@"

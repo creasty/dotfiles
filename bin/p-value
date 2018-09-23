@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+WORKSPACE_PATH = "#{Dir.home}/docker/r-base"
+TMP_SCRIPT_FILE = 'tmp.r'
+
+params = ARGV
+  .flat_map { |v| v.split('/') }
+  .map(&:to_i)
+
+unless params.size == 4
+  warn('p-value N1/D1 N2/D2')
+  exit 1
+end
+
+n1, d1, n2, d2 = params
+script = 'prop.test(c(%d, %d), c(%d, %d))' % [n1, n2, d1, d2]
+
+File.write("#{WORKSPACE_PATH}/#{TMP_SCRIPT_FILE}", script)
+system('r-base', 'Rscript', TMP_SCRIPT_FILE)
