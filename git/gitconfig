@@ -18,8 +18,7 @@
   ff   = false
 
 [diff]
-  tool      = vimdiff
-  algorithm = histogram
+  indentHeuristic = true
 
 [push]
   default = current
