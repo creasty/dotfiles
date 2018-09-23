@@ -155,6 +155,7 @@ golang:
     - github.com/golang/lint/golint
     - github.com/golang/mock/mockgen
     - github.com/nsf/gocode
+    - github.com/rogpeppe/godef
 
 nodejs:
   versions:
