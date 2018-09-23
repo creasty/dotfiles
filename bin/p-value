@@ -8,7 +8,12 @@ params = ARGV
   .map(&:to_i)
 
 unless params.size == 4
-  warn('p-value N1/D1 N2/D2')
+  warn(<<-HELP)
+p-value N1/D1 N2/D2
+
+    N: Numerator
+    D: Denominator
+  HELP
   exit 1
 end
 
