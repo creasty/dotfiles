@@ -78,4 +78,4 @@ endif
 command! GoDef
   \ call <SID>go_def_jump()
 
-nnoremap <buffer> <C-]> :call <SID>go_def_jump()<CR>
+nnoremap <buffer> <silent> <C-]> :call <SID>go_def_jump()<CR>
