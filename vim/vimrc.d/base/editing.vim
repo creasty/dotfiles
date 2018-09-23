@@ -230,3 +230,6 @@ endfunction
 " q:
 nnoremap q: :q
 nnoremap <Space>: q:
+
+" dotfiles
+command! Dotfiles :exec 'lcd' fnameescape($DOTFILES_PATH)
