@@ -42,9 +42,10 @@ endif
 " shortcut
 nmap <C-s> <C-w>
 
-" dotfiles
-command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles)
+" edit configurations
 command! Vimrc edit $MYVIMRC
+command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles)
+command! MacVim :lcd /usr/local/opt/macvim/MacVim.app/Contents/Resources/vim/runtime
 
 " pay respect to vim
 nnoremap <Up> <Nop>
