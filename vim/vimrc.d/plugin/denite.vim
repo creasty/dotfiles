@@ -56,19 +56,6 @@ function! s:denite_on_source() abort
 
   " file_rec
   call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-  " change ignore_globs
-  let l:ignore_globs = [
-    \ '*~', '*.o', '*.exe', '*.bak',
-    \ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
-    \ '.hg/', '.git/', '.bzr/', '.svn/',
-    \ 'tags', 'tags-*', '.tags',
-    \ '*.jpg', '*.jpeg', '*.png', '*.gif', '*.pdf', '*.ttf', '*.otf', '*.eot', '*.woff', '*.svg', '*.svgz',
-    \ 'tmp/**', 'cache/**', 'public/system/**', 'vendor/bundle/**',
-    \ 'node_modules/**', 'bower_components/**',
-    \ 'Godeps/**',
-  \ ]
-  call denite#custom#filter('matcher_ignore_globs', 'ignore_globs', l:ignore_globs)
 endfunction
 call dein#set_hook('denite.nvim', 'hook_source', function('s:denite_on_source'))
 
