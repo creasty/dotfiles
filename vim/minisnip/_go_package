@@ -1,0 +1,1 @@
+package {{+~expand('%:h:t')+}}{{++}}
