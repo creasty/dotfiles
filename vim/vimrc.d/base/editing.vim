@@ -44,8 +44,8 @@ nmap <C-s> <C-w>
 
 " edit configurations
 command! Vimrc edit $MYVIMRC
-command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles)
-command! MacVim :lcd /usr/local/opt/macvim/MacVim.app/Contents/Resources/vim/runtime
+command! Dotfiles exec 'lcd' g:env.path.dotfiles
+command! MacVim exec 'lcd' g:env.path.runtime
 
 " pay respect to vim
 nnoremap <Up> <Nop>
