@@ -39,11 +39,12 @@ if has('gui_running')
   set formatoptions+=j
 endif
 
-" edit and apply vimrc
-command! EditVimrc edit $MYVIMRC
+" shortcut
+nmap <C-s> <C-w>
 
-" toggle paste mode
-command! Pt :set paste!
+" dotfiles
+command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles)
+command! Vimrc edit $MYVIMRC
 
 " pay respect to vim
 nnoremap <Up> <Nop>
@@ -143,6 +144,10 @@ map Q @@
 " avoid suicide
 nnoremap ZQ <Nop>
 
+" q:
+nnoremap q: :q
+nnoremap <Space>: q:
+
 " useless and annoying
 vnoremap K <Nop>
 
@@ -174,14 +179,6 @@ nnoremap <C-w>d :quit<CR>
 
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
-
-if has('gui_running')
-  nmap <C-w><C-o> <C-w>o
-  nnoremap <C-w>o :maca newWindow:<CR>
-end
-
-" tmux
-nmap <C-s> <C-w>
 
 " remove trailing spaces before saving
 autocmd vimrc BufWritePre *
@@ -226,10 +223,3 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
-
-" q:
-nnoremap q: :q
-nnoremap <Space>: q:
-
-" dotfiles
-command! Dotfiles :exec 'lcd' fnameescape(g:env.path.dotfiles)
