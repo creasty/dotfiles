@@ -1,0 +1,1 @@
+//go:generate stringer -type={{+Type+}}

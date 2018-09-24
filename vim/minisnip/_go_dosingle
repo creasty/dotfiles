@@ -1,0 +1,4 @@
+c.{{+name+}}Once.Do(func() {
+  c.{{+~=1+}}Holder = {{--}}
+})
+return c.{{+~=1+}}Holder
