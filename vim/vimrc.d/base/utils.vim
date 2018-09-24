@@ -93,4 +93,4 @@ endif
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
 " forcibly reload file
-autocmd vimrc BufEnter * :checktime
+autocmd vimrc BufEnter * :silent! checktime
