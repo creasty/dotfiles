@@ -28,7 +28,7 @@ on_func = ['smartchr']
 
 [[plugins]] # switch segments of text with predefined replacements
 repo   = 'AndrewRadev/switch.vim'
-on_cmd = ['Swift']
+on_cmd = ['Switch']
 
 [[plugins]] # maniplate selected text easily
 repo   = 't9md/vim-textmanip'
