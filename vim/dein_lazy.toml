@@ -126,16 +126,16 @@ on_ft = ['coffee']
 repo  = 'cakebaker/scss-syntax.vim'
 on_ft = ['scss']
 
-[[plugins]] # syntax highlight for Scala
-repo  = 'derekwyatt/vim-scala'
-on_ft = ['scala']
-hook_source = '''
-let g:scala_sort_across_groups = 1
-'''
+# [[plugins]] # syntax highlight for Scala
+# repo  = 'derekwyatt/vim-scala'
+# on_ft = ['scala']
+# hook_source = '''
+# let g:scala_sort_across_groups = 1
+# '''
 
-[[plugins]] # syntax highlight for Haskell
-repo  = 'kana/vim-filetype-haskell'
-on_ft = ['haskell']
+# [[plugins]] # syntax highlight for Haskell
+# repo  = 'kana/vim-filetype-haskell'
+# on_ft = ['haskell']
 
 [[plugins]] # Vastly improved Javascript indentation and syntax support
 repo  = 'pangloss/vim-javascript'
@@ -149,10 +149,10 @@ on_ft = ['javascript', 'typescript']
 repo  = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
 
-[[plugins]] # Jade template engine syntax highlighting and indention
-repo  = 'digitaltoad/vim-jade'
-on_ft = ['jade']
+# [[plugins]] # Jade template engine syntax highlighting and indention
+# repo  = 'digitaltoad/vim-jade'
+# on_ft = ['jade']
 
-[[plugins]] # vim syntax highlighting for ace templates
-repo  = 'yosssi/vim-ace'
-on_ft = ['ace']
+# [[plugins]] # vim syntax highlighting for ace templates
+# repo  = 'yosssi/vim-ace'
+# on_ft = ['ace']
