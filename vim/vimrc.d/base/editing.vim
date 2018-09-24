@@ -212,8 +212,13 @@ command! -count -nargs=1 ContinuousNumber
 vnoremap <expr> I <SID>force_blockwise_visual('I')
 vnoremap <expr> A <SID>force_blockwise_visual('A')
 
+let s:blockwise_visual_paste = 0
+
 function! s:force_blockwise_visual(next_key)
   let l:m = mode()
+
+  let s:blockwise_visual_paste = 1
+  set paste
 
   if l:m ==# 'v'
     return "\<C-v>" . a:next_key
@@ -223,3 +228,9 @@ function! s:force_blockwise_visual(next_key)
     return a:next_key
   endif
 endfunction
+
+autocmd vimrc InsertLeave *
+  \ if s:blockwise_visual_paste == 1 |
+    \ let s:blockwise_visual_paste = 0 |
+    \ set nopaste |
+  \ endif
