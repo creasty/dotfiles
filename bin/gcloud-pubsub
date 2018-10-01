@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+NAME=the-pubsub
+: ${PORT:=8085}
+
+
+#  Commands
+#-----------------------------------------------
+server_stop() {
+  echo '==> Stopping server'
+  docker stop $NAME
+}
+
+server_start() {
+  echo '==> Starting server'
+  docker start $NAME 2>/dev/null || server_create
+
+  echo '==> Waiting for ready'
+  sleep 5
+  echo 'ready'
+}
+
+server_destory() {
+  echo '==> Destroying server'
+  docker rm $NAME
+}
+
+server_create() {
+  echo '==> Creating server'
+  docker run \
+    --name $NAME \
+    -d \
+    -p "$PORT:$PORT" \
+    -it google/cloud-sdk:latest \
+    gcloud beta emulators pubsub start --host-port="0.0.0.0:$PORT"
+}
+
+
+#  Entrypoint
+#-----------------------------------------------
+COMMAND="${1:-}"
+shift || true
+
+case "$COMMAND" in
+  start)    server_start ;;
+  stop)     server_stop ;;
+  destroy)  server_destory ;;
+esac
