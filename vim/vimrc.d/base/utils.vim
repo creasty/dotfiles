@@ -84,10 +84,10 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
   \ endif
 
 " automatically change input source
-if executable('osascript')
-  autocmd vimrc FocusGained *
-    \ call job_start(['osascript', '-e', 'tell application "System Events" to key code 102'])
-endif
+" if executable('osascript')
+"   autocmd vimrc FocusGained *
+"     \ call job_start(['osascript', '-e', 'tell application "System Events" to key code 102'])
+" endif
 
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
