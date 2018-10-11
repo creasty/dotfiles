@@ -38,6 +38,9 @@ export PATH=$DOTFILES_PATH/bin:$PATH
 # golang
 export PATH=$PATH:$GOPATH/bin
 
+# libxml2
+export PATH=/usr/local/opt/libxml2/bin:$PATH
+
 # wantedly
 export PATH=$PATH:$HOME/.wantedly/bin
 
