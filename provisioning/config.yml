@@ -152,8 +152,7 @@ golang:
 
     # dev tools
     - github.com/golang/dep/cmd/dep
-    - github.com/golang/lint/golint
-    - github.com/golang/mock/mockgen
+    - golang.org/x/lint/golint
     - github.com/nsf/gocode
     - github.com/rogpeppe/godef
 
