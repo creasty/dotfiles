@@ -5,6 +5,12 @@ augroup vim_ftplugin_go
   autocmd!
 augroup END
 
+"  Imports
+"-----------------------------------------------
+command! GoImports
+  \ call system('goimports -w ' . shellescape(expand('%:p')))
+  \ | e
+
 "  Fmt
 "-----------------------------------------------
 function! s:auto_gofmt(path) abort
@@ -23,36 +29,18 @@ endfunction
 autocmd vim_ftplugin_go FocusLost,BufLeave *.go
   \ call <SID>auto_gofmt(expand('%:p'))
 
-command! GoImports
-  \ call system('goimports -w ' . shellescape(expand('%:p')))
-  \ | e
-
 "  Def
 "-----------------------------------------------
 function! s:go_def() abort
   let l:fname = expand('%:p')
-
-  " Write current unsaved buffer to a temp file and use the modified content
-  " if &modified
-  "   let l:tmpname = tempname()
-  "   call writefile(go#util#GetLines(), l:tmpname)
-  "   let l:fname = l:tmpname
-  " endif
-
   let l:pos = getpos('.')[1:2]
   let l:offs = line2byte(pos[0]) + pos[1] - 2
 
-  let l:out = system('godef'
+  silent let l:out = system('godef'
     \ . ' -f=' . shellescape(l:fname)
     \ . ' -o=' . shellescape(l:offs)
-    \ . ' -t'
   \ )
-  " if exists('l:tmpname')
-  "   call delete(l:tmpname)
-  " endif
-
   let l:out = substitute(l:out, '\n$', '', '')
-  let l:out = join(split(l:out, '\n'), ':')
 
   return l:out
 endfunction
@@ -60,7 +48,13 @@ endfunction
 if !exists('*s:go_def_jump')
   function! s:go_def_jump() abort
     let l:out = s:go_def()
+
     let l:parts = split(l:out, ':')
+    if len(l:parts) < 3
+      echomsg 'tag not found'
+      return
+    endif
+
     let l:filename = l:parts[0]
     let l:line = l:parts[1]
     let l:col = l:parts[2]
