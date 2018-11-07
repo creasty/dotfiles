@@ -146,15 +146,15 @@ anyenv:
 golang:
   packages:
     # tools
-    - github.com/motemen/ghq
-    - github.com/peco/peco/cmd/peco
-    - github.com/rakyll/boom
+    - github.com/motemen/ghq        # Remote repository management made easy
+    - github.com/peco/peco/cmd/peco # Simplistic interactive filtering tool
+    - github.com/rakyll/hey         # HTTP load generator, ApacheBench (ab) replacement
 
     # dev tools
-    - github.com/golang/dep/cmd/dep
-    - golang.org/x/lint/golint
-    - github.com/nsf/gocode
-    - github.com/rogpeppe/godef
+    - github.com/golang/dep/cmd/dep # Go dependency management tool
+    - golang.org/x/lint/golint      # Golint is a linter for Go source code
+    - github.com/nsf/gocode         # An autocompletion daemon for the Go programming language
+    - github.com/rogpeppe/godef     # find symbol information in Go source
 
 nodejs:
   versions:
@@ -170,14 +170,13 @@ ruby:
   plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
 
   plugins:
-    - ianheggie/rbenv-binstubs
-    - sstephenson/rbenv-default-gems
-    - sstephenson/rbenv-gem-rehash
+    - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
+    - rbenv/rbenv-default-gems # Automatically install gems every time you install a new version of Ruby
 
 vagrant:
   boxes: {}
 
   plugins:
-    - sahara
-    - dotenv
-    - vagrant-share
+    - sahara        # https://github.com/jedi4ever/sahara
+    - dotenv        # https://github.com/johnbellone/vagrant-dotenv ?
+    - vagrant-share # https://www.vagrantup.com/docs/share/
