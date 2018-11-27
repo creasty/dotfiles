@@ -125,7 +125,7 @@ alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 rbserver() {
-  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: (ARGV[0] || 5000).to_i).start'
+  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start'
 }
 
 ipf() {
