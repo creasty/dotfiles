@@ -1,6 +1,34 @@
 # https://github.com/rubocop-hq/rubocop/blob/master/config/default.yml
 
+AllCops:
+  TargetRubyVersion: 2.5
+
+#  Metrics
+#-----------------------------------------------
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 200
+
+Metrics/ClassLength:
+  Enabled: false
+
+#  Naming
+#-----------------------------------------------
+Naming/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
+#  Style
+#-----------------------------------------------
 Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
   Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
@@ -8,6 +36,26 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/GuardClause:
+  MinBodyLength: 4
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+#  Layout
+#-----------------------------------------------
+Layout/IndentHash:
+  EnforcedStyle: consistent
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
