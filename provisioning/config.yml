@@ -130,6 +130,7 @@ link:
   ruby/railsrc:              .railsrc
   ruby/rbenv/default-gems:   .anyenv/envs/rbenv/default-gems
   ruby/rspec:                .rspec
+  ruby/rubocop.yml:          .rubocop.yml
   tmux/tmux.conf:            .tmux.conf
   tmux:                      .tmux
   vim/gvimrc:                .gvimrc
