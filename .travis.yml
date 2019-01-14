@@ -13,6 +13,11 @@ env:
     - DOTFILES_NOEDIT_SECRETS=1
     - SKIP_TAGS=zsh
 
+    # Workaround
+    # @see https://github.com/Homebrew/brew/issues/5513
+    - HOMEBREW_LOGS=$HOME/homebrew-logs
+    - HOMEBREW_TEMP=$HOME/homebrew-temp
+
 before_script:
   - ln -sf $PWD $HOME/dotfiles
 
