@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+CLUSTER="$1"
+BRANCH="$2"
+PORT_LOCAL="${3:-5000}"
+PORT_REMOTE=8080
+
+check_unbuffer() {
+  command -v 'unbuffer' > /dev/null 2>&1 && return
+  echo '`unbuffer` is not installed on this computer.'
+  echo 'Try:'
+  echo '    brew install expect'
+}
+
+forward_port() {
+  local pod="$1"
+  kube "$CLUSTER" port-forward "$pod" "$PORT_LOCAL:$PORT_REMOTE" &
+  # ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: 8100).start' &
+}
+
+scan_pod() {
+  local pod_name=''
+  local forwarded=0
+
+  while IFS= read -r line; do
+    echo "$line"
+
+    if [[ -z "$pod_name" && "$line" =~ ^pod\ \"([^\"]+)\"\ created$ ]]; then
+      pod_name="${BASH_REMATCH[1]}"
+      echo "[kube-oneshot] Pod name detected: $pod_name"
+    fi
+
+    if [[ $forwarded -eq 0 && "$line" =~ master\ process\ ready ]]; then
+      echo "[kube-oneshot] Start port forwarding: $PORT_REMOTE -> $PORT_LOCAL"
+      forwarded=1
+      forward_port "$pod_name"
+    fi
+  done
+}
+
+create_pod() {
+  local rails_env=''
+
+  case "$CLUSTER" in
+    prod) rails_env="production" ;;
+    *)    rails_env="$CLUSTER" ;;
+  esac
+
+  unbuffer kube "$CLUSTER" sh "$BRANCH" -- bundle exec unicorn -c 'config/unicorn.rb' -E "$rails_env"
+  # unbuffer ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: 8000).start'
+}
+
+start_pod() {
+  create_pod | scan_pod
+}
+
+main() {
+  check_unbuffer
+  start_pod &
+  wait $!
+}
+
+at_exit() {
+  kill -TERM -$$
+}
+
+trap at_exit EXIT
+trap 'trap - EXIT; at_exit; exit -1' SIGHUP SIGINT SIGTERM
+main
