@@ -55,7 +55,7 @@ function! s:denite_on_source() abort
   call denite#custom#var('grep', 'final_opts', [])
 
   " file_rec
-  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-U', '-g', ''])
 endfunction
 call dein#set_hook('denite.nvim', 'hook_source', function('s:denite_on_source'))
 
