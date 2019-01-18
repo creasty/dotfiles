@@ -86,6 +86,7 @@ homebrew:
     - webp                 # Image format providing lossless and lossy compression for web images
     - xctool               # Drop-in replacement for xcodebuild with a few extra features
     - yarn                 # JavaScript package manager
+    - expect               # Program that can automate interactive applications
 
 mas:
   appstore_id:       '{{ appstore_id }}'
