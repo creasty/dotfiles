@@ -42,6 +42,8 @@
       tags: ['app', 'vim']
     - role: vagrant
       tags: ['app', 'vagrant']
+    - role: vscode
+      tags: ['app', 'vscode']
 
     #  system
     #-----------------------------------------------
