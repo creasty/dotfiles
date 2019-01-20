@@ -44,6 +44,9 @@ export PATH=/usr/local/opt/libxml2/bin:$PATH
 # wantedly
 export PATH=$PATH:$HOME/.wantedly/bin
 
+# vscode
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
 
 #  Git
 #-----------------------------------------------
