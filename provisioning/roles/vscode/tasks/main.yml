@@ -46,16 +46,20 @@
       loop_control:
         label: '{{ item.value }}'
       with_dict: '{{ vscode.link }}'
+
   when: vscode.link
 
-- name: get installed extensions
-  command: |
-    code --list-extensions
-  register: installed_vscode_exts
+- block:
+    - name: get installed extensions
+      command: |
+        code --list-extensions
+      register: installed_vscode_exts
 
-- name: install extensions
-  command: |
-    code --install-extension {{ item | quote }}
-  when: |
-    vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
-  with_items: '{{ vscode.extensions }}'
+    - name: install extensions
+      command: |
+        code --install-extension {{ item | quote }}
+      when: |
+        vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
+      with_items: '{{ vscode.extensions }}'
+
+  when: ansible_distribution == 'MacOSX'
