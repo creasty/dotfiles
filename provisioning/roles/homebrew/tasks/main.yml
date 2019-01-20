@@ -5,13 +5,6 @@
   homebrew:
     update_homebrew: yes
 
-- name: tap external homebrew repos
-  homebrew_tap:
-    tap:   '{{ item }}'
-    state: present
-  with_items: '{{ homebrew.repositories }}'
-  when: homebrew.repositories
-
 - name: install cask applications
   homebrew_cask:
     name:            '{{ item.name | default(item) }}'
