@@ -15,7 +15,7 @@ homebrew:
     - google-hangouts      # https://www.google.com/tools/dlpage/hangoutplugin
     - google-japanese-ime  # https://www.google.co.jp/ime/
     - imageoptim           # https://imageoptim.com/mac
-    - istat-menus          # https://bjango.com/mac/istatmenus/
+    #- istat-menus          # https://bjango.com/mac/istatmenus/
     - iterm2               # https://www.iterm2.com/
     - jetbrains-toolbox    # https://www.jetbrains.com/toolbox/app/
     - keyboard             # https://github.com/creasty/Keyboard
