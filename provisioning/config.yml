@@ -1,8 +1,4 @@
 homebrew:
-  repositories:
-    - creasty/tools
-    - dtan4/tools
-
   applications:
     - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
     - alfred               # https://www.alfredapp.com/
@@ -183,3 +179,36 @@ vagrant:
     - sahara        # https://github.com/jedi4ever/sahara
     - dotenv        # https://github.com/johnbellone/vagrant-dotenv ?
     - vagrant-share # https://www.vagrantup.com/docs/share/
+
+vscode:
+  link:
+    vscode/settings.json: settings.json
+
+  # code --list-extensions
+  extensions:
+    - alefragnani.Bookmarks
+    - angryobject.react-pure-to-class-vscode
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - cssho.vscode-svgviewer
+    - dbaeumer.vscode-eslint
+    - dsznajder.es7-react-js-snippets
+    - eg2.tslint
+    - formulahendry.auto-close-tag
+    - formulahendry.auto-rename-tag
+    - formulahendry.code-runner
+    - JerryHong.autofilename
+    - jock.svg
+    - jpoissonnier.vscode-styled-components
+    - lannonbr.vscode-js-annotations
+    - ms-vsliveshare.vsliveshare
+    - msjsdiag.debugger-for-chrome
+    - qezhu.gitlink
+    - shinnn.stylelint
+    - steoates.autoimport
+    - streetsidesoftware.code-spell-checker
+    - vincaslt.highlight-matching-tag
+    - wayou.vscode-todo-highlight
+    - wix.vscode-import-cost
+    - xabikos.JavaScriptSnippets
+    - yzhang.markdown-all-in-one
