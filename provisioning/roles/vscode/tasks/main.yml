@@ -9,6 +9,11 @@
     vscode_path: '{{ home_path }}/.config/Code/User'
   when: ansible_distribution != 'MacOSX'
 
+- name: install vscode
+  homebrew_cask:
+    name:  visual-studio-code
+    state: present
+
 - block:
     - name: allocate parent directories
       file:
