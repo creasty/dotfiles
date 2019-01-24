@@ -9,8 +9,9 @@
 
 - name: fetch anyenv repo
   git:
-    repo: https://github.com/riywo/anyenv
-    dest: '{{ anyenv.dir }}'
+    repo:    https://github.com/anyenv/anyenv
+    version: riywo
+    dest:    '{{ anyenv.dir }}'
   when: anyenv.dir
 
 - name: create plugins dir
@@ -21,6 +22,6 @@
 
 - name: fetch anyenv update repo
   git:
-    repo: https://github.com/znz/anyenv-update.git
+    repo: https://github.com/znz/anyenv-update
     dest: '{{ anyenv.plugins_dir }}/anyenv-update'
   when: anyenv.plugins_dir
