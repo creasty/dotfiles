@@ -1,0 +1,5 @@
+holder := &c.{{+name+}}
+holder.once.Do(func() {
+  holder.result, holder.err = {{--}}
+})
+return holder.result, holder.err

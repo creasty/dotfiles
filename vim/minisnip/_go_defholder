@@ -1,0 +1,5 @@
+{{+name+}} struct {
+  result {{-Type-}}
+  err    error
+  once   sync.Once
+}
