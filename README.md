@@ -6,7 +6,7 @@ dotfiles [![Build Status](https://travis-ci.org/creasty/dotfiles.svg?branch=mast
 A powerful development environment for full-stack engineers.  
 Work it harder, make it better, do it faster, makes us stronger.
 
-<pre><code>$ bash <(curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a>)</code></pre>
+<pre><code>$ curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
 
 
 Screenshots
