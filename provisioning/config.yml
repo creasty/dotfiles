@@ -1,8 +1,4 @@
 homebrew:
-  repositories:
-    - creasty/tools
-    - dtan4/tools
-
   applications:
     - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
     - alfred               # https://www.alfredapp.com/
@@ -15,7 +11,7 @@ homebrew:
     - google-hangouts      # https://www.google.com/tools/dlpage/hangoutplugin
     - google-japanese-ime  # https://www.google.co.jp/ime/
     - imageoptim           # https://imageoptim.com/mac
-    - istat-menus          # https://bjango.com/mac/istatmenus/
+    #- istat-menus          # https://bjango.com/mac/istatmenus/
     - iterm2               # https://www.iterm2.com/
     - jetbrains-toolbox    # https://www.jetbrains.com/toolbox/app/
     - keyboard             # https://github.com/creasty/Keyboard
@@ -30,7 +26,6 @@ homebrew:
     - tunnelbear           # https://www.tunnelbear.com/
     - vagrant              # https://www.vagrantup.com/
     #- virtualbox           # https://www.virtualbox.org/
-    - visual-studio-code   # https://code.visualstudio.com/
     - webpquicklook        # https://github.com/dchest/webp-quicklook
     - wwdc                 # https://wwdc.io/
 
@@ -183,3 +178,36 @@ vagrant:
     - sahara        # https://github.com/jedi4ever/sahara
     - dotenv        # https://github.com/johnbellone/vagrant-dotenv ?
     - vagrant-share # https://www.vagrantup.com/docs/share/
+
+vscode:
+  link:
+    vscode/settings.json: settings.json
+
+  # code --list-extensions
+  extensions:
+    - alefragnani.Bookmarks
+    - angryobject.react-pure-to-class-vscode
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - cssho.vscode-svgviewer
+    - dbaeumer.vscode-eslint
+    - dsznajder.es7-react-js-snippets
+    - eg2.tslint
+    - formulahendry.auto-close-tag
+    - formulahendry.auto-rename-tag
+    - formulahendry.code-runner
+    - JerryHong.autofilename
+    - jock.svg
+    - jpoissonnier.vscode-styled-components
+    - lannonbr.vscode-js-annotations
+    - ms-vsliveshare.vsliveshare
+    - msjsdiag.debugger-for-chrome
+    - qezhu.gitlink
+    - shinnn.stylelint
+    - steoates.autoimport
+    - streetsidesoftware.code-spell-checker
+    - vincaslt.highlight-matching-tag
+    - wayou.vscode-todo-highlight
+    - wix.vscode-import-cost
+    - xabikos.JavaScriptSnippets
+    - yzhang.markdown-all-in-one

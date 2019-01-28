@@ -139,15 +139,8 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " select all
 map <Space>a ggVG
 
-" repeat the last recorded macro
-map Q @@
-
 " avoid suicide
 nnoremap ZQ <Nop>
-
-" q:
-nnoremap q: :q
-nnoremap <Space>: q:
 
 " useless and annoying
 vnoremap K <Nop>

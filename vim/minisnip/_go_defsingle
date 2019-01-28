@@ -1,2 +1,0 @@
-{{+name+}}Holder {{-Type-}}
-{{+~=1+}}Once sync.Once

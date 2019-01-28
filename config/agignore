@@ -1,13 +1,22 @@
+.DS_Store
+Thumb.db
+
+.tags
+.idea/
+
 tmp
 cache
-log
-vendor/bundle
+
+.bundle
+vendor
 Godeps
 node_modules
-bower_components
-public/system
 Carthage
 Pods
+
+*.git
+.gitkeep
+.keep
 
 *.jpg
 *.jpeg

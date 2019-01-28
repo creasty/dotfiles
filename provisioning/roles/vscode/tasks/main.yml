@@ -1,0 +1,70 @@
+- set_fact:
+    vscode: {}
+
+- set_fact:
+    vscode_path: '{{ home_path }}/Library/Application Support/Code/User'
+  when: ansible_distribution == 'MacOSX'
+
+- set_fact:
+    vscode_path: '{{ home_path }}/.config/Code/User'
+  when: ansible_distribution != 'MacOSX'
+
+- name: install vscode
+  homebrew_cask:
+    name:  visual-studio-code
+    state: present
+
+- block:
+    - name: allocate parent directories
+      file:
+        dest:    '{{ vscode_path }}/{{ item }}'
+        state:   directory
+        recurse: yes
+      loop_control:
+        label: '{{ vscode_path }}/{{ item }}'
+      with_items: '{{ vscode.link.values() | map("dirname") | unique | list }}'
+
+    - name: check destinations
+      stat:
+        path: '{{ vscode_path }}/{{ item.value }}'
+      loop_control:
+        label: '{{ item.value }}'
+      with_dict: '{{ vscode.link }}'
+      register: dest_stat
+
+    - name: create backup files
+      command: |
+        mv -f \
+          {{ vscode_path | quote }}/{{ item.item.value | quote }} \
+          {{ vscode_path | quote }}/{{ item.item.value | quote }}.bak
+      when: item.stat.exists and not item.stat.islnk
+      loop_control:
+        label: '{{ item.item.value }}'
+      with_items: '{{ dest_stat.results }}'
+
+    - name: create symlinks
+      file:
+        src:   '{{ dotfiles_path }}/{{ item.key }}'
+        dest:  '{{ vscode_path }}/{{ item.value }}'
+        state: link
+        force: yes
+      loop_control:
+        label: '{{ item.value }}'
+      with_dict: '{{ vscode.link }}'
+
+  when: vscode.link
+
+- block:
+    - name: get installed extensions
+      command: |
+        code --list-extensions
+      register: installed_vscode_exts
+
+    - name: install extensions
+      command: |
+        code --install-extension {{ item | quote }}
+      when: |
+        vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
+      with_items: '{{ vscode.extensions }}'
+
+  when: ansible_distribution == 'MacOSX'

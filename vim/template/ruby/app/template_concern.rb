@@ -1,5 +1,5 @@
 <%-
-namespaces = File.dirname('FILE_PATH'.split('app/services')[1])
+namespaces = File.dirname('FILE_PATH'.split('/concerns')[1])
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .split('/')
   .reject { |n| n == '' }
@@ -10,8 +10,7 @@ base_name = File.basename('FILE_NAME', '.rb')
 
 class_name = [*namespaces, base_name].join('::')
 -%>
-class <%= class_name %>
-  def perform!
-    <+CURSOR+>
-  end
+module <%= class_name %>
+  extend ActiveSupport::Concern
+  <+CURSOR+>
 end
