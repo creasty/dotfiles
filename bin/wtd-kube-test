@@ -18,7 +18,6 @@ check_unbuffer() {
 forward_port() {
   local pod="$1"
   kube "$CLUSTER" port-forward "$pod" "$PORT_LOCAL:$PORT_REMOTE" &
-  # ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: 8100).start' &
 }
 
 scan_pod() {
@@ -30,11 +29,11 @@ scan_pod() {
 
     if [[ -z "$pod_name" && "$line" =~ ^pod\ \"([^\"]+)\"\ created$ ]]; then
       pod_name="${BASH_REMATCH[1]}"
-      echo "[kube-oneshot] Pod name detected: $pod_name"
+      echo "[kube-test] Pod name detected: $pod_name"
     fi
 
     if [[ $forwarded -eq 0 && "$line" =~ master\ process\ ready ]]; then
-      echo "[kube-oneshot] Start port forwarding: $PORT_REMOTE -> $PORT_LOCAL"
+      echo "[kube-test] Start port forwarding: $PORT_REMOTE -> $PORT_LOCAL"
       forwarded=1
       forward_port "$pod_name"
     fi
@@ -50,20 +49,15 @@ create_pod() {
   esac
 
   unbuffer kube "$CLUSTER" sh "$BRANCH" -- bundle exec unicorn -c 'config/unicorn.rb' -E "$rails_env"
-  # unbuffer ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", Port: 8000).start'
-}
-
-start_pod() {
-  create_pod | scan_pod
 }
 
 main() {
   check_unbuffer
-  start_pod &
-  wait $!
+  create_pod | scan_pod
 }
 
 at_exit() {
+  # FIXME: This doesn't terminate kube sh properly
   kill -TERM -$$
 }
 
