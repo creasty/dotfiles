@@ -227,3 +227,4 @@ alias xct='xctool'
 #-----------------------------------------------
 alias valec='envchain wtd valec'
 alias kube='envchain wtd kube'
+alias kube-test='envchain wtd wtd-kube-test'
