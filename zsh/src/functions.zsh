@@ -194,6 +194,7 @@ _register_keycommand '^o^p' peco_insert_path
 peco_modified_file() {
   git status -s \
     | cut -b 4- \
+    | sed 's/.*-> //' \
     | _peco_select \
     | _buffer_insert_lines
 }
