@@ -129,7 +129,7 @@ rbserver() {
 }
 
 ipf() {
-  curl "ipinfo.io/$1" | jq .
+  curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
 }
 
 
