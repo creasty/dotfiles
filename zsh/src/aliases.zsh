@@ -105,7 +105,6 @@ alias ql='qlmanage -p "$@" >& /dev/null'
 alias mas='reattach-to-user-namespace mas'
 alias :save="$TMUX_RESURRECT_SCRIPTS_PATH/save.sh"
 alias :restore="$TMUX_RESURRECT_SCRIPTS_PATH/restore.sh"
-alias maxscreen='screenresolution set 2880x1800x32@0 || screenresolution set 2560x1600x32@0'  # screenresolution list
 
 alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
 

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+MODE_PATTERN='\b\d+x\d+x\d+@0\b'
+
+list_resolutions() {
+  screenresolution list 2> /dev/null \
+    | grep -o -E "$MODE_PATTERN"
+}
+
+set_resolution() {
+  while read -r mode; do
+    screenresolution set "$mode"
+    break
+  done
+}
+
+full_mode() {
+  local mode="$(
+    system_profiler SPDisplaysDataType \
+      | grep -o -m 1 -E 'Resolution: \d+ x \d+\b' \
+      | awk '{ print $2 "x" $4 "x32@0" }'
+  )"
+
+  list_resolutions \
+    | grep -m 1 "$mode" \
+    | set_resolution
+}
+
+max_mode() {
+  list_resolutions \
+    | sed -E 's/[^0-9]+/ /g' \
+    | awk '{ print $1 "x" $2 "x" $3 "@" $4, (int($1) * int($2)) }' \
+    | sort -n -r -k 2 \
+    | grep -o -m 1 -E "$MODE_PATTERN" \
+    | set_resolution
+}
+
+full_mode || max_mode
