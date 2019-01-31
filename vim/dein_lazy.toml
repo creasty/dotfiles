@@ -107,6 +107,10 @@ on_cmd = ['Vinarise', 'VinariseDump']
 repo   = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']
 
+[[plugins]] # A Git wrapper so awesome, it should be illegal
+repo   = 'tpope/vim-fugitive'
+on_cmd = ['Gblame', 'Gbrowse']
+
 
 #  Language
 #-----------------------------------------------
