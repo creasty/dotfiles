@@ -148,6 +148,9 @@ endif
 if dein#tap('vim-altr')
   call s:load_file('plugin/vim-altr')
 endif
+if dein#tap('vim-fugitive')
+  call s:load_file('plugin/vim-fugitive')
+endif
 if dein#tap('vim-quickrun')
   call s:load_file('plugin/vim-quickrun')
 endif
