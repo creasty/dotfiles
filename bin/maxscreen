@@ -11,10 +11,8 @@ list_resolutions() {
 }
 
 set_resolution() {
-  while read -r mode; do
-    screenresolution set "$mode"
-    break
-  done
+  read -r mode
+  screenresolution set "$mode"
 }
 
 full_mode() {
