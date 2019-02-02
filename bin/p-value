@@ -1,24 +1,29 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
 
-WORKSPACE_PATH = "#{Dir.home}/docker/r-base"
-TMP_SCRIPT_FILE = 'tmp.r'
+set -eu
+set -o pipefail
 
-params = ARGV
-  .flat_map { |v| v.split('/') }
-  .map(&:to_i)
+WORKSPACE_PATH="$HOME/docker/r-base"
+TMP_SCRIPT_FILE='tmp.r'
 
-unless params.size == 4
-  warn(<<-HELP)
-p-value N1/D1 N2/D2
+INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)'
+R_TEMPLATE='prop.test(c(\1, \3), c(\2, \4))'
 
-    N: Numerator
-    D: Denominator
-  HELP
+do_help() {
+  echo "p-value N1/D1 N2/D2"
+  echo ""
+  echo "    N: Numerator"
+  echo "    D: Denominator"
   exit 1
-end
+}
 
-n1, d1, n2, d2 = params
-script = 'prop.test(c(%d, %d), c(%d, %d))' % [n1, n2, d1, d2]
+[ $# -ne 2 ] && do_help
 
-File.write("#{WORKSPACE_PATH}/#{TMP_SCRIPT_FILE}", script)
-system('r-base', 'Rscript', TMP_SCRIPT_FILE)
+echo "$@" \
+  | {
+    grep -o -m 1 -E "$INPUT_PATTERN" || do_help
+  } \
+  | sed -E "s/$INPUT_PATTERN/$R_TEMPLATE/" \
+  | tee "$WORKSPACE_PATH/$TMP_SCRIPT_FILE"
+
+r-base Rscript "$TMP_SCRIPT_FILE"
