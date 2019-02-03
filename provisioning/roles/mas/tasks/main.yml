@@ -1,6 +1,11 @@
 - set_fact:
     mas: {}
 
+- name: install mas
+  homebrew:
+    name:  mas # Mac App Store command line interface
+    state: present
+
 - name: signout mas
   command: |
     bash -lc 'mas signout'
