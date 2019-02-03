@@ -98,11 +98,11 @@ __git_ps1() {
     fi
   fi
 
-  printf -- " ${fg[blue]}on${fg[white]} %s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u" "$r"
+  printf -- "${fg[white]} @ %s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u" "$r"
 }
 
 PROMPT="
-%F{blue}in %f%F{white}\${(%):-%~}%f\$(__git_ps1)%f
-%F{blue}❯ %f"
+%F{white}\${(%):-%~}%f\$(__git_ps1)%f
+%F{blue}$ %f"
 
-PROMPT2="%F{white}❯ %f"
+PROMPT2="%F{white}$ %f"
