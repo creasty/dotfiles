@@ -4,6 +4,7 @@ zmodload -i zsh/mathfunc
 zmodload -i zsh/complist
 
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 fpath=(
   ~/.zsh/plugins/zsh-completions/src
@@ -191,15 +192,7 @@ ZSH_HIGHLIGHT_STYLES[unknown-token]=none
 
 #  Type ahead auto suggestion
 #-----------------------------------------------
-# AUTOSUGGESTION_HIGHLIGHT_COLOR=fg=white
-# AUTOSUGGESTION_HIGHLIGHT_CURSOR=0
-#
-# zle-line-init() {
-#   zle autosuggest-start
-# }
-# zle -N zle-line-init
-#
-# bindkey '^T' autosuggest-toggle
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=white
 
 
 #  Direnv
