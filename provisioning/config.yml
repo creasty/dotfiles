@@ -1,4 +1,8 @@
 homebrew:
+  repositories:
+    - creasty/tools
+    - dtan4/tools
+
   applications:
     - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
     - alfred               # https://www.alfredapp.com/
