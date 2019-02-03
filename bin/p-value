@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#> p-value N1/D1 N2/D2
+#>
+#>     N: Numerator
+#>     D: Denominator
 
 set -eu
 set -o pipefail
@@ -10,14 +14,9 @@ INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)'
 R_TEMPLATE='prop.test(c(\1, \3), c(\2, \4))'
 
 do_help() {
-  echo "p-value N1/D1 N2/D2"
-  echo ""
-  echo "    N: Numerator"
-  echo "    D: Denominator"
+  cat "$0" | grep '^#>' | sed -E 's/#>[ ]?//g'
   exit 1
 }
-
-[ $# -ne 2 ] && do_help
 
 echo "$@" \
   | {
