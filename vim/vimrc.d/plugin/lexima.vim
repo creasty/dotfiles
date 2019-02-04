@@ -48,7 +48,7 @@ function! ExpandMarkdownTitleLine(char) abort
   endif
 endfunction
 
-function! ExpandSectionHeader(level, trigger, token) abort
+function! ExpandSectionHeader(trigger, token, leader, line, width) abort
   let l:line = getline(line('.'))
   let l:m = matchlist(l:line, '^\(\s*\)' . a:trigger . '\s*\(.*\)')
 
@@ -62,13 +62,8 @@ function! ExpandSectionHeader(level, trigger, token) abort
   let l:cursor = '<vim:expand_section_header:cursor>'
   let l:lines = ['', '']
 
-  if a:level == 1
-    let l:lines[0] = l:indent . a:token . '=== ' . l:text . l:cursor
-    let l:lines[1] = l:indent . a:token . repeat('=', 94)
-  else
-    let l:lines[0] = l:indent . a:token . '  ' . l:text . l:cursor
-    let l:lines[1] = l:indent . a:token . repeat('-', 47)
-  endif
+  let l:lines[0] = l:indent . a:token . a:leader . l:text . l:cursor
+  let l:lines[1] = l:indent . a:token . repeat(a:line, a:width)
 
   call setline('.', l:lines[0])
   call append(line('.'), l:lines[1])
@@ -87,23 +82,33 @@ let s:rules = {
   \ '/':  ['haml'],
   \ '%':  ['tex'],
   \ '"':  ['vim'],
+  \ '--': ['sql'],
 \ }
 for [s:token, s:filetype] in items(s:rules)
   let s:t1 = s:token[0]
   let s:t2 = s:token[0] . s:token[0]
 
-  call lexima#add_rule({
-    \ 'char':     '<Tab>',
-    \ 'at':       '^\s*' . s:t1 . '\%#',
-    \ 'input':    "<Esc>:call ExpandSectionHeader(1, '" . s:t1 . "', '" . s:token . "')<CR>a",
-    \ 'filetype': s:filetype,
-  \ })
-  call lexima#add_rule({
-    \ 'char':     '<Tab>',
-    \ 'at':       '^\s*' . s:t2 . '\%#',
-    \ 'input':    "<Esc>:call ExpandSectionHeader(2, '" . s:t2 . "', '" . s:token . "')<CR>a",
-    \ 'filetype': s:filetype,
-  \ })
+  if s:token ==# '--'
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '^\s*--\%#',
+      \ 'input':    "<Esc>:call ExpandSectionHeader('--', '--', ' ', '-', 47)<CR>a",
+      \ 'filetype': s:filetype,
+    \ })
+  else
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '^\s*' . s:t1 . '\%#',
+      \ 'input':    "<Esc>:call ExpandSectionHeader('" . s:t1 . "', '" . s:token . "', '=== ', '=', 94)<CR>a",
+      \ 'filetype': s:filetype,
+    \ })
+    call lexima#add_rule({
+      \ 'char':     '<Tab>',
+      \ 'at':       '^\s*' . s:t2 . '\%#',
+      \ 'input':    "<Esc>:call ExpandSectionHeader('" . s:t2 . "', '" . s:token . "', '  ', '-', 47)<CR>a",
+      \ 'filetype': s:filetype,
+    \ })
+  endif
 endfor
 unlet s:token
 unlet s:filetype
