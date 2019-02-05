@@ -38,9 +38,8 @@
 
 - name: install macvim
   homebrew:
-    name:            macvim
-    state:           present
-    install_options: with-override-system-vim
+    name:  macvim
+    state: present
 
 - name: link app
   file:
