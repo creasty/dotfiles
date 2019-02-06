@@ -1,0 +1,1 @@
+awk '{ e = 1; print $0 } END { if (e) exit(1) }'{{++}}
