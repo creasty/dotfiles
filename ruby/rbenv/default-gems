@@ -1,6 +1,9 @@
 bundler
-
 pry
 rails
-synx
+
 solargraph
+
+# iOS development
+synx
+xcode-install
