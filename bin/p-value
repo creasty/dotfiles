@@ -7,8 +7,8 @@
 set -eu
 set -o pipefail
 
-WORKSPACE_PATH="$HOME/docker/r-base"
-TMP_SCRIPT_FILE='tmp.r'
+SHARED_PATH="$HOME/docker/r-base"
+TMP_SCRIPT_FILE='p-value.r'
 
 INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)'
 R_TEMPLATE='prop.test(c(\1, \3), c(\2, \4))'
@@ -23,6 +23,6 @@ echo "$@" \
     grep -o -m 1 -E "$INPUT_PATTERN" || do_help
   } \
   | sed -E "s/$INPUT_PATTERN/$R_TEMPLATE/" \
-  | tee "$WORKSPACE_PATH/$TMP_SCRIPT_FILE"
+  | tee "$SHARED_PATH/$TMP_SCRIPT_FILE"
 
-r-base Rscript "$TMP_SCRIPT_FILE"
+r-base Rscript "/shared/$TMP_SCRIPT_FILE"

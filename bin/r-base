@@ -4,6 +4,7 @@ docker run \
   --rm \
   -it \
   -w /workdir \
-  -v ~/docker/r-base:/workdir \
+  -v "$(pwd)":/workdir \
+  -v ~/docker/r-base:/shared \
   r-base:latest \
   "$@"
