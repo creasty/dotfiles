@@ -3,6 +3,10 @@
 #>
 #>     N: Numerator
 #>     D: Denominator
+#>
+#> - A small p-value (< 0.05) indicates strong evidence against the null hypothesis, so you reject the null hypothesis.
+#> - A large p-value (> 0.05) indicates weak evidence against the null hypothesis, so you fail to reject the null hypothesis.
+#> - p-values very close to the cutoff (0.05) are considered to be marginal (could go either way).
 
 set -eu
 set -o pipefail
