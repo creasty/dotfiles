@@ -82,7 +82,7 @@ let s:rules = {
   \ '/':  ['haml'],
   \ '%':  ['tex'],
   \ '"':  ['vim'],
-  \ '--': ['sql'],
+  \ '--': ['sql', 'sql.bq', 'sql.pg'],
 \ }
 for [s:token, s:filetype] in items(s:rules)
   let s:t1 = s:token[0]
