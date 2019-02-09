@@ -1,5 +1,6 @@
 " hide upper case marks
-let g:SignatureIncludeMarks = 'abcdefghijklmnopqrstuvwxyz'
+" 's' is used by vim-minisnip
+let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
 
 " highlight
 let g:SignatureMarkTextHL = 'Statement'
