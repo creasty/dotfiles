@@ -17,10 +17,8 @@ IMAGE=redis:3.0.7-alpine
 #  Utils
 #-----------------------------------------------
 do_help() {
-  cat "$0" \
-    | grep '^#>' \
-    | sed -e 's/#> //g' -e 's/#>//g'
-  exit 0
+  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  exit 1
 }
 
 

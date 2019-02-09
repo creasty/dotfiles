@@ -1,4 +1,4 @@
 do_help() {
-  cat "$0" | grep '^#>' | sed -E 's/#>[ ]?//g'
+  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
   exit 1
-}
+}{{--}}
