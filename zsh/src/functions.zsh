@@ -44,6 +44,7 @@ _register_keycommand() {
 }
 
 _buffer_insert() {
+  zle autosuggest-clear
   local rbuf="$RBUFFER"
   BUFFER="$LBUFFER$(cat)"
   CURSOR=$#BUFFER
