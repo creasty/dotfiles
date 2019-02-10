@@ -53,7 +53,7 @@ _buffer_insert() {
 _buffer_insert_lines() {
   cat \
     | {
-      lines=()
+      local lines=()
 
       while read -r line; do
         if ! [ -z "$line" ]; then
@@ -68,6 +68,34 @@ _buffer_insert_lines() {
 _buffer_replace() {
   BUFFER="$(cat)"
   CURSOR=$#BUFFER
+}
+
+_buffer_insert_files() {
+  local file="$(cat)"
+
+  if [ "$LBUFFER" != "" ]; then
+    _buffer_insert_lines <<< "$file"
+  elif [ -d "$file" ]; then
+    _buffer_insert <<< "cd $file"
+  elif [ -f "$file" ]; then
+    buf="$file"
+
+    if ! [ -x "$file" ]; then
+      case "$file" in
+        *_spec.rb)
+          buf="be rspec $file"
+          ;;
+
+        *)
+          buf="$EDITOR $file"
+          ;;
+      esac
+    fi
+
+    _buffer_insert <<< "$buf"
+  else
+    _buffer_insert_lines <<< "$file"
+  fi
 }
 
 
@@ -163,35 +191,16 @@ _peco_select() {
 #  Insert path
 #-----------------------------------------------
 peco_insert_path() {
-  ag --follow --nocolor --nogroup -g '' \
-    | _peco_select \
-    | {
-      file="$(cat)"
-
-      if [ "$LBUFFER" != "" ]; then
-        _buffer_insert_lines <<< "$file"
-      elif [ -d "$file" ]; then
-        _buffer_insert <<< "cd $file"
-      elif [ -f "$file" ]; then
-        buf="$file"
-
-        if ! [ -x "$file" ]; then
-          case "$file" in
-            *_spec.rb)
-              buf="be rspec $file"
-              ;;
-
-            *)
-              buf="$EDITOR $file"
-              ;;
-          esac
-        fi
-
-        _buffer_insert <<< "$buf"
-      else
-        _buffer_insert_lines <<< "$file"
-      fi
-    }
+  if [ "$(pwd)" = "$HOME" ]; then
+    ls -AF \
+      | sed -E 's/@$//g' \
+      | _peco_select \
+      | _buffer_insert_files
+  else
+    ag --follow --nocolor --nogroup --hidden -U -g '' \
+      | _peco_select \
+      | _buffer_insert_files
+  fi
 }
 
 _register_keycommand '^o^p' peco_insert_path
