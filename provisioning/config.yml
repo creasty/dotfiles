@@ -6,6 +6,7 @@ homebrew:
 
   applications:
     - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
+    - alacritty            # https://github.com/jwilm/alacritty
     - alfred               # https://www.alfredapp.com/
     #- android-sdk          # https://developer.android.com/index.html
     #- android-studio       # https://developer.android.com/studio/index.html
@@ -17,7 +18,6 @@ homebrew:
     - google-japanese-ime  # https://www.google.co.jp/ime/
     - imageoptim           # https://imageoptim.com/mac
     #- istat-menus          # https://bjango.com/mac/istatmenus/
-    - iterm2               # https://www.iterm2.com/
     - jetbrains-toolbox    # https://www.jetbrains.com/toolbox/app/
     - keyboard             # https://github.com/creasty/Keyboard
     - ngrok                # https://ngrok.com/
@@ -139,6 +139,7 @@ link:
   zsh/zshenv:                .zshenv
   zsh/zshrc:                 .zshrc
   zsh:                       .zsh
+  config/alacritty.yml:      .config/alacritty/alacritty.yml
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'
