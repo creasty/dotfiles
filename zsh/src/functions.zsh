@@ -213,7 +213,7 @@ peco_modified_file() {
     | sed -E $'s/ -> /\\\n-> /g' \
     | _peco_select \
     | cut -b 4- \
-    | _buffer_insert_lines
+    | _buffer_insert_files
 }
 
 _register_keycommand '^o^m' peco_modified_file
