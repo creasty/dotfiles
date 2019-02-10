@@ -54,3 +54,15 @@
     dest:  /usr/local/bin/vim
     state: link
     force: yes
+
+- name: add padding to MacVim window
+  osx_defaults:
+    domain: org.vim.MacVim
+    key:    '{{ item }}'
+    type:   int
+    value:  6
+  with_items:
+    - MMTextInsetTop
+    - MMTextInsetRight
+    - MMTextInsetBottom
+    - MMTextInsetLeft
