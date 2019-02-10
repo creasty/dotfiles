@@ -160,3 +160,15 @@ on_ft = ['typescript']
 # [[plugins]] # vim syntax highlighting for ace templates
 # repo  = 'yosssi/vim-ace'
 # on_ft = ['ace']
+
+[[plugins]] # Vim syntax highlighting for Google's Protocol Buffers
+repo  = 'uarun/vim-protobuf'
+on_ft = ['proto']
+
+[[plugins]] # Vim syntax for TOML
+repo  = 'cespare/vim-toml'
+on_ft = ['toml']
+
+[[plugins]] # Vim SQL Syntax
+repo  = 'magicalbanana/sql-syntax-vim'
+on_ft = ['sql']
