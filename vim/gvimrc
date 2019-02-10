@@ -1,5 +1,6 @@
 " fonts
-command! -nargs=1 Font :set guifont=Monaco:h<args>
+set linespace=2
+command! -nargs=1 Font :set guifont=Menlo:h<args>
 Font 12
 
 " maximize window
