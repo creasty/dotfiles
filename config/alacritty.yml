@@ -223,7 +223,7 @@ colors:
   #   `- { index: 16, color: '0xff00ff' }`
   #
   indexed_colors:
-    - { index: 137, color: '0xbc8d6d' }   # candle-theme: orange
+    - { index: 137, color: '0xbc8d6d' } # candle-theme: orange
     - { index: 233, color: '0x1a1a1a' } # candle-theme: background
     - { index: 235, color: '0x262626' } # candle-theme: window
     - { index: 236, color: '0x303030' } # candle-theme: line
@@ -291,7 +291,7 @@ mouse:
   triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
-  hide_when_typing: false
+  hide_when_typing: true
 
   url:
     # URL launcher
@@ -311,7 +311,7 @@ mouse:
     #
     # These are the modifiers that need to be held down for opening URLs when clicking
     # on them. The available modifiers are documented in the key binding section.
-    modifiers: None
+    modifiers: Command
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
@@ -336,7 +336,7 @@ cursor:
   unfocused_hollow: true
 
 # Live config reload (changes require restart)
-live_config_reload: true
+live_config_reload: false
 
 # Shell
 #
