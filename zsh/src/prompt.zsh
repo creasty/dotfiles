@@ -98,7 +98,7 @@ __git_ps1() {
     fi
   fi
 
-  printf -- "${fg[white]} @ %s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u" "$r"
+  printf -- " \e[0;38;5;238m@ ${fg[white]}%s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u" "$r"
 }
 
 PROMPT="
