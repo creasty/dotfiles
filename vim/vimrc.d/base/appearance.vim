@@ -55,6 +55,9 @@ endif
 set colorcolumn=90
 hi ColorColumn guibg=#1f1f1f ctermbg=234
 
+" always show sign column
+set signcolumn=yes
+
 
 "  Folding
 "-----------------------------------------------
@@ -98,23 +101,6 @@ if dein#tap('candle.vim')
   autocmd vimrc BufWinEnter,WinEnter *
     \ call matchadd('TrailingSpace', '\s\+$')
 endif
-
-
-"  Sign column
-"-----------------------------------------------
-" make sign column always visible
-sign define mydummy
-
-autocmd vimrc BufEnter * call <SID>add_dummy_sign()
-
-function! s:add_dummy_sign()
-  let l:bufnr = bufnr('')
-
-  if !getbufvar(l:bufnr, 'my_dummy_sign')
-    exec 'sign place 9999 line=1 name=mydummy buffer=' . l:bufnr
-    call setbufvar(l:bufnr, 'my_dummy_sign', 1)
-  endif
-endfunction
 
 
 "  Windo title
