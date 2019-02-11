@@ -223,13 +223,21 @@ colors:
   #   `- { index: 16, color: '0xff00ff' }`
   #
   indexed_colors:
-    - { index: 137, color: '0xbc8d6d' } # candle-theme: orange
     - { index: 233, color: '0x1a1a1a' } # candle-theme: background
     - { index: 235, color: '0x262626' } # candle-theme: window
     - { index: 236, color: '0x303030' } # candle-theme: line
     - { index: 238, color: '0x444444' } # candle-theme: selection
     - { index: 241, color: '0x626262' } # candle-theme: comment
     - { index: 248, color: '0xa8a8a8' } # candle-theme: foreground
+
+    - { index: 137, color: '0xbc8d6d' } # candle-theme: orange
+    - { index:  94, color: '0x573f2e' } # candle-theme: dark_orange
+    - { index:  52, color: '0x503131' } # candle-theme: dark_red
+    - { index:  58, color: '0x4c4b30' } # candle-theme: dark_green
+    - { index:  94, color: '0x5f5138' } # candle-theme: dark_yellow
+    - { index:  24, color: '0x39444d' } # candle-theme: dark_blue
+    - { index:  60, color: '0x47404d' } # candle-theme: dark_purple
+    - { index:  23, color: '0x3c4e4b' } # candle-theme: dark_aqua
 
 # Visual Bell
 #
