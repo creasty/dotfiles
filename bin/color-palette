@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+printf -- "FG (0-7):   \\\e[3\e[33m7\e[0mm\n"
+printf -- "FG (8-255): \\\e[38;5;\e[33m255\e[0mm\n"
+printf -- "BG (0-7):   \\\e[4\e[33m7\e[0mm\n"
+printf -- "BG (8-255): \\\e[48;5;\e[33m255\e[0mm\n"
+printf -- "Clear:      \\\e[0m\n"
+echo
+echo 'https://en.wikipedia.org/wiki/ANSI_escape_code'
+echo
+
+for c in {0..255}; do
+  printf "\e[48;5;%dm %3d \e[0m" $c $c
+  [ $(($c % 16)) -eq 15 ] && echo
+done
+
+for c in {0..255}; do
+  printf "\e[38;5;%dm %3d \e[0m" $c $c
+  [ $(($c % 16)) -eq 15 ] && echo
+done
