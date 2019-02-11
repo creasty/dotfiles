@@ -8,8 +8,6 @@ augroup custom_filetypes
   autocmd BufNewFile,BufRead *.md  setf markdown
   autocmd BufNewFile,BufRead *.pde setf processing
 
-  autocmd FileType objcpp setf objc
-
 
   "  Based on filename or extension
   "-----------------------------------------------
@@ -28,15 +26,27 @@ augroup custom_filetypes
 
   "  Subtypes
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
+  autocmd BufNewFile,BufRead *_spec.rb setl ft=ruby.rspec
+  autocmd BufNewFile,BufRead *.bq.sql setl ft=sql.bq
+  autocmd BufNewFile,BufRead *.pg.sql setl ft=sql.pg
 
 
   "  Shortcuts
   "-----------------------------------------------
-  autocmd FileType js setlocal ft=javascript
-  autocmd FileType ts setlocal ft=typescript
-  autocmd FileType cf setlocal ft=coffee
-  autocmd FileType md setlocal ft=markdown
+  let s:shortcut = { 'ft': '' }
+  func! s:shortcut.call(name) abort
+    exec 'setf' self.ft
+  endfunc
+  func! s:shortcut.async_call(ft) abort
+    let self.ft = a:ft
+    call timer_start(50, function(s:shortcut.call))
+  endfunc
+
+  autocmd FileType js call s:shortcut.async_call('javascript')
+  autocmd FileType ts call s:shortcut.async_call('typescript')
+  autocmd FileType md call s:shortcut.async_call('markdown')
+  autocmd FileType bq call s:shortcut.async_call('sql.bq')
+  autocmd FileType pg call s:shortcut.async_call('sql.pg')
 
 
   "  Header file
