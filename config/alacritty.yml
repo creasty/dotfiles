@@ -153,7 +153,7 @@ render_timer: false
 persistent_logging: false
 
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night Bright)
 colors:
@@ -192,12 +192,12 @@ colors:
   # Bright colors
   bright:
     black:   '0x444444' # candle-theme: selection
-    red:     '0x503131' # candle-theme: dark_red
-    green:   '0x4c4b30' # candle-theme: dark_green
-    yellow:  '0x5f5138' # candle-theme: dark_yellow
-    blue:    '0x39444d' # candle-theme: dark_blue
-    magenta: '0x47404d' # candle-theme: dark_purple
-    cyan:    '0x3c4e4b' # candle-theme: dark_aqua
+    red:     '0xaf7070' # candle-theme: red
+    green:   '0xa3a46f' # candle-theme: green
+    yellow:  '0xceb481' # candle-theme: yellow
+    blue:    '0x8397a9' # candle-theme: blue
+    magenta: '0x9d91a9' # candle-theme: purple
+    cyan:    '0x8aaaa5' # candle-theme: aqua
     white:   '0x626262' # candle-theme: comment
 
   # Dim colors
