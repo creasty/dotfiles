@@ -9,19 +9,15 @@
     name:  python3
     state: present
 
-- name: install neovim python library
+- name: install python libraries
   pip:
     executable: pip3
     name:       neovim
     state:      latest
-  become: yes
-
-- name: install vim-vint
-  pip:
-    executable: pip3
-    name:       vim-vint
-    state:      latest
-  become: yes
+  with_items:
+    - neovim
+    - vim-vint
+    - pynvim
 
 - block:
     - name: solargraph | install python library
@@ -29,7 +25,6 @@
         executable: pip3
         name:       solargraph-utils.py
         state:      latest
-      become: yes
     - name: solargraph | install ruby gem
       command: |
         bash -lc 'gem install solargraph'
