@@ -34,6 +34,7 @@ if dein#tap('candle.vim')
   autocmd vimrc VimEnter,Syntax *
     \ call candle#highlight('TabLineNr', 'selection', 'window', '')
     \ | call candle#highlight('TabLineNrSel', 'comment', 'foreground', '')
+    \ | hi TabLineSel term=NONE cterm=NONE gui=NONE
 endif
 
 
