@@ -284,29 +284,57 @@ _register_keycommand '^q' peco_cd_repo
 
 #  Insert resource
 #-----------------------------------------------
+peco_docker_image() {
+  docker images \
+    | _peco_select \
+    | awk '{ print $3 }' \
+    | _buffer_insert_lines
+}
+
+peco_docker_container() {
+  docker ps \
+    | _peco_select \
+    | awk '{ print $1 }' \
+    | _buffer_insert_lines
+}
+
+peco_kube_deployment() {
+  local cluster="$1"
+
+  kube "$cluster" get deployment \
+    | _peco_select \
+    | awk '{ print $1 }' \
+    | _buffer_insert_lines
+}
+
+peco_kube_pod() {
+  local cluster="$1"
+
+  kube "$cluster" get po \
+    | _peco_select \
+    | awk '{ print $1 }' \
+    | _buffer_insert_lines
+}
+
 peco_insert_resource() {
-  local resource
+  local args=($(tr ' ' '\n' <<< "$LBUFFER"))
 
-  case "$LBUFFER" in
-    'kube tags '*)            resource='kube-deployment' ;;
-    'kube edit deployment '*) resource='kube-deployment' ;;
-    'kube scale '*)           resource='kube-deployment' ;;
-    'kube '*)                 resource='kube-pod' ;;
-  esac
-
-  case "$resource" in
-    kube-deployment)
-      kube get deployment \
-        | _peco_select \
-        | awk '{ print $1 }' \
-        | _buffer_insert
+  case "${args[1]}" in
+    'docker'|'dk')
+      case "${args[2]}" in
+        'rmi') peco_docker_image ;;
+        *)     peco_docker_container ;;
+      esac
       ;;
 
-    kube-pod)
-      kube get po \
-        | _peco_select \
-        | awk '{ print $1 }' \
-        | _buffer_insert
+    'kube')
+      local cluster="${args[2]}"
+      case "${args[3]}" in
+        'scale') peco_kube_deployment "$cluster" ;;
+        'tags')  peco_kube_deployment "$cluster" ;;
+        'edit')  peco_kube_deployment "$cluster" ;;
+        *)       peco_kube_pod "$cluster" ;;
+      esac
       ;;
   esac
 }
