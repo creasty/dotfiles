@@ -642,14 +642,6 @@ call lexima#add_rule({
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
 \ })
 
-" closing tag
-call lexima#add_rule({
-  \ 'char':     '/',
-  \ 'at':       '\(........\)\?<\%#>',
-  \ 'input':    '/<C-x><C-o><BS><ESC>a',
-  \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
-\ })
-
 " entity
 call lexima#add_rule({
   \ 'char':     '&',
@@ -677,6 +669,12 @@ call lexima#add_rule({
   \ 'char':     '%',
   \ 'at':       '\(........\)\?<%[=-]\? \%#',
   \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+  \ 'filetype': ['html', 'ejs', 'eruby'],
+\ })
+call lexima#add_rule({
+  \ 'char':     '%',
+  \ 'at':       '\(........\)\?<%[=-]\?\%#',
+  \ 'input':    "<C-r>=smartchr#loop('%', '%=', '%-)<CR>",
   \ 'filetype': ['html', 'ejs', 'eruby'],
 \ })
 
