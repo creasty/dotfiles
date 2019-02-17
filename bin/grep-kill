@@ -4,8 +4,6 @@ ARGS="$@"
 
 ps aux \
   | grep -v $0 \
-  | grep -v grep \
-  | grep -v peco \
   | sed '1d' \
   | {
     if [ "$ARGS" = '' ]; then
