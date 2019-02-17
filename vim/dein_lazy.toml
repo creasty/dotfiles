@@ -169,10 +169,6 @@ on_ft = ['proto']
 repo  = 'cespare/vim-toml'
 on_ft = ['toml']
 
-[[plugins]] # Vim SQL Syntax
-repo  = 'magicalbanana/sql-syntax-vim'
-on_ft = ['sql']
-
 [[plugins]] # vim syntax file for plantuml
 repo  = 'aklt/plantuml-syntax'
 on_ft = ['plantuml']
