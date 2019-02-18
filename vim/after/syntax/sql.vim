@@ -27,14 +27,15 @@ syn keyword sqlKeyword      rowlabel rownum rows schema session share size
 syn keyword sqlKeyword      start security successful synonym then to transaction trigger
 syn keyword sqlKeyword      uid user using validate values view virtual whenever
 syn keyword sqlKeyword      where with without
+syn keyword sqlKeyword      partition
 
 " Operators
 syn keyword sqlOperator     all and any between case distinct elif else end
 syn keyword sqlOperator     exit exists if in intersect is like match matches
 syn keyword sqlOperator     minus not or out prior regexp some then union
 syn keyword sqlOperator     unique when
-syn match   sqlOperator     "||\|:="
-syn match   sqlOperator     "=\|<\|>\|+\|-"
+syn keyword sqlOperator     over
+syn match   sqlOperator     "[=<>+\-*/]"
 
 " Unknown functions
 syn match   sqlUnknownFunc  "\<[0-9a-z_-]\+\ze("
@@ -43,6 +44,11 @@ syn match   sqlUnknownFunc  "\<[0-9a-z_-]\+\ze("
 syn keyword sqlTodo         contained DEBUG FIXME NOTE TODO XXX
 syn region sqlComment       start="/\*"  end="\*/" contains=sqlTodo
 syn match  sqlComment       "--.*$" contains=sqlTodo
+
+" String
+syn region sqlString        start=+"+  skip=+\\\\\|\\"+  end=+"+
+syn region sqlString        start=+'+  skip=+\\\\\|\\'+  end=+'+
+syn region sqlString        start=+`+  skip=+\\\\\|\\`+  end=+`+
 
 " Types
 syn keyword sqlType         bigint bit blob bool boolean byte char
@@ -55,7 +61,7 @@ syn keyword sqlType         raw real rowid serial serial8 set
 syn keyword sqlType         smallfloat smallint text time
 syn keyword sqlType         timestamp tinyblob tinyint tinytext
 syn keyword sqlType         varchar varchar2 varray year zone
-syn keyword sqlType         int64 array string struct
+syn keyword sqlType         int64 float64 array string struct
 
 " Mark correct paren use. Different colors for different purposes.
 " syn region  sqlParens       transparent matchgroup=sqlParen start="(" end=")"
@@ -69,6 +75,7 @@ hi link sqlOperator    Operator
 hi link sqlUnknownFunc Function
 hi link sqlType        Type
 hi link sqlComment     Comment
+hi link sqlString      String
 hi link sqlTodo        Todo
 
 " hi link sqlParen      Comment
