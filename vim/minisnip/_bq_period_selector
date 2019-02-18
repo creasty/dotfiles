@@ -1,0 +1,7 @@
+create temp function ts_in_period(ts timestamp) returns bool as ((
+  date(ts, '+9') between d_start() and d_end()
+));
+
+create temp function suffix_in_period(suffix string) returns bool as ((
+  suffix between format_date('%Y%m%d', d_start()) and format_date('%Y%m%d', d_end())
+));{{--}}

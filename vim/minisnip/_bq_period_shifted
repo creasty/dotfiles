@@ -1,0 +1,6 @@
+create temp function d_start_shifted(d int64) returns date as ((
+  date_add(d_start(), interval d day)
+));
+create temp function d_end_shifted(d int64) returns date as ((
+  date_add(d_end(), interval d day)
+));{{--}}

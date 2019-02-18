@@ -1,0 +1,3 @@
+create temp function ts_to_month(ts timestamp) returns string as ((
+  format_date('%Y-%m', date(ts, '+9'))
+));{{--}}

@@ -1,0 +1,10 @@
+create temp function d_start() returns date as ((
+  date('2018-10-01')
+  -- date_sub(date(timestamp_trunc(current_timestamp(), month), '+9'), interval 3 month) -- last month; 3-month average
+  -- date(timestamp_trunc(timestamp_sub(current_timestamp(), interval 1 day), month), '+9') -- current month
+));
+create temp function d_end() returns date as ((
+  date('2018-12-31')
+  -- date_sub(date_trunc(current_date(), month), interval 1 day) -- last month; 3-month average
+  -- date_sub(current_date('+9'), interval 1 day) -- current month
+));
