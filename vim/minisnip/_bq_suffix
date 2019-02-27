@@ -1,4 +1,0 @@
-.table_suffix between
-  format_date('%Y%m%d', {{+start+}})
-  and
-  format_date('%Y%m%d', {{+end+}}){{--}}
