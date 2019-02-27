@@ -1,0 +1,3 @@
+create temp function extract_id_from_path(path string, pattern string) returns int64 as ((
+  cast(regexp_extract_all(path, pattern)[safe_offset(0)] as int64)
+));{{--}}
