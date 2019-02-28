@@ -316,6 +316,22 @@ peco_kube_pod() {
     | _buffer_insert_lines
 }
 
+peco_remote_branch() {
+  git ls-remote --heads --refs origin \
+    | awk '{ print $2 }' \
+    | sed -E 's|^refs/heads/||' \
+    | _peco_select \
+    | {
+      branch="$(cat)"
+
+      if [[ -z "$LBUFFER" && `echo "$branch" | wc -l` -eq 1 ]]; then
+        _buffer_insert <<< "g k $branch"
+      else
+        _buffer_insert_lines <<< "$branch"
+      fi
+    }
+}
+
 peco_insert_resource() {
   local args=($(tr ' ' '\n' <<< "$LBUFFER"))
 
@@ -334,6 +350,12 @@ peco_insert_resource() {
         'tags')  peco_kube_deployment "$cluster" ;;
         'edit')  peco_kube_deployment "$cluster" ;;
         *)       peco_kube_pod "$cluster" ;;
+      esac
+      ;;
+
+    'git'|'g')
+      case "${args[2]}" in
+        'fok') peco_remote_branch ;;
       esac
       ;;
   esac
