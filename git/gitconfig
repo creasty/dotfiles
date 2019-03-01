@@ -33,6 +33,11 @@
   cane = commit --amend --no-edit
   ce   = commit --allow-empty -m
 
+  # Temporarily ignoring files
+  # @see http://gitready.com/intermediate/2009/02/18/temporarily-ignoring-files.html
+  au  = update-index --assume-unchanged
+  nau = update-index --no-assume-unchanged
+
   r   = remote
   ra  = remote add
   ru  = remote set-url
