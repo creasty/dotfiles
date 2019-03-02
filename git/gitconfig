@@ -37,6 +37,7 @@
   # @see http://gitready.com/intermediate/2009/02/18/temporarily-ignoring-files.html
   au  = update-index --assume-unchanged
   nau = update-index --no-assume-unchanged
+  ti = tempignore
 
   r   = remote
   ra  = remote add
