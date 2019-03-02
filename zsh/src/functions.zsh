@@ -345,6 +345,8 @@ peco_insert_resource() {
 
     'kube')
       local cluster="${args[2]}"
+      [ -z "$cluster" ] && return
+
       case "${args[3]}" in
         'scale') peco_kube_deployment "$cluster" ;;
         'tags')  peco_kube_deployment "$cluster" ;;
