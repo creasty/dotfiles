@@ -11,11 +11,19 @@ function! s:altr_on_source() abort
   call altr#define('Gemfile', 'Gemfile.lock')
 
   " I18n
-  call altr#define('locales/%/en.yml', 'locales/%/ja.yml', 'locales/%/zh-HK.yml')
-  call altr#define('locales/%.en.yml', 'locales/%.ja.yml', 'locales/%.zh-HK.yml')
-  call altr#define('locales/en.yml', 'locales/ja.yml', 'locales/zh-HK.yml')
-  call altr#define('locales/en.json', 'locales/ja.json')
-  call altr#define('locales/%/en.json', 'locales/%/ja.json')
+  let l:locales = ['en', 'ja', 'zh-HK', 'de']
+  let l:localized_files = [
+    \ 'locales/@.yml',
+    \ 'locales/%.@.yml',
+    \ 'locales/%/@.yml',
+    \ 'locales/@.json',
+    \ 'locales/%.@.json',
+    \ 'locales/%/@.json',
+  \ ]
+  for l:file in l:localized_files
+    let l:files = map(copy(l:locales), { i, locale -> substitute(l:file, '@', l:locale, 'g') })
+    call call('altr#define', l:files)
+  endfor
 
   " Frontend
   call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
