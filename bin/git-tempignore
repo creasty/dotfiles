@@ -9,6 +9,9 @@
 #> git tempignore -v FILES...  # Mark the specified files as modified
 #>
 #> git tempignore -h           # Show this help
+#>
+#> @see http://gitready.com/intermediate/2009/02/18/temporarily-ignoring-files.html
+#> @see https://stackoverflow.com/questions/13630849/git-difference-between-assume-unchanged-and-skip-worktree
 
 set -eu
 set -o pipefail
@@ -47,18 +50,18 @@ if [ $# -eq 0 ]; then
       | sed -E $'s/ -> /\\\n-> /g' \
       | peco_select \
       | cut -b 4- \
-      | xargs git update-index --assume-unchanged
+      | xargs git update-index --skip-worktree
   else
     git ls-files -v \
-      | grep ^h \
+      | grep ^S \
       | cut -c 3- \
       | peco_select \
-      | xargs git update-index --no-assume-unchanged
+      | xargs git update-index --no-skip-worktree
   fi
 else
   if [ $REMOVE -eq 0 ]; then
-    git update-index --assume-unchanged "$@"
+    git update-index --skip-worktree "$@"
   else
-    git update-index --no-assume-unchanged "$@"
+    git update-index --no-skip-worktree "$@"
   fi
 fi

@@ -33,12 +33,6 @@
   cane = commit --amend --no-edit
   ce   = commit --allow-empty -m
 
-  # Temporarily ignoring files
-  # @see http://gitready.com/intermediate/2009/02/18/temporarily-ignoring-files.html
-  au  = update-index --assume-unchanged
-  nau = update-index --no-assume-unchanged
-  ti = tempignore
-
   r   = remote
   ra  = remote add
   ru  = remote set-url
@@ -110,6 +104,8 @@
   ecf = ! vim -p `git ls-files --unmerged | cut -f2 | sort -u`
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
   dmb = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
+
+  ti = tempignore
 
 [issue]
   type = github
