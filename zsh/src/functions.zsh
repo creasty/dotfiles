@@ -209,8 +209,10 @@ _register_keycommand '^o^p' peco_insert_path
 #  Insert modified files
 #-----------------------------------------------
 peco_modified_file() {
-  git status -s \
-    | sed -E $'s/ -> /\\\n-> /g' \
+  {
+    git status -s | sed -E $'s/ -> /\\\n-> /g'
+    git ls-files -v | sed -n -E '/^[Sh]/s/^/-/gp' # S = skip-worktree, h = assume-unchanged
+  } \
     | _peco_select \
     | cut -b 4- \
     | _buffer_insert_files

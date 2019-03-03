@@ -91,11 +91,11 @@ __git_ps1() {
       i="#"
     fi
 
-    # git rev-parse --verify refs/stash >/dev/null 2>&1 && s="$"
-
-    if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-      u="%${ZSH_VERSION+%}"
+    if git ls-files -v | grep -E '^[Sh]' > /dev/null 2>&1; then
+      u="-"
     fi
+
+    # git rev-parse --verify refs/stash >/dev/null 2>&1 && s="$"
   fi
 
   printf -- " \e[0;38;5;238m@ ${fg[white]}%s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u" "$r"
