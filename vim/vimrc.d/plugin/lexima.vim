@@ -363,6 +363,13 @@ for s:pa in ['()', '[]', '{}']
 endfor
 unlet s:pa
 
+" tag close
+call lexima#add_rule({
+  \ 'char':  '<C-l>',
+  \ 'at':    '<[a-zA-Z0-9_-]\+[^>]*>\%#',
+  \ 'input': '<Esc>F<<Right>"xyiwf>a</><Esc><Left>"xpF<i',
+\ })
+
 
 "  Backspace
 "-----------------------------------------------
