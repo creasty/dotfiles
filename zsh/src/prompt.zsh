@@ -25,7 +25,7 @@ __git_ps1() {
   [ -z "$g" ] && return
 
   local r=""
-  local b=""
+  local b="" # branch
   local step=""
   local total=""
 
@@ -70,11 +70,12 @@ __git_ps1() {
     r="$r $step/$total"
   fi
 
-  local w=""
-  local i=""
-  local s=""
-  local u=""
-  local c=""
+  local w="" # modified
+  local i="" # tracked
+  local s="" # stash
+  local u="" # untracked
+  local c="" # ref prefix
+  local x="" # index
 
   if [ "true" = "$(git rev-parse --is-inside-git-dir 2>/dev/null)" ]; then
     if [ "true" = "$(git rev-parse --is-bare-repository 2>/dev/null)" ]; then
@@ -91,14 +92,18 @@ __git_ps1() {
       i="#"
     fi
 
+    if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+      u="%${ZSH_VERSION+%}"
+    fi
+
     if git ls-files -v | grep -E '^[Sh]' > /dev/null 2>&1; then
-      u="-"
+      x="-"
     fi
 
     # git rev-parse --verify refs/stash >/dev/null 2>&1 && s="$"
   fi
 
-  printf -- " \e[0;38;5;238m@ ${fg[white]}%s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u" "$r"
+  printf -- " \e[0;38;5;238m@ ${fg[white]}%s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u$x" "$r"
 }
 
 PROMPT="
