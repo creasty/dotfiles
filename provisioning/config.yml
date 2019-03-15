@@ -11,13 +11,14 @@ homebrew:
     #- android-sdk          # https://developer.android.com/index.html
     #- android-studio       # https://developer.android.com/studio/index.html
     - appcleaner           # https://freemacsoft.net/appcleaner/
+    - chromedriver         # https://sites.google.com/a/chromium.org/chromedriver/home
     - docker               # https://www.docker.com/community-edition
     - dropbox              # https://www.dropbox.com/
     - google-chrome        # https://www.google.com/chrome/
     - google-hangouts      # https://www.google.com/tools/dlpage/hangoutplugin
     - google-japanese-ime  # https://www.google.co.jp/ime/
     - imageoptim           # https://imageoptim.com/mac
-    #- istat-menus          # https://bjango.com/mac/istatmenus/
+    - istat-menus          # https://bjango.com/mac/istatmenus/
     - jetbrains-toolbox    # https://www.jetbrains.com/toolbox/app/
     - keyboard             # https://github.com/creasty/Keyboard
     - ngrok                # https://ngrok.com/
@@ -49,6 +50,7 @@ homebrew:
     - dtan4/tools/k8sec    # CLI tool to manage Kubernetes Secrets easily
     - envchain             # Secure your credentials in environment variables
     - eot-utils            # Tools to convert fonts from OTF/TTF to EOT format
+    - expect               # Program that can automate interactive applications
     - fontconfig           # XML-based font configuration API for X Windows
     - fontforge            # Command-line outline and bitmap font editor/converter
     - freetype             # Software library to render fonts
@@ -85,7 +87,6 @@ homebrew:
     - webp                 # Image format providing lossless and lossy compression for web images
     - xctool               # Drop-in replacement for xcodebuild with a few extra features
     - yarn                 # JavaScript package manager
-    - expect               # Program that can automate interactive applications
 
 mas:
   appstore_id:       '{{ appstore_id }}'
