@@ -133,6 +133,9 @@ endif
 if dein#tap('mold.vim')
   call s:load_file('plugin/mold')
 endif
+if dein#tap('vim-lsp')
+  call s:load_file('plugin/vim-lsp')
+endif
 if dein#tap('deoplete.nvim')
   call s:load_file('plugin/deoplete')
 endif
@@ -168,7 +171,4 @@ if dein#tap('vim-signature')
 endif
 if dein#tap('vim-anzu')
   call s:load_file('plugin/vim-anzu')
-endif
-if dein#tap('echodoc.vim')
-  call dein#call_hook('echodoc.vim')
 endif

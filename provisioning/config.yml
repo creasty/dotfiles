@@ -155,10 +155,11 @@ golang:
     - github.com/rakyll/hey         # HTTP load generator, ApacheBench (ab) replacement
 
     # dev tools
-    - github.com/golang/dep/cmd/dep # Go dependency management tool
-    - golang.org/x/lint/golint      # Golint is a linter for Go source code
-    - github.com/nsf/gocode         # An autocompletion daemon for the Go programming language
-    - github.com/rogpeppe/godef     # find symbol information in Go source
+    - github.com/golang/dep/cmd/dep        # Go dependency management tool
+    - github.com/rogpeppe/godef            # find symbol information in Go source
+    - github.com/sourcegraph/go-langserver # Go language server to add Go support to editors and other tools that use the Language Server Protocol (LSP)
+    - golang.org/x/lint/golint             # Golint is a linter for Go source code
+    - golang.org/x/tools/cmd/gopls         # LSP server for Go
 
 nodejs:
   versions:
@@ -166,6 +167,8 @@ nodejs:
 
   packages:
     - coffee-script
+    - typescript
+    - typescript-language-server
 
 ruby:
   versions:
