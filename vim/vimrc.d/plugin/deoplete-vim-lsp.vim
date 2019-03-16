@@ -4,4 +4,6 @@ if executable('gopls')
     \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
     \ 'whitelist': ['go']
   \ })
+  autocmd vimrc FileType go
+    \ nnoremap <buffer> <silent> <C-]> :LspDefinition<CR>
 endif
