@@ -1,7 +1,7 @@
 " let g:lsp_log_verbose = 1
 " let g:lsp_log_file = expand('~/vim-lsp.log')
 
-let g:lsp_diagnostics_enabled = 0 " TODO
+let g:lsp_diagnostics_enabled = 1 " TODO
 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '∆'}
@@ -21,10 +21,11 @@ function! s:activate_lsp_mode() abort
   nnoremap <buffer> <silent> <C-]> :LspDefinition<CR>
 endfunction
 
-if executable('gopls')
+if executable('go-langserver')
+  " TODO: replace with 'gopls -mode stdio'
   autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'gopls',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'gopls -mode stdio']},
+    \ 'name': 'go-langserver',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
     \ 'whitelist': ['go'],
   \ })
   autocmd vimrc FileType go call s:activate_lsp_mode()

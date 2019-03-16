@@ -76,7 +76,7 @@ on_ft   = ['c', 'cpp', 'objc', 'objcpp']
 repo    = 'creasty/deoplete-vim-lsp' # lighttiger2505/deoplete-vim-lsp
 rev     = 'creasty/whitelisted'
 depends = ['deoplete.nvim']
-on_ft   = ['go']
+on_i    = 1
 
 
 #  Utils
