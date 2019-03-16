@@ -5,6 +5,7 @@ let g:lsp_diagnostics_enabled = 1 " TODO
 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '∆'}
+let g:lsp_signs_information = {'text': '▸'}
 let g:lsp_signs_hint = {'text': '▸'}
 
 hi clear LspErrorText
