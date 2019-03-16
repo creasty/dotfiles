@@ -67,30 +67,10 @@ repo    = 'Shougo/neco-vim'
 depends = ['deoplete.nvim']
 on_ft   = ['vim']
 
-# [[plugins]] # asynchronous Go completion for Neovim. deoplete source for Go
-# repo    = 'zchee/deoplete-go'
-# depends = ['deoplete.nvim']
-# build   = 'make'
-# on_ft   = ['go']
-# hook_source = '''
-# let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
-# '''
-
 [[plugins]] # deoplete.nvim source for c/c++/obj-c/obj-c++ with clang-python3
 repo = 'zchee/deoplete-clang'
 depends = ['deoplete.nvim']
 on_ft   = ['c', 'cpp', 'objc', 'objcpp']
-
-# [[plugins]] # deoplete.nvim source for Ruby with solargraph
-# repo    = 'uplus/deoplete-solargraph'
-# depends = ['deoplete.nvim']
-# on_ft   = ['ruby', 'ruby.rspec']
-
-# [[plugins]] # Language Server Protocol (LSP) support for vim and neovim
-# repo    = 'autozimu/LanguageClient-neovim'
-# rev     = 'next'
-# build   = 'bash install.sh'
-# depends = ['deoplete.nvim']
 
 [[plugins]] # normalize async job control api for vim and neovim
 repo = 'prabirshrestha/async.vim'
