@@ -156,9 +156,9 @@ golang:
 
     # dev tools
     - github.com/golang/dep/cmd/dep # Go dependency management tool
-    - golang.org/x/lint/golint      # Golint is a linter for Go source code
-    - github.com/nsf/gocode         # An autocompletion daemon for the Go programming language
     - github.com/rogpeppe/godef     # find symbol information in Go source
+    - golang.org/x/lint/golint      # Golint is a linter for Go source code
+    - golang.org/x/tools/cmd/gopls  # LSP server for Go
 
 nodejs:
   versions:
