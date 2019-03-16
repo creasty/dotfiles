@@ -38,13 +38,15 @@ if executable('typescript-language-server')
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
     \ 'whitelist': ['typescript', 'typescript.tsx'],
   \ })
+  autocmd vimrc FileType typescript,typescript.tsx call s:activate_lsp_mode()
+
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'javascript support using typescript-language-server',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
     \ 'whitelist': ['javascript', 'javascript.jsx'],
     \ })
-  autocmd vimrc FileType typescript,typescript.tsx,javascript,javascript.jsx call s:activate_lsp_mode()
+  autocmd vimrc FileType javascript,javascript.jsx call s:activate_lsp_mode()
 endif
 
 if executable('solargraph')
@@ -52,7 +54,7 @@ if executable('solargraph')
     \ 'name': 'solargraph',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
     \ 'initialization_options': {'diagnostics': 'true'},
-    \ 'whitelist': ['ruby'],
+    \ 'whitelist': ['ruby', 'ruby.rspec'],
   \ })
   autocmd vimrc FileType ruby,ruby.rspec call s:activate_lsp_mode()
 endif
