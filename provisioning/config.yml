@@ -166,6 +166,8 @@ nodejs:
 
   packages:
     - coffee-script
+    - typescript
+    - typescript-language-server
 
 ruby:
   versions:
