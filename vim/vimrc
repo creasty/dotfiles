@@ -133,11 +133,11 @@ endif
 if dein#tap('mold.vim')
   call s:load_file('plugin/mold')
 endif
+if dein#tap('vim-lsp')
+  call s:load_file('plugin/vim-lsp')
+endif
 if dein#tap('deoplete.nvim')
   call s:load_file('plugin/deoplete')
-endif
-if dein#tap('deoplete-vim-lsp')
-  call s:load_file('plugin/deoplete-vim-lsp')
 endif
 if dein#tap('vim-minisnip')
   call s:load_file('plugin/vim-minisnip')

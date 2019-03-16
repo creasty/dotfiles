@@ -72,16 +72,9 @@ repo = 'zchee/deoplete-clang'
 depends = ['deoplete.nvim']
 on_ft   = ['c', 'cpp', 'objc', 'objcpp']
 
-[[plugins]] # normalize async job control api for vim and neovim
-repo = 'prabirshrestha/async.vim'
-
-[[plugins]] # async language server protocol plugin for vim and neovim
-repo    = 'prabirshrestha/vim-lsp'
-depends = ['async.vim']
-
 [[plugins]] # deoplete source for vim-lsp
 repo    = 'lighttiger2505/deoplete-vim-lsp'
-depends = ['vim-lsp', 'deoplete.nvim']
+depends = ['deoplete.nvim']
 on_ft   = ['go']
 
 
