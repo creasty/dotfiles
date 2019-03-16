@@ -172,6 +172,3 @@ endif
 if dein#tap('vim-anzu')
   call s:load_file('plugin/vim-anzu')
 endif
-if dein#tap('echodoc.vim')
-  call dein#call_hook('echodoc.vim')
-endif

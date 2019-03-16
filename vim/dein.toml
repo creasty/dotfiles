@@ -59,7 +59,6 @@ repo    = 'cohama/lexima.vim'
 depends = ['deoplete.nvim'] # smartchr, vim-minisnip, emmet
 
 
-
 #  Utils
 #-----------------------------------------------
 [[plugins]] # enable repeating supported plugin maps with dot
