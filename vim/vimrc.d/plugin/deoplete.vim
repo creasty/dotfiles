@@ -16,3 +16,5 @@ let g:deoplete#auto_complete_start_length = 1
 call deoplete#custom#source('buffer', 'min_pattern_length', 3)
 call deoplete#custom#source('minisnip', 'min_pattern_length', 1)
 call deoplete#custom#source('minisnip', 'rank', 900)
+
+call deoplete#custom#option('skip_chars', ['(', ')', '{', '}', ';'])
