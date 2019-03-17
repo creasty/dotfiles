@@ -115,8 +115,10 @@ link:
   bash/bash_profile:         .bash_profile
   bash/bashrc:               .bashrc
   config/agignore:           .agignore
+  config/alacritty.yml:      .config/alacritty/alacritty.yml
   config/ansible.cfg:        .ansible.cfg
   config/aws/config:         .aws/config
+  config/cargo/config:       .cargo/config
   config/ctags:              .ctags
   config/curlrc:             .curlrc
   config/gocode/config.json: .config/gocode/config.json
@@ -140,7 +142,6 @@ link:
   zsh/zshenv:                .zshenv
   zsh/zshrc:                 .zshrc
   zsh:                       .zsh
-  config/alacritty.yml:      .config/alacritty/alacritty.yml
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'
