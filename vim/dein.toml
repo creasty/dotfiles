@@ -32,9 +32,6 @@ repo = 'sickill/vim-pasta'
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
 
-[[plugins]] # lightweight snippet manager
-repo = 'joereynolds/vim-minisnip'
-
 
 #  Completion
 #-----------------------------------------------

@@ -38,6 +38,11 @@ on_map = ['<Plug>(textmanip-']
 repo   = 'deris/vim-rengbang'
 on_cmd = ['RengBang']
 
+[[plugins]] # lightweight snippet manager
+repo    = 'joereynolds/vim-minisnip'
+on_func = ['minisnip']
+on_i    = 1
+
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo    = 'mattn/emmet-vim'
 on_func = ['emmet']
