@@ -41,6 +41,7 @@ on_cmd = ['RengBang']
 [[plugins]] # lightweight snippet manager
 repo    = 'joereynolds/vim-minisnip'
 on_func = ['minisnip']
+on_i    = 1
 
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo    = 'mattn/emmet-vim'
@@ -56,11 +57,6 @@ on_i    = 1
 hook_source = '''
 let g:necosyntax#min_keyword_length = 3
 '''
-
-[[plugins]] # deoplete source for vim-minisnip
-repo    = 'joereynolds/deoplete-minisnip'
-depends = ['deoplete.nvim', 'vim-minisnip']
-on_i    = 1
 
 [[plugins]] # vim source for neocomplete/deoplete
 repo    = 'Shougo/neco-vim'
