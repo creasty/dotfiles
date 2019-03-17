@@ -12,5 +12,7 @@ tmp/
 .rubocop.yml
 
 # Rust
-/target
-**/*.rs.bk
+target/debug/
+target/release/
+target/rls/
+*.rs.bk
