@@ -20,19 +20,10 @@ endif
 
 "  Hover
 "-----------------------------------------------
-function! s:get_servers() abort
+function! s:hover_under_cursor() abort
   let l:servers = filter(lsp#get_whitelisted_servers(), 'lsp#capabilities#has_hover_provider(v:val)')
-
   if len(l:servers) == 0
     call lsp#utils#error('Retrieving hover not supported for '. &filetype)
-  endif
-
-  return l:servers
-endfunction
-
-function! s:hover_under_cursor() abort
-  let l:servers = s:get_servers()
-  if len(l:servers) == 0
     return
   endif
 
@@ -79,6 +70,50 @@ function! s:echo_hover_result(data) abort
 endfunction
 
 
+"  Server status
+"-----------------------------------------------
+let s:server_status = {}
+
+function! s:server_status_changed(...) abort
+  let l:servers = lsp#get_whitelisted_servers()
+  if empty(l:servers)
+    return
+  endif
+
+  let l:info = []
+
+  for l:server in l:servers
+    let l:prev = get(s:server_status, l:server, '')
+    let l:status = lsp#get_server_status(l:server)
+
+    if l:prev !=# l:status
+      let s:server_status[l:server] = l:status
+      let l:info += [join([l:server, l:status], ': ')]
+    endif
+  endfor
+
+  if empty(l:info)
+    return
+  endif
+
+  echomsg '[vim-lsp]' join(l:info, ', ')
+endfunction
+function! s:server_status_changed_delay() abort
+  call timer_start(500, function('s:server_status_changed'))
+endfunction
+autocmd vimrc User lsp_setup call <SID>server_status_changed_delay()
+autocmd vimrc FileType * call <SID>server_status_changed_delay()
+autocmd vimrc User lsp_server_init,lsp_server_exit call <SID>server_status_changed()
+
+
+"  Notification
+"-----------------------------------------------
+function! s:on_notification(server_name, data) abort
+  " TODO
+endfunction
+call lsp#register_notifications('vimrc:on_notification', function('s:on_notification'))
+
+
 "  Mode
 "-----------------------------------------------
 nnoremap gd :LspDefinition<CR>
@@ -111,7 +146,7 @@ if executable('typescript-language-server')
   \ })
 
   autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'javascript support using typescript-language-server',
+    \ 'name': 'typescript-language-server/javascript',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
     \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
     \ 'whitelist': ['javascript', 'javascript.jsx'],
