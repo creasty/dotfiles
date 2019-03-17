@@ -63,11 +63,6 @@ repo    = 'Shougo/neco-vim'
 depends = ['deoplete.nvim']
 on_ft   = ['vim']
 
-[[plugins]] # deoplete.nvim source for c/c++/obj-c/obj-c++ with clang-python3
-repo = 'zchee/deoplete-clang'
-depends = ['deoplete.nvim']
-on_ft   = ['c', 'cpp', 'objc', 'objcpp']
-
 [[plugins]] # deoplete source for vim-lsp
 repo    = 'creasty/deoplete-vim-lsp' # lighttiger2505/deoplete-vim-lsp
 rev     = 'creasty/whitelisted'
