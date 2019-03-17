@@ -191,6 +191,15 @@ alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
 alias rdba='rake-db-migrate-all'
 
 
+#  Rust
+#-----------------------------------------------
+alias ca='cargo'
+alias cab='cargo build'
+alias cau='cargo update'
+alias car='cargo run'
+alias cac='cargo check'
+
+
 #  Make
 #-----------------------------------------------
 alias gmake='make'

@@ -10,3 +10,7 @@ tmp/
 .idea/
 
 .rubocop.yml
+
+# Rust
+/target
+**/*.rs.bk
