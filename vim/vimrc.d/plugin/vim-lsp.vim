@@ -1,6 +1,3 @@
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('~/vim-lsp.log')
-
 let g:lsp_diagnostics_enabled = 1 " TODO
 
 let g:lsp_signs_error = {'text': '✗'}
@@ -116,6 +113,14 @@ call lsp#register_notifications('vimrc:on_notification', function('s:on_notifica
 
 "  Mode
 "-----------------------------------------------
+command! LspLogEnable
+  \ let g:lsp_log_verbose = 1
+  \| let g:lsp_log_file = expand('~/vim-lsp.log')
+
+command! LspLogDisable
+  \ let g:lsp_log_verbose = 0
+  \| let g:lsp_log_file = ''
+
 nnoremap gd :LspDefinition<CR>
 nnoremap gh :LspHover<CR>
 nnoremap gs :call <SID>hover_under_cursor()<CR>
