@@ -89,6 +89,8 @@ nnoremap gh :call <SID>hover_under_cursor()<CR>
 
 "  Servers
 "-----------------------------------------------
+" Installation: go get -u golang.org/x/tools/cmd/gopls
+" Installation: go get -u github.com/sourcegraph/go-langserver
 if executable('go-langserver')
   " TODO: replace with 'gopls -mode stdio'
   autocmd vimrc User lsp_setup call lsp#register_server({
@@ -98,6 +100,7 @@ if executable('go-langserver')
   \ })
 endif
 
+" Installation: npm install -g typescript typescript-language-server
 if executable('typescript-language-server')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'typescript-language-server',
@@ -114,6 +117,7 @@ if executable('typescript-language-server')
   \ })
 endif
 
+" Installation: gem install solargraph
 if executable('solargraph')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'solargraph',
@@ -123,6 +127,7 @@ if executable('solargraph')
   \ })
 endif
 
+" Installation: pip install python-language-server
 if executable('pyls')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'pyls',
@@ -131,6 +136,7 @@ if executable('pyls')
   \ })
 endif
 
+" Installation: https://github.com/MaskRay/ccls/wiki
 if executable('ccls')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'ccls',
