@@ -810,6 +810,16 @@ call lexima#add_rule({
   \ 'mode':  ':',
 \ })
 
+if has('gui_running')
+  " Font
+  call lexima#add_rule({
+    \ 'char':  '<Space>',
+    \ 'at':    '^font\%#',
+    \ 'input': "\<C-u>Font ",
+    \ 'mode':  ':',
+  \ })
+endif
+
 
 "  Completion
 "-----------------------------------------------
