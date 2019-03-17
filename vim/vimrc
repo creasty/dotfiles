@@ -163,9 +163,6 @@ endif
 if dein#tap('vim-submode')
   call s:load_file('plugin/vim-submode')
 endif
-if dein#tap('vim-tags')
-  call s:load_file('plugin/vim-tags')
-endif
 if dein#tap('vim-signature')
   call s:load_file('plugin/vim-signature')
 endif

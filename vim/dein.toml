@@ -75,9 +75,6 @@ repo = 'thinca/vim-quickrun'
 [[plugins]] # create your own submodes
 repo = 'kana/vim-submode'
 
-[[plugins]] # ctags generator
-repo = 'szw/vim-tags'
-
 
 #  Appearance
 #-----------------------------------------------
