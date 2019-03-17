@@ -70,9 +70,7 @@ endfunction
 
 function! s:echo_hover_result(data) abort
   if type(a:data) == type([])
-    for l:entry in a:data
-      call s:echo_hover_result(l:entry)
-    endfor
+    call s:echo_hover_result(a:data[0])
   elseif type(a:data) == type('')
     echomsg a:data
   elseif type(a:data) == type({})
@@ -84,7 +82,8 @@ endfunction
 "  Mode
 "-----------------------------------------------
 nnoremap gd :LspDefinition<CR>
-nnoremap gh :call <SID>hover_under_cursor()<CR>
+nnoremap gh :LspHover<CR>
+nnoremap gs :call <SID>hover_under_cursor()<CR>
 
 
 "  Servers
