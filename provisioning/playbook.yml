@@ -35,6 +35,8 @@
       tags: ['lang', 'nodejs']
     - role: golang
       tags: ['lang', 'golang']
+    - role: rust
+      tags: ['lang', 'rust']
 
     #  app
     #-----------------------------------------------

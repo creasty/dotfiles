@@ -1,0 +1,19 @@
+- set_fact:
+    rust: {}
+
+- name: install rustup-init
+  homebrew:
+    name:  rustup
+    state: present
+
+- name: install rust
+  command: |
+    bash -lc 'rustup-init -v -y --no-modify-path'
+
+- name: rustup update
+  command: |
+    bash -lc 'rustup update'
+
+- name: install language server
+  command: |
+    bash -lc 'rustup component add rls rust-analysis rust-src'
