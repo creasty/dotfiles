@@ -180,6 +180,13 @@ ruby:
     - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
     - rbenv/rbenv-default-gems # Automatically install gems every time you install a new version of Ruby
 
+rust:
+  components:
+    - rls           # https://github.com/rust-lang/rls
+    - rust-analysis # https://github.com/rust-lang/rls
+    - rust-src      # https://github.com/rust-lang/rust
+    - clippy        # https://github.com/rust-lang/rust-clippy
+
 vagrant:
   boxes: {}
 

@@ -14,6 +14,8 @@
   command: |
     bash -lc 'rustup update'
 
-- name: install language server
+- name: install components
   command: |
-    bash -lc 'rustup component add rls rust-analysis rust-src'
+    bash -lc 'rustup component add {{ item | quote }}'
+  with_items: '{{ rust.components }}'
+  when: rust.components
