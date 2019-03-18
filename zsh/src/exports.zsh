@@ -60,3 +60,8 @@ export GIT_MERGE_AUTOEDIT='no'
 #  Rails
 #-----------------------------------------------
 export DISABLE_SPRING=1
+
+
+#  Rust
+#-----------------------------------------------
+export RUST_BACKTRACE=1
