@@ -6,62 +6,56 @@ export EDITOR=vim
 
 export LSCOLORS='Gxfxcxdxbxegedabagacad'
 
-
 #  Path
 #-----------------------------------------------
-# dotfiles
+# Dotfiles
 export DOTFILES_PATH="$HOME/dotfiles"
 
-# golang
+# Golang
 export GOPATH=$HOME/go
 
-# android
+# Android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
-# anyenv
+# Anyenv
 export ANYENV_DIR=$HOME/.anyenv
 
-# tmux
+# Tmux
 export TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
-
 
 #  Search path
 #-----------------------------------------------
-# local
+# Local
 export PATH=/usr/local/bin:$PATH
 
-# anyenv
+# Anyenv
 export PATH=$ANYENV_DIR/bin:$PATH
 
-# dotfiles
+# Dotfiles
 export PATH=$DOTFILES_PATH/bin:$PATH
 
-# golang
+# Golang
 export PATH=$PATH:$GOPATH/bin
 
 # libxml2
 export PATH=/usr/local/opt/libxml2/bin:$PATH
 
-# wantedly
+# Wantedly
 export PATH=$PATH:$HOME/.wantedly/bin
 
-# vscode
+# VSCode
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
-# rust
+# Rust
 export PATH=$PATH:$HOME/.cargo/bin
 
-
-#  Git
+#  Other config
 #-----------------------------------------------
+# Git
 export GIT_MERGE_AUTOEDIT='no'
 
-
-#  Rails
-#-----------------------------------------------
+# Rails
 export DISABLE_SPRING=1
 
-
-#  Rust
-#-----------------------------------------------
+# Rust
 export RUST_BACKTRACE=1
