@@ -9,7 +9,7 @@ hi clear LspErrorText
 hi clear LspWarningText
 hi clear LspInformationText
 
-if dein#tap('candle.vim')
+if exists('*candle#highlight')
   call candle#highlight('LspErrorText', 'red', '', '')
   call candle#highlight('LspWarningText', 'yellow', '', '')
   call candle#highlight('LspInformationText', 'blue', '', '')

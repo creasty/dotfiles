@@ -90,7 +90,7 @@ endfunction
 
 "  Custom highlight
 "-----------------------------------------------
-if dein#tap('candle.vim')
+if exists('*candle#highlight')
   " highlight full-width space
   call candle#highlight('ZenkakuSpace', '', 'dark_red', '')
   autocmd vimrc BufWinEnter,WinEnter *

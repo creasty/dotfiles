@@ -15,7 +15,7 @@ let g:neomake_message_sign = {
   \ 'texthl': 'NeomakeMessageSign',
 \ }
 
-if dein#tap('candle.vim')
+if exists('*candle#highlight')
   call candle#highlight('NeomakeErrorSign', 'red', '', '')
   call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
   call candle#highlight('NeomakeInfoSign', 'blue', '', '')

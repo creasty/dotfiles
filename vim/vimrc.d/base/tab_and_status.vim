@@ -28,7 +28,7 @@ function! MyTabLine()
   return l:s
 endfunction
 
-if dein#tap('candle.vim')
+if exists('*candle#highlight')
   set tabline=%!MyTabLine()
 
   autocmd vimrc VimEnter,Syntax *
@@ -43,7 +43,7 @@ endif
 function! RefreshStatusline()
   let l:cw = winnr()
 
-  if !dein#tap('candle.vim')
+  if !exists('*candle#highlight')
     return
   endif
 
@@ -124,7 +124,7 @@ function! MyStatusLine(w, cw)
   return l:s
 endfunction
 
-if dein#tap('candle.vim')
+if exists('*candle#highlight')
   autocmd vimrc VimEnter,Syntax *
     \ call candle#highlight('StatusLineLeft', 'selection', 'window', '')
     \ | call candle#highlight('StatusLineLeftActive', 'background', 'green', '')
