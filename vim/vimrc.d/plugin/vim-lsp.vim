@@ -1,4 +1,4 @@
-let g:lsp_diagnostics_enabled = 1 " TODO
+let g:lsp_diagnostics_enabled = 1
 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '∆'}
@@ -128,6 +128,10 @@ nnoremap gs :call <SID>hover_under_cursor()<CR>
 
 "  Servers
 "-----------------------------------------------
+function! LspGetRootUriForFile(file) abort
+  return lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), a:file))
+endfunction
+
 " Installation:
 "   go get -u golang.org/x/tools/cmd/gopls
 "   go get -u github.com/sourcegraph/go-langserver
@@ -135,7 +139,7 @@ if executable('go-langserver')
   " TODO: replace with 'gopls -mode stdio'
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'go-langserver',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
     \ 'whitelist': ['go'],
   \ })
 endif
@@ -145,25 +149,27 @@ endif
 if executable('typescript-language-server')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'typescript-language-server',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri': {server_info -> LspGetRootUriForFile('tsconfig.json')},
     \ 'whitelist': ['typescript', 'typescript.tsx'],
   \ })
 
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'typescript-language-server/javascript',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri': {server_info -> LspGetRootUriForFile('package.json')},
     \ 'whitelist': ['javascript', 'javascript.jsx'],
   \ })
 endif
 
 " Installation:
 "   gem install solargraph
+"
+" TODO: Bundler
 if executable('solargraph')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'solargraph',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
     \ 'initialization_options': {'diagnostics': 'true'},
     \ 'whitelist': ['ruby', 'ruby.rspec'],
   \ })
@@ -174,7 +180,7 @@ endif
 if executable('pyls')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'pyls',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'pyls']},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'pyls']},
     \ 'whitelist': ['python'],
   \ })
 endif
@@ -184,8 +190,8 @@ endif
 if executable('ccls')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'ccls',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'ccls']},
-    \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'ccls']},
+    \ 'root_uri': {server_info -> LspGetRootUriForFile('compile_commands.json')},
     \ 'initialization_options': {},
     \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
   \ })
@@ -197,7 +203,7 @@ endif
 if executable('rls')
   autocmd vimrc User lsp_setup call lsp#register_server({
     \ 'name': 'rls',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'rustup run stable rls']},
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'rustup run stable rls']},
     \ 'whitelist': ['rust'],
   \ })
 endif
