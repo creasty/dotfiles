@@ -154,8 +154,10 @@ hash -d t=~/Desktop
 hash -d l=~/Downloads
 hash -d d=~/Dropbox
 
-hash -d q=$(ghq root)
-hash -d g=$(ghq root)/github.com
+if command -v ghq > /dev/null 2>&1; then
+  hash -d q=$(ghq root)
+  hash -d g=$(ghq root)/github.com
+fi
 
 
 #  Fish shell like syntax highlighting
