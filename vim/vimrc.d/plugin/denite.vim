@@ -63,8 +63,8 @@ call dein#set_hook('denite.nvim', 'hook_source', function('s:denite_on_source'))
 
 function! s:open_best_denite()
   let l:is_home = (getcwd() == $HOME)
-  let l:is_same_dir = (getcwd() == get(w:, 'denite_last_cwd', ''))
-  let w:denite_last_cwd = getcwd()
+  let l:is_same_dir = (getcwd() == get(g:, 'denite_last_cwd', ''))
+  let g:denite_last_cwd = getcwd()
 
   let l:source = l:is_home ? 'ghq' : 'file_rec'
   let l:resume = l:is_same_dir ? '-resume' : ''
