@@ -13,4 +13,74 @@ DEFAULT_HEAD="$(git symbolic-ref --short HEAD)"
 BASE="${1:-"$DEFAULT_BASE"}"
 HEAD="${2:-"$DEFAULT_HEAD"}"
 
-git cherry -v "$BASE" "$HEAD"
+#  Files
+#-----------------------------------------------
+TMPDIR="$(mktemp -d)"
+
+at_exit() {
+  rm -rf "$TMPDIR"
+}
+trap at_exit EXIT
+trap 'trap - EXIT; at_exit; exit -1' SIGHUP SIGINT SIGTERM
+
+#  Analysis
+#-----------------------------------------------
+CHERRY_FILE="$TMPDIR/cherry.txt"
+git cherry -v "$BASE" "$HEAD" \
+  > "$CHERRY_FILE"
+
+NUMSTAT_FILE="$TMPDIR/numstat.txt"
+cat "$CHERRY_FILE" \
+  | awk '{ print $2 }' \
+  | xargs git show --pretty=format: --numstat \
+  > "$NUMSTAT_FILE"
+
+FILES_FILE="$TMPDIR/files.txt"
+cat "$NUMSTAT_FILE" \
+  | awk '/./ { print $3 }' \
+  | sort \
+  | uniq \
+  > "$FILES_FILE"
+
+#  Display
+#-----------------------------------------------
+label() {
+  printf "%12s  " "$1"
+}
+
+count_lines() {
+  cat "$1" \
+    | wc -l \
+    | grep -o -E '[0-9]+' \
+    | sed -E $'s/([0-9]+)/\e[0;33m\\1\e[0m/'
+}
+
+label 'Commits'
+count_lines "$CHERRY_FILE"
+
+label 'Files'
+count_lines "$FILES_FILE"
+
+label 'Changes'
+cat "$NUMSTAT_FILE" \
+  | awk '
+    /^$/ { next }
+    { ins += $1; del += $2 }
+    END { printf "+%d -%d\n", ins, del }
+  ' \
+  | sed -E $'s/(\+[0-9]+)/\e[0;32m\\1\e[0m/' \
+  | sed -E $'s/(-[0-9]+)/\e[0;31m\\1\e[0m/'
+
+label 'First commit'
+cat "$CHERRY_FILE" \
+  | awk '{ print $2; exit 0 }' \
+  | xargs git show --format='%ar' \
+  | head -n 1 \
+  | sed -E $'s/([0-9]+)/\e[0;33m\\1\e[0m/'
+
+echo
+cat "$FILES_FILE"
+
+echo
+cat "$CHERRY_FILE" \
+  | sed -E $'s/^(. [0-9a-f]+ )(.+)$/\\1\e[0;37m\\2\e[0m/'
