@@ -84,7 +84,7 @@ alias -s java='_run_java'
 #  Bin
 #-----------------------------------------------
 alias g='envchain crst git'
-alias ag="ag --pager='less -R'"
+alias ag="ag --pager='less -R' --width 1000"
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
