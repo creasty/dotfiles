@@ -776,6 +776,14 @@ call lexima#add_rule({
   \ 'mode':  ':',
 \ })
 
+" edit file :ef
+call lexima#add_rule({
+  \ 'char':  'f',
+  \ 'at':    '^e\%#',
+  \ 'input': " \<C-r>=expand('%:p')\<CR>",
+  \ 'mode':  ':',
+\ })
+
 " directory shortcuts
 let s:directories = {
   \ 'h': '~/',
