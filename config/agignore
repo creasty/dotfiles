@@ -19,6 +19,8 @@ node_modules
 Carthage
 Pods
 
+build/
+
 *.git
 .gitkeep
 .keep
