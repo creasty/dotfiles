@@ -160,9 +160,6 @@ alias be='bundle exec'
 alias bi='bundle install --path=vendor/bundle --binstubs=vendor/bundle/bin'
 
 alias ra='bundle exec rails'
-alias rg='bundle exec rails g'
-alias rgmo='bundle exec rails g model'
-alias rgmi='bundle exec rails g migration'
 
 alias rk='bundle exec rake'
 alias rkr='bundle exec rake routes'
