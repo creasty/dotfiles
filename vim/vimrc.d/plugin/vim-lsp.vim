@@ -1,6 +1,7 @@
 let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_echo_delay = 300
+let g:lsp_use_event_queue = 1
 
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '∆'}
