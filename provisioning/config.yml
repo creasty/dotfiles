@@ -167,9 +167,11 @@ nodejs:
     - '8.11.3'
 
   packages:
-    - coffee-script
-    - typescript
-    - typescript-language-server
+    - coffee-script                 # https://github.com/jashkenas/coffeescript
+    - typescript                    # https://github.com/Microsoft/TypeScript
+    - typescript-language-server    # https://github.com/theia-ide/typescript-language-server
+    - typescript-styled-plugin      # https://github.com/Microsoft/typescript-styled-plugin
+    - vscode-css-languageserver-bin # https://github.com/vscode-langservers/vscode-css-languageserver-bin
 
 ruby:
   versions:

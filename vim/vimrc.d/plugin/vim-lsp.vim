@@ -148,20 +148,13 @@ if executable('go-langserver')
 endif
 
 " Installation:
-"   npm install -g typescript typescript-language-server
-if executable('typescript-language-server')
+"   rustup update
+"   rustup component add rls rust-analysis rust-src
+if executable('rls')
   autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'typescript-language-server',
-    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri': {server_info -> LspGetRootUriForFile('tsconfig.json')},
-    \ 'whitelist': ['typescript', 'typescript.tsx'],
-  \ })
-
-  autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'typescript-language-server/javascript',
-    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri': {server_info -> LspGetRootUriForFile('package.json')},
-    \ 'whitelist': ['javascript', 'javascript.jsx'],
+    \ 'name': 'rls',
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'rustup run stable rls']},
+    \ 'whitelist': ['rust'],
   \ })
 endif
 
@@ -201,12 +194,30 @@ if executable('ccls')
 endif
 
 " Installation:
-"   rustup update
-"   rustup component add rls rust-analysis rust-src
-if executable('rls')
+"   npm install -g typescript typescript-language-server
+"   npm install -g typescript-styled-plugin
+if executable('typescript-language-server')
   autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'rls',
-    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'rustup run stable rls']},
-    \ 'whitelist': ['rust'],
+    \ 'name': 'typescript-language-server',
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri': {server_info -> LspGetRootUriForFile('tsconfig.json')},
+    \ 'whitelist': ['typescript', 'typescript.tsx'],
+  \ })
+
+  autocmd vimrc User lsp_setup call lsp#register_server({
+    \ 'name': 'typescript-language-server/javascript',
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri': {server_info -> LspGetRootUriForFile('package.json')},
+    \ 'whitelist': ['javascript', 'javascript.jsx'],
+  \ })
+endif
+
+" Installation:
+"   npm install -g vscode-css-languageserver-bin
+if executable('css-languageserver')
+  autocmd vimrc User lsp_setup call lsp#register_server({
+    \ 'name': 'css-languageserver',
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'css-languageserver --stdio']},
+    \ 'whitelist': ['css', 'sass', 'scss'],
   \ })
 endif
