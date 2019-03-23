@@ -19,7 +19,7 @@ call deoplete#custom#source('buffer', 'min_pattern_length', 3)
 call deoplete#custom#source('minisnip', 'min_pattern_length', 1)
 call deoplete#custom#source('minisnip', 'rank', 900)
 
-let deoplete#sources#vim_lsp#show_info = 1
+let g:deoplete#sources#vim_lsp#show_info = 1
 
 call deoplete#custom#source('_', 'converters', [
   \ 'converter_auto_paren',
@@ -27,3 +27,23 @@ call deoplete#custom#source('_', 'converters', [
   \ 'converter_truncate_abbr',
   \ 'converter_truncate_menu',
 \ ])
+
+command! DeopleteDebug
+  \ call deoplete#custom#option('profile', v:true)
+  \| call deoplete#enable_logging('DEBUG', expand('~/deoplete.log'))
+  \| call deoplete#custom#source('_', 'is_debug_enabled', 1)
+
+function! s:on_completion() abort
+  let l:completed_item = get(v:, 'completed_item', {})
+  if empty(l:completed_item)
+    let l:completed_item = get(v:event, 'completed_item', {})
+  endif
+
+  if !has_key(l:completed_item, 'info')
+    return
+  endif
+
+  let l:info = l:completed_item['info']
+  echomsg l:info
+endfunction
+autocmd vimrc CompleteDone * :call <SID>on_completion()
