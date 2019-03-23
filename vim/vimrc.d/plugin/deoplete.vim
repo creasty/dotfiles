@@ -18,3 +18,5 @@ call deoplete#custom#source('minisnip', 'min_pattern_length', 1)
 call deoplete#custom#source('minisnip', 'rank', 900)
 
 call deoplete#custom#option('skip_chars', ['(', ')', '{', '}', ';'])
+
+let deoplete#sources#vim_lsp#show_info = 1
