@@ -13,10 +13,17 @@ let g:deoplete#enable_smart_case = 1
 let g:deoplete#auto_complete_delay = 0
 let g:deoplete#auto_complete_start_length = 1
 
+call deoplete#custom#option('skip_chars', ['(', ')', '{', '}', ';'])
+
 call deoplete#custom#source('buffer', 'min_pattern_length', 3)
 call deoplete#custom#source('minisnip', 'min_pattern_length', 1)
 call deoplete#custom#source('minisnip', 'rank', 900)
 
-call deoplete#custom#option('skip_chars', ['(', ')', '{', '}', ';'])
-
 let deoplete#sources#vim_lsp#show_info = 1
+
+call deoplete#custom#source('_', 'converters', [
+  \ 'converter_auto_paren',
+  \ 'converter_remove_overlap',
+  \ 'converter_truncate_abbr',
+  \ 'converter_truncate_menu',
+\ ])
