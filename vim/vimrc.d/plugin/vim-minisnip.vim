@@ -6,7 +6,17 @@ map <Plug>(minisnip-complete-nop) <Plug>(minisnip-complete)
 
 " remove placeholders before saving
 autocmd vimrc BufWritePre *
-  \ exec '%s/{{+\([^+]\|+[^}]\|+}[^}]\)*+}}//ge'
+  \ if &ft != 'minisnip' |
+    \ exec '%s/{{+\([^+]\|+[^}]\|+}[^}]\)*+}}//ge' |
+    \ exec '%s/{{-\([^-]\|-[^}]\|-}[^}]\)*-}}//ge' |
+  \ endif
+
+if exists('*candle#highlight')
+  call candle#highlight('MinisnipPlaceholder', 'blue', 'dark_blue', '')
+  autocmd vimrc BufWinEnter,WinEnter *
+    \ call matchadd('MinisnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}')
+    \| call matchadd('MinisnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}')
+endif
 
 " trigger with Tab in select mode
 smap <silent> <expr> <Tab> minisnip#ShouldTrigger() ? "\<Esc>:call minisnip#Minisnip()\<CR>" : "<Nop>"

@@ -45,5 +45,7 @@ function! s:on_completion() abort
 
   let l:info = l:completed_item['info']
   echomsg l:info
+
+  " TODO: Insert function placeholder
 endfunction
 autocmd vimrc CompleteDone * :call <SID>on_completion()
