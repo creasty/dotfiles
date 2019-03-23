@@ -6,7 +6,7 @@ map <Plug>(minisnip-complete-nop) <Plug>(minisnip-complete)
 
 " remove placeholders before saving
 autocmd vimrc BufWritePre *
-  \ if &ft != 'minisnip' |
+  \ if &ft !=# 'minisnip' |
     \ exec '%s/{{+\([^+]\|+[^}]\|+}[^}]\)*+}}//ge' |
     \ exec '%s/{{-\([^-]\|-[^}]\|-}[^}]\)*-}}//ge' |
   \ endif
