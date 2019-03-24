@@ -42,16 +42,17 @@ function! s:on_completion() abort
     let l:completed_item = get(v:event, 'completed_item', {})
   endif
 
-  if !has_key(l:completed_item, 'info')
+  let l:info = get(l:completed_item, 'info', '')
+  if empty(l:info)
+    let l:info = get(l:completed_item, 'abbr', '')
+  endif
+  if empty(l:info)
     return
   endif
 
-  let l:info = l:completed_item['info']
   echomsg l:info
 
-  let l:kind = get(l:completed_item, 'kind', '')
   let l:word = get(l:completed_item, 'word', '')
-
   if l:word =~# '^.\+('
     call s:complete_signature(l:info)
   endif
@@ -61,6 +62,8 @@ autocmd vimrc CompleteDone * :call <SID>on_completion()
 function! s:complete_signature(info) abort
   let l:signature = s:parse_funcs(a:info, &filetype)
   if empty(l:signature)
+    let l:line = getline(line('.'))
+    call setline('.', l:line . ')')
     return
   endif
 
