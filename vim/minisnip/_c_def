@@ -1,3 +1,3 @@
-#ifndef {{++}}
-#define {{++SYMBOL++}} {{+value+}}
+#ifndef {{+SYMBOL+}}
+#define {{+~=1+}} {{+value+}}
 #endif

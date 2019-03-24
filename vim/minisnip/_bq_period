@@ -7,4 +7,4 @@ create temp function d_end() returns date as ((
   date('2018-12-31')
   -- date_sub(date_trunc(current_date(), month), interval 1 day) -- last month; 3-month average
   -- date_sub(current_date('+9'), interval 1 day) -- current month
-));
+));{{--}}
