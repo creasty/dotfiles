@@ -102,7 +102,7 @@ if exists('*candle#highlight')
   " highlight trailing spaces
   call candle#highlight('TrailingSpace', '', 'line', '')
   autocmd vimrc BufWinEnter,WinEnter *
-    \ call matchadd('TrailingSpace', '\s\+$')
+    \ call matchadd('TrailingSpace', '\s\+$', 50)
 endif
 
 

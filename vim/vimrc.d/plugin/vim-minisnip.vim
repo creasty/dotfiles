@@ -14,8 +14,8 @@ autocmd vimrc BufWritePre *
 if exists('*candle#highlight')
   call candle#highlight('MinisnipPlaceholder', 'blue', 'dark_blue', '')
   autocmd vimrc BufWinEnter,WinEnter *
-    \ call matchadd('MinisnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}')
-    \| call matchadd('MinisnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}')
+    \ call matchadd('MinisnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
+    \| call matchadd('MinisnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
 
 " trigger with Tab in select mode
