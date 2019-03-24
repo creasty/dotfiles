@@ -64,8 +64,7 @@ depends = ['deoplete.nvim']
 on_ft   = ['vim']
 
 [[plugins]] # deoplete source for vim-lsp
-repo    = 'creasty/deoplete-vim-lsp' # lighttiger2505/deoplete-vim-lsp
-rev     = 'creasty/whitelisted'
+repo    = 'lighttiger2505/deoplete-vim-lsp'
 depends = ['deoplete.nvim']
 on_i    = 1
 
