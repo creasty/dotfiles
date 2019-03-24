@@ -26,12 +26,11 @@
 
 - name: install dependency
   homebrew:
-    name:  '{{ item }}'
+    name:
+      - ruby-build
+      - openssl
+      - readline
     state: present
-  with_items:
-    - ruby-build
-    - openssl
-    - readline
 
 - name: get openssl dir
   command: |
