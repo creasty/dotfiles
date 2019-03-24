@@ -121,11 +121,11 @@ link:
   config/cargo/config:       .cargo/config
   config/ctags:              .ctags
   config/curlrc:             .curlrc
+  config/gitconfig:          .gitconfig
+  config/gitignore:          .gitignore
   config/gocode/config.json: .config/gocode/config.json
   config/peco:               .peco
   config/pgclirc:            .pgclirc
-  git/gitconfig:             .gitconfig
-  git/gitignore:             .gitignore
   ruby/bundle/config:        .bundle/config
   ruby/gemrc:                .gemrc
   ruby/irbrc:                .irbrc
@@ -200,7 +200,7 @@ vagrant:
 
 vscode:
   link:
-    vscode/settings.json: settings.json
+    config/vscode/settings.json: settings.json
 
   # code --list-extensions
   extensions:
