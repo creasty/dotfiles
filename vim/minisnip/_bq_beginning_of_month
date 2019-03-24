@@ -1,0 +1,1 @@
+date_sub(date(timestamp_trunc(current_timestamp(), month), '+9'), interval {{+month+}} month){{--}}

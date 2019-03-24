@@ -1,0 +1,1 @@
+date_sub(date_sub(date_trunc(current_date(), month), interval {{+month+}} month), interval 1 day){{--}}
