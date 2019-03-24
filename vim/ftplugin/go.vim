@@ -5,6 +5,10 @@ augroup vim_ftplugin_go
   autocmd!
 augroup END
 
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_trailing_whitespace_error = 0
+let g:go_highlight_extra_types = 0
+
 "  Imports
 "-----------------------------------------------
 command! GoImports
