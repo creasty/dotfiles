@@ -92,9 +92,12 @@ endfunction
 "-----------------------------------------------
 if exists('*candle#highlight')
   " highlight full-width space
-  call candle#highlight('ZenkakuSpace', '', 'dark_red', '')
+  call candle#highlight('ZenkakuSpace', '', 'dark_purple', '')
   autocmd vimrc BufWinEnter,WinEnter *
     \ call matchadd('ZenkakuSpace', '　')
+    \| call matchadd("SpellRare", '[０１２３４５６７８９]')
+    \| call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]')
+    \| call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
 
   " highlight trailing spaces
   call candle#highlight('TrailingSpace', '', 'line', '')
