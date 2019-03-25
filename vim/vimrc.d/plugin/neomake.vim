@@ -11,7 +11,7 @@ let g:neomake_info_sign = {
   \ 'texthl': 'NeomakeInfoSign',
 \ }
 let g:neomake_message_sign = {
-  \ 'text':   '▸',
+  \ 'text':   '▪︎',
   \ 'texthl': 'NeomakeMessageSign',
 \ }
 

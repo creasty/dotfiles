@@ -6,16 +6,18 @@ let g:lsp_use_event_queue = 1
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '∆'}
 let g:lsp_signs_information = {'text': '▸'}
-let g:lsp_signs_hint = {'text': '▸'}
+let g:lsp_signs_hint = {'text': '▪︎'}
 
 hi clear LspErrorText
 hi clear LspWarningText
 hi clear LspInformationText
+hi clear LspHintText
 
 if exists('*candle#highlight')
   call candle#highlight('LspErrorText', 'red', '', '')
   call candle#highlight('LspWarningText', 'yellow', '', '')
   call candle#highlight('LspInformationText', 'blue', '', '')
+  call candle#highlight('LspHintText', 'green', '', '')
 endif
 
 "  Hover
