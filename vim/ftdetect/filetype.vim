@@ -23,11 +23,16 @@ augroup custom_filetypes
     \ Guardfile,Vagrantfile,*.rabl,*.rake
     \ setf ruby
 
+  autocmd BufNewFile,BufRead gitconfig setf toml
+
+
+  "  Compound filetypes
+  "-----------------------------------------------
   autocmd BufNewFile,BufRead *.tsx setf typescript.tsx
   autocmd BufNewFile,BufRead *.jsx setf javascript.jsx
-  autocmd BufNewFile,BufRead *_spec.rb setl ft=ruby.rspec
-  autocmd BufNewFile,BufRead *.bq.sql setl ft=sql.bq
-  autocmd BufNewFile,BufRead *.pg.sql setl ft=sql.pg
+  autocmd BufNewFile,BufRead *_spec.rb setf ruby.rspec
+  autocmd BufNewFile,BufRead *.bq.sql setf sql.bq
+  autocmd BufNewFile,BufRead *.pg.sql setf sql.pg
 
 
   "  Shortcuts
