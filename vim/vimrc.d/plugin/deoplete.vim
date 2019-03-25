@@ -60,9 +60,16 @@ endfunction
 autocmd vimrc CompleteDone * :call <SID>on_completion()
 
 function! s:complete_signature(info) abort
+  let l:line = getline(line('.'))
+  let l:pos = getpos('.')
+
+  " Cursor should be at EOL
+  if len(l:line) >= l:pos[2]
+    return
+  endif
+
   let l:signature = s:parse_funcs(a:info, &filetype)
   if empty(l:signature)
-    let l:line = getline(line('.'))
     call setline('.', l:line . ')')
     return
   endif
@@ -76,7 +83,6 @@ function! s:complete_signature(info) abort
   let l:args = map(l:args, {i, a -> '{{+' . trim(l:a) . '+}}'}) " TODO: support named arguments
   let l:args = join(l:args, ', ') " FIXME: hardcoded delimiter
 
-  let l:line = getline(line('.'))
   call setline('.', l:line . l:args . ')')
   call feedkeys("\<Tab>") " Jump to the first placeholder
 endfunction
