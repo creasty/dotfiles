@@ -63,8 +63,11 @@
 
   pl = auto-ref pull
   pu = auto-ref push
-  pr = github-compare
   y  = deploy
+  pr = github-compare
+
+  cmp = compare
+  cmpm = compare master
 
   s  = status -s
   w  = show --diff-filter=M
