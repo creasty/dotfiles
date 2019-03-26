@@ -2,10 +2,12 @@ syn case ignore
 
 " Various error conditions.
 " syn match   sqlError        ")"                 " Lonely closing paren.
-syn match   sqlError        ",\(\_\s*[;)]\)\@=" " Comma before a paren or semicolon.
-syn match   sqlError        ",\_\s*\(\<\(asc\|desc\|exists\|for\|from\)\>\)\@="
-syn match   sqlError        ",\_\s*\(\<\(group by\|into\|limit\|order\)\>\)\@="
-syn match   sqlError        ",\_\s*\(\<\(table\|using\|where\)\>\)\@="
+syn match   sqlError        ",\ze\(\_\s*[;)]\)\@=" " Comma before a paren or semicolon.
+syn match   sqlError        ",\ze\_\s*\(\<\(asc\|desc\|exists\|for\|from\)\>\)\@="
+syn match   sqlError        ",\ze\_\s*\(\<\(group by\|into\|limit\|order\)\>\)\@="
+syn match   sqlError        ",\ze\_\s*\(\<\(table\|using\|where\)\>\)\@="
+syn match   sqlError        ",\ze\_\s*\(\<\(select\)\>\)\@="
+syn match   sqlError        ")\ze\_\s*\w\+\_\s\+as\_\s\+(\@="
 
 " Special words.
 syn keyword sqlSpecial      false null true
