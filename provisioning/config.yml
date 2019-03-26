@@ -186,17 +186,17 @@ ruby:
 
 rust:
   components:
+    - clippy        # https://github.com/rust-lang/rust-clippy
     - rls           # https://github.com/rust-lang/rls
     - rust-analysis # https://github.com/rust-lang/rls
     - rust-src      # https://github.com/rust-lang/rust
-    - clippy        # https://github.com/rust-lang/rust-clippy
 
 vagrant:
   boxes: {}
 
   plugins:
-    - sahara        # https://github.com/jedi4ever/sahara
     - dotenv        # https://github.com/johnbellone/vagrant-dotenv ?
+    - sahara        # https://github.com/jedi4ever/sahara
     - vagrant-share # https://www.vagrantup.com/docs/share/
 
 vscode:
