@@ -59,3 +59,6 @@ export DISABLE_SPRING=1
 
 # Rust
 export RUST_BACKTRACE=1
+
+# Go
+export GO111MODULE=on

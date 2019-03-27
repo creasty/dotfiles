@@ -60,6 +60,9 @@ export DISABLE_SPRING=1
 # Rust
 export RUST_BACKTRACE=1
 
+# Go
+export GO111MODULE=on
+
 #  Anyenv
 #-----------------------------------------------
 if [ -d $HOME/.anyenv ] && command -v 'anyenv' > /dev/null 2>&1; then
