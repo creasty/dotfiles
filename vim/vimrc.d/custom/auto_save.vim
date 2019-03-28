@@ -26,10 +26,6 @@ function! s:auto_save()
   finally
     let g:auto_save = 1
   endtry
-
-  if mode() !=# 'i'
-    echo '(AutoSaved at ' . strftime('%H:%M:%S') . ')'
-  endif
 endfunction
 
 function! s:auto_save_toggle()
