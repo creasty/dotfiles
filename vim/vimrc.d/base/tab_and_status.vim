@@ -98,6 +98,23 @@ function! MyStatusLine(w, cw)
     let l:l1 += [denite#get_status('sources')]
   endif
 
+  " r1
+  if l:active && exists('*neomake#statusline#LoclistCounts')
+    let l:status = neomake#statusline#LoclistCounts()
+    if get(l:status, 'E', 0) != 0
+      let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:status['E'] . '%#StatusLine#']
+    end
+    if get(l:status, 'W', 0) != 0
+      let l:r1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:status['W'] . '%#StatusLine#']
+    end
+    if get(l:status, 'I', 0) != 0
+      let l:r1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:status['I'] . '%#StatusLine#']
+    end
+    if get(l:status, 'M', 0) != 0
+      let l:r1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:status['M'] . '%#StatusLine#']
+    end
+  endif
+
   " r0
   if l:active
     let l:r0 += ['%l:%c', '∙', '%p%%']
@@ -123,6 +140,10 @@ if exists('*candle#highlight')
     \| call candle#highlight('StatusLineLeftActive', 'green', 'window', '')
     \| call candle#highlight('StatusLineRight', 'comment', 'window', '')
     \| call candle#highlight('StatusLineRightActive', 'comment', 'window', '')
+    \| call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '')
+    \| call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '')
+    \| call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '')
+    \| call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
 
   let s:prev_status_line_mode = 'n'
 
