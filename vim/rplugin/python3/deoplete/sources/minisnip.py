@@ -20,7 +20,7 @@ class Source(Base):
             self.snippets = os.listdir(os.path.expanduser(self.minisnip_dir))
 
         ft = context['filetype']
-        ft_reg = '^_(' + format(ft.replace('.', '|')) + ')_'
+        ft_reg = '^_(' + ft.replace('.', '|') + ')_'
 
         candidates = []
 
