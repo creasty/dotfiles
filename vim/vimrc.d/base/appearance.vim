@@ -259,13 +259,13 @@ function! MyStatusLine(w, cw) abort
   endif
 
   " Build
-  let l:s = ['%#StatusLineLeft' . (l:active ? 'Active' : '') . '#']
+  let l:s = [l:active ? '%#StatusLineMode#' : '%#StatusLine#']
     \ + l:l0
     \ + ['%*']
     \ + l:l1
     \ + ['%=']
     \ + l:r1
-    \ + ['%#StatusLineRight' . (l:active ? 'Active' : '') . '#']
+    \ + ['%*']
     \ + l:r0
     \ + ['%*']
 
@@ -286,7 +286,7 @@ function! s:change_status_line_for_mode(m) abort
     \ a:m ==# 'r' ? 'purple' :
     \ 'foreground'
 
-  call candle#highlight('StatusLineLeftActive', l:color, '', '')
+  call candle#highlight('StatusLineMode', l:color, '', '')
   call candle#highlight('Cursor', '', l:color, '')
 
   return ''
@@ -294,10 +294,7 @@ endfunction
 
 if exists('*candle#highlight')
   autocmd vimrc VimEnter,Syntax *
-    \ call candle#highlight('StatusLineLeft', 'comment', 'window', '')
-    \| call candle#highlight('StatusLineLeftActive', 'foreground', 'window', '')
-    \| call candle#highlight('StatusLineRight', 'comment', 'window', '')
-    \| call candle#highlight('StatusLineRightActive', 'comment', 'window', '')
+    \ call candle#highlight('StatusLineMode', 'foreground', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '')
