@@ -110,7 +110,7 @@ endif
 "-----------------------------------------------
 set title titlestring=%{MyTitleText()}
 
-function! MyTitleText()
+function! MyTitleText() abort
   let l:t = []
 
   if !empty(v:servername)
@@ -139,7 +139,7 @@ endfunction
 
 "  TabLine
 "-----------------------------------------------
-function! MyTabLine()
+function! MyTabLine() abort
   let l:s = ''
   let l:current = tabpagenr()
 
@@ -175,7 +175,7 @@ endif
 
 "  StatusLine
 "-----------------------------------------------
-function! RefreshStatusline()
+function! s:refresh_statusline() abort
   let l:cw = winnr()
 
   for l:nr in range(1, winnr('$'))
@@ -184,10 +184,10 @@ function! RefreshStatusline()
 endfunction
 
 if exists('*candle#highlight')
-  autocmd vimrc VimEnter,WinEnter,BufWinEnter * call RefreshStatusline()
+  autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
 endif
 
-function! MyStatusLine(w, cw)
+function! MyStatusLine(w, cw) abort
   let l:l0 = []
   let l:l1 = []
   let l:r0 = []
@@ -219,8 +219,9 @@ function! MyStatusLine(w, cw)
   if l:active
     let l:l0 += [(l:ft ==# '' ? 'plain' : l:ft), '∙', (empty(&fileencoding) ? 'utf-8' : &fileencoding)]
   elseif l:is_file
-    let l:head = fnamemodify(l:_bufname, ':h:t')
-    let l:l0 += [(empty(l:head) || l:head ==# '.' ? '' : l:head . '/') . l:bufname]
+    let l:l0 += [fnamemodify(l:_bufname, ':p:~:.')]
+  else
+    let l:l0 += [l:bufname]
   endif
 
   let l:flag = ''
@@ -239,16 +240,16 @@ function! MyStatusLine(w, cw)
   if l:active && exists('*neomake#statusline#LoclistCounts')
     let l:status = neomake#statusline#LoclistCounts()
     if get(l:status, 'E', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:status['E'] . '%#StatusLine#']
+      let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:status['E'] . '%*']
     end
     if get(l:status, 'W', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:status['W'] . '%#StatusLine#']
+      let l:r1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:status['W'] . '%*']
     end
     if get(l:status, 'I', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:status['I'] . '%#StatusLine#']
+      let l:r1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:status['I'] . '%*']
     end
     if get(l:status, 'M', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:status['M'] . '%#StatusLine#']
+      let l:r1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:status['M'] . '%*']
     end
   endif
 
@@ -260,20 +261,20 @@ function! MyStatusLine(w, cw)
   " Build
   let l:s = ['%#StatusLineLeft' . (l:active ? 'Active' : '') . '#']
     \ + l:l0
-    \ + ['%#StatusLine#']
+    \ + ['%*']
     \ + l:l1
     \ + ['%=']
     \ + l:r1
     \ + ['%#StatusLineRight' . (l:active ? 'Active' : '') . '#']
     \ + l:r0
-    \ + ['%#StatusLine#']
+    \ + ['%*']
 
   return join(l:s, ' ')
 endfunction
 
 let s:prev_status_line_mode = 'n'
 
-function! s:change_status_line_for_mode(m)
+function! s:change_status_line_for_mode(m) abort
   if s:prev_status_line_mode == a:m
     return
   endif
@@ -283,9 +284,10 @@ function! s:change_status_line_for_mode(m)
     \ a:m ==# 'i' ? 'blue' :
     \ a:m ==# 'v' ? 'orange' :
     \ a:m ==# 'r' ? 'purple' :
-    \ 'green'
+    \ 'foreground'
 
   call candle#highlight('StatusLineLeftActive', l:color, '', '')
+  call candle#highlight('Cursor', '', l:color, '')
 
   return ''
 endfunction
@@ -293,7 +295,7 @@ endfunction
 if exists('*candle#highlight')
   autocmd vimrc VimEnter,Syntax *
     \ call candle#highlight('StatusLineLeft', 'comment', 'window', '')
-    \| call candle#highlight('StatusLineLeftActive', 'green', 'window', '')
+    \| call candle#highlight('StatusLineLeftActive', 'foreground', 'window', '')
     \| call candle#highlight('StatusLineRight', 'comment', 'window', '')
     \| call candle#highlight('StatusLineRightActive', 'comment', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '')
