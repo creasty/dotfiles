@@ -217,7 +217,10 @@ function! MyStatusLine(w, cw) abort
 
   " l0
   if l:active
-    let l:l0 += [(l:ft ==# '' ? 'plain' : l:ft), '∙', (empty(&fileencoding) ? 'utf-8' : &fileencoding)]
+    let l:l0 += [(l:ft ==# '' ? 'plain' : l:ft)]
+    if l:is_file || l:ft ==# ''
+      let l:l0 += ['∙', (empty(&fileencoding) ? 'utf-8' : &fileencoding)]
+    endif
   elseif l:is_file
     let l:l0 += [fnamemodify(l:_bufname, ':p:~:.')]
   else
