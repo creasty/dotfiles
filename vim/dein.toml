@@ -78,12 +78,14 @@ repo = 'kana/vim-submode'
 
 #  Appearance
 #-----------------------------------------------
+[[plugins]] # candle theme
+repo = 'creasty/candle.vim'
+
 [[plugins]] # toggle, display and navigate marks
 repo = 'kshenoy/vim-signature'
 
 [[plugins]] # search status
-repo   = 'osyo-manga/vim-anzu'
-on_map = ['<Plug>(anzu-']
+repo = 'osyo-manga/vim-anzu'
 
-[[plugins]] # candle theme
-repo = 'creasty/candle.vim'
+[[plugins]] # Highlight the current search result differently
+repo = 'qxxxb/vim-searchhi'
