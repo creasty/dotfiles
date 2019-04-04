@@ -106,34 +106,16 @@ if exists('*candle#highlight')
 endif
 
 
-"  Windo title
+"  Window title
 "-----------------------------------------------
 set title titlestring=%{MyTitleText()}
 
 function! MyTitleText() abort
-  let l:t = []
-
-  if !empty(v:servername)
-    let l:name = substitute(v:servername, 'VIM', '', '')
-    if l:name ==# ''
-      let l:name = '0'
-    endif
-    call add(l:t, '$' . l:name . ':')
-  endif
-
-  let l:session = fnamemodify(v:this_session, ':t:r')
-
-  if l:session !=# ''
-    call add(l:t, '[' . l:session . ']')
-  endif
-
   let l:path = expand('%:p')
   let l:path = (l:path !=# '') ? l:path : getcwd()
   let l:path = substitute(l:path, $HOME, '~', '')
   let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
-  call add(l:t, l:path)
-
-  return join(l:t, ' ')
+  return l:path
 endfunction
 
 
@@ -164,13 +146,7 @@ function! MyTabLine() abort
   return l:s
 endfunction
 
-if exists('*candle#highlight')
-  set tabline=%!MyTabLine()
-
-  autocmd vimrc VimEnter,Syntax *
-    \ call candle#highlight('TabLineNr', 'selection', 'window', '')
-    \| hi TabLineSel term=NONE cterm=NONE gui=NONE
-endif
+set tabline=%!MyTabLine()
 
 
 "  StatusLine
@@ -196,11 +172,9 @@ function! MyStatusLine(w, cw) abort
   " Params
   let l:bufnr = winbufnr(a:w)
   let l:_bufname = bufname(l:bufnr)
-  let l:bufmodified = getbufvar(l:bufnr, '&mod')
   let l:active = (a:w == a:cw)
-  let l:width = winwidth(a:w)
   let l:ft = getbufvar(l:bufnr, '&ft')
-  let l:enough_width = (l:width > 70)
+  let l:enough_width = (winwidth(a:w) > 70)
 
   let l:bufname =
     \ empty(l:_bufname) ? '[No Name]' :
@@ -219,7 +193,7 @@ function! MyStatusLine(w, cw) abort
   if l:active
     let l:l0 += [(l:ft ==# '' ? 'plain' : l:ft)]
     if l:is_file || l:ft ==# ''
-      let l:l0 += ['∙', (empty(&fileencoding) ? 'utf-8' : &fileencoding)]
+      let l:l0 += ['∙', empty(&fileencoding) ? 'utf-8' : &fileencoding, &fileformat]
     endif
   elseif l:is_file
     let l:l0 += [fnamemodify(l:_bufname, ':p:~:.')]
