@@ -111,10 +111,53 @@ autocmd vimrc User lsp_server_init,lsp_server_exit call <SID>server_status_chang
 "  Notification
 "-----------------------------------------------
 function! s:on_notification(server_name, data) abort
-  " TODO
+  let l:response = a:data['response']
+
+  if lsp#client#is_server_instantiated_notification(a:data)
+    if has_key(l:response, 'method')
+      if l:response['method'] ==# 'textDocument/publishDiagnostics'
+        call s:handle_diagnostics(a:server_name, a:data)
+      endif
+    endif
+  endif
 endfunction
 call lsp#register_notifications('vimrc:on_notification', function('s:on_notification'))
 
+let s:severity_enum = {
+  \ 1: 'E',
+  \ 2: 'W',
+  \ 3: 'I',
+  \ 4: 'H',
+\ }
+
+function! s:handle_diagnostics(server_name, data) abort
+  if lsp#client#is_error(a:data['response'])
+    return
+  endif
+
+  let l:uri = a:data['response']['params']['uri']
+  let l:diagnostics = a:data['response']['params']['diagnostics']
+
+  let l:path = lsp#utils#uri_to_path(l:uri)
+  let l:bufnr = bufnr(l:path)
+
+  if l:bufnr < 0
+    return
+  endif
+
+  let l:count = {}
+  for l:item in items(s:severity_enum)
+    let l:count[l:item[1]] = 0
+  endfor
+
+  for l:item in l:diagnostics
+    if has_key(l:item, 'severity') && !empty(l:item['severity'])
+      let l:count[s:severity_enum[l:item['severity']]] += 1
+    endif
+  endfor
+
+  call setbufvar(l:bufnr, 'vim_lsp_diagnostics', l:count)
+endfunction
 
 "  Mode
 "-----------------------------------------------

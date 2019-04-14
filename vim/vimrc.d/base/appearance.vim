@@ -214,19 +214,41 @@ function! MyStatusLine(w, cw) abort
   endif
 
   " r1
+  let l:diagnostics = {
+    \ 'E': 0,
+    \ 'W': 0,
+    \ 'I': 0,
+    \ 'H': 0,
+  \ }
+
+  if l:active
+    let l:status = getbufvar(l:bufnr, 'vim_lsp_diagnostics', {})
+    let l:diagnostics['E'] += get(l:status, 'E', 0)
+    let l:diagnostics['W'] += get(l:status, 'W', 0)
+    let l:diagnostics['I'] += get(l:status, 'I', 0)
+    let l:diagnostics['H'] += get(l:status, 'H', 0)
+  endif
+
   if l:active && exists('*neomake#statusline#LoclistCounts')
     let l:status = neomake#statusline#LoclistCounts()
-    if get(l:status, 'E', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:status['E'] . '%*']
+    let l:diagnostics['E'] += get(l:status, 'E', 0)
+    let l:diagnostics['W'] += get(l:status, 'W', 0)
+    let l:diagnostics['I'] += get(l:status, 'I', 0)
+    let l:diagnostics['H'] += get(l:status, 'M', 0)
+  endif
+
+  if l:active
+    if l:diagnostics['E'] > 0
+      let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:diagnostics['E'] . '%*']
     end
-    if get(l:status, 'W', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:status['W'] . '%*']
+    if l:diagnostics['W'] > 0
+      let l:r1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:diagnostics['W'] . '%*']
     end
-    if get(l:status, 'I', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:status['I'] . '%*']
+    if l:diagnostics['I'] > 0
+      let l:r1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:diagnostics['I'] . '%*']
     end
-    if get(l:status, 'M', 0) != 0
-      let l:r1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:status['M'] . '%*']
+    if l:diagnostics['H'] > 0
+      let l:r1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:diagnostics['H'] . '%*']
     end
   endif
 
