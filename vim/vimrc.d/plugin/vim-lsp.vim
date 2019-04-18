@@ -207,14 +207,14 @@ endif
 "   gem install solargraph
 "
 " TODO: Bundler
-if executable('solargraph')
-  autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'solargraph',
-    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
-    \ 'initialization_options': {'diagnostics': 'true'},
-    \ 'whitelist': ['ruby', 'ruby.rspec'],
-  \ })
-endif
+" if executable('solargraph')
+"   autocmd vimrc User lsp_setup call lsp#register_server({
+"     \ 'name': 'solargraph',
+"     \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'solargraph stdio']},
+"     \ 'initialization_options': {'diagnostics': 'true'},
+"     \ 'whitelist': ['ruby', 'ruby.rspec'],
+"   \ })
+" endif
 
 " Installation:
 "   pip install python-language-server
