@@ -24,7 +24,7 @@ function! s:denite_on_source() abort
   call denite#custom#map('_', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
   call denite#custom#map('_', '<C-n>', '<denite:move_to_next_line>', 'noremap')
   call denite#custom#map('_', '<Tab>', '<denite:choose_action>', 'noremap')
-  call denite#custom#map('_', '<C-r>', '<denite:restart>', 'noremap')
+  call denite#custom#map('_', '<C-r>', '<denite:multiple_mappings:denite:restart,denite:move_to_first_line>', 'noremap')
   call denite#custom#map('_', '<C-j>', '<denite:do_action:default>', 'noremap')
 
   call denite#custom#map('insert', '<C-v>', '<denite:paste_from_default_register>', 'noremap')
