@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#> rake-db-migrate -- An easy interface for migration commands.
+#>
+#>     rake-db-migrate           Migrates all pending migrations.
+#>                               = `rake db:migrate`.
+#>     rake-db-migrate -STEP     Rolls back migrations by the specified amount of steps.
+#>                               = `rake db:rollback STEP=`.
+#>     rake-db-migrate -VERSION  Reverts a migration with the specified version.
+#>                               = `bundle exec rake db:migrate:down VERSION=`.
+#>     rake-db-migrate +VERSION  Migrates a migration with the specified version.
+#>                               = `bundle exec rake db:migrate:up VERSION=`.
+#>
+#>     STEP    = 1, 2, ..., 99   (1 <= N < 100)
+#>     VERSION = 20190421165018  (YYYYMMDDHHmmss)
+
+set -eu
+set -o pipefail
+
+ID="${1:-}"
+
+do_help() {
+  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  exit 1
+}
+
+if [ "$ID" = '-h' ] || [ "$ID" = '--help' ]; then
+  do_help
+elif [[ "$ID" =~ ^-([0-9]{1,2})$ ]]; then
+  STEP="${BASH_REMATCH[1]}"
+  echo "Rolling back $STEP step(s)..."
+  bundle exec rake db:rollback STEP=$STEP
+elif [[ "$ID" =~ ^-([0-9]+)$ ]]; then
+  VERSION="${BASH_REMATCH[1]}"
+  echo "Reverting a specific version at $VERSION..."
+  bundle exec rake db:migrate:down VERSION=$VERSION
+elif [[ "$ID" =~ ^\+?([0-9]+)$ ]]; then
+  VERSION="${BASH_REMATCH[1]}"
+  echo "Migrating a specific version at $VERSION..."
+  bundle exec rake db:migrate:up VERSION=$VERSION
+else
+  echo 'Migrating pending migrations...'
+  bundle exec rake db:migrate "$@"
+fi

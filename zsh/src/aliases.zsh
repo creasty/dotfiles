@@ -157,23 +157,7 @@ alias be='bundle exec'
 alias bi='bundle install --path=vendor/bundle --binstubs=vendor/bundle/bin'
 
 alias ra='bundle exec rails'
-
-alias rk='bundle exec rake'
-alias rkr='bundle exec rake routes'
-
-alias rdbc='bundle exec rake db:create'
-alias rdbm='bundle exec rake db:migrate'
-alias rdbr='bundle exec rake db:reset'
-alias rdbs='bundle exec rake db:setup'
-alias rdbf='bundle exec rake db:migrate:reset && bundle exec rake db:seed'
-
-rdbb() {
-  bundle exec rake db:rollback STEP=$1
-}
-rdbd() {
-  bundle exec rake db:migrate:down VERSION=$1
-}
-
+alias rkr='bundle exec rails routes'
 alias rc='bundle exec rails c'
 alias rs='bundle exec rails s -b 0.0.0.0'
 alias rs1='bundle exec rails s -b 0.0.0.0 -p 3001'
@@ -182,6 +166,11 @@ alias rs3='bundle exec rails s -b 0.0.0.0 -p 3003'
 alias rs4='bundle exec rails s -b 0.0.0.0 -p 3004'
 alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
 
+alias rk='bundle exec rake'
+alias rdbc='bundle exec rake db:create'
+alias rdbr='bundle exec rake db:reset'
+alias rdbs='bundle exec rake db:setup'
+alias rdbm='rake-db-migrate'
 alias rdba='rake-db-migrate-all'
 
 
