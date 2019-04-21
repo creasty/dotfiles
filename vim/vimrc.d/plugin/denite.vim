@@ -81,3 +81,4 @@ command! Ag :Denite -no-empty -mode=normal -buffer-name=grep -resume grep
 nnoremap <Space>/ :Ag<CR>
 
 command! I18n :Denite -no-empty -mode=normal -buffer-name=i18n_flow -resume i18n_flow
+nnoremap <Space>i :I18n<CR>
