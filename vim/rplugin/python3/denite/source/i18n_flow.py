@@ -1,7 +1,6 @@
 import shlex
 import subprocess
 import re
-from os.path import relpath
 
 from denite import util, process
 from .base import Base
@@ -31,13 +30,12 @@ _HEADER_KEY_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderKey S
 _HEADER_LOCALE_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderLocale Function'
 _HEADER_LOCATION_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderLocation Comment'
 
-def _candidate(result, context):
+def _candidate(result, base_path):
     m = re.match(r'^(\S+) \[([^\]]+)\] \(([^\):]+):(\d+)\)', result)
     if not m:
         return None
 
-    path = context['__config_base_path'] + '/' + m[3]
-    path = relpath(path, start=context['path'])
+    path = base_path + '/' + m[3]
 
     return {
         'word': result,
@@ -129,7 +127,7 @@ class Source(Base):
         candidates = []
 
         for line in outs:
-            candidate = _candidate(line, context)
+            candidate = _candidate(line, context['__config_base_path'])
             if not candidate:
                 continue
             candidates.append(candidate)
