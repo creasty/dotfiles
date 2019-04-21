@@ -12,7 +12,7 @@ Work it harder, make it better, do it faster, makes us stronger.
 Screenshots
 -----------
 
-| Tmux + ZSH | Vim |
+| Tmux + ZSH (Alacritty) | Vim (MacVim) |
 |---|---|
 | ![](./docs/images/screenshots/tmux.png) | ![](./docs/images/screenshots/vim.png) |
 
