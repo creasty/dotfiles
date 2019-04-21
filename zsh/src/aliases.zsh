@@ -110,7 +110,7 @@ alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-
 
 ssh() {
   cat ~/.ssh/config.d/* > ~/.ssh/config
-  [ $# -gt 0 ] && \ssh "$@"
+  [ $# -gt 0 ] && command ssh "$@"
 }
 
 
