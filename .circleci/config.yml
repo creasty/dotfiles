@@ -1,0 +1,19 @@
+version: 2
+
+jobs:
+  build:
+    macos:
+      xcode: '10.2.0'
+
+    environment:
+      HOMEBREW_VERBOSE: 1
+      DOTFILES_NOEDIT_SECRETS: 1
+      SKIP_TAGS: zsh
+
+    working_directory: ~/dotfiles
+
+    steps:
+      - checkout
+      - run:
+          name: Provisioning
+          command: ./up --skip-tags="$SKIP_TAGS" -vvvv
