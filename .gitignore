@@ -2,8 +2,6 @@
 __pycache__
 *.pyc
 
-.travis.key
-
 vim/.netrwhist
 vim/init.vim
 vim/dein/*
