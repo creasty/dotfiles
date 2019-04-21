@@ -6,25 +6,30 @@ from os.path import relpath
 from denite import util, process
 from .base import Base
 
-# GREP_HEADER_SYNTAX = (
-#     'syntax match deniteSource_grepHeader '
-#     r'/\v[^:]*:\d+(:\d+)? / '
-#     'contained keepend')
+_HEADER_SYNTAX = (
+    'syntax match deniteSource_i18nflowHeader '
+    r'/\v(\S+) \[([^\]]+)\] \(([^\):]+):(\d+)\)/ '
+    'contained keepend'
+)
+_HEADER_KEY_SYNTAX = (
+    'syntax match deniteSource_i18nflowHeaderKey '
+    r'/\v(\S+)\ze \[/ '
+    'contained containedin=deniteSource_i18nflowHeader'
+)
+_HEADER_LOCALE_SYNTAX = (
+    'syntax match deniteSource_i18nflowHeaderLocale '
+    r'/\v\[\zs[^\]]+\ze\]/ '
+    'contained containedin=deniteSource_i18nflowHeader'
+)
+_HEADER_LOCATION_SYNTAX = (
+    'syntax match deniteSource_i18nflowHeaderLocation '
+    r'/\v\(\zs[^\)]+\ze\)/ '
+    'contained containedin=deniteSource_i18nflowHeader'
+)
 
-# GREP_FILE_SYNTAX = (
-#     'syntax match deniteSource_grepFile '
-#     r'/[^:]*:/ '
-#     'contained containedin=deniteSource_grepHeader '
-#     'nextgroup=deniteSource_grepLineNR')
-# GREP_FILE_HIGHLIGHT = 'highlight default link deniteSource_grepFile Comment'
-
-# GREP_LINE_SYNTAX = (
-#     'syntax match deniteSource_grepLineNR '
-#     r'/\d\+\(:\d\+\)\?/ '
-#     'contained containedin=deniteSource_grepHeader')
-# GREP_LINE_HIGHLIGHT = 'highlight default link deniteSource_grepLineNR LineNR'
-
-# GREP_PATTERNS_HIGHLIGHT = 'highlight default link deniteGrepPatterns Function'
+_HEADER_KEY_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderKey String'
+_HEADER_LOCALE_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderLocale Function'
+_HEADER_LOCATION_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderLocation Comment'
 
 def _candidate(result, context):
     m = re.match(r'^(\S+) \[([^\]]+)\] \(([^\):]+):(\d+)\)', result)
@@ -63,25 +68,27 @@ class Source(Base):
             context['__proc'].kill()
             context['__proc'] = None
 
-    # def highlight(self):
-    #     self.vim.command(GREP_HEADER_SYNTAX)
-    #     self.vim.command(GREP_FILE_SYNTAX)
-    #     self.vim.command(GREP_FILE_HIGHLIGHT)
-    #     self.vim.command(GREP_LINE_SYNTAX)
-    #     self.vim.command(GREP_LINE_HIGHLIGHT)
-    #     self.vim.command(GREP_PATTERNS_HIGHLIGHT)
+    def highlight(self):
+        self.vim.command(_HEADER_SYNTAX)
+        self.vim.command(_HEADER_KEY_SYNTAX)
+        self.vim.command(_HEADER_LOCALE_SYNTAX)
+        self.vim.command(_HEADER_LOCATION_SYNTAX)
 
-    # def define_syntax(self):
-    #     self.vim.command(
-    #         'syntax region ' + self.syntax_name + ' start=// end=/$/ '
-    #         'contains=deniteSource_grepHeader,deniteMatchedRange contained')
-    #     if self.context['__patterns']:
-    #         self.vim.command(
-    #             'syntax match deniteGrepPatterns ' +
-    #             r'/%s/ ' % r'\|'.join(
-    #                 util.regex_convert_str_vim(pattern)
-    #                 for pattern in self.context['__patterns']) +
-    #             'contained containedin=' + self.syntax_name)
+        self.vim.command(_HEADER_KEY_HIGHLIGHT)
+        self.vim.command(_HEADER_LOCALE_HIGHLIGHT)
+        self.vim.command(_HEADER_LOCATION_HIGHLIGHT)
+
+    def define_syntax(self):
+        self.vim.command(
+            'syntax region ' + self.syntax_name + ' start=// end=/$/ '
+            'contains=deniteSource_i18nflowHeader,deniteMatchedRange contained')
+        if self.context['__patterns']:
+            self.vim.command(
+                'syntax match deniteI18nflowPatterns ' +
+                r'/%s/ ' % r'\|'.join(
+                    util.regex_convert_str_vim(pattern)
+                    for pattern in self.context['__patterns']) +
+                'contained containedin=' + self.syntax_name)
 
     def gather_candidates(self, context):
         if context['event'] == 'interactive':
