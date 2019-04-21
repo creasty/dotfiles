@@ -8,10 +8,6 @@ vim/.netrwhist
 vim/init.vim
 vim/dein/*
 
-tmux/plugins/*
-tmux/resurrect/*
-!tmux/plugins/tpm
-
 provisioning/playbook.retry
 provisioning/secrets.yml
 
