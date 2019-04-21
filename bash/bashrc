@@ -20,9 +20,6 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # Anyenv
 export ANYENV_DIR=$HOME/.anyenv
 
-# Tmux
-export TMUX_RESURRECT_SCRIPTS_PATH=~/.tmux/plugins/tmux-resurrect/scripts
-
 #  Search path
 #-----------------------------------------------
 # Local
