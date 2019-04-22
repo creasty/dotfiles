@@ -77,8 +77,8 @@ endfunction
 
 nnoremap <silent> <C-q> :<C-u>call <SID>open_best_denite()<CR>
 
-command! Ag :Denite -no-empty -mode=normal -buffer-name=grep -resume grep
+command! Ag :Denite -mode=normal -buffer-name=grep -resume grep
 nnoremap <Space>/ :Ag<CR>
 
-command! I18n :Denite -no-empty -mode=normal -buffer-name=i18n_flow -resume i18n_flow
+command! I18n :Denite -mode=normal -buffer-name=i18n_flow -resume i18n_flow
 nnoremap <Space>i :I18n<CR>
