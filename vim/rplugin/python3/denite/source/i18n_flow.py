@@ -7,7 +7,7 @@ from .base import Base
 
 _HEADER_SYNTAX = (
     'syntax match deniteSource_i18nflowHeader '
-    r'/\v(\S+) \[([^\]]+)\] \(([^\):]+):(\d+)\)/ '
+    r'/\v(\S+) \[([^\]]+)\] \(([^\):]+):(\d+):(\d+)\)/ '
     'contained keepend'
 )
 _HEADER_KEY_SYNTAX = (
@@ -29,9 +29,10 @@ _HEADER_LOCATION_SYNTAX = (
 _HEADER_KEY_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderKey String'
 _HEADER_LOCALE_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderLocale Function'
 _HEADER_LOCATION_HIGHLIGHT = 'highlight default link deniteSource_i18nflowHeaderLocation Comment'
+_PATTERNS_HIGHLIGHT = 'highlight default link deniteI18nflowPatterns Constant'
 
 def _candidate(result, base_path):
-    m = re.match(r'^(\S+) \[([^\]]+)\] \(([^\):]+):(\d+)\)', result)
+    m = re.match(r'^(\S+) \[([^\]]+)\] \(([^\):]+):(\d+):(\d+)\)', result)
     if not m:
         return None
 
@@ -41,7 +42,7 @@ def _candidate(result, base_path):
         'word': result,
         'action__path': path,
         'action__line': m[4],
-        'action__col': 1,
+        'action__col': m[5],
     }
 
 class Source(Base):
@@ -75,6 +76,7 @@ class Source(Base):
         self.vim.command(_HEADER_KEY_HIGHLIGHT)
         self.vim.command(_HEADER_LOCALE_HIGHLIGHT)
         self.vim.command(_HEADER_LOCATION_HIGHLIGHT)
+        self.vim.command(_PATTERNS_HIGHLIGHT)
 
     def define_syntax(self):
         self.vim.command(
