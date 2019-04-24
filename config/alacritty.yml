@@ -80,7 +80,7 @@ tabspaces: 4
 # Font configuration (changes require restart)
 font:
   # Normal (roman) font face
-  normal:
+  #normal:
     # Font family
     #
     # Default:
