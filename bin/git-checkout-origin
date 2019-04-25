@@ -3,19 +3,27 @@
 set -eu
 set -o pipefail
 
-BRANCH="$1"
-
 section() {
-  printf "\e[33m==> $1\e[0m\n"
+  printf -- "\e[33m==> $@\e[0m\n"
 }
 
-section "git fetch"
+select_remote_branch() {
+  git ls-remote --heads --refs origin \
+    | awk '{ print $2 }' \
+    | sed -E 's|^refs/heads/||' \
+    | peco
+}
+
+BRANCH="${1:-}"
+[ -z "$BRANCH" ] && BRANCH="$(select_remote_branch)"
+
+section "Fetching $BRANCH..."
 git fetch origin "$BRANCH"
 
-section "git checkout"
+section 'Checking out...'
 git checkout "$BRANCH"
 
 if [ "$(git rev-parse HEAD)" != "$(git rev-parse '@{u}')" ]; then
-  section "git pull"
+  section 'Pulling...'
   git pull --ff origin "$BRANCH"
 fi
