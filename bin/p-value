@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-#> p-value Nb/Db Na/Da
+#> p-value N1/D1 N0/D0
 #>
 #>     N*: Numerator
 #>     D*: Denominator
-#>     *b: Before
-#>     *a: After
+#>     *0: An control group (Old)
+#>     *1: An experimental group (New)
 #>
 #> - A small p-value (< 0.05) indicates strong evidence against the null hypothesis, so you reject the null hypothesis.
 #> - A large p-value (> 0.05) indicates weak evidence against the null hypothesis, so you fail to reject the null hypothesis.
@@ -13,18 +13,33 @@
 set -eu
 set -o pipefail
 
+CONF_LEVEL='0.95'
+
 SHARED_PATH="$HOME/docker/r-base"
 TMP_SCRIPT_FILE='p-value.r'
 
-INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)'
-R_TEMPLATE='prop.test(c(\3, \1), c(\4, \2))'
+INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)[ ]+@([0-9\.]+)'
+R_TEMPLATE='prop.test(c(\1, \3), c(\2, \4), conf.level = \5)'
 
 do_help() {
   cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
   exit 1
 }
 
-echo "$@" \
+for opt in "$@"; do
+  case $opt in
+    -l)
+      CONF_LEVEL=$2
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;;
+  esac
+done
+
+echo "$@ @$CONF_LEVEL" \
   | {
     grep -o -m 1 -E "$INPUT_PATTERN" || do_help
   } \

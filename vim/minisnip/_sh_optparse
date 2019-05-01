@@ -1,0 +1,16 @@
+for opt in "$@"; do
+  case $opt in
+    -a)
+      FLAG=1
+      shift
+      ;;
+    --long)
+      VALUE=$2
+      shift 2
+      ;;{{--}}
+    --)
+      shift
+      break
+      ;;
+  esac
+done
