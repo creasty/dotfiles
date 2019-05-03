@@ -15,7 +15,7 @@
 "    C
 "   print "hello ", name
 "          VVVVVV
-function! vimrc#text_objects#next(motion, dir) abort
+function! vimrc#text_object#next(motion, dir) abort
   let c = nr2char(getchar())
   let d = ''
 
@@ -113,7 +113,7 @@ endfunction
 " margin-top: 200px; -> dam -> margin-top: px;
 " ^                                       ^
 " TODO: Handle floats.
-function! vimrc#text_objects#number(whole) abort
+function! vimrc#text_object#number(whole) abort
   let num = '\v[0-9]'
 
   " If the current char isn't a number, walk forward.

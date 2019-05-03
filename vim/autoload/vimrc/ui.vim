@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-function! vimrc#appearance#ui#fold_text() abort
+function! vimrc#ui#fold_text() abort
   let l:fs = v:foldstart
 
   while getline(l:fs) =~# '^\s*$' | let l:fs = nextnonblank(l:fs + 1)
@@ -20,7 +20,7 @@ function! vimrc#appearance#ui#fold_text() abort
   return l:line . l:expansion . l:linecounter
 endfunction
 
-function! vimrc#appearance#ui#title_text() abort
+function! vimrc#ui#title_text() abort
   let l:path = expand('%:p')
   let l:path = (l:path !=# '') ? l:path : getcwd()
   let l:path = substitute(l:path, $HOME, '~', '')
@@ -28,7 +28,7 @@ function! vimrc#appearance#ui#title_text() abort
   return l:path
 endfunction
 
-function! vimrc#appearance#ui#tab_line() abort
+function! vimrc#ui#tab_line() abort
   let l:s = ''
   let l:current = tabpagenr()
 
@@ -53,7 +53,7 @@ function! vimrc#appearance#ui#tab_line() abort
   return l:s
 endfunction
 
-function! vimrc#appearance#ui#status_line(w, cw) abort
+function! vimrc#ui#status_line(w, cw) abort
   let l:l0 = []
   let l:l1 = []
   let l:r0 = []

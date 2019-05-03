@@ -76,7 +76,7 @@ set foldmethod=indent
 set fillchars="fold:"
 set foldlevel=20
 set foldlevelstart=20
-set foldtext=vimrc#appearance#ui#fold_text()
+set foldtext=vimrc#ui#fold_text()
 
 
 "  Custom highlight
@@ -99,12 +99,12 @@ endif
 
 "  Window title
 "-----------------------------------------------
-set title titlestring=%{vimrc#appearance#ui#title_text()}
+set title titlestring=%{vimrc#ui#title_text()}
 
 
 "  TabLine
 "-----------------------------------------------
-set tabline=%!vimrc#appearance#ui#tab_line()
+set tabline=%!vimrc#ui#tab_line()
 
 
 "  StatusLine
@@ -113,7 +113,7 @@ function! s:refresh_statusline() abort
   let l:cw = winnr()
 
   for l:nr in range(1, winnr('$'))
-    call setwinvar(l:nr, '&statusline', '%!vimrc#appearance#ui#status_line(' . l:nr . ', ' . l:cw . ')')
+    call setwinvar(l:nr, '&statusline', '%!vimrc#ui#status_line(' . l:nr . ', ' . l:cw . ')')
   endfor
 endfunction
 

@@ -1,5 +1,5 @@
 " clean up hidden buffers
-function! vimrc#utils#clean_buffers() abort
+function! vimrc#util#clean_buffers() abort
   redir => l:bufs
     silent buffers
   redir END
@@ -13,14 +13,14 @@ function! vimrc#utils#clean_buffers() abort
 endfunction
 
 " create directories if not exist
-function! vimrc#utils#auto_mkdir(dir) abort
+function! vimrc#util#auto_mkdir(dir) abort
   if !isdirectory(a:dir)
     call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
   endif
 endfunction
 
 " delete current file
-function! vimrc#utils#delete_or_trash(file) abort
+function! vimrc#util#delete_or_trash(file) abort
   let l:trash_dir = $HOME . '/.Trash'
   let l:file = fnameescape(a:file)
 
@@ -36,7 +36,7 @@ function! vimrc#utils#delete_or_trash(file) abort
 endfunction
 
 " edit a next file in the same directory
-function! vimrc#utils#next_file(direction) abort
+function! vimrc#util#next_file(direction) abort
   let l:path = expand('%:p')
   let l:directory = fnamemodify(l:path, ':h')
 
