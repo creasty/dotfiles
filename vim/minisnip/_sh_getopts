@@ -1,0 +1,8 @@
+while getopts {{+options+}} OPT;; do
+  # Refer $OPTARG to retrieve a value
+  case "$OPT" in
+    {{--}}
+  esac
+done
+
+shift $((OPTIND - 1))
