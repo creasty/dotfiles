@@ -1,3 +1,11 @@
+if exists('g:loaded_last_closed_buffer') || v:version < 702
+  finish
+endif
+let g:loaded_last_closed_buffer = 1
+
+let s:save_cpo = &cpoptions
+set cpoptions&vim
+
 let g:lcb_max_restore_count = 5
 
 let g:lcb_current = 0
@@ -27,11 +35,14 @@ function! s:lcb_restore()
   endif
 endfunction
 
-autocmd vimrc BufEnter *
-  \ call <SID>lcb_remember_on_enter()
-
-autocmd vimrc BufLeave *
-  \ call <SID>lcb_remember_on_leave()
+augroup last_closed_buffer
+  autocmd!
+  autocmd vimrc BufEnter * call <SID>lcb_remember_on_enter()
+  autocmd vimrc BufLeave * call <SID>lcb_remember_on_leave()
+augroup END
 
 nmap <C-w>r <C-w><C-r>
 nnoremap <silent> <C-w><C-r> :call <SID>lcb_restore()<CR>
+
+let &cpoptions = s:save_cpo
+unlet s:save_cpo

@@ -88,11 +88,6 @@ function! s:load_file(file)
   endif
 endfunction
 
-call s:load_file('custom/auto_save')
-call s:load_file('custom/last_closed_buffer')
-call s:load_file('custom/project_dir')
-call s:load_file('custom/text_objects')
-
 if dein#tap('dein.vim')
   call s:load_file('plugin/dein')
 endif

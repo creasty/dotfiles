@@ -15,18 +15,7 @@
 "    C
 "   print "hello ", name
 "          VVVVVV
-
-onoremap <silent> an :<C-u>call <SID>next_text_object('a', '/')<CR>
-xnoremap <silent> an :<C-u>call <SID>next_text_object('a', '/')<CR>
-onoremap <silent> in :<C-u>call <SID>next_text_object('i', '/')<CR>
-xnoremap <silent> in :<C-u>call <SID>next_text_object('i', '/')<CR>
-
-onoremap <silent> al :<C-u>call <SID>next_text_object('a', '?')<CR>
-xnoremap <silent> al :<C-u>call <SID>next_text_object('a', '?')<CR>
-onoremap <silent> il :<C-u>call <SID>next_text_object('i', '?')<CR>
-xnoremap <silent> il :<C-u>call <SID>next_text_object('i', '?')<CR>
-
-function! s:next_text_object(motion, dir)
+function! vimrc#text_objects#next(motion, dir) abort
   let c = nr2char(getchar())
   let d = ''
 
@@ -119,21 +108,12 @@ function! s:next_text_object(motion, dir)
   endif
 endfunction
 
-
 "=== Number text-object
 "==============================================================================================
 " margin-top: 200px; -> dam -> margin-top: px;
 " ^                                       ^
 " TODO: Handle floats.
-
-onoremap <silent> m  :<C-u>call <SID>number_text_object(0)<CR>
-xnoremap <silent> m  :<C-u>call <SID>number_text_object(0)<CR>
-onoremap <silent> am :<C-u>call <SID>number_text_object(1)<CR>
-xnoremap <silent> am :<C-u>call <SID>number_text_object(1)<CR>
-onoremap <silent> im :<C-u>call <SID>number_text_object(1)<CR>
-xnoremap <silent> im :<C-u>call <SID>number_text_object(1)<CR>
-
-function! s:number_text_object(whole)
+function! vimrc#text_objects#number(whole) abort
   let num = '\v[0-9]'
 
   " If the current char isn't a number, walk forward.

@@ -223,6 +223,23 @@ autocmd vimrc_editing InsertLeave *
     \ set nopaste |
   \ endif
 
+" next/last text-object
+onoremap <silent> an :<C-u>call vimrc#text_objects#next('a', '/')<CR>
+xnoremap <silent> an :<C-u>call vimrc#text_objects#next('a', '/')<CR>
+onoremap <silent> in :<C-u>call vimrc#text_objects#next('i', '/')<CR>
+xnoremap <silent> in :<C-u>call vimrc#text_objects#next('i', '/')<CR>
+onoremap <silent> al :<C-u>call vimrc#text_objects#next('a', '?')<CR>
+xnoremap <silent> al :<C-u>call vimrc#text_objects#next('a', '?')<CR>
+onoremap <silent> il :<C-u>call vimrc#text_objects#next('i', '?')<CR>
+xnoremap <silent> il :<C-u>call vimrc#text_objects#next('i', '?')<CR>
+
+" number text-object
+onoremap <silent> m  :<C-u>call vimrc#text_objects#number(0)<CR>
+xnoremap <silent> m  :<C-u>call vimrc#text_objects#number(0)<CR>
+onoremap <silent> am :<C-u>call vimrc#text_objects#number(1)<CR>
+xnoremap <silent> am :<C-u>call vimrc#text_objects#number(1)<CR>
+onoremap <silent> im :<C-u>call vimrc#text_objects#number(1)<CR>
+xnoremap <silent> im :<C-u>call vimrc#text_objects#number(1)<CR>
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

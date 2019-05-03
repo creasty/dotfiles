@@ -1,8 +1,15 @@
+if exists('g:loaded_project_dir') || v:version < 702
+  finish
+endif
+let g:loaded_project_dir = 1
+
+let s:save_cpo = &cpoptions
+set cpoptions&vim
+
+
 if exists('+autochdir')
   set noautochdir
 endif
-
-let b:current_root_directory = '.'
 
 let s:root_patterns = [
   \ '.git',
@@ -67,5 +74,12 @@ function! s:change_to_root_directory()
   call s:change_directory(l:dir)
 endfunction
 
-autocmd vimrc BufRead,BufEnter,WinEnter,TabEnter *
-  \ call <SID>change_to_root_directory()
+augroup project_dir
+  autocmd!
+  autocmd BufRead,BufEnter,WinEnter,TabEnter *
+    \ call <SID>change_to_root_directory()
+augroup END
+
+
+let &cpoptions = s:save_cpo
+unlet s:save_cpo
