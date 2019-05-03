@@ -35,4 +35,6 @@ let g:quickrun_config['scala'] = {
   \ 'exec':    '%c %o %s %a',
 \ }
 
-nmap <Leader>r <Plug>(quickrun)
+function! vimrc#plugin#quickrun#init() abort
+  nmap <Leader>r <Plug>(quickrun)
+endfunction

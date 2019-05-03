@@ -1,18 +1,4 @@
-function! vimrc#plugin#denite#open_best()
-  let l:is_home = (getcwd() == $HOME)
-  let l:is_same_dir = (getcwd() == get(g:, 'denite_last_cwd', ''))
-  let g:denite_last_cwd = getcwd()
-
-  let l:source = l:is_home ? 'ghq' : 'file_rec'
-  let l:resume = l:is_same_dir ? '-resume' : ''
-
-  exec 'Denite'
-    \ '-buffer-name=' . l:source
-    \ l:resume
-    \ l:source
-endfunction
-
-function! vimrc#plugin#denite#lazy_init() abort
+function! vimrc#plugin#denite#lazy#init() abort
   " default options
   call denite#custom#option('_', 'statusline', v:false)
   call denite#custom#option('_', 'highlight_matched_range', 'Normal')

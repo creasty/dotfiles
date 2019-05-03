@@ -1,5 +1,8 @@
 let g:submode_keep_leaving_key = 1
 
+function! vimrc#plugin#submode#init() abort
+endfunction
+
 "  Window resizing
 "-----------------------------------------------
 call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')

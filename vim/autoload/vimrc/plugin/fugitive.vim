@@ -18,7 +18,7 @@ function! s:homepage_for_url(url) abort
   return ''
 endfunction
 
-function! MyFugitiveBrowseHandler(opts, ...) abort
+function! vimrc#plugin#fugitive#browse_handler(opts, ...) abort
   if a:0 || type(a:opts) != type({})
     return ''
   endif
@@ -63,12 +63,10 @@ function! MyFugitiveBrowseHandler(opts, ...) abort
   return l:url
 endfunction
 
-function! s:fugitive_on_source() abort
+function! vimrc#plugin#fugitive#lazy_init() abort
   if !exists('g:fugitive_browse_handlers')
     let g:fugitive_browse_handlers = []
   endif
 
-  call insert(g:fugitive_browse_handlers, function('MyFugitiveBrowseHandler'))
+  call insert(g:fugitive_browse_handlers, function('vimrc#plugin#fugitive#browse_handler'))
 endfunction
-
-call dein#set_hook('vim-fugitive', 'hook_source', function('s:fugitive_on_source'))

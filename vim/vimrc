@@ -9,8 +9,6 @@
 "
 "----------------------------------------------------------------------------------------------
 
-"=== Environment
-"==============================================================================================
 " encoding
 set encoding=utf-8
 scriptencoding utf-8
@@ -20,8 +18,7 @@ augroup vimrc
   autocmd!
 augroup END
 
-
-"=== Plugins
+"=== Dein
 "==============================================================================================
 if &compatible
   set nocompatible
@@ -49,19 +46,8 @@ endif
 
 filetype plugin indent on
 
-
 "=== Load
 "==============================================================================================
-function! s:load_file(file)
-  let l:file = g:vimrc#env.path.vimrcd . '/' . a:file . '.vim'
-
-  if filereadable(l:file)
-    execute 'source ' . l:file
-  else
-    echomsg 'file not readable:' l:file
-  endif
-endfunction
-
 if dein#tap('dein.vim')
   command! DeinPrunePlugins
     \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
@@ -172,29 +158,76 @@ if dein#tap('vim-minisnip')
 endif
 
 if dein#tap('nerdtree')
-  call s:load_file('plugin/nerdtree')
+  let g:NERDSpaceDelims = 1
+  let g:NERDShutUp = 1
+  let g:NERDTreeShowHidden = 1
+  let g:NERDTreeIgnore = ['\~$', '\.git$']
+  let g:NERDTreeAutoDeleteBuffer = 1
 endif
+
 if dein#tap('denite.nvim')
-  call s:load_file('plugin/denite')
+  call dein#set_hook('denite.nvim', 'hook_source', function('vimrc#plugin#denite#lazy_init'))
+
+  nnoremap <silent> <C-q> :<C-u>call vimrc#plugin#denite#open_best()<CR>
+
+  command! Ag :Denite -mode=normal -buffer-name=grep -resume grep
+  nnoremap <Space>/ :Ag<CR>
+
+  command! I18n :Denite -mode=normal -buffer-name=i18n_flow -resume i18n_flow
+  nnoremap <Space>i :I18n<CR>
 endif
+
 if dein#tap('vim-altr')
-  call s:load_file('plugin/vim-altr')
+  call dein#set_hook('vim-altr', 'hook_source', function('vimrc#plugin#altr#lazy_init'))
+
+  nmap ga <Plug>(altr-forward)
+  nmap gA <Plug>(altr-back)
 endif
+
 if dein#tap('vim-fugitive')
-  call s:load_file('plugin/vim-fugitive')
+  call dein#set_hook('vim-fugitive', 'hook_source', function('vimrc#plugin#fugitive#lazy_init'))
 endif
+
 if dein#tap('vim-quickrun')
-  call s:load_file('plugin/vim-quickrun')
+  call vimrc#plugin#quickrun#init()
 endif
+
 if dein#tap('neomake')
-  call s:load_file('plugin/neomake')
+  call vimrc#plugin#neomake#init()
 endif
+
 if dein#tap('vim-submode')
-  call s:load_file('plugin/vim-submode')
+  call vimrc#plugin#submode#init()
 endif
+
 if dein#tap('vim-signature')
-  call s:load_file('plugin/vim-signature')
+  " hide upper case marks
+  " 's' is used by vim-minisnip
+  let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
+
+  " highlight
+  let g:SignatureMarkTextHL = 'Statement'
 endif
+
 if dein#tap('vim-searchhi')
-  call s:load_file('plugin/vim-searchhi')
+  let g:searchhi_user_autocmds_enabled = 1
+  let g:searchhi_redraw_before_on = 1
+
+  nmap n <Plug>(searchhi-n)
+  nmap N <Plug>(searchhi-N)
+  nmap * <Plug>(searchhi-*)
+  nmap g* <Plug>(searchhi-g*)
+  nmap # <Plug>(searchhi-#)
+  nmap g# <Plug>(searchhi-g#)
+  nmap <Space><Space> <Plug>(searchhi-clear-all)
+
+  if dein#tap('vim-anzu')
+    autocmd vimrc User SearchHiOn AnzuUpdateSearchStatusOutput
+    autocmd vimrc User SearchHiOff echo g:anzu_no_match_word
+  endif
+
+  if exists('*candle#highlight')
+    autocmd vimrc VimEnter,Syntax *
+      \ call candle#highlight('CurrentSearch', 'background', 'orange', 'bold')
+  endif
 endif

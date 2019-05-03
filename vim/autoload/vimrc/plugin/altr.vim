@@ -1,4 +1,4 @@
-function! s:altr_on_source() abort
+function! vimrc#plugin#altr#lazy_init() abort
   " Header files
   call altr#define('%.c', '%.h', '%.m')
 
@@ -46,8 +46,3 @@ function! s:altr_on_source() abort
   " Vim
   call altr#define('dein.toml', 'dein_lazy.toml')
 endfunction
-
-nmap ga <Plug>(altr-forward)
-nmap gA <Plug>(altr-back)
-
-call dein#set_hook('vim-altr', 'hook_source', function('s:altr_on_source'))
