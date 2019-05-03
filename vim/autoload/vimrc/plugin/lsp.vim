@@ -22,14 +22,12 @@ function! vimrc#plugin#lsp#init() abort
     call candle#highlight('LspInformationText', 'blue', '', '')
     call candle#highlight('LspHintText', 'green', '', '')
   endif
+
+  " server status
+  autocmd vimrc User lsp_setup call vimrc#plugin#lsp#util#server_status_changed(1)
+  autocmd vimrc FileType * call vimrc#plugin#lsp#util#server_status_changed(1)
+  autocmd vimrc User lsp_server_init,lsp_server_exit call vimrc#plugin#lsp#util#server_status_changed(0)
 endfunction
-
-
-"  Server status
-"-----------------------------------------------
-autocmd vimrc User lsp_setup call vimrc#plugin#lsp#util#server_status_changed(1)
-autocmd vimrc FileType * call vimrc#plugin#lsp#util#server_status_changed(1)
-autocmd vimrc User lsp_server_init,lsp_server_exit call vimrc#plugin#lsp#util#server_status_changed(0)
 
 
 "  Notification

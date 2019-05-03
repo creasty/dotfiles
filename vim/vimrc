@@ -157,8 +157,9 @@ if dein#tap('vim-lsp')
 endif
 
 if dein#tap('deoplete.nvim')
-  call s:load_file('plugin/deoplete')
+  call vimrc#plugin#deoplete#init()
 endif
+
 if dein#tap('vim-minisnip')
   call s:load_file('plugin/vim-minisnip')
 endif
