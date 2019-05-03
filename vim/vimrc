@@ -28,16 +28,16 @@ if &compatible
 endif
 
 if has('vim_starting')
-  let &g:rtp .= ',' . g:env.path.dein_repo
+  let &g:rtp .= ',' . vimrc#env.path.dein_repo
 endif
 
 let g:dein#_plugins = {}
 
-if dein#load_state(g:env.path.dein)
-  call dein#begin(g:env.path.dein, [expand('<sfile>'), g:env.path.dein_toml, g:env.path.dein_lazy_toml])
+if dein#load_state(vimrc#env.path.dein)
+  call dein#begin(vimrc#env.path.dein, [expand('<sfile>'), vimrc#env.path.dein_toml, vimrc#env.path.dein_lazy_toml])
 
-  call dein#load_toml(g:env.path.dein_toml,      { 'lazy': 0 })
-  call dein#load_toml(g:env.path.dein_lazy_toml, { 'lazy': 1 })
+  call dein#load_toml(vimrc#env.path.dein_toml,      { 'lazy': 0 })
+  call dein#load_toml(vimrc#env.path.dein_lazy_toml, { 'lazy': 1 })
 
   call dein#end()
   call dein#save_state()
@@ -53,7 +53,7 @@ filetype plugin indent on
 "=== Load
 "==============================================================================================
 function! s:load_file(file)
-  let l:file = g:env.path.vimrcd . '/' . a:file . '.vim'
+  let l:file = g:vimrc#env.path.vimrcd . '/' . a:file . '.vim'
 
   if filereadable(l:file)
     execute 'source ' . l:file
@@ -63,26 +63,79 @@ function! s:load_file(file)
 endfunction
 
 if dein#tap('dein.vim')
-  call s:load_file('plugin/dein')
+  command! DeinPrunePlugins
+    \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
+    \ call dein#recache_runtimepath() |
+    \ echo 'done'
 endif
+
 if dein#tap('vim-textobj-multiblock')
-  call s:load_file('plugin/vim-textobj-multiblock')
+  let g:textobj_multiblock_blocks = [
+    \ [ '(', ')' ],
+    \ [ '[', ']' ],
+    \ [ '{', '}' ],
+    \ [ '<', '>' ],
+    \ [ '"', '"' ],
+    \ [ "'", "'" ],
+    \ [ '「', '」' ],
+    \ [ '（', '）' ],
+  \ ]
+
+  omap ab <Plug>(textobj-multiblock-a)
+  omap ib <Plug>(textobj-multiblock-i)
+  xmap ab <Plug>(textobj-multiblock-a)
+  xmap ib <Plug>(textobj-multiblock-i)
 endif
+
 if dein#tap('surround.vim')
-  call s:load_file('plugin/surround')
+  nmap ,( csw(
+  nmap ,) csw)
+  nmap ,{ csw{
+  nmap ,} csw}
+  nmap ,[ csw[
+  nmap ,] csw]
+  nmap ,' csw'
+  nmap ," csw"
 endif
+
 if dein#tap('vim-easy-align')
-  call s:load_file('plugin/vim-easy-align')
+  let g:easy_align_delimiters = {
+    \ '=': {
+      \ 'pattern':       '===\|<=>\|=\~[#?]\?\|=>\|[:+/*!%^=><&|.-?]*=[#?]\?'
+      \                  . '\|[-=]>\|<[-=]',
+      \ 'left_margin':   1,
+      \ 'right_margin':  1,
+      \ 'stick_to_left': 0,
+    \ },
+    \ ';': {
+      \ 'pattern':       ':',
+      \ 'left_margin':   0,
+      \ 'right_margin':  1,
+      \ 'stick_to_left': 1
+    \ },
+  \ }
+
+  vnoremap <silent> L :EasyAlign<cr>
 endif
+
 if dein#tap('emmet-vim')
-  call s:load_file('plugin/emmet-vim')
+  let g:user_emmet_install_global = 0
+  let g:user_emmet_mode = 'i'
+  let g:user_emmet_leader_key = '<Nop>'
+  let g:user_emmet_settings = {
+    \ 'indentation': '  ',
+  \ }
 endif
+
 if dein#tap('operator-camelize.vim')
-  call s:load_file('plugin/operator-camelize')
+  vmap C <Plug>(operator-camelize-toggle)
 endif
+
 if dein#tap('vim-operator-replace')
-  call s:load_file('plugin/vim-operator-replace')
+  map r <Plug>(operator-replace)
+  noremap R r
 endif
+
 if dein#tap('lexima.vim')
   call s:load_file('plugin/lexima')
 endif
