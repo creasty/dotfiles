@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+export ANNOTATE_SKIP_ON_DB_MIGRATE=1
+
 section() {
-  printf "\e[33m==> $1\e[0m\n"
+  printf -- "\e[33m==> $1\e[0m\n"
 }
 
 print_info() {
-  printf "\e[0;34m[Info]\e[0m $@\n"
+  printf -- "\e[0;34m[Info]\e[0m $@\n" 1>&2
 }
 
 migrate_databases() {
@@ -31,9 +33,13 @@ main() {
   local migration_cmd='migrate'
   [ "$1" = '-t' ] && migration_cmd='test:prepare'
 
-  find ./config -name '*database.yml' \
-    | xargs -n1 -I{} basename {} '.yml' \
-    | sed -e 's/^database$/db/' -e 's/_database$/_db/' \
+  # find ./config -name '*database.yml' \
+  #   | xargs -n1 -I{} basename {} '.yml' \
+  #   | sed -e 's/^database$/db/' -e 's/_database$/_db/' \
+
+  find ./db -type d -name '*migrate' \
+    | xargs -n1 -I{} basename {} \
+    | sed -e 's/_migrate$//' -e 's/migrate$/database/' \
     | migrate_databases $migration_cmd
 }
 
