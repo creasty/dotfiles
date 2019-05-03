@@ -93,4 +93,7 @@ autocmd vimrc BufWritePost,BufReadPost,BufEnter *
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
 " forcibly reload file
-autocmd vimrc BufEnter * :silent! checktime
+autocmd vimrc BufEnter *
+  \ if filereadable(expand('%:p')) |
+    \ silent! execute 'checktime' bufnr('%') |
+  \ endif
