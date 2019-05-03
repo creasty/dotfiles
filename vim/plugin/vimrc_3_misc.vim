@@ -1,12 +1,12 @@
-if exists('g:loaded_vimrc_utils') || v:version < 702
+if exists('g:loaded_vimrc_misc') || v:version < 702
   finish
 endif
-let g:loaded_vimrc_utils = 1
+let g:loaded_vimrc_misc = 1
 
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-augroup vimrc_utils
+augroup vimrc_misc
   autocmd!
 augroup END
 
@@ -14,7 +14,7 @@ augroup END
 command! CleanBuffers :call vimrc#util#clean_buffers()
 
 " create directories if not exist
-autocmd vimrc_utils BufWritePre *
+autocmd vimrc_misc BufWritePre *
  \ call vimrc#util#auto_mkdir(expand('<afile>:p:h'))
 
 " delete current file
@@ -31,7 +31,7 @@ nnoremap g9 :PrevFile<CR>
 nnoremap g0 :NextFile<CR>
 
 " file detect on read / save
-autocmd vimrc_utils BufWritePost,BufReadPost,BufEnter *
+autocmd vimrc_misc BufWritePost,BufReadPost,BufEnter *
   \ if &l:filetype ==# '' || exists('b:ftdetect') |
     \ unlet! b:ftdetect |
     \ filetype detect |
@@ -41,7 +41,7 @@ autocmd vimrc_utils BufWritePost,BufReadPost,BufEnter *
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
 " forcibly reload file
-autocmd vimrc_utils BufEnter *
+autocmd vimrc_misc BufEnter *
   \ if filereadable(expand('%:p')) |
     \ silent! execute 'checktime' bufnr('%') |
   \ endif

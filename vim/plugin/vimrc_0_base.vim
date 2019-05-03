@@ -1,7 +1,7 @@
-if exists('g:loaded_vimrc_0_base') || v:version < 702
+if exists('g:loaded_vimrc_base') || v:version < 702
   finish
 endif
-let g:loaded_vimrc_0_base = 1
+let g:loaded_vimrc_base = 1
 
 let s:save_cpo = &cpoptions
 set cpoptions&vim
@@ -147,25 +147,6 @@ set incsearch
 
 " match highlight
 set hlsearch
-
-" dim match highlight
-nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
-
-" erase previous match highlight
-autocmd vimrc_base BufReadPost * :nohlsearch
-
-" search selection
-vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
-
-" replace selection
-vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
-
-" replace word under cursor
-nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
-
-" auto escaping
-cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 
 " ag
 if executable('ag')

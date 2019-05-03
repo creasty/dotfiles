@@ -19,9 +19,6 @@ set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=0
 set shiftround
 
-" change soft-indent size
-command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
-
 " virtualedit with freedom
 set virtualedit& virtualedit+=block
 
@@ -29,9 +26,29 @@ set virtualedit& virtualedit+=block
 set formatoptions-=ro
 
 " remove a comment leader when joining lines
-if has('gui_running')
-  set formatoptions+=j
-endif
+set formatoptions+=j
+
+" dim match highlight
+nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
+
+" erase previous match highlight
+autocmd vimrc_editing BufReadPost * :nohlsearch
+
+" search selection
+vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
+
+" replace selection
+vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+
+" replace word under cursor
+nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
+
+" auto escaping
+cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
+
+" change soft-indent size
+command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
 " shortcut
 nmap <C-s> <C-w>
