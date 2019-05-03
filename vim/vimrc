@@ -48,6 +48,10 @@ filetype plugin indent on
 
 "=== Load
 "==============================================================================================
+if dein#tap('candle.vim')
+  colorscheme candle
+endif
+
 if dein#tap('dein.vim')
   command! DeinPrunePlugins
     \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
@@ -226,7 +230,7 @@ if dein#tap('vim-searchhi')
     autocmd vimrc User SearchHiOff echo g:anzu_no_match_word
   endif
 
-  if exists('*candle#highlight')
+  if g:colors_name ==# 'candle'
     autocmd vimrc VimEnter,Syntax *
       \ call candle#highlight('CurrentSearch', 'background', 'orange', 'bold')
   endif

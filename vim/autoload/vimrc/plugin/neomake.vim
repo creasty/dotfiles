@@ -43,7 +43,7 @@ function! vimrc#plugin#neomake#init() abort
   autocmd vimrc InsertLeave * let b:neomake_run_ileave = 1
   autocmd vimrc CursorHold * call <SID>neomake(1)
 
-  if exists('*candle#highlight')
+  if g:colors_name ==# 'candle'
     call candle#highlight('NeomakeErrorSign', 'red', '', '')
     call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
     call candle#highlight('NeomakeInfoSign', 'blue', '', '')

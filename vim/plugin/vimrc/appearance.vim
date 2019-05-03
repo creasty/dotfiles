@@ -6,17 +6,16 @@ let g:loaded_vimrc_appearance = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-
 scriptencoding utf-8
+
+augroup vimrc_appearance
+  autocmd!
+augroup END
 
 " syntax highlight & color scheme
 set background=dark
 set t_Co=256
 syntax enable
-
-if dein#tap('candle.vim')
-  colorscheme candle
-endif
 
 " always show statusline
 set laststatus=2
@@ -81,10 +80,10 @@ set foldtext=vimrc#ui#fold_text()
 
 "  Custom highlight
 "-----------------------------------------------
-if exists('*candle#highlight')
+if g:colors_name ==# 'candle'
   " highlight full-width space
   call candle#highlight('ZenkakuSpace', '', 'dark_purple', '')
-  autocmd vimrc BufWinEnter,WinEnter *
+  autocmd vimrc_appearance BufWinEnter,WinEnter *
     \ call matchadd('ZenkakuSpace', '　')
     \| call matchadd("SpellRare", '[０１２３４５６７８９]')
     \| call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]')
@@ -92,15 +91,16 @@ if exists('*candle#highlight')
 
   " highlight trailing spaces
   call candle#highlight('TrailingSpace', '', 'line', '')
-  autocmd vimrc BufWinEnter,WinEnter *
+  autocmd vimrc_appearance BufWinEnter,WinEnter *
     \ call matchadd('TrailingSpace', '\s\+$', 50)
 
   " snippet placeholder
   call candle#highlight('SnipPlaceholder', 'blue', 'dark_blue', '')
-  autocmd vimrc BufWinEnter,WinEnter *
+  autocmd vimrc_appearance BufWinEnter,WinEnter *
     \ call matchadd('SnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
     \| call matchadd('SnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
+
 
 "  Window title
 "-----------------------------------------------
@@ -122,8 +122,8 @@ function! s:refresh_statusline() abort
   endfor
 endfunction
 
-if exists('*candle#highlight')
-  autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
+if g:colors_name ==# 'candle'
+  autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
 endif
 
 let s:prev_status_line_mode = 'n'
@@ -146,16 +146,16 @@ function! s:change_status_line_for_mode(m) abort
   return ''
 endfunction
 
-if exists('*candle#highlight')
-  autocmd vimrc VimEnter,Syntax *
+if g:colors_name ==# 'candle'
+  autocmd vimrc_appearance VimEnter,Syntax *
     \ call candle#highlight('StatusLineMode', 'foreground', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '')
     \| call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
 
-  autocmd vimrc InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
-  autocmd vimrc InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
+  autocmd vimrc_appearance InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
+  autocmd vimrc_appearance InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
 
   nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
   nnoremap <expr> V <SID>change_status_line_for_mode('v') . 'V'

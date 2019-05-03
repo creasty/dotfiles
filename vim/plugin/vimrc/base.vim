@@ -6,10 +6,6 @@ let g:loaded_vimrc_base = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-augroup vimrc_base
-  autocmd!
-augroup END
-
 " disable builtin plugins
 let g:loaded_gzip               = 1
 let g:loaded_tar                = 1
@@ -30,17 +26,6 @@ let g:loaded_logipat            = 1
 " configure runtime features
 let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
-
-" change cursor shape in iTerm
-if !has('gui_running') && exists('$ITERM_PROFILE')
-  if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-  else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-  endif
-endif
 
 " use comma as leader
 let g:mapleader = ','

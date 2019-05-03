@@ -16,7 +16,7 @@ function! vimrc#plugin#lsp#init() abort
   hi clear LspInformationText
   hi clear LspHintText
 
-  if exists('*candle#highlight')
+  if g:colors_name ==# 'candle'
     call candle#highlight('LspErrorText', 'red', '', '')
     call candle#highlight('LspWarningText', 'yellow', '', '')
     call candle#highlight('LspInformationText', 'blue', '', '')
