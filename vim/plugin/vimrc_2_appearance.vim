@@ -94,8 +94,13 @@ if exists('*candle#highlight')
   call candle#highlight('TrailingSpace', '', 'line', '')
   autocmd vimrc BufWinEnter,WinEnter *
     \ call matchadd('TrailingSpace', '\s\+$', 50)
-endif
 
+  " snippet placeholder
+  call candle#highlight('SnipPlaceholder', 'blue', 'dark_blue', '')
+  autocmd vimrc BufWinEnter,WinEnter *
+    \ call matchadd('SnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
+    \| call matchadd('SnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
+endif
 
 "  Window title
 "-----------------------------------------------

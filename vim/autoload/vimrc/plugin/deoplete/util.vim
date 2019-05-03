@@ -41,7 +41,7 @@ function! s:complete_signature(info) abort
     return
   endif
 
-  let l:args = map(l:args, {i, a -> ''}) " TODO: support named arguments
+  let l:args = map(l:args, {i, a -> '{{+' . trim(l:a) . '+}}'}) " TODO: support named arguments
   let l:args = join(l:args, ', ') " FIXME: hardcoded delimiter
 
   call setline('.', l:line . l:args . ')')

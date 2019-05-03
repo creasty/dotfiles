@@ -161,8 +161,16 @@ if dein#tap('deoplete.nvim')
 endif
 
 if dein#tap('vim-minisnip')
-  call s:load_file('plugin/vim-minisnip')
+  let g:minisnip_backrefmarker = '='
+
+  " disable default mappings
+  map <Plug>(minisnip-nop) <Plug>(minisnip)
+  map <Plug>(minisnip-complete-nop) <Plug>(minisnip-complete)
+
+  " trigger with Tab in select mode
+  smap <silent> <expr> <Tab> minisnip#ShouldTrigger() ? "\<Esc>:call minisnip#Minisnip()\<CR>" : "<Nop>"
 endif
+
 if dein#tap('nerdtree')
   call s:load_file('plugin/nerdtree')
 endif
