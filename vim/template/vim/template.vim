@@ -4,12 +4,10 @@ if exists('g:loaded_<%= @name %>') || v:version < 702
 endif
 let g:loaded_<%= @name %> = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
-
+let s:save_cpo = &cpoptions
+set cpoptions&vim
 
 <+CURSOR+>
 
-
-let &cpo = s:save_cpo
+let &cpoptions = s:save_cpo
 unlet s:save_cpo
