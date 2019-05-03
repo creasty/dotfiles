@@ -204,6 +204,7 @@ function! MyStatusLine(w, cw) abort
   let l:flag = ''
   let l:flag .= getbufvar(l:bufnr, '&readonly') ? '!' : ''
   let l:flag .= getbufvar(l:bufnr, '&mod') ? '+' : ''
+  let l:flag .= l:is_file && !filereadable(fnamemodify(l:_bufname, ':p')) ? '?' : ''
   if !empty(l:flag)
     let l:l0 += [l:flag]
   endif
