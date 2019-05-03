@@ -25,5 +25,7 @@ endfunction
 
 " autocmd vimrc BufNewFile * call mold#load('', 1)
 
-autocmd vimrc User MoldTemplateLoadPre  call <SID>template_before_load()
-autocmd vimrc User MoldTemplateLoadPost call <SID>template_after_load()
+function! vimrc#plugin#mold#init() abort
+  autocmd vimrc User MoldTemplateLoadPre  call <SID>template_before_load()
+  autocmd vimrc User MoldTemplateLoadPost call <SID>template_after_load()
+endfunction

@@ -49,7 +49,7 @@ let g:switch_custom_definitions = [
   \ },
 \ ]
 
-function! s:switch() abort
+function! vimrc#plugin#switch#toggle() abort
   let l:line = getline('.')
   let l:pos = col('.') - 1
   let l:max = len(l:line) - 1
@@ -171,5 +171,3 @@ function! s:switch() abort
   " fallback to switch.vim
   :Switch
 endfunction
-
-nnoremap <silent> - :call <SID>switch()<CR>

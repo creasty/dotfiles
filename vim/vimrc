@@ -141,17 +141,21 @@ if dein#tap('lexima.vim')
 endif
 
 if dein#tap('switch.vim')
-  call s:load_file('plugin/switch')
+  nnoremap <silent> - :call vimrc#plugin#switch#toggle()<CR>
 endif
+
 if dein#tap('vim-textmanip')
-  call s:load_file('plugin/vim-textmanip')
+  call vimrc#plugin#textmanip#init()
 endif
+
 if dein#tap('mold.vim')
-  call s:load_file('plugin/mold')
+  call vimrc#plugin#mold#init()
 endif
+
 if dein#tap('vim-lsp')
-  call s:load_file('plugin/vim-lsp')
+  call vimrc#plugin#lsp#init()
 endif
+
 if dein#tap('deoplete.nvim')
   call s:load_file('plugin/deoplete')
 endif
