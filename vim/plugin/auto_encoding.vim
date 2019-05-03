@@ -1,3 +1,11 @@
+if exists('g:loaded_auto_encoding') || v:version < 702
+  finish
+endif
+let g:loaded_auto_encoding = 1
+
+let s:save_cpo = &cpoptions
+set cpoptions&vim
+
 set encoding=utf-8
 set fileencodings=ucs_bom,utf8,ucs-2le,ucs-2
 set fileformats=unix,dos,mac
@@ -53,3 +61,6 @@ augroup AutoDetectEncording
       \ let &fileencoding = &encoding |
     \ endif
 augroup END
+
+let &cpoptions = s:save_cpo
+unlet s:save_cpo
