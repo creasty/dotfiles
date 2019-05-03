@@ -1,4 +1,4 @@
-function! vimrc#plugin#denite#open_best()
+function! vimrc#plugin#denite#open_best() abort
   let l:is_home = (getcwd() == $HOME)
   let l:is_same_dir = (getcwd() == get(g:, 'denite_last_cwd', ''))
   let g:denite_last_cwd = getcwd()
