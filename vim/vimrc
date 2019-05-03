@@ -88,12 +88,6 @@ function! s:load_file(file)
   endif
 endfunction
 
-call s:load_file('base/encoding')
-call s:load_file('base/base')
-call s:load_file('base/appearance')
-call s:load_file('base/editing')
-call s:load_file('base/utils')
-
 call s:load_file('custom/auto_save')
 call s:load_file('custom/last_closed_buffer')
 call s:load_file('custom/project_dir')

@@ -1,3 +1,15 @@
+if exists('g:loaded_vimrc_0_base') || v:version < 702
+  finish
+endif
+let g:loaded_vimrc_0_base = 1
+
+let s:save_cpo = &cpoptions
+set cpoptions&vim
+
+augroup vimrc_base
+  autocmd!
+augroup END
+
 " disable builtin plugins
 let g:loaded_gzip               = 1
 let g:loaded_tar                = 1
@@ -140,7 +152,7 @@ set hlsearch
 nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
 
 " erase previous match highlight
-autocmd vimrc BufReadPost * :nohlsearch
+autocmd vimrc_base BufReadPost * :nohlsearch
 
 " search selection
 vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
@@ -160,3 +172,7 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ -iS
   set grepformat=%f:%l:%m
 endif
+
+
+let &cpoptions = s:save_cpo
+unlet s:save_cpo

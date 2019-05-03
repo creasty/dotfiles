@@ -1,21 +1,15 @@
-"=== Fast <C-o> hack
-"==============================================================================================
-function! s:insert_enter()
-  set eventignore+=InsertLeave,InsertEnter
-  return ''
-endfunction
+if exists('g:loaded_vimrc_editing') || v:version < 702
+  finish
+endif
+let g:loaded_vimrc_editing = 1
 
-function! s:insert_leave()
-  set eventignore-=InsertLeave,InsertEnter
-  return ''
-endfunction
+let s:save_cpo = &cpoptions
+set cpoptions&vim
 
-inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
-inoremap <expr> <Plug>(insert-leave) <SID>insert_leave()
+augroup vimrc_editing
+  autocmd!
+augroup END
 
-
-"=== Editing
-"==============================================================================================
 " indent
 set noautoindent
 set smartindent
@@ -175,19 +169,19 @@ nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
 
 " remove trailing spaces before saving
-autocmd vimrc BufWritePre *
+autocmd vimrc_editing BufWritePre *
   \ if &ft != 'markdown' |
     \ :%s/\s\+$//ge |
   \ endif
 
 " convert tabs to soft tabs if expandtab is set
-autocmd vimrc BufWritePre *
+autocmd vimrc_editing BufWritePre *
   \ if &et |
     \ exec "%s/\t/" . repeat(' ', &tabstop) . "/ge" |
   \ endif
 
 " back to the last line I edited
-autocmd vimrc BufReadPost *
+autocmd vimrc_editing BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \ exe "normal! g`\"" |
   \ endif
@@ -208,7 +202,7 @@ vnoremap <expr> A <SID>force_blockwise_visual('A')
 
 let s:blockwise_visual_paste = 0
 
-function! s:force_blockwise_visual(next_key)
+function! s:force_blockwise_visual(next_key) abort
   let l:m = mode()
 
   let s:blockwise_visual_paste = 1
@@ -223,8 +217,12 @@ function! s:force_blockwise_visual(next_key)
   endif
 endfunction
 
-autocmd vimrc InsertLeave *
+autocmd vimrc_editing InsertLeave *
   \ if s:blockwise_visual_paste == 1 |
     \ let s:blockwise_visual_paste = 0 |
     \ set nopaste |
   \ endif
+
+
+let &cpoptions = s:save_cpo
+unlet s:save_cpo

@@ -62,5 +62,15 @@ augroup AutoDetectEncording
     \ endif
 augroup END
 
+" reopen current buffer with specific encoding
+command! -bang -nargs=? Utf8
+  \ edit<bang> ++enc=utf-8 <args>
+command! -bang -nargs=? Sjis
+  \ edit<bang> ++enc=cp932 <args>
+command! -bang -nargs=? Jis
+  \ edit<bang> ++enc=iso-2022-jp <args>
+command! -bang -nargs=? Euc
+  \ edit<bang> ++enc=eucjp <args>
+
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
