@@ -137,8 +137,9 @@ if dein#tap('vim-operator-replace')
 endif
 
 if dein#tap('lexima.vim')
-  call s:load_file('plugin/lexima')
+  call vimrc#plugin#lexima#init()
 endif
+
 if dein#tap('switch.vim')
   call s:load_file('plugin/switch')
 endif

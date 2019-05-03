@@ -1,77 +1,18 @@
+function! vimrc#plugin#lexima#init() abort
+  " super tab
+  imap <silent> <expr> <Tab> vimrc#plugin#lexima#util#super_tab_completion()
+
+  " cancel or accept
+  inoremap <Plug>(deoplete-my-undo) <C-e>
+  inoremap <Plug>(deoplete-my-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+  imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
+  imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
+  imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=deoplete#close_popup()\<CR>" : "\<CR>"
+endfunction
+
 let g:lexima_map_escape = ''
 
 call lexima#set_default_rules()
-
-let s:indents = "^\(\t\|  \)\+"
-let s:opx     = '\(' . join(['[+-\*/%?]', '[&|<>]\{1,2}', '>>>'], '\|') . '\)'
-
-
-"  Disable lexima inside string literal
-"-----------------------------------------------
-function! s:disable_lexima_inside_string(char) abort
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
-    \ 'input': a:char,
-  \ })
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
-    \ 'input': a:char,
-  \ })
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '\%#',
-    \ 'input': a:char,
-    \ 'syntax': ['String'],
-  \ })
-endfunction
-
-function! s:disable_lexima_inside_regexp(char) abort
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
-    \ 'input': a:char,
-  \ })
-endfunction
-
-
-"  Expanders
-"-----------------------------------------------
-function! ExpandMarkdownTitleLine(char) abort
-  let l:text = getline(line('.') - 1)
-
-  if l:text =~# '^\(\t\|  \)*[-=]\s'
-    return a:char . ' '
-  else
-    return repeat(a:char, strwidth(l:text))
-  endif
-endfunction
-
-function! ExpandSectionHeader(trigger, token, leader, line, width) abort
-  let l:line = getline(line('.'))
-  let l:m = matchlist(l:line, '^\(\s*\)' . a:trigger . '\s*\(.*\)')
-
-  if empty(l:m)
-    return
-  endif
-
-  let l:indent = get(l:m, 1, '')
-  let l:text = get(l:m, 2, '')
-
-  let l:cursor = '<vim:expand_section_header:cursor>'
-  let l:lines = ['', '']
-
-  let l:lines[0] = l:indent . a:token . a:leader . l:text . l:cursor
-  let l:lines[1] = l:indent . a:token . repeat(a:line, a:width)
-
-  call setline('.', l:lines[0])
-  call append(line('.'), l:lines[1])
-
-  if search(l:cursor)
-    execute 'normal! "_da>'
-  end
-endfunction
 
 
 "  Section headers
@@ -92,20 +33,20 @@ for [s:token, s:filetype] in items(s:rules)
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '^\s*--\%#',
-      \ 'input':    "<Esc>:call ExpandSectionHeader('--', '--', ' ', '-', 47)<CR>a",
+      \ 'input':    "<Esc>:call vimrc#plugin#lexima#util#expand_section('--', '--', ' ', '-', 47)<CR>a",
       \ 'filetype': s:filetype,
     \ })
   else
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '^\s*' . s:t1 . '\%#',
-      \ 'input':    "<Esc>:call ExpandSectionHeader('" . s:t1 . "', '" . s:token . "', '=== ', '=', 94)<CR>a",
+      \ 'input':    "<Esc>:call vimrc#plugin#lexima#util#expand_section('" . s:t1 . "', '" . s:token . "', '=== ', '=', 94)<CR>a",
       \ 'filetype': s:filetype,
     \ })
     call lexima#add_rule({
       \ 'char':     '<Tab>',
       \ 'at':       '^\s*' . s:t2 . '\%#',
-      \ 'input':    "<Esc>:call ExpandSectionHeader('" . s:t2 . "', '" . s:token . "', '  ', '-', 47)<CR>a",
+      \ 'input':    "<Esc>:call vimrc#plugin#lexima#util#expand_section('" . s:t2 . "', '" . s:token . "', '  ', '-', 47)<CR>a",
       \ 'filetype': s:filetype,
     \ })
   endif
@@ -134,7 +75,7 @@ for s:quote in ['"', "'"]
     \ 'input': '<Right>',
   \ })
 
-  call s:disable_lexima_inside_regexp(s:quote)
+  call vimrc#plugin#lexima#util#disable_inside_regexp(s:quote)
 endfor
 unlet s:quote
 
@@ -188,8 +129,8 @@ for [s:char, s:rule] in items(s:rules)
     \ 'input': '<BS><C-r>=' . s:rule . '<CR>',
   \ })
 
-  call s:disable_lexima_inside_string(s:char)
-  call s:disable_lexima_inside_regexp(s:char)
+  call vimrc#plugin#lexima#util#disable_inside_string(s:char)
+  call vimrc#plugin#lexima#util#disable_inside_regexp(s:char)
 endfor
 
 unlet s:char
@@ -217,8 +158,8 @@ for s:op in ['+', '-', '/', '*', '=', '%']
     \ 'input': '<BS>' . s:op . ' ',
   \ })
 
-  call s:disable_lexima_inside_string(s:op)
-  call s:disable_lexima_inside_regexp(s:op)
+  call vimrc#plugin#lexima#util#disable_inside_string(s:op)
+  call vimrc#plugin#lexima#util#disable_inside_regexp(s:op)
 endfor
 unlet s:op
 unlet s:eop
@@ -251,7 +192,7 @@ call lexima#add_rule({
   \ 'at':    '^\s*/.*\%#',
   \ 'input': '/',
 \ })
-call s:disable_lexima_inside_regexp('/')
+call vimrc#plugin#lexima#util#disable_inside_regexp('/')
 
 " decrement/increment operators
 for s:op in ['+', '-']
@@ -262,7 +203,7 @@ for s:op in ['+', '-']
   \ })
   call lexima#add_rule({
     \ 'char':  s:op,
-    \ 'at':    s:indents . s:op . ' \%#',
+    \ 'at':    "^\(\t\|  \)\+" . s:op . ' \%#',
     \ 'input': s:op,
   \ })
   call lexima#add_rule({
@@ -751,7 +692,7 @@ for s:d in ['-', '=']
   call lexima#add_rule({
     \ 'char':     s:d,
     \ 'at':       '^\%#',
-    \ 'input':    "<C-r>=ExpandMarkdownTitleLine('" . s:d . "')<CR>",
+    \ 'input':    "<C-r>=vimrc#plugin#lexima#util#expand_markdown_headering('" . s:d . "')<CR>",
     \ 'filetype': ['markdown'],
   \ })
 endfor
@@ -827,28 +768,3 @@ if has('gui_running')
     \ 'mode':  ':',
   \ })
 endif
-
-
-"  Completion
-"-----------------------------------------------
-function! s:super_tab_completion()
-  if pumvisible()
-    return "\<C-r>=deoplete#close_popup()\<CR>"
-  elseif minisnip#ShouldTrigger()
-     return "\<Esc>:call minisnip#Minisnip()\<CR>"
-  elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-  else
-    return "\<C-r>=lexima#expand('<TAB>', 'i')\<CR>"
-  endif
-endfunction
-
-" super tab
-imap <silent> <expr> <Tab> <SID>super_tab_completion()
-
-" cancel or accept
-inoremap <Plug>(deoplete-my-undo) <C-e>
-inoremap <Plug>(deoplete-my-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=deoplete#close_popup()\<CR>" : "\<CR>"
