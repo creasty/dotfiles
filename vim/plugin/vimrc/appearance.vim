@@ -68,17 +68,21 @@ hi ColorColumn guibg=#1f1f1f ctermbg=234
 " always show sign column
 set signcolumn=yes
 
-
-"  Folding
-"-----------------------------------------------
+" folding
 set foldmethod=indent
 set fillchars="fold:"
 set foldlevel=20
 set foldlevelstart=20
 set foldtext=vimrc#ui#fold_text()
 
+" window title
+set title titlestring=%{vimrc#ui#title_text()}
 
-"  Custom highlight
+" tabline
+set tabline=%!vimrc#ui#tab_line()
+
+
+"  Custom highlights
 "-----------------------------------------------
 if g:colors_name ==# 'candle'
   " highlight full-width space
@@ -100,16 +104,6 @@ if g:colors_name ==# 'candle'
     \ call matchadd('SnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
     \| call matchadd('SnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
-
-
-"  Window title
-"-----------------------------------------------
-set title titlestring=%{vimrc#ui#title_text()}
-
-
-"  TabLine
-"-----------------------------------------------
-set tabline=%!vimrc#ui#tab_line()
 
 
 "  StatusLine

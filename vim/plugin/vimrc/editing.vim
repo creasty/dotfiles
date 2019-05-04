@@ -28,27 +28,6 @@ set formatoptions-=ro
 " remove a comment leader when joining lines
 set formatoptions+=j
 
-" dim match highlight
-autocmd vimrc_editing User ClearSearchHighlight :
-nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
-autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
-
-" search selection
-vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
-
-" replace selection
-vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
-
-" replace word under cursor
-nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
-
-" auto escaping
-cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
-
-" change soft-indent size
-command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
-
 " shortcut
 nmap <C-s> <C-w>
 
@@ -68,30 +47,6 @@ nmap j gj
 vmap j gj
 nmap k gk
 vmap k gk
-
-" Emacs-like key bindings
-inoremap <Plug>(emacs-down) <C-g>u<C-o>gj
-inoremap <Plug>(emacs-up) <C-g>u<C-o>gk
-inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
-inoremap <expr> <Plug>(emacs-bol) (col('.') == 2) ? "\<Left>" : "\<C-g>u\<C-o>g0"
-inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
-
-map <C-c> <Esc>
-imap <C-j> <CR>
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
-inoremap <C-d> <Del>
-imap <C-p> <Plug>(insert-enter)<Plug>(emacs-up)<Plug>(insert-leave)
-imap <C-n> <Plug>(insert-enter)<Plug>(emacs-down)<Plug>(insert-leave)
-imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)<Plug>(insert-leave)
-imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)<Plug>(insert-leave)
-imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)<Plug>(insert-leave)
-
-cnoremap <C-a> <Home>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-cnoremap <C-d> <Del>
-cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
 " paste
 inoremap <C-v> <C-r><C-p>*
@@ -183,6 +138,27 @@ nnoremap <C-w>d :quit<CR>
 
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
+
+" dim match highlight
+autocmd vimrc_editing User ClearSearchHighlight :
+nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
+autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
+
+" search selection
+vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
+
+" replace selection
+vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+
+" replace word under cursor
+nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
+
+" auto escaping
+cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
+
+" change soft-indent size
+command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
 " remove trailing spaces before saving
 autocmd vimrc_editing BufWritePre *
