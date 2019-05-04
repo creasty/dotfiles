@@ -13,10 +13,6 @@ augroup END
 " clean up hidden buffers
 command! CleanBuffers :call vimrc#util#clean_buffers()
 
-" create directories if not exist
-autocmd vimrc_misc BufWritePre *
- \ call vimrc#util#auto_mkdir(expand('<afile>:p:h'))
-
 " delete current file
 command! -nargs=0 Delete call vimrc#util#delete_or_trash(expand('%:p')) | enew!
 
@@ -30,15 +26,19 @@ command! -nargs=0 PrevFile call vimrc#util#next_file(-1)
 nnoremap g9 :PrevFile<CR>
 nnoremap g0 :NextFile<CR>
 
+" inspect syntax
+command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
+
+" create directories if not exist
+autocmd vimrc_misc BufWritePre *
+ \ call vimrc#util#auto_mkdir(expand('<afile>:p:h'))
+
 " file detect on read / save
 autocmd vimrc_misc BufWritePost,BufReadPost,BufEnter *
   \ if &l:filetype ==# '' || exists('b:ftdetect') |
     \ unlet! b:ftdetect |
     \ filetype detect |
   \ endif
-
-" inspect syntax
-command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
 " forcibly reload file
 autocmd vimrc_misc BufEnter *
