@@ -53,138 +53,137 @@ function! s:parse_funcs(text, filetype) abort
     return []
   endif
 
-  let text = a:text
+  let l:text = a:text
 
   " Function pointer pattern.
   " Example: int32_t get(void *const, const size_t)
-  let text = substitute(text, '\s*(\*)\s*', '', 'g')
-  let text = substitute(text, '^(\(.*\))$', '\1', '')
-  let text = substitute(text, '\s\+\ze(', '', '')
+  let l:text = substitute(l:text, '\s*(\*)\s*', '', 'g')
+  let l:text = substitute(l:text, '^(\(.*\))$', '\1', '')
+  let l:text = substitute(l:text, '\s\+\ze(', '', '')
 
   " Template arguments pattern.
-  let text = substitute(text, '<\zs[^>]*\ze>', '...', 'g')
+  let l:text = substitute(l:text, '<\zs[^>]*\ze>', '...', 'g')
 
-  let quote_i = -1
-  let stack = []
-  let open_stack = []
-  let comma = 0
+  let l:quote_i = -1
+  let l:stack = []
+  let l:open_stack = []
+  let l:comma = 0
 
   " Matching pairs will count as a single argument entry so that commas can be
   " skipped within them.  The open depth is tracked in each open stack item.
   " Parenthesis is an exception since it's used for functions and can have a
   " depth of 1.
-  let pairs = '({[)}]'
-  let l = len(text) - 1
-  let i = -1
+  let l:pairs = '({[)}]'
+  let l:last = len(l:text) - 1
+  let l:i = -1
 
   " Note: single quote does not check
-  let check_quotes = ['"', '`']
+  let l:check_quotes = ['"', '`']
 
-  while i < l
-    let i += 1
-    let c = text[i]
+  while l:i < l:last
+    let l:i += 1
+    let l:c = l:text[l:i]
 
-    if i > 0 && text[i - 1] ==# '\'
+    if l:i > 0 && l:text[l:i - 1] ==# '\'
       continue
     endif
 
-    if quote_i != -1
+    if l:quote_i != -1
       " For languages that allow '''' ?
-      " if c == "'" && text[i - 1] == c && i - quote_i > 1
+      " if l:c == "'" && l:text[l:i - 1] == l:c && l:i - l:quote_i > 1
       "   continue
       " endif
-      if c == text[quote_i]
-        let quote_i = -1
+      if l:c == l:text[l:quote_i]
+        let l:quote_i = -1
       endif
       continue
     endif
 
-    if quote_i == -1 && index(check_quotes, c) >= 0
+    if l:quote_i == -1 && index(l:check_quotes, l:c) >= 0
       " backtick (`) is not used alone in languages that I know of.
-      let quote_i = i
+      let l:quote_i = l:i
       continue
     endif
 
-    let prev = len(open_stack) ? open_stack[-1] : {'opens': [0, 0, 0]}
-    let opened = prev.opens[0] + prev.opens[1] + prev.opens[2]
+    let l:prev = len(l:open_stack) ? l:open_stack[-1] : {'opens': [0, 0, 0]}
+    let l:opened = l:prev.opens[0] + l:prev.opens[1] + l:prev.opens[2]
 
-    let p = stridx(pairs, c)
-    if p != -1
-      let ci = p % 3
-      if p == 3 && opened == 1 && prev.opens[0] == 1
+    let l:p = stridx(l:pairs, l:c)
+    if l:p != -1
+      let ci = l:p % 3
+      if l:p == 3 && l:opened == 1 && l:prev.opens[0] == 1
         " Closing the function parenthesis
-        if !empty(open_stack)
-          let item = remove(open_stack, -1)
-          let item.end = i - 1
-          let item.pos = -1
-          let item.opens[0] -= 1
-          if comma <= i
-            call add(item.args, text[comma :i - 1])
+        if !empty(l:open_stack)
+          let l:item = remove(l:open_stack, -1)
+          let l:item.end = l:i - 1
+          let l:item.pos = -1
+          let l:item.opens[0] -= 1
+          if l:comma <= l:i
+            call add(l:item.args, l:text[l:comma : l:i - 1])
           endif
-          let comma = item.i
+          let l:comma = l:item.i
         endif
-      elseif p == 0
+      elseif l:p == 0
         " Opening parenthesis
-        let func_i = match(text[:i - 1], '\S', comma)
-        let func_name = matchstr(substitute(text[func_i :i - 1],
-              \ '<[^>]*>', '', 'g'), '\k\+$')
+        let l:func_i = match(l:text[: l:i - 1], '\S', l:comma)
+        let l:func_name = matchstr(substitute(l:text[l:func_i : l:i - 1], '<[^>]*>', '', 'g'), '\k\+$')
 
-        if func_i != -1 && func_i < i - 1 && func_name !=# ''
-          let ppos = 0
-          if !empty(open_stack)
-            let ppos = open_stack[-1].pos
+        if l:func_i != -1 && l:func_i < l:i - 1 && l:func_name !=# ''
+          let l:ppos = 0
+          if !empty(l:open_stack)
+            let l:ppos = l:open_stack[-1].pos
           endif
 
-          if func_name !=# ''
+          if l:func_name !=# ''
             " Opening parenthesis that's preceded by a non-empty string.
-            call add(stack, {
-                  \ 'name': func_name,
-                  \ 'i': func_i,
-                  \ 'start': i + 1,
-                  \ 'end': -1,
-                  \ 'pos': 0,
-                  \ 'ppos': ppos,
-                  \ 'args': [],
-                  \ 'opens': [1, 0, 0]
-                  \ })
-            call add(open_stack, stack[-1])
+            call add(l:stack, {
+              \ 'name': l:func_name,
+              \ 'i': l:func_i,
+              \ 'start': l:i + 1,
+              \ 'end': -1,
+              \ 'pos': 0,
+              \ 'ppos': l:ppos,
+              \ 'args': [],
+              \ 'opens': [1, 0, 0]
+            \ })
+            call add(l:open_stack, l:stack[-1])
 
             " Function opening parenthesis marks the beginning of arguments.
-            " let comma = i + 1
-            let comma = i + 1
+            " let l:comma = l:i + 1
+            let l:comma = l:i + 1
           endif
         else
-          let prev.opens[0] += 1
+          let l:prev.opens[0] += 1
         endif
       else
-        let prev.opens[ci] += p > 2 ? -1 : 1
+        let l:prev.opens[ci] += l:p > 2 ? -1 : 1
       endif
-    elseif opened == 1 && prev.opens[0] == 1 && c ==# ','
+    elseif l:opened == 1 && l:prev.opens[0] == 1 && l:c ==# ','
       " Not nested in a pair.
-      if !empty(open_stack) && comma <= i
-        let open_stack[-1].pos += 1
-        call add(open_stack[-1].args, text[comma :i - 1])
+      if !empty(l:open_stack) && l:comma <= l:i
+        let l:open_stack[-1].pos += 1
+        call add(l:open_stack[-1].args, l:text[l:comma : l:i - 1])
       endif
-      let comma = i + 1
+      let l:comma = l:i + 1
     endif
   endwhile
 
-  if !empty(open_stack)
-    let item = open_stack[-1]
-    call add(item.args, text[comma :l])
-    let item.pos += 1
+  if !empty(l:open_stack)
+    let l:item = l:open_stack[-1]
+    call add(l:item.args, l:text[l:comma : l:last])
+    let l:item.pos += 1
   endif
 
   if a:filetype ==# 'python'
-    for item in open_stack
-      call filter(item.args, "v:val !=# 'self'")
+    for l:item in l:open_stack
+      call filter(l:item.args, "v:val !=# 'self'")
     endfor
   endif
 
-  if !empty(stack) && stack[-1].opens[0] == 0
-    let item = stack[-1]
-    let item.trailing = matchstr(text, '\s*\zs\p*', item.end + 2)
+  if !empty(l:stack) && l:stack[-1].opens[0] == 0
+    let l:item = l:stack[-1]
+    let l:item.trailing = matchstr(l:text, '\s*\zs\p*', l:item.end + 2)
   endif
 
-  return stack
+  return l:stack
 endfunction
