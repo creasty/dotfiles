@@ -29,10 +29,9 @@ set formatoptions-=ro
 set formatoptions+=j
 
 " dim match highlight
-nnoremap <silent> <Space><Space> :nohlsearch<CR><Esc>
-
-" erase previous match highlight
-autocmd vimrc_editing BufReadPost * :nohlsearch
+autocmd vimrc_editing User ClearSearchHighlight :
+nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
+autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
 
 " search selection
 vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>

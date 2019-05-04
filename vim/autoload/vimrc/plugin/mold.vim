@@ -5,11 +5,11 @@ let s:mold_template_macro = {
   \ 'USER_NAME': 'Creasty',
 \ }
 
-function! s:template_before_load() abort
+function! vimrc#plugin#mold#template_before_load() abort
   let b:mold_saved_cursor = getcurpos()
 endfunction
 
-function! s:template_after_load() abort
+function! vimrc#plugin#mold#template_after_load() abort
   for [l:macro, l:def] in items(s:mold_template_macro)
     silent exec '%s/\<' . l:macro . '\>/' . l:def . '/ge'
   endfor
@@ -21,11 +21,4 @@ function! s:template_after_load() abort
   else
     call setpos('.', b:mold_saved_cursor)
   endif
-endfunction
-
-" autocmd vimrc BufNewFile * call mold#load('', 1)
-
-function! vimrc#plugin#mold#init() abort
-  autocmd vimrc User MoldTemplateLoadPre  call <SID>template_before_load()
-  autocmd vimrc User MoldTemplateLoadPost call <SID>template_after_load()
 endfunction

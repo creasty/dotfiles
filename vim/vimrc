@@ -139,7 +139,8 @@ if dein#tap('vim-textmanip')
 endif
 
 if dein#tap('mold.vim')
-  call vimrc#plugin#mold#init()
+  autocmd vimrc User MoldTemplateLoadPre  call vimrc#plugin#mold#template_before_load()
+  autocmd vimrc User MoldTemplateLoadPost call vimrc#plugin#mold#template_after_load()
 endif
 
 if dein#tap('vim-lsp')
@@ -223,7 +224,10 @@ if dein#tap('vim-searchhi')
   nmap g* <Plug>(searchhi-g*)
   nmap # <Plug>(searchhi-#)
   nmap g# <Plug>(searchhi-g#)
-  nmap <Space><Space> <Plug>(searchhi-clear-all)
+
+  autocmd vimrc User ClearSearchHighlight
+    \ call searchhi#clear(0, 0) |
+    \ call searchhi#await(0, 0)
 
   if dein#tap('vim-anzu')
     autocmd vimrc User SearchHiOn AnzuUpdateSearchStatusOutput
