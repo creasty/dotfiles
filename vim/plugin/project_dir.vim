@@ -22,7 +22,7 @@ let s:root_patterns = [
   \ 'build.sbt',
 \ ]
 
-function! s:get_root_directory()
+function! s:get_root_directory() abort
   let l:dir_current_file = fnameescape(expand('%:p:h'))
 
   for l:pattern in s:root_patterns
@@ -44,11 +44,11 @@ function! s:get_root_directory()
   return ''
 endfunction
 
-function! s:can_change_directory()
+function! s:can_change_directory() abort
   return match(expand('%:p'), '^\w\+://.*') == -1 && empty(&buftype)
 endfunction
 
-function! s:change_directory(dir)
+function! s:change_directory(dir) abort
   let l:edir = fnameescape(a:dir)
 
   exec 'setlocal path-=' . l:edir
@@ -58,7 +58,7 @@ function! s:change_directory(dir)
   exec 'lcd ' . l:edir
 endfunction
 
-function! s:change_to_root_directory()
+function! s:change_to_root_directory() abort
   if !s:can_change_directory()
     return
   endif

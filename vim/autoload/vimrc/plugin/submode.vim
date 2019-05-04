@@ -31,7 +31,7 @@ call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
 
 "  Better undo
 "-----------------------------------------------
-function! s:better_undo(key)
+function! s:better_undo(key) abort
   undojoin
   exec 'normal!' a:key
 endfunction

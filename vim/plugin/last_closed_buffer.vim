@@ -12,7 +12,7 @@ let g:lcb_current = 0
 let g:lcb_leaved  = 0
 let g:lcb_closed  = []
 
-function! s:lcb_remember_on_enter()
+function! s:lcb_remember_on_enter() abort
   let g:lcb_current = bufnr('')
 
   if g:lcb_leaved > 0 && !bufloaded(g:lcb_leaved)
@@ -20,13 +20,13 @@ function! s:lcb_remember_on_enter()
   endif
 endfunction
 
-function! s:lcb_remember_on_leave()
+function! s:lcb_remember_on_leave() abort
   if g:lcb_current > 0 && !empty(bufname(g:lcb_current))
     let g:lcb_leaved = g:lcb_current
   endif
 endfunction
 
-function! s:lcb_restore()
+function! s:lcb_restore() abort
   let l:nr = get(g:lcb_closed, 0, 0)
   let g:lcb_closed = g:lcb_closed[1:]
 

@@ -88,10 +88,10 @@ if g:colors_name ==# 'candle'
   " highlight full-width space
   call candle#highlight('ZenkakuSpace', '', 'dark_purple', '')
   autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('ZenkakuSpace', '　')
-    \| call matchadd("SpellRare", '[０１２３４５６７８９]')
-    \| call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]')
-    \| call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
+    \ call matchadd('ZenkakuSpace', '　') |
+    \ call matchadd("SpellRare", '[０１２３４５６７８９]') |
+    \ call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]') |
+    \ call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
 
   " highlight trailing spaces
   call candle#highlight('TrailingSpace', '', 'line', '')
@@ -101,8 +101,8 @@ if g:colors_name ==# 'candle'
   " snippet placeholder
   call candle#highlight('SnipPlaceholder', 'blue', 'dark_blue', '')
   autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('SnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
-    \| call matchadd('SnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
+    \ call matchadd('SnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
+    \ call matchadd('SnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
 
 
@@ -142,11 +142,11 @@ endfunction
 
 if g:colors_name ==# 'candle'
   autocmd vimrc_appearance VimEnter,Syntax *
-    \ call candle#highlight('StatusLineMode', 'foreground', 'window', '')
-    \| call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '')
-    \| call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '')
-    \| call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '')
-    \| call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
+    \ call candle#highlight('StatusLineMode', 'foreground', 'window', '') |
+    \ call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '') |
+    \ call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '') |
+    \ call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '') |
+    \ call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
 
   autocmd vimrc_appearance InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
   autocmd vimrc_appearance InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())

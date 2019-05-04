@@ -18,7 +18,7 @@ augroup END
 
 command! AutoSaveToggle :call <SID>auto_save_toggle()
 
-function! s:auto_save()
+function! s:auto_save() abort
   if s:auto_save_enabled == 0
     return
   end
@@ -39,7 +39,7 @@ function! s:auto_save()
   endtry
 endfunction
 
-function! s:auto_save_toggle()
+function! s:auto_save_toggle() abort
   if s:auto_save_enabled >= 1
     let s:auto_save_enabled = 0
     echo 'AutoSave is OFF'

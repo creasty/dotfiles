@@ -161,4 +161,3 @@ function! vimrc#ui#status_line(w, cw) abort
 
   return join(l:s, ' ')
 endfunction
-
