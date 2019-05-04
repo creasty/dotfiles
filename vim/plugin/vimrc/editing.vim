@@ -10,24 +10,6 @@ augroup vimrc_editing
   autocmd!
 augroup END
 
-" indent
-set noautoindent
-set smartindent
-set cindent
-set smarttab
-set expandtab
-set tabstop=2 shiftwidth=2 softtabstop=0
-set shiftround
-
-" virtualedit with freedom
-set virtualedit& virtualedit+=block
-
-" don't insert the current comment leader on leading lines
-set formatoptions-=ro
-
-" remove a comment leader when joining lines
-set formatoptions+=j
-
 " shortcut
 nmap <C-s> <C-w>
 
@@ -141,8 +123,8 @@ nnoremap <C-w><C-b> gT
 
 " dim match highlight
 autocmd vimrc_editing User ClearSearchHighlight :
-nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
 autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
+nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
 
 " search selection
 vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
@@ -160,24 +142,6 @@ cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
-" remove trailing spaces before saving
-autocmd vimrc_editing BufWritePre *
-  \ if &ft != 'markdown' |
-    \ :%s/\s\+$//ge |
-  \ endif
-
-" convert tabs to soft tabs if expandtab is set
-autocmd vimrc_editing BufWritePre *
-  \ if &et |
-    \ exec "%s/\t/" . repeat(' ', &tabstop) . "/ge" |
-  \ endif
-
-" back to the last line I edited
-autocmd vimrc_editing BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \ exe "normal! g`\"" |
-  \ endif
-
 " numbering selection in visual-block mode
 nnoremap <silent> sc :ContinuousNumber <C-a><CR>
 vnoremap <silent> sc :ContinuousNumber <C-a><CR>
@@ -187,33 +151,6 @@ command! -count -nargs=1 ContinuousNumber
     \ exec 'normal! j' . n . <q-args> |
     \ call cursor('.', c) |
   \ endfor
-
-" use I, A for all visual modes
-vnoremap <expr> I <SID>force_blockwise_visual('I')
-vnoremap <expr> A <SID>force_blockwise_visual('A')
-
-let s:blockwise_visual_paste = 0
-
-function! s:force_blockwise_visual(next_key) abort
-  let l:m = mode()
-
-  let s:blockwise_visual_paste = 1
-  set paste
-
-  if l:m ==# 'v'
-    return "\<C-v>" . a:next_key
-  elseif l:m ==# 'V'
-    return "\<C-v>0o$" . a:next_key
-  else
-    return a:next_key
-  endif
-endfunction
-
-autocmd vimrc_editing InsertLeave *
-  \ if s:blockwise_visual_paste == 1 |
-    \ let s:blockwise_visual_paste = 0 |
-    \ set nopaste |
-  \ endif
 
 " next/last text-object
 onoremap <silent> an :<C-u>call vimrc#text_object#next('a', '/')<CR>
@@ -232,6 +169,24 @@ onoremap <silent> am :<C-u>call vimrc#text_object#number(1)<CR>
 xnoremap <silent> am :<C-u>call vimrc#text_object#number(1)<CR>
 onoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
 xnoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
+
+" remove trailing spaces before saving
+autocmd vimrc_editing BufWritePre *
+  \ if &ft != 'markdown' |
+    \ :%s/\s\+$//ge |
+  \ endif
+
+" convert tabs to soft tabs if expandtab is set
+autocmd vimrc_editing BufWritePre *
+  \ if &et |
+    \ exec "%s/\t/" . repeat(' ', &tabstop) . "/ge" |
+  \ endif
+
+" back to the last line I edited
+autocmd vimrc_editing BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \ exe "normal! g`\"" |
+  \ endif
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

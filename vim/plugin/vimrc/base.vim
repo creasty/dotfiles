@@ -53,8 +53,11 @@ set autoread
 " delete over lines and indents
 set backspace=indent,eol,start
 
-" add multibyte option
-set formatoptions& formatoptions+=lmoq
+" automatic formatting
+set formatoptions&
+set formatoptions+=lmq " add multibyte option
+set formatoptions-=ro  " don't insert the current comment leader on leading lines
+set formatoptions+=j   " remove a comment leader when joining lines
 
 " no beeps
 set visualbell t_vb=
@@ -138,6 +141,18 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ -iS
   set grepformat=%f:%l:%m
 endif
+
+" indent
+set noautoindent
+set smartindent
+set cindent
+set smarttab
+set expandtab
+set tabstop=2 shiftwidth=2 softtabstop=0
+set shiftround
+
+" virtualedit with freedom
+set virtualedit& virtualedit+=block
 
 
 let &cpoptions = s:save_cpo
