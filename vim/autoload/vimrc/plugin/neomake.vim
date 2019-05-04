@@ -44,9 +44,10 @@ function! vimrc#plugin#neomake#init() abort
   autocmd vimrc CursorHold * call <SID>neomake(1)
 
   if g:colors_name ==# 'candle'
-    call candle#highlight('NeomakeErrorSign', 'red', '', '')
-    call candle#highlight('NeomakeWarningSign', 'yellow', '', '')
-    call candle#highlight('NeomakeInfoSign', 'blue', '', '')
-    call candle#highlight('NeomakeMessageSign', 'green', '', '')
+    autocmd vimrc BufWinEnter,WinEnter *
+     \ call candle#highlight('NeomakeErrorSign', 'red', '', '') |
+     \ call candle#highlight('NeomakeWarningSign', 'yellow', '', '') |
+     \ call candle#highlight('NeomakeInfoSign', 'blue', '', '') |
+     \ call candle#highlight('NeomakeMessageSign', 'green', '', '')
   endif
 endfunction

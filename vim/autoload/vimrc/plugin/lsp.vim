@@ -17,10 +17,11 @@ function! vimrc#plugin#lsp#init() abort
   hi clear LspHintText
 
   if g:colors_name ==# 'candle'
-    call candle#highlight('LspErrorText', 'red', '', '')
-    call candle#highlight('LspWarningText', 'yellow', '', '')
-    call candle#highlight('LspInformationText', 'blue', '', '')
-    call candle#highlight('LspHintText', 'green', '', '')
+    autocmd vimrc BufWinEnter,WinEnter *
+      \ call candle#highlight('LspErrorText', 'red', '', '') |
+      \ call candle#highlight('LspWarningText', 'yellow', '', '') |
+      \ call candle#highlight('LspInformationText', 'blue', '', '') |
+      \ call candle#highlight('LspHintText', 'green', '', '')
   endif
 
   " server status
