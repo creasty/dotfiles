@@ -54,6 +54,7 @@ function! vimrc#plugin#denite#lazy_init() abort
   call denite#custom#map('normal', '<C-u>', '<denite:scroll_window_upwards>', 'noremap')
   call denite#custom#map('normal', 'gg', '<denite:move_to_first_line>', 'noremap')
   call denite#custom#map('normal', 'G', '<denite:move_to_last_line>', 'noremap')
+  call denite#custom#map('normal', 'y', '<denite:do_action:yank>', 'noremap')
 
   " mode / quit
   call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>', 'noremap')

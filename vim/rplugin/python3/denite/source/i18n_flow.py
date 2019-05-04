@@ -40,6 +40,7 @@ def _candidate(result, base_path):
 
     return {
         'word': result,
+        'action__text': m[1],
         'action__path': path,
         'action__line': m[4],
         'action__col': m[5],
