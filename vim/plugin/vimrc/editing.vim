@@ -129,24 +129,6 @@ nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
 
-" next/last text-object
-onoremap <silent> an :<C-u>call vimrc#text_object#next('a', '/')<CR>
-xnoremap <silent> an :<C-u>call vimrc#text_object#next('a', '/')<CR>
-onoremap <silent> in :<C-u>call vimrc#text_object#next('i', '/')<CR>
-xnoremap <silent> in :<C-u>call vimrc#text_object#next('i', '/')<CR>
-onoremap <silent> al :<C-u>call vimrc#text_object#next('a', '?')<CR>
-xnoremap <silent> al :<C-u>call vimrc#text_object#next('a', '?')<CR>
-onoremap <silent> il :<C-u>call vimrc#text_object#next('i', '?')<CR>
-xnoremap <silent> il :<C-u>call vimrc#text_object#next('i', '?')<CR>
-
-" number text-object
-onoremap <silent> m  :<C-u>call vimrc#text_object#number(0)<CR>
-xnoremap <silent> m  :<C-u>call vimrc#text_object#number(0)<CR>
-onoremap <silent> am :<C-u>call vimrc#text_object#number(1)<CR>
-xnoremap <silent> am :<C-u>call vimrc#text_object#number(1)<CR>
-onoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
-xnoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
-
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
