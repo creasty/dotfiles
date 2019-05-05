@@ -64,8 +64,11 @@ autocmd vimrc_misc BufWritePost,BufReadPost,BufEnter *
   \ endif
 
 " forcibly reload file
+autocmd vimrc_misc BufEnter,BufReadPost *
+  \ let b:filereadable = filereadable(expand('%:p'))
+
 autocmd vimrc_misc BufEnter *
-  \ if filereadable(expand('%:p')) |
+  \ if b:filereadable |
     \ silent! execute 'checktime' bufnr('%') |
   \ endif
 
