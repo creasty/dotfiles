@@ -13,26 +13,35 @@ function! vimrc#util#clean_buffers() abort
 endfunction
 
 " create directories if not exist
-function! vimrc#util#auto_mkdir(dir) abort
+function! vimrc#util#mkdir(dir) abort
   if !isdirectory(a:dir)
     call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
   endif
 endfunction
 
 " delete current file
-function! vimrc#util#delete_or_trash(file) abort
-  let l:trash_dir = $HOME . '/.Trash'
+function! vimrc#util#delete_file(file) abort
   let l:file = fnameescape(a:file)
-
   if empty(l:file)
     return
   endif
 
+  let l:trash_dir = $HOME . '/.Trash'
   if isdirectory(l:trash_dir)
     call job_start(['mv', l:file, l:trash_dir])
   else
     call delete(l:file)
   endif
+endfunction
+
+" chmod
+function! vimrc#util#chmod(file, mode) abort
+  let l:file = fnameescape(a:file)
+  if empty(l:file)
+    return
+  endif
+
+  call job_start(['chmod', a:mode, l:file])
 endfunction
 
 " edit a next file in the same directory

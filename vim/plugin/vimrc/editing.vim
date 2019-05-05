@@ -13,12 +13,7 @@ augroup END
 " shortcut
 nmap <C-s> <C-w>
 
-" edit configurations
-command! Vimrc edit $MYVIMRC
-command! Dotfiles exec 'lcd' vimrc#env.path.dotfiles
-command! MacVim exec 'lcd' vimrc#env.path.runtime
-
-" pay respect to vim
+" disable arrow keys
 nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
 nnoremap <Left> <Nop>
@@ -121,11 +116,6 @@ nnoremap <C-w>d :quit<CR>
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
 
-" dim match highlight
-autocmd vimrc_editing User ClearSearchHighlight :
-autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
-nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
-
 " search selection
 vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
@@ -138,19 +128,6 @@ nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 " auto escaping
 cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
-
-" change soft-indent size
-command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
-
-" numbering selection in visual-block mode
-nnoremap <silent> sc :ContinuousNumber <C-a><CR>
-vnoremap <silent> sc :ContinuousNumber <C-a><CR>
-command! -count -nargs=1 ContinuousNumber
-  \ let c = col('.') |
-  \ for n in range(1, <count>?<count>-line('.'):1) |
-    \ exec 'normal! j' . n . <q-args> |
-    \ call cursor('.', c) |
-  \ endfor
 
 " next/last text-object
 onoremap <silent> an :<C-u>call vimrc#text_object#next('a', '/')<CR>
@@ -169,6 +146,24 @@ onoremap <silent> am :<C-u>call vimrc#text_object#number(1)<CR>
 xnoremap <silent> am :<C-u>call vimrc#text_object#number(1)<CR>
 onoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
 xnoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
+
+" change soft-indent size
+command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
+
+" numbering selection in visual-block mode
+nnoremap <silent> sc :ContinuousNumber <C-a><CR>
+vnoremap <silent> sc :ContinuousNumber <C-a><CR>
+command! -count -nargs=1 ContinuousNumber
+  \ let c = col('.') |
+  \ for n in range(1, <count>?<count>-line('.'):1) |
+    \ exec 'normal! j' . n . <q-args> |
+    \ call cursor('.', c) |
+  \ endfor
+
+" dim match highlight
+autocmd vimrc_editing User ClearSearchHighlight :
+autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
+nnoremap <silent> <Space><Space> :nohlsearch | doautocmd User ClearSearchHighlight<CR>
 
 " remove trailing spaces before saving
 autocmd vimrc_editing BufWritePre *
