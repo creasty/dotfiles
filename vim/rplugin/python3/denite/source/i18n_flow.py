@@ -39,7 +39,8 @@ def _candidate(result, base_path):
     path = base_path + '/' + m[3]
 
     return {
-        'word': result,
+        'word': m[1],
+        'abbr': result,
         'action__text': m[1],
         'action__path': path,
         'action__line': m[4],
