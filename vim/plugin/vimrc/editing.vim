@@ -145,7 +145,7 @@ command! -count -nargs=1 ContinuousNumber
 " dim match highlight
 autocmd vimrc_editing User ClearSearchHighlight :
 autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
-nnoremap <silent> <Space><Space> :nohlsearch | doautocmd User ClearSearchHighlight<CR>
+nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
 
 " remove trailing spaces before saving
 autocmd vimrc_editing BufWritePre *
