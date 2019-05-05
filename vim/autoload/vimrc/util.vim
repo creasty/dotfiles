@@ -44,6 +44,21 @@ function! vimrc#util#chmod(file, mode) abort
   call job_start(['chmod', a:mode, l:file])
 endfunction
 
+" rename
+function! vimrc#util#rename_file(file) abort
+  let l:src = expand('%:p')
+  let l:dst = expand(a:file)
+
+  exec 'keepalt saveas' fnameescape(l:dst)
+
+  if l:src !=# expand('%:p')
+    exec 'bwipe' fnameescape(l:src)
+    call delete(l:src)
+  endif
+
+  filetype detect
+endfunction
+
 " edit a next file in the same directory
 function! vimrc#util#next_file(direction) abort
   let l:path = expand('%:p')

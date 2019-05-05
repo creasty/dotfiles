@@ -40,7 +40,7 @@ command! CleanBuffers :call vimrc#util#clean_buffers()
 command! -nargs=0 Delete call vimrc#util#delete_file(expand('%:p')) | enew!
 
 " rename current file name
-command! -nargs=1 -complete=file Rename keepalt saveas <args>
+command! -nargs=1 -complete=file Rename call vimrc#util#rename_file(<q-args>)
 
 " edit a next file in the same directory
 command! -nargs=0 PrevFile call vimrc#util#next_file(-1)
