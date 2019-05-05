@@ -64,7 +64,7 @@ function! vimrc#ui#status_line(w, cw) abort
   let l:_bufname = bufname(l:bufnr)
   let l:active = (a:w == a:cw)
   let l:ft = getbufvar(l:bufnr, '&ft')
-  let l:enough_width = (winwidth(a:w) > 70)
+  " let l:enough_width = (winwidth(a:w) > 70)
 
   let l:bufname =
     \ empty(l:_bufname) ? '[No Name]' :
@@ -105,30 +105,32 @@ function! vimrc#ui#status_line(w, cw) abort
   endif
 
   " r1
-  let l:diagnostics = {
-    \ 'E': 0,
-    \ 'W': 0,
-    \ 'I': 0,
-    \ 'H': 0,
-  \ }
-
   if l:active
+    let l:diagnostics = {
+      \ 'E': 0,
+      \ 'W': 0,
+      \ 'I': 0,
+      \ 'H': 0,
+    \ }
+
     let l:status = getbufvar(l:bufnr, 'vim_lsp_diagnostics', {})
-    let l:diagnostics['E'] += get(l:status, 'E', 0)
-    let l:diagnostics['W'] += get(l:status, 'W', 0)
-    let l:diagnostics['I'] += get(l:status, 'I', 0)
-    let l:diagnostics['H'] += get(l:status, 'H', 0)
-  endif
+    if !empty(l:status)
+      let l:diagnostics['E'] += get(l:status, 'E', 0)
+      let l:diagnostics['W'] += get(l:status, 'W', 0)
+      let l:diagnostics['I'] += get(l:status, 'I', 0)
+      let l:diagnostics['H'] += get(l:status, 'H', 0)
+    end
 
-  if l:active && exists('*neomake#statusline#LoclistCounts')
-    let l:status = neomake#statusline#LoclistCounts()
-    let l:diagnostics['E'] += get(l:status, 'E', 0)
-    let l:diagnostics['W'] += get(l:status, 'W', 0)
-    let l:diagnostics['I'] += get(l:status, 'I', 0)
-    let l:diagnostics['H'] += get(l:status, 'M', 0)
-  endif
+    if exists('*neomake#statusline#LoclistCounts')
+      let l:status = neomake#statusline#LoclistCounts(l:bufnr)
+      if !empty(l:status)
+        let l:diagnostics['E'] += get(l:status, 'E', 0)
+        let l:diagnostics['W'] += get(l:status, 'W', 0)
+        let l:diagnostics['I'] += get(l:status, 'I', 0)
+        let l:diagnostics['H'] += get(l:status, 'M', 0)
+      endif
+    endif
 
-  if l:active
     if l:diagnostics['E'] > 0
       let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:diagnostics['E'] . '%*']
     end
