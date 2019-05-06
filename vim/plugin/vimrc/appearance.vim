@@ -124,7 +124,7 @@ let s:prev_status_line_mode = 'n'
 
 function! s:change_status_line_for_mode(m) abort
   if s:prev_status_line_mode == a:m
-    return
+    return ''
   endif
   let s:prev_status_line_mode = a:m
 
@@ -151,7 +151,8 @@ if g:colors_name ==# 'candle'
   autocmd vimrc_appearance InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
   autocmd vimrc_appearance InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
 
-  vnoremap <expr> <Esc> <SID>change_status_line_for_mode('n') . "\<Esc>"
+  snoremap <expr> <Esc> <SID>change_status_line_for_mode('n') . "\<Esc>"
+  xnoremap <expr> <Esc> <SID>change_status_line_for_mode('n') . "\<Esc>"
   nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
   nnoremap <expr> V <SID>change_status_line_for_mode('v') . 'V'
   nnoremap <expr> <C-v> <SID>change_status_line_for_mode('v') . "\<C-v>"
