@@ -101,8 +101,8 @@ if g:colors_name ==# 'candle'
   " snippet placeholder
   call candle#highlight('SnipPlaceholder', 'blue', 'dark_blue', '')
   autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('SnipPlaceholder', '{{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
-    \ call matchadd('SnipPlaceholder', '{{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
+    \ call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
+    \ call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
 
 
