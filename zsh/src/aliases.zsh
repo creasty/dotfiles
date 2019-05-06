@@ -25,6 +25,8 @@ alias sort='LC_ALL=C sort'
 
 alias :q='exit'
 
+alias path='echo -e ${PATH//:/\\n}'
+
 
 #  Global
 #-----------------------------------------------
@@ -128,6 +130,15 @@ ipf() {
   curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
 }
 
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+  alias "$method"="curl -X '$method'"
+done
+
+# Run `dig` and display the most useful info
+digga() {
+  dig +nocmd "$1" any +multiline +noall +answer
+}
+
 
 #  Docker
 #-----------------------------------------------
@@ -135,6 +146,7 @@ alias dk='docker'
 alias dkc='docker-compose'
 alias dkm='docker-machine'
 
+alias dk-ips="docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \//\t/'"
 alias dk-clean='docker-clean'
 
 
