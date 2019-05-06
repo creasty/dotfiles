@@ -4,9 +4,13 @@ function! vimrc#plugin#deoplete#util#on_completion() abort
     let l:completed_item = get(v:event, 'completed_item', {})
   endif
 
+  let l:word = get(l:completed_item, 'word', '')
+  let l:abbr = get(l:completed_item, 'abbr', '')
   let l:info = get(l:completed_item, 'info', '')
+  let l:kind = get(l:completed_item, 'kind', '')
+
   if empty(l:info)
-    let l:info = get(l:completed_item, 'abbr', '')
+    let l:info = l:abbr
   endif
   if empty(l:info)
     return
@@ -14,10 +18,14 @@ function! vimrc#plugin#deoplete#util#on_completion() abort
 
   echomsg l:info
 
-  let l:word = get(l:completed_item, 'word', '')
-  if l:word =~# '^.\+('
-    call s:complete_signature(l:info)
+  if l:kind !=# '' && l:kind !~# '^[FM]'
+    return
   endif
+  if l:word !~# '^.\+(' && l:info !~# '(.*)' && l:abbr !~# '(.*)'
+    return
+  endif
+
+  call s:complete_signature(l:info)
 endfunction
 
 function! s:complete_signature(info) abort
@@ -28,10 +36,20 @@ function! s:complete_signature(info) abort
   if len(l:line) >= l:pos[2]
     return
   endif
+  if l:line =~# ')$'
+    return
+  endif
+
+  if l:line !~# '($'
+    let l:line .= '('
+    let l:pos[2] += 1
+    call setline('.', l:line)
+    call setpos('.', l:pos)
+  endif
 
   let l:signature = s:parse_funcs(a:info, &filetype)
   if empty(l:signature)
-    call setline('.', l:line . ')')
+    call feedkeys(")\<Left>", 'n')
     return
   endif
 
@@ -41,7 +59,7 @@ function! s:complete_signature(info) abort
     return
   endif
 
-  let l:args = map(l:args, {i, a -> '{{+' . trim(l:a) . '+}}'}) " TODO: support named arguments
+  let l:args = map(l:args, {i, a -> '{'.'{+' . trim(l:a) . '+}}'}) " TODO: support named arguments
   let l:args = join(l:args, ', ') " FIXME: hardcoded delimiter
 
   call setline('.', l:line . l:args . ')')

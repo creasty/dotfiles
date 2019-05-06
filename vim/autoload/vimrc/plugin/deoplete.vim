@@ -22,7 +22,6 @@ call deoplete#custom#source('minisnip', 'rank', 900)
 let g:deoplete#sources#vim_lsp#show_info = 1
 
 call deoplete#custom#source('_', 'converters', [
-  \ 'converter_auto_paren',
   \ 'converter_remove_overlap',
   \ 'converter_truncate_abbr',
   \ 'converter_truncate_menu',
