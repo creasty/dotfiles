@@ -72,7 +72,6 @@ filetype plugin indent on
 "==============================================================================================
 if dein#tap('candle.vim')
   colorscheme candle
-  set background=dark
   set t_Co=256
   syntax enable
 endif
