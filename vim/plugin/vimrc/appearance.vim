@@ -12,11 +12,6 @@ augroup vimrc_appearance
   autocmd!
 augroup END
 
-" syntax highlight & color scheme
-set background=dark
-set t_Co=256
-syntax enable
-
 " always show statusline
 set laststatus=2
 
