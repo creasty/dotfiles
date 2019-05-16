@@ -24,8 +24,8 @@ homebrew:
     - qlmarkdown             # https://github.com/toland/qlmarkdown
     - qlstephen              # https://whomwah.github.io/qlstephen/
     - quicklook-json         # http://www.sagtau.com/quicklookjson.html
-    - sequel-pro             # https://www.sequelpro.com/
     - skype                  # https://www.skype.com/
+    - tableplus              # https://tableplus.io/
     - transmit               # https://panic.com/transmit/
     - tunnelbear             # https://www.tunnelbear.com/
     - vagrant                # https://www.vagrantup.com/
