@@ -52,6 +52,12 @@ Style/IfUnlessModifier:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
 #  Layout
 #-----------------------------------------------
 Layout/IndentHash:
@@ -59,3 +65,9 @@ Layout/IndentHash:
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
