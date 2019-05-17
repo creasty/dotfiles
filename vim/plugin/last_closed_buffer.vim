@@ -41,8 +41,7 @@ augroup last_closed_buffer
   autocmd vimrc BufLeave * call <SID>lcb_remember_on_leave()
 augroup END
 
-nmap <C-w>r <C-w><C-r>
-nnoremap <silent> <C-w><C-r> :call <SID>lcb_restore()<CR>
+nnoremap <silent> <Plug>(lcb-restore) :call <SID>lcb_restore()<CR>
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

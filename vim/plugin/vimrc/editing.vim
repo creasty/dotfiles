@@ -10,9 +10,6 @@ augroup vimrc_editing
   autocmd!
 augroup END
 
-" shortcut
-nmap <C-s> <C-w>
-
 " disable arrow keys
 nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
@@ -98,6 +95,8 @@ nnoremap tl :tags<CR>
 nnoremap <C-]> g<C-]>
 
 " tab pages / buffers
+nmap <C-s> <C-w>
+
 nmap <C-w><C-t> <C-w>t
 nnoremap <C-w>t :tabnew<CR>
 
@@ -116,6 +115,9 @@ nnoremap <C-w>d :quit<CR>
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
 
+nmap <C-w>r <Plug>(lcb-restore)
+nmap <C-w><C-r> <Plug>(lcb-restore)
+
 " search selection
 vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
@@ -126,8 +128,8 @@ vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
 " auto escaping
-cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
