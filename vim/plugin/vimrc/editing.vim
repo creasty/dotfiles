@@ -147,18 +147,6 @@ autocmd vimrc_editing User ClearSearchHighlight :
 autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
 nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
 
-" remove trailing spaces before saving
-autocmd vimrc_editing BufWritePre *
-  \ if &ft != 'markdown' |
-    \ :%s/\s\+$//ge |
-  \ endif
-
-" convert tabs to soft tabs if expandtab is set
-autocmd vimrc_editing BufWritePre *
-  \ if &et |
-    \ exec "%s/\t/" . repeat(' ', &tabstop) . "/ge" |
-  \ endif
-
 " back to the last line I edited
 autocmd vimrc_editing BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
