@@ -21,4 +21,4 @@ function! s:get_env() abort
   return l:env
 endfunction
 
-let vimrc#env = s:get_env()
+let g:vimrc#env = s:get_env()

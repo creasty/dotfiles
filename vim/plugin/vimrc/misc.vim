@@ -30,8 +30,8 @@ xnoremap <silent> im :<C-u>call vimrc#text_object#number(1)<CR>
 
 " edit configurations
 command! Vimrc edit $MYVIMRC
-command! Dotfiles exec 'lcd' vimrc#env.path.dotfiles
-command! MacVim exec 'lcd' vimrc#env.path.runtime
+command! Dotfiles exec 'lcd' g:vimrc#env.path.dotfiles
+command! MacVim exec 'lcd' g:vimrc#env.path.runtime
 
 " clean up hidden buffers
 command! CleanBuffers :call vimrc#util#clean_buffers()
