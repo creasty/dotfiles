@@ -42,6 +42,10 @@ except:
 `} = `!p snip.rv=match.group(1)`$0
 endsnippet
 
+snippet "(\S+)\.par" "(expr)" r
+(`!p snip.rv = match.group(1)`)$0
+endsnippet
+
 snippet "(\S+)\.if" "if expr" r
 if ${1:`!p snip.rv = match.group(1)`} {
 	$0
