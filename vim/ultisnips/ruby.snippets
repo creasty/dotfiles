@@ -52,7 +52,7 @@ endsnippet
 
 #  Postfix
 #-----------------------------------------------
-snippet "(\S+)\.var" "var_name = ..." r
+snippet "(\S+)\.var" "name = expr" r
 ${1:`!p
 element_name = match.group(1).lstrip('$@')
 ematch = re.search("([A-Za-z][A-Za-z0-9_]+?)s?[^A-Za-z0-9_]*?$", element_name)
@@ -60,22 +60,22 @@ try:
 	wmatch = re.search("([A-Za-z][A-Za-z0-9_]+)$", ematch.group(1))
 	snip.rv = wmatch.group(1).lower()
 except:
-	snip.rv = 'var'
+	snip.rv = 'name'
 `} = `!p snip.rv=match.group(1)`$0
 endsnippet
 
-snippet "(\S+)\.if" "if ..." r
+snippet "(\S+)\.if" "if expr" r
 if ${1:`!p snip.rv = match.group(1)`}
 	$0
 end
 endsnippet
 
-snippet "(\S+)\.else" "if ! ..." r
+snippet "(\S+)\.else" "if !expr" r
 if !${1:`!p snip.rv = match.group(1)`}
 	$0
 end
 endsnippet
 
-snippet "(\S+)\.format" "format(...)" r
+snippet "(\S+)\.format" "format(expr)" r
 format(${1:`!p snip.rv = match.group(1)`}, $0)
 endsnippet
