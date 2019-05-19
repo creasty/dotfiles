@@ -192,9 +192,6 @@ if dein#tap('vim-minisnip')
   " disable default mappings
   map <Plug>(minisnip-nop) <Plug>(minisnip)
   map <Plug>(minisnip-complete-nop) <Plug>(minisnip-complete)
-
-  " trigger with Tab in select mode
-  smap <silent> <expr> <Tab> minisnip#ShouldTrigger() ? "\<Esc>:call minisnip#Minisnip()\<CR>" : "<Nop>"
 endif
 
 if dein#tap('nerdtree')
