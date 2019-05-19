@@ -167,6 +167,17 @@ if dein#tap('mold.vim')
   autocmd vimrc User MoldTemplateLoadPost call vimrc#plugin#mold#template_after_load()
 endif
 
+if dein#tap('ultisnips')
+  let g:UltiSnipsSnippetDirectories = ['ultisnips']
+  let g:UltiSnipsRemoveSelectModeMappings = 0
+  let g:UltiSnipsEnableSnipMate = 0
+
+  let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips-expand)'
+  let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips-jump-forward)'
+  let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
+  let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
+endif
+
 if dein#tap('vim-lsp')
   call vimrc#plugin#lsp#init()
 endif

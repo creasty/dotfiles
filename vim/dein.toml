@@ -32,6 +32,9 @@ repo = 'sickill/vim-pasta'
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
 
+[[plugins]] # The ultimate snippet solution for Vim
+repo = 'SirVer/ultisnips'
+
 
 #  Completion
 #-----------------------------------------------
