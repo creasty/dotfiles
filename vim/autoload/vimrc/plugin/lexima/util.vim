@@ -63,17 +63,3 @@ function! vimrc#plugin#lexima#util#expand_section(trigger, token, leader, line, 
     execute 'normal! "_da>'
   end
 endfunction
-
-"  Completion
-"-----------------------------------------------
-function! vimrc#plugin#lexima#util#super_tab_completion() abort
-  if pumvisible()
-    return "\<C-r>=deoplete#close_popup()\<CR>"
-  elseif minisnip#ShouldTrigger()
-     return "\<Esc>:call minisnip#Minisnip()\<CR>"
-  elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-  else
-    return "\<C-r>=lexima#expand('<TAB>', 'i')\<CR>"
-  endif
-endfunction

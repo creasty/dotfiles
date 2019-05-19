@@ -1,0 +1,12 @@
+global !p
+def create_row_placeholders(snip):
+	placeholders_amount = int(snip.buffer[snip.line].strip())
+	snip.buffer[snip.line] = ''
+	anon_snippet_body = ' & '.join(['$' + str(i+1) for i in range(placeholders_amount)])
+	snip.expand_anon(anon_snippet_body)
+endglobal
+
+post_jump "create_row_placeholders(snip)"
+snippet "tr(\d+)" "latex table row variable" br
+`!p snip.rv = match.group(1)`
+endsnippet

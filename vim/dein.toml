@@ -32,6 +32,9 @@ repo = 'sickill/vim-pasta'
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
 
+[[plugins]] # The ultimate snippet solution for Vim
+repo = 'SirVer/ultisnips'
+
 
 #  Completion
 #-----------------------------------------------
@@ -55,7 +58,7 @@ depends = ['vim-lsp'] # + ['nvim-yarp', 'vim-hug-neovim-rpc']
 
 [[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
-depends = ['deoplete.nvim'] # + ['smartchr', 'vim-minisnip', 'emmet']
+depends = ['deoplete.nvim'] # + ['smartchr']
 
 
 #  Utils
