@@ -1,0 +1,81 @@
+global !p
+import re
+
+def write_instance_vars(arglist, snip):
+	args = []
+	for arg in arglist.split(','):
+		m = re.search(r'\s*(\w+)', arg)
+		if m:
+			args.append(m.group(1))
+
+	for arg in args:
+		snip += "@%s = %s" % (arg, arg)
+endglobal
+
+snippet init "def initialize" b
+def initialize$1`!p
+snip.rv = ""
+snip >> 1
+write_instance_vars(t[1], snip)
+`
+	$0
+end
+endsnippet
+
+snippet ###
+=begin
+$0
+=end
+endsnippet
+
+#  Block
+#-----------------------------------------------
+snippet "(\w+)\.each" ".each { |element| ... }" r
+`!p snip.rv = match.group(1)`.each { |${1:`!p match.group(1)[0]`}| $0 }
+endsnippet
+
+snippet "(\w+)\.eachdo" ".each do |element| ... end" r
+`!p snip.rv = match.group(1)`.each do |${1:`!p match.group(1)[0]`}|
+	$0
+end
+endsnippet
+
+snippet "(\w+)\.map" ".map { |element| ... }" r
+`!p snip.rv = match.group(1)`.each { |${1:`!p match.group(1).lower()[0]`}| $0 }
+endsnippet
+
+snippet "(\w+)\.mapdo" ".map do |element| ... end" r
+`!p snip.rv = match.group(1)`.map do |${1:`!p match.group(1)[0]`}|
+	$0
+end
+endsnippet
+
+#  Postfix
+#-----------------------------------------------
+snippet "(\S+)\.var" "var_name = ..." r
+${1:`!p
+element_name = match.group(1).lstrip('$@')
+ematch = re.search("([A-Za-z][A-Za-z0-9_]+?)s?[^A-Za-z0-9_]*?$", element_name)
+try:
+	wmatch = re.search("([A-Za-z][A-Za-z0-9_]+)$", ematch.group(1))
+	snip.rv = wmatch.group(1).lower()
+except:
+	snip.rv = 'var'
+`} = `!p snip.rv=match.group(1)`$0
+endsnippet
+
+snippet "(\S+)\.if" "if ..." r
+if ${1:`!p snip.rv = match.group(1)`}
+	$0
+end
+endsnippet
+
+snippet "(\S+)\.else" "if ! ..." r
+if !${1:`!p snip.rv = match.group(1)`}
+	$0
+end
+endsnippet
+
+snippet "(\S+)\.format" "format(...)" r
+format(${1:`!p snip.rv = match.group(1)`}, $0)
+endsnippet
