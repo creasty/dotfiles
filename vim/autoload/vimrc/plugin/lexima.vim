@@ -1,9 +1,4 @@
 function! vimrc#plugin#lexima#init() abort
-  inoremap <Plug>(deoplete-my-undo) <C-e><C-r>=deoplete#close_popup()<CR>
-  inoremap <Plug>(deoplete-my-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-  imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-  imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-  imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=deoplete#close_popup()\<CR>" : "\<CR>"
 endfunction
 
 let g:lexima_map_escape = ''
