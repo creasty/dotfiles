@@ -1,3 +1,0 @@
-create temp function {{+name+}}({{+args+}}) returns {{+type+}} as ((
-  {{-body-}}
-));

@@ -1,7 +1,0 @@
-create temp function d_window() returns int64 as ((
-  28
-));
-
-create temp function date_in_window(d date, wd date) returns bool as ((
-  d between date_sub(wd, interval d_window() - 1 day) and wd
-));{{--}}

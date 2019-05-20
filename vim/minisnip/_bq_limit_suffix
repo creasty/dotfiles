@@ -1,3 +1,0 @@
-create temp function limit_suffix(suffix string, start_date date, end_date date) returns bool as ((
-  suffix between format_date('%Y%m%d', start_date) and format_date('%Y%m%d', end_date)
-));{{--}}

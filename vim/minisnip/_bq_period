@@ -1,6 +1,0 @@
-create temp function d_start() returns date as ((
-  date_sub(current_date('+9'), interval 28 * 3 day)
-));
-create temp function d_end() returns date as ((
-  date_sub(current_date('+9'), interval 1 day)
-));{{--}}

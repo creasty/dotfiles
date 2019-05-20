@@ -1,7 +1,0 @@
-create temp function ts_in_period(ts timestamp, s int64, e int64) returns bool as ((
-  date(ts, '+9') between date_add(d_start(), interval s day) and date_add(d_end(), interval e day)
-));
-
-create temp function suffix_in_period(suffix string, s int64, e int64) returns bool as ((
-  suffix between format_date('%Y%m%d', date_add(d_start(), interval s day)) and format_date('%Y%m%d', date_add(d_end(), interval e day))
-));{{--}}

@@ -1,1 +1,0 @@
-format_date('{{+%Y%m%d+}}', {{+start+}})

@@ -1,7 +1,0 @@
-create temp function period_array() returns array<date> as ((
-  generate_date_array(
-    d_start(),
-    d_end(),
-    interval 1 day
-  )
-));{{--}}

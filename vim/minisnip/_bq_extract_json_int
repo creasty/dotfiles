@@ -1,3 +1,0 @@
-create temp function extract_json_int(json string, path string) returns int64 as ((
-  cast(regexp_extract(json_extract_scalar(json, path), r'\d+') as int64)
-));{{--}}

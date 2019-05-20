@@ -1,1 +1,0 @@
-format_timestamp('%F %T UTC', {{++}})
