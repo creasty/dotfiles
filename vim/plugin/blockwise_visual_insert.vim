@@ -6,9 +6,8 @@ let g:loaded_blockwise_visual_insert = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-" use I, A for all visual modes
-vnoremap <expr> I <SID>force_blockwise_visual('I')
-vnoremap <expr> A <SID>force_blockwise_visual('A')
+xnoremap <expr> I <SID>force_blockwise_visual('I')
+xnoremap <expr> A <SID>force_blockwise_visual('A')
 
 let s:blockwise_visual_paste = 0
 

@@ -20,14 +20,14 @@ endfunction
 
 function! vimrc#plugin#textmanip#init() abort
   " move selection
-  vmap <C-j> <Plug>(textmanip-move-down)
-  vmap <C-k> <Plug>(textmanip-move-up)
-  vmap <C-h> <Plug>(textmanip-move-left)
-  vmap <C-l> <Plug>(textmanip-move-right)
+  xmap <C-j> <Plug>(textmanip-move-down)
+  xmap <C-k> <Plug>(textmanip-move-up)
+  xmap <C-h> <Plug>(textmanip-move-left)
+  xmap <C-l> <Plug>(textmanip-move-right)
 
   " duplicate line
-  vmap <Space><C-j> <Plug>(textmanip-duplicate-down)
-  vmap <Space><C-k> <Plug>(textmanip-duplicate-up)
-  vmap <Space><C-h> <Plug>(textmanip-duplicate-left)
-  vmap <Space><C-l> <Plug>(textmanip-duplicate-right)
+  xmap <Space><C-j> <Plug>(textmanip-duplicate-down)
+  xmap <Space><C-k> <Plug>(textmanip-duplicate-up)
+  xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
+  xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 endfunction

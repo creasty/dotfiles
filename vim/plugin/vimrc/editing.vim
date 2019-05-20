@@ -18,9 +18,9 @@ nnoremap <Right> <Nop>
 
 " move cursor visually with long lines
 nmap j gj
-vmap j gj
+xmap j gj
 nmap k gk
-vmap k gk
+xmap k gk
 
 " paste
 inoremap <C-v> <C-r><C-p>*
@@ -34,8 +34,8 @@ nnoremap x "_x
 nnoremap X "_X
 nnoremap c "_c
 nnoremap C "_C
-vnoremap c "_c
-vnoremap x "_x
+xnoremap c "_c
+xnoremap x "_x
 
 " undo
 inoremap <C-u> <C-g>u<C-u>
@@ -51,8 +51,8 @@ nnoremap J mZJ`ZmZ
 nnoremap <silent> K ylpr<Enter>
 
 " reselect visual block after indent/outdent
-vnoremap < <gv
-vnoremap > >gv
+xnoremap < <gv
+xnoremap > >gv
 
 " indent/outdent
 inoremap <C-s><C-h> <C-d>
@@ -64,9 +64,9 @@ inoremap <C-s>l <C-t>
 nnoremap <Space>h g^
 nnoremap <Space>l g$
 nnoremap <Space>m %
-vnoremap <Space>h g^
-vnoremap <Space>l g$
-vnoremap <Space>m %
+xnoremap <Space>h g^
+xnoremap <Space>l g$
+xnoremap <Space>m %
 
 " insert blank lines without going into insert mode
 nnoremap <Space>o mZo<Esc>`ZmZ
@@ -82,7 +82,7 @@ map <Space>a ggVG
 nnoremap ZQ <Nop>
 
 " useless and annoying
-vnoremap K <Nop>
+xnoremap K <Nop>
 
 " sort lines inside block
 nnoremap <leader>sor ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
@@ -119,10 +119,10 @@ nmap <C-w>r <Plug>(lcb-restore)
 nmap <C-w><C-r> <Plug>(lcb-restore)
 
 " search selection
-vnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
+xnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
 " replace selection
-vnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+xnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
 nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
@@ -136,7 +136,7 @@ command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
 " numbering selection in visual-block mode
 nnoremap <silent> sc :ContinuousNumber <C-a><CR>
-vnoremap <silent> sc :ContinuousNumber <C-a><CR>
+xnoremap <silent> sc :ContinuousNumber <C-a><CR>
 command! -count -nargs=1 ContinuousNumber
   \ let c = col('.') |
   \ for n in range(1, <count>?<count>-line('.'):1) |

@@ -129,7 +129,7 @@ if dein#tap('vim-easy-align')
     \ },
   \ }
 
-  vnoremap <silent> L :EasyAlign<cr>
+  xnoremap <silent> L :EasyAlign<cr>
 endif
 
 if dein#tap('emmet-vim')
@@ -142,7 +142,7 @@ if dein#tap('emmet-vim')
 endif
 
 if dein#tap('operator-camelize.vim')
-  vmap C <Plug>(operator-camelize-toggle)
+  xmap C <Plug>(operator-camelize-toggle)
 endif
 
 if dein#tap('vim-operator-replace')
