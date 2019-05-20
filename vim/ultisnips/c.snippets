@@ -1,3 +1,5 @@
+extends clikestmt
+
 snippet def "ifndef define" b
 #ifndef ${1:SYMBOL}
 #define $1 ${2:value}
@@ -20,24 +22,6 @@ snippet struct "typedef struct" b
 typedef struct ${1:tag_name} {
 	$0
 } ${2:name};
-endsnippet
-
-snippet if "if (expr)" b
-if ($1) {
-	$0
-}
-endsnippet
-
-snippet for "for (expr)" b
-for ($1) {
-	$0
-}
-endsnippet
-
-snippet while "while (expr)" b
-while ($1) {
-	$0
-}
 endsnippet
 
 snippet main "Create main()" b
