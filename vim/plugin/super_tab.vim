@@ -67,13 +67,16 @@ endfunction
 
 "  Tab
 "-----------------------------------------------
-function! TriggerUltiSnipsOrLexima()
+function! InsCtrlR()
   call UltiSnips#ExpandSnippetOrJump()
   if g:ulti_expand_or_jump_res > 0
     return ''
   endif
 
-  return lexima#expand('<TAB>', 'i')
+  " return lexima#expand('<TAB>', 'i')
+
+  call feedkeys("\<Tab>", 'n')
+  return ''
 endfunction
 
 function! s:tab_i() abort
@@ -84,7 +87,7 @@ function! s:tab_i() abort
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
   else
-    return "\<C-r>=TriggerUltiSnipsOrLexima()\<CR>"
+    return "\<C-r>=InsCtrlR()\<CR>"
   endif
 endfunction
 
