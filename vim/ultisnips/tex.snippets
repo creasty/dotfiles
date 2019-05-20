@@ -10,3 +10,13 @@ post_jump "create_row_placeholders(snip)"
 snippet "tr(\d+)" "latex table row variable" br
 `!p snip.rv = match.group(1)`
 endsnippet
+
+snippet /(?<!%)%/ "Heading 1" br
+%=== $0
+%`!v repeat('=', 94)`
+endsnippet
+
+snippet /(?<!%)%%/ "Heading 2" br
+%  $0
+%`!v repeat('-', 47)`
+endsnippet

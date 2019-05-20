@@ -6,47 +6,6 @@ let g:lexima_map_escape = ''
 call lexima#set_default_rules()
 
 
-"  Section headers
-"-----------------------------------------------
-let s:rules = {
-  \ '//': [],
-  \ '#':  [],
-  \ '/':  ['haml'],
-  \ '%':  ['tex'],
-  \ '"':  ['vim'],
-  \ '--': ['sql', 'sql.bq', 'sql.pg'],
-\ }
-for [s:token, s:filetype] in items(s:rules)
-  let s:t1 = s:token[0]
-  let s:t2 = s:token[0] . s:token[0]
-
-  if s:token ==# '--'
-    call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '^\s*--\%#',
-      \ 'input':    "<Esc>:call vimrc#plugin#lexima#util#expand_section('--', '--', ' ', '-', 47)<CR>a",
-      \ 'filetype': s:filetype,
-    \ })
-  else
-    call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '^\s*' . s:t1 . '\%#',
-      \ 'input':    "<Esc>:call vimrc#plugin#lexima#util#expand_section('" . s:t1 . "', '" . s:token . "', '=== ', '=', 94)<CR>a",
-      \ 'filetype': s:filetype,
-    \ })
-    call lexima#add_rule({
-      \ 'char':     '<Tab>',
-      \ 'at':       '^\s*' . s:t2 . '\%#',
-      \ 'input':    "<Esc>:call vimrc#plugin#lexima#util#expand_section('" . s:t2 . "', '" . s:token . "', '  ', '-', 47)<CR>a",
-      \ 'filetype': s:filetype,
-    \ })
-  endif
-endfor
-unlet s:token
-unlet s:filetype
-unlet s:rules
-
-
 "  Quotes
 "-----------------------------------------------
 for s:quote in ['"', "'"]
