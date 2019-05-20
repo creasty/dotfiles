@@ -1,0 +1,59 @@
+snippet def "ifndef define" b
+#ifndef ${1:SYMBOL}
+#define $1 ${2:value}
+#endif$0
+endsnippet
+
+snippet do "do { } while (expr)" b
+do {
+	$0
+} while ($1);
+endsnippet
+
+snippet enum "typedef enum" b
+typedef enum {
+	$0
+} ${1:name};
+endsnippet
+
+snippet struct "typedef struct" b
+typedef struct ${1:tag_name} {
+	$0
+} ${2:name};
+endsnippet
+
+snippet if "if (expr)" b
+if ($1) {
+	$0
+}
+endsnippet
+
+snippet for "for (expr)" b
+for ($1) {
+	$0
+}
+endsnippet
+
+snippet while "while (expr)" b
+while ($1) {
+	$0
+}
+endsnippet
+
+snippet main "Create main()" b
+int
+main(int argc, const char *argv[])
+{
+	$0
+	return 0;
+}
+endsnippet
+
+snippet guard "Include guard" b
+#ifndef __${1:`!v toupper(substitute(expand('%:t'), '\W\+', '_', 'g'))`_LOADED}
+#define __$1
+
+$0
+
+#endif /* end of include guard: __$1 */
+endsnippet
