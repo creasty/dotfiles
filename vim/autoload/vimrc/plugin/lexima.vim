@@ -328,65 +328,6 @@ unlet s:epa
 
 "  Arrows
 "-----------------------------------------------
-for s:width in ['-', '=']
-  " right-arrow
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    s:width . '\%#',
-    \ 'input': '> ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    '\S' . s:width . '\%#',
-    \ 'input': '<BS> ' . s:width . '> ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    s:width . ' \%#',
-    \ 'input': '<BS>> ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    s:width . '>\%#',
-    \ 'input': '<BS><BS><' . s:width . ' ',
-  \ })
-
-  " left-arrow
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    '\(.....\)\?' . s:width . s:width . '\%#',
-    \ 'input': '<BS><BS><' . s:width . ' ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    '\S' . s:width . s:width . '\%#',
-    \ 'input': '<BS><BS><BS> <' . s:width . ' ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    s:width . s:width . ' \%#',
-    \ 'input': '<BS><BS><BS><' . s:width . ' ',
-  \ })
-
-  " toggle
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    s:width . '> \%#',
-    \ 'input': '<BS><BS><BS><' . s:width . ' ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    '<' . s:width . '\%#',
-    \ 'input': '<BS><BS>' . s:width . '> ',
-  \ })
-  call lexima#add_rule({
-    \ 'char':  '<Tab>',
-    \ 'at':    '<' . s:width . ' \%#',
-    \ 'input': '<BS><BS><BS>' . s:width . '> ',
-  \ })
-endfor
-unlet s:width
-
 " indent on return
 call lexima#add_rule({
   \ 'char':  '<CR>',

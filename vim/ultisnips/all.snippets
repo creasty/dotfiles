@@ -1,3 +1,43 @@
 snippet lorem "Lorem (446 chars)" b
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.$0
 endsnippet
+
+snippet /(\S?)(?<![<-])(-{1,2})\s?/ "Arrow" r
+`!p
+rv = ''
+
+non_ws = match.group(1)
+if non_ws:
+	rv += non_ws + ' '
+
+dash = len(match.group(2))
+rv += '-> ' if dash == 1 else '<- '
+
+snip.rv = rv
+`
+endsnippet
+
+snippet /(\S?)(?<![<=])(={1,2})\s?/ "Fat arrow" r
+`!p
+rv = ''
+
+non_ws = match.group(1)
+if non_ws:
+	rv += non_ws + ' '
+
+dash = len(match.group(2))
+rv += '=> ' if dash == 1 else '<= '
+
+snip.rv = rv
+`
+endsnippet
+
+snippet /([=-]>|<[=-])\s?/ "Toggle arrow" r
+`!p
+m = match.group(1)
+if m[0] == '<':
+	snip.rv = m[1] + '> '
+else:
+	snip.rv = '<' + m[0] + ' '
+`
+endsnippet
