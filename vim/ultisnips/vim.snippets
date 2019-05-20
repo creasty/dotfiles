@@ -1,0 +1,38 @@
+snippet augroup "augroup" b
+augroup ${1:name}
+	autocmd!
+	autocmd $0
+augroup END
+endsnippet
+
+snippet cpo "cpo guard" b
+let s:save_cpo = &cpo
+set cpo&vim
+
+$0
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+endsnippet
+
+snippet func "Create Function" b
+function! ${1:name}() abort
+	$0
+endfunction
+endsnippet
+
+snippet guard "Load guard" b
+if exists('g:loaded_${1:`!v tolower(substitute(expand('%:t'), '\W\+', '_', 'g'))`}')
+	finish
+endif
+
+let g:loaded_$1 = 1
+
+$0
+endsnippet
+
+snippet redir "redir ... END" b
+redir => ${1:var_name}
+	$0
+redir END
+endsnippet
