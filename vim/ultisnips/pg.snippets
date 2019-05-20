@@ -1,0 +1,24 @@
+snippet begin "begin ... end" b
+begin;
+	$0
+end;
+endsnippet
+
+snippet declare "declare variable" b
+declare ${1:var_name} ${2:type} = $0;
+endsnippet
+
+snippet do "do ... end" b
+do $$
+	${1:variables}
+begin
+	$0
+end $$;
+endsnippet
+
+snippet temptable "Create temporary table" b
+create temp table ${1:name} on commit drop as
+select
+	$0
+;
+endsnippet

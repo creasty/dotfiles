@@ -1,4 +1,0 @@
-create temp table {{+name+}} on commit drop as
-select
-  {{++}}
-;

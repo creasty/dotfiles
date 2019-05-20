@@ -1,1 +1,0 @@
-declare {{+var_name+}} {{+type+}} = {{+value+}};

@@ -1,5 +1,0 @@
-do $$
-  {{+variables+}}
-begin
-  {{+body+}}
-end $$;
