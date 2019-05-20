@@ -4,6 +4,46 @@
 # }
 # endsnippet
 
+snippet holder "Define holder field" b
+${1:name} struct {
+	result ${2:Type}
+	err    error
+	once   sync.Once
+}
+endsnippet
+
+snippet holderdo "Initialize holder" b
+holder := &c.${1:name}
+holder.once.Do(func() {
+	holder.result, holder.err = $0
+})
+return holder.result, holder.err
+endsnippet
+
+snippet if "if expr" b
+if $1 {
+	$0
+}
+endsnippet
+
+snippet for "for expr" b
+for $1 {
+	$0
+}
+endsnippet
+
+snippet package "Define package" b
+package `!v expand('%:h:t')`$0
+endsnippet
+
+snippet mockgen "go:generate mockgen" b
+//go:generate mockgen -source=`!v expand('%:t:r')`.go -package `!v expand('%:h:t')` -destination=`!v expand('%:t:r')`_mock.go$0
+endsnippet
+
+snippet stringer "go:generate stringer" b
+//go:generate stringer -type=${1:Type}
+endsnippet
+
 #  Postfix
 #-----------------------------------------------
 snippet "(\S+)\.var" "name := expr" r

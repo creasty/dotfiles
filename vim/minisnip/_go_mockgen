@@ -1,1 +1,0 @@
-//go:generate mockgen -source={{+~expand('%:t:r')+}}.go -package {{+~expand('%:h:t')+}} -destination={{+~expand('%:t:r')+}}_mock.go{{++}}
