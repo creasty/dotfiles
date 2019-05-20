@@ -564,14 +564,6 @@ call lexima#add_rule({
 
 "  Markdown
 "-----------------------------------------------
-" horizontal rule
-call lexima#add_rule({
-  \ 'char':     '-',
-  \ 'at':       '^-\%#',
-  \ 'input':    "<C-r>=repeat('-', 80)<CR>",
-  \ 'filetype': ['markdown'],
-\ })
-
 " headering
 for s:d in ['-', '=']
   call lexima#add_rule({
