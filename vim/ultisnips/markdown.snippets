@@ -23,3 +23,9 @@ endglobal
 pre_expand "create_table(snip)"
 snippet "tb(\d+x\d+)" "Customizable table" br
 endsnippet
+
+snippet details "<details> tag" b
+<details><summary>${1:See details}</summary>
+$0
+</details><br>
+endsnippet
