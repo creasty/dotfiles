@@ -32,6 +32,13 @@ for $1 {
 }
 endsnippet
 
+# context "re.match('^\s+[^=]*err\s*:?=', snip.buffer[snip.line-1])"
+# snippet if "if expr" be
+# if err != nil {
+# 	$1
+# }
+# endsnippet
+
 snippet package "Define package" b
 package `!v expand('%:h:t')`$0
 endsnippet
