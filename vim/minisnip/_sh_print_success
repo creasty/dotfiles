@@ -1,3 +1,0 @@
-print_success() {
-  printf -- "\e[0;32m[Success]\e[0m $@\n"
-}{{++}}

@@ -1,5 +1,0 @@
-at_exit() {
-  {{++}}
-}
-trap at_exit EXIT
-trap 'trap - EXIT; at_exit; exit -1' SIGHUP SIGINT SIGTERM

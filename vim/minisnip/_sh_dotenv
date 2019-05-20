@@ -1,5 +1,0 @@
-if [ -f .env ]; then
-  set -o allexport
-  eval "$(cat .env | grep -v '^#')"
-  set +o allexport
-fi{{++}}

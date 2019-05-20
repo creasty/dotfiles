@@ -1,5 +1,0 @@
-set -o allexport
-eval "$(envchain -l -v {{++}})"
-set +o allexport
-
-{{++}}

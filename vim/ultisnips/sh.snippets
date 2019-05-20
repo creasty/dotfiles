@@ -1,0 +1,169 @@
+snippet if "if [ expr ]; then" b
+if [ $1 ]; then
+	$0
+fi
+endsnippet
+
+snippet elif "elif [ expr ]; then" b
+elif [ $1 ]; then
+	$0
+endsnippet
+
+snippet case "case" b
+case ${1:expr} in
+	$0
+esac
+endsnippet
+
+snippet warn "Print message to stderr" b
+echo '$0' 1>&2
+endsnippet
+
+snippet fatal "Print error and exit" b
+echo '$0' 1>&2
+exit 1
+endsnippet
+
+snippet ask "ask()" b
+ask() {
+	echo -n "\$1"
+	read REPLY
+}
+endsnippet
+
+snippet cdrt "cd to the script's location" b
+cd "$(dirname \$0)/.."$0
+endsnippet
+
+snippet command "Check if a command is available" b
+command -v '$0' > /dev/null 2>&1
+endsnippet
+
+snippet dotenv "Load .env file" b
+if [ -f .env ]; then
+	set -o allexport
+	eval "\$(cat .env | grep -v '^#')"
+	set +o allexport
+fi$0
+endsnippet
+
+snippet envchain "Load envchain" b
+set -o allexport
+eval "$(envchain -l -v ${1:namespace})"
+set +o allexport
+$0
+endsnippet
+
+snippet do_help "do_help()" b
+do_help() {
+	cat "\$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+	exit 1
+}$0
+endsnippet
+
+snippet errifout "Error if there's output" b
+awk '{ e = 1; print \$0 } END { if (e) exit(1) }'$0
+endsnippet
+
+snippet getopts "while getopts" b
+while getopts ${1:options} OPT;; do
+	# Refer \$OPTARG to retrieve a value
+	case "\$OPT" in
+		$0
+	esac
+done
+
+shift \$((OPTIND - 1))
+endsnippet
+
+snippet parse_opt "Custome option parser" b
+parse_opt() {
+	case "\$1" in
+		${1:opt_name})
+			$0
+			return ${2:1}
+			;;
+	esac
+
+	echo "Invalid option: \$1" 1>&2
+	exit 1
+}
+
+while (( \$# > 0 )); do
+	case "\$1" in
+		--) shift; break ;;
+		--*)
+			parse_opt "\${1:2}" "\${@:2}" || shift \$?
+			;;
+		-*)
+			if [[ "\$1" =~ ^-[a-z0-9]{2,}\$ ]]; then
+				while read -n1 c && [ -n "\$c" ]; do
+					parse_opt "\$c" '' || true
+				done <<< "\${1:1}"
+				shift
+			else
+				parse_opt "\${1:1}" "\${@:2}" || shift \$?
+			fi
+			;;
+		*) break ;;
+	esac
+done
+endsnippet
+
+snippet line "Iterate each line" b
+while IFS= read -r line; do
+	$0
+done
+endsnippet
+
+snippet print_info "print_info()" b
+print_info() {
+	printf -- "\e[0;34m[Info]\e[0m \$@\n" 1>&2
+}$0
+endsnippet
+
+snippet print_error "print_success()" b
+print_success() {
+	printf -- "\e[0;32m[Success]\e[0m \$@\n" 1>&2
+}$0
+endsnippet
+
+snippet print_error "print_error()" b
+print_error() {
+	printf -- "\e[0;31m[Error]\e[0m \$@\n" 1>&2
+}$0
+endsnippet
+
+snippet print_status "print_status()" b
+print_status() {
+	if [ \$1 -eq 0 ]; then
+		print_success "OK"
+	else
+		print_info "\$2"
+	fi
+}$0
+endsnippet
+
+snippet section "section()" b
+section() {
+	printf -- "\e[33m==> \$@\e[0m\n"
+}$0
+endsnippet
+
+snippet subsection "subsection" b
+subsection() {
+	printf -- "\e[34m--> \$@\e[0m\n"
+}$0
+endsnippet
+
+snippet teepipe "Debug output while piping" b
+awk '{ print \$0; print \$0 > "/dev/stderr" }'$0
+endsnippet
+
+snippet trap "trap and at_exit" b
+at_exit() {
+	$0
+}
+trap at_exit EXIT
+trap 'trap - EXIT; at_exit; exit -1' SIGHUP SIGINT SIGTERM
+endsnippet
