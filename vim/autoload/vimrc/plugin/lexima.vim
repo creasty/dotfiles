@@ -259,13 +259,6 @@ call lexima#add_rule({
   \ 'input': '<Esc>ddO',
 \ })
 
-" member access
-call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '\w\(\.\|->\)\%#',
-  \ 'input': "<C-r>=smartchr#loop('.', '->')<CR>",
-\ })
-
 " nesting
 for s:pa in ['()', '[]', '{}']
   call lexima#add_rule({
@@ -346,34 +339,6 @@ call lexima#add_rule({
   \ 'at':       '\%#',
   \ 'input':    "<C-r>=smartchr#loop(', ', ',')<CR>",
 \ })
-
-
-"  C
-"-----------------------------------------------
-" include
-call lexima#add_rule({
-  \ 'char':     '<Space>',
-  \ 'at':       '^#include\%#',
-  \ 'input':    ' <><Left>',
-  \ 'filetype': ['c', 'cpp', 'objc'],
-\ })
-
-" member access on pointer `->`
-call lexima#add_rule({
-  \ 'char':     ',',
-  \ 'at':       '\(........\)\?\w\+[\.,]\%#',
-  \ 'input':    '<BS>->',
-  \ 'filetype': ['c', 'cpp', 'objc'],
-\ })
-for s:at in split('_abcdefghijklmnopqrstuvwxyz', '.\zs\ze.')
-  call lexima#add_rule({
-    \ 'char':     s:at,
-    \ 'at':       '\(........\)\?\w\+\.\.\%#',
-    \ 'input':    '<BS><BS>->' . s:at,
-    \ 'filetype': ['c', 'cpp', 'objc'],
-  \ })
-endfor
-unlet s:at
 
 
 "  Vim

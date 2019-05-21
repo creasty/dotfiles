@@ -42,3 +42,11 @@ $0
 
 #endif /* end of include guard: __$1 */
 endsnippet
+
+snippet /#include / "Include" brA
+#include <$0>
+endsnippet
+
+snippet /(\w+)\.\.(\w)/ "Description" rA
+`!p snip.rv = match.group(1) + '->' + match.group(2)`
+endsnippet
