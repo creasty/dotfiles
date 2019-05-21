@@ -8,21 +8,22 @@ def write_instance_vars(arglist, snip):
 		if m:
 			args.append(m.group(1))
 
+	snip.rv = ""
+	snip >> 1
+
 	for arg in args:
 		snip += "@%s = %s" % (arg, arg)
 endglobal
 
 snippet init "def initialize" b
 def initialize$1`!p
-snip.rv = ""
-snip >> 1
 write_instance_vars(t[1], snip)
 `
 	$0
 end
 endsnippet
 
-snippet ###
+snippet ### "Document comment" b
 =begin
 $0
 =end

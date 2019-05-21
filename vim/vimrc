@@ -146,8 +146,12 @@ if dein#tap('operator-camelize.vim')
 endif
 
 if dein#tap('vim-operator-replace')
-  map r <Plug>(operator-replace)
-  noremap R r
+  nmap r <Plug>(operator-replace)
+  xmap r <Plug>(operator-replace)
+  omap r <Plug>(operator-replace)
+  nnoremap R r
+  xnoremap R r
+  onoremap R r
 endif
 
 if dein#tap('lexima.vim')

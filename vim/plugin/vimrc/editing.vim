@@ -76,7 +76,7 @@ nnoremap <Space>O mZO<Esc>`ZmZ
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " select all
-map <Space>a ggVG
+nnoremap <Space>a ggVG
 
 " avoid suicide
 nnoremap ZQ <Nop>

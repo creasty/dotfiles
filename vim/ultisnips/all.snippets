@@ -6,31 +6,27 @@ endsnippet
 
 snippet /(\S?)(?<![<-])(-{1,2})\s?/ "Arrow" r
 `!p
-rv = ''
+snip.rv = ''
 
 non_ws = match.group(1)
 if non_ws:
-	rv += non_ws + ' '
+	snip.rv += non_ws + ' '
 
 dash = len(match.group(2))
-rv += '-> ' if dash == 1 else '<- '
-
-snip.rv = rv
+snip.rv += '-> ' if dash == 1 else '<- '
 `
 endsnippet
 
 snippet /(\S?)(?<![<=])(={1,2})\s?/ "Fat arrow" r
 `!p
-rv = ''
+snip.rv = ''
 
 non_ws = match.group(1)
 if non_ws:
-	rv += non_ws + ' '
+	snip.rv += non_ws + ' '
 
 dash = len(match.group(2))
-rv += '=> ' if dash == 1 else '<= '
-
-snip.rv = rv
+snip.rv += '=> ' if dash == 1 else '<= '
 `
 endsnippet
 
