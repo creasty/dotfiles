@@ -5,6 +5,33 @@ let g:lexima_map_escape = ''
 
 call lexima#set_default_rules()
 
+function! s:disable_inside_string(char) abort
+  call lexima#add_rule({
+    \ 'char':  a:char,
+    \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
+    \ 'input': a:char,
+  \ })
+  call lexima#add_rule({
+    \ 'char':  a:char,
+    \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
+    \ 'input': a:char,
+  \ })
+  call lexima#add_rule({
+    \ 'char':  a:char,
+    \ 'at':    '\%#',
+    \ 'input': a:char,
+    \ 'syntax': ['String'],
+  \ })
+endfunction
+
+function! s:disable_inside_regexp(char) abort
+  call lexima#add_rule({
+    \ 'char':  a:char,
+    \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
+    \ 'input': a:char,
+  \ })
+endfunction
+
 
 "  Quotes
 "-----------------------------------------------
@@ -25,7 +52,7 @@ for s:quote in ['"', "'"]
     \ 'input': '<Right>',
   \ })
 
-  call vimrc#plugin#lexima#util#disable_inside_regexp(s:quote)
+  call s:disable_inside_regexp(s:quote)
 endfor
 unlet s:quote
 
@@ -79,8 +106,8 @@ for [s:char, s:rule] in items(s:rules)
     \ 'input': '<BS><C-r>=' . s:rule . '<CR>',
   \ })
 
-  call vimrc#plugin#lexima#util#disable_inside_string(s:char)
-  call vimrc#plugin#lexima#util#disable_inside_regexp(s:char)
+  call s:disable_inside_string(s:char)
+  call s:disable_inside_regexp(s:char)
 endfor
 
 unlet s:char
@@ -108,8 +135,8 @@ for s:op in ['+', '-', '/', '*', '=', '%']
     \ 'input': '<BS>' . s:op . ' ',
   \ })
 
-  call vimrc#plugin#lexima#util#disable_inside_string(s:op)
-  call vimrc#plugin#lexima#util#disable_inside_regexp(s:op)
+  call s:disable_inside_string(s:op)
+  call s:disable_inside_regexp(s:op)
 endfor
 unlet s:op
 unlet s:eop
@@ -142,7 +169,7 @@ call lexima#add_rule({
   \ 'at':    '^\s*/.*\%#',
   \ 'input': '/',
 \ })
-call vimrc#plugin#lexima#util#disable_inside_regexp('/')
+call s:disable_inside_regexp('/')
 
 " decrement/increment operators
 for s:op in ['+', '-']
@@ -560,26 +587,6 @@ call lexima#add_rule({
   \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
   \ 'filetype': ['go'],
 \ })
-
-
-"  Markdown
-"-----------------------------------------------
-" headering
-for s:d in ['-', '=']
-  call lexima#add_rule({
-    \ 'char':     s:d,
-    \ 'at':       '^\n\%#',
-    \ 'input':    s:d,
-    \ 'filetype': ['markdown'],
-  \ })
-  call lexima#add_rule({
-    \ 'char':     s:d,
-    \ 'at':       '^\%#',
-    \ 'input':    "<C-r>=vimrc#plugin#lexima#util#expand_markdown_headering('" . s:d . "')<CR>",
-    \ 'filetype': ['markdown'],
-  \ })
-endfor
-unlet s:d
 
 
 "  Command mode

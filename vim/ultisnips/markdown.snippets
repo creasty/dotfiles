@@ -1,4 +1,6 @@
 global !p
+from unicodedata import east_asian_width
+
 def create_table(snip):
     # retrieving single line from current string and treat it like tabstops count
     placeholders_string = snip.buffer[snip.line].strip()[2:].split("x",1)
@@ -18,6 +20,9 @@ def create_table(snip):
 
     # expand anonymous snippet
     snip.expand_anon(anon_snippet_table)
+
+def screen_len(s):
+	return sum(2 if east_asian_width(c) == 'W' else 1 for c in s)
 endglobal
 
 pre_expand "create_table(snip)"
@@ -30,6 +35,11 @@ $0
 </details><br>
 endsnippet
 
-snippet --- "Horizontal rule" b
+snippet /^-{3,}/ "Horizontal rule" r
 `!v repeat('-', 80)`
+endsnippet
+
+context "re.match('^[^\-=\s].*', snip.buffer[snip.line-1])"
+snippet /^[\-=]/ "Headering" remA
+`!p snip.rv = match.group(0) * screen_len(snip.context.group(0)) + "\n"`
 endsnippet
