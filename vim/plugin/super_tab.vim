@@ -67,7 +67,7 @@ endfunction
 
 "  Tab
 "-----------------------------------------------
-function! UltiSnips_IsExpandable() abort
+function! s:ultisnips_is_expandable() abort
   return !(
     \ col('.') <= 1
     \ || !empty(matchstr(getline('.'), '\%' . (col('.') - 1) . 'c\s'))
@@ -82,7 +82,7 @@ function! s:tab_i() abort
     return "\<Esc>:call SelectPlaceholder()\<CR>"
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-  elseif UltiSnips_IsExpandable()
+  elseif s:ultisnips_is_expandable()
     return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
   else
     " return lexima#expand('<TAB>', 'i')
