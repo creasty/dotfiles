@@ -70,7 +70,7 @@ endfunction
 function! s:ultisnips_is_expandable() abort
   return !(
     \ col('.') <= 1
-    \ || !empty(matchstr(getline('.'), '\%' . (col('.') - 1) . 'c\s'))
+    \ || !empty(matchstr(getline('.')[:col('.') - 1], '^\s\+$'))
     \ || empty(UltiSnips#SnippetsInCurrentScope())
     \ )
 endfunction
