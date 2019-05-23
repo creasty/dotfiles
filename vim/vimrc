@@ -163,7 +163,28 @@ if dein#tap('switch.vim')
 endif
 
 if dein#tap('vim-textmanip')
-  call vimrc#plugin#textmanip#init()
+  let g:textmanip_enable_mappings = 0
+
+  let g:textmanip_hooks = {}
+  function! g:textmanip_hooks.finish(tm) abort
+    let l:tm = a:tm
+    let l:helper = textmanip#helper#get()
+    if !l:tm.linewise
+      call l:helper.remove_trailing_WS(l:tm)
+    endif
+  endfunction
+
+  " move selection
+  xmap <C-j> <Plug>(textmanip-move-down)
+  xmap <C-k> <Plug>(textmanip-move-up)
+  xmap <C-h> <Plug>(textmanip-move-left)
+  xmap <C-l> <Plug>(textmanip-move-right)
+
+  " duplicate line
+  xmap <Space><C-j> <Plug>(textmanip-duplicate-down)
+  xmap <Space><C-k> <Plug>(textmanip-duplicate-up)
+  xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
+  xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 endif
 
 if dein#tap('mold.vim')
@@ -188,14 +209,6 @@ endif
 
 if dein#tap('deoplete.nvim')
   call vimrc#plugin#deoplete#init()
-endif
-
-if dein#tap('vim-minisnip')
-  let g:minisnip_backrefmarker = '='
-
-  " disable default mappings
-  map <Plug>(minisnip-nop) <Plug>(minisnip)
-  map <Plug>(minisnip-complete-nop) <Plug>(minisnip-complete)
 endif
 
 if dein#tap('nerdtree')
@@ -256,7 +269,6 @@ endif
 
 if dein#tap('vim-signature')
   " hide upper case marks
-  " 's' is used by vim-minisnip
   let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
 
   " highlight

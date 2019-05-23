@@ -23,8 +23,6 @@ call deoplete#custom#source('_', 'converters', [
 let g:deoplete#sources#vim_lsp#show_info = 1
 
 call deoplete#custom#source('buffer', 'min_pattern_length', 3)
-call deoplete#custom#source('minisnip', 'min_pattern_length', 1)
-call deoplete#custom#source('minisnip', 'rank', 900)
 call deoplete#custom#source('ultisnips', 'rank', 800)
 
 function! vimrc#plugin#deoplete#init() abort
