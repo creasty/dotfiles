@@ -67,12 +67,16 @@ endfunction
 
 "  Tab
 "-----------------------------------------------
-function! s:ultisnips_is_expandable() abort
-  return !(
-    \ col('.') <= 1
-    \ || !empty(matchstr(getline('.')[:col('.') - 1], '^\s\+$'))
-    \ || empty(UltiSnips#SnippetsInCurrentScope())
-    \ )
+function! InsCtrlR()
+  call UltiSnips#ExpandSnippetOrJump()
+  if g:ulti_expand_or_jump_res > 0
+    return ''
+  endif
+
+  " return lexima#expand('<TAB>', 'i')
+
+  call feedkeys("\<Tab>", 'n')
+  return ''
 endfunction
 
 function! s:tab_i() abort
@@ -82,12 +86,8 @@ function! s:tab_i() abort
     return "\<Esc>:call SelectPlaceholder()\<CR>"
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-  elseif s:ultisnips_is_expandable()
-    return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
   else
-    " return lexima#expand('<TAB>', 'i')
-    call feedkeys("\<Tab>", 'n')
-    return ''
+    return "\<C-r>=InsCtrlR()\<CR>"
   endif
 endfunction
 
