@@ -111,31 +111,22 @@ function! s:refresh_statusline() abort
   endfor
 endfunction
 
-if g:colors_name ==# 'candle'
-  autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
-endif
-
-let s:prev_status_line_mode = 'n'
-
-function! s:change_status_line_for_mode(m) abort
-  if s:prev_status_line_mode == a:m
-    return ''
-  endif
-  let s:prev_status_line_mode = a:m
+function! s:change_status_line_for_mode() abort
+  let l:m = g:mode_observer_current_mode
 
   let l:color =
-    \ a:m ==# 'i' ? 'blue' :
-    \ a:m ==# 'v' ? 'orange' :
-    \ a:m ==# 'r' ? 'purple' :
+    \ l:m ==# 'i' ? 'blue' :
+    \ l:m ==# 'v' ? 'orange' :
+    \ l:m ==# 'r' ? 'purple' :
     \ 'foreground'
 
   call candle#highlight('StatusLineMode', l:color, '', '')
   call candle#highlight('Cursor', '', l:color, '')
-
-  return ''
 endfunction
 
 if g:colors_name ==# 'candle'
+  autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
+
   autocmd vimrc_appearance VimEnter,Syntax *
     \ call candle#highlight('StatusLineMode', 'foreground', 'window', '') |
     \ call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '') |
@@ -143,16 +134,8 @@ if g:colors_name ==# 'candle'
     \ call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '') |
     \ call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
 
-  autocmd vimrc_appearance InsertEnter,InsertChange * call <SID>change_status_line_for_mode(v:insertmode)
-  autocmd vimrc_appearance InsertLeave,CursorHold * call <SID>change_status_line_for_mode(mode())
-
-  snoremap <expr> <Esc> <SID>change_status_line_for_mode('n') . "\<Esc>"
-  xnoremap <expr> <Esc> <SID>change_status_line_for_mode('n') . "\<Esc>"
-  nnoremap <expr> v <SID>change_status_line_for_mode('v') . 'v'
-  nnoremap <expr> V <SID>change_status_line_for_mode('v') . 'V'
-  nnoremap <expr> <C-v> <SID>change_status_line_for_mode('v') . "\<C-v>"
+  autocmd vimrc_appearance User ModeDidChange call <SID>change_status_line_for_mode()
 endif
-
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
