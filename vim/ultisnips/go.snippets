@@ -40,11 +40,11 @@ endsnippet
 # endsnippet
 
 snippet package "Define package" b
-package `!v expand('%:h:t')`$0
+package `!v expand('%:h:t')`
 endsnippet
 
 snippet mockgen "go:generate mockgen" b
-//go:generate mockgen -source=`!v expand('%:t:r')`.go -package `!v expand('%:h:t')` -destination=`!v expand('%:t:r')`_mock.go$0
+//go:generate mockgen -source=`!v expand('%:t:r')`.go -package `!v expand('%:h:t')` -destination=`!v expand('%:t:r')`_mock.go
 endsnippet
 
 snippet stringer "go:generate stringer" b
@@ -62,7 +62,7 @@ try:
 	snip.rv = wmatch.group(1).lower()
 except:
 	snip.rv = 'name'
-`} := `!p snip.rv=match.group(1)`$0
+`} := `!p snip.rv=match.group(1)`
 endsnippet
 
 snippet "(\S+)\.varr" "var name T = expr" r
@@ -74,7 +74,7 @@ try:
 	snip.rv = wmatch.group(1).lower()
 except:
 	snip.rv = 'name'
-`} ${2:Type} = `!p snip.rv=match.group(1)`$0
+`} ${2:Type} = `!p snip.rv=match.group(1)`
 endsnippet
 
 snippet "(\S+)\.const" "const name = expr" r
@@ -86,11 +86,11 @@ try:
 	snip.rv = wmatch.group(1).lower()
 except:
 	snip.rv = 'name'
-`} = `!p snip.rv=match.group(1)`$0
+`} = `!p snip.rv=match.group(1)`
 endsnippet
 
 snippet "(\S+)\.par" "(expr)" r
-(`!p snip.rv = match.group(1)`)$0
+(`!p snip.rv = match.group(1)`)
 endsnippet
 
 snippet "(\S+)\.if" "if expr" r

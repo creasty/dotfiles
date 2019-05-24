@@ -34,7 +34,7 @@ def self.$0
 endsnippet
 
 snippet pry "binding.pry" b
-binding.pry$0
+binding.pry
 endsnippet
 
 snippet r "attr_reader" b
@@ -82,11 +82,11 @@ try:
 	snip.rv = wmatch.group(1).lower()
 except:
 	snip.rv = 'name'
-`} = `!p snip.rv=match.group(1)`$0
+`} = `!p snip.rv=match.group(1)`
 endsnippet
 
 snippet "(\S+)\.par" "(expr)" r
-(`!p snip.rv = match.group(1)`)$0
+(`!p snip.rv = match.group(1)`)
 endsnippet
 
 snippet "(\S+)\.if" "if expr" r

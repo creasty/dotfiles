@@ -32,7 +32,7 @@ ask() {
 endsnippet
 
 snippet cdrt "cd to the script's location" b
-cd "$(dirname \$0)/.."$0
+cd "$(dirname \$0)/.."
 endsnippet
 
 snippet command "Check if a command is available" b
@@ -44,25 +44,24 @@ if [ -f .env ]; then
 	set -o allexport
 	eval "\$(cat .env | grep -v '^#')"
 	set +o allexport
-fi$0
+fi
 endsnippet
 
 snippet envchain "Load envchain" b
 set -o allexport
 eval "$(envchain -l -v ${1:namespace})"
 set +o allexport
-$0
 endsnippet
 
 snippet do_help "do_help()" b
 do_help() {
 	cat "\$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
 	exit 1
-}$0
+}
 endsnippet
 
 snippet errifout "Error if there's output" b
-awk '{ e = 1; print \$0 } END { if (e) exit(1) }'$0
+awk '{ e = 1; print \$0 } END { if (e) exit(1) }'
 endsnippet
 
 snippet getopts "while getopts" b
@@ -119,19 +118,19 @@ endsnippet
 snippet print_info "print_info()" b
 print_info() {
 	printf -- "\e[0;34m[Info]\e[0m \$@\n" 1>&2
-}$0
+}
 endsnippet
 
 snippet print_error "print_success()" b
 print_success() {
 	printf -- "\e[0;32m[Success]\e[0m \$@\n" 1>&2
-}$0
+}
 endsnippet
 
 snippet print_error "print_error()" b
 print_error() {
 	printf -- "\e[0;31m[Error]\e[0m \$@\n" 1>&2
-}$0
+}
 endsnippet
 
 snippet print_status "print_status()" b
@@ -141,23 +140,23 @@ print_status() {
 	else
 		print_info "\$2"
 	fi
-}$0
+}
 endsnippet
 
 snippet section "section()" b
 section() {
 	printf -- "\e[33m==> \$@\e[0m\n"
-}$0
+}
 endsnippet
 
 snippet subsection "subsection" b
 subsection() {
 	printf -- "\e[34m--> \$@\e[0m\n"
-}$0
+}
 endsnippet
 
 snippet teepipe "Debug output while piping" b
-awk '{ print \$0; print \$0 > "/dev/stderr" }'$0
+awk '{ print \$0; print \$0 > "/dev/stderr" }'
 endsnippet
 
 snippet trap "trap and at_exit" b

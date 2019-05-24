@@ -21,14 +21,13 @@ function! ${1:name}() abort
 endfunction
 endsnippet
 
-snippet guard "Load guard" b
+snippet guard "Load guard" bm
 if exists('g:loaded_${1:`!v tolower(substitute(expand('%:t'), '\W\+', '_', 'g'))`}')
 	finish
 endif
 
 let g:loaded_$1 = 1
 
-$0
 endsnippet
 
 snippet redir "redir ... END" b
