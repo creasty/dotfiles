@@ -52,6 +52,11 @@ nnoremap g0 :NextFile<CR>
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
+command! Profile
+  \ profile start ~/vim_profile.log |
+  \ profile func * |
+  \ profile! file *
+
 " create directories if not exist
 autocmd vimrc_misc BufWritePre *
  \ call vimrc#util#mkdir(expand('<afile>:p:h'))
