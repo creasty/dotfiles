@@ -245,15 +245,14 @@ endif
 if dein#tap('vim-quickrun')
   let g:quickrun_config = {}
   let g:quickrun_config['_'] = {
-    \ 'runner':                        'job',
-    \ 'outputter/buffer/split':        ':botright 15sp',
-    \ 'outputter/buffer/running_mark': '',
+    \ 'runner': 'job',
+    \ 'outputter/buffer/split': ':botright 15sp',
   \ }
   let g:quickrun_config['ruby.rspec'] = {
-    \ 'type':    'ruby.rspec',
+    \ 'type': 'ruby.rspec',
     \ 'command': 'rspec',
-    \ 'cmdopt':  'bundle exec',
-    \ 'exec':    '%o %c %s',
+    \ 'cmdopt': 'bundle exec',
+    \ 'exec': '%o %c %s',
   \ }
 
   nmap <Leader>r <Plug>(quickrun)
