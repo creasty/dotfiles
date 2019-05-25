@@ -4,11 +4,13 @@
 - name: install golang
   homebrew:
     name:  go
-    state: present
+    state: latest
 
 - name: install packages
   command: |
      bash -lc 'go get -u {{ item | quote }}'
+  environment:
+    GO111MODULE: off
   with_items: '{{ golang.packages }}'
   when: golang.packages
 
@@ -16,6 +18,8 @@
     - name: optimize goimports | install
       command: |
         bash -lc 'go get -u {{ item | quote }}'
+      environment:
+        GO111MODULE: off
       with_items:
         - github.com/monochromegane/dragon-imports/...
         - github.com/pwaller/goimports-update-ignore
