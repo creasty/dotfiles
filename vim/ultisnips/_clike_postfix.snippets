@@ -3,37 +3,37 @@ snippet "(\S+)\.par" "(expr)" r
 endsnippet
 
 snippet "(\S+)\.if" "if (expr)" r
-if (${1:`!p snip.rv = match.group(1)`}) {
+if (`!p snip.rv = match.group(1)`) {
 	$0
 }
 endsnippet
 
 snippet "(\S+)\.else" "if (!expr)" r
-if (!${1:`!p snip.rv = match.group(1)`}) {
+if (!`!p snip.rv = match.group(1)`) {
 	$0
 }
 endsnippet
 
 snippet "(\S+)\.(null|nil)" "if (expr == null)" r
-if (${1:`!p snip.rv = match.group(1)`} == null) {
+if (`!p snip.rv = match.group(1)` == null) {
 	$0
 }
 endsnippet
 
 snippet "(\S+)\.(notnull|notnil|nn)" "if (expr != null)" r
-if (${1:`!p snip.rv = match.group(1)`} != null) {
+if (`!p snip.rv = match.group(1)` != null) {
 	$0
 }
 endsnippet
 
 snippet "(\S+)\.while" "while (expr)" r
-while (${1:`!p snip.rv = match.group(1)`}) {
+while (`!p snip.rv = match.group(1)`) {
 	$0
 }
 endsnippet
 
 snippet "(\S+)\.switch" "switch (expr)" r
-switch (${1:`!p snip.rv = match.group(1)`}) {
+switch (`!p snip.rv = match.group(1)`) {
 	$0
 }
 endsnippet
