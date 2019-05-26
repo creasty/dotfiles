@@ -107,7 +107,12 @@ def get_last_separation_style(text, column, op):
 		return 0
 
 def create_line_context(snip):
-	if get_last_separation_style(snip.buffer[snip.line], snip.column, '-') == 0:
+	text = snip.buffer[snip.line]
+
+	if text[snip.column] == ' ':
+		return None
+
+	if get_last_separation_style(text, snip.column, '-') == 0:
 		return None
 
 	if get_syntactical_context(snip.line, snip.column):
@@ -118,6 +123,6 @@ def create_line_context(snip):
 endglobal
 
 context "create_line_context(snip)"
-snippet /([^\-\+\*\/<>\|&\?%=^~:! ])([\-\+\*\/<>\|&\?%=^~:! ]+)/ "Operators" reA
+snippet /([^\-\+\*\/<>\|&\?%=\^~:! ])([\-\+\*\/<>\|&\?%=\^~:! ]+)/ "Operators" reA
 `!p snip.rv = space_operators(snip, match.group(1), match.group(2))`
 endsnippet
