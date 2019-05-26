@@ -1,0 +1,62 @@
+priority -1
+
+global !p
+import re
+
+def space_operators(snip, operand, op):
+	trailing_space = ''
+
+	trailing_space_m = re.search(r'\s+$', op)
+	if trailing_space_m:
+		trailing_space = trailing_space_m.group(0)
+		op = op[:-len(trailing_space)]
+
+	if re.match(r'^\?(?!\?)|!(?!!)', op):
+		# a suffix operator: `operand?` `operand!`
+		operand += op[1]
+		op = op[1:]
+
+	# 0: no spacing
+	# 1: space left
+	# 2: space around
+	separation = 1 if len(op) > 0 and op[0] == ' ' else 0
+	op = op.replace(' ', '')
+
+	if op == '':
+		pass
+	elif op == ':':
+		pass
+	elif operand in {'(', '[', '{'}:
+		separation = 0 # the beginning of expression
+	elif op == '++' and separation > 0:
+		separation = 0 # a suffix operator: operand++
+	elif op == '--' and separation > 0:
+		separation = 0 # a suffix operator: operand--
+	elif op == '+++' and separation == 0:
+		op = '++'
+		separation = 2 # convert to an infix operator: operand ++ operand
+	elif op == '---' and separation == 0:
+		op = '--'
+		separation = 2 # convert to an infix operator: operand -- operand
+	else:
+		separation = 2
+
+	op = re.sub(r'([=]+)', r' \1 ', op) # group equals
+	op = re.sub(r'([!]) = ', r' \1= ', op) # compound comparators (left)
+	op = re.sub(r' = ([~])', r' =\1 ', op) # compound comparators (right)
+	op = re.sub(r' (!=|==) ([#])', r' \1\2 ', op) # comparators with modifier
+	op = re.sub(r'(?:^| )([\+\-\*/%\^~:]|([\|&\?])\2?|<<|>>) = ', r' \1= ', op) # compound assignment operators
+
+	op = op.strip()
+
+	if separation > 0:
+		op = ' ' + op
+	if separation > 1 and len(trailing_space) == 0:
+		op += ' '
+
+	return operand + op + trailing_space
+endglobal
+
+snippet /([^\-\+\*\/<>\|&\?%=^~:! ])([\-\+\*\/<>\|&\?%=^~:! ]+)/ "Operators" rA
+`!p snip.rv = space_operators(snip, match.group(1), match.group(2))`
+endsnippet
