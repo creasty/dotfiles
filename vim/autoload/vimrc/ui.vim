@@ -104,6 +104,11 @@ function! vimrc#ui#status_line(w, cw) abort
     let l:l1 += [denite#get_status('sources')]
   endif
 
+  let l:completed_item_info = getbufvar(l:bufnr, 'completed_item_info', '')
+  if l:active && !empty(l:completed_item_info)
+    let l:l1 += [l:completed_item_info]
+  endif
+
   " r1
   if l:active
     let l:diagnostics = {

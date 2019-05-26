@@ -32,4 +32,5 @@ function! vimrc#plugin#deoplete#init() abort
     \ call deoplete#custom#source('_', 'is_debug_enabled', 1)
 
   autocmd vimrc CompleteDone * :call vimrc#plugin#deoplete#util#on_completion()
+  autocmd vimrc CursorHold * unlet! b:completed_item_info
 endfunction

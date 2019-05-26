@@ -16,7 +16,7 @@ function! vimrc#plugin#deoplete#util#on_completion() abort
     return
   endif
 
-  echomsg l:info
+  let b:completed_item_info = l:info
 
   if l:kind !=# '' && l:kind !~# '^[FM]'
     return
