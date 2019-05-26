@@ -55,8 +55,69 @@ def space_operators(snip, operand, op):
 		op += ' '
 
 	return operand + op + trailing_space
+
+def get_syntax_names(l, c):
+	try:
+		syntax_stack = vim.eval('synstack({}, {})'.format(l + 1, c + 1))
+	except:
+		return []
+
+	names = []
+	for syn_id in syntax_stack:
+		names.append(vim.eval('synIDattr(synIDtrans({}), "name")'.format(syn_id)))
+
+	return names
+
+def get_syntactical_context(l, c):
+	names = get_syntax_names(l, c)
+
+	for name in names:
+		if re.search('reg(ular)?ex', name, re.IGNORECASE):
+			return 'regexp'
+		elif re.search('htmltag', name, re.IGNORECASE):
+			return 'tag'
+		elif re.search('string', name, re.IGNORECASE):
+			return 'string'
+
+	return None
+
+def get_last_separation_style(text, column, op):
+	if column == 0:
+		return -1
+
+	if text[column] != op:
+		return -1
+
+	pos = text.rfind(op, 0, column)
+	if pos == -1:
+		return -1
+
+	l = text[pos - 1] if pos > 0 else ''
+	r = text[pos + 1] if pos < column else ''
+
+	if l == op:
+		return -1
+
+	if l == ' ':
+		if r == ' ':
+			return 2
+		else:
+			return 1
+	else:
+		return 0
+
+def create_line_context(snip):
+	if get_last_separation_style(snip.buffer[snip.line], snip.column, '-') == 0:
+		return None
+
+	if get_syntactical_context(snip.line, snip.column):
+		return None
+
+	return {"space_op": True}
+
 endglobal
 
-snippet /([^\-\+\*\/<>\|&\?%=^~:! ])([\-\+\*\/<>\|&\?%=^~:! ]+)/ "Operators" rA
+context "create_line_context(snip)"
+snippet /([^\-\+\*\/<>\|&\?%=^~:! ])([\-\+\*\/<>\|&\?%=^~:! ]+)/ "Operators" reA
 `!p snip.rv = space_operators(snip, match.group(1), match.group(2))`
 endsnippet

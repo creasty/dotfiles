@@ -5,25 +5,6 @@ let g:lexima_map_escape = ''
 
 call lexima#set_default_rules()
 
-function! s:disable_inside_string(char) abort
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#',
-    \ 'input': a:char,
-  \ })
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
-    \ 'input': a:char,
-  \ })
-  call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '\%#',
-    \ 'input': a:char,
-    \ 'syntax': ['String'],
-  \ })
-endfunction
-
 function! s:disable_inside_regexp(char) abort
   call lexima#add_rule({
     \ 'char':  a:char,
