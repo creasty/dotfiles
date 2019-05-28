@@ -173,6 +173,22 @@ whiche() {
 }
 
 
+#  Open Xcode project file
+#-----------------------------------------------
+openx() {
+  if [ -n "$(find . -maxdepth 1 -name '*.xcworkspace' -print -quit)" ]; then
+    echo 'Opening workspace...'
+    open *.xcworkspace
+  elif [ -n "$(find . -maxdepth 1 -name '*.xcodeproj' -print -quit)" ]; then
+    echo 'Opening project...'
+    open *.xcodeproj
+  else
+    echo 'Nothing found'
+    exit 1
+  fi
+}
+
+
 #=== Peco
 #==============================================================================================
 _peco_select() {
