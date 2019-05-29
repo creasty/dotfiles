@@ -60,7 +60,13 @@ Style/NumericPredicate:
 
 #  Layout
 #-----------------------------------------------
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
+  EnforcedStyle: consistent
+
+Layout/IndentFirstArrayElement:
+  EnforcedStyle: consistent
+
+Layout/IndentFirstParameter:
   EnforcedStyle: consistent
 
 Layout/MultilineMethodCallIndentation:
