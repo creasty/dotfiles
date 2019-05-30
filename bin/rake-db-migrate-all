@@ -39,7 +39,7 @@ main() {
 
   find ./db -type d -name '*migrate' \
     | xargs -n1 -I{} basename {} \
-    | sed -e 's/_migrate$//' -e 's/migrate$/database/' \
+    | sed -e 's/migrate$/db/' \
     | migrate_databases $migration_cmd
 }
 
