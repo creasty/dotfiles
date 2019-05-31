@@ -9,20 +9,13 @@ call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>
 
 "  Angle brackets
 "-----------------------------------------------
-call lexima#add_rule({ 'char': '<', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
-call lexima#add_rule({ 'char': '<', 'at': '\\\%#' })
-call lexima#add_rule({ 'char': '>', 'at': '<%#>', 'leave': 1 })
-call lexima#add_rule({ 'char': '<BS>', 'at': '<%#>', 'delete': 1 })
+call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
+call lexima#add_rule({ 'char': '<lt>', 'at': '\\\%#' })
+call lexima#add_rule({ 'char': '>', 'at': '[^>]\%#>', 'leave': 1 })
+call lexima#add_rule({ 'char': '<BS>', 'at': '<\%#>', 'delete': 1 })
 call lexima#add_rule({ 'char': '>', 'at': '< \%#', 'input': '<BS>', 'input_after': '>' })
-
-" sql not <>
-" call lexima#add_rule({
-"   \ 'char':     '>',
-"   \ 'at':       '< \%#',
-"   \ 'input':    '<BS>><Space>',
-"   \ 'filetype': ['sql'],
-"   \ 'priority': 1,
-" \ })
+call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
+call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
 
 "  Arrows
 "-----------------------------------------------
