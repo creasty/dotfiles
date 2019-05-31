@@ -7,9 +7,10 @@ call lexima#set_default_rules()
 
 function! s:disable_inside_regexp(char) abort
   call lexima#add_rule({
-    \ 'char':  a:char,
-    \ 'at':    '\(...........\)\?/\S.*\%#.*\S/',
-    \ 'input': a:char,
+    \ 'char':     a:char,
+    \ 'at':       '/\S.*\%#.*\S/',
+    \ 'input':    a:char,
+    \ 'priority': 10,
   \ })
 endfunction
 
@@ -18,19 +19,22 @@ endfunction
 "-----------------------------------------------
 for s:quote in ['"', "'"]
   call lexima#add_rule({
-    \ 'char':  s:quote,
-    \ 'at':    '\(.......\)\?\%#\w',
-    \ 'input': s:quote,
+    \ 'char':     s:quote,
+    \ 'at':       '\%#\w',
+    \ 'input':    s:quote,
+    \ 'priority': 5,
   \ })
   call lexima#add_rule({
-    \ 'char':  s:quote,
-    \ 'at':    '\(.......\)\?' . s:quote . '\%#',
-    \ 'input': s:quote,
+    \ 'char':     s:quote,
+    \ 'at':       s:quote . '\%#',
+    \ 'input':    s:quote,
+    \ 'priority': 5,
   \ })
   call lexima#add_rule({
-    \ 'char':  s:quote,
-    \ 'at':    '\(...........\)\?\%#' . s:quote,
-    \ 'input': '<Right>',
+    \ 'char':     s:quote,
+    \ 'at':       '\%#' . s:quote,
+    \ 'input':    '<Right>',
+    \ 'priority': 10,
   \ })
 
   call s:disable_inside_regexp(s:quote)
@@ -49,9 +53,10 @@ call lexima#add_rule({
 
 " transpose charactors before/after cursor
 call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '\(...........\)\?\w\%#\w',
-  \ 'input': '<Esc>"0ylxa<C-r>0<Left>',
+  \ 'char':     '<C-l>',
+  \ 'at':       '\w\%#\w',
+  \ 'input':    '<Esc>"0ylxa<C-r>0<Left>',
+  \ 'priority': 10,
 \ })
 
 " delete spaces around
@@ -81,14 +86,16 @@ call lexima#add_rule({
 " nesting
 for s:pa in ['()', '[]', '{}']
   call lexima#add_rule({
-    \ 'char':  '<C-l>',
-    \ 'at':    '\(...........\)\?' . escape(s:pa[1], '[]') . '\%#',
-    \ 'input': '<Esc>%i' . s:pa[0] . '<Esc><Right>%a' . s:pa[1],
+    \ 'char':     '<C-l>',
+    \ 'at':       escape(s:pa[1], '[]') . '\%#',
+    \ 'input':    '<Esc>%i' . s:pa[0] . '<Esc><Right>%a' . s:pa[1],
+    \ 'priority': 10,
   \ })
   call lexima#add_rule({
-    \ 'char':  '<C-l>',
-    \ 'at':    '\(...........\)\?\%#' . escape(s:pa[1], '[]'),
-    \ 'input': '<Esc><Right>%i' . s:pa[0] . '<Esc><Right>%i' . s:pa[1],
+    \ 'char':     '<C-l>',
+    \ 'at':       '\%#' . escape(s:pa[1], '[]'),
+    \ 'input':    '<Esc><Right>%i' . s:pa[0] . '<Esc><Right>%i' . s:pa[1],
+    \ 'priority': 10,
   \ })
 endfor
 unlet s:pa
@@ -143,9 +150,10 @@ call lexima#add_rule({
 "-----------------------------------------------
 for s:pair in ['()', '[]', '{}']
   call lexima#add_rule({
-    \ 'char':  s:pair[0],
-    \ 'at':    '\(........\)\?\%#[^\s' . escape(s:pair[1], ']') . ']',
-    \ 'input': s:pair[0],
+    \ 'char':     s:pair[0],
+    \ 'at':       '\%#[^\s' . escape(s:pair[1], ']') . ']',
+    \ 'input':    s:pair[0],
+    \ 'priority': 5,
   \ })
 endfor
 unlet s:pair
@@ -218,9 +226,10 @@ call lexima#add_rule({
 " lambda
 call lexima#add_rule({
   \ 'char':     '(',
-  \ 'at':       '\(........\)\?-> \%#',
+  \ 'at':       '?-> \%#',
   \ 'input':    '<BS>()<Left>',
   \ 'filetype': ['ruby', 'ruby.rspec'],
+  \ 'property': 1,
 \ })
 
 
@@ -251,81 +260,93 @@ unlet s:rules
 "-----------------------------------------------
 " tag
 call lexima#add_rule({
-  \ 'char':  '>',
-  \ 'at':    '\(.....\)\?<\%#',
-  \ 'input': '>',
+  \ 'char':     '>',
+  \ 'at':       '<\%#',
+  \ 'input':    '>',
+  \ 'property': 1,
+\ })
+call lexima#add_rule({
+  \ 'char':     '>',
+  \ 'at':       '< \%#',
+  \ 'input':    '<BS>><Left>',
+  \ 'property': 2,
 \ })
 call lexima#add_rule({
   \ 'char':  '>',
-  \ 'at':    '\(........\)\?< \%#',
-  \ 'input': '<BS>><Left>',
-\ })
-call lexima#add_rule({
-  \ 'char':  '>',
-  \ 'at':    '\(........\)\?<\%#>',
+  \ 'at':    '<\%#>',
   \ 'input': '<Right>',
+  \ 'property': 2,
 \ })
 call lexima#add_rule({
   \ 'char':     '<',
-  \ 'at':       '\(........\)\?\%#',
+  \ 'at':       '\%#',
   \ 'input':    '<><Left>',
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'property': 2,
 \ })
 call lexima#add_rule({
   \ 'char':     '>',
-  \ 'at':       '\(........\)\?\%#',
+  \ 'at':       '\%#',
   \ 'input':    '>',
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'property': 2,
 \ })
 call lexima#add_rule({
   \ 'char':     '>',
-  \ 'at':       '\(........\)\?\%#>',
+  \ 'at':       '\%#>',
   \ 'input':    '<Right>',
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'property': 2,
 \ })
 
 " attributes
 call lexima#add_rule({
   \ 'char':     '=',
-  \ 'at':       '\(........\)\?<.\+\%#',
+  \ 'at':       '<.\+\%#',
   \ 'input':    '=""<Left>',
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'property': 2,
 \ })
 
 " entity
 call lexima#add_rule({
   \ 'char':     '&',
-  \ 'at':       '\(........\)\?\%#',
+  \ 'at':       '\%#',
   \ 'input':    '&;<Left>',
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'property': 2,
 \ })
 
 " comment
 call lexima#add_rule({
   \ 'char':     '-',
-  \ 'at':       '\(........\)\?<\%#>',
+  \ 'at':       '<\%#>',
   \ 'input':    '!--  --<Left><Left><Left>',
   \ 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'property': 2,
 \ })
 
 " server script
 call lexima#add_rule({
   \ 'char':     '%',
-  \ 'at':       '\(........\)\?<\%#',
+  \ 'at':       '<\%#',
   \ 'input':    '%  %<Left><Left>',
   \ 'filetype': ['html', 'ejs', 'eruby'],
+  \ 'property': 2,
 \ })
 call lexima#add_rule({
   \ 'char':     '%',
-  \ 'at':       '\(........\)\?<%[=-]\? \%#',
+  \ 'at':       '<%[=-]\? \%#',
   \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
   \ 'filetype': ['html', 'ejs', 'eruby'],
+  \ 'property': 2,
 \ })
 call lexima#add_rule({
   \ 'char':     '%',
-  \ 'at':       '\(........\)\?<%[=-]\?\%#',
+  \ 'at':       '<%[=-]\?\%#',
   \ 'input':    "<C-r>=smartchr#loop('%', '%=', '%-)<CR>",
   \ 'filetype': ['html', 'ejs', 'eruby'],
+  \ 'property': 2,
 \ })
 
 
@@ -345,9 +366,10 @@ call lexima#add_rule({
 " <?php
 call lexima#add_rule({
   \ 'char':     '?',
-  \ 'at':       '\(........\)\?<\%#>',
+  \ 'at':       '<\%#>',
   \ 'input':    '?php  ?<Left><Left>',
   \ 'filetype': ['php'],
+  \ 'priority': 2,
 \ })
 
 
@@ -356,9 +378,10 @@ call lexima#add_rule({
 " not <>
 call lexima#add_rule({
   \ 'char':     '>',
-  \ 'at':       '\(.....\)\?< \%#',
+  \ 'at':       '< \%#',
   \ 'input':    '<BS>><Space>',
   \ 'filetype': ['sql'],
+  \ 'priority': 1,
 \ })
 
 
