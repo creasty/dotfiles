@@ -62,10 +62,6 @@ function! s:find_chunk_around(text, i) abort
   while 0 <= l:i
     let l:c = a:text[l:i]
 
-    if l:space == 2
-      break
-    endif
-
     if l:c ==# ' '
       let l:space += 1
     elseif stridx(s:opfmt_triggers_all, l:c) == -1
@@ -74,17 +70,17 @@ function! s:find_chunk_around(text, i) abort
 
     let l:range[0] = l:i
     let l:i -= 1
-  endwhile
-
-  " Right
-  " let l:space = 0
-  let l:i = a:i + 1
-  while l:i <= l:len - 1
-    let l:c = a:text[l:i]
 
     if l:space == 2
       break
     endif
+  endwhile
+
+  " Right
+  let l:space = 0
+  let l:i = a:i + 1
+  while l:i <= l:len - 1
+    let l:c = a:text[l:i]
 
     if l:c ==# ' '
       let l:space += 1
@@ -94,26 +90,36 @@ function! s:find_chunk_around(text, i) abort
 
     let l:range[1] = l:i
     let l:i += 1
+
+    if l:space == 1
+      break
+    endif
   endwhile
 
-  echomsg [l:range, a:text[l:range[0] : l:range[1]]]
+  return [l:range, a:text[l:range[0] : l:range[1]]]
 endfunction
 
 function! vimrc#plugin#lexima#opfmt(op) abort
   let l:line = line('.')
   let l:col = col('.')
-  let l:text = getline(l:line)
-
-  let l:text = l:text[0 : l:col - 1] . a:op . l:text[l:col :]
 
   if s:skip_syntactical_context(l:line, l:col)
     return a:op
   endif
+
+  let l:text = getline(l:line)
+  if l:col == 1
+    let l:text = a:op . l:text
+  else
+    let l:col -= 1
+    let l:text = l:text[0 : l:col - 1] . a:op . l:text[l:col :]
+  endif
+
   if s:skip_last_style(l:text, l:col, a:op)
     return a:op
   endif
 
-  call s:find_chunk_around(l:text, l:col)
+  echomsg s:find_chunk_around(l:text, l:col)
 
   return a:op
   " return ' ' . a:op . ' '
