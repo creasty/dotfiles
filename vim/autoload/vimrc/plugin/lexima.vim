@@ -3,6 +3,134 @@ endfunction
 
 let g:lexima_map_escape = ''
 
+let s:opfmt_precedence = [
+  \ ['||'],
+  \ ['&&'],
+  \ ['==', '!=', '<', '<=', '>', '>='],
+  \ ['+', '-', '|', '^'],
+  \ ['*', '/', '%', '<<', '>>', '&', '&^'],
+\ ]
+
+let s:opfmt_triggers = [
+  \ '*/%<>&' . '+-|^' . '=',
+  \ '~' . '?!:',
+  \ '$#@\.,' . "'`",
+\ ]
+
+let s:opfmt_triggers_all = join(s:opfmt_triggers, '')
+
+function! s:skip_syntactical_context(line, col) abort
+  for l:syn in synstack(a:line, a:col)
+    let l:name = synIDattr(synIDtrans(l:syn), 'name')
+    if l:name =~? '\vreg(ular)?ex|htmltag|jsxelement|string'
+      return v:true
+    endif
+  endfor
+
+  return v:false
+endfunction
+
+function! s:skip_last_style(text, i, op) abort
+  if a:i == 0
+    return v:false
+  endif
+
+  if a:text[a:i - 1] ==# a:op
+    return v:false
+  endif
+
+  let l:pos = strridx(a:text, a:op, a:i - 1)
+  if l:pos <= 0
+    return v:false
+  endif
+
+  let l:left = a:text[l:pos - 1]
+  if l:left ==# a:op " repeating
+    return v:false
+  endif
+
+  return (l:left !=# ' ')
+endfunction
+
+function! s:find_chunk_around(text, i) abort
+  let l:len = len(a:text)
+  let l:range = [a:i, a:i]
+
+  " Left
+  let l:space = 0
+  let l:i = a:i - 1
+  while 0 <= l:i
+    let l:c = a:text[l:i]
+
+    if l:space == 2
+      break
+    endif
+
+    if l:c ==# ' '
+      let l:space += 1
+    elseif stridx(s:opfmt_triggers_all, l:c) == -1
+      break
+    endif
+
+    let l:range[0] = l:i
+    let l:i -= 1
+  endwhile
+
+  " Right
+  " let l:space = 0
+  let l:i = a:i + 1
+  while l:i <= l:len - 1
+    let l:c = a:text[l:i]
+
+    if l:space == 2
+      break
+    endif
+
+    if l:c ==# ' '
+      let l:space += 1
+    elseif stridx(s:opfmt_triggers_all, l:c) == -1
+      break
+    endif
+
+    let l:range[1] = l:i
+    let l:i += 1
+  endwhile
+
+  echomsg [l:range, a:text[l:range[0] : l:range[1]]]
+endfunction
+
+function! vimrc#plugin#lexima#opfmt(op) abort
+  let l:line = line('.')
+  let l:col = col('.')
+  let l:text = getline(l:line)
+
+  let l:text = l:text[0 : l:col - 1] . a:op . l:text[l:col :]
+
+  if s:skip_syntactical_context(l:line, l:col)
+    return a:op
+  endif
+  if s:skip_last_style(l:text, l:col, a:op)
+    return a:op
+  endif
+
+  call s:find_chunk_around(l:text, l:col)
+
+  return a:op
+  " return ' ' . a:op . ' '
+endfunction
+
+for s:op in split(join(s:opfmt_triggers, ''), '\zs')
+  let s:op_char = s:op
+  let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
+  let s:op_char = substitute(s:op_char, '<', '<lt>', '')
+  let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
+
+  call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=vimrc#plugin#lexima#opfmt("' . escape(s:op, '"') . '")<CR>' })
+endfor
+unlet s:op
+unlet s:op_char
+
+
 "  Comma
 "-----------------------------------------------
 call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
