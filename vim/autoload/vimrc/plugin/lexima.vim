@@ -25,6 +25,8 @@ call lexima#add_rule({ 'char': '<BS>', 'at': '<\%#>', 'delete': 1 })
 call lexima#add_rule({ 'char': '>', 'at': '< \%#', 'input': '<BS>', 'input_after': '>' })
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
+call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
+call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': '><Space>' })
 
 "  Comma
 "-----------------------------------------------
@@ -121,6 +123,21 @@ call lexima#add_rule({
   \ 'input':       '<BS>(',
   \ 'input_after': ')',
   \ 'filetype':    ['ruby', 'ruby.rspec'],
+\ })
+
+" block
+call lexima#add_rule({
+  \ 'char':        '<Bar>',
+  \ 'at':          '\({\|do\)\s*\%#',
+  \ 'input':       '<Bar>',
+  \ 'input_after': '<Bar>',
+  \ 'filetype':    ['ruby', 'ruby.rspec'],
+\ })
+call lexima#add_rule({
+  \ 'char':     '<Bar>',
+  \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
+  \ 'leave':    1,
+  \ 'filetype': ['ruby', 'ruby.rspec'],
 \ })
 
 "  Lang: HTML
