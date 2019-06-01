@@ -8,25 +8,29 @@ function! s:create_dict(items) abort
   return l:dict
 endfunction
 
-let g:opfmt#all_operators = [
+let g:opfmt#triggers = [
+  \ '*', '/', '%', '<', '>', '&', '+', '-', '|', '^', '=',
+  \ '~', '?', '!', ':',
+  \ '$', '#', '@', "\\",
+\ ]
+let s:all_operators = s:create_dict([
   \ '*', '/', '%', '<', '>', '&', '+', '-', '|', '^', '=',
   \ '~', '?', '!', ':',
   \ '$', '#', '@', "\\", '.', ',', "'", '`',
-\ ]
-
-let s:all_operators = s:create_dict(g:opfmt#all_operators)
-
+\ ])
 let s:eq_patterns = s:create_dict([
   \ '*=', '/=', '%=', '<=', '>=', '+=', '-=', '|=', '&=', '^=',
   \ '?=', '||=', '&&=', '<<=', '>>=', '&^=',
   \ '==', '===',
   \ '!=', '!==', '\=',
   \ '=~', '!~',
-  \ '==#', '!=#', '=~#', '!~#', '==?', '!=?', '=~?', '!~?',
+  \ '==#', '!=#', '=~#', '!~#', '==?', '!=?', '=~?', '!~?', '.=',
   \ '=>',
   \ ':=',
 \ ])
-
+let s:no_merge = s:create_dict([
+  \ '? :', ': :', '.', ',', "'", '`',
+\ ])
 let s:auto_sep_0 = s:create_dict([
   \ '++',
   \ '--',
@@ -205,7 +209,9 @@ function! s:format(before, info) abort
     let l:g1 = a:info.groups[1]
     let l:merged = l:g0 . l:g1
 
-    if has_key(s:auto_sep_0, l:merged)
+    if has_key(s:no_merge, l:text)
+      " skip
+    elseif has_key(s:auto_sep_0, l:merged)
       let l:text = l:merged
       let l:sep = 0
     elseif l:merged =~# '='
@@ -215,7 +221,7 @@ function! s:format(before, info) abort
       else
         let l:sep = or(l:sep, 2)
       endif
-    else
+    elseif l:sep != 0
       let l:text = l:merged
       let l:sep = or(l:sep, 2)
     endif
