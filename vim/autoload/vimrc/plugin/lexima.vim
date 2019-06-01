@@ -91,7 +91,7 @@ for s:pa in ['()', '[]', '{}']
   \ })
   call lexima#add_rule({
     \ 'char':     '<C-l>',
-    \ 'at':       '\%#' . escape(s:pa[1], '[]'),
+    \ 'at':       '\S\%#' . escape(s:pa[1], '[]'),
     \ 'input':    '<Esc><Right>%i' . s:pa[0] . '<Esc><Right>%i' . s:pa[1],
     \ 'priority': 10,
   \ })
@@ -163,7 +163,7 @@ call lexima#add_rule({
   \ 'at':          '\%#',
   \ 'input':       '&',
   \ 'input_after': ';',
-  \ 'filetype':    ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'filetype':    ['html', 'eruby', 'xml'],
 \ })
 
 " comment
@@ -172,7 +172,8 @@ call lexima#add_rule({
   \ 'at':          '<\%#>',
   \ 'input':       '!-- ',
   \ 'input_after': ' --',
-  \ 'filetype':    ['html', 'eruby', 'slim', 'php', 'xml'],
+  \ 'filetype':    ['html', 'eruby', 'xml', 'markdown'],
+  \ 'syntax':      ['htmlTag'],
 \ })
 
 " server script
@@ -181,13 +182,14 @@ call lexima#add_rule({
   \ 'at':          '<\%#>',
   \ 'input':       '% ',
   \ 'input_after': ' %',
-  \ 'filetype':    ['html', 'ejs', 'eruby'],
+  \ 'filetype':    ['html', 'eruby'],
+  \ 'syntax':      ['htmlTag'],
 \ })
 call lexima#add_rule({
   \ 'char':     '%',
   \ 'at':       '<%[=-]\? \%# %>',
   \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
-  \ 'filetype': ['html', 'ejs', 'eruby'],
+  \ 'filetype': ['html', 'eruby'],
 \ })
 
 " program block
@@ -195,7 +197,7 @@ call lexima#add_rule({
   \ 'char':     '=',
   \ 'at':       '^\s*\([.#%]\(\w\|-\)\+\)*\%#',
   \ 'input':    '= ',
-  \ 'filetype': ['haml', 'slim'],
+  \ 'filetype': ['haml'],
 \ })
 
 "  Mode: Command

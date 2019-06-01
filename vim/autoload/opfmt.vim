@@ -97,7 +97,10 @@ function! s:skip_by_before(text, op) abort
   endif
 
   " Ruby: block args
-  if a:text =~# '\v\{\s*\|[^|]+\|\s*$'
+  if a:op ==# '|' && a:text =~# '\v(do|\{)\s*\|[^|]+\s*$'
+    return v:true
+  endif
+  if a:text =~# '\v(do|\{)\s*\|[^|]+\|\s*$'
     return v:true
   endif
 
