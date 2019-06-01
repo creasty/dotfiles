@@ -59,7 +59,6 @@ function! s:skip_by_last_style(text, i, op) abort
   if a:i == 0
     return v:false
   endif
-
   if a:text[a:i - 1] ==# a:op
     return v:false
   endif
@@ -70,11 +69,8 @@ function! s:skip_by_last_style(text, i, op) abort
   endif
 
   let l:left = a:text[l:pos - 1]
-  if l:left ==# a:op " repeating
-    return v:false
-  endif
 
-  return (l:left !=# ' ')
+  return (l:left !=# ' ' && !has_key(s:all_operators, l:left))
 endfunction
 
 function! s:skip_by_group_info(info) abort
