@@ -11,7 +11,7 @@ for s:op in g:opfmt#all_operators
   let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
   let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
 
-  call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"') . '")<CR>' })
+  call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"\') . '")<CR>' })
 endfor
 unlet s:op
 unlet s:op_char
