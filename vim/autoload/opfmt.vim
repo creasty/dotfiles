@@ -1,8 +1,3 @@
-augroup opfmt
-  autocmd!
-  autocmd CursorHold delfunc opfmt#format
-augroup END
-
 "  Patterns
 "-----------------------------------------------
 function! s:create_dict(items) abort
@@ -260,7 +255,6 @@ function! opfmt#format(op) abort
   endif
 
   let l:before = l:range[0] > 0 ? l:text[0 : l:range[0] - 1] : ''
-
   if s:skip_by_before(l:before)
     return a:op
   endif
