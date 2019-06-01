@@ -27,6 +27,7 @@ inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\
 
 map <C-c> <Esc>
 imap <C-j> <CR>
+imap <C-h> <BS>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
@@ -36,6 +37,7 @@ imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)<Plug>(insert-leave)
 imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)<Plug>(insert-leave)
 imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)<Plug>(insert-leave)
 
+cmap <C-h> <BS>
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
 cnoremap <C-f> <Right>
