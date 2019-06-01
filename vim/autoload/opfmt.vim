@@ -13,16 +13,16 @@ function! s:create_dict(items) abort
   return l:dict
 endfunction
 
-let g:opfmt#triggers = [
+let s:triggers = [
   \ '*', '/', '%', '<', '>', '&', '+', '-', '|', '^', '=',
-  \ '~', '?', '!', ':',
+  \ '~', '?', '!',
   \ '$', '#', '@', "\\",
 \ ]
-let s:all_operators = s:create_dict([
-  \ '*', '/', '%', '<', '>', '&', '+', '-', '|', '^', '=',
-  \ '~', '?', '!', ':',
-  \ '$', '#', '@', "\\", '.', ',', "'", '`',
-\ ])
+let s:non_triggers = [
+  \ ':', '.', ',', "'", '`',
+\ ]
+let s:all_operators = s:create_dict(s:triggers + s:non_triggers)
+
 let s:eq_patterns = s:create_dict([
   \ '*=', '/=', '%=', '<=', '>=', '+=', '-=', '|=', '&=', '^=',
   \ '?=', '||=', '&&=', '<<=', '>>=', '&^=',
@@ -33,18 +33,15 @@ let s:eq_patterns = s:create_dict([
   \ '=>',
   \ ':=',
 \ ])
-let s:no_merge = s:create_dict([
-  \ '? :', ': :', '.', ',', "'", '`',
-\ ])
-let s:auto_sep_0 = s:create_dict([
+let s:sep_0_patterns = s:create_dict([
   \ '++',
   \ '--',
 \ ])
-let s:auto_sep_0t3 = {
-  \ '+++': '++',
-  \ '---': '--',
+let s:sep_0_transformations = {
+  \ '+++': ['++', 3],
+  \ '---': ['--', 3],
 \ }
-let s:auto_sep_3 = s:create_dict([
+let s:sep_3_patterns = s:create_dict([
   \ '*', '/', '%', '<', '>', '&',
   \ '+', '-', '|', '^',
   \ '!!', '??', '\\',
@@ -203,20 +200,17 @@ function! s:format(before, info) abort
   if a:info.num_groups == 1
     let l:g0 = a:info.groups[0]
 
-    if has_key(s:auto_sep_3, l:g0)
+    if has_key(s:sep_3_patterns, l:g0)
       let l:sep = 3
-    elseif l:sep == 0 && has_key(s:auto_sep_0t3, l:g0)
-      let l:sep = 3
-      let l:text = s:auto_sep_0t3[l:g0]
+    elseif l:sep == 0 && has_key(s:sep_0_transformations, l:g0)
+      let [l:text, l:sep] = s:sep_0_transformations[l:g0]
     endif
   elseif a:info.num_groups == 2
     let l:g0 = a:info.groups[0]
     let l:g1 = a:info.groups[1]
     let l:merged = l:g0 . l:g1
 
-    if has_key(s:no_merge, l:text)
-      " skip
-    elseif has_key(s:auto_sep_0, l:merged)
+    if has_key(s:sep_0_patterns, l:merged)
       let l:text = l:merged
       let l:sep = 0
     elseif l:merged =~# '='
@@ -275,4 +269,8 @@ function! opfmt#format(op) abort
   let l:new = repeat("\<BS>", l:i - l:range[0]) . repeat("\<Del>", l:range[1] - l:i) . l:new
 
   return l:new
+endfunction
+
+function! opfmt#triggers() abort
+  return s:triggers
 endfunction

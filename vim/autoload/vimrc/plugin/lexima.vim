@@ -5,7 +5,7 @@ let g:lexima_map_escape = ''
 
 "  Operators
 "-----------------------------------------------
-for s:op in g:opfmt#triggers
+for s:op in opfmt#triggers()
   let s:op_char = s:op
   let s:op_char = substitute(s:op_char, '<', '<lt>', '')
   let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
@@ -74,6 +74,11 @@ call lexima#add_rule({
   \ 'char':  '<C-l>',
   \ 'at':    '\S[+\-\*/%?&|<>=]\+ \%#',
   \ 'input': '<BS>',
+\ })
+call lexima#add_rule({
+  \ 'char':  '<C-l>',
+  \ 'at':    '\S <\%#>',
+  \ 'input': '<BS><BS><lt>',
 \ })
 
 " nesting
