@@ -258,7 +258,7 @@ function! opfmt#format(op) abort
   let l:i = l:col - 1
   let l:text = s:insert_text_at(l:text, a:op, l:i)
 
-  if l:i > 0 && s:skip_by_before(l:text[0 : l:i - 1], a:op)
+  if l:i == 0 || s:skip_by_before(l:text[0 : l:i - 1], a:op)
     " echomsg 'skip_by_before'
     return a:op
   endif
