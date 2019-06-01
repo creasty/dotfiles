@@ -88,8 +88,20 @@ function! s:skip_by_group_info(info) abort
   return v:false
 endfunction
 
-function! s:skip_by_before(text) abort
-  return a:text =~# '^\s*$' || a:text =~# '\v[(\[{,<]\s*$'
+function! s:skip_by_before(text, op) abort
+  if a:text =~# '^\s*$'
+    return v:true
+  endif
+  if a:text =~# '\v[(\[{,<]\s*$'
+    return v:true
+  endif
+
+  " Ruby: block args
+  if a:text =~# '\v\{\s*\|[^|]+\|\s*$'
+    return v:true
+  endif
+
+  return v:false
 endfunction
 
 "  Analyzers
@@ -188,7 +200,7 @@ endfunction
 
 "  Formatter
 "-----------------------------------------------
-function! s:format(before, info) abort
+function! s:format(info) abort
   let l:sep = a:info.sep
   let l:text = join(a:info.groups, ' ')
 
@@ -235,6 +247,7 @@ function! opfmt#format(op) abort
   let l:col = col('.')
 
   if s:skip_by_syntax(l:line, l:col)
+    echomsg 'skip_by_syntax'
     return a:op
   endif
 
@@ -242,7 +255,13 @@ function! opfmt#format(op) abort
   let l:i = l:col - 1
   let l:text = s:insert_text_at(l:text, a:op, l:i)
 
+  if l:i > 0 && s:skip_by_before(l:text[0 : l:i - 1], a:op)
+    echomsg 'skip_by_before'
+    return a:op
+  endif
+
   if s:skip_by_last_style(l:text, l:i, a:op)
+    echomsg 'skip_by_last_style'
     return a:op
   endif
 
@@ -251,15 +270,11 @@ function! opfmt#format(op) abort
   echomsg l:group_info
 
   if s:skip_by_group_info(l:group_info)
+    echomsg 'skip_by_group_info'
     return a:op
   endif
 
-  let l:before = l:range[0] > 0 ? l:text[0 : l:range[0] - 1] : ''
-  if s:skip_by_before(l:before)
-    return a:op
-  endif
-
-  let l:new = s:format(l:before, l:group_info)
+  let l:new = s:format(l:group_info)
   let l:new = repeat("\<BS>", l:i - l:range[0]) . repeat("\<Del>", l:range[1] - l:i) . l:new
 
   return l:new
