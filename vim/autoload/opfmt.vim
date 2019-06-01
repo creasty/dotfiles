@@ -11,6 +11,12 @@ let g:opfmt#operators =
   \ . '~' . '?!:'
   \ . '$#@\.,' . "'`"
 
+function! s:insert_text_at(text, insertion, i) abort
+  return (a:i == 0)
+    \ ? (a:insertion . a:text)
+    \ : (a:text[0 : a:i - 1] . a:insertion . a:text[a:i :])
+endfunction
+
 function! s:skip_by_syntax(line, col) abort
   for l:syn in synstack(a:line, a:col)
     let l:name = synIDattr(synIDtrans(l:syn), 'name')
@@ -44,55 +50,123 @@ function! s:skip_by_last_style(text, i, op) abort
   return (l:left !=# ' ')
 endfunction
 
-function! s:find_range(text, i) abort
-  let l:len = len(a:text)
-  let l:range = [a:i, a:i]
+function! s:skip_by_group_info(info) abort
+  if a:info.cursor != a:info.num_groups - 1
+    return v:true
+  endif
 
-  " Left
-  let l:space = 0
-  let l:i = a:i - 1
-  while 0 <= l:i
-    let l:c = a:text[l:i]
+  let l:group = a:info.groups[a:info.cursor]
+  if a:info.cursor_pos != len(l:group) - 1
+    return v:true
+  endif
 
-    if l:c ==# ' '
-      let l:space += 1
-    elseif stridx(g:opfmt#operators, l:c) == -1
-      break
-    endif
-
-    let l:range[0] = l:i
-    let l:i -= 1
-
-    if l:space == 2
-      break
-    endif
-  endwhile
-
-  " Right
-  let l:space = 0
-  let l:i = a:i + 1
-  while l:i <= l:len - 1
-    let l:c = a:text[l:i]
-
-    if l:c ==# ' '
-      let l:space += 1
-    elseif stridx(g:opfmt#operators, l:c) == -1
-      break
-    endif
-
-    let l:range[1] = l:i
-    let l:i += 1
-
-    if l:space == 1
-      break
-    endif
-  endwhile
-
-  return [l:range, a:text[l:range[0] : l:range[1]]]
+  return v:false
 endfunction
 
-function! s:format(before, operators, i) abort
-  return [' ' . a:operators . ' ', 1]
+function! s:_find_range(text, len, start, end, max_space) abort
+  if a:start == a:end
+    return a:start
+  endif
+
+  let l:dir = (a:start < a:end ? +1 : -1)
+
+  let l:space = 0
+  let l:space_flag = v:false
+  let l:idx = a:start
+  let l:i = a:start + l:dir
+
+  while 0 <= l:i && l:i < a:len
+    let l:c = a:text[l:i]
+
+    if l:c ==# ' '
+      if l:space_flag
+        break
+      endif
+
+      let l:space += 1
+      let l:space_flag = v:true
+    else
+      let l:space_flag = v:false
+
+      if stridx(g:opfmt#operators, l:c) == -1
+        break
+      endif
+    endif
+
+    let l:idx = l:i
+    let l:i += l:dir
+
+    if l:space == a:max_space
+      break
+    endif
+  endwhile
+
+  return l:idx
+endfunction
+
+function! s:find_range(text, i) abort
+  let l:len = len(a:text)
+  let l:left = s:_find_range(a:text, l:len, a:i, 0, 2)
+  let l:right = s:_find_range(a:text, l:len, a:i, l:len, 1)
+
+  return [[l:left, l:right], a:text[l:left : l:right]]
+endfunction
+
+function! s:parse_group(operators, i) abort
+  let l:seeker = 'C'
+
+  let l:text = s:insert_text_at(a:operators, l:seeker, a:i)
+  let l:groups = split(l:text, ' ', v:true)
+
+  let l:sep = 0
+  if l:groups[0] ==# ''
+    let l:sep += 1
+    let l:groups = l:groups[1:]
+  endif
+  if l:groups[-1] ==# ''
+    let l:sep += 2
+    let l:groups = l:groups[0:-2]
+  endif
+
+  let l:len = len(l:groups)
+  let l:i = 0
+  while l:i < l:len
+    let l:text = l:groups[l:i]
+    let l:pos = stridx(l:text, l:seeker)
+    if l:pos >= 0
+      let l:groups[l:i] = substitute(l:text, l:seeker, '', '')
+      break
+    endif
+    let l:i += 1
+  endwhile
+
+  return {
+    \ 'groups':     l:groups,
+    \ 'num_groups': l:len,
+    \ 'sep':        l:sep,
+    \ 'cursor':     l:i,
+    \ 'cursor_pos': l:pos,
+  \ }
+endfunction
+
+function! s:find_common_edge(a, b) abort
+  let l:len = min([len(a:a), len(a:b)])
+
+  let l:i = 0
+endfunction
+
+function! s:format(before, info) abort
+  let l:sep = 3 " a:info.sep
+  let l:text = join(a:info.groups, '')
+
+  if and(l:sep, 1)
+    let l:text = ' ' . l:text
+  endif
+  if and(l:sep, 2)
+    let l:text = l:text . ' '
+  endif
+
+  return l:text
 endfunction
 
 function! opfmt#format(op) abort
@@ -100,28 +174,34 @@ function! opfmt#format(op) abort
   let l:col = col('.')
 
   if s:skip_by_syntax(l:line, l:col)
+    echomsg 'skip_by_syntax'
     return a:op
   endif
 
   let l:text = getline(l:line)
   let l:i = l:col - 1
-  if l:i == 0
-    let l:text = a:op . l:text
-  else
-    let l:text = l:text[0 : l:i - 1] . a:op . l:text[l:i :]
-  endif
+  let l:text = s:insert_text_at(l:text, a:op, l:i)
 
   if s:skip_by_last_style(l:text, l:i, a:op)
+    echomsg 'skip_by_last_style'
     return a:op
   endif
 
   let [l:range, l:operators] = s:find_range(l:text, l:i)
-  echomsg l:range l:operators
+  echomsg l:range [l:operators]
+
+  let l:group_info = s:parse_group(l:operators, l:i - l:range[0])
+  echomsg l:group_info
+
+  if s:skip_by_group_info(l:group_info)
+    echomsg 'skip_by_group_info'
+    return a:op
+  endif
 
   let l:before = l:range[0] > 0 ? l:text[0 : l:range[0] - 1] : ''
-  let [l:new, l:move] = s:format(l:before, l:operators, l:i - l:range[0])
-  let l:after = l:text[l:range[1] + 1 :]
+  let l:new = s:format(l:before, l:group_info)
 
+  let l:new = repeat("\<BS>", l:i - l:range[0]) . repeat("\<Del>", l:range[1] - l:i) . l:new
 
-  return ''
+  return l:new
 endfunction
