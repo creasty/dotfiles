@@ -1,3 +1,8 @@
+augroup opfmt
+  autocmd!
+  autocmd CursorHold delfunc opfmt#format
+augroup END
+
 "  Patterns
 "-----------------------------------------------
 function! s:create_dict(items) abort
@@ -254,6 +259,7 @@ function! opfmt#format(op) abort
 
   let [l:range, l:operators] = s:find_range(l:text, l:i)
   let l:group_info = s:parse_group(l:operators, l:i - l:range[0])
+  echomsg l:group_info
 
   if s:skip_by_group_info(l:group_info)
     return a:op
