@@ -112,14 +112,14 @@ call lexima#add_rule({
 " lambda
 call lexima#add_rule({
   \ 'char':        '(',
-  \ 'at':          '?->\%#',
+  \ 'at':          '->\%#',
   \ 'input':       '(',
   \ 'input_after': ')',
   \ 'filetype':    ['ruby', 'ruby.rspec'],
 \ })
 call lexima#add_rule({
   \ 'char':        '(',
-  \ 'at':          '?-> \%#',
+  \ 'at':          '-> \%#',
   \ 'input':       '<BS>(',
   \ 'input_after': ')',
   \ 'filetype':    ['ruby', 'ruby.rspec'],

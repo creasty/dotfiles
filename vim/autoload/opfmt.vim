@@ -88,7 +88,7 @@ function! s:skip_by_group_info(info) abort
 endfunction
 
 function! s:skip_by_before(text) abort
-  return a:text =~# '\v[(\[{,<]\s*$'
+  return a:text =~# '^\s*$' || a:text =~# '\v[(\[{,<]\s*$'
 endfunction
 
 "  Analyzers
