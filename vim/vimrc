@@ -208,7 +208,31 @@ if dein#tap('vim-lsp')
 endif
 
 if dein#tap('deoplete.nvim')
-  call vimrc#plugin#deoplete#init()
+  set completeopt+=noinsert " auto select
+  set completeopt-=preview " disable the preview window feature
+  set shortmess+=c " silence anoyying messages
+
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_yarp = 1
+  let g:deoplete#enable_smart_case = 1
+  let g:deoplete#auto_complete_delay = 0
+  let g:deoplete#auto_complete_start_length = 1
+
+  call deoplete#custom#option('skip_chars', ['(', ')', '{', '}', ';'])
+  call deoplete#custom#source('_', 'converters', [
+    \ 'converter_remove_overlap',
+    \ 'converter_truncate_abbr',
+    \ 'converter_truncate_menu',
+  \ ])
+
+  call deoplete#custom#source('buffer', 'min_pattern_length', 3)
+  call deoplete#custom#source('ultisnips', 'rank', 800)
+  let g:deoplete#sources#vim_lsp#show_info = 1
+
+  command! DeopleteDebug
+    \ call deoplete#custom#option('profile', v:true) |
+    \ call deoplete#enable_logging('DEBUG', expand('~/deoplete.log')) |
+    \ call deoplete#custom#source('_', 'is_debug_enabled', 1)
 endif
 
 if dein#tap('nerdtree')

@@ -1,4 +1,54 @@
-function! vimrc#plugin#deoplete#util#on_completion() abort
+let s:placeholder_delim = [
+  \ '{{+',
+  \ '+}}',
+\ ]
+let s:placeholder_pattern = '\V' . s:placeholder_delim[0] . '\.\{-}' . s:placeholder_delim[1]
+
+function! funcsig#should_trigger() abort
+  return search(s:placeholder_pattern, 'e')
+endfunction
+
+function! funcsig#select_placeholder() abort
+  " Make sure '< mark is set so the normal command won't error out.
+  if getpos("'<") == [0, 0, 0, 0]
+    call setpos("'<", getpos('.'))
+  endif
+
+  " don't clobber s register
+  let l:old_s = @s
+
+  try
+    " gn misbehaves when 'wrapscan' isn't set (see vim's #1683)
+    let [l:ws, &wrapscan] = [&wrapscan, 1]
+    silent keeppatterns execute 'normal! /' . s:placeholder_pattern . "/e\<cr>gn\"sy"
+    " save length of entire placeholder for reference later
+    let l:slen = len(@s)
+    " remove the start and end delimiters
+    let @s=substitute(@s, '\V' . s:placeholder_delim[0], '', '')
+    let @s=substitute(@s, '\V' . s:placeholder_delim[1], '', '')
+  catch /E486:/
+    " There's no normal placeholder at all
+    let @s = l:old_s
+    call feedkeys('i', 'n')
+    return
+  finally
+    let &wrapscan = l:ws
+  endtry
+
+  if empty(@s)
+    " the placeholder was empty, so just enter insert mode directly
+    normal! gv"_d
+    call feedkeys(col("'>") - l:slen >= col('$') - 1 ? 'a' : 'i', 'n')
+  else
+    " paste the placeholder's default value in and enter select mode on it
+    execute "normal! gv\"spgv\<C-g>"
+  endif
+
+  " restore old value of s register
+  let @s = l:old_s
+endfunction
+
+function! funcsig#on_completion() abort
   let l:completed_item = get(v:, 'completed_item', {})
   if empty(l:completed_item)
     let l:completed_item = get(v:event, 'completed_item', {})
@@ -26,6 +76,10 @@ function! vimrc#plugin#deoplete#util#on_completion() abort
   endif
 
   call s:complete_signature(l:info)
+endfunction
+
+function! funcsig#on_cursor_hold() abort
+  unlet! b:completed_item_info
 endfunction
 
 function! s:complete_signature(info) abort
@@ -59,7 +113,7 @@ function! s:complete_signature(info) abort
     return
   endif
 
-  let l:args = map(l:args, {i, a -> '{'.'{+' . trim(l:a) . '+}}'}) " TODO: support named arguments
+  let l:args = map(l:args, {i, a -> s:placeholder_delim[0] . trim(l:a) . s:placeholder_delim[1] }) " TODO: support named arguments
   let l:args = join(l:args, ', ') " FIXME: hardcoded delimiter
 
   call setline('.', l:line . l:args . ')')
