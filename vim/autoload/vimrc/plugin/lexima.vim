@@ -3,10 +3,10 @@ endfunction
 
 let g:lexima_map_escape = ''
 
-for s:op in split(g:opfmt#operators, '\zs')
+for s:op in g:opfmt#all_operators
   let s:op_char = s:op
-  let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
   let s:op_char = substitute(s:op_char, '<', '<lt>', '')
+  let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
   let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
 
   call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"') . '")<CR>' })

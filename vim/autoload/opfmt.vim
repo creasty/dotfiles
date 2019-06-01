@@ -1,16 +1,49 @@
-let s:precedence = [
-  \ ['||'],
-  \ ['&&'],
-  \ ['==', '!=', '<', '<=', '>', '>='],
-  \ ['+', '-', '|', '^'],
-  \ ['*', '/', '%', '<<', '>>', '&', '&^'],
+" Patterns
+"-----------------------------------------------
+function! s:create_dict(items) abort
+  let l:dict = {}
+  for l:item in a:items
+    let l:dict[l:item] = 1
+  endfor
+  return l:dict
+endfunction
+
+let g:opfmt#all_operators = [
+  \ '*', '/', '%', '<', '>', '&', '+', '-', '|', '^', '=',
+  \ '~', '?', '!', ':',
+  \ '$', '#', '@', "\\", '.', ',', "'", '`',
 \ ]
 
-let g:opfmt#operators =
-  \ '*/%<>&' . '+-|^' . '='
-  \ . '~' . '?!:'
-  \ . '$#@\.,' . "'`"
+let s:all_operators = s:create_dict(g:opfmt#all_operators)
 
+let s:eq_patterns = s:create_dict([
+  \ '*=', '/=', '%=', '<=', '>=', '+=', '-=', '|=', '&=', '^=',
+  \ '?=', '||=', '&&=',
+  \ '==', '===',
+  \ '!=', '!==',
+  \ '=~', '!~',
+  \ '==#', '!=#', '=~#', '!~#', '==?', '!=?', '=~?', '!~?',
+  \ '=>',
+  \ ':=',
+\ ])
+
+let s:auto_sep_0 = s:create_dict([
+  \ '++',
+  \ '--',
+\ ])
+let s:auto_sep_0t3 = {
+  \ '+++': '++',
+  \ '---': '--',
+\ }
+let s:auto_sep_3 = s:create_dict([
+  \ '*', '/', '%', '<', '>', '&',
+  \ '+', '-', '|', '^',
+  \ '=', '~',
+  \ '!!', '??',
+\ ])
+
+" Util
+"-----------------------------------------------
 function! s:insert_text_at(text, insertion, i) abort
   return (a:i == 0)
     \ ? (a:insertion . a:text)
@@ -28,6 +61,8 @@ function! s:skip_by_syntax(line, col) abort
   return v:false
 endfunction
 
+" Skip functions
+"-----------------------------------------------
 function! s:skip_by_last_style(text, i, op) abort
   if a:i == 0
     return v:false
@@ -63,6 +98,8 @@ function! s:skip_by_group_info(info) abort
   return v:false
 endfunction
 
+" Analyzers
+"-----------------------------------------------
 function! s:_find_range(text, len, start, end, max_space) abort
   if a:start == a:end
     return a:start
@@ -88,7 +125,7 @@ function! s:_find_range(text, len, start, end, max_space) abort
     else
       let l:space_flag = v:false
 
-      if stridx(g:opfmt#operators, l:c) == -1
+      if !has_key(s:all_operators, l:c)
         break
       endif
     endif
@@ -149,15 +186,41 @@ function! s:parse_group(operators, i) abort
   \ }
 endfunction
 
-function! s:find_common_edge(a, b) abort
-  let l:len = min([len(a:a), len(a:b)])
-
-  let l:i = 0
-endfunction
-
+" Formatter
+"-----------------------------------------------
 function! s:format(before, info) abort
-  let l:sep = 3 " a:info.sep
-  let l:text = join(a:info.groups, '')
+  let l:sep = a:info.sep
+  let l:text = join(a:info.groups, ' ')
+
+  if a:info.num_groups == 1
+    let l:g0 = a:info.groups[0]
+
+    if has_key(s:auto_sep_3, l:g0)
+      let l:sep = 3
+    elseif l:sep == 0 && has_key(s:auto_sep_0t3, l:g0)
+      let l:sep = 3
+      let l:text = s:auto_sep_0t3[l:g0]
+    endif
+  elseif a:info.num_groups == 2
+    let l:g0 = a:info.groups[0]
+    let l:g1 = a:info.groups[1]
+    let l:merged = l:g0 . l:g1
+
+    if has_key(s:auto_sep_0, l:merged)
+      let l:text = l:merged
+      let l:sep = 0
+    elseif l:merged =~# '='
+      if and(l:sep, 1) && has_key(s:eq_patterns, l:merged)
+        let l:text = l:merged
+        let l:sep = 3
+      else
+        let l:sep = or(l:sep, 2)
+      endif
+    else
+      let l:text = l:merged
+      let l:sep = or(l:sep, 2)
+    endif
+  endif
 
   if and(l:sep, 1)
     let l:text = ' ' . l:text
@@ -165,7 +228,6 @@ function! s:format(before, info) abort
   if and(l:sep, 2)
     let l:text = l:text . ' '
   endif
-
   return l:text
 endfunction
 
