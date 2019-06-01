@@ -16,8 +16,7 @@ endfor
 unlet s:op
 unlet s:op_char
 
-"  Angle brackets
-"-----------------------------------------------
+" angle brackets
 call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
 call lexima#add_rule({ 'char': '<lt>', 'at': '\\\%#' })
 call lexima#add_rule({ 'char': '>', 'at': '[^>]\%#>', 'leave': 1 })
@@ -28,9 +27,11 @@ call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'e
 call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
 call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': '><Space>' })
 
-"  Comma
-"-----------------------------------------------
+" comma
 call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
+
+" Rust: lifetime
+call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
 
 "  CR
 "-----------------------------------------------
