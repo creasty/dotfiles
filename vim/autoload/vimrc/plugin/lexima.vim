@@ -3,6 +3,8 @@ endfunction
 
 let g:lexima_map_escape = ''
 
+"  Operators
+"-----------------------------------------------
 for s:op in g:opfmt#all_operators
   let s:op_char = s:op
   let s:op_char = substitute(s:op_char, '<', '<lt>', '')
@@ -14,11 +16,6 @@ endfor
 unlet s:op
 unlet s:op_char
 
-
-"  Comma
-"-----------------------------------------------
-call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
-
 "  Angle brackets
 "-----------------------------------------------
 call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
@@ -29,9 +26,13 @@ call lexima#add_rule({ 'char': '>', 'at': '< \%#', 'input': '<BS>', 'input_after
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
 
-"  Arrows
+"  Comma
 "-----------------------------------------------
-" indent on return
+call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
+
+"  CR
+"-----------------------------------------------
+" indent on after =>
 call lexima#add_rule({
   \ 'char':  '<CR>',
   \ 'at':    '\(<[-=]\|[-=]>\)\%#',
@@ -96,7 +97,7 @@ call lexima#add_rule({
   \ 'input': '<Esc>F<<Right>"xyiwf>a</><Esc><Left>"xpF<i',
 \ })
 
-" go channel
+" Golang: channel
 call lexima#add_rule({
   \ 'char':     '<C-l>',
   \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
@@ -104,7 +105,7 @@ call lexima#add_rule({
   \ 'filetype': ['go'],
 \ })
 
-"  Ruby
+"  Lang: Ruby
 "-----------------------------------------------
 " lambda
 call lexima#add_rule({
@@ -122,7 +123,7 @@ call lexima#add_rule({
   \ 'filetype':    ['ruby', 'ruby.rspec'],
 \ })
 
-"  Html
+"  Lang: HTML
 "-----------------------------------------------
 " attributes
 call lexima#add_rule({
@@ -174,7 +175,7 @@ call lexima#add_rule({
   \ 'filetype': ['haml', 'slim'],
 \ })
 
-"  Command mode
+"  Mode: Command
 "-----------------------------------------------
 " write a file as sudo :w!!
 call lexima#add_rule({
