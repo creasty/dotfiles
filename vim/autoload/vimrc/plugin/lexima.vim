@@ -152,11 +152,16 @@ call lexima#add_rule({
 "-----------------------------------------------
 " attributes
 call lexima#add_rule({
+  \ 'char':   '-',
+  \ 'at':     '\w\+\%#',
+  \ 'syntax': ['htmlTag', 'htmlArg'],
+\ })
+call lexima#add_rule({
   \ 'char':        '=',
   \ 'at':          '\w\+\%#',
   \ 'input':       '="',
   \ 'input_after': '"',
-  \ 'syntax':      ['htmlArg'],
+  \ 'syntax':      ['htmlTag'],
 \ })
 
 " entity
