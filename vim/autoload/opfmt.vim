@@ -249,7 +249,7 @@ function! opfmt#format(op) abort
   let l:col = col('.')
 
   if s:skip_by_syntax(l:line, l:col)
-    echomsg 'skip_by_syntax'
+    " echomsg 'skip_by_syntax'
     return a:op
   endif
 
@@ -258,27 +258,27 @@ function! opfmt#format(op) abort
   let l:text = s:insert_text_at(l:text, a:op, l:i)
 
   if l:i == 0 || s:skip_by_context(l:text[0 : l:i - 1], a:op, v:false)
-    echomsg 'skip_by_context (cursor)'
+    " echomsg 'skip_by_context (cursor)'
     return a:op
   endif
   if s:skip_by_last_style(l:text, l:i, a:op)
-    echomsg 'skip_by_last_style'
+    " echomsg 'skip_by_last_style'
     return a:op
   endif
 
   let [l:range, l:operators] = s:find_range(l:text, l:i)
-  echomsg [l:range, l:operators]
+  " echomsg [l:range, l:operators]
 
   if l:range[0] == 0 || s:skip_by_context(l:text[0 : l:range[0] - 1], a:op, v:true)
-    echomsg 'skip_by_context (operator)'
+    " echomsg 'skip_by_context (operator)'
     return a:op
   endif
 
   let l:group_info = s:parse_group(l:operators, l:i - l:range[0])
-  echomsg l:group_info
+  " echomsg l:group_info
 
   if s:skip_by_group_info(l:group_info)
-    echomsg 'skip_by_group_info'
+    " echomsg 'skip_by_group_info'
     return a:op
   endif
 
