@@ -9,7 +9,17 @@
 - name: install dep
   homebrew:
     name:  dep
-    state: latest
+    state: present
+
+- block:
+  - name: grapi | tap
+    homebrew_tap:
+      tap:   izumin5210/tools
+      state: present
+  - name: grapi | install
+    homebrew:
+      name:  izumin5210/tools/grapi
+      state: present
 
 - name: install packages
   command: |
