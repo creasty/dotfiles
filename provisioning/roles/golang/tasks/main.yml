@@ -6,6 +6,11 @@
     name:  go
     state: latest
 
+- name: install dep
+  homebrew:
+    name:  dep
+    state: latest
+
 - name: install packages
   command: |
      bash -lc 'go get -u {{ item | quote }}'
