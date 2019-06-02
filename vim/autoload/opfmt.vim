@@ -88,7 +88,7 @@ function! s:skip_by_group_info(info) abort
   return v:false
 endfunction
 
-function! s:skip_by_before(text, op) abort
+function! s:skip_by_context(text, op, grouped) abort
   if a:text =~# '^\s*$'
     return v:true
   endif
@@ -96,12 +96,13 @@ function! s:skip_by_before(text, op) abort
     return v:true
   endif
 
-  " Ruby: block args
-  if a:op ==# '|' && a:text =~# '\v(do|\{)\s*\|[^|]+\s*$'
-    return v:true
-  endif
-  if a:text =~# '\v(do|\{)\s*\|[^|]+\|\s*$'
-    return v:true
+  if !a:grouped
+    " Ruby: block args
+    if a:op ==# '|' && a:text =~# '\v(do|\{)\s*\|[^|]+\s*$'
+      return v:true
+    elseif a:text =~# '\v(do|\{)\s*\|[^|]+\|\s*$'
+      return v:true
+    endif
   endif
 
   return v:false
@@ -130,9 +131,11 @@ function! s:_find_range(text, len, start, end, max_space) abort
   while 0 <= l:i && l:i < a:len
     let l:c = a:text[l:i]
 
-    if l:c ==# ' '
+    if l:space == a:max_space
+      break
+    elseif l:c ==# ' '
       if l:space_flag
-        break
+        break " stop when two consecutive spaces found
       endif
 
       let l:space += 1
@@ -147,10 +150,6 @@ function! s:_find_range(text, len, start, end, max_space) abort
 
     let l:idx = l:i
     let l:i += l:dir
-
-    if l:space == a:max_space
-      break
-    endif
   endwhile
 
   return l:idx
@@ -250,7 +249,7 @@ function! opfmt#format(op) abort
   let l:col = col('.')
 
   if s:skip_by_syntax(l:line, l:col)
-    " echomsg 'skip_by_syntax'
+    echomsg 'skip_by_syntax'
     return a:op
   endif
 
@@ -258,22 +257,28 @@ function! opfmt#format(op) abort
   let l:i = l:col - 1
   let l:text = s:insert_text_at(l:text, a:op, l:i)
 
-  if l:i == 0 || s:skip_by_before(l:text[0 : l:i - 1], a:op)
-    " echomsg 'skip_by_before'
+  if l:i == 0 || s:skip_by_context(l:text[0 : l:i - 1], a:op, v:false)
+    echomsg 'skip_by_context (cursor)'
     return a:op
   endif
-
   if s:skip_by_last_style(l:text, l:i, a:op)
-    " echomsg 'skip_by_last_style'
+    echomsg 'skip_by_last_style'
     return a:op
   endif
 
   let [l:range, l:operators] = s:find_range(l:text, l:i)
+  echomsg [l:range, l:operators]
+
+  if l:range[0] == 0 || s:skip_by_context(l:text[0 : l:range[0] - 1], a:op, v:true)
+    echomsg 'skip_by_context (operator)'
+    return a:op
+  endif
+
   let l:group_info = s:parse_group(l:operators, l:i - l:range[0])
-  " echomsg l:group_info
+  echomsg l:group_info
 
   if s:skip_by_group_info(l:group_info)
-    " echomsg 'skip_by_group_info'
+    echomsg 'skip_by_group_info'
     return a:op
   endif
 
