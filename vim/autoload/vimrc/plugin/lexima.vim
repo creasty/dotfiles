@@ -5,6 +5,8 @@ let g:lexima_map_escape = ''
 
 "  Operators
 "-----------------------------------------------
+let s:all_ops = opfmt#all_operators_regexp()
+
 for s:op in opfmt#triggers()
   let s:op_char = s:op
   let s:op_char = substitute(s:op_char, '<', '<lt>', '')
@@ -62,17 +64,17 @@ call lexima#add_rule({
 " delete spaces around
 call lexima#add_rule({
   \ 'char':  '<C-l>',
-  \ 'at':    '\S [+\-\*/%?&|<>=]\+ \%#',
+  \ 'at':    '\S ' . s:all_ops . '\+ \%#',
   \ 'input': '<Esc>bh"_xf<Space>"_cl',
 \ })
 call lexima#add_rule({
   \ 'char':  '<C-l>',
-  \ 'at':    '\S [+\-\*/%?&|<>=]\+\%#',
+  \ 'at':    '\S ' . s:all_ops . '\+\%#',
   \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
 \ })
 call lexima#add_rule({
   \ 'char':  '<C-l>',
-  \ 'at':    '\S[+\-\*/%?&|<>=]\+ \%#',
+  \ 'at':    '\S' . s:all_ops . '\+ \%#',
   \ 'input': '<BS>',
 \ })
 call lexima#add_rule({

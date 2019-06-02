@@ -291,3 +291,8 @@ endfunction
 function! opfmt#triggers() abort
   return s:triggers
 endfunction
+
+function! opfmt#all_operators_regexp() abort
+  let l:all = s:triggers + s:non_triggers
+  return '[' . escape(join(l:all, ''), '\-[]') . ']'
+endfunction
