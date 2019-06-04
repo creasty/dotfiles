@@ -41,6 +41,7 @@ homebrew:
   #   $ for name in `pbpaste`; do echo "$name # $(brew info $name | sed -n '2p')"; done
   #
   packages:
+    - bat                  # Clone of cat(1) with syntax highlighting and Git integration
     - binutils             # FSF Binutils for native development
     - carthage             # Decentralized dependency manager for Cocoa
     - clib                 # Package manager for C programming
@@ -52,6 +53,7 @@ homebrew:
     - envchain             # Secure your credentials in environment variables
     - eot-utils            # Tools to convert fonts from OTF/TTF to EOT format
     - expect               # Program that can automate interactive applications
+    - fd                   # Simple, fast and user-friendly alternative to find
     - fontconfig           # XML-based font configuration API for X Windows
     - fontforge            # Command-line outline and bitmap font editor/converter
     - freetype             # Software library to render fonts
@@ -82,6 +84,7 @@ homebrew:
     - protobuf             # Protocol buffers (Google's data interchange format)
     - python               # Interpreted, interactive, object-oriented programming language
     - screenresolution     # Get, set, and list display resolution
+    - termtosvg            # Record terminal sessions as SVG animations
     - the_silver_searcher  # Code-search similar to ack
     - tmux                 # Terminal multiplexer
     - tree                 # Display directories as trees (with optional color/HTML output)
