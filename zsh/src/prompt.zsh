@@ -106,8 +106,7 @@ __git_ps1() {
   printf -- " \e[0;38;5;238m@ ${fg[white]}%s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u$x" "$r"
 }
 
-PROMPT="
-%F{white}\${(%):-%~}%f\$(__git_ps1)%f
+PROMPT="%F{white}\${(%):-%~}%f\$(__git_ps1)%f
 %F{blue}$ %f"
 
 PROMPT2="%F{white}$ %f"
