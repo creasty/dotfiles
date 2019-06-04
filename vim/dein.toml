@@ -75,6 +75,9 @@ repo = 'thinca/vim-quickrun'
 [[plugins]] # create your own submodes
 repo = 'kana/vim-submode'
 
+[[plugins]] # sequencial numbering with pattern
+repo = 'deris/vim-rengbang'
+
 
 #  Appearance
 #-----------------------------------------------

@@ -34,10 +34,6 @@ on_cmd = ['Switch']
 repo   = 't9md/vim-textmanip'
 on_map = ['<Plug>(textmanip-']
 
-[[plugins]] # sequencial numbering with pattern
-repo   = 'deris/vim-rengbang'
-on_cmd = ['RengBang']
-
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo    = 'mattn/emmet-vim'
 on_func = ['emmet']
