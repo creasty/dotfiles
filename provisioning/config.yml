@@ -130,6 +130,7 @@ link:
   config/gocode/config.json: .config/gocode/config.json
   config/peco:               .peco
   config/pgclirc:            .pgclirc
+  config/termtosvg:          .config/termtosvg
   ruby/bundle/config:        .bundle/config
   ruby/gemrc:                .gemrc
   ruby/irbrc:                .irbrc

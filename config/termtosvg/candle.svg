@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg id="terminal" baseProfile="full" viewBox="0 0 700 400" width="700" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+      <termtosvg:screen_geometry columns="100" rows="25"/> <!-- 7x16 -->
+    </termtosvg:template_settings>
+
+    <style type="text/css" id="generated-style"><![CDATA[
+      :root {
+        --animation-duration: 26350ms;
+      }
+
+      #screen {
+        font-family: 'Menlo', monospace;
+        font-style: normal;
+        font-size: 14px;
+      }
+
+      text {
+        dominant-baseline: text-before-edge;
+      }
+    ]]></style>
+    <style type="text/css" id="user-style">
+      .foreground { fill: #a8a8a8; }
+      .background { fill: #1a1a1a; }
+      .color0 { fill: #444444; }
+      .color1 { fill: #af7070; }
+      .color2 { fill: #a3a46f; }
+      .color3 { fill: #ceb481; }
+      .color4 { fill: #8397a9; }
+      .color5 { fill: #9d91a9; }
+      .color6 { fill: #8aaaa5; }
+      .color7 { fill: #626262; }
+      .color8 { fill: #444444; }
+      .color9 { fill: #af7070; }
+      .color10 { fill: #a3a46f; }
+      .color11 { fill: #ceb481; }
+      .color12 { fill: #8397a9; }
+      .color13 { fill: #9d91a9; }
+      .color14 { fill: #8aaaa5; }
+      .color15 { fill: #626262; }
+    </style>
+  </defs>
+
+  <rect id="terminalui" class="background" width="100%" height="100%" ry="4.5826941"/>
+
+  <svg id="screen" width="672" x="14" y="16" viewBox="0 0 672 368" preserveAspectRatio="xMidYMin meet">
+    <!-- https://github.com/nbedos/termtosvg/blob/develop/man/termtosvg-templates.md -->
+  </svg>
+</svg>

@@ -112,6 +112,13 @@ ssh() {
   [ $# -gt 0 ] && command ssh "$@"
 }
 
+termtosvg() {
+  local ts=$(date +'%Y%m%d%H%M%S')
+  local file="$HOME/Desktop/termtosvg_${ts}.svg"
+  local template="$HOME/.config/termtosvg/candle.svg"
+  command termtosvg --max-frame-duration=2000 --template="$template" "$file"
+}
+
 
 #  Networks
 #-----------------------------------------------
