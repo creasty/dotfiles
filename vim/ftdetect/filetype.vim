@@ -28,8 +28,8 @@ augroup custom_filetypes
 
   "  Compound filetypes
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.tsx setf typescript.tsx
   autocmd BufNewFile,BufRead *.jsx setf javascript.jsx
+  autocmd BufNewFile,BufRead *.tsx setf typescript.tsx
   autocmd BufNewFile,BufRead *_spec.rb setf ruby.rspec
   autocmd BufNewFile,BufRead *.bq.sql setf sql.bq
   autocmd BufNewFile,BufRead *.pg.sql setf sql.pg
@@ -47,7 +47,9 @@ augroup custom_filetypes
   endfunc
 
   autocmd FileType js call s:shortcut.async_call('javascript')
+  autocmd FileType jsx call s:shortcut.async_call('javascript.jsx')
   autocmd FileType ts call s:shortcut.async_call('typescript')
+  autocmd FileType tsx call s:shortcut.async_call('typescript.tsx')
   autocmd FileType md call s:shortcut.async_call('markdown')
   autocmd FileType bq call s:shortcut.async_call('sql.bq')
   autocmd FileType pg call s:shortcut.async_call('sql.pg')

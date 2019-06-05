@@ -27,7 +27,7 @@ function! vimrc#plugin#altr#lazy_init() abort
 
   " Frontend
   call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
-  call altr#define('%.js', '%.jsx', '%.coffee', '%.scss', '%.jade', '%.ace')
+  call altr#define('%.js', '%.jsx', '%.ts', '%.tsx', '%.coffee', '%.css', '%.scss', '%.jade', '%.ace')
 
   " Golang
   call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
