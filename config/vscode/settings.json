@@ -21,5 +21,8 @@
     "search.showLineNumbers": true,
     "terminal.external.osxExec": "iTerm.app",
     "emmet.triggerExpansionOnTab": true,
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "cSpell.userWords": [
+        "Typeahead"
+    ]
 }
