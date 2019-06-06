@@ -87,6 +87,10 @@ if g:colors_name ==# 'candle'
     \ call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]') |
     \ call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
 
+  " highlight extra blank lines
+  " autocmd vimrc_appearance BufWinEnter,WinEnter *
+  "   \ call matchadd("SpellBad", '^\n\ze\n\+\%$\@!')
+
   " highlight trailing spaces
   call candle#highlight('TrailingSpace', '', 'line', '')
   autocmd vimrc_appearance BufWinEnter,WinEnter *
