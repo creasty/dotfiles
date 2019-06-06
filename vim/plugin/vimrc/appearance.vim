@@ -91,6 +91,10 @@ if g:colors_name ==# 'candle'
   " autocmd vimrc_appearance BufWinEnter,WinEnter *
   "   \ call matchadd("SpellBad", '^\n\ze\n\+\%$\@!')
 
+  call candle#highlight('GitConflictMarker', 'red', 'dark_red', '')
+  autocmd vimrc_appearance BufWinEnter,WinEnter *
+    \ call matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50)
+
   " highlight trailing spaces
   call candle#highlight('TrailingSpace', '', 'line', '')
   autocmd vimrc_appearance BufWinEnter,WinEnter *
