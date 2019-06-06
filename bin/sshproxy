@@ -13,7 +13,6 @@ HOST_PORT=8888
 
 SSH=proxy_exp1
 
-
 sudo echo ''
 
 proxy_on() {

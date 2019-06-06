@@ -35,7 +35,6 @@ bindkey '\C-x\C-e' edit-command-line
 # paste last word
 bindkey '^o^w' copy-prev-shell-word
 
-
 #=== Helper
 #==============================================================================================
 _register_keycommand() {
@@ -98,7 +97,6 @@ _buffer_insert_files() {
   fi
 }
 
-
 #=== General
 #==============================================================================================
 #  Move to project root
@@ -109,13 +107,11 @@ cdrt() {
   fi
 }
 
-
 #  Make directory and enter to it
 #-----------------------------------------------
 mkd() {
   mkdir -p "$@" && cd "$@"
 }
-
 
 #  Refresh without restart
 #-----------------------------------------------
@@ -127,7 +123,6 @@ _refresh_screen() {
 
 _register_keycommand '^l' _refresh_screen
 
-
 #  Reload
 #-----------------------------------------------
 reload() {
@@ -135,13 +130,11 @@ reload() {
   [ -n "$TMUX" ] && tmux source-file ~/.tmux.conf
 }
 
-
 #  Update all repos managed by ghq
 #-----------------------------------------------
 ghq-update() {
   ghq list | xargs -n 1 -P 10 ghq get -u
 }
-
 
 #  Tmux
 #-----------------------------------------------
@@ -152,7 +145,6 @@ tmk() {
     | cut -d: -f 1 \
     | xargs -n 1 tmux kill-session -t
 }
-
 
 #  Load .env
 #-----------------------------------------------
@@ -165,13 +157,11 @@ load-env() {
   set +o allexport
 }
 
-
 #  which + edit
 #-----------------------------------------------
 whiche() {
   vim "$(which $1)"
 }
-
 
 #  Open Xcode project file
 #-----------------------------------------------
@@ -188,7 +178,6 @@ openx() {
   fi
 }
 
-
 #=== Peco
 #==============================================================================================
 _peco_select() {
@@ -202,7 +191,6 @@ _peco_select() {
 
   peco --query "$query" <<< "$tx"
 }
-
 
 #  Insert path
 #-----------------------------------------------
@@ -221,7 +209,6 @@ peco_insert_path() {
 
 _register_keycommand '^o^p' peco_insert_path
 
-
 #  Insert modified files
 #-----------------------------------------------
 peco_modified_file() {
@@ -235,7 +222,6 @@ peco_modified_file() {
 }
 
 _register_keycommand '^o^m' peco_modified_file
-
 
 #  Insert branch
 #-----------------------------------------------
@@ -256,7 +242,6 @@ peco_insert_branch() {
 
 _register_keycommand '^o^b' peco_insert_branch
 
-
 #  Insert commit id
 #-----------------------------------------------
 peco_insert_commit() {
@@ -267,7 +252,6 @@ peco_insert_commit() {
 }
 
 _register_keycommand '^o^l' peco_insert_commit
-
 
 #  History
 #-----------------------------------------------
@@ -280,7 +264,6 @@ peco_history() {
 }
 
 _register_keycommand '^r' peco_history
-
 
 #  GHQ
 #-----------------------------------------------
@@ -298,7 +281,6 @@ peco_cd_repo() {
 }
 
 _register_keycommand '^q' peco_cd_repo
-
 
 #  Insert resource
 #-----------------------------------------------

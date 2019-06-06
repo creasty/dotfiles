@@ -52,7 +52,6 @@ syn keyword rubySchema add_index remove_index rename_index
 syn keyword rubySchema enable_extension reversible revert
 syn keyword rubySchema execute transaction
 
-
 "  Spec
 "-----------------------------------------------
 syn keyword rubyTestMacro before after around background setup teardown

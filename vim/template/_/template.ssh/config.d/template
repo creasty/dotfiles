@@ -3,4 +3,3 @@ Host <%= 'FILE_NAME' %>
   User webapp
   Port 22
   IdentityFile ~/.ssh/keys/<%= 'FILE_NAME' %>_webapp
-

@@ -38,7 +38,6 @@ on_map = ['<Plug>(textmanip-']
 repo    = 'mattn/emmet-vim'
 on_func = ['emmet']
 
-
 #  Completion
 #-----------------------------------------------
 [[plugins]] # syntax source for neocomplete/deoplete/ncm
@@ -59,7 +58,6 @@ repo    = 'lighttiger2505/deoplete-vim-lsp'
 depends = ['deoplete.nvim']
 on_i    = 1
 
-
 #  Utils
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
@@ -77,7 +75,6 @@ on_map = ['<Plug>(altr-']
 [[plugins]] # A Git wrapper so awesome, it should be illegal
 repo   = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gbrowse']
-
 
 #  Language
 #-----------------------------------------------

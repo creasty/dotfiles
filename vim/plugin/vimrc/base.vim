@@ -130,6 +130,5 @@ set shiftround
 " virtualedit with freedom
 set virtualedit& virtualedit+=block
 
-
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

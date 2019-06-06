@@ -5,7 +5,6 @@
 #include <netdb.h>
 #include <stdio.h>
 
-
 int main(int argc, char **argv) {
   int server_fd;
   int client_fd;

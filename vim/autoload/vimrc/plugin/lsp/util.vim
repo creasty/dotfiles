@@ -49,7 +49,6 @@ function! s:echo_hover_result(data) abort
   endif
 endfunction
 
-
 "  Server status
 "-----------------------------------------------
 let s:server_status = {}
@@ -86,7 +85,6 @@ function! vimrc#plugin#lsp#util#server_status_changed(delay) abort
     call s:server_status_changed()
   endif
 endfunction
-
 
 "  Diagnostics
 "-----------------------------------------------
@@ -125,7 +123,6 @@ function! vimrc#plugin#lsp#util#handle_diagnostics(server_name, data) abort
 
   call setbufvar(l:bufnr, 'vim_lsp_diagnostics', l:count)
 endfunction
-
 
 "  Helpers
 "-----------------------------------------------

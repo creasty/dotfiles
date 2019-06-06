@@ -20,7 +20,6 @@ for file in ~/.zsh/src/{functions,prompt,term}.zsh; do
 done
 unset file
 
-
 #  Base
 #-----------------------------------------------
 HISTFILE=~/.zsh_history
@@ -29,7 +28,6 @@ SAVEHIST=100000
 
 # disable r command so that I can use r-lang one
 disable r
-
 
 #  Options
 #-----------------------------------------------
@@ -109,7 +107,6 @@ unset zle_bracketed_paste
 # display an exit code of the previous command
 setopt print_exit_value
 
-
 #  Completion
 #-----------------------------------------------
 WORDCHARS=''
@@ -147,7 +144,6 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 # unless we really want to
 zstyle '*' single-ignored show
 
-
 #  Named directories
 #-----------------------------------------------
 hash -d t=~/Desktop
@@ -158,7 +154,6 @@ if command -v ghq > /dev/null 2>&1; then
   hash -d q=$(ghq root)
   hash -d g=$(ghq root)/github.com
 fi
-
 
 #  Fish shell like syntax highlighting
 #-----------------------------------------------
@@ -191,7 +186,6 @@ ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=fg=white
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=green
 ZSH_HIGHLIGHT_STYLES[unknown-token]=none
 
-
 #  Type ahead auto suggestion
 #-----------------------------------------------
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=237
@@ -201,11 +195,9 @@ ZSH_AUTOSUGGEST_IGNORE_WIDGETS=(
   peco_\*
 )
 
-
 #  Direnv
 #-----------------------------------------------
 eval "$(direnv hook zsh)"
-
 
 #  Anyenv
 #-----------------------------------------------

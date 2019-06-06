@@ -6,7 +6,6 @@ set -o pipefail
 NAME=the-elasticsearch-15
 IMAGE=quay.io/wantedly/visit-elasticsearch:1.5.1
 
-
 #  Commands
 #-----------------------------------------------
 server_stop() {
@@ -48,7 +47,6 @@ server_create() {
     -d \
     $IMAGE
 }
-
 
 #  Entrypoint
 #-----------------------------------------------

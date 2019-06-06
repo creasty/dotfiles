@@ -52,7 +52,6 @@ title_preexec() {
 add-zsh-hook precmd title_precmd
 add-zsh-hook preexec title_preexec
 
-
 #  Nortify done
 #-----------------------------------------------
 local notify_prev_command=""
@@ -89,7 +88,6 @@ notify_precmd() {
 
 add-zsh-hook precmd notify_precmd
 add-zsh-hook preexec notify_preexec
-
 
 #  Blank line
 #-----------------------------------------------

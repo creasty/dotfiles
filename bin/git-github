@@ -19,7 +19,6 @@ GIT_DIR="$PROJECT_DIR/.git"
 
 DEFAULT_PAR_PAGE=100
 
-
 #  Functions
 #-----------------------------------------------
 client() {
@@ -54,7 +53,6 @@ copy2clipboard() {
 error() {
   echo -e "Error: $@" 1>&2
 }
-
 
 #  Commands
 #-----------------------------------------------
@@ -222,7 +220,6 @@ mk-pr [head] [base]
     head is default to master; base is to the current branch
 HELP
 }
-
 
 #  Dispatch
 #-----------------------------------------------

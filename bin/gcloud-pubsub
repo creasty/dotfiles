@@ -6,7 +6,6 @@ set -o pipefail
 NAME=the-pubsub
 : ${PORT:=8085}
 
-
 #  Commands
 #-----------------------------------------------
 server_stop() {
@@ -37,7 +36,6 @@ server_create() {
     -it google/cloud-sdk:latest \
     gcloud beta emulators pubsub start --host-port="0.0.0.0:$PORT"
 }
-
 
 #  Entrypoint
 #-----------------------------------------------

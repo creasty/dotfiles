@@ -8,14 +8,12 @@ General
 |:--:|
 | ![](./images/syspref/general.png) |
 
-
 Keyboard
 --------
 
 | 1 | 2 |
 |:--:|:--:|
 | ![](./images/syspref/keyboard/1_all_controls.png) | ![](./images/syspref/keyboard/2_modifier_keys.png) |
-
 
 Trackpad
 --------

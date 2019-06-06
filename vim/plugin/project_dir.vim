@@ -6,7 +6,6 @@ let g:loaded_project_dir = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-
 if exists('+autochdir')
   set noautochdir
 endif
@@ -79,7 +78,6 @@ augroup project_dir
   autocmd BufRead,BufEnter,WinEnter,TabEnter *
     \ call <SID>change_to_root_directory()
 augroup END
-
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

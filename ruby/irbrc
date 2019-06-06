@@ -24,4 +24,3 @@ FancyIrb.start(
 
 Hirb.enable
 # AwesomePrint.irb!
-

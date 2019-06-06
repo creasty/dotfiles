@@ -3,7 +3,6 @@
 [[plugins]] # dark powered vim/neovim plugin manager
 repo = 'Shougo/dein.vim'
 
-
 #  Editing
 #-----------------------------------------------
 [[plugins]] # create your own text objects
@@ -35,7 +34,6 @@ repo = 'creasty/mold.vim'
 [[plugins]] # The ultimate snippet solution for Vim
 repo = 'SirVer/ultisnips'
 
-
 #  Completion
 #-----------------------------------------------
 [[plugins]] # normalize async job control api for vim and neovim
@@ -60,7 +58,6 @@ depends = ['vim-lsp'] # + ['nvim-yarp', 'vim-hug-neovim-rpc']
 repo    = 'cohama/lexima.vim'
 depends = ['deoplete.nvim'] # + ['smartchr']
 
-
 #  Utils
 #-----------------------------------------------
 [[plugins]] # enable repeating supported plugin maps with dot
@@ -77,7 +74,6 @@ repo = 'kana/vim-submode'
 
 [[plugins]] # sequencial numbering with pattern
 repo = 'deris/vim-rengbang'
-
 
 #  Appearance
 #-----------------------------------------------

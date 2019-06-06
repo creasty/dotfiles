@@ -16,14 +16,12 @@ set -o pipefail
 NAME=the-postgres
 IMAGE=postgres:9.6.1-alpine
 
-
 #  Utils
 #-----------------------------------------------
 do_help() {
   cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
   exit 1
 }
-
 
 #  Commands
 #-----------------------------------------------
@@ -93,7 +91,6 @@ exec_status() {
     echo 'not running'
   fi
 }
-
 
 #  Entrypoint
 #-----------------------------------------------

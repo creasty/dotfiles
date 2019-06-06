@@ -30,7 +30,6 @@ function! vimrc#plugin#lsp#init() abort
   autocmd vimrc User lsp_server_init,lsp_server_exit call vimrc#plugin#lsp#util#server_status_changed(0)
 endfunction
 
-
 "  Notification
 "-----------------------------------------------
 function! s:on_notification(server_name, data) abort
@@ -46,7 +45,6 @@ function! s:on_notification(server_name, data) abort
 endfunction
 call lsp#register_notifications('vimrc:on_notification', function('s:on_notification'))
 
-
 "  Mode
 "-----------------------------------------------
 command! LspLogEnable
@@ -60,7 +58,6 @@ command! LspLogDisable
 nnoremap gd :LspDefinition<CR>
 nnoremap gh :LspHover<CR>
 nnoremap gs :call vimrc#plugin#lsp#util#hover_under_cursor()<CR>
-
 
 "  Servers
 "-----------------------------------------------

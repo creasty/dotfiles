@@ -27,7 +27,6 @@ alias :q='exit'
 
 alias path='echo -e ${PATH//:/\\n}'
 
-
 #  Global
 #-----------------------------------------------
 alias -g A='| awk'
@@ -47,7 +46,6 @@ alias -g X='| xargs'
 alias -g X1='| xargs -n 1'
 alias -g XL='| tr "\n" "\0" | xargs -0'
 alias -g P='| peco'
-
 
 #  Suffix
 #-----------------------------------------------
@@ -81,7 +79,6 @@ _run_java() {
   java $className $@
 }
 alias -s java='_run_java'
-
 
 #  Bin
 #-----------------------------------------------
@@ -119,7 +116,6 @@ termtosvg() {
   command termtosvg --max-frame-duration=2000 --template="$template" "$file"
 }
 
-
 #  Networks
 #-----------------------------------------------
 alias hosts='vi /etc/hosts'
@@ -146,7 +142,6 @@ digga() {
   dig +nocmd "$1" any +multiline +noall +answer
 }
 
-
 #  Docker
 #-----------------------------------------------
 alias dk='docker'
@@ -155,7 +150,6 @@ alias dkm='docker-machine'
 
 alias dk-ips="docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \//\t/'"
 alias dk-clean='docker-clean'
-
 
 #  Google Cloud SDK
 #-----------------------------------------------
@@ -167,7 +161,6 @@ alias kubectl='google-cloud-sdk kubectl'
 alias ku='kubectl'
 alias ku-oneshot='kubectl-oneshot'
 alias ku-saconfig='kubectl-saconfig'
-
 
 #  Ruby / Rails
 #-----------------------------------------------
@@ -192,7 +185,6 @@ alias rdbs='bundle exec rake db:setup'
 alias rdbm='rake-db-migrate'
 alias rdba='rake-db-migrate-all'
 
-
 #  Rust
 #-----------------------------------------------
 alias ca='cargo'
@@ -200,7 +192,6 @@ alias cab='cargo build'
 alias cau='cargo update'
 alias car='cargo run'
 alias cac='cargo check'
-
 
 #  Make
 #-----------------------------------------------
@@ -210,7 +201,6 @@ alias m='make'
 alias mi='make install'
 alias mc='make clean'
 
-
 #  tmux
 #-----------------------------------------------
 alias tm='tmux'
@@ -219,7 +209,6 @@ alias tma0='tmux attach -t 0'
 alias tma1='tmux attach -t 1'
 alias tma2='tmux attach -t 2'
 alias tml='tmux list-sessions'
-
 
 #  Xcode
 #-----------------------------------------------
@@ -231,7 +220,6 @@ alias swiftc='SDKPATH=$(/usr/bin/env xcrun --show-sdk-path --sdk macosx) xcrun s
 
 alias xcb='xcodebuild'
 alias xct='xctool'
-
 
 #  Wantedly
 #-----------------------------------------------

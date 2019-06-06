@@ -13,14 +13,12 @@ set -o pipefail
 NAME=the-redis
 IMAGE=redis:3.0.7-alpine
 
-
 #  Utils
 #-----------------------------------------------
 do_help() {
   cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
   exit 1
 }
-
 
 #  Commands
 #-----------------------------------------------
@@ -52,7 +50,6 @@ server_create() {
 exec_cli() {
   docker exec -it $NAME redis-cli
 }
-
 
 #  Entrypoint
 #-----------------------------------------------

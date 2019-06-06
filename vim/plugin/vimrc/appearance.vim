@@ -76,7 +76,6 @@ set title titlestring=%{vimrc#ui#title_text()}
 " tabline
 set tabline=%!vimrc#ui#tab_line()
 
-
 "  Custom highlights
 "-----------------------------------------------
 if g:colors_name ==# 'candle'
@@ -99,7 +98,6 @@ if g:colors_name ==# 'candle'
     \ call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
     \ call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
-
 
 "  StatusLine
 "-----------------------------------------------

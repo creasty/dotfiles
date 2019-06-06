@@ -17,14 +17,15 @@
 "
 " Some lines of code were borrowed from Zhuojun Chen.
 
-if exists("b:current_syntax")
-    finish
+if exists('b:current_syntax')
+  finish
 endif
+let b:current_syntax = 'r'
 
 setlocal iskeyword=@,48-57,_,.
 
-if exists("g:r_syntax_folding")
-    setlocal foldmethod=syntax
+if exists('g:r_syntax_folding')
+  setlocal foldmethod=syntax
 endif
 
 syn case match
@@ -42,21 +43,19 @@ syn match rOKeyword contained "@\(method\|noRd\|note\|references\|seealso\|setCl
 syn match rOKeyword contained "@\(family\|template\|templateVar\|description\|details\|inheritsParams\)"
 syn match rOComment contains=@Spell,rOKeyword "#'.*"
 
-
-if &filetype == "rhelp"
-    " string enclosed in double quotes
-    syn region rString contains=rSpecial,@Spell start=/"/ skip=/\\\\\|\\"/ end=/"/
-    " string enclosed in single quotes
-    syn region rString contains=rSpecial,@Spell start=/'/ skip=/\\\\\|\\'/ end=/'/
+if &filetype ==# 'rhelp'
+  " string enclosed in double quotes
+  syn region rString contains=rSpecial,@Spell start=/"/ skip=/\\\\\|\\"/ end=/"/
+  " string enclosed in single quotes
+  syn region rString contains=rSpecial,@Spell start=/'/ skip=/\\\\\|\\'/ end=/'/
 else
-    " string enclosed in double quotes
-    syn region rString contains=rSpecial,rStrError,@Spell start=/"/ skip=/\\\\\|\\"/ end=/"/
-    " string enclosed in single quotes
-    syn region rString contains=rSpecial,rStrError,@Spell start=/'/ skip=/\\\\\|\\'/ end=/'/
+  " string enclosed in double quotes
+  syn region rString contains=rSpecial,rStrError,@Spell start=/"/ skip=/\\\\\|\\"/ end=/"/
+  " string enclosed in single quotes
+  syn region rString contains=rSpecial,rStrError,@Spell start=/'/ skip=/\\\\\|\\'/ end=/'/
 endif
 
 syn match rStrError display contained "\\."
-
 
 " New line, carriage return, tab, backspace, bell, feed, vertical tab, backslash
 syn match rSpecial display contained "\\\(n\|r\|t\|b\|a\|f\|v\|'\|\"\)\|\\\\"
@@ -116,10 +115,10 @@ syn match rOperator    '-'
 syn match rOperator    '\*'
 syn match rOperator    '+'
 syn match rOperator    '='
-if &filetype != "rmd" && &filetype != "rrst"
-    syn match rOperator    "[|!<>^~/:]"
+if &filetype !=# 'rmd' && &filetype !=# 'rrst'
+  syn match rOperator    "[|!<>^~/:]"
 else
-    syn match rOperator    "[|!<>^~`/:]"
+  syn match rOperator    "[|!<>^~`/:]"
 endif
 syn match rOperator    "%\{2}\|%\S\{-}%"
 syn match rOpError  '\*\{3}'
@@ -136,14 +135,14 @@ syn match rArrow "->\{1,2}"
 syn match rDelimiter "[,;:]"
 
 " Error
-if exists("g:r_syntax_folding")
-    syn region rRegion matchgroup=Delimiter start=/(/ matchgroup=Delimiter end=/)/ transparent contains=ALLBUT,rError,rBraceError,rCurlyError fold
-    syn region rRegion matchgroup=Delimiter start=/{/ matchgroup=Delimiter end=/}/ transparent contains=ALLBUT,rError,rBraceError,rParenError fold
-    syn region rRegion matchgroup=Delimiter start=/\[/ matchgroup=Delimiter end=/]/ transparent contains=ALLBUT,rError,rCurlyError,rParenError fold
+if exists('g:r_syntax_folding')
+  syn region rRegion matchgroup=Delimiter start=/(/ matchgroup=Delimiter end=/)/ transparent contains=ALLBUT,rError,rBraceError,rCurlyError fold
+  syn region rRegion matchgroup=Delimiter start=/{/ matchgroup=Delimiter end=/}/ transparent contains=ALLBUT,rError,rBraceError,rParenError fold
+  syn region rRegion matchgroup=Delimiter start=/\[/ matchgroup=Delimiter end=/]/ transparent contains=ALLBUT,rError,rCurlyError,rParenError fold
 else
-    syn region rRegion matchgroup=Delimiter start=/(/ matchgroup=Delimiter end=/)/ transparent contains=ALLBUT,rError,rBraceError,rCurlyError
-    syn region rRegion matchgroup=Delimiter start=/{/ matchgroup=Delimiter end=/}/ transparent contains=ALLBUT,rError,rBraceError,rParenError
-    syn region rRegion matchgroup=Delimiter start=/\[/ matchgroup=Delimiter end=/]/ transparent contains=ALLBUT,rError,rCurlyError,rParenError
+  syn region rRegion matchgroup=Delimiter start=/(/ matchgroup=Delimiter end=/)/ transparent contains=ALLBUT,rError,rBraceError,rCurlyError
+  syn region rRegion matchgroup=Delimiter start=/{/ matchgroup=Delimiter end=/}/ transparent contains=ALLBUT,rError,rBraceError,rParenError
+  syn region rRegion matchgroup=Delimiter start=/\[/ matchgroup=Delimiter end=/]/ transparent contains=ALLBUT,rError,rCurlyError,rParenError
 endif
 
 syn match rError      "[)\]}]"
@@ -165,27 +164,27 @@ syn match rLstElmt "@[a-zA-Z0-9\\._]*" contains=rDollar
 " Functions that may add new objects
 syn keyword rPreProc     library require attach detach source
 
-if &filetype == "rhelp"
-    syn match rHelpIdent '\\method'
-    syn match rHelpIdent '\\S4method'
+if &filetype ==# 'rhelp'
+  syn match rHelpIdent '\\method'
+  syn match rHelpIdent '\\S4method'
 endif
 
 " Type
 syn keyword rType array category character complex double function integer list logical matrix numeric vector data.frame 
 
 " Name of object with spaces
-if &filetype != "rmd" && &filetype != "rrst"
-    syn region rNameWSpace start="`" end="`"
+if &filetype !=# 'rmd' && &filetype !=# 'rrst'
+  syn region rNameWSpace start="`" end="`"
 endif
 
-if &filetype == "rhelp"
-    syn match rhPreProc "^#ifdef.*" 
-    syn match rhPreProc "^#endif.*" 
-    syn match rhSection "\\dontrun\>"
+if &filetype ==# 'rhelp'
+  syn match rhPreProc "^#ifdef.*"
+  syn match rhPreProc "^#endif.*"
+  syn match rhSection "\\dontrun\>"
 endif
 
 " Define the default highlighting.
-hi def link rArrow       Statement	
+hi def link rArrow       Statement
 hi def link rBoolean     Boolean
 hi def link rBraceError  Error
 hi def link rComment     Comment
@@ -218,7 +217,3 @@ hi def link rString      String
 hi def link rStrError    Error
 hi def link rType        Type
 hi def link rOKeyword    Title
-
-let b:current_syntax="r"
-
-" vim: ts=8 sw=4

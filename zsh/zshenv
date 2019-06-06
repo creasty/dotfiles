@@ -5,7 +5,6 @@ for file in ~/.zsh/src/{exports,aliases}.zsh; do
 done
 unset file
 
-
 #  Anyenv
 #-----------------------------------------------
 if [ -d $HOME/.anyenv ] && command -v 'anyenv' > /dev/null 2>&1; then

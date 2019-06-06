@@ -2,18 +2,15 @@
 " Language:   Swift (https://developer.apple.com/swift)
 " Maintainer: Yuki Iwanaga (yuki@creasty.com)
 
-if exists('b:current_syntax') && b:current_syntax == 'swift'
+if exists('b:current_syntax') && b:current_syntax ==# 'swift'
   finish
 endif
-
 let b:current_syntax = 'swift'
-
 
 "=== Operators
 "==============================================================================================
 syn match swiftOperator "->\|-\|+\|\*\|/\|=\|&\|%=\|!\|\~\|\.\|?\|\^\|<\|>\|:"
 hi link swiftOperator Operator
-
 
 "=== Comments
 "==============================================================================================
@@ -21,12 +18,10 @@ syn region swiftComment start=#\/\*# end=#\*\/#
 syn match swiftComment /\/\/.*$/
 hi link swiftComment Comment
 
-
 "=== Marks
 "==============================================================================================
 syn match swiftMark /@[a-zA-Z_][a-zA-Z_0-9]*/
 hi link swiftMark Operator
-
 
 "=== Functions
 "==============================================================================================
@@ -41,7 +36,6 @@ syn region swiftFuncArgs matchgroup=swiftFuncArgs start="(" end=")" contained co
 
 hi link swiftFuncKeyword Keyword
 hi link swiftFuncIdentifer Identifier
-
 
 "=== Keywords
 "==============================================================================================
@@ -58,7 +52,6 @@ hi link swiftBoolean Boolean
 syn keyword swiftConstant nil __COLUMN__ __FILE__ __FUNCTION__ __LINE__
 hi link swiftConstant Constant
 
-
 "=== Literals
 "==============================================================================================
 syn match swiftIntegerLiteral /\<[0-9_]\+\>/
@@ -70,7 +63,6 @@ hi link swiftIntegerLiteral Number
 syn region swiftStringLiteral start=/"/ skip=/\\"/ end=/"/ contains=swiftInterpolatedWrapper
 syn region swiftInterpolatedWrapper start="\v\\\(\s*" end="\v\s*\)" contained containedin=swiftStringLiteral contains=TOP
 hi link swiftStringLiteral String
-
 
 "=== Type
 "==============================================================================================
