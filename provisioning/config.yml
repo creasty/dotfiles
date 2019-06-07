@@ -168,7 +168,7 @@ golang:
 
 nodejs:
   versions:
-    - '8.11.3'
+    - '10.15.3'
 
   packages:
     - coffee-script                 # https://github.com/jashkenas/coffeescript
