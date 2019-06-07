@@ -1,28 +1,39 @@
 {
-    "files.autoSave": "afterDelay",
-    "editor.wordWrap": "on",
-    "editor.wordWrapColumn": 120,
-    "editor.renderControlCharacters": true,
-    "editor.renderWhitespace": "boundary",
-    "editor.tabCompletion": "on",
-    "editor.wrappingIndent": "indent",
-    "editor.cursorBlinking": "smooth",
-    "editor.find.autoFindInSelection": true,
-    "editor.formatOnSave": true,
-    "editor.formatOnType": true,
-    "editor.minimap.enabled": false,
-    "files.trimTrailingWhitespace": true,
-    "files.insertFinalNewline": true,
-    "workbench.tips.enabled": false,
-    "breadcrumbs.enabled": true,
-    "workbench.editor.highlightModifiedTabs": true,
-    "explorer.confirmDragAndDrop": false,
-    "search.smartCase": true,
-    "search.showLineNumbers": true,
-    "terminal.external.osxExec": "iTerm.app",
-    "emmet.triggerExpansionOnTab": true,
-    "window.zoomLevel": 0,
-    "cSpell.userWords": [
-        "Typeahead"
-    ]
+  "files.autoSave": "afterDelay",
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 120,
+  "editor.renderControlCharacters": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.tabCompletion": "on",
+  "editor.wrappingIndent": "indent",
+  "editor.cursorBlinking": "smooth",
+  "editor.find.autoFindInSelection": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.minimap.enabled": false,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "workbench.tips.enabled": false,
+  "breadcrumbs.enabled": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "explorer.confirmDragAndDrop": false,
+  "search.smartCase": true,
+  "search.showLineNumbers": true,
+  "terminal.external.osxExec": "iTerm.app",
+  "emmet.triggerExpansionOnTab": true,
+  "window.zoomLevel": 0,
+  "cSpell.userWords": [
+    "Typeahead"
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    { "language": "typescript", "autoFix": true },
+    { "language": "typescriptreact", "autoFix": true }
+  ],
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  }
 }
