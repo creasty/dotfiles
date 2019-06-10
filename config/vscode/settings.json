@@ -35,5 +35,6 @@
     "other": true,
     "comments": false,
     "strings": true
-  }
+  },
+  "workbench.statusBar.feedback.visible": false
 }
