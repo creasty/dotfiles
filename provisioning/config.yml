@@ -13,6 +13,7 @@ homebrew:
     - creasty/tools/keyboard # https://github.com/creasty/Keyboard
     - docker                 # https://www.docker.com/community-edition
     - dropbox                # https://www.dropbox.com/
+    - figma                  # https://www.figma.com/
     - google-chrome          # https://www.google.com/chrome/
     - google-hangouts        # https://www.google.com/tools/dlpage/hangoutplugin
     - google-japanese-ime    # https://www.google.co.jp/ime/
@@ -26,6 +27,7 @@ homebrew:
     - quicklook-json         # http://www.sagtau.com/quicklookjson.html
     - sketch                 # https://www.sketchapp.com/
     - skype                  # https://www.skype.com/
+    - station                # https://getstation.com/
     - tableplus              # https://tableplus.io/
     - transmit               # https://panic.com/transmit/
     - tunnelbear             # https://www.tunnelbear.com/
@@ -108,7 +110,6 @@ mas:
     - '425424354'  # The Unarchiver
     - '497799835'  # Xcode
     - '540348655'  # Monosnap
-    - '803453959'  # Slack
     - '904280696'  # Things3
     - '928494006'  # PopHub
     - '975937182'  # Fantastical 2
