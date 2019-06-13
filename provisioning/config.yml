@@ -25,7 +25,6 @@ homebrew:
     - qlmarkdown             # https://github.com/toland/qlmarkdown
     - qlstephen              # https://whomwah.github.io/qlstephen/
     - quicklook-json         # http://www.sagtau.com/quicklookjson.html
-    - sketch                 # https://www.sketchapp.com/
     - skype                  # https://www.skype.com/
     - station                # https://getstation.com/
     - tableplus              # https://tableplus.io/
@@ -173,7 +172,8 @@ nodejs:
     - '10.15.3'
 
   packages:
-    - coffee-script                 # https://github.com/jashkenas/coffeescript
+    - eslint                        # https://github.com/eslint/eslint
+    - tslint                        # https://github.com/palantir/tslint
     - typescript                    # https://github.com/Microsoft/TypeScript
     - typescript-language-server    # https://github.com/theia-ide/typescript-language-server
     - typescript-styled-plugin      # https://github.com/Microsoft/typescript-styled-plugin
