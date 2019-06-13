@@ -36,9 +36,9 @@
       environment:
         GO111MODULE: off
       with_items:
+        - golang.org/x/tools/...
         - github.com/monochromegane/dragon-imports/...
         - github.com/pwaller/goimports-update-ignore
-        - golang.org/x/tools/imports
     - name: optimize goimports | run goimports-update-ignore
       command: |
         bash -lc 'goimports-update-ignore -max-depth 5'
