@@ -44,9 +44,7 @@
 
 - name: install ruby
   command: |
-    bash -lc 'rbenv install {{ item | quote }}'
-  environment:
-    RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }}'
+    env RUBY_CONFIGURE_OPTS='--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }}' bash -lc 'rbenv install {{ item | quote }}'
   when: |
     ruby.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ ruby.versions }}'
