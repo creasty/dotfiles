@@ -12,8 +12,8 @@ let g:go_highlight_extra_types = 0
 "  Imports
 "-----------------------------------------------
 command! GoImports
-  \ call system('goimports -w ' . shellescape(expand('%:p')))
-  \ | e
+  \ call system('goimports -w ' . shellescape(expand('%:p'))) |
+  \ e
 
 "  Fmt
 "-----------------------------------------------
