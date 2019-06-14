@@ -22,22 +22,21 @@ endfunction
 augroup custom_filetypes
   autocmd!
 
-  autocmd BufNewFile,BufRead *.er  setf conf
-  autocmd BufNewFile,BufRead *.m   setf objc
-  autocmd BufNewFile,BufRead *.md  setf markdown
-  autocmd BufNewFile,BufRead *.pde setf processing
-
-  autocmd BufNewFile,BufRead gitconfig setf toml
-  autocmd BufNewFile,BufRead *.psgi,*.t,cpanfile setf perl
-  autocmd BufNewFile,BufRead Guardfile,Vagrantfile,*.rake,*.jbuilder setf ruby
+  autocmd BufNewFile,BufRead *.er setlocal ft=conf
+  autocmd BufNewFile,BufRead *.m setlocal ft=objc
+  autocmd BufNewFile,BufRead *.md setlocal ft=markdown
+  autocmd BufNewFile,BufRead *.pde setlocal ft=processing
+  autocmd BufNewFile,BufRead gitconfig setlocal ft=toml
+  autocmd BufNewFile,BufRead *.psgi,*.t,cpanfile setlocal ft=perl
+  autocmd BufNewFile,BufRead Guardfile,Vagrantfile,*.rake,*.jbuilder setlocal ft=ruby
 
   "  Compound filetypes
   "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.jsx setf javascript.jsx
-  autocmd BufNewFile,BufRead *.tsx setf typescript.tsx
-  autocmd BufNewFile,BufRead *_spec.rb setf ruby.rspec
-  autocmd BufNewFile,BufRead *.bq.sql setf sql.bq
-  autocmd BufNewFile,BufRead *.pg.sql setf sql.pg
+  autocmd BufNewFile,BufRead *.jsx setlocal ft=javascript.jsx
+  autocmd BufNewFile,BufRead *.tsx setlocal ft=typescript.tsx
+  autocmd BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
+  autocmd BufNewFile,BufRead *.bq.sql setlocal ft=sql.bq
+  autocmd BufNewFile,BufRead *.pg.sql setlocal ft=sql.pg
 
   "  Shortcuts
   "-----------------------------------------------
