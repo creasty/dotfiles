@@ -36,5 +36,6 @@
     "comments": false,
     "strings": true
   },
-  "workbench.statusBar.feedback.visible": false
+  "workbench.statusBar.feedback.visible": false,
+  "workbench.startupEditor": "newUntitledFile"
 }
