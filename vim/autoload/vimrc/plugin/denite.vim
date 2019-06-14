@@ -3,7 +3,7 @@ function! vimrc#plugin#denite#open_best() abort
   let l:is_same_dir = (getcwd() == get(g:, 'denite_last_cwd', ''))
   let g:denite_last_cwd = getcwd()
 
-  let l:source = l:is_home ? 'ghq' : 'file_rec'
+  let l:source = l:is_home ? 'ghq' : 'file/rec'
   let l:resume = l:is_same_dir ? '-resume' : ''
 
   exec 'Denite'

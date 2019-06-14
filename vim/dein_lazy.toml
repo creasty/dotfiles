@@ -62,6 +62,7 @@ on_i    = 1
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
 repo   = 'Shougo/denite.nvim'
+rev    = '2.1'
 on_cmd = ['Denite']
 
 [[plugins]] # hex editing system
