@@ -22,28 +22,14 @@ endfunction
 augroup custom_filetypes
   autocmd!
 
-  "  Remap
-  "-----------------------------------------------
   autocmd BufNewFile,BufRead *.er  setf conf
   autocmd BufNewFile,BufRead *.m   setf objc
   autocmd BufNewFile,BufRead *.md  setf markdown
   autocmd BufNewFile,BufRead *.pde setf processing
 
-  "  Based on filename or extension
-  "-----------------------------------------------
-  autocmd BufNewFile,BufRead
-    \ *.psgi,*.t,cpanfile
-    \ setf perl
-
-  autocmd BufNewFile,BufRead
-    \ *.ejs,*.ep,*.erb,*.tt,*.tt2,*.html.erb
-    \ setf html
-
-  autocmd BufNewFile,BufRead
-    \ Guardfile,Vagrantfile,*.rabl,*.rake
-    \ setf ruby
-
   autocmd BufNewFile,BufRead gitconfig setf toml
+  autocmd BufNewFile,BufRead *.psgi,*.t,cpanfile setf perl
+  autocmd BufNewFile,BufRead Guardfile,Vagrantfile,*.rake,*.jbuilder setf ruby
 
   "  Compound filetypes
   "-----------------------------------------------
