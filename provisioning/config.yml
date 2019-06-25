@@ -66,7 +66,7 @@ homebrew:
     - ghostscript         # Interpreter for PostScript and PDF
     - git                 # Distributed revision control system
     - git-lfs             # Git extension for versioning large files
-    - gpg                 # GNU Privacy Guard: a free PGP replacement
+    - gnupg               # GNU Pretty Good Privacy (PGP) package
     - heroku/brew/heroku  # Everything you need to get started with Heroku
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
