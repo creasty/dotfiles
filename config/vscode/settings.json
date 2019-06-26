@@ -37,5 +37,6 @@
     "strings": true
   },
   "workbench.statusBar.feedback.visible": false,
-  "workbench.startupEditor": "newUntitledFile"
+  "workbench.startupEditor": "newUntitledFile",
+  "explorer.confirmDelete": false
 }
