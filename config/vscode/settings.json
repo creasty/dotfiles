@@ -23,7 +23,9 @@
   "emmet.triggerExpansionOnTab": true,
   "window.zoomLevel": 0,
   "cSpell.userWords": [
-    "Typeahead"
+    "Hookable",
+    "Typeahead",
+    "pluggable"
   ],
   "eslint.validate": [
     "javascript",
