@@ -21,6 +21,7 @@ homebrew:
     - istat-menus            # https://bjango.com/mac/istatmenus/
     - jetbrains-toolbox      # https://www.jetbrains.com/toolbox/app/
     - ngrok                  # https://ngrok.com/
+    - notion                 # https://www.notion.so/
     - qlcolorcode            # https://github.com/anthonygelibert/QLColorCode
     - qlmarkdown             # https://github.com/toland/qlmarkdown
     - qlstephen              # https://whomwah.github.io/qlstephen/
