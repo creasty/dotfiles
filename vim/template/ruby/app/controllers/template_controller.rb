@@ -1,4 +1,4 @@
-<%=
+<%-
 namespaces = File.dirname('FILE_PATH'.split('app/controllers')[1])
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .split('/')
@@ -10,14 +10,7 @@ class_name = File.basename('FILE_NAME', '.rb')
 
 parent = (class_name == 'ApplicationController') ?
   'ActionController::Base' : 'ApplicationController'
-
-out = <<EOS.chomp
-class #{[*namespaces, class_name].join('::')} < #{parent}
-
+-%>
+class <%= [*namespaces, class_name].join('::') %> < <%= parent %>
   <+CURSOR+>
-
 end
-EOS
-
-out
-%>

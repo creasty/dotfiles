@@ -1,4 +1,4 @@
-<%
+<%-
 is_active_support_available = false
 
 begin
@@ -23,7 +23,5 @@ class_name = class_name
 require 'spec_helper'
 
 Rspec.describe <%= class_name %>, type: :<%= spec_type %> do
-
-  
-
+  <+CURSOR+>
 end

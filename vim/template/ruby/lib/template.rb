@@ -1,4 +1,4 @@
-<%=
+<%-
 namespaces = File.dirname('FILE_PATH'.split('lib/', 2)[1])
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .split('/')
@@ -7,14 +7,7 @@ namespaces = File.dirname('FILE_PATH'.split('lib/', 2)[1])
 class_name = File.basename('FILE_NAME', '.rb')
   .gsub(/(_|\b)([a-z0-9])/) { $2.upcase }
   .delete('_')
-
-out = <<EOS.chomp
-class #{[*namespaces, class_name].join('::')}
-
+-%>
+class <%= [*namespaces, class_name].join('::') %>
   <+CURSOR+>
-
 end
-EOS
-
-out
-%>
