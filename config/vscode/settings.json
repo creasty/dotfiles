@@ -25,7 +25,8 @@
   "cSpell.userWords": [
     "Hookable",
     "Typeahead",
-    "pluggable"
+    "pluggable",
+    "unstyled"
   ],
   "eslint.validate": [
     "javascript",
