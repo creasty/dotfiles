@@ -119,7 +119,7 @@ nmap <C-w>r <Plug>(lcb-restore)
 nmap <C-w><C-r> <Plug>(lcb-restore)
 
 " search selection
-xnoremap <Space>/ "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
+xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
 " replace selection
 xnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/

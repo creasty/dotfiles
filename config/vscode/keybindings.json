@@ -1,0 +1,274 @@
+[
+  {
+    "key": "up",
+    "command": "cursorUp",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
+  },
+  {
+    "key": "down",
+    "command": "cursorDown",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
+  },
+
+  //=== Emacs
+  //==============================================================================================
+  {
+    "key": "ctrl+j",
+    "command": "list.select",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "acceptSelectedSuggestionOnEnter",
+    "when": "acceptSuggestionOnEnter && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "repl.action.acceptInput",
+    "when": "inDebugRepl && textInputFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "breadcrumbs.selectFocused",
+    "when": "breadcrumbsActive && breadcrumbsVisible"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "breakpointWidget.action.acceptInput",
+    "when": "breakpointWidgetVisible && inBreakpointWidget"
+  },
+
+  //
+  // "forwardChar", "backwardChar", "nextLine", "previousLine",
+  // "moveBeginningOfLine", "moveEndOfLine", "forwardWord", "backwardWord",
+  // "beginningOfBuffer", "endOfBuffer", "scrollUpCommand", "scrollDownCommand",
+  // {
+  //   "key": "ctrl+n",
+  //   "command": "-cursorDown",
+  //   "when": "textInputFocus"
+  // },
+  // {
+  //   "key": "ctrl+n",
+  //   "command": "cursorDown",
+  //   "when": "textInputFocus && !vim.active && !suggestWidgetVisible"
+  // },
+  // {
+  //   "key": "ctrl+p",
+  //   "command": "-cursorUp",
+  //   "when": "textInputFocus"
+  // },
+  // {
+  //   "key": "ctrl+p",
+  //   "command": "cursorUp",
+  //   "when": "textInputFocus && !vim.active && !suggestWidgetVisible"
+  // },
+  // {
+  //   "key": "ctrl+a",
+  //   "command": "-cursorLineStart",
+  //   "when": "textInputFocus"
+  // },
+  // {
+  //   "key": "ctrl+a",
+  //   "command": "cursorLineStart",
+  //   "when": "textInputFocus && !vim.active"
+  // },
+  // {
+  //   "key": "ctrl+e",
+  //   "command": "-cursorLineEnd",
+  //   "when": "textInputFocus"
+  // },
+  // {
+  //   "key": "ctrl+e",
+  //   "command": "cursorLineEnd",
+  //   "when": "textInputFocus && !vim.active"
+  // },
+
+  {
+    "key": "ctrl+q",
+    "command": "workbench.action.quickOpen"
+  },
+
+  //=== Sidebar
+  //==============================================================================================
+  // {
+  //   "key": "cmd+b",
+  //   "command": "workbench.action.toggleSidebarVisibility"
+  // },
+  // {
+  //   "key": "cmd+o",
+  //   "command": "workbench.action.focusSideBar"
+  // },
+  {
+    "key": "ctrl+s ctrl+l",
+    "command": "workbench.action.navigateEditorGroups",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "ctrl+s l",
+    "command": "workbench.action.navigateEditorGroups",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "escape",
+    "command": "list.toggleKeyboardNavigation",
+    "when": "listFocus && listSupportsKeyboardNavigation"
+  },
+
+  //  Search
+  //-----------------------------------------------
+  {
+    "key": "ctrl+n",
+    "command": "search.focus.nextInputBox",
+    "when": "inputBoxFocus && searchViewletVisible"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "search.focus.previousInputBox",
+    "when": "inputBoxFocus && searchViewletVisible && !searchInputBoxFocus"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "search.action.focusSearchFromResults",
+    "when": "firstMatchFocus && searchViewletVisible"
+  },
+
+  //  Explorer
+  //-----------------------------------------------
+  {
+    "key": "ctrl+r",
+    "command": "renameFile",
+    "when": "explorerViewletVisible && filesExplorerFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "explorer.openToSide",
+    "when": "explorerViewletVisible && filesExplorerFocus"
+  },
+
+  //=== Settings
+  //==============================================================================================
+  {
+    "key": "ctrl+n",
+    "command": "settings.action.focusSettingsFile",
+    "when": "inSettingsSearch"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "keybindings.editor.focusKeybindings",
+    "when": "inKeybindings && inKeybindingsSearch"
+  },
+
+  //=== Split/Tab navigation
+  //==============================================================================================
+  {
+    "key": "ctrl+s v",
+    "command": "workbench.action.splitEditorRight"
+  },
+  {
+    "key": "ctrl+s ctrl+v",
+    "command": "workbench.action.splitEditorRight"
+  },
+  {
+    "key": "ctrl+s s",
+    "command": "workbench.action.splitEditorDown"
+  },
+  {
+    "key": "ctrl+s ctrl+s",
+    "command": "workbench.action.splitEditorDown"
+  },
+  {
+    "key": "ctrl+s h",
+    "command": "workbench.action.focusLeftGroup"
+  },
+  {
+    "key": "ctrl+s ctrl+h",
+    "command": "workbench.action.focusLeftGroup"
+  },
+  {
+    "key": "ctrl+s j",
+    "command": "workbench.action.focusBelowGroup"
+  },
+  {
+    "key": "ctrl+s ctrl+j",
+    "command": "workbench.action.focusBelowGroup"
+  },
+  {
+    "key": "ctrl+s k",
+    "command": "workbench.action.focusAboveGroup"
+  },
+  {
+    "key": "ctrl+s ctrl+k",
+    "command": "workbench.action.focusAboveGroup"
+  },
+  {
+    "key": "ctrl+s l",
+    "command": "workbench.action.focusRightGroup"
+  },
+  {
+    "key": "ctrl+s ctrl+l",
+    "command": "workbench.action.focusRightGroup"
+  },
+  {
+    "key": "ctrl+s d",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "ctrl+s ctrl+d",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "ctrl+s d",
+    "command": "workbench.action.closeGroup",
+    "when": "activeEditorGroupEmpty && multipleEditorGroups"
+  },
+  {
+    "key": "ctrl+s ctrl+d",
+    "command": "workbench.action.closeGroup",
+    "when": "activeEditorGroupEmpty && multipleEditorGroups"
+  },
+  {
+    "key": "ctrl+s n",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "ctrl+s ctrl+n",
+    "command": "workbench.action.nextEditor"
+  },
+  {
+    "key": "ctrl+s b",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+s ctrl+b",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+s r",
+    "command": "workbench.action.reopenClosedEditor"
+  },
+  {
+    "key": "ctrl+s ctrl+r",
+    "command": "workbench.action.reopenClosedEditor"
+  },
+
+  //=== Enumerate
+  //==============================================================================================
+  {
+    "key": "alt+cmd+e",
+    "command": "-extension.enumerate",
+    "when": "editorTextFocus"
+  },
+
+  //=== File Switcher
+  //==============================================================================================
+  {
+    "key": "alt+r",
+    "command": "-fileswitcher.switchFile",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+alt+r",
+    "command": "-fileswitcher.switchFileSplit",
+    "when": "editorTextFocus"
+  }
+]

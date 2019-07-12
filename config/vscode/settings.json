@@ -1,27 +1,73 @@
 {
-  "files.autoSave": "afterDelay",
-  "editor.wordWrap": "on",
-  "editor.wordWrapColumn": 120,
-  "editor.renderControlCharacters": true,
-  "editor.renderWhitespace": "boundary",
-  "editor.tabCompletion": "on",
-  "editor.wrappingIndent": "indent",
+  //=== Basic
+  //==============================================================================================
+  "breadcrumbs.enabled": true,
+
+  "debug.inlineValues": true,
+
+  "diffEditor.ignoreTrimWhitespace": false,
+
   "editor.cursorBlinking": "smooth",
   "editor.find.autoFindInSelection": true,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.minimap.enabled": false,
-  "files.trimTrailingWhitespace": true,
-  "files.insertFinalNewline": true,
-  "workbench.tips.enabled": false,
-  "breadcrumbs.enabled": true,
-  "workbench.editor.highlightModifiedTabs": true,
+  "editor.renderControlCharacters": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.tabCompletion": "on",
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 120,
+  "editor.wrappingIndent": "indent",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+
+  "explorer.openEditors.visible": 0,
+  "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "search.smartCase": true,
+
+  "files.autoSave": "afterDelay",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
   "search.showLineNumbers": true,
+  "search.smartCase": true,
+  "search.usePCRE2": true,
+  "search.location": "panel",
+  "search.useIgnoreFiles": true,
+
   "terminal.external.osxExec": "iTerm.app",
-  "emmet.triggerExpansionOnTab": true,
+
   "window.zoomLevel": 0,
+
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.statusBar.feedback.visible": false,
+  "workbench.tips.enabled": false,
+  "workbench.activityBar.visible": false,
+  "workbench.editor.showTabs": true,
+
+  //=== Emmet
+  //==============================================================================================
+  "emmet.triggerExpansionOnTab": true,
+
+  //=== Liveshare
+  //==============================================================================================
+  "liveshare.showInStatusBar": "whileCollaborating",
+
+  //=== Eslint
+  //==============================================================================================
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    { "language": "typescript", "autoFix": true },
+    { "language": "typescriptreact", "autoFix": true }
+  ],
+
+  //=== Code Spell Checker
+  //==============================================================================================
   "cSpell.userWords": [
     "Hookable",
     "Typeahead",
@@ -29,18 +75,239 @@
     "pluggable",
     "unstyled"
   ],
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
-  ],
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": false,
-    "strings": true
+
+  //=== Better align
+  //==============================================================================================
+  "alignment.surroundSpace": {
+    "colon": [0, 1],
+    "assignment": [1, 1],
+    "arrow": [1, 1],
+    "comment": 1
   },
-  "workbench.statusBar.feedback.visible": false,
-  "workbench.startupEditor": "newUntitledFile",
-  "explorer.confirmDelete": false
+
+  //=== Custom CSS
+  //==============================================================================================
+  "vscode_custom_css.statusbar": false,
+  "vscode_custom_css.imports": [],
+
+  //=== Prettier
+  //==============================================================================================
+  "prettier.stylelintIntegration": true,
+  "prettier.eslintIntegration": true,
+  "prettier.tslintIntegration": true,
+  "prettier.trailingComma": "es5",
+
+  //=== File Switcher
+  //==============================================================================================
+  "fileswitcher.mappings": [
+    {
+      "from": "app/(.+).rb",
+      "to": "test/:1_test.rb"
+    },
+    {
+      "from": "test/(.+)_test.rb",
+      "to": "app/:1.rb"
+    }
+  ],
+
+  //=== VSCodeVim
+  //==============================================================================================
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.textwidth": 90,
+  "vim.leader": " ",
+  "vim.whichwrap": "h,l,<,>,[,]",
+  "vim.visualstar": true,
+  "vim.debug.silent": true,
+  "vim.handleKeys": {
+    "<C-s>": false,
+    "<C-f>": false
+  },
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "j"],
+      "after": ["<Esc>"]
+    }
+  ],
+  "vim.normalModeKeyBindings": [
+    //  Easymotion
+    {
+      "before": ["<leader>", "f"],
+      "after": ["<leader>", "<leader>", "f"]
+    },
+    {
+      "before": ["<leader>", "F"],
+      "after": ["<leader>", "<leader>", "F"]
+    },
+    {
+      "before": ["<leader>", "t"],
+      "after": ["<leader>", "<leader>", "t"]
+    },
+    {
+      "before": ["<leader>", "T"],
+      "after": ["<leader>", "<leader>", "T"]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    // {{{ move cursor visually with long lines
+    {
+      "before": ["j"],
+      "after": ["g", "j"]
+    },
+    {
+      "before": ["k"],
+      "after": ["g", "k"]
+    },
+    // }}}
+
+    {
+      "before": ["<leader>", "<leader>"],
+      "commands": [":nohl"]
+    },
+    {
+      "before": ["<leader>", "h"],
+      "after": ["g", "^"]
+    },
+    {
+      "before": ["<leader>", "l"],
+      "after": ["g", "$"]
+    },
+    {
+      "before": ["<leader>", "r"],
+      "commands": ["code-runner.run"]
+    },
+    {
+      // keep the cursor in place while joining lines
+      "before": ["J"],
+      "after": ["m", "Z", "J", "`", "Z", "m", "Z"]
+    },
+    {
+      // split lines: inverse of J
+      "before": ["K"],
+      "after": ["y", "l", "p", "r", "<Enter>"]
+    },
+    {
+      "before": ["<leader>", "a"],
+      "after": ["g", "g", "V", "G"]
+    },
+    {
+      "before": ["g", "r"],
+      "commands": ["editor.action.referenceSearch.trigger"]
+    },
+    {
+      "before": ["g", "a"],
+      "commands": ["fileswitcher.switchFile"]
+    },
+
+    // {{{ insert blank lines without going into insert mode
+    {
+      "before": ["<leader>", "o"],
+      "after": ["m", "Z", "o", "<Esc>", "`", "Z", "m", "Z"]
+    },
+    {
+      "before": ["<leader>", "O"],
+      "after": ["m", "Z", "O", "<Esc>", "`", "Z", "m", "Z"]
+    },
+    // }}}
+
+    // {{{ do not store to register with x, c
+    {
+      "before": ["x"],
+      "after": ["\"", "_", "x"]
+    },
+    {
+      "before": ["X"],
+      "after": ["\"", "_", "X"]
+    },
+    {
+      "before": ["c"],
+      "after": ["\"", "_", "c"]
+    },
+    {
+      "before": ["C"],
+      "after": ["\"", "_", "C"]
+    }
+    // }}}
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": ["j"],
+      "after": ["g", "j"]
+    },
+    {
+      "before": ["k"],
+      "after": ["g", "k"]
+    },
+    {
+      "before": ["p"],
+      "after": ["p", "g", "v", "y"]
+    },
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"]
+    },
+    {
+      "before": ["="],
+      "commands": ["editor.action.reindentselectedlines"]
+    },
+    {
+      "before": ["<"],
+      "commands": ["editor.action.outdentLines"]
+    },
+
+    // {{{ do not store to register with x, c
+    {
+      "before": ["x"],
+      "after": ["\"", "_", "x"]
+    },
+    {
+      "before": ["c"],
+      "after": ["\"", "_", "c"]
+    },
+    // }}}
+
+    // {{{ line-wise manipulations
+    {
+      "before": ["C-j"],
+      "commands": ["editor.action.moveLinesDownAction"]
+    },
+    {
+      "before": ["C-k"],
+      "commands": ["editor.action.moveLinesUpAction"]
+    },
+    {
+      "before": ["<leader>", "C-j"],
+      "commands": ["editor.action.copyLinesDownAction"]
+    },
+    {
+      "before": ["<leader>", "C-k"],
+      "commands": ["editor.action.copyLinesUpAction"]
+    },
+    // }}}
+
+    {
+      "before": ["R"],
+      "after": ["\"", "_", "d", "P"]
+    },
+    {
+      "before": ["C"],
+      "commands": ["extension.changeCase.commands"]
+    },
+    {
+      "before": ["L"],
+      "commands": ["wwm.aligncode"]
+    },
+    {
+      "before": ["O"],
+      "commands": ["sortLines.sortLines"]
+    }
+  ],
+
+  "vim.easymotion": true,
+  "vim.easymotionMarkerFontFamily": "Menlo",
+  "vim.easymotionMarkerFontSize": 12,
+
+  "vim.camelCaseMotion.enable": true
 }
