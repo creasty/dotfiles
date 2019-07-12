@@ -207,7 +207,9 @@ vagrant:
 
 vscode:
   link:
+    config/vscode/keybindings.json: keybindings.json
     config/vscode/settings.json: settings.json
+    config/vscode/snippets: snippets
 
   # code --list-extensions
   extensions:
