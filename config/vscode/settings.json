@@ -309,5 +309,9 @@
   "vim.easymotionMarkerFontFamily": "Menlo",
   "vim.easymotionMarkerFontSize": 12,
 
-  "vim.camelCaseMotion.enable": true
+  "vim.camelCaseMotion.enable": true,
+
+  //=== Go
+  //==============================================================================================
+  "go.formatTool": "goimports"
 }

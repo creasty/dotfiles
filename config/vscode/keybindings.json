@@ -37,6 +37,11 @@
     "command": "breakpointWidget.action.acceptInput",
     "when": "breakpointWidgetVisible && inBreakpointWidget"
   },
+  {
+    "key": "ctrl+j",
+    "command": "-editor.action.joinLines",
+    "when": "editorTextFocus && !editorReadonly"
+  },
 
   //
   // "forwardChar", "backwardChar", "nextLine", "previousLine",
@@ -86,6 +91,10 @@
   {
     "key": "ctrl+q",
     "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "shift+ctrl+q",
+    "command": "extension.ghqOpen"
   },
 
   //=== Sidebar
