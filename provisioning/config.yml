@@ -215,27 +215,42 @@ vscode:
   extensions:
     - alefragnani.Bookmarks
     - angryobject.react-pure-to-class-vscode
+    - apollographql.vscode-apollo
+    - be5invis.vscode-custom-css
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
     - cssho.vscode-svgviewer
     - dbaeumer.vscode-eslint
     - dsznajder.es7-react-js-snippets
     - eg2.tslint
+    - esbenp.prettier-vscode
+    - filwaline.vscode-postfix-python
     - formulahendry.auto-close-tag
     - formulahendry.auto-rename-tag
     - formulahendry.code-runner
+    - ipatalas.vscode-postfix-ts
     - JerryHong.autofilename
     - jock.svg
+    - johnathanludwig.fileswitcher
     - jpoissonnier.vscode-styled-components
+    - jtanx.ctagsx
     - lannonbr.vscode-js-annotations
+    - marchrock.vscode-ghq
+    - ms-vscode.Go
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
     - qezhu.gitlink
     - shinnn.stylelint
     - steoates.autoimport
     - streetsidesoftware.code-spell-checker
+    - swindh.enumerator
+    - Tyriar.sort-lines
     - vincaslt.highlight-matching-tag
+    - vscodevim.vim
     - wayou.vscode-todo-highlight
     - wix.vscode-import-cost
+    - wmaurer.change-case
+    - wwm.better-align
     - xabikos.JavaScriptSnippets
+    - yokoe.vscode-postfix-go
     - yzhang.markdown-all-in-one
