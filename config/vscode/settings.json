@@ -48,6 +48,7 @@
   "workbench.tips.enabled": false,
   "workbench.activityBar.visible": false,
   "workbench.editor.showTabs": true,
+  "workbench.editor.enablePreview": false,
 
   //=== Emmet
   //==============================================================================================
@@ -99,6 +100,7 @@
 
   //=== File Switcher
   //==============================================================================================
+  // TODO
   "fileswitcher.mappings": [
     {
       "from": "app/(.+).rb",

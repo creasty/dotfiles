@@ -99,14 +99,27 @@
 
   //=== Sidebar
   //==============================================================================================
-  // {
-  //   "key": "cmd+b",
-  //   "command": "workbench.action.toggleSidebarVisibility"
-  // },
-  // {
-  //   "key": "cmd+o",
-  //   "command": "workbench.action.focusSideBar"
-  // },
+  {
+    "key": "ctrl+s m",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "!sideBarVisible || sideBarFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+m",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "!sideBarVisible || sideBarFocus"
+  },
+  {
+    "key": "ctrl+s m",
+    "command": "workbench.action.focusSideBar",
+    "when": "sideBarVisible && !sideBarFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+m",
+    "command": "workbench.action.focusSideBar",
+    "when": "sideBarVisible && !sideBarFocus"
+  },
+
   {
     "key": "ctrl+s ctrl+l",
     "command": "workbench.action.navigateEditorGroups",
@@ -117,6 +130,7 @@
     "command": "workbench.action.navigateEditorGroups",
     "when": "!editorFocus"
   },
+
   {
     "key": "escape",
     "command": "list.toggleKeyboardNavigation",
