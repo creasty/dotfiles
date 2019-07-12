@@ -211,7 +211,7 @@ vscode:
     config/vscode/settings.json: settings.json
     config/vscode/snippets: snippets
 
-  # code --list-extensions
+  # code --list-extensions | sed -e 's/^/- /g' | pbcopy
   extensions:
     - alefragnani.Bookmarks
     - angryobject.react-pure-to-class-vscode
@@ -241,6 +241,7 @@ vscode:
     - msjsdiag.debugger-for-chrome
     - qezhu.gitlink
     - shinnn.stylelint
+    - sleistner.vscode-fileutils
     - steoates.autoimport
     - streetsidesoftware.code-spell-checker
     - swindh.enumerator
