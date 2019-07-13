@@ -116,12 +116,12 @@
     "when": "inQuickOpen"
   },
   {
-    "key": "ctrl+r",
+    "key": "ctrl+k l",
     "command": "workbench.action.showCommands",
-    "when": "!inQuickOpen"
+    "when": "!inQuickOpen && vim.mode == 'Normal'"
   },
   {
-    "key": "ctrl+r",
+    "key": "ctrl+k l",
     "command": "workbench.action.closeQuickOpen",
     "when": "inQuickOpen"
   },
@@ -132,11 +132,6 @@
   //-----------------------------------------------
   {
     "key": "ctrl+k k",
-    "command": "workbench.action.togglePanel",
-    "when": "vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+k ctrl+k",
     "command": "workbench.action.togglePanel",
     "when": "vim.mode == 'Normal'"
   },
@@ -165,22 +160,7 @@
     "when": "sideBarFocus && vim.mode == 'Normal'"
   },
   {
-    "key": "ctrl+k ctrl+b",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "!sideBarVisible && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+k ctrl+b",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "sideBarFocus && vim.mode == 'Normal'"
-  },
-  {
     "key": "ctrl+k b",
-    "command": "workbench.action.focusSideBar",
-    "when": "sideBarVisible && !sideBarFocus && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+k ctrl+b",
     "command": "workbench.action.focusSideBar",
     "when": "sideBarVisible && !sideBarFocus && vim.mode == 'Normal'"
   },
@@ -215,16 +195,6 @@
     "when": "vim.active && vim.mode == 'Normal'"
   },
   {
-    "key": "ctrl+k ctrl+s",
-    "command": "workbench.view.search",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k ctrl+s",
-    "command": "workbench.view.search",
-    "when": "vim.active && vim.mode == 'Normal'"
-  },
-  {
     "key": "ctrl+n",
     "command": "search.focus.nextInputBox",
     "when": "inputBoxFocus && searchViewletVisible"
@@ -253,16 +223,6 @@
     "when": "vim.active && vim.mode == 'Normal'"
   },
   {
-    "key": "ctrl+k ctrl+f",
-    "command": "workbench.view.explorer",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k ctrl+f",
-    "command": "workbench.view.explorer",
-    "when": "vim.active && vim.mode == 'Normal'"
-  },
-  {
     "key": "r",
     "command": "renameFile",
     "when": "explorerViewletVisible && filesExplorerFocus"
@@ -282,16 +242,6 @@
   },
   {
     "key": "ctrl+k d",
-    "command": "workbench.debug.action.toggleRepl",
-    "when": "vim.active && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+k ctrl+d",
-    "command": "workbench.debug.action.toggleRepl",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k ctrl+d",
     "command": "workbench.debug.action.toggleRepl",
     "when": "vim.active && vim.mode == 'Normal'"
   },
@@ -421,6 +371,10 @@
   {
     "key": "ctrl+s ctrl+r",
     "command": "workbench.action.reopenClosedEditor"
+  },
+  {
+    "key": "ctrl+s =",
+    "command": "workbench.action.evenEditorWidths"
   },
 
   //=== Enumerate

@@ -39,17 +39,23 @@
   "search.location": "panel",
   "search.useIgnoreFiles": true,
 
+  "window.closeWhenEmpty": true,
   "window.zoomLevel": 0,
   "window.newWindowDimensions": "inherit",
 
+  "workbench.useExperimentalGridLayout": true,
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.statusBar.feedback.visible": false,
   "workbench.tips.enabled": false,
-  "workbench.activityBar.visible": false,
+  // "workbench.activityBar.visible": false,
   "workbench.editor.showTabs": true,
   "workbench.editor.enablePreview": false,
   "workbench.colorTheme": "Material Theme Darker",
+
+  //=== Customize UI
+  //==============================================================================================
+  "customizeUI.activityBar": "bottom",
 
   //=== Emmet
   //==============================================================================================
@@ -195,6 +201,10 @@
     },
     // }}}
 
+    // {
+    //   "before": [":"],
+    //   "commands": ["vim.showQuickpickCmdLine"]
+    // },
     {
       "before": ["<leader>", "<leader>"],
       "commands": [":nohl"]
@@ -277,14 +287,6 @@
     // }}}
   ],
   "vim.visualModeKeyBindings": [
-    {
-      "before": "i",
-      "after": "I"
-    },
-    {
-      "before": "a",
-      "after": "A"
-    }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
     {
