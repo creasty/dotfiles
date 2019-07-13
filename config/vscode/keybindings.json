@@ -182,7 +182,7 @@
     "command": "workbench.view.explorer"
   },
   {
-    "key": "ctrl+r",
+    "key": "r",
     "command": "renameFile",
     "when": "explorerViewletVisible && filesExplorerFocus"
   },

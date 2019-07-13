@@ -98,20 +98,6 @@
   "prettier.tslintIntegration": true,
   "prettier.trailingComma": "es5",
 
-  //=== File Switcher
-  //==============================================================================================
-  // TODO
-  "fileswitcher.mappings": [
-    {
-      "from": "app/(.+).rb",
-      "to": "test/:1_test.rb"
-    },
-    {
-      "from": "test/(.+)_test.rb",
-      "to": "app/:1.rb"
-    }
-  ],
-
   //=== VSCodeVim
   //==============================================================================================
   "vim.incsearch": true,
