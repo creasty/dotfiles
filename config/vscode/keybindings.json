@@ -132,11 +132,13 @@
   //-----------------------------------------------
   {
     "key": "ctrl+k k",
-    "command": "workbench.action.togglePanel"
+    "command": "workbench.action.togglePanel",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+k ctrl+k",
-    "command": "workbench.action.togglePanel"
+    "command": "workbench.action.togglePanel",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
 
   {
@@ -155,22 +157,22 @@
   {
     "key": "ctrl+k b",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "!sideBarVisible || sideBarFocus"
+    "when": "(!sideBarVisible || sideBarFocus) && (!editorTextFocus || vim.mode == 'Normal')"
   },
   {
     "key": "ctrl+k ctrl+b",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "!sideBarVisible || sideBarFocus"
+    "when": "(!sideBarVisible || sideBarFocus) && (!editorTextFocus || vim.mode == 'Normal')"
   },
   {
     "key": "ctrl+k b",
     "command": "workbench.action.focusSideBar",
-    "when": "sideBarVisible && !sideBarFocus"
+    "when": "(sideBarVisible && !sideBarFocus) && (!editorTextFocus || vim.mode == 'Normal')"
   },
   {
     "key": "ctrl+k ctrl+b",
     "command": "workbench.action.focusSideBar",
-    "when": "sideBarVisible && !sideBarFocus"
+    "when": "(sideBarVisible && !sideBarFocus) && (!editorTextFocus || vim.mode == 'Normal')"
   },
 
   {
@@ -194,11 +196,13 @@
   //-----------------------------------------------
   {
     "key": "ctrl+k s",
-    "command": "workbench.view.search"
+    "command": "workbench.view.search",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+k ctrl+s",
-    "command": "workbench.view.search"
+    "command": "workbench.view.search",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+n",
@@ -220,11 +224,13 @@
   //-----------------------------------------------
   {
     "key": "ctrl+k f",
-    "command": "workbench.view.explorer"
+    "command": "workbench.view.explorer",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+k ctrl+f",
-    "command": "workbench.view.explorer"
+    "command": "workbench.view.explorer",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
   {
     "key": "r",
@@ -241,18 +247,21 @@
   //-----------------------------------------------
   {
     "key": "ctrl+k d",
-    "command": "workbench.debug.action.toggleRepl"
+    "command": "workbench.debug.action.toggleRepl",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+k ctrl+d",
-    "command": "workbench.debug.action.toggleRepl"
+    "command": "workbench.debug.action.toggleRepl",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
 
   //  Debug view (sidebar)
   //-----------------------------------------------
   {
     "key": "ctrl+k space d",
-    "command": "workbench.view.debug"
+    "command": "workbench.view.debug",
+    "when": "!editorTextFocus || vim.mode == 'Normal'"
   },
 
   //=== Settings
@@ -270,6 +279,14 @@
 
   //=== Split/Tab navigation
   //==============================================================================================
+  {
+    "key": "ctrl+s t",
+    "command": "workbench.action.files.newUntitledFile"
+  },
+  {
+    "key": "ctrl+s ctrl+t",
+    "command": "workbench.action.files.newUntitledFile"
+  },
   {
     "key": "ctrl+s v",
     "command": "workbench.action.splitEditorRight"
