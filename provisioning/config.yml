@@ -214,7 +214,6 @@ vscode:
   # code --list-extensions | sed -e 's/^/- /g' | pbcopy
   extensions:
     - alefragnani.Bookmarks
-    - angryobject.react-pure-to-class-vscode
     - apollographql.vscode-apollo
     - be5invis.vscode-custom-css
     - christian-kohler.npm-intellisense
@@ -222,7 +221,8 @@ vscode:
     - cssho.vscode-svgviewer
     - dbaeumer.vscode-eslint
     - dsznajder.es7-react-js-snippets
-    - eg2.tslint
+    - eg2.vscode-npm-script
+    - Equinusocio.vsc-material-theme
     - esbenp.prettier-vscode
     - filwaline.vscode-postfix-python
     - formulahendry.auto-close-tag
@@ -236,6 +236,7 @@ vscode:
     - lannonbr.vscode-js-annotations
     - marchrock.vscode-ghq
     - ms-vscode.Go
+    - ms-vscode.vscode-typescript-tslint-plugin
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
     - qezhu.gitlink

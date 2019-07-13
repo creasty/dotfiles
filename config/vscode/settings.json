@@ -24,6 +24,7 @@
     "strings": true
   },
 
+  "explorer.autoReveal": false,
   "explorer.openEditors.visible": 0,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
@@ -49,6 +50,7 @@
   "workbench.activityBar.visible": false,
   "workbench.editor.showTabs": true,
   "workbench.editor.enablePreview": false,
+  "workbench.colorTheme": "Material Theme Darker",
 
   //=== Emmet
   //==============================================================================================
