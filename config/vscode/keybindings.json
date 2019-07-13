@@ -19,6 +19,11 @@
   //==============================================================================================
   {
     "key": "ctrl+j",
+    "command": "workbench.action.acceptSelectedQuickOpenItem",
+    "when": "inQuickOpen"
+  },
+  {
+    "key": "ctrl+j",
     "command": "list.select",
     "when": "listFocus && !inputFocus"
   },
@@ -46,6 +51,46 @@
     "key": "ctrl+j",
     "command": "-editor.action.joinLines",
     "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "acceptRenameInput",
+    "when": "editorFocus && renameInputVisible"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "breadcrumbs.selectFocused",
+    "when": "breadcrumbsActive && breadcrumbsVisible"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "breakpointWidget.action.acceptInput",
+    "when": "breakpointWidgetVisible && inBreakpointWidget"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "debug.renameWatchExpression",
+    "when": "watchExpressionsFocused"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "markdown.extension.onEnterKey",
+    "when": "editorTextFocus && !editorReadonly && !suggestWidgetVisible && editorLangId == 'markdown' && vim.mode != 'CommandlineInProgress' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'EasyMotionMode' && vim.mode != 'Normal' && vim.mode != 'Replace' && vim.mode != 'SearchInProgressMode' && vim.mode != 'SurroundInputMode' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine'"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "notification.toggle",
+    "when": "notificationFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "settings.action.focusNextSetting",
+    "when": "inSettingsSearch"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "settings.action.focusSettingsList",
+    "when": "inSettingsEditor && settingsTocRowFocus"
   },
 
   //=== Quick open
@@ -321,19 +366,6 @@
   {
     "key": "alt+cmd+e",
     "command": "-extension.enumerate",
-    "when": "editorTextFocus"
-  },
-
-  //=== File Switcher
-  //==============================================================================================
-  {
-    "key": "alt+r",
-    "command": "-fileswitcher.switchFile",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "shift+alt+r",
-    "command": "-fileswitcher.switchFileSplit",
     "when": "editorTextFocus"
   }
 ]

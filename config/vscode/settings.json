@@ -288,12 +288,12 @@
       "after": ["p", "g", "v", "y"]
     },
     {
-      "before": [">"],
-      "commands": ["editor.action.indentLines"]
-    },
-    {
       "before": ["="],
       "commands": ["editor.action.reindentselectedlines"]
+    },
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"]
     },
     {
       "before": ["<"],
@@ -327,6 +327,14 @@
     {
       "before": ["<leader>", "C-k"],
       "commands": ["editor.action.copyLinesUpAction"]
+    },
+    {
+      "before": ["C-h"],
+      "commands": ["editor.action.outdentLines"]
+    },
+    {
+      "before": ["C-l"],
+      "commands": ["editor.action.indentLines"]
     },
     // }}}
 
