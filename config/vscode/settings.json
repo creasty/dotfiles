@@ -119,6 +119,7 @@
   "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
   "vim.textwidth": 90,
+  "vim.timeout": 200,
   "vim.leader": " ",
   "vim.whichwrap": "h,l,<,>,[,]",
   "vim.visualstar": true,
@@ -128,9 +129,53 @@
     "<C-f>": false
   },
   "vim.insertModeKeyBindings": [
+  ],
+  "vim.insertModeKeyBindingsNonRecursive": [
+    // {{{ Emacs cursor
     {
-      "before": ["j", "j"],
-      "after": ["<Esc>"]
+      "before": ["<C-j>"],
+      "after": ["<Enter>"]
+    },
+    {
+      "before": ["<C-h>"],
+      "after": ["<Backspace>"]
+    },
+    {
+      "before": ["<C-d>"],
+      "after": ["<Delete>"]
+    },
+    {
+      "before": ["<C-b>"],
+      "after": ["<Left>"]
+    },
+    {
+      "before": ["<C-f>"],
+      "after": ["<Right>"]
+    },
+    {
+      "before": ["<C-p>"],
+      "commands": ["cursorUp"]
+    },
+    {
+      "before": ["<C-n>"],
+      "commands": ["cursorDown"]
+    },
+    {
+      "before": ["<C-a>"],
+      "commands": ["cursorLineStart"]
+    },
+    {
+      "before": ["<C-e>"],
+      "commands": ["cursorLineEnd"]
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["deleteAllRight"]
+    },
+    // }}}
+    {
+      "before": ["<C-v>"],
+      "commands": ["editor.action.clipboardPasteAction"]
     }
   ],
   "vim.normalModeKeyBindings": [
@@ -232,6 +277,16 @@
       "after": ["\"", "_", "C"]
     }
     // }}}
+  ],
+  "vim.visualModeKeyBindings": [
+    {
+      "before": "i",
+      "after": "I"
+    },
+    {
+      "before": "a",
+      "after": "A"
+    }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
     {
