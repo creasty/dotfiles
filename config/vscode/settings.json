@@ -126,19 +126,19 @@
     },
     {
       "before": ["<C-h>"],
-      "after": ["<Backspace>"]
+      "commands": ["deleteLeft"]
     },
     {
       "before": ["<C-d>"],
-      "after": ["<Delete>"]
+      "commands": ["deleteRight"]
     },
     {
       "before": ["<C-b>"],
-      "after": ["<Left>"]
+      "commands": ["cursorLeft"]
     },
     {
       "before": ["<C-f>"],
-      "after": ["<Right>"]
+      "commands": ["cursorRight"]
     },
     {
       "before": ["<C-p>"],
@@ -228,13 +228,25 @@
       "after": ["g", "g", "V", "G"]
     },
     {
-      "before": ["g", "r"],
+      "before": ["g", "R"],
       "commands": ["editor.action.referenceSearch.trigger"]
     },
     {
-      "before": ["g", "a"],
-      "commands": ["fileswitcher.switchFile"]
+      "before": ["g", "r"],
+      "commands": ["editor.action.rename"]
     },
+    {
+      "before": ["g", "f"],
+      "commands": ["editor.action.openLink"]
+    },
+    {
+      "before": ["g", "q"],
+      "commands": ["editor.action.quickFix"]
+    },
+    // {
+    //   "before": ["g", "a"],
+    //   "commands": ["fileswitcher.switchFile"]
+    // },
 
     // {{{ insert blank lines without going into insert mode
     {
@@ -343,6 +355,10 @@
     {
       "before": ["R"],
       "after": ["\"", "_", "d", "P"]
+    },
+    {
+      "before": ["J"],
+      "commands": ["editor.action.joinLines"]
     },
     {
       "before": ["C"],
