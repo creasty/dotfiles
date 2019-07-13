@@ -39,9 +39,8 @@
   "search.location": "panel",
   "search.useIgnoreFiles": true,
 
-  "terminal.external.osxExec": "iTerm.app",
-
   "window.zoomLevel": 0,
+  "window.newWindowDimensions": "inherit",
 
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
@@ -107,14 +106,13 @@
   "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
   "vim.textwidth": 90,
-  "vim.timeout": 200,
+  "vim.timeout": 500,
   "vim.leader": " ",
   "vim.whichwrap": "h,l,<,>,[,]",
   "vim.visualstar": true,
   "vim.debug.silent": true,
   "vim.handleKeys": {
-    "<C-s>": false,
-    "<C-f>": false
+    "<C-s>": false
   },
   "vim.insertModeKeyBindings": [
   ],
