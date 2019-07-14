@@ -110,13 +110,24 @@
     "command": "workbench.action.closeQuickOpen",
     "when": "inQuickOpen"
   },
+
   {
-    "key": "ctrl+w",
+    "key": "ctrl+w ctrl+w",
     "command": "extension.ghqOpen",
     "when": "!inQuickOpen && vim.mode == 'Normal'"
   },
   {
-    "key": "ctrl+w",
+    "key": "ctrl+w w",
+    "command": "extension.ghqOpen",
+    "when": "!inQuickOpen && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w ctrl+w",
+    "command": "workbench.action.closeQuickOpen",
+    "when": "inQuickOpen"
+  },
+  {
+    "key": "ctrl+w w",
     "command": "workbench.action.closeQuickOpen",
     "when": "inQuickOpen"
   },
@@ -176,6 +187,27 @@
   //  Search (panel)
   //-----------------------------------------------
   {
+    "key": "ctrl+w ctrl+s",
+    "command": "workbench.view.search",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w s",
+    "command": "workbench.view.search",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w ctrl+s",
+    "command": "workbench.action.togglePanel",
+    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.view.search'"
+  },
+  {
+    "key": "ctrl+w s",
+    "command": "workbench.action.togglePanel",
+    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.view.search'"
+  },
+
+  {
     "key": "ctrl+n",
     "command": "search.focus.nextInputBox",
     "when": "inputBoxFocus && searchViewletVisible"
@@ -194,6 +226,27 @@
   //  Explorer (sidebar)
   //-----------------------------------------------
   {
+    "key": "ctrl+w ctrl+e",
+    "command": "workbench.view.explorer",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w e",
+    "command": "workbench.view.explorer",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w ctrl+e",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.explorer'"
+  },
+  {
+    "key": "ctrl+w e",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.explorer'"
+  },
+
+  {
     "key": "r",
     "command": "renameFile",
     "when": "!inputFocus && explorerViewletVisible && filesExplorerFocus"
@@ -202,6 +255,52 @@
     "key": "ctrl+j",
     "command": "explorer.openToSide",
     "when": "explorerViewletVisible && filesExplorerFocus"
+  },
+
+  //  Debug (sidebar)
+  //-----------------------------------------------
+  {
+    "key": "ctrl+w ctrl+d",
+    "command": "workbench.view.debug",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w d",
+    "command": "workbench.view.debug",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w ctrl+d",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.debug'"
+  },
+  {
+    "key": "ctrl+w d",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.debug'"
+  },
+
+  //  Debug console (panel)
+  //-----------------------------------------------
+  {
+    "key": "ctrl+w ctrl+l",
+    "command": "workbench.debug.action.toggleRepl",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.debug.action.toggleRepl",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w ctrl+l",
+    "command": "workbench.action.togglePanel",
+    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.panel.repl'"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.togglePanel",
+    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.panel.repl'"
   },
 
   //=== Settings

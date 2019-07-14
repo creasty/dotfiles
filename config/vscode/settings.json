@@ -290,18 +290,6 @@
     {
       "before": ["<leader>", "/"],
       "commands": ["workbench.view.search"]
-    },
-    {
-      "before": ["<leader>", "e"],
-      "commands": ["workbench.view.explorer"]
-    },
-    {
-      "before": ["<leader>", "d"],
-      "commands": ["workbench.view.debug"]
-    },
-    {
-      "before": ["<leader>", "c"],
-      "commands": ["workbench.debug.action.toggleRepl"]
     }
   ],
   "vim.visualModeKeyBindings": [
