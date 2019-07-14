@@ -219,10 +219,6 @@
       "after": ["g", "$"]
     },
     {
-      "before": ["<leader>", "r"],
-      "commands": ["code-runner.run"]
-    },
-    {
       // keep the cursor in place while joining lines
       "before": ["J"],
       "after": ["m", "Z", "J", "`", "Z", "m", "Z"]
@@ -284,8 +280,29 @@
     {
       "before": ["C"],
       "after": ["\"", "_", "C"]
-    }
+    },
     // }}}
+
+    {
+      "before": ["<leader>", "r"],
+      "commands": ["code-runner.run"]
+    },
+    {
+      "before": ["<leader>", "/"],
+      "commands": ["workbench.view.search"]
+    },
+    {
+      "before": ["<leader>", "e"],
+      "commands": ["workbench.view.explorer"]
+    },
+    {
+      "before": ["<leader>", "d"],
+      "commands": ["workbench.view.debug"]
+    },
+    {
+      "before": ["<leader>", "c"],
+      "commands": ["workbench.debug.action.toggleRepl"]
+    }
   ],
   "vim.visualModeKeyBindings": [
   ],

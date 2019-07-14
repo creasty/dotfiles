@@ -9,11 +9,6 @@
     "command": "cursorDown",
     "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
   },
-  {
-    "key": "ctrl+v",
-    "command": "editor.action.clipboardPasteAction",
-    "when": "textInputFocus || inputFocus"
-  },
 
   //=== Emacs
   //==============================================================================================
@@ -131,9 +126,12 @@
   //  Panel
   //-----------------------------------------------
   {
-    "key": "ctrl+k k",
-    "command": "workbench.action.togglePanel",
-    "when": "vim.mode == 'Normal'"
+    "key": "ctrl+s ctrl+p",
+    "command": "workbench.action.togglePanel"
+  },
+  {
+    "key": "ctrl+s p",
+    "command": "workbench.action.togglePanel"
   },
 
   {
@@ -150,19 +148,12 @@
   //  Sidebar
   //-----------------------------------------------
   {
-    "key": "ctrl+k b",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.mode == 'Normal'"
+    "key": "ctrl+s ctrl+m",
+    "command": "workbench.action.toggleSidebarVisibility"
   },
   {
-    "key": "ctrl+k b",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "sideBarFocus && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+k b",
-    "command": "workbench.action.focusSideBar",
-    "when": "sideBarVisible && !sideBarFocus && vim.mode == 'Normal'"
+    "key": "ctrl+s m",
+    "command": "workbench.action.toggleSidebarVisibility"
   },
 
   {
@@ -185,16 +176,6 @@
   //  Search (panel)
   //-----------------------------------------------
   {
-    "key": "ctrl+k s",
-    "command": "workbench.view.search",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k s",
-    "command": "workbench.view.search",
-    "when": "vim.active && vim.mode == 'Normal'"
-  },
-  {
     "key": "ctrl+n",
     "command": "search.focus.nextInputBox",
     "when": "inputBoxFocus && searchViewletVisible"
@@ -213,50 +194,14 @@
   //  Explorer (sidebar)
   //-----------------------------------------------
   {
-    "key": "ctrl+k f",
-    "command": "workbench.view.explorer",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k f",
-    "command": "workbench.view.explorer",
-    "when": "vim.active && vim.mode == 'Normal'"
-  },
-  {
     "key": "r",
     "command": "renameFile",
-    "when": "explorerViewletVisible && filesExplorerFocus"
+    "when": "!inputFocus && explorerViewletVisible && filesExplorerFocus"
   },
   {
     "key": "ctrl+j",
     "command": "explorer.openToSide",
     "when": "explorerViewletVisible && filesExplorerFocus"
-  },
-
-  //  Debug console (panel)
-  //-----------------------------------------------
-  {
-    "key": "ctrl+k d",
-    "command": "workbench.debug.action.toggleRepl",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k d",
-    "command": "workbench.debug.action.toggleRepl",
-    "when": "vim.active && vim.mode == 'Normal'"
-  },
-
-  //  Debug view (sidebar)
-  //-----------------------------------------------
-  {
-    "key": "ctrl+k space d",
-    "command": "workbench.view.debug",
-    "when": "!editorTextFocus"
-  },
-  {
-    "key": "ctrl+k space d",
-    "command": "workbench.view.debug",
-    "when": "vim.active && vim.mode == 'Normal'"
   },
 
   //=== Settings
@@ -383,5 +328,33 @@
     "key": "alt+cmd+e",
     "command": "-extension.enumerate",
     "when": "editorTextFocus"
+  },
+
+  //=== Editing
+  //==============================================================================================
+  {
+    "key": "ctrl+v",
+    "command": "editor.action.clipboardPasteAction",
+    "when": "textInputFocus || inputFocus"
+  },
+  {
+    "key": "ctrl+s l",
+    "command": "editor.action.indentLines",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+s ctrl+l",
+    "command": "editor.action.indentLines",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+s h",
+    "command": "editor.action.outdentLines",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+s ctrl+h",
+    "command": "editor.action.outdentLines",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
   }
 ]
