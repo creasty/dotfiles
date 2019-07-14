@@ -92,6 +92,16 @@
     "command": "settings.action.focusSettingsList",
     "when": "inSettingsEditor && settingsTocRowFocus"
   },
+  {
+    "key": "ctrl+b",
+    "command": "list.collapse",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "list.expand",
+    "when": "listFocus && !inputFocus"
+  },
 
   //=== Quick open
   //==============================================================================================
@@ -112,16 +122,6 @@
   },
   {
     "key": "ctrl+w",
-    "command": "workbench.action.closeQuickOpen",
-    "when": "inQuickOpen"
-  },
-  {
-    "key": "ctrl+k l",
-    "command": "workbench.action.showCommands",
-    "when": "!inQuickOpen && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+k l",
     "command": "workbench.action.closeQuickOpen",
     "when": "inQuickOpen"
   },
