@@ -228,6 +228,9 @@ vscode:
     - formulahendry.auto-close-tag
     - formulahendry.auto-rename-tag
     - formulahendry.code-runner
+    - geddski.macros
+    - iocave.customize-ui
+    - iocave.monkey-patch
     - ipatalas.vscode-postfix-ts
     - JerryHong.autofilename
     - jock.svg
