@@ -32,6 +32,7 @@
   "files.autoSave": "afterDelay",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
 
   "search.showLineNumbers": true,
   "search.smartCase": true,
@@ -202,14 +203,22 @@
     },
     // }}}
 
-    // {
-    //   "before": [":"],
-    //   "commands": ["vim.showQuickpickCmdLine"]
-    // },
     {
       "before": [":"],
       "commands": ["workbench.action.showCommands"]
     },
+    // {
+    //   "before": ["/"],
+    //   "commands": ["actions.find"]
+    // },
+    // {
+    //   "before": ["n"],
+    //   "commands": ["editor.action.nextMatchFindAction"],
+    // },
+    // {
+    //   "before": ["N"],
+    //   "commands": ["editor.action.previousMatchFindAction"],
+    // },
     {
       "before": ["<leader>", "<leader>"],
       "commands": [":nohl"]
