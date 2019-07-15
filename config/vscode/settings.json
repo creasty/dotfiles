@@ -211,6 +211,14 @@
       "after": ["g", "k"]
     },
     // }}}
+    {
+      "before": ["Left"],
+      "after": ["C-b"]
+    },
+    {
+      "before": ["Right"],
+      "after": ["C-f"]
+    },
 
     {
       "before": [":"],
