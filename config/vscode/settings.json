@@ -107,6 +107,15 @@
   "prettier.tslintIntegration": true,
   "prettier.trailingComma": "es5",
 
+  //=== Macros
+  //==============================================================================================
+  "macros": {
+    "commitFindWidgetInput": [
+      "closeFindWidget",
+      "cancelSelection"
+    ]
+  },
+
   //=== VSCodeVim
   //==============================================================================================
   "vim.incsearch": true,
@@ -207,18 +216,22 @@
       "before": [":"],
       "commands": ["workbench.action.showCommands"]
     },
-    // {
-    //   "before": ["/"],
-    //   "commands": ["actions.find"]
-    // },
-    // {
-    //   "before": ["n"],
-    //   "commands": ["editor.action.nextMatchFindAction"],
-    // },
-    // {
-    //   "before": ["N"],
-    //   "commands": ["editor.action.previousMatchFindAction"],
-    // },
+    {
+      "before": ["<leader>", "/"],
+      "commands": ["workbench.view.search"]
+    },
+    {
+      "before": ["/"],
+      "commands": ["actions.find"]
+    },
+    {
+      "before": ["n"],
+      "commands": ["editor.action.nextMatchFindAction"],
+    },
+    {
+      "before": ["N"],
+      "commands": ["editor.action.previousMatchFindAction"],
+    },
     {
       "before": ["<leader>", "<leader>"],
       "commands": [":nohl"]
@@ -331,6 +344,10 @@
     {
       "before": ["<"],
       "commands": ["editor.action.outdentLines"]
+    },
+    {
+      "before": ["/"],
+      "commands": ["actions.findWithSelection"]
     },
 
     // {{{ do not store to register with x, c

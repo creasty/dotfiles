@@ -366,6 +366,11 @@
     "command": "markdown.extension.editing.paste",
     "when": "editorHasSelection && editorTextFocus && editorLangId == 'markdown'"
   },
+  {
+    "key": "enter",
+    "command": "macros.commitFindWidgetInput",
+    "when": "findWidgetVisible && inputFocus"
+  },
 
   //=== Emacs cursor
   //==============================================================================================
