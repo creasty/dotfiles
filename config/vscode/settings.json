@@ -350,11 +350,19 @@
       "commands": ["editor.action.moveLinesDownAction"]
     },
     {
+      "before": ["enter"],
+      "commands": ["editor.action.moveLinesDownAction"]
+    },
+    {
       "before": ["C-k"],
       "commands": ["editor.action.moveLinesUpAction"]
     },
     {
       "before": ["<leader>", "C-j"],
+      "commands": ["editor.action.copyLinesDownAction"]
+    },
+    {
+      "before": ["<leader>", "enter"],
       "commands": ["editor.action.copyLinesDownAction"]
     },
     {

@@ -49,6 +49,10 @@
   //  Panel
   //-----------------------------------------------
   {
+    "key": "ctrl+s up",
+    "command": "workbench.action.togglePanel"
+  },
+  {
     "key": "ctrl+s ctrl+p",
     "command": "workbench.action.togglePanel"
   },
@@ -147,11 +151,6 @@
     "command": "renameFile",
     "when": "!inputFocus && explorerViewletVisible && filesExplorerFocus"
   },
-  {
-    "key": "ctrl+j",
-    "command": "explorer.openToSide",
-    "when": "explorerViewletVisible && filesExplorerFocus"
-  },
 
   //  Debug (sidebar)
   //-----------------------------------------------
@@ -242,6 +241,10 @@
     "command": "workbench.action.focusBelowGroup"
   },
   {
+    "key": "ctrl+s enter",
+    "command": "workbench.action.focusBelowGroup"
+  },
+  {
     "key": "ctrl+s k",
     "command": "workbench.action.focusAboveGroup"
   },
@@ -284,11 +287,19 @@
     "command": "workbench.action.nextEditor"
   },
   {
+    "key": "ctrl+s down",
+    "command": "workbench.action.nextEditor"
+  },
+  {
     "key": "ctrl+s b",
     "command": "workbench.action.previousEditor"
   },
   {
     "key": "ctrl+s ctrl+b",
+    "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+s left",
     "command": "workbench.action.previousEditor"
   },
   {
@@ -492,6 +503,11 @@
     "key": "ctrl+f",
     "command": "list.expand",
     "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "explorer.openToSide",
+    "when": "explorerViewletVisible && filesExplorerFocus"
   },
   {
     "key": "ctrl+j",
