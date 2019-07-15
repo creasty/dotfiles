@@ -207,6 +207,10 @@
     //   "commands": ["vim.showQuickpickCmdLine"]
     // },
     {
+      "before": [":"],
+      "commands": ["workbench.action.showCommands"]
+    },
+    {
       "before": ["<leader>", "<leader>"],
       "commands": [":nohl"]
     },
@@ -271,7 +275,7 @@
     },
     {
       "before": ["X"],
-      "after": ["\"", "_", "X"]
+      "after": ["\"", "_", "d", "$"]
     },
     {
       "before": ["c"],
@@ -279,7 +283,7 @@
     },
     {
       "before": ["C"],
-      "after": ["\"", "_", "C"]
+      "after": ["\"", "_", "c", "$"]
     },
     // }}}
 
