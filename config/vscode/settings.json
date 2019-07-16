@@ -219,6 +219,14 @@
       "before": ["Right"],
       "after": ["C-f"]
     },
+    {
+      "before": ["u"],
+      "commands": ["undo"]
+    },
+    {
+      "before": ["C-r"],
+      "commands": ["redo"]
+    },
 
     {
       "before": [":"],
