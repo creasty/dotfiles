@@ -349,7 +349,7 @@
   {
     "key": "ctrl+v",
     "command": "editor.action.clipboardPasteAction",
-    "when": "textInputFocus && !editorReadonly"
+    "when": "textInputFocus && !editorReadonly && vim.mode == 'Insert'"
   },
   {
     "key": "ctrl+v",
