@@ -67,6 +67,14 @@
   //==============================================================================================
   "liveshare.showInStatusBar": "whileCollaborating",
 
+  //=== GitLens
+  //==============================================================================================
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.codeLens.enabled": false,
+  "gitlens.statusBar.enabled": false,
+  "gitlens.mode.statusBar.enabled": false,
+
   //=== Eslint
   //==============================================================================================
   "eslint.validate": [
@@ -314,6 +322,10 @@
     {
       "before": ["/"],
       "commands": ["actions.findWithSelection"]
+    },
+    {
+      "before": [":"],
+      "commands": ["workbench.action.showCommands"]
     },
 
     // {{{ do not store to register with x, c

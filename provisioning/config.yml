@@ -222,6 +222,7 @@ vscode:
     - cssho.vscode-svgviewer
     - dbaeumer.vscode-eslint
     - dsznajder.es7-react-js-snippets
+    - eamodio.gitlens
     - eg2.vscode-npm-script
     - Equinusocio.vsc-material-theme
     - esbenp.prettier-vscode
@@ -239,13 +240,15 @@ vscode:
     - jpoissonnier.vscode-styled-components
     - jtanx.ctagsx
     - karunamurti.haml
+    - KnisterPeter.vscode-github
     - lannonbr.vscode-js-annotations
     - marchrock.vscode-ghq
+    - mikestead.dotenv
     - ms-vscode.Go
     - ms-vscode.vscode-typescript-tslint-plugin
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
-    - qezhu.gitlink
+    - pnp.polacode
     - rebornix.ruby
     - shanehofstetter.rails-i18n
     - shinichi-takii.sql-bigquery
