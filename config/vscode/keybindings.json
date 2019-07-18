@@ -61,17 +61,6 @@
     "command": "workbench.action.togglePanel"
   },
 
-  {
-    "key": "ctrl+s ctrl+k",
-    "command": "workbench.action.navigateEditorGroups",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s k",
-    "command": "workbench.action.navigateEditorGroups",
-    "when": "panelFocus"
-  },
-
   //  Sidebar
   //-----------------------------------------------
   {
@@ -81,17 +70,6 @@
   {
     "key": "ctrl+s m",
     "command": "workbench.action.toggleSidebarVisibility"
-  },
-
-  {
-    "key": "ctrl+s ctrl+l",
-    "command": "workbench.action.navigateEditorGroups",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s l",
-    "command": "workbench.action.navigateEditorGroups",
-    "when": "sideBarFocus"
   },
 
   {
@@ -226,39 +204,39 @@
   },
   {
     "key": "ctrl+s h",
-    "command": "workbench.action.focusLeftGroup"
+    "command": "workbench.action.navigateLeft"
   },
   {
     "key": "ctrl+s ctrl+h",
-    "command": "workbench.action.focusLeftGroup"
+    "command": "workbench.action.navigateLeft"
   },
   {
     "key": "ctrl+s j",
-    "command": "workbench.action.focusBelowGroup"
+    "command": "workbench.action.navigateDown"
   },
   {
     "key": "ctrl+s ctrl+j",
-    "command": "workbench.action.focusBelowGroup"
+    "command": "workbench.action.navigateDown"
   },
   {
     "key": "ctrl+s enter",
-    "command": "workbench.action.focusBelowGroup"
+    "command": "workbench.action.navigateDown"
   },
   {
     "key": "ctrl+s k",
-    "command": "workbench.action.focusAboveGroup"
+    "command": "workbench.action.navigateUp"
   },
   {
     "key": "ctrl+s ctrl+k",
-    "command": "workbench.action.focusAboveGroup"
+    "command": "workbench.action.navigateUp"
   },
   {
     "key": "ctrl+s l",
-    "command": "workbench.action.focusRightGroup"
+    "command": "workbench.action.navigateRight"
   },
   {
     "key": "ctrl+s ctrl+l",
-    "command": "workbench.action.focusRightGroup"
+    "command": "workbench.action.navigateRight"
   },
   {
     "key": "ctrl+s d",
