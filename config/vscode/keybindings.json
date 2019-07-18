@@ -24,6 +24,20 @@
   },
 
   {
+    "key": "ctrl+w",
+    "command": "-workbench.action.switchWindow"
+  },
+  {
+    "key": "ctrl+w ctrl+w",
+    "command": "extension.ghqOpen",
+    "when": "!inQuickOpen && !vim.active"
+  },
+  {
+    "key": "ctrl+w w",
+    "command": "extension.ghqOpen",
+    "when": "!inQuickOpen && !vim.active"
+  },
+  {
     "key": "ctrl+w ctrl+w",
     "command": "extension.ghqOpen",
     "when": "!inQuickOpen && vim.mode == 'Normal'"
