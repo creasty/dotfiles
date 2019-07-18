@@ -128,58 +128,10 @@
   "vim.whichwrap": "h,l,<,>,[,]",
   "vim.visualstar": true,
   "vim.debug.silent": true,
-  "vim.handleKeys": {
-    "<C-s>": false
-  },
+  "vim.handleKeys": {},
   "vim.insertModeKeyBindings": [
   ],
   "vim.insertModeKeyBindingsNonRecursive": [
-    // {{{ Emacs cursor
-    {
-      "before": ["<C-j>"],
-      "after": ["<Enter>"]
-    },
-    {
-      "before": ["<C-h>"],
-      "commands": ["deleteLeft"]
-    },
-    {
-      "before": ["<C-d>"],
-      "commands": ["deleteRight"]
-    },
-    {
-      "before": ["<C-b>"],
-      "commands": ["cursorLeft"]
-    },
-    {
-      "before": ["<C-f>"],
-      "commands": ["cursorRight"]
-    },
-    {
-      "before": ["<C-p>"],
-      "commands": ["cursorUp"]
-    },
-    {
-      "before": ["<C-n>"],
-      "commands": ["cursorDown"]
-    },
-    {
-      "before": ["<C-a>"],
-      "commands": ["cursorLineStart"]
-    },
-    {
-      "before": ["<C-e>"],
-      "commands": ["cursorLineEnd"]
-    },
-    {
-      "before": ["<C-k>"],
-      "commands": ["deleteAllRight"]
-    },
-    // }}}
-    {
-      "before": ["<C-v>"],
-      "commands": ["editor.action.clipboardPasteAction"]
-    }
   ],
   "vim.normalModeKeyBindings": [
     //  Easymotion

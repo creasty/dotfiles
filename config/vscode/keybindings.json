@@ -350,6 +350,59 @@
     "when": "findWidgetVisible && inputFocus"
   },
 
+  //=== Emacs cursor (VIM)
+  //==============================================================================================
+  {
+    "key": "ctrl+b",
+    "command": "cursorLeft",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "cursorRight",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "cursorDown",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "cursorUp",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+a",
+    "command": "cursorLineStart",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "cursorLineEnd",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "deleteAllRight",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+h",
+    "command": "deleteLeft",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "deleteRight",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+v",
+    "command": "editor.action.clipboardPasteAction",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+
   //=== Emacs cursor
   //==============================================================================================
   {
