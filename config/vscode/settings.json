@@ -246,6 +246,10 @@
     //   "before": ["g", "a"],
     //   "commands": ["fileswitcher.switchFile"]
     // },
+    {
+      "before": ["<leader>", "/"],
+      "commands": ["workbench.view.search"],
+    },
 
     // {{{ insert blank lines without going into insert mode
     {

@@ -123,7 +123,11 @@
     "command": "workbench.action.toggleSidebarVisibility",
     "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.explorer'"
   },
-
+  {
+    "key": "enter",
+    "command": "explorer.openToSide",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
   {
     "key": "r",
     "command": "renameFile",
@@ -292,6 +296,36 @@
     "key": "ctrl+s =",
     "command": "workbench.action.evenEditorWidths"
   },
+  {
+    "key": "ctrl+s n",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+n",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s down",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s b",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+b",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s left",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus"
+  },
 
   //=== Plugin: Enumerate
   //==============================================================================================
@@ -358,8 +392,13 @@
     "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
   },
   {
-    "key": "space /",
-    "command": "workbench.view.search",
+    "key": "ctrl+i",
+    "command": "workbench.action.navigateForward",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "workbench.action.navigateBack",
     "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
   },
 
