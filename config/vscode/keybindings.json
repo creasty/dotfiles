@@ -350,7 +350,20 @@
     "when": "findWidgetVisible && inputFocus"
   },
 
-  //=== Emacs cursor (VIM)
+  //=== Vim: (normal mode)
+  //==============================================================================================
+  {
+    "key": ", r",
+    "command": "code-runner.run",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "space /",
+    "command": "workbench.view.search",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+  },
+
+  //=== Vim: (insert mode) Emacs
   //==============================================================================================
   {
     "key": "ctrl+b",
