@@ -242,10 +242,14 @@
       "before": ["g", "q"],
       "commands": ["editor.action.quickFix"]
     },
-    // {
-    //   "before": ["g", "a"],
-    //   "commands": ["fileswitcher.switchFile"]
-    // },
+    {
+      "before": ["g", "a"],
+      "commands": ["altr.switchToNextFile"]
+    },
+    {
+      "before": ["g", "A"],
+      "commands": ["altr.switchToPreviousFile"]
+    },
     {
       "before": ["<leader>", "/"],
       "commands": ["workbench.view.search"],
@@ -386,7 +390,13 @@
 
   "vim.camelCaseMotion.enable": true,
 
-  //=== Go
+  //=== Lang: Go
   //==============================================================================================
-  "go.formatTool": "goimports"
+  "go.formatTool": "goimports",
+
+  //=== Lang: Typescript
+  //==============================================================================================
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
