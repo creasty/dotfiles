@@ -69,11 +69,12 @@
 
   //=== GitLens
   //==============================================================================================
-  "gitlens.currentLine.enabled": false,
-  "gitlens.hovers.currentLine.over": "line",
   "gitlens.codeLens.enabled": false,
-  "gitlens.statusBar.enabled": false,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
   "gitlens.mode.statusBar.enabled": false,
+  "gitlens.statusBar.enabled": false,
 
   //=== Eslint
   //==============================================================================================
@@ -186,6 +187,10 @@
     {
       "before": ["C-r"],
       "commands": ["redo"]
+    },
+    {
+      "before": ["Y"],
+      "after": ["y", "$"]
     },
 
     {
