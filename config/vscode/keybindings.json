@@ -404,6 +404,11 @@
     "when": "breadcrumbsVisible && listFocus"
   },
   {
+    "key": "escape",
+    "command": "breadcrumbs.selectEditor",
+    "when": "breadcrumbsActive && breadcrumbsVisible && !listHasSelectionOrFocus"
+  },
+  {
     "key": "left",
     "command": "breadcrumbs.focusPrevious",
     "when": "breadcrumbsActive && breadcrumbsVisible && !listHasSelectionOrFocus"
