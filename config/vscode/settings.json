@@ -256,6 +256,10 @@
       "commands": ["editor.action.quickFix"]
     },
     {
+      "before": ["g", "b"],
+      "commands": ["breadcrumbs.focus"]
+    },
+    {
       "before": ["g", "a"],
       "commands": ["altr.switchToNextFile"]
     },

@@ -398,6 +398,22 @@
     "when": "findWidgetVisible && inputFocus"
   },
 
+  {
+    "key": "escape",
+    "command": "list.clear",
+    "when": "breadcrumbsVisible && listFocus"
+  },
+  {
+    "key": "left",
+    "command": "breadcrumbs.focusPrevious",
+    "when": "breadcrumbsActive && breadcrumbsVisible && !listHasSelectionOrFocus"
+  },
+  {
+    "key": "right",
+    "command": "breadcrumbs.focusNext",
+    "when": "breadcrumbsActive && breadcrumbsVisible && !listHasSelectionOrFocus"
+  },
+
   //=== Vim: (normal mode)
   //==============================================================================================
   {
