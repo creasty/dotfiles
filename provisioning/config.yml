@@ -3,6 +3,7 @@ homebrew:
     - creasty/tools
     - dtan4/tools
     - heroku/brew
+    - homebrew/cask-fonts
 
   applications:
     - adobe-creative-cloud   # https://creative.adobe.com/products/creative-cloud
@@ -34,6 +35,9 @@ homebrew:
     - vagrant                # https://www.vagrantup.com/
     - webpquicklook          # https://github.com/dchest/webp-quicklook
     - wwdc                   # https://wwdc.io/
+
+    # Fonts
+    - font-fira-code
 
     #- android-sdk    # https://developer.android.com/index.html
     #- android-studio # https://developer.android.com/studio/index.html

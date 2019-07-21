@@ -23,6 +23,8 @@
     "comments": false,
     "strings": true
   },
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
 
   "explorer.autoReveal": false,
   "explorer.openEditors.visible": 0,
@@ -92,6 +94,7 @@
     "Typeahead",
     "creasty",
     "focusable",
+    "outdent",
     "pluggable",
     "serializer",
     "serializers",
