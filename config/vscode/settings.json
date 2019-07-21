@@ -244,6 +244,10 @@
       "commands": ["actions.find"]
     },
     {
+      "before": ["*"],
+      "commands": ["editor.action.nextSelectionMatchFindAction"]
+    },
+    {
       "before": ["n"],
       "commands": ["editor.action.nextMatchFindAction"],
     },
@@ -253,7 +257,7 @@
     },
     {
       "before": ["<leader>", "<leader>"],
-      "commands": [":nohl"]
+      "commands": [":nohl", "closeFindWidget"]
     },
     {
       "before": ["<leader>", "h"],
