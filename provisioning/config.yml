@@ -14,6 +14,7 @@ homebrew:
     - creasty/tools/keyboard # https://github.com/creasty/Keyboard
     - docker                 # https://www.docker.com/community-edition
     - dropbox                # https://www.dropbox.com/
+    - exa                    # https://the.exa.website
     - figma                  # https://www.figma.com/
     - google-chrome          # https://www.google.com/chrome/
     - google-hangouts        # https://www.google.com/tools/dlpage/hangoutplugin
@@ -94,7 +95,6 @@ homebrew:
     - termtosvg           # Record terminal sessions as SVG animations
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
-    - tree                # Display directories as trees (with optional color/HTML output)
     - webp                # Image format providing lossless and lossy compression for web images
     - xctool              # Drop-in replacement for xcodebuild with a few extra features
     - yarn                # JavaScript package manager
