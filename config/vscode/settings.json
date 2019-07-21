@@ -374,6 +374,10 @@
       "before": [":"],
       "commands": ["workbench.action.showCommands"]
     },
+    {
+      "before": ["g", "q"],
+      "commands": ["editor.action.quickFix"]
+    },
 
     // {{{ do not store to register with x, c
     {
@@ -448,10 +452,15 @@
   //=== Lang: Go
   //==============================================================================================
   "go.formatTool": "goimports",
+  "go.useLanguageServer": true,
 
   //=== Lang: Typescript
   //==============================================================================================
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
