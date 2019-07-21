@@ -23,8 +23,8 @@
     "comments": false,
     "strings": true
   },
-  "editor.fontFamily": "Fira Code",
-  "editor.fontLigatures": true,
+  // "editor.fontFamily": "Fira Code",
+  // "editor.fontLigatures": true,
 
   "explorer.autoReveal": false,
   "explorer.openEditors.visible": 0,
