@@ -340,6 +340,37 @@
     "command": "workbench.action.previousPanelView",
     "when": "panelFocus"
   },
+  {
+    "key": "ctrl+s b",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+b",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s left",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s n",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+n",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s down",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+
 
   //=== Plugin: Enumerate
   //==============================================================================================
