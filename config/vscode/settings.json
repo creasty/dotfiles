@@ -53,8 +53,8 @@
   "workbench.tips.enabled": false,
   // "workbench.activityBar.visible": false,
   "workbench.editor.showTabs": true,
-  "workbench.editor.enablePreview": false,
-  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.editor.enablePreview": true,
+  "workbench.editor.enablePreviewFromQuickOpen": true,
   "workbench.colorTheme": "Material Theme Darker",
 
   //=== Customize UI
