@@ -422,10 +422,6 @@
     // }}}
 
     {
-      "before": ["R"],
-      "after": ["\"", "_", "d", "P"]
-    },
-    {
       "before": ["J"],
       "commands": ["editor.action.joinLines"]
     },
