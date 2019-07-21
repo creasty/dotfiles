@@ -219,7 +219,6 @@ vscode:
   extensions:
     - alefragnani.Bookmarks
     - apollographql.vscode-apollo
-    - be5invis.vscode-custom-css
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
     - creasty.vscode-altr
@@ -231,7 +230,6 @@ vscode:
     - Equinusocio.vsc-material-theme
     - esbenp.prettier-vscode
     - fallenwood.vimL
-    - filwaline.vscode-postfix-python
     - formulahendry.auto-close-tag
     - formulahendry.auto-rename-tag
     - formulahendry.code-runner
@@ -252,6 +250,7 @@ vscode:
     - ms-vscode.vscode-typescript-tslint-plugin
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
+    - pflannery.vscode-versionlens
     - pnp.polacode
     - rebornix.ruby
     - shanehofstetter.rails-i18n
