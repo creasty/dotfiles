@@ -49,13 +49,21 @@
   "workbench.useExperimentalGridLayout": true,
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
-  "workbench.statusBar.feedback.visible": false,
   "workbench.tips.enabled": false,
   // "workbench.activityBar.visible": false,
   "workbench.editor.showTabs": true,
   "workbench.editor.enablePreview": true,
   "workbench.editor.enablePreviewFromQuickOpen": true,
+
   "workbench.colorTheme": "Material Theme Darker",
+  "workbench.colorCustomizations": {
+    "[Material Theme Darker]": {
+      "editor.findMatchBackground": "#ffcb6b20",
+      "editor.findMatchBorder": "#ffcb6b60",
+      "editor.findMatchHighlightBackground": "#ffcb6b20",
+      "editor.findMatchHighlightBorder": "#ffcb6b30"
+    }
+  },
 
   //=== Customize UI
   //==============================================================================================
