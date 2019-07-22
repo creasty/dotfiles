@@ -194,7 +194,7 @@
     "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.panel.repl'"
   },
 
-  //=== Split/Tab navigation
+  //=== Group/Tab/Sidebar/Panel
   //==============================================================================================
   {
     "key": "ctrl+s t",
@@ -204,6 +204,39 @@
     "key": "ctrl+s ctrl+t",
     "command": "workbench.action.files.newUntitledFile"
   },
+  {
+    "key": "ctrl+s d",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "ctrl+s ctrl+d",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "ctrl+s d",
+    "command": "workbench.action.closeGroup",
+    "when": "activeEditorGroupEmpty && multipleEditorGroups"
+  },
+  {
+    "key": "ctrl+s ctrl+d",
+    "command": "workbench.action.closeGroup",
+    "when": "activeEditorGroupEmpty && multipleEditorGroups"
+  },
+  {
+    "key": "ctrl+s r",
+    "command": "workbench.action.reopenClosedEditor"
+  },
+  {
+    "key": "ctrl+s ctrl+r",
+    "command": "workbench.action.reopenClosedEditor"
+  },
+  {
+    "key": "ctrl+s =",
+    "command": "workbench.action.evenEditorWidths"
+  },
+
+  //  Split
+  //-----------------------------------------------
   {
     "key": "ctrl+s v",
     "command": "workbench.action.splitEditorRight"
@@ -220,6 +253,9 @@
     "key": "ctrl+s ctrl+s",
     "command": "workbench.action.splitEditorDown"
   },
+
+  //  Navigation
+  //-----------------------------------------------
   {
     "key": "ctrl+s h",
     "command": "workbench.action.navigateLeft"
@@ -256,24 +292,9 @@
     "key": "ctrl+s ctrl+l",
     "command": "workbench.action.navigateRight"
   },
-  {
-    "key": "ctrl+s d",
-    "command": "workbench.action.closeActiveEditor"
-  },
-  {
-    "key": "ctrl+s ctrl+d",
-    "command": "workbench.action.closeActiveEditor"
-  },
-  {
-    "key": "ctrl+s d",
-    "command": "workbench.action.closeGroup",
-    "when": "activeEditorGroupEmpty && multipleEditorGroups"
-  },
-  {
-    "key": "ctrl+s ctrl+d",
-    "command": "workbench.action.closeGroup",
-    "when": "activeEditorGroupEmpty && multipleEditorGroups"
-  },
+
+  //  Tab
+  //-----------------------------------------------
   {
     "key": "ctrl+s n",
     "command": "workbench.action.nextEditor"
@@ -297,80 +318,73 @@
   {
     "key": "ctrl+s left",
     "command": "workbench.action.previousEditor"
-  },
-  {
-    "key": "ctrl+s r",
-    "command": "workbench.action.reopenClosedEditor"
-  },
-  {
-    "key": "ctrl+s ctrl+r",
-    "command": "workbench.action.reopenClosedEditor"
-  },
-  {
-    "key": "ctrl+s =",
-    "command": "workbench.action.evenEditorWidths"
-  },
-  {
-    "key": "ctrl+s n",
-    "command": "workbench.action.nextPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s ctrl+n",
-    "command": "workbench.action.nextPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s down",
-    "command": "workbench.action.nextPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s b",
-    "command": "workbench.action.previousPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s ctrl+b",
-    "command": "workbench.action.previousPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s left",
-    "command": "workbench.action.previousPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s b",
-    "command": "workbench.action.previousSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s ctrl+b",
-    "command": "workbench.action.previousSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s left",
-    "command": "workbench.action.previousSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s n",
-    "command": "workbench.action.nextSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s ctrl+n",
-    "command": "workbench.action.nextSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s down",
-    "command": "workbench.action.nextSideBarView",
-    "when": "sideBarFocus"
   },
 
+  //  Panel
+  //-----------------------------------------------
+  {
+    "key": "ctrl+s n",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+n",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s down",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s b",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+b",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus"
+  },
+  {
+    "key": "ctrl+s left",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus"
+  },
+
+  //  Sidebar
+  //-----------------------------------------------
+  {
+    "key": "ctrl+s b",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+b",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s left",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s n",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s ctrl+n",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+s down",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
 
   //=== Plugin: Enumerate
   //==============================================================================================
