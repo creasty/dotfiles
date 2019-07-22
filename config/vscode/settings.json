@@ -105,6 +105,7 @@
     "creasty",
     "focusable",
     "outdent",
+    "paleblue",
     "pluggable",
     "serializer",
     "serializers",
@@ -301,7 +302,7 @@
       "commands": ["editor.action.quickFix"]
     },
     {
-      "before": ["g", "b"],
+      "before": ["g", "o"],
       "commands": ["breadcrumbs.focus"]
     },
     {
