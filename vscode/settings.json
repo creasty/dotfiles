@@ -167,6 +167,13 @@
     ["locales/%/en.json", "locales/%/ja.json", "locales/%/zh-HK.json", "locales/%/de.json"]
   ],
 
+  //=== Code Runner
+  //==============================================================================================
+  "code-runner.showRunIconInEditorTitleMenu": false,
+  "code-runner.executorMapByGlob": {
+    "*_spec.rb": "bundle exec rspec"
+  },
+
   //=== VSCodeVim
   //==============================================================================================
   "vim.incsearch": true,
@@ -321,11 +328,11 @@
     // {{{ insert blank lines without going into insert mode
     {
       "before": ["<leader>", "o"],
-      "after": ["m", "Z", "o", "<Esc>", "`", "Z", "m", "Z"]
+      "commands": ["editor.action.insertLineAfter"]
     },
     {
       "before": ["<leader>", "O"],
-      "after": ["m", "Z", "O", "<Esc>", "`", "Z", "m", "Z"]
+      "commands": ["editor.action.insertLineBefore"]
     },
     // }}}
 
@@ -470,5 +477,11 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  //=== Lang: Ruby
+  //==============================================================================================
+  "[ruby]": {
+    "editor.tabSize": 2
   }
 }

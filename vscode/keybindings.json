@@ -481,6 +481,11 @@
     "command": "workbench.action.navigateBack",
     "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
   },
+  {
+    "key": "enter",
+    "command": "workbench.action.keepEditor",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+  },
 
   //=== Vim: (insert mode) Emacs
   //==============================================================================================
@@ -532,6 +537,11 @@
   {
     "key": "ctrl+v",
     "command": "editor.action.clipboardPasteAction",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
+  {
+    "key": "ctrl+t",
+    "command": "editor.action.transposeLetters",
     "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
   },
 

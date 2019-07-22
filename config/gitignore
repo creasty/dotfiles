@@ -2,6 +2,7 @@
 Thumb.db
 *.log
 .tags
+tags
 .vimprojectroot
 vendor/bundle
 .bundle
