@@ -103,6 +103,8 @@
     "Typeahead",
     "Webview",
     "creasty",
+    "deserialize",
+    "deserialized",
     "focusable",
     "outdent",
     "paleblue",
@@ -110,6 +112,7 @@
     "serializer",
     "serializers",
     "unstyled",
+    "uploader",
     "wantedly"
   ],
 
