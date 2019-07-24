@@ -141,6 +141,50 @@
     ]
   },
 
+  //=== Highlight Matching Tag
+  //==============================================================================================
+  "highlight-matching-tag.styles": {
+    "opening": {
+      "name": {
+        "underline": "#D8B775"
+      }
+    },
+    "closing": {
+      "name": {
+        "underline": "#D8B775"
+      }
+    }
+  },
+
+  //=== Todo Highlight
+  //==============================================================================================
+  "todohighlight.keywords": [
+    {
+      "text": "NOTE",
+      "color": "#0F0F0F",
+      "backgroundColor": "#575757",
+      "overviewRulerColor": "#575757"
+    },
+    {
+      "text": "TODO",
+      "color": "#0F0F0F",
+      "backgroundColor": "#A6B083",
+      "overviewRulerColor": "#A6B083"
+    },
+    {
+      "text": "FIXME",
+      "color": "#0F0F0F",
+      "backgroundColor": "#A57572",
+      "overviewRulerColor": "#A57572"
+    }
+  ],
+  "todohighlight.defaultStyle": {
+    "color": "#0F0F0F",
+    "backgroundColor": "#D0B888",
+    "overviewRulerColor": "#D0B888",
+    "borderRadius": "2px"
+  },
+
   //=== Altr
   //==============================================================================================
   "altr.rules": [
