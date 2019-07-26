@@ -341,8 +341,24 @@
       "after": ["g", "g", "V", "G"]
     },
     {
+      "before": ["g", "t"],
+      "commands": ["editor.action.goToTypeDefinition"]
+    },
+    {
       "before": ["g", "R"],
       "commands": ["editor.action.referenceSearch.trigger"]
+    },
+    {
+      "before": ["g", "D"],
+      "commands": ["editor.action.peekDefinition"]
+    },
+    {
+      "before": ["g", "T"],
+      "commands": ["editor.action.peekTypeDefinition"]
+    },
+    {
+      "before": ["g", "I"],
+      "commands": ["editor.action.peekImplementation"]
     },
     {
       "before": ["g", "r"],
