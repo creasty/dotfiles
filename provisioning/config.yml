@@ -26,6 +26,7 @@ homebrew:
     - qlmarkdown               # https://github.com/toland/qlmarkdown
     - qlstephen                # https://whomwah.github.io/qlstephen/
     - quicklook-json           # http://www.sagtau.com/quicklookjson.html
+    - rightfont                # https://rightfontapp.com/
     - skype                    # https://www.skype.com/
     - station                  # https://getstation.com/
     - tableplus                # https://tableplus.io/
@@ -110,9 +111,10 @@ mas:
     - '1031280567' # Postico
     - '1091189122' # Bear
     - '1333542190' # 1Password 7
+    - '412485838'  # Witch
     - '425424354'  # The Unarchiver
     - '497799835'  # Xcode
-    - '540348655'  # Monosnap
+    - '498672703'  # Droplr
     - '904280696'  # Things3
     - '928494006'  # PopHub
     - '975937182'  # Fantastical 2

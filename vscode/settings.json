@@ -341,6 +341,22 @@
       "after": ["g", "g", "V", "G"]
     },
     {
+      "before": ["z", "c"],
+      "commands": ["editor.fold"]
+    },
+    {
+      "before": ["z", "C"],
+      "commands": ["editor.foldAll"]
+    },
+    {
+      "before": ["z", "o"],
+      "commands": ["editor.unfold"]
+    },
+    {
+      "before": ["z", "O"],
+      "commands": ["editor.unfoldAll"]
+    },
+    {
       "before": ["g", "t"],
       "commands": ["editor.action.goToTypeDefinition"]
     },
@@ -533,10 +549,17 @@
   "go.formatTool": "goimports",
   "go.useLanguageServer": true,
 
+  //=== Lang: Javascript
+  //==============================================================================================
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+
   //=== Lang: Typescript
   //==============================================================================================
   "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
+    "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
@@ -546,6 +569,12 @@
   //=== Lang: Ruby
   //==============================================================================================
   "[ruby]": {
+    "editor.tabSize": 2
+  },
+
+  //=== Lang: JSON
+  //==============================================================================================
+  "[json]": {
     "editor.tabSize": 2
   }
 }
