@@ -34,6 +34,7 @@ homebrew:
     - tunnelbear               # https://www.tunnelbear.com/
     - vagrant                  # https://www.vagrantup.com/
     - webpquicklook            # https://github.com/dchest/webp-quicklook
+    - witch                    # https://manytricks.com/witch/
     - wwdc                     # https://wwdc.io/
 
     # Fonts
@@ -111,7 +112,6 @@ mas:
     - '1031280567' # Postico
     - '1091189122' # Bear
     - '1333542190' # 1Password 7
-    - '412485838'  # Witch
     - '425424354'  # The Unarchiver
     - '497799835'  # Xcode
     - '498672703'  # Droplr
