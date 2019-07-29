@@ -9,6 +9,7 @@
 
   "editor.cursorBlinking": "smooth",
   "editor.find.autoFindInSelection": true,
+  "editor.find.seedSearchStringFromSelection": false,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.minimap.enabled": false,
@@ -46,6 +47,7 @@
   "window.zoomLevel": 0,
   "window.newWindowDimensions": "inherit",
 
+  "workbench.tree.indent": 16,
   "workbench.useExperimentalGridLayout": true,
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
@@ -54,6 +56,8 @@
   "workbench.editor.showTabs": true,
   "workbench.editor.enablePreview": true,
   "workbench.editor.enablePreviewFromQuickOpen": true,
+  "workbench.quickOpen.closeOnFocusLost": false,
+  "workbench.quickOpen.preserveInput": true,
 
   "workbench.colorTheme": "Candle Theme",
   "workbench.colorCustomizations": {
