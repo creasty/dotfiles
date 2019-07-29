@@ -486,6 +486,16 @@
     "command": "workbench.action.keepEditor",
     "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
   },
+  {
+    "key": "j",
+    "command": "cursorDown",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "k",
+    "command": "cursorUp",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+  },
 
   //=== Vim: (insert mode) Emacs
   //==============================================================================================
@@ -511,12 +521,12 @@
   },
   {
     "key": "ctrl+a",
-    "command": "cursorLineStart",
+    "command": "cursorHome",
     "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
   },
   {
     "key": "ctrl+e",
-    "command": "cursorLineEnd",
+    "command": "cursorEnd",
     "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
   },
   {
