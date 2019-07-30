@@ -108,6 +108,7 @@
     "Typeahead",
     "Webview",
     "creasty",
+    "debouncing",
     "deserialize",
     "deserialized",
     "focusable",
