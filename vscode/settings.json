@@ -237,6 +237,7 @@
   "vim.leader": " ",
   "vim.whichwrap": "h,l,<,>,[,]",
   "vim.visualstar": true,
+  "vim.replaceWithRegister": true,
   "vim.debug.silent": true,
   "vim.handleKeys": {},
   "vim.insertModeKeyBindings": [
@@ -419,6 +420,12 @@
       "commands": ["editor.action.insertLineBefore"]
     },
     // }}}
+
+    // ReplaceWithRegister
+    {
+      "before": ["r"],
+      "after": ["g", "r"]
+    },
 
     // {{{ do not store to register with x, c
     {

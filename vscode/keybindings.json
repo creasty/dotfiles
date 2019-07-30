@@ -469,7 +469,7 @@
   {
     "key": ", r",
     "command": "code-runner.run",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
   },
   {
     "key": "ctrl+i",
@@ -484,17 +484,17 @@
   {
     "key": "enter",
     "command": "workbench.action.keepEditor",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
-  },
-  {
-    "key": "j",
-    "command": "cursorDown",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
   },
   {
     "key": "k",
     "command": "cursorUp",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
+  },
+  {
+    "key": "j",
+    "command": "cursorDown",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
   },
 
   //=== Vim: (insert mode) Emacs
