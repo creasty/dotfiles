@@ -248,6 +248,7 @@ vscode:
     - lannonbr.vscode-js-annotations
     - marchrock.vscode-ghq
     - mikestead.dotenv
+    - mrorz.language-gettext
     - ms-vscode.Go
     - ms-vscode.vscode-typescript-tslint-plugin
     - ms-vsliveshare.vsliveshare
@@ -262,6 +263,7 @@ vscode:
     - steoates.autoimport
     - streetsidesoftware.code-spell-checker
     - swindh.enumerator
+    - TabNine.tabnine-vscode
     - Tyriar.sort-lines
     - vincaslt.highlight-matching-tag
     - vscodevim.vim
