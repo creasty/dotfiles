@@ -231,20 +231,31 @@
   //==============================================================================================
   "vim.incsearch": true,
   "vim.useSystemClipboard": true,
-  "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
   "vim.textwidth": 90,
+  "vim.visualstar": true,
   "vim.timeout": 500,
   "vim.leader": " ",
   "vim.whichwrap": "h,l,<,>,[,]",
-  "vim.visualstar": true,
-  "vim.replaceWithRegister": true,
   "vim.debug.silent": true,
+  "vim.useCtrlKeys": true,
   "vim.handleKeys": {},
+
+  "vim.replaceWithRegister": true,
+  "vim.easymotion": true,
+  "vim.easymotionMarkerFontFamily": "Menlo",
+  "vim.easymotionMarkerFontSize": 12,
+  "vim.camelCaseMotion.enable": true,
+
+  //  Insert mode
+  //-----------------------------------------------
   "vim.insertModeKeyBindings": [
   ],
   "vim.insertModeKeyBindingsNonRecursive": [
   ],
+
+  //  Normal mode
+  //-----------------------------------------------
   "vim.normalModeKeyBindings": [
     //  Easymotion
     {
@@ -446,6 +457,9 @@
       "after": ["\"", "_", "c", "$"]
     }
   ],
+
+  //  Visual mode
+  //-----------------------------------------------
   "vim.visualModeKeyBindings": [
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
@@ -549,12 +563,6 @@
       "commands": ["sortLines.sortLines"]
     }
   ],
-
-  "vim.easymotion": true,
-  "vim.easymotionMarkerFontFamily": "Menlo",
-  "vim.easymotionMarkerFontSize": 12,
-
-  "vim.camelCaseMotion.enable": true,
 
   //=== Lang: Go
   //==============================================================================================
