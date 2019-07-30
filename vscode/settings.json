@@ -339,7 +339,7 @@
     {
       // split lines: inverse of J
       "before": ["K"],
-      "after": ["y", "l", "p", "r", "<Enter>"]
+      "after": ["a", "<Enter>", "<Esc>"]
     },
     {
       "before": ["<leader>", "a"],
