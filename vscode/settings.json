@@ -589,7 +589,12 @@
   //=== Lang: Ruby
   //==============================================================================================
   "[ruby]": {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/" // ! and ? are omitted
+  },
+  "[haml]": {
+    "editor.tabSize": 2,
+    "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/" // ! and ? are omitted
   },
 
   //=== Lang: JSON

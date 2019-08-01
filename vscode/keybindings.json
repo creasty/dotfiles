@@ -148,6 +148,29 @@
     "when": "!inputFocus && explorerViewletVisible && filesExplorerFocus"
   },
 
+  //  Extensions (sidebar)
+  //-----------------------------------------------
+  {
+    "key": "ctrl+w ctrl+x",
+    "command": "workbench.view.extensions",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w x",
+    "command": "workbench.view.extensions",
+    "when": "vim.active && vim.mode == 'Normal'"
+  },
+  {
+    "key": "ctrl+w ctrl+x",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.extensions'"
+  },
+  {
+    "key": "ctrl+w x",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.extensions'"
+  },
+
   //  Debug (sidebar)
   //-----------------------------------------------
   {
