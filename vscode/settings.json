@@ -72,6 +72,9 @@
   //=== Customize UI
   //==============================================================================================
   "customizeUI.activityBar": "bottom",
+  "customizeUI.stylesheet": {
+    ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;"
+  },
 
   //=== Emmet
   //==============================================================================================
