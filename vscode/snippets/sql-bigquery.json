@@ -1,0 +1,274 @@
+{
+  //=== Date/time helpers
+  //==============================================================================================
+  "Beginning of month": {
+    "prefix": "beginning_of_month",
+    "body": [
+      "date_sub(date(timestamp_trunc(current_timestamp(), month), '+9'), interval ${1:month}} month)$0"
+    ]
+  },
+  "End of month": {
+    "prefix": "end_of_month",
+    "body": [
+      "date_sub(date_sub(date_trunc(current_date(), month), interval ${1:month} month), interval 1 day)$0"
+    ]
+  },
+  "Date helpers for a rolling period": {
+    "prefix": "date_in_window",
+    "body": [
+      "create temp function d_window() returns int64 as ((",
+      "\t${1:28}",
+      "));",
+      "",
+      "create temp function date_in_window(d date, wd date) returns bool as ((",
+      "\td between date_sub(wd, interval d_window() - 1 day) and wd",
+      "));$0"
+    ]
+  },
+  "N-day ago": {
+    "prefix": "day_ago",
+    "body": [
+      "date_sub(current_date('+9'), interval ${1:day} day)$0"
+    ]
+  },
+  "Format date": {
+    "prefix": "format_date",
+    "body": [
+      "format_date('${1:%Y%m%d}', ${2:date})"
+    ]
+  },
+  "Format timestamp": {
+    "prefix": "format_timestamp",
+    "body": [
+      "format_timestamp('%F %T UTC', ${1:timestamp})"
+    ]
+  },
+  "Suffix selector": {
+    "prefix": "limit_suffix",
+    "body": [
+      "create temp function limit_suffix(suffix string, start_date date, end_date date) returns bool as ((",
+      "\tsuffix between format_date('%Y%m%d', start_date) and format_date('%Y%m%d', end_date)",
+      "));"
+    ]
+  },
+  "Period start and end dates": {
+    "prefix": "period",
+    "body": [
+      "create temp function d_start() returns date as ((",
+      "\tdate_sub(current_date('+9'), interval 28 * 3 day)",
+      "));",
+      "create temp function d_end() returns date as ((",
+      "\tdate_sub(current_date('+9'), interval 1 day)",
+      "));"
+    ]
+  },
+  "Period array": {
+    "prefix": "period_array",
+    "body": [
+      "create temp function period_array() returns array<date> as ((",
+      "\tgenerate_date_array(",
+      "\t\td_start(),",
+      "\t\td_end(),",
+      "\t\tinterval 1 day",
+      "\t)",
+      "));$0"
+    ]
+  },
+  "Period selector": {
+    "prefix": "period_selector",
+    "body": [
+      "create temp function ts_in_period(ts timestamp, s int64, e int64) returns bool as ((",
+      "\tdate(ts, '+9') between date_add(d_start(), interval s day) and date_add(d_end(), interval e day)",
+      "));",
+      "",
+      "create temp function suffix_in_period(suffix string, s int64, e int64) returns bool as ((",
+      "\tsuffix between format_date('%Y%m%d', date_add(d_start(), interval s day)) and format_date('%Y%m%d', date_add(d_end(), interval e day))",
+      "));$0"
+    ]
+  },
+  "Timestamp to a month": {
+    "prefix": "ts_to_month",
+    "body": [
+      "create temp function ts_to_month(ts timestamp) returns string as ((",
+      "\tformat_date('%Y-%m', date(ts, '+9'))",
+      "));$0"
+    ]
+  },
+
+  //=== String
+  //==============================================================================================
+  "Extract an ID from a path": {
+    "prefix": "extact_id_from_path",
+    "body": [
+      "create temp function extract_id_from_path(path string, pattern string) returns int64 as ((",
+      "\tcast(regexp_extract_all(path, pattern)[safe_offset(0)] as int64)",
+      "));$0"
+    ]
+  },
+  "Extract an integer from a JSON": {
+    "prefix": "extract_json_int",
+    "body": [
+      "create temp function extract_json_int(json string, path string) returns int64 as ((",
+      "\tcast(regexp_extract(json_extract_scalar(json, path), r'\\d+') as int64)",
+      "));$0"
+    ]
+  },
+
+  //=== Statement
+  //==============================================================================================
+  "Create a temp function": {
+    "prefix": "func",
+    "body": [
+      "create temp function ${1:name}(${2:args}) returns ${3:type} as ((",
+      "\t$0",
+      "));"
+    ]
+  },
+
+  //  Median
+  //-----------------------------------------------
+  "Create a median function": {
+    "prefix": "median",
+    "body": [
+      "-- median_${1:float64}(array_agg(t.value))",
+      "create temp function median_$1(arr array<$1>) returns struct<",
+      "\tvalue $1,",
+      "\tmin $1,",
+      "\taverage float64,",
+      "\tmax $1,",
+      "\trank int64,",
+      "\tmax_rank int64,",
+      "\tcumulative_total $1,",
+      "\ttotal $1,",
+      "\trank_percent float64,",
+      "\ttotal_percent float64",
+      "> as ((",
+      "\twith",
+      "\t\tseries as (",
+      "\t\t\tselect",
+      "\t\t\t\tvalue,",
+      "\t\t\t\t(row_number() over (order by value)) as rank",
+      "\t\t\tfrom",
+      "\t\t\t\tunnest(arr) as value",
+      "\t\t),",
+      "\t\tcumulative_series as (",
+      "\t\t\tselect",
+      "\t\t\t\tany_value(s.value) as value,",
+      "\t\t\t\ts.rank,",
+      "\t\t\t\t(max(s.rank) over ()) as max_rank,",
+      "\t\t\t\t(sum(ss.value)) as cumulative_total,",
+      "\t\t\t\t(sum(any_value(s.value)) over ()) as total,",
+      "\t\t\t\t(min(any_value(s.value)) over ()) as min,",
+      "\t\t\t\t(avg(any_value(s.value)) over ()) as average,",
+      "\t\t\t\t(max(any_value(s.value)) over ()) as max",
+      "\t\t\tfrom",
+      "\t\t\t\tseries as s",
+      "\t\t\t\tcross join series as ss",
+      "\t\t\twhere",
+      "\t\t\t\tss.rank <= s.rank",
+      "\t\t\tgroup by",
+      "\t\t\t\ts.rank",
+      "\t\t)",
+      "",
+      "\tselect",
+      "\t\tstruct(",
+      "\t\t\ts.value,",
+      "\t\t\ts.min,",
+      "\t\t\ts.average,",
+      "\t\t\ts.max,",
+      "\t\t\ts.rank,",
+      "\t\t\ts.max_rank,",
+      "\t\t\ts.cumulative_total,",
+      "\t\t\ts.total,",
+      "\t\t\t(s.rank / s.max_rank) as rank_percent,",
+      "\t\t\t(s.cumulative_total / s.total) as total_percent",
+      "\t\t)",
+      "\tfrom",
+      "\t\tcumulative_series as s",
+      "\twhere",
+      "\t\ts.cumulative_total >= s.total * 0.5",
+      "\torder by",
+      "\t\ts.rank",
+      "\tlimit 1",
+      "));$0"
+    ]
+  },
+
+  //=== Wantedly
+  //==============================================================================================
+  "Country helpers": {
+    "prefix": "wtd_countries",
+    "body": [
+      "create temp function countries() returns array<struct<code string, rank int64>> as ((",
+      "\t[",
+      "\t\tstruct('JP' as code, 0 as rank),",
+      "\t\tstruct('SG' as code, 1 as rank),",
+      "\t\tstruct('HK' as code, 2 as rank),",
+      "\t\tstruct('DE' as code, 3 as rank)",
+      "\t]",
+      "));",
+      "",
+      "create temp function match_country(cd string) returns bool as ((",
+      "\tcd in ('JP', 'SG', 'HK', 'DE')",
+      "));",
+      "",
+      "create temp function match_country_code(cd string, name string) returns bool as ((",
+      "\tconcat(cd, ':', name) in (",
+      "\t\t'JP:japan',",
+      "\t\t'SG:singapore',",
+      "\t\t'HK:hong_kong',",
+      "\t\t'DE:germany'",
+      "\t)",
+      "));",
+    ]
+  },
+  "Visit endpoints": {
+    "prefix": "visit_endpoints",
+    "body": [
+      "create temp function visit_endpoints(controller string, action string, referrer string) returns bool as ((",
+      "\t(",
+      "\t\tcontroller in (",
+      "\t\t\t'projects', 'messages', 'candidacies', 'search', 'category_tags', 'staffings', 'profiles',",
+      "\t\t\t'api/v1/projects', 'api/v1/candidacies', 'api/v1/feeds', 'api/v1/users', 'api/v1/notifications',",
+      "\t\t\t'api/v2/projects', 'api/v2/candidacies', 'api/v2/feeds', 'api/v2/users', 'api/v2/notifications'",
+      "\t\t)",
+      "\t\tor (controller = 'campaigns' and action = 'newgrad')",
+      "\t\tor (",
+      "\t\t\t(controller = 'posts' and action = 'show')",
+      "\t\t\tor (controller = 'employee_interviews' and action = 'show')",
+      "\t\t\tor (controller = 'post_articles' and action = 'show')",
+      "\t\t\tor (controller = 'post_spaces')",
+      "\t\t\tor (controller = 'feeds' and action in ('company_posts', 'posts', 'index') and referrer not like '%companies%')",
+      "\t\t)",
+      "\t)",
+      "));"
+    ]
+  },
+  "Company plan name": {
+    "prefix": "plan_name",
+    "body": [
+      "-- puts CompanyAccount.plans.hash.invert.to_json",
+      "create temp function plan_name(cd int64) returns string language js as \"\"\"",
+      "\tconst dict = {\"0\":\"trial\",\"1\":\"standard_2012\",\"2\":\"premium_2012\",\"3\":\"standard\",\"4\":\"premium\",\"5\":\"startup\",\"6\":\"small_business\",\"7\":\"business\",\"8\":\"enterprise\",\"9\":\"lite_2016_half\",\"10\":\"lite_2016_year\",\"11\":\"lite_2016_month\",\"12\":\"lite_2016_three_month\",\"13\":\"deprecated_2015\",\"14\":\"standard_2016_half\",\"15\":\"standard_2016_year\",\"16\":\"standard_2016_month\",\"17\":\"standard_2016_three_month\",\"18\":\"complimentary_three_month\",\"19\":\"lite_2016_two_year\",\"20\":\"standard_2016_two_year\",\"21\":\"international_starter_half\",\"22\":\"international_starter_year\",\"23\":\"international_standard_half\",\"24\":\"international_standard_year\",\"25\":\"international_enterprise\",\"26\":\"standard_2017_half\",\"27\":\"standard_2017_year\",\"28\":\"standard_2017_two_year\",\"29\":\"lite_2017_half\",\"30\":\"lite_2017_year\",\"31\":\"lite_2017_two_year\",\"32\":\"minimum_2017_half\",\"33\":\"minimum_2017_year\",\"34\":\"minimum_2017_two_year\",\"35\":\"standard_2017_month\",\"36\":\"standard_2017_three_month\",\"37\":\"lite_2017_month\",\"38\":\"lite_2017_three_month\",\"39\":\"minimum_2017_month\",\"40\":\"minimum_2017_three_month\"};",
+      "\treturn dict[cd] || (\"unknown(\" + cd + \")\")",
+      "\"\"\";"
+    ]
+  },
+  "Visit interest level": {
+    "prefix": "visit_interest_level",
+    "body": [
+      "create temp function interest_level(comment string) returns string as ((",
+      "\tcase",
+      "\twhen comment in (\"I'm ready for the real interview!\", \"I'm ready to do the real job interview!\", \"Want to work together now!\", \"Let’s work together!\", \"準備好正式面試！\", \"今すぐ一緒に働きたい\", \"Ich bin bereit für das richtige Interview!\") then",
+      "\t\t'3_high'",
+      "\twhen comment in (\"I want to talk with the team first.\", \"I want to visit and talk with the team first.\", \"Would like to talk first.\", \"Let’s have a chat.\", \"Before an interview, I want to visit and talk to the team first.\", \"Before the actual interview, I want to visit and talk to the team first.\", \"想Visit公司，與團隊見面交談\", \"まずは話を聞いてみたい\", \"Ich möchte zunächst vorbeikommen und mit dem Team reden.\") then",
+      "\t\t'2_middle'",
+      "\twhen comment in (\"I want to chat with the team online.\", \"I want to talk to the team online.\", \"This opportunity interests me.\", \"Just interested.\", \"Before I visit, I want to talk to the team online.\", \"Visit前想在線上與團隊交談\", \"少しだけ興味があります\", \"Vor meinem Besuch möchte ich mit dem Team online chatten.\") then",
+      "\t\t'1_low'",
+      "\telse",
+      "\t\tconcat('(', comment, ')')",
+      "\tend",
+      "));"
+    ]
+  }
+}

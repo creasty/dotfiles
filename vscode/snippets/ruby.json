@@ -1,0 +1,50 @@
+{
+  "Class initializer": {
+    "prefix": "init",
+    "body": "def initialize",
+  },
+  "Singular method": {
+    "prefix": "defs",
+    "body": "def self."
+  },
+  "Binding pry": {
+    "prefix": "pry",
+    "body": "binding.pry"
+  },
+  "attr_reader": {
+    "prefix": "r",
+    "body": "attr_reader :"
+  },
+  "attr_writer": {
+    "prefix": "w",
+    "body": "attr_writer :"
+  },
+  "attr_accessor": {
+    "prefix": "rw",
+    "body": "attr_accessor :"
+  },
+  "each block": {
+    "prefix": ".each",
+    "body": ".each { |$1| $0 }"
+  },
+  "each-do block": {
+    "prefix": ".eachdo",
+    "body": [
+      ".each do |$1|",
+      "\t$0",
+      "end"
+    ]
+  },
+  "map block": {
+    "prefix": ".map",
+    "body": ".map { |$1| $0 }"
+  },
+  "map-do block": {
+    "prefix": ".mapdo",
+    "body": [
+      ".map do |$1|",
+      "\t$0",
+      "end"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "Details tag": {
+    "prefix": "details",
+    "body": [
+      "<details><summary>${1:See details}</summary>",
+      "$0",
+      "</details><br>"
+    ]
+  }
+}

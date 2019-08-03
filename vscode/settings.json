@@ -120,7 +120,9 @@
     "pluggable",
     "serializer",
     "serializers",
+    "struct",
     "unstyled",
+    "upcase",
     "uploader",
     "wantedly"
   ],

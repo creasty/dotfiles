@@ -1,0 +1,8 @@
+{
+  "Logger": {
+    "prefix": "log",
+    "body": [
+      "console.log($0);"
+    ]
+  }
+}

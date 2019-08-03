@@ -1,0 +1,52 @@
+{
+  "Function": {
+    "prefix": "func",
+    "body": [
+      "func ${1:name}(${2:params})${3/(.+)/ /}${3:type} {",
+      "\t${0:${VISUAL}}",
+      "}"
+    ]
+  },
+  "Define a holder field": {
+    "prefix": "holder",
+    "body": [
+      "${1:name} struct {",
+      "\tresult ${2:Type}",
+      "\terr    error",
+      "\tonce   sync.Once",
+      "}"
+    ]
+  },
+  "Initialize a holder": {
+    "prefix": "holderdo",
+    "body": [
+      "holder := &c.${1:name}",
+      "holder.once.Do(func() {",
+      "\tholder.result, holder.err = $0",
+      "})",
+      "return holder.result, holder.err"
+    ]
+  },
+  "if block": {
+    "prefix": "if",
+    "body": ["if $1 {", "\t$0", "}"]
+  },
+  "for block": {
+    "prefix": "for",
+    "body": ["for $1 {", "\t$0", "}"]
+  },
+  "Define package": {
+    "prefix": "package",
+    "body": ["package ${TM_DIRECTORY/.+?([^\\/]+)$/$1/}"]
+  },
+  "go:generate mockgen": {
+    "prefix": "mockgen",
+    "body": [
+      "//go:generate mockgen -source=${TM_FILENAME_BASE}.go -package ${TM_DIRECTORY/.+?([^\\/]+)$/$1/} -destination=${TM_FILENAME_BASE}_mock.go"
+    ]
+  },
+  "go:generate stringer": {
+    "prefix": "stringer",
+    "body": ["//go:generate stringer -type=${1:Type}"]
+  }
+}

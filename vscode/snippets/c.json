@@ -1,0 +1,56 @@
+{
+  "ifndef define": {
+    "prefix": "def",
+    "body": [
+      "#ifndef ${1:SYMBOL}",
+      "#define $1 ${2:value}",
+      "#endif$0"
+    ]
+  },
+  "do-while block": {
+    "prefix": "do-while",
+    "body": [
+      "do {",
+      "\t$0",
+      "} while ($1);"
+    ]
+  },
+  "Enum definition": {
+    "prefix": "enum",
+    "body": [
+      "typedef enum {",
+      "\t$0",
+      "} ${1:name};"
+    ]
+  },
+  "Struct definition": {
+    "prefix": "struct",
+    "body": [
+      "typedef struct ${1:tag_name} {",
+      "\t$0",
+      "} ${2:name};"
+    ]
+  },
+  "Main function": {
+    "prefix": "main",
+    "body": [
+      "int",
+      "main(int argc, const char *argv[])",
+      "{",
+      "\t$0",
+      "\treturn 0;",
+      "}"
+    ]
+  },
+  "Include guard": {
+    "prefix": "guard",
+    "body": [
+      "#ifndef __${1:${TM_FILENAME/[\\.-]/_/g}}_LOADED", // Missing transformation to upcase
+      "#define __$1",
+      "",
+      "$0",
+      "",
+      "#endif /* end of include guard: __$1 */",
+    ]
+  }
+}
