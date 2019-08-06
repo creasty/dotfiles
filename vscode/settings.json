@@ -426,6 +426,10 @@
       "before": ["<leader>", "/"],
       "commands": ["workbench.view.search"],
     },
+    {
+      "before": ["@"],
+      "commands": ["workbench.action.gotoSymbol"],
+    },
 
     // {{{ insert blank lines without going into insert mode
     {
