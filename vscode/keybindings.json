@@ -63,11 +63,7 @@
   //  Panel
   //-----------------------------------------------
   {
-    "key": "ctrl+s up",
-    "command": "workbench.action.togglePanel"
-  },
-  {
-    "key": "ctrl+s ctrl+p",
+    "key": "ctrl+s up", // ctrl+p
     "command": "workbench.action.togglePanel"
   },
   {
@@ -292,11 +288,7 @@
     "command": "workbench.action.navigateDown"
   },
   {
-    "key": "ctrl+s ctrl+j",
-    "command": "workbench.action.navigateDown"
-  },
-  {
-    "key": "ctrl+s enter",
+    "key": "ctrl+s enter", // ctrl+j
     "command": "workbench.action.navigateDown"
   },
   {
@@ -323,11 +315,7 @@
     "command": "workbench.action.nextEditor"
   },
   {
-    "key": "ctrl+s ctrl+n",
-    "command": "workbench.action.nextEditor"
-  },
-  {
-    "key": "ctrl+s down",
+    "key": "ctrl+s down", // ctrl+n
     "command": "workbench.action.nextEditor"
   },
   {
@@ -335,11 +323,7 @@
     "command": "workbench.action.previousEditor"
   },
   {
-    "key": "ctrl+s ctrl+b",
-    "command": "workbench.action.previousEditor"
-  },
-  {
-    "key": "ctrl+s left",
+    "key": "ctrl+s left", // ctrl+b
     "command": "workbench.action.previousEditor"
   },
 
@@ -351,12 +335,7 @@
     "when": "panelFocus"
   },
   {
-    "key": "ctrl+s ctrl+n",
-    "command": "workbench.action.nextPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s down",
+    "key": "ctrl+s down", // ctrl+n
     "command": "workbench.action.nextPanelView",
     "when": "panelFocus"
   },
@@ -366,12 +345,7 @@
     "when": "panelFocus"
   },
   {
-    "key": "ctrl+s ctrl+b",
-    "command": "workbench.action.previousPanelView",
-    "when": "panelFocus"
-  },
-  {
-    "key": "ctrl+s left",
+    "key": "ctrl+s left", // ctrl+b
     "command": "workbench.action.previousPanelView",
     "when": "panelFocus"
   },
@@ -384,12 +358,7 @@
     "when": "sideBarFocus"
   },
   {
-    "key": "ctrl+s ctrl+b",
-    "command": "workbench.action.previousSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s left",
+    "key": "ctrl+s left", // ctrl+b
     "command": "workbench.action.previousSideBarView",
     "when": "sideBarFocus"
   },
@@ -399,12 +368,7 @@
     "when": "sideBarFocus"
   },
   {
-    "key": "ctrl+s ctrl+n",
-    "command": "workbench.action.nextSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+s down",
+    "key": "ctrl+s down", // ctrl+n
     "command": "workbench.action.nextSideBarView",
     "when": "sideBarFocus"
   },
@@ -523,26 +487,6 @@
   //=== Vim: (insert mode) Emacs
   //==============================================================================================
   {
-    "key": "ctrl+b",
-    "command": "cursorLeft",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+f",
-    "command": "cursorRight",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "cursorDown",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "cursorUp",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
     "key": "ctrl+a",
     "command": "cursorHome",
     "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
@@ -576,218 +520,5 @@
     "key": "ctrl+t",
     "command": "editor.action.transposeLetters",
     "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-
-  //=== Emacs cursor
-  //==============================================================================================
-  {
-    "key": "ctrl+p",
-    "command": "list.focusUp",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "history.showPrevious",
-    "when": "historyNavigationEnabled && historyNavigationWidget"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "cursorUp",
-    "when": "textInputFocus"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "notifications.focusPreviousToast",
-    "when": "notificationFocus && notificationToastsVisible"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "selectPrevSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "showPrevParameterHint",
-    "when": "editorFocus && parameterHintsMultipleSignatures && parameterHintsVisible"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "workbench.action.interactivePlayground.arrowUp",
-    "when": "interactivePlaygroundFocus && !editorTextFocus"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "search.focus.previousInputBox",
-    "when": "inputBoxFocus && searchViewletVisible && !searchInputBoxFocus"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "search.action.focusSearchFromResults",
-    "when": "firstMatchFocus && searchViewletVisible"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "cursorDown",
-    "when": "textInputFocus"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "history.showNext",
-    "when": "historyNavigationEnabled && historyNavigationWidget"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "list.focusDown",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "notifications.focusNextToast",
-    "when": "notificationFocus && notificationToastsVisible"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "selectNextSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "settings.action.focusSettingsFile",
-    "when": "inSettingsSearch && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "keybindings.editor.focusKeybindings",
-    "when": "inKeybindings && inKeybindingsSearch"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "settings.action.focusSettingsFromSearch",
-    "when": "inSettingsSearch && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "showNextParameterHint",
-    "when": "editorFocus && parameterHintsMultipleSignatures && parameterHintsVisible"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "workbench.action.interactivePlayground.arrowDown",
-    "when": "interactivePlaygroundFocus && !editorTextFocus"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "search.focus.nextInputBox",
-    "when": "inputBoxFocus && searchViewletVisible"
-  },
-  {
-    "key": "ctrl+b",
-    "command": "breadcrumbs.focusPrevious",
-    "when": "breadcrumbsActive && breadcrumbsVisible"
-  },
-  {
-    "key": "ctrl+b",
-    "command": "cursorLeft",
-    "when": "textInputFocus"
-  },
-  {
-    "key": "ctrl+b",
-    "command": "notification.collapse",
-    "when": "notificationFocus"
-  },
-  {
-    "key": "ctrl+b",
-    "command": "list.collapse",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+f",
-    "command": "breadcrumbs.focusNext",
-    "when": "breadcrumbsActive && breadcrumbsVisible"
-  },
-  {
-    "key": "ctrl+f",
-    "command": "notification.expand",
-    "when": "notificationFocus"
-  },
-  {
-    "key": "ctrl+f",
-    "command": "list.expand",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "explorer.openToSide",
-    "when": "explorerViewletVisible && filesExplorerFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "workbench.action.acceptSelectedQuickOpenItem",
-    "when": "inQuickOpen"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "repl.action.acceptInput",
-    "when": "inDebugRepl && textInputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "acceptRenameInput",
-    "when": "editorFocus && renameInputVisible"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "acceptSelectedSuggestionOnEnter",
-    "when": "acceptSuggestionOnEnter && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "breadcrumbs.selectFocused",
-    "when": "breadcrumbsActive && breadcrumbsVisible"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "breakpointWidget.action.acceptInput",
-    "when": "breakpointWidgetVisible && inBreakpointWidget"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "debug.renameWatchExpression",
-    "when": "watchExpressionsFocused"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "debug.setVariable",
-    "when": "variablesFocused"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "list.select",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "markdown.extension.onEnterKey",
-    "when": "editorTextFocus && !editorReadonly && !suggestWidgetVisible && editorLangId == 'markdown' && vim.mode != 'CommandlineInProgress' && vim.mode != 'EasyMotionInputMode' && vim.mode != 'EasyMotionMode' && vim.mode != 'Normal' && vim.mode != 'Replace' && vim.mode != 'SearchInProgressMode' && vim.mode != 'SurroundInputMode' && vim.mode != 'Visual' && vim.mode != 'VisualBlock' && vim.mode != 'VisualLine'"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "notification.toggle",
-    "when": "notificationFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "renameFile",
-    "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "settings.action.focusNextSetting",
-    "when": "inSettingsSearch"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "settings.action.focusSettingsList",
-    "when": "inSettingsEditor && settingsTocRowFocus"
   }
 ]
