@@ -61,11 +61,7 @@
 
   "workbench.colorTheme": "Candle Theme",
   "workbench.colorCustomizations": {
-    "[Material Theme Darker]": {
-      "editor.findMatchBackground": "#ffcb6b20",
-      "editor.findMatchBorder": "#ffcb6b60",
-      "editor.findMatchHighlightBackground": "#ffcb6b20",
-      "editor.findMatchHighlightBorder": "#ffcb6b30"
+    "[Candle Theme]": {
     }
   },
 
