@@ -219,7 +219,9 @@ vscode:
   # code --list-extensions | sed -e 's/^/- /g' | pbcopy
   extensions:
     - alefragnani.Bookmarks
+    - aleksandra.go-group-imports
     - apollographql.vscode-apollo
+    - castwide.solargraph
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
     - creasty.vscode-altr
