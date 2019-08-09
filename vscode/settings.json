@@ -39,7 +39,6 @@
 
   "search.showLineNumbers": true,
   "search.smartCase": true,
-  "search.usePCRE2": true,
   "search.location": "panel",
   "search.useIgnoreFiles": true,
 
@@ -48,11 +47,10 @@
   "window.newWindowDimensions": "inherit",
 
   "workbench.tree.indent": 16,
-  "workbench.useExperimentalGridLayout": true,
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tips.enabled": false,
-  // "workbench.activityBar.visible": false,
+  "workbench.activityBar.visible": false,
   "workbench.editor.showTabs": true,
   "workbench.editor.enablePreview": true,
   "workbench.editor.enablePreviewFromQuickOpen": true,
@@ -62,12 +60,15 @@
   "workbench.colorTheme": "Candle Theme",
   "workbench.colorCustomizations": {
     "[Candle Theme]": {
+      "sideBar.border": "#00000030", // "{{scheme.black}}30"
+      "panel.border": "#00000030", // "{{scheme.black}}30"
+      "tab.unfocusedActiveBorder": "#1B1B1B", // "{{colors.background}}"
+      "inputOption.activeBackground": "#80C7BC30" // "{{colors.accent}}30"
     }
   },
 
   //=== Customize UI
   //==============================================================================================
-  "customizeUI.activityBar": "bottom",
   "customizeUI.stylesheet": {
     ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;"
   },
