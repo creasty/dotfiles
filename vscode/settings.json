@@ -59,11 +59,17 @@
 
   "workbench.colorTheme": "Candle Theme",
   "workbench.colorCustomizations": {
+    // https://code.visualstudio.com/api/references/theme-color
     "[Candle Theme]": {
       "sideBar.border": "#00000030", // "{{scheme.black}}30"
       "panel.border": "#00000030", // "{{scheme.black}}30"
       "tab.unfocusedActiveBorder": "#1B1B1B", // "{{colors.background}}"
-      "inputOption.activeBackground": "#80C7BC30" // "{{colors.accent}}30"
+      "inputOption.activeBackground": "#80C7BC30", // "{{colors.accent}}30"
+      "editorOverviewRuler.errorForeground": "#B56E6A90", // "{{scheme.accentRed}}40"
+      "editorOverviewRuler.warningForeground": "#D8B77590", // "{{scheme.accentYellow}}40"
+      "editorOverviewRuler.modifiedForeground": "#82A4C390", // "{{scheme.accentBlue}}90"
+      "editorOverviewRuler.addedForeground": "#82A4C390", // "{{scheme.accentBlue}}90"
+      "editorOverviewRuler.deletedForeground": "#82A4C390" // "{{scheme.accentBlue}}90"
     }
   },
 
@@ -177,13 +183,13 @@
       "text": "TODO",
       "color": "#0F0F0F",
       "backgroundColor": "#A6B083",
-      "overviewRulerColor": "#A6B083"
+      "overviewRulerColor": "rgba(166, 176, 131, 0.5)"
     },
     {
       "text": "FIXME",
       "color": "#0F0F0F",
       "backgroundColor": "#A57572",
-      "overviewRulerColor": "#A57572"
+      "overviewRulerColor": "rgba(165, 117, 114, 0.5)"
     }
   ],
   "todohighlight.defaultStyle": {
