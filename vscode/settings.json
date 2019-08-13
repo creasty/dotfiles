@@ -252,7 +252,7 @@
   "vim.replaceWithRegister": true,
   "vim.easymotion": true,
   "vim.easymotionMarkerFontFamily": "Menlo",
-  "vim.easymotionMarkerFontSize": 12,
+  "vim.easymotionMarkerFontSize": "12",
   "vim.camelCaseMotion.enable": true,
 
   //  Insert mode
@@ -590,7 +590,8 @@
   //=== Lang: Javascript
   //==============================================================================================
   "[javascript]": {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   //=== Lang: Typescript
