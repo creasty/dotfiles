@@ -525,11 +525,7 @@
 
     // {{{ line-wise manipulations
     {
-      "before": ["C-j"],
-      "commands": ["editor.action.moveLinesDownAction"]
-    },
-    {
-      "before": ["enter"],
+      "before": ["enter"], // C-j
       "commands": ["editor.action.moveLinesDownAction"]
     },
     {
@@ -537,11 +533,7 @@
       "commands": ["editor.action.moveLinesUpAction"]
     },
     {
-      "before": ["<leader>", "C-j"],
-      "commands": ["editor.action.copyLinesDownAction"]
-    },
-    {
-      "before": ["<leader>", "enter"],
+      "before": ["<leader>", "enter"], // leader C-j
       "commands": ["editor.action.copyLinesDownAction"]
     },
     {
