@@ -160,7 +160,12 @@ load-env() {
 #  which + edit
 #-----------------------------------------------
 whiche() {
-  vim "$(which $1)"
+  local file="$(which $1)"
+  if [ -f "$file" ]; then
+    vim "$file"
+  else
+    echo "$file"
+  fi
 }
 
 #  Open Xcode project file
