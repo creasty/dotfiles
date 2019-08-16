@@ -599,6 +599,18 @@
 
   //=== Lang: Ruby
   //==============================================================================================
+  "ruby.useLanguageServer": true,
+  "ruby.codeCompletion": true,
+  "ruby.intellisense": true,
+  "ruby.useBundler": true,
+  "ruby.lint": {
+    "ruby": true,
+    "rubocop": {
+      "useBundler": true
+    }
+  },
+  "ruby.format": "rubocop",
+
   "[ruby]": {
     "editor.tabSize": 2,
     "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/" // ! and ? are omitted
