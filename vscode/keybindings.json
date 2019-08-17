@@ -403,6 +403,11 @@
     "command": "editor.action.outdentLines",
     "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
   },
+  {
+    "key": "ctrl+l",
+    "command": "patternSwitch.switchUnderCursor",
+    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
+  },
 
   {
     "key": "ctrl+v",

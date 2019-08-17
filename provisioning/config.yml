@@ -227,16 +227,19 @@ vscode:
     - christian-kohler.path-intellisense
     - creasty.vscode-altr
     - creasty.vscode-candle-theme
+    - creasty.vscode-pattern-switch
     - cssho.vscode-svgviewer
     - dbaeumer.vscode-eslint
     - eamodio.gitlens
     - eg2.vscode-npm-script
     - Equinusocio.vsc-material-theme
+    - esafirm.kotlin-formatter
     - esbenp.prettier-vscode
     - fallenwood.vimL
     - formulahendry.auto-close-tag
     - formulahendry.auto-rename-tag
     - formulahendry.code-runner
+    - fwcd.kotlin
     - geddski.macros
     - iocave.customize-ui
     - iocave.monkey-patch
@@ -256,10 +259,10 @@ vscode:
     - ms-vscode.vscode-typescript-tslint-plugin
     - ms-vsliveshare.vsliveshare
     - msjsdiag.debugger-for-chrome
+    - naco-siren.gradle-language
     - pflannery.vscode-versionlens
     - pnp.polacode
     - rebornix.ruby
-    - shanehofstetter.rails-i18n
     - shinichi-takii.sql-bigquery
     - shinnn.stylelint
     - sleistner.vscode-fileutils
