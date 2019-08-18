@@ -24,6 +24,7 @@
     "comments": false,
     "strings": true
   },
+  "workbench.editor.focusRecentEditorAfterClose": false,
   // "editor.fontFamily": "Fira Code",
   // "editor.fontLigatures": true,
 
@@ -45,6 +46,7 @@
   "window.closeWhenEmpty": true,
   "window.zoomLevel": 0,
   "window.newWindowDimensions": "inherit",
+  "window.clickThroughInactive": false,
 
   "workbench.tree.indent": 16,
   "workbench.editor.highlightModifiedTabs": true,
@@ -56,6 +58,7 @@
   "workbench.editor.enablePreviewFromQuickOpen": true,
   "workbench.quickOpen.closeOnFocusLost": false,
   "workbench.quickOpen.preserveInput": true,
+  "workbench.settings.editor": "json",
 
   "workbench.colorTheme": "Candle Theme",
   "workbench.colorCustomizations": {
@@ -82,6 +85,7 @@
   //=== Emmet
   //==============================================================================================
   "emmet.triggerExpansionOnTab": true,
+  "emmet.showAbbreviationSuggestions": false,
 
   //=== Liveshare
   //==============================================================================================
@@ -95,6 +99,10 @@
   "gitlens.hovers.currentLine.over": "line",
   "gitlens.mode.statusBar.enabled": false,
   "gitlens.statusBar.enabled": false,
+
+  //=== Version lens
+  //==============================================================================================
+  "versionlens.showVersionLensesAtStartup": false,
 
   //=== Eslint
   //==============================================================================================

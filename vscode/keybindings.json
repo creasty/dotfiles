@@ -437,6 +437,11 @@
 
   {
     "key": "escape",
+    "command": "hideSuggestWidget",
+    "when": "suggestWidgetVisible && editorTextFocus"
+  },
+  {
+    "key": "escape",
     "command": "list.clear",
     "when": "breadcrumbsVisible && listFocus"
   },
