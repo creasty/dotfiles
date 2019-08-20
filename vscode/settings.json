@@ -25,6 +25,7 @@
     "strings": true
   },
   "workbench.editor.focusRecentEditorAfterClose": false,
+  "editor.renderLineHighlight": "none",
   // "editor.fontFamily": "Fira Code",
   // "editor.fontLigatures": true,
 
@@ -66,7 +67,9 @@
     "[Candle Theme]": {
       "sideBar.border": "#00000030", // "{{scheme.black}}30"
       "panel.border": "#00000030", // "{{scheme.black}}30"
-      "tab.unfocusedActiveBorder": "#1B1B1B", // "{{colors.background}}"
+      "tab.activeBorder": "#00000000", // "{{colors.transparent}}" !
+      "tab.unfocusedActiveForeground": "#575757", // "{{colors.tabInactiveForeground}}",
+      "tab.unfocusedActiveBorder": "#00000000", // "{{colors.transparent}}" !
       "inputOption.activeBackground": "#80C7BC30", // "{{colors.accent}}30"
       "editorOverviewRuler.errorForeground": "#B56E6A90", // "{{scheme.accentRed}}40"
       "editorOverviewRuler.warningForeground": "#D8B77590", // "{{scheme.accentYellow}}40"
@@ -79,7 +82,8 @@
   //=== Customize UI
   //==============================================================================================
   "customizeUI.stylesheet": {
-    ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;"
+    ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;",
+    ".cursor": "transition: all 80ms;"
   },
 
   //=== Emmet
