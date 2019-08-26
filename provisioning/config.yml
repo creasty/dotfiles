@@ -244,6 +244,7 @@ vscode:
     - iocave.customize-ui
     - iocave.monkey-patch
     - ipatalas.vscode-postfix-ts
+    - jebbs.plantuml
     - JerryHong.autofilename
     - jock.svg
     - jpoissonnier.vscode-styled-components
