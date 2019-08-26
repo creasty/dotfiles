@@ -508,6 +508,19 @@
     },
     // }}}
 
+    {
+      "before": ["m", "m"],
+      "commands": ["bookmarks.toggle"],
+    },
+    {
+      "before": ["m", "n"],
+      "commands": ["bookmarks.jumpToNext"],
+    },
+    {
+      "before": ["m", "p"],
+      "commands": ["bookmarks.jumpToPrevious"],
+    },
+
     // ReplaceWithRegister
     {
       "before": ["r"],
