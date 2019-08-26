@@ -82,8 +82,8 @@
   //=== Customize UI
   //==============================================================================================
   "customizeUI.stylesheet": {
-    ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;",
-    ".cursor": "transition: all 80ms;"
+    // ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;"
+    // ".cursor": "transition: all 80ms;"
   },
 
   //=== Emmet
@@ -140,6 +140,57 @@
     "upcase",
     "uploader",
     "wantedly"
+  ],
+  "cSpell.enabledLanguageIds": [
+    "asciidoc",
+    "c",
+    "coffeescript",
+    "cpp",
+    "csharp",
+    "css",
+    "diagram",
+    "dockerfile",
+    "dotenv",
+    "erb",
+    "gemfile",
+    "git-commit",
+    "go",
+    "haml",
+    "handlebars",
+    "haskell",
+    "html",
+    "jade",
+    "java",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "kotlin",
+    "latex",
+    "less",
+    "makefile",
+    "markdown",
+    "php",
+    "plaintext",
+    "proto3",
+    "pug",
+    "python",
+    "restructuredtext",
+    "ruby",
+    "rust",
+    "scala",
+    "scss",
+    "shellscript",
+    "source.css.styled",
+    "sql",
+    "sql-bigquery",
+    "swift",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "xml",
+    "yaml",
+    "yml"
   ],
 
   //=== Better align
