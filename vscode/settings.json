@@ -513,12 +513,20 @@
       "commands": ["bookmarks.toggle"],
     },
     {
-      "before": ["m", "n"],
+      "before": ["m", "l"],
+      "commands": ["bookmarks.toggleLabeled"],
+    },
+    {
+      "before": ["'", "m"],
       "commands": ["bookmarks.jumpToNext"],
     },
     {
-      "before": ["m", "p"],
+      "before": ["'", "n"],
       "commands": ["bookmarks.jumpToPrevious"],
+    },
+    {
+      "before": ["'", "'"],
+      "commands": ["bookmarks.list"],
     },
 
     // ReplaceWithRegister
