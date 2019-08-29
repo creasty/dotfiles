@@ -204,9 +204,9 @@
 
   //=== Prettier
   //==============================================================================================
-  "prettier.stylelintIntegration": true,
-  "prettier.eslintIntegration": true,
-  "prettier.tslintIntegration": true,
+  "prettier-stylelint.integration": true,
+  "prettier.eslint.integration": true,
+  "prettier.tslint.integration": true,
   "prettier.trailingComma": "es5",
 
   //=== Macros
@@ -508,6 +508,7 @@
     },
     // }}}
 
+    // {{{ Bookmarks
     {
       "before": ["m", "m"],
       "commands": ["bookmarks.toggle"],
@@ -528,6 +529,7 @@
       "before": ["'", "'"],
       "commands": ["bookmarks.list"],
     },
+    // }}}
 
     // ReplaceWithRegister
     {
@@ -641,12 +643,12 @@
     },
 
     {
-      "before": ["J"],
-      "commands": ["editor.action.joinLines"]
-    },
-    {
       "before": ["C"],
       "commands": ["extension.changeCase.commands"]
+    },
+    {
+      "before": ["J"],
+      "commands": ["editor.action.joinLines"]
     },
     {
       "before": ["L"],
