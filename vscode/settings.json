@@ -121,11 +121,13 @@
   //=== Code Spell Checker
   //==============================================================================================
   "cSpell.userWords": [
+    "Fullscreen",
     "Hookable",
     "Overridable",
     "Readonly",
     "Typeahead",
     "Webview",
+    "antialiased",
     "bitflag",
     "commentable",
     "creasty",
@@ -133,9 +135,11 @@
     "deserialize",
     "deserialized",
     "focusable",
+    "iframe",
     "outdent",
     "paleblue",
     "pluggable",
+    "rgba",
     "serializer",
     "serializers",
     "struct",
