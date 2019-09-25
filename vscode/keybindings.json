@@ -381,6 +381,19 @@
     "when": "editorTextFocus"
   },
 
+  //=== Plugin: Ruby endwise
+  //==============================================================================================
+  {
+    "key": "enter",
+    "command": "-endwise.enter",
+    "when": "editorTextFocus && editorLangId == 'ruby' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Normal' && vim.mode != 'SearchInProgressMode'"
+  },
+  {
+    "key": "enter",
+    "command": "endwise.enter",
+    "when": "editorTextFocus && editorLangId == 'ruby' && vim.mode == 'Insert'"
+  },
+
   //=== Editing
   //==============================================================================================
   {
