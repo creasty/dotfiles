@@ -1,5 +1,18 @@
 require 'rubygems' unless defined? Gem
 
+# Pry.config.history.should_save = !defined?(RbReadline)
+
+if defined?(RbReadline)
+  class Pry::History
+    class File < ::File
+      def self.open(path, mode, perm)
+        mode = "#{mode}:ascii-8bit" unless /:/ =~ mode
+        ::File.open(path, mode, perm)
+      end
+    end
+  end
+end
+
 Pry.commands.delete('.<shell command>') rescue nil
 
 Pry.commands.block_command(/^!$/, 'Reload rails') do
