@@ -88,14 +88,3 @@ notify_precmd() {
 
 add-zsh-hook precmd notify_precmd
 add-zsh-hook preexec notify_preexec
-
-#  Blank line
-#-----------------------------------------------
-echo_blank() {
-  if [ -z "$NEW_LINE_BEFORE_PROMPT" ]; then
-    NEW_LINE_BEFORE_PROMPT=1
-  elif [ "$NEW_LINE_BEFORE_PROMPT" -eq 1 ]; then
-    echo
-  fi
-}
-add-zsh-hook precmd echo_blank
