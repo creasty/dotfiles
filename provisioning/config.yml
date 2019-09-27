@@ -130,6 +130,7 @@ link:
   config/alacritty.yml:      .config/alacritty/alacritty.yml
   config/ansible.cfg:        .ansible.cfg
   config/aws/config:         .aws/config
+  config/bat:                .config/bat/config
   config/cargo/config:       .cargo/config
   config/ctags:              .ctags
   config/curlrc:             .curlrc

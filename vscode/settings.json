@@ -139,7 +139,6 @@
     "outdent",
     "paleblue",
     "pluggable",
-    "printf",
     "rgba",
     "serializer",
     "serializers",
@@ -147,6 +146,7 @@
     "unstyled",
     "upcase",
     "uploader",
+    "uuid",
     "wantedly"
   ],
   "cSpell.enabledLanguageIds": [
