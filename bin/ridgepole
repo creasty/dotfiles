@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+docker run \
+  --rm \
+  -it \
+  -w /workdir \
+  -v "$(pwd)":/workdir \
+  izumin5210/ridgepole:latest \
+  "$@"
