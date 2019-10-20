@@ -38,6 +38,6 @@ elif [[ "$ID" =~ ^\+?([0-9]+)$ ]]; then
   echo "Migrating a specific version at $VERSION..."
   bundle exec rake db:migrate:up VERSION=$VERSION
 else
-  echo 'Migrating pending migrations...'
+  echo 'Executing pending migrations...'
   bundle exec rake db:migrate "$@"
 fi
