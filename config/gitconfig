@@ -135,3 +135,6 @@
 
 [ghq]
   root = ~/go/src
+
+[diff-so-fancy]
+  stripLeadingSymbols = false
