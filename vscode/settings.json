@@ -121,11 +121,13 @@
   //=== Code Spell Checker
   //==============================================================================================
   "cSpell.userWords": [
+    "CSRF",
     "Fullscreen",
     "Hookable",
     "Overridable",
     "Readonly",
     "Typeahead",
+    "Unmount",
     "Webview",
     "antialiased",
     "bitflag",
