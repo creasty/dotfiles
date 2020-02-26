@@ -8,6 +8,8 @@ vim/.netrwhist
 vim/init.vim
 vim/dein/*
 
+tmp
+
 provisioning/playbook.retry
 provisioning/secrets.yml
 

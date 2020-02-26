@@ -42,7 +42,6 @@
 
   "search.showLineNumbers": true,
   "search.smartCase": true,
-  "search.location": "panel",
   "search.useIgnoreFiles": true,
 
   "window.closeWhenEmpty": true,
@@ -149,6 +148,7 @@
     "serializer",
     "serializers",
     "struct",
+    "strval",
     "uint",
     "unprocessable",
     "unstyled",
