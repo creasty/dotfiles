@@ -15,7 +15,7 @@
 - name: install plugins
   git:
     repo: 'https://github.com/{{ item }}.git'
-    dest: '{{ nodenv.plugins_dir }}/{{ item | basename }}'
+    dest: '{{ anyenv.envs_dir }}/nodenv/plugins/{{ item | basename }}'
   with_items: '{{ nodejs.plugins }}'
   when: nodejs.plugins_dir and nodejs.plugins
 

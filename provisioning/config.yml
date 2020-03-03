@@ -99,8 +99,9 @@ homebrew:
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - webp                # Image format providing lossless and lossy compression for web images
-    #- xctool              # Drop-in replacement for xcodebuild with a few extra features
     - yarn                # JavaScript package manager
+
+    #- xctool # Drop-in replacement for xcodebuild with a few extra features
 
 mas:
   # List installed apps by
@@ -179,7 +180,6 @@ nodejs:
   versions:
     - '12.15.0'
 
-  plugins_dir: '{{ anyenv.envs_dir }}/nodenv/plugins'
   plugins:
     - nodenv/nodenv-default-packages
 
@@ -189,7 +189,6 @@ ruby:
   versions:
     - '2.6.5'
 
-  plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
   plugins:
     - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
     - rbenv/rbenv-default-gems # Automatically install gems every time you install a new version of Ruby
