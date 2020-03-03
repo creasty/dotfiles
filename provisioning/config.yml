@@ -164,7 +164,7 @@ anyenv:
 golang:
   packages:
     # tools
-    - github.com/motemen/ghq        # Remote repository management made easy
+    - github.com/x-motemen/ghq      # Remote repository management made easy
     - github.com/peco/peco/cmd/peco # Simplistic interactive filtering tool
     - github.com/rakyll/hey         # HTTP load generator, ApacheBench (ab) replacement
 
@@ -172,7 +172,7 @@ golang:
     - github.com/rogpeppe/godef            # find symbol information in Go source
     - github.com/sourcegraph/go-langserver # Go language server to add Go support to editors and other tools that use the Language Server Protocol (LSP)
     - golang.org/x/lint/golint             # Golint is a linter for Go source code
-    - golang.org/x/tools/cmd/gopls         # LSP server for Go
+    - golang.org/x/tools/gopls             # LSP server for Go
 
 nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
