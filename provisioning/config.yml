@@ -99,7 +99,7 @@ homebrew:
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - webp                # Image format providing lossless and lossy compression for web images
-    - xctool              # Drop-in replacement for xcodebuild with a few extra features
+    #- xctool              # Drop-in replacement for xcodebuild with a few extra features
     - yarn                # JavaScript package manager
 
 mas:
@@ -179,7 +179,7 @@ golang:
 
 nodejs:
   versions:
-    - '10.15.3'
+    - '12.15.0'
 
   packages:
     - eslint                        # https://github.com/eslint/eslint
@@ -191,7 +191,7 @@ nodejs:
 
 ruby:
   versions:
-    - '2.5.1'
+    - '2.6.5'
 
   plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
 
