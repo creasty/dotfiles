@@ -103,9 +103,6 @@ homebrew:
     - yarn                # JavaScript package manager
 
 mas:
-  appstore_id:       '{{ appstore_id }}'
-  appstore_password: '{{ appstore_password }}'
-
   # List installed apps by
   #
   #   $ mas list

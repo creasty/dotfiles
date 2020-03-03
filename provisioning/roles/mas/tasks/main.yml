@@ -6,25 +6,19 @@
     name:  mas # Mac App Store command line interface
     state: present
 
-- name: signout mas
+- name: check if logged in
   command: |
-    bash -lc 'mas signout'
+    bash -lc 'mas account'
   ignore_errors: yes
-
-- name: signin to mas
-  command: |
-    bash -lc 'mas signin {{ mas.appstore_id | quote }} {{ mas.appstore_password | quote }}'
-  ignore_errors: yes
-  register: mas_signin
-  when: mas.appstore_id and mas.appstore_password
+  register: mas_logged_in
 
 - name: install applications
   command: |
     bash -lc 'mas install {{ item | quote }}'
   with_items: '{{ mas.applications }}'
-  when: mas.applications and mas_signin.get('rc') == 0
+  when: mas.applications and mas_logged_in.get('rc') == 0
 
 - name: upgrade applications
   command: |
     bash -lc 'mas upgrade'
-  when: mas_signin.get('rc') == 0
+  when: mas_logged_in.get('rc') == 0
