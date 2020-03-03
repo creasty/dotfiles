@@ -15,9 +15,16 @@
 - name: install plugins
   git:
     repo: 'https://github.com/{{ item }}.git'
-    dest: '{{ ruby.plugins_dir }}/{{ item }}'
+    dest: '{{ ruby.plugins_dir }}/{{ item | basename }}'
   with_items: '{{ ruby.plugins }}'
   when: ruby.plugins_dir and ruby.plugins
+
+- name: copy default-gems
+  file:
+    src:  '{{ ruby.default_gems_path }}'
+    dest: '{{ anyenv.envs_dir }}/rbenv/default-gems'
+    state: link
+    force: yes
 
 - name: get installed versions
   command: |

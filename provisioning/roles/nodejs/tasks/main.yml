@@ -12,6 +12,20 @@
     bash -lc 'anyenv install nodenv'
   when: which_nodenv.rc > 0
 
+- name: install plugins
+  git:
+    repo: 'https://github.com/{{ item }}.git'
+    dest: '{{ nodenv.plugins_dir }}/{{ item | basename }}'
+  with_items: '{{ nodejs.plugins }}'
+  when: nodejs.plugins_dir and nodejs.plugins
+
+- name: copy default-packages
+  file:
+    src:  '{{ nodejs.default_packages_path }}'
+    dest: '{{ anyenv.envs_dir }}/nodenv/default-packages'
+    state: link
+    force: yes
+
 - name: get installed versions
   command: |
     bash -lc 'nodenv versions'
@@ -29,9 +43,6 @@
     bash -lc 'nodenv global {{ nodejs.versions[0] | quote }}'
   when: nodejs.versions
 
-- name: install npm packages
-  npm:
-    name:   '{{ item }}'
-    global: yes
-  with_items: '{{ nodejs.packages }}'
-  when: nodejs.packages
+- name: install default packages
+  command: |
+    bash -lc 'nodenv default-packages install'

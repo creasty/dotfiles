@@ -144,7 +144,6 @@ link:
   ruby/irbrc:                .irbrc
   ruby/pryrc:                .pryrc
   ruby/railsrc:              .railsrc
-  ruby/rbenv/default-gems:   .anyenv/envs/rbenv/default-gems
   ruby/rspec:                .rspec
   ruby/rubocop.yml:          .rubocop.yml
   tmux/tmux.conf:            .tmux.conf
@@ -175,23 +174,22 @@ golang:
     - golang.org/x/tools/cmd/gopls         # LSP server for Go
 
 nodejs:
+  default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
+
   versions:
     - '12.15.0'
 
-  packages:
-    - eslint                        # https://github.com/eslint/eslint
-    - tslint                        # https://github.com/palantir/tslint
-    - typescript                    # https://github.com/Microsoft/TypeScript
-    - typescript-language-server    # https://github.com/theia-ide/typescript-language-server
-    - typescript-styled-plugin      # https://github.com/Microsoft/typescript-styled-plugin
-    - vscode-css-languageserver-bin # https://github.com/vscode-langservers/vscode-css-languageserver-bin
+  plugins_dir: '{{ anyenv.envs_dir }}/nodenv/plugins'
+  plugins:
+    - nodenv/nodenv-default-packages
 
 ruby:
+  default_gems_path: '{{ dotfiles_path }}/ruby/rbenv/default-gems'
+
   versions:
     - '2.6.5'
 
   plugins_dir: '{{ anyenv.envs_dir }}/rbenv/plugins'
-
   plugins:
     - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
     - rbenv/rbenv-default-gems # Automatically install gems every time you install a new version of Ruby

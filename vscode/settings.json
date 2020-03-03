@@ -8,7 +8,7 @@
   "diffEditor.ignoreTrimWhitespace": false,
 
   "editor.cursorBlinking": "smooth",
-  "editor.find.autoFindInSelection": true,
+  "editor.find.autoFindInSelection": "multiline",
   "editor.find.seedSearchStringFromSelection": false,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
@@ -112,9 +112,7 @@
   //==============================================================================================
   "eslint.validate": [
     "javascript",
-    "javascriptreact",
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
+    "javascriptreact"
   ],
 
   //=== Code Spell Checker
@@ -158,7 +156,7 @@
     "uuid",
     "wantedly"
   ],
-  "cSpell.enabledLanguageIds": [
+  "cSpell.enableFiletypes": [
     "asciidoc",
     "c",
     "coffeescript",
