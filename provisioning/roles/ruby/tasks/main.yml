@@ -17,7 +17,7 @@
     repo: 'https://github.com/{{ item }}.git'
     dest: '{{ anyenv.envs_dir }}/rbenv/plugins/{{ item | basename }}'
   with_items: '{{ ruby.plugins }}'
-  when: ruby.plugins_dir and ruby.plugins
+  when: ruby.plugins
 
 - name: copy default-gems
   file:
