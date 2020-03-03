@@ -220,6 +220,7 @@ vscode:
     - alefragnani.Bookmarks
     - aleksandra.go-group-imports
     - apollographql.vscode-apollo
+    - bungcip.better-toml
     - castwide.solargraph
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
@@ -230,7 +231,9 @@ vscode:
     - dbaeumer.vscode-eslint
     - eamodio.gitlens
     - eg2.vscode-npm-script
+    - Equinusocio.vsc-community-material-theme
     - Equinusocio.vsc-material-theme
+    - equinusocio.vsc-material-theme-icons
     - esafirm.kotlin-formatter
     - esbenp.prettier-vscode
     - fallenwood.vimL
@@ -252,8 +255,10 @@ vscode:
     - KnisterPeter.vscode-github
     - lannonbr.vscode-js-annotations
     - marchrock.vscode-ghq
+    - mauve.terraform
     - mikestead.dotenv
     - mrorz.language-gettext
+    - ms-azuretools.vscode-docker
     - ms-vscode.Go
     - ms-vscode.vscode-typescript-tslint-plugin
     - ms-vsliveshare.vsliveshare
@@ -273,6 +278,7 @@ vscode:
     - vincaslt.highlight-matching-tag
     - vscodevim.vim
     - wayou.vscode-todo-highlight
+    - wingrunr21.vscode-ruby
     - wix.vscode-import-cost
     - wmaurer.change-case
     - wwm.better-align
