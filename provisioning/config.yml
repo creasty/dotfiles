@@ -35,7 +35,6 @@ homebrew:
     - tunnelbear               # https://www.tunnelbear.com/
     - vagrant                  # https://www.vagrantup.com/
     - webpquicklook            # https://github.com/dchest/webp-quicklook
-    - witch                    # https://manytricks.com/witch/
     - wwdc                     # https://wwdc.io/
 
     # Fonts
@@ -268,7 +267,6 @@ vscode:
     - pnp.polacode
     - rebornix.ruby
     - shinichi-takii.sql-bigquery
-    - shinnn.stylelint
     - sleistner.vscode-fileutils
     - steoates.autoimport
     - streetsidesoftware.code-spell-checker
