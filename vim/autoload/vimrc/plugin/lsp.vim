@@ -5,23 +5,33 @@ let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_echo_delay = 300
 let g:lsp_use_event_queue = 1
 
+let g:lsp_virtual_text_prefix = '←'
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '∆'}
 let g:lsp_signs_information = {'text': '▸'}
 let g:lsp_signs_hint = {'text': '▪︎'}
 
 function! vimrc#plugin#lsp#init() abort
-  hi clear LspErrorText
-  hi clear LspWarningText
-  hi clear LspInformationText
-  hi clear LspHintText
-
   if g:colors_name ==# 'candle'
+    hi clear LspErrorHighlight
+    hi clear LspWarningHighlight
+    hi clear LspInformationHighlight
+    hi clear LspHintHighlight
+
+    hi clear LspErrorLine
+    hi clear LspWarningLine
+    hi clear LspInformationLine
+    hi clear LspHintLine
+    hi clear LspErrorText
+    hi clear LspWarningText
+    hi clear LspInformationText
+    hi clear LspHintText
+
     autocmd vimrc BufWinEnter,WinEnter *
       \ call candle#highlight('LspErrorText', 'red', '', '') |
       \ call candle#highlight('LspWarningText', 'yellow', '', '') |
       \ call candle#highlight('LspInformationText', 'blue', '', '') |
-      \ call candle#highlight('LspHintText', 'green', '', '')
+      \ call candle#highlight('LspHintText', 'green', '', '') |
   endif
 
   " server status
@@ -55,20 +65,24 @@ command! LspLogDisable
   \ let g:lsp_log_verbose = 0 |
   \ let g:lsp_log_file = ''
 
-nnoremap gd :LspDefinition<CR>
-nnoremap gh :LspHover<CR>
+nmap gr <Plug>(lsp-rename)
+nmap gq <Plug>(lsp-code-action)
+nmap gd <Plug>(lsp-definition)
+nmap gD <Plug>(lsp-peek-definition)
+nmap gh <Plug>(lsp-hover)
+nmap gt <Plug>(lsp-type-definition)
+nmap gT <Plug>(lsp-peek-type-definition)
+nmap gR <Plug>(lsp-references)
 nnoremap gs :call vimrc#plugin#lsp#util#hover_under_cursor()<CR>
 
 "  Servers
 "-----------------------------------------------
 " Installation:
-"   go get -u golang.org/x/tools/cmd/gopls
-"   go get -u github.com/sourcegraph/go-langserver
-if executable('go-langserver')
-  " TODO: replace with 'gopls -mode stdio'
+"   go get -u golang.org/x/tools/gopls
+if executable('gopls')
   autocmd vimrc User lsp_setup call lsp#register_server({
-    \ 'name': 'go-langserver',
-    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
+    \ 'name': 'gopls',
+    \ 'cmd': {server_info -> [&shell, &shellcmdflag, 'gopls -mode stdio']},
     \ 'whitelist': ['go'],
   \ })
 endif
