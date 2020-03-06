@@ -22,8 +22,11 @@ before_script:
   - eval "$(ssh-agent -s)"
   - ssh-add ~/.ssh/id_rsa
 
+  - curl https://raw.githubusercontent.com/chanzuckerberg/go-travis-wait/master/download.sh --output go-travis-wait.sh
+  - sh go-travis-wait.sh -b .
+
 script:
-  - travis_wait 90 ./up --skip-tags="$SKIP_TAGS" -vvvv
+  - ./go-travis-wait -timeout 90m -interval 1m ./up --skip-tags="$SKIP_TAGS" -vvvv
 
 notifications:
   email: false
