@@ -5,8 +5,8 @@ let g:lexima_map_escape = ''
 
 "  Operators
 "-----------------------------------------------
-" let s:all_ops = opfmt#all_operators_regexp()
-"
+let s:all_ops = opfmt#all_operators_regexp()
+
 " for s:op in opfmt#triggers()
 "   let s:op_char = s:op
 "   let s:op_char = substitute(s:op_char, '<', '<lt>', '')

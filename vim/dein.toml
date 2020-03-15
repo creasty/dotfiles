@@ -41,54 +41,6 @@ repo   = 'neoclide/coc.nvim'
 rev    = 'release'
 merged = 0
 
-[[plugins]]
-repo  = 'eoclide/coc-snippets'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-repo  = 'eoclide/coc-tabnine'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-# npm install -g typescript typescript-language-server
-# npm install -g typescript-styled-plugin
-repo  = 'neoclide/coc-tsserver'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-repo  = 'eoclide/coc-prettier'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-# npm install -g eslint
-repo  = 'eoclide/coc-eslint'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-repo  = 'eoclide/coc-tslint-plugin'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-# npm install -g vscode-css-languageserver-bin
-repo  = 'eoclide/coc-css'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-# rustup update
-# rustup component add rls rust-analysis rust-src
-repo  = 'eoclide/coc-rls'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-# gem install solargraph
-repo  = 'eoclide/coc-solargraph'
-build = 'yarn install --frozen-lockfile'
-
-[[plugins]]
-# pip install python-language-server
-repo  = 'eoclide/coc-python'
-build = 'yarn install --frozen-lockfile'
-
 # [[plugins]] # normalize async job control api for vim and neovim
 # repo = 'prabirshrestha/async.vim'
 # 

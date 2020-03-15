@@ -35,6 +35,37 @@ nnoremap <silent> <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefi
 
 command! -nargs=0 Format :call CocAction('format')
 
+" [coc-tsserver]
+" npm install -g typescript typescript-language-server typescript-styled-plugin
+"
+" [coc-eslint]
+" npm install -g eslint
+"
+" [coc-css]
+" npm install -g vscode-css-languageserver-bin
+"
+" [coc-rls]
+" rustup update && rustup component add rls rust-analysis rust-src
+"
+" [coc-solargraph]
+" gem install solargraph
+"
+" [coc-python]
+" pip install python-language-server
+
+command! -nargs=0 CocInstallAll :CocInstall
+  \ coc-css
+  \ coc-eslint
+  \ coc-json
+  \ coc-prettier
+  \ coc-python
+  \ coc-rls
+  \ coc-snippets
+  \ coc-solargraph
+  \ coc-tabnine
+  \ coc-tslint-plugin
+  \ coc-tsserver
+
 "  Key mappings
 "-----------------------------------------------
 " Formatting selected code.
@@ -68,16 +99,6 @@ nmap gh <Plug>(coc-hover)
 nmap gt <Plug>(coc-type-definition)
 nmap gT <Plug>(coc-peek-type-definition)
 nmap gR <Plug>(coc-references)
-
-"  Config
-"-----------------------------------------------
-call coc#config('snippets.loadFromExtensions', v:false)
-
-call coc#config('diagnostic.errorSign', '✗')
-call coc#config('diagnostic.warningSign', '∆')
-call coc#config('diagnostic.infoSign', '▸')
-call coc#config('diagnostic.hintSign', '▪︎')
-call coc#config('diagnostic.virtualTextPrefix', '←')
 
 "  Servers
 "-----------------------------------------------
