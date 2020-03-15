@@ -1,5 +1,9 @@
 scriptencoding utf-8
 
+set completeopt+=noinsert " auto select
+set completeopt-=preview " disable the preview window feature
+set shortmess+=c " silence anoyying messages
+
 let g:coc_status_error_sign = '✗'
 let g:coc_status_warning_sign = '∆'
 
@@ -20,7 +24,7 @@ function! vimrc#plugin#coc#init() abort
   autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
 
   " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
+  autocmd vimrc User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
 endfunction
 
 "  Custom actions
