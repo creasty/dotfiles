@@ -28,7 +28,8 @@ endfunction
 
 function! s:tab_i() abort
   if pumvisible()
-    return "\<C-r>=deoplete#close_popup()\<CR>"
+    " return "\<C-r>=deoplete#close_popup()\<CR>"
+    return coc#_select_confirm()
   elseif funcsig#should_trigger()
     return "\<Esc>:call funcsig#select_placeholder()\<CR>"
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
@@ -54,12 +55,13 @@ imap <silent> <expr> <Tab> <SID>tab_i()
 smap <silent> <expr> <Tab> <SID>tab_s()
 xmap <silent> <expr> <Tab> <SID>tab_x()
 
-inoremap <Plug>(deoplete-my-undo) <C-e><C-r>=deoplete#close_popup()<CR>
-inoremap <Plug>(deoplete-my-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
+" inoremap <Plug>(supertab-undo) <C-e><C-r>=deoplete#close_popup()<CR>
+inoremap <Plug>(supertab-undo) <C-e>
+inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
+imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
 
-imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=deoplete#close_popup()\<CR>" : "\<CR>"
+imap <silent> <expr> <C-j> pumvisible() ? "\<C-y>" : "\<CR>"
 
 augroup super_tab
   autocmd!

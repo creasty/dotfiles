@@ -19,8 +19,8 @@ depends = ['vim-textobj-user']
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'vim-scripts/surround.vim'
 
-[[plugins]] # async :make and linting framework for neovim/vim
-repo = 'neomake/neomake'
+# [[plugins]] # async :make and linting framework for neovim/vim
+# repo = 'neomake/neomake'
 
 [[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'
@@ -36,12 +36,65 @@ repo = 'SirVer/ultisnips'
 
 #  Completion
 #-----------------------------------------------
-[[plugins]] # normalize async job control api for vim and neovim
-repo = 'prabirshrestha/async.vim'
+[[plugins]]
+repo   = 'neoclide/coc.nvim'
+rev    = 'release'
+merged = 0
 
-[[plugins]] # async language server protocol plugin for vim and neovim
-repo    = 'prabirshrestha/vim-lsp'
-depends = ['async.vim']
+[[plugins]]
+# npm install -g typescript typescript-language-server
+# npm install -g typescript-styled-plugin
+repo  = 'neoclide/coc-tsserver'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+repo  = 'eoclide/coc-snippets'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+repo  = 'eoclide/coc-prettier'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+# npm install -g eslint
+repo  = 'eoclide/coc-eslint'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+# pip install python-language-server
+repo  = 'eoclide/coc-python'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+# rustup update
+# rustup component add rls rust-analysis rust-src
+repo  = 'eoclide/coc-rls'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+repo  = 'eoclide/coc-tabnine'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+# gem install solargraph
+repo  = 'eoclide/coc-solargraph'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+# npm install -g vscode-css-languageserver-bin
+repo  = 'eoclide/coc-css'
+build = 'yarn install --frozen-lockfile'
+
+[[plugins]]
+repo  = 'eoclide/coc-tslint-plugin'
+build = 'yarn install --frozen-lockfile'
+
+# [[plugins]] # normalize async job control api for vim and neovim
+# repo = 'prabirshrestha/async.vim'
+# 
+# [[plugins]] # async language server protocol plugin for vim and neovim
+# repo    = 'prabirshrestha/vim-lsp'
+# depends = ['async.vim']
 
 [[plugins]] # yet another remote plugin framework for neovim
 repo = 'roxma/nvim-yarp'
@@ -50,10 +103,10 @@ if   = "!has('nvim')"
 [[plugins]] # a compatibility layer for neovim rpc client working on vim8
 repo = 'roxma/vim-hug-neovim-rpc'
 
-[[plugins]] # dark powered asynchronous completion framework for neovim/vim8
-repo    = 'Shougo/deoplete.nvim'
-depends = ['vim-lsp'] # + ['nvim-yarp', 'vim-hug-neovim-rpc']
-
+# [[plugins]] # dark powered asynchronous completion framework for neovim/vim8
+# repo    = 'Shougo/deoplete.nvim'
+# depends = ['vim-lsp'] # + ['nvim-yarp', 'vim-hug-neovim-rpc']
+# 
 [[plugins]] # auto close parentheses and repeat by dot
 repo    = 'cohama/lexima.vim'
 depends = ['deoplete.nvim'] # + ['smartchr']

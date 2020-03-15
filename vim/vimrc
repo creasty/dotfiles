@@ -206,6 +206,10 @@ if dein#tap('ultisnips')
   let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
 endif
 
+if dein#tap('coc.nvim')
+  call vimrc#plugin#coc#init()
+end
+
 if dein#tap('vim-lsp')
   call vimrc#plugin#lsp#init()
 endif

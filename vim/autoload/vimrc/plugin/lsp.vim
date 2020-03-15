@@ -73,6 +73,7 @@ nmap gh <Plug>(lsp-hover)
 nmap gt <Plug>(lsp-type-definition)
 nmap gT <Plug>(lsp-peek-type-definition)
 nmap gR <Plug>(lsp-references)
+
 nnoremap gs :call vimrc#plugin#lsp#util#hover_under_cursor()<CR>
 
 "  Servers
