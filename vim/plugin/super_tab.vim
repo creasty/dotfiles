@@ -1,6 +1,6 @@
 " Handle isx_<Tab>, i_<Esc>, i_<CR>
 "
-" - Shougo/deoplete.nvim
+" - neoclide/coc.nvim
 " - mattn/emmet-vim
 " - SirVer/ultisnips
 " - cohama/lexima.vim
@@ -28,7 +28,6 @@ endfunction
 
 function! s:tab_i() abort
   if pumvisible()
-    " return "\<C-r>=deoplete#close_popup()\<CR>"
     return coc#_select_confirm()
   elseif funcsig#should_trigger()
     return "\<Esc>:call funcsig#select_placeholder()\<CR>"
@@ -55,7 +54,6 @@ imap <silent> <expr> <Tab> <SID>tab_i()
 smap <silent> <expr> <Tab> <SID>tab_s()
 xmap <silent> <expr> <Tab> <SID>tab_x()
 
-" inoremap <Plug>(supertab-undo) <C-e><C-r>=deoplete#close_popup()<CR>
 inoremap <Plug>(supertab-undo) <C-e>
 inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
 imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
@@ -65,8 +63,8 @@ imap <silent> <expr> <C-j> pumvisible() ? "\<C-y>" : "\<CR>"
 
 augroup super_tab
   autocmd!
-  autocmd CompleteDone * call funcsig#on_completion()
-  autocmd CursorHold * call funcsig#on_cursor_hold()
+  " autocmd CompleteDone * call funcsig#on_completion()
+  " autocmd CursorHold * call funcsig#on_cursor_hold()
 augroup END
 
 let &cpoptions = s:save_cpo

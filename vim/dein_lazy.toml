@@ -38,26 +38,6 @@ on_map = ['<Plug>(textmanip-']
 repo    = 'mattn/emmet-vim'
 on_func = ['emmet']
 
-#  Completion
-#-----------------------------------------------
-# [[plugins]] # syntax source for neocomplete/deoplete/ncm
-# repo    = 'Shougo/neco-syntax'
-# depends = ['deoplete.nvim']
-# on_i    = 1
-# hook_source = '''
-# let g:necosyntax#min_keyword_length = 3
-# '''
-# 
-# [[plugins]] # vim source for neocomplete/deoplete
-# repo    = 'Shougo/neco-vim'
-# depends = ['deoplete.nvim']
-# on_ft   = ['vim']
-# 
-# [[plugins]] # deoplete source for vim-lsp
-# repo    = 'lighttiger2505/deoplete-vim-lsp'
-# depends = ['deoplete.nvim']
-# on_i    = 1
-
 #  Utils
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
@@ -111,10 +91,6 @@ on_ft = ['javascript', 'typescript']
 [[plugins]] # TypesSript syntax files for Vim
 repo  = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
-
-# [[plugins]] # Jade template engine syntax highlighting and indention
-# repo  = 'digitaltoad/vim-jade'
-# on_ft = ['jade']
 
 [[plugins]] # Vim syntax highlighting for Google's Protocol Buffers
 repo  = 'uarun/vim-protobuf'

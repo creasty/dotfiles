@@ -19,9 +19,6 @@ depends = ['vim-textobj-user']
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'vim-scripts/surround.vim'
 
-# [[plugins]] # async :make and linting framework for neovim/vim
-# repo = 'neomake/neomake'
-
 [[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'
 
@@ -36,18 +33,16 @@ repo = 'SirVer/ultisnips'
 
 #  Completion
 #-----------------------------------------------
-[[plugins]]
+[[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 repo   = 'neoclide/coc.nvim'
 rev    = 'release'
 merged = 0
 
-# [[plugins]] # normalize async job control api for vim and neovim
-# repo = 'prabirshrestha/async.vim'
-# 
-# [[plugins]] # async language server protocol plugin for vim and neovim
-# repo    = 'prabirshrestha/vim-lsp'
-# depends = ['async.vim']
+[[plugins]] # auto close parentheses and repeat by dot
+repo = 'cohama/lexima.vim'
 
+#  Utils
+#-----------------------------------------------
 [[plugins]] # yet another remote plugin framework for neovim
 repo = 'roxma/nvim-yarp'
 if   = "!has('nvim')"
@@ -55,16 +50,6 @@ if   = "!has('nvim')"
 [[plugins]] # a compatibility layer for neovim rpc client working on vim8
 repo = 'roxma/vim-hug-neovim-rpc'
 
-# [[plugins]] # dark powered asynchronous completion framework for neovim/vim8
-# repo    = 'Shougo/deoplete.nvim'
-# depends = ['vim-lsp'] # + ['nvim-yarp', 'vim-hug-neovim-rpc']
-# 
-[[plugins]] # auto close parentheses and repeat by dot
-repo    = 'cohama/lexima.vim'
-depends = ['deoplete.nvim'] # + ['smartchr']
-
-#  Utils
-#-----------------------------------------------
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 
