@@ -54,6 +54,7 @@ command! -nargs=0 Format :call CocAction('format')
 " pip install python-language-server
 
 command! -nargs=0 CocInstallAll :CocInstall
+  \ coc-calc
   \ coc-css
   \ coc-eslint
   \ coc-json
@@ -63,6 +64,7 @@ command! -nargs=0 CocInstallAll :CocInstall
   \ coc-snippets
   \ coc-solargraph
   \ coc-tabnine
+  \ coc-tag
   \ coc-tslint-plugin
   \ coc-tsserver
 

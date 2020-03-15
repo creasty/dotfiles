@@ -31,6 +31,9 @@ repo = 'creasty/mold.vim'
 [[plugins]] # The ultimate snippet solution for Vim
 repo = 'SirVer/ultisnips'
 
+[[plugins]] # auto close parentheses and repeat by dot
+repo = 'cohama/lexima.vim'
+
 #  Completion
 #-----------------------------------------------
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
@@ -38,8 +41,12 @@ repo   = 'neoclide/coc.nvim'
 rev    = 'release'
 merged = 0
 
-[[plugins]] # auto close parentheses and repeat by dot
-repo = 'cohama/lexima.vim'
+[[plugins]] # The vim source for neocomplete/deoplete
+repo = 'Shougo/neco-vim'
+
+[[plugins]] # Vim completon source for coc.nvim using neco-vim
+repo = 'neoclide/coc-neco'
+depends = ['neco-vim']
 
 #  Utils
 #-----------------------------------------------
