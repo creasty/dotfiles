@@ -31,6 +31,7 @@ call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': 
 
 " comma
 call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
+call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
 
 " Rust: lifetime
 call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
