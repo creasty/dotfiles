@@ -152,6 +152,7 @@ link:
   tmux:                 .tmux
   vim/gvimrc:           .gvimrc
   vim/vimrc:            .vimrc
+  vim/neovim_init.vim:  .config/nvim/init.vim
   vim:                  .vim
   zsh/zshenv:           .zshenv
   zsh/zshrc:            .zshrc

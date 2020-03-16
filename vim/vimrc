@@ -81,8 +81,7 @@ if dein#tap('dein.vim')
     \ call dein#clear_state()
   command! DeinPrunePlugins
     \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
-    \ call dein#recache_runtimepath() |
-    \ call dein#clear_state() |
+    \ DeinPurgeCache |
     \ echo 'done'
 endif
 
