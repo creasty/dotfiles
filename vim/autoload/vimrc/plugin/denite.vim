@@ -72,5 +72,5 @@ function! vimrc#plugin#denite#lazy_init() abort
   call denite#custom#var('grep', 'final_opts', [])
 
   " file_rec
-  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-U', '-g', ''])
+  call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-U', '-g', ''])
 endfunction
