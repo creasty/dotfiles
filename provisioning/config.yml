@@ -126,37 +126,36 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
-  bash/bash_profile:         .bash_profile
-  bash/bashrc:               .bashrc
-  config/agignore:           .agignore
-  config/alacritty.yml:      .config/alacritty/alacritty.yml
-  config/ansible.cfg:        .ansible.cfg
-  config/aws/config:         .aws/config
-  config/bat:                .config/bat/config
-  config/cargo/config:       .cargo/config
-  config/ctags:              .ctags
-  config/curlrc:             .curlrc
-  config/gitconfig:          .gitconfig
-  config/gitignore:          .gitignore
-  config/gocode/config.json: .config/gocode/config.json
-  config/peco:               .peco
-  config/pgclirc:            .pgclirc
-  config/termtosvg:          .config/termtosvg
-  ruby/bundle/config:        .bundle/config
-  ruby/gemrc:                .gemrc
-  ruby/irbrc:                .irbrc
-  ruby/pryrc:                .pryrc
-  ruby/railsrc:              .railsrc
-  ruby/rspec:                .rspec
-  ruby/rubocop.yml:          .rubocop.yml
-  tmux/tmux.conf:            .tmux.conf
-  tmux:                      .tmux
-  vim/gvimrc:                .gvimrc
-  vim/vimrc:                 .vimrc
-  vim:                       .vim
-  zsh/zshenv:                .zshenv
-  zsh/zshrc:                 .zshrc
-  zsh:                       .zsh
+  bash/bash_profile:    .bash_profile
+  bash/bashrc:          .bashrc
+  config/agignore:      .agignore
+  config/alacritty.yml: .config/alacritty/alacritty.yml
+  config/ansible.cfg:   .ansible.cfg
+  config/aws/config:    .aws/config
+  config/bat:           .config/bat/config
+  config/cargo/config:  .cargo/config
+  config/ctags:         .ctags
+  config/curlrc:        .curlrc
+  config/gitconfig:     .gitconfig
+  config/gitignore:     .gitignore
+  config/peco:          .peco
+  config/pgclirc:       .pgclirc
+  config/termtosvg:     .config/termtosvg
+  ruby/bundle/config:   .bundle/config
+  ruby/gemrc:           .gemrc
+  ruby/irbrc:           .irbrc
+  ruby/pryrc:           .pryrc
+  ruby/railsrc:         .railsrc
+  ruby/rspec:           .rspec
+  ruby/rubocop.yml:     .rubocop.yml
+  tmux/tmux.conf:       .tmux.conf
+  tmux:                 .tmux
+  vim/gvimrc:           .gvimrc
+  vim/vimrc:            .vimrc
+  vim:                  .vim
+  zsh/zshenv:           .zshenv
+  zsh/zshrc:            .zshrc
+  zsh:                  .zsh
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'
@@ -171,10 +170,9 @@ golang:
     - github.com/rakyll/hey         # HTTP load generator, ApacheBench (ab) replacement
 
     # dev tools
-    - github.com/rogpeppe/godef            # find symbol information in Go source
-    - github.com/sourcegraph/go-langserver # Go language server to add Go support to editors and other tools that use the Language Server Protocol (LSP)
-    - golang.org/x/lint/golint             # Golint is a linter for Go source code
-    - golang.org/x/tools/gopls             # LSP server for Go
+    - github.com/rogpeppe/godef # find symbol information in Go source
+    - golang.org/x/lint/golint  # Golint is a linter for Go source code
+    - golang.org/x/tools/gopls  # LSP server for Go
 
 nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
