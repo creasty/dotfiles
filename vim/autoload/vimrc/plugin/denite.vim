@@ -1,9 +1,10 @@
 function! vimrc#plugin#denite#open_best() abort
-  let l:is_home = (getcwd() == $HOME)
-  let l:is_same_dir = (getcwd() == get(g:, 'denite_last_cwd', ''))
-  let g:denite_last_cwd = getcwd()
+  let l:cwd = getcwd()
+  let l:is_startup_dir = (l:cwd == $HOME || l:cwd == '/')
+  let l:is_same_dir = (l:cwd == get(g:, 'denite_last_cwd', ''))
+  let g:denite_last_cwd = l:cwd
 
-  let l:source = l:is_home ? 'ghq' : 'file/rec'
+  let l:source = l:is_startup_dir ? 'ghq' : 'file/rec'
   let l:resume = l:is_same_dir ? '-resume' : ''
 
   exec 'Denite'

@@ -44,7 +44,7 @@ on_func = ['emmet']
 repo    = 'Shougo/denite.nvim'
 rev     = '2.1'
 on_cmd  = ['Denite']
-depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
+depends = ['vim-hug-neovim-rpc']
 
 [[plugins]] # hex editing system
 repo   = 'Shougo/vinarise.vim'
