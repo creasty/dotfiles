@@ -58,12 +58,13 @@ command! -nargs=0 CocInstallAll :CocInstall
   \ coc-prettier
   \ coc-python
   \ coc-rls
-  \ coc-snippets
   \ coc-solargraph
+  \ coc-syntax
   \ coc-tabnine
   \ coc-tag
   \ coc-tslint-plugin
   \ coc-tsserver
+  \ coc-ultisnips
 
 "  Key mappings
 "-----------------------------------------------

@@ -6,7 +6,5 @@
   "diagnostic.warningSign": "∆",
   "diagnostic.infoSign": "▸",
   "diagnostic.hintSign": "▪︎",
-  "diagnostic.virtualTextPrefix": "←",
-
-  "snippets.loadFromExtensions": false
+  "diagnostic.virtualTextPrefix": "←"
 }
