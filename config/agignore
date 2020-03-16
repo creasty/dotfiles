@@ -43,3 +43,7 @@ target/debug/
 target/release/
 target/rls/
 *.rs.bk
+
+# Python
+__pycache__
+*.pyc
