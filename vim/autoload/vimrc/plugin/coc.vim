@@ -4,9 +4,6 @@ set completeopt+=noinsert " auto select
 set completeopt-=preview " disable the preview window feature
 set shortmess+=c " silence anoyying messages
 
-let g:coc_status_error_sign = '✗'
-let g:coc_status_warning_sign = '∆'
-
 function! vimrc#plugin#coc#init() abort
   if g:colors_name ==# 'candle'
     autocmd vimrc BufWinEnter,WinEnter *
@@ -87,8 +84,8 @@ omap af <Plug>(coc-funcobj-a)
 " Use <TAB> for selections ranges.
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
 " coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <Tab> <Plug>(coc-range-select)
-xmap <silent> <Tab> <Plug>(coc-range-select)
+" nmap <silent> <Tab> <Plug>(coc-range-select)
+" xmap <silent> <Tab> <Plug>(coc-range-select)
 
 " Refactoring
 nmap gr <Plug>(coc-rename)

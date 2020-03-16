@@ -50,16 +50,17 @@ function! s:tab_x() abort
   return ":\<C-u>call UltiSnips#SaveLastVisualSelection()\<CR>gvs"
 endfunction
 
+inoremap <Plug>(supertab-undo) <C-e>
+inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+inoremap <Plug>(supertab-accept) <C-y>
+
 imap <silent> <expr> <Tab> <SID>tab_i()
 smap <silent> <expr> <Tab> <SID>tab_s()
 xmap <silent> <expr> <Tab> <SID>tab_x()
 
-inoremap <Plug>(supertab-undo) <C-e>
-inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
 imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
 imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
-
-imap <silent> <expr> <C-j> pumvisible() ? "\<C-y>" : "\<CR>"
+imap <silent> <expr> <C-j> pumvisible() ? "\<Plug>(supertab-accept)" : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
 augroup super_tab
   autocmd!
