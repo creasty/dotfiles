@@ -17,7 +17,7 @@ repo    = 'osyo-manga/vim-textobj-multiblock'
 depends = ['vim-textobj-user']
 
 [[plugins]] # deleting, changing, and adding surroundings
-repo = 'vim-scripts/surround.vim'
+repo = 'tpope/vim-surround'
 
 [[plugins]] # extended % matching
 repo = 'tmhedberg/matchit'

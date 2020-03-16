@@ -23,7 +23,7 @@ repo   = 'junegunn/vim-easy-align'
 on_cmd = ['EasyAlign']
 
 [[plugins]] # insert several candidates with a single key
-repo    = 'vim-scripts/smartchr'
+repo    = 'kana/vim-smartchr'
 on_func = ['smartchr']
 
 [[plugins]] # switch segments of text with predefined replacements
