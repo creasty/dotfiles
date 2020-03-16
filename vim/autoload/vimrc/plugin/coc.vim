@@ -1,5 +1,29 @@
 scriptencoding utf-8
 
+" [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin
+" [coc-eslint] npm install -g eslint
+" [coc-css] npm install -g vscode-css-languageserver-bin
+" [coc-rls] rustup update && rustup component add rls rust-analysis rust-src
+" [coc-solargraph] gem install solargraph
+" [coc-python] pip install python-language-server
+let g:coc_global_extensions = [
+  \ 'coc-calc',
+  \ 'coc-css',
+  \ 'coc-eslint',
+  \ 'coc-json',
+  \ 'coc-prettier',
+  \ 'coc-python',
+  \ 'coc-rls',
+  \ 'coc-solargraph',
+  \ 'coc-syntax',
+  \ 'coc-tabnine',
+  \ 'coc-tag',
+  \ 'coc-tslint-plugin',
+  \ 'coc-tsserver',
+  \ 'coc-ultisnips',
+  \ 'coc-vimlsp',
+\ ]
+
 set completeopt+=noinsert " auto select
 set completeopt-=preview " disable the preview window feature
 set shortmess+=c " silence anoyying messages
@@ -30,48 +54,15 @@ nnoremap <silent> <Plug>(coc-hover) :call CocAction('doHover')<CR>
 nnoremap <silent> <Plug>(coc-peek-definition) :call CocAction('jumpDefinition', v:false)<CR>
 nnoremap <silent> <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefinition', v:false)<CR>
 
-command! -nargs=0 Format :call CocAction('format')
-
-" [coc-tsserver]
-" npm install -g typescript typescript-language-server typescript-styled-plugin
-"
-" [coc-eslint]
-" npm install -g eslint
-"
-" [coc-css]
-" npm install -g vscode-css-languageserver-bin
-"
-" [coc-rls]
-" rustup update && rustup component add rls rust-analysis rust-src
-"
-" [coc-solargraph]
-" gem install solargraph
-"
-" [coc-python]
-" pip install python-language-server
-
-command! -nargs=0 CocInstallAll :CocInstall
-  \ coc-calc
-  \ coc-css
-  \ coc-eslint
-  \ coc-json
-  \ coc-prettier
-  \ coc-python
-  \ coc-rls
-  \ coc-solargraph
-  \ coc-syntax
-  \ coc-tabnine
-  \ coc-tag
-  \ coc-tslint-plugin
-  \ coc-tsserver
-  \ coc-ultisnips
-  \ coc-vimlsp
+command! -nargs=0 -range=% Format
+  \ if <range> == 0 |
+  \   call CocAction('format') |
+  \ else |
+  \   call CocAction('formatSelected', visualmode()) |
+  \ endif
 
 "  Key mappings
 "-----------------------------------------------
-" Formatting selected code.
-xmap <leader>f <Plug>(coc-format-selected)
-
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
