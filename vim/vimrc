@@ -9,6 +9,8 @@
 "
 "----------------------------------------------------------------------------------------------
 
+language en_US
+
 " encoding
 set encoding=utf-8
 scriptencoding utf-8
