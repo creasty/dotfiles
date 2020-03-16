@@ -9,6 +9,7 @@ scriptencoding utf-8
 let g:coc_global_extensions = [
   \ 'coc-calc',
   \ 'coc-css',
+  \ 'coc-diagnostic',
   \ 'coc-eslint',
   \ 'coc-json',
   \ 'coc-prettier',
@@ -90,27 +91,3 @@ nmap gh <Plug>(coc-hover)
 nmap gt <Plug>(coc-type-definition)
 nmap gT <Plug>(coc-peek-type-definition)
 nmap gR <Plug>(coc-references)
-
-"  Servers
-"-----------------------------------------------
-" Installation:
-"   go get -u golang.org/x/tools/gopls
-if executable('gopls')
-  call coc#config('languageserver', { 'gopls': {
-    \ 'command': 'gopls',
-    \ 'rootPatterns': ['go.mod'],
-    \ 'disableWorkspaceFolders': v:true,
-    \ 'filetypes': ['go'],
-  \ } })
-endif
-
-" Installation:
-"   npm i -g bash-language-server
-if executable('bash-language-server')
-  call coc#config('languageserver', { 'bash': {
-    \ 'command': 'bash-language-server',
-    \ 'args': ['start'],
-    \ 'filetypes': ['sh'],
-    \ 'ignoredRootPaths': ['~'],
-  \ } })
-endif
