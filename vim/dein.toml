@@ -41,13 +41,6 @@ repo   = 'neoclide/coc.nvim'
 rev    = 'release'
 merged = 0
 
-[[plugins]] # The vim source for neocomplete/deoplete
-repo = 'Shougo/neco-vim'
-
-[[plugins]] # Vim completon source for coc.nvim using neco-vim
-repo = 'neoclide/coc-neco'
-depends = ['neco-vim']
-
 #  Utils
 #-----------------------------------------------
 [[plugins]] # yet another remote plugin framework for neovim

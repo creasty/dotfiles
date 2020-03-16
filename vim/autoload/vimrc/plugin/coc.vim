@@ -65,12 +65,12 @@ command! -nargs=0 CocInstallAll :CocInstall
   \ coc-tslint-plugin
   \ coc-tsserver
   \ coc-ultisnips
+  \ coc-vimlsp
 
 "  Key mappings
 "-----------------------------------------------
 " Formatting selected code.
 xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -110,5 +110,16 @@ if executable('gopls')
     \ 'rootPatterns': ['go.mod'],
     \ 'disableWorkspaceFolders': v:true,
     \ 'filetypes': ['go'],
+  \ } })
+endif
+
+" Installation:
+"   npm i -g bash-language-server
+if executable('bash-language-server')
+  call coc#config('languageserver', { 'bash': {
+    \ 'command': 'bash-language-server',
+    \ 'args': ['start'],
+    \ 'filetypes': ['sh'],
+    \ 'ignoredRootPaths': ['~'],
   \ } })
 endif
