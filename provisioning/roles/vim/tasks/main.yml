@@ -12,7 +12,7 @@
 - name: install python libraries
   pip:
     executable: pip3
-    name:       neovim
+    name:       '{{ item }}'
     state:      latest
   with_items:
     - neovim
