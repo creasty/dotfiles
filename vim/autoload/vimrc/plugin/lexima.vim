@@ -5,8 +5,8 @@ let g:lexima_map_escape = ''
 
 "  Operators
 "-----------------------------------------------
-" let s:all_ops = opfmt#all_operators_regexp()
-"
+let s:all_ops = opfmt#all_operators_regexp()
+
 " for s:op in opfmt#triggers()
 "   let s:op_char = s:op
 "   let s:op_char = substitute(s:op_char, '<', '<lt>', '')
@@ -31,6 +31,7 @@ call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': 
 
 " comma
 call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
+call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
 
 " Rust: lifetime
 call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })

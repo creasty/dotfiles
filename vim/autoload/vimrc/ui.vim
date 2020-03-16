@@ -104,9 +104,9 @@ function! vimrc#ui#status_line(w, cw) abort
     let l:l1 += [denite#get_status('sources')]
   endif
 
-  let l:completed_item_info = getbufvar(l:bufnr, 'completed_item_info', '')
-  if l:active && !empty(l:completed_item_info)
-    let l:l1 += [l:completed_item_info]
+  let l:coc_current_function = getbufvar(l:bufnr, 'coc_current_function', '')
+  if l:active && !empty(l:coc_current_function)
+    let l:l1 += [l:coc_current_function]
   endif
 
   " r1
@@ -118,23 +118,13 @@ function! vimrc#ui#status_line(w, cw) abort
       \ 'H': 0,
     \ }
 
-    let l:status = getbufvar(l:bufnr, 'vim_lsp_diagnostics', {})
+    let l:status = getbufvar(l:bufnr, 'coc_diagnostic_info', {})
     if !empty(l:status)
-      let l:diagnostics['E'] += get(l:status, 'E', 0)
-      let l:diagnostics['W'] += get(l:status, 'W', 0)
-      let l:diagnostics['I'] += get(l:status, 'I', 0)
-      let l:diagnostics['H'] += get(l:status, 'H', 0)
+      let l:diagnostics['E'] += get(l:status, 'error', 0)
+      let l:diagnostics['W'] += get(l:status, 'warning', 0)
+      let l:diagnostics['I'] += get(l:status, 'information', 0)
+      let l:diagnostics['H'] += get(l:status, 'hint', 0)
     end
-
-    if exists('*neomake#statusline#LoclistCounts')
-      let l:status = neomake#statusline#LoclistCounts(l:bufnr)
-      if !empty(l:status)
-        let l:diagnostics['E'] += get(l:status, 'E', 0)
-        let l:diagnostics['W'] += get(l:status, 'W', 0)
-        let l:diagnostics['I'] += get(l:status, 'I', 0)
-        let l:diagnostics['H'] += get(l:status, 'M', 0)
-      endif
-    endif
 
     if l:diagnostics['E'] > 0
       let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:diagnostics['E'] . '%*']

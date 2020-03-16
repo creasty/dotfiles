@@ -21,6 +21,11 @@
       name:  izumin5210/tools/grapi
       state: present
 
+- name: golangci-lint
+  homebrew:
+    name:  golangci/tap/golangci-lint
+    state: present
+
 - name: install packages
   command: |
      bash -lc 'go get {{ item | quote }}@latest'

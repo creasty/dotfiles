@@ -1,6 +1,6 @@
 " Handle isx_<Tab>, i_<Esc>, i_<CR>
 "
-" - Shougo/deoplete.nvim
+" - neoclide/coc.nvim
 " - mattn/emmet-vim
 " - SirVer/ultisnips
 " - cohama/lexima.vim
@@ -28,7 +28,7 @@ endfunction
 
 function! s:tab_i() abort
   if pumvisible()
-    return "\<C-r>=deoplete#close_popup()\<CR>"
+    return coc#_select_confirm()
   elseif funcsig#should_trigger()
     return "\<Esc>:call funcsig#select_placeholder()\<CR>"
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
@@ -50,21 +50,22 @@ function! s:tab_x() abort
   return ":\<C-u>call UltiSnips#SaveLastVisualSelection()\<CR>gvs"
 endfunction
 
+inoremap <Plug>(supertab-undo) <C-e>
+inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+inoremap <Plug>(supertab-accept) <C-y>
+
 imap <silent> <expr> <Tab> <SID>tab_i()
 smap <silent> <expr> <Tab> <SID>tab_s()
 xmap <silent> <expr> <Tab> <SID>tab_x()
 
-inoremap <Plug>(deoplete-my-undo) <C-e><C-r>=deoplete#close_popup()<CR>
-inoremap <Plug>(deoplete-my-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(deoplete-my-undo)" : "\<Plug>(deoplete-my-escape)"
-
-imap <silent> <expr> <C-j> pumvisible() ? "\<C-r>=deoplete#close_popup()\<CR>" : "\<CR>"
+imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
+imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
+imap <silent> <expr> <C-j> pumvisible() ? "\<Plug>(supertab-accept)" : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
 
 augroup super_tab
   autocmd!
-  autocmd CompleteDone * call funcsig#on_completion()
-  autocmd CursorHold * call funcsig#on_cursor_hold()
+  " autocmd CompleteDone * call funcsig#on_completion()
+  " autocmd CursorHold * call funcsig#on_cursor_hold()
 augroup END
 
 let &cpoptions = s:save_cpo
