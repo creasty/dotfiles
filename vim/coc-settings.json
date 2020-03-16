@@ -1,4 +1,7 @@
 {
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",
   "diagnostic.infoSign": "▸",
