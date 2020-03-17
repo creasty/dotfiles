@@ -17,12 +17,13 @@
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
-      "filetypes": ["sh"],
+      "filetypes": ["bash"],
       "ignoredRootPaths": ["~"]
     }
   },
 
   "diagnostic-languageserver.filetypes": {
+    "bash": ["shellcheck"],
     "sh": ["shellcheck"],
     "vim": ["vint"],
     "go": ["golangci-lint"]

@@ -38,9 +38,6 @@ homebrew:
     - webpquicklook            # https://github.com/dchest/webp-quicklook
     - wwdc                     # https://wwdc.io/
 
-    # Fonts
-    - font-fira-code
-
     #- android-sdk    # https://developer.android.com/index.html
     #- android-studio # https://developer.android.com/studio/index.html
     #- virtualbox     # https://www.virtualbox.org/
