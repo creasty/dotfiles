@@ -28,7 +28,6 @@ homebrew:
     - qlstephen                # https://whomwah.github.io/qlstephen/
     - quicklook-json           # http://www.sagtau.com/quicklookjson.html
     - rightfont                # https://rightfontapp.com/
-    - shellcheck               # https://www.shellcheck.net/
     - shift                    # https://tryshift.com/
     - skype                    # https://www.skype.com/
     - spotify                  # https://www.spotify.com/
@@ -97,6 +96,7 @@ homebrew:
     - pcre                                  # Perl compatible regular expressions library
     - protobuf                              # Protocol buffers (Google's data interchange format)
     - python                                # Interpreted, interactive, object-oriented programming language
+    - shellcheck                            # https://www.shellcheck.net/
     - termtosvg                             # Record terminal sessions as SVG animations
     - the_silver_searcher                   # Code-search similar to ack
     - tmux                                  # Terminal multiplexer
