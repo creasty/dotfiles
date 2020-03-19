@@ -7,16 +7,16 @@ let g:lexima_map_escape = ''
 "-----------------------------------------------
 let s:all_ops = opfmt#all_operators_regexp()
 
-" for s:op in opfmt#triggers()
-"   let s:op_char = s:op
-"   let s:op_char = substitute(s:op_char, '<', '<lt>', '')
-"   let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
-"   let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
-"
-"   call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"\') . '")<CR>' })
-" endfor
-" unlet s:op
-" unlet s:op_char
+for s:op in opfmt#triggers()
+  let s:op_char = s:op
+  let s:op_char = substitute(s:op_char, '<', '<lt>', '')
+  let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
+  let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
+
+  call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"\') . '")<CR>' })
+endfor
+unlet s:op
+unlet s:op_char
 
 " angle brackets
 call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
