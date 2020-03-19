@@ -19,6 +19,10 @@
       "args": ["start"],
       "filetypes": ["bash"],
       "ignoredRootPaths": ["~"]
+    },
+    "kotlin": {
+      "command": "kotlin-language-server",
+      "filetypes": ["kotlin"]
     }
   },
 
