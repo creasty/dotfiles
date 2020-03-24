@@ -84,14 +84,10 @@ nnoremap ZQ <Nop>
 " useless and annoying
 xnoremap K <Nop>
 
-" sort lines inside block
-nnoremap <leader>sor ?{<CR>jV/\v^\s*\}?$<CR>k:sort<CR>:noh<CR>
-
 " tags
 nnoremap tn :tn<CR>
 nnoremap tp :tp<CR>
 nnoremap tl :tags<CR>
-
 nnoremap <C-]> g<C-]>
 
 " tab pages / buffers
@@ -133,16 +129,6 @@ cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
-
-" numbering selection in visual-block mode
-nnoremap <silent> sc :ContinuousNumber <C-a><CR>
-xnoremap <silent> sc :ContinuousNumber <C-a><CR>
-command! -count -nargs=1 ContinuousNumber
-  \ let c = col('.') |
-  \ for n in range(1, <count>?<count>-line('.'):1) |
-    \ exec 'normal! j' . n . <q-args> |
-    \ call cursor('.', c) |
-  \ endfor
 
 " dim match highlight
 autocmd vimrc_editing User ClearSearchHighlight :
