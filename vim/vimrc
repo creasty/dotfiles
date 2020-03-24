@@ -11,9 +11,10 @@
 
 language en_US
 
-" encoding
 set encoding=utf-8
 scriptencoding utf-8
+
+let g:mapleader = ','
 
 " disable builtin plugins
 let g:loaded_gzip = 1
@@ -35,9 +36,6 @@ let g:loaded_logipat = 1
 " configure runtime features
 let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
-
-" use comma as leader
-let g:mapleader = ','
 
 " unregister autocmds
 augroup vimrc
@@ -68,23 +66,23 @@ endif
 
 filetype plugin indent on
 
+"  Commands
+"-----------------------------------------------
+command! DeinUpdate call dein#update()
+command! DeinPurgeCache
+  \ call dein#recache_runtimepath() |
+  \ call dein#clear_state()
+command! DeinPrunePlugins
+  \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
+  \ exec 'DeinPurgeCache' |
+  \ echo 'done'
+
 "=== Load
 "==============================================================================================
 if dein#tap('candle.vim')
   colorscheme candle
   set t_Co=256
   syntax enable
-endif
-
-if dein#tap('dein.vim')
-  command! DeinUpdate call dein#update()
-  command! DeinPurgeCache
-    \ call dein#recache_runtimepath() |
-    \ call dein#clear_state()
-  command! DeinPrunePlugins
-    \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
-    \ exec 'DeinPurgeCache' |
-    \ echo 'done'
 endif
 
 if dein#tap('vim-textobj-multiblock')
