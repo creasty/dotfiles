@@ -30,12 +30,14 @@ inoremap <C-\> <C-v>
 cnoremap <C-\> <C-v>
 
 " do not store to register with x, c
-nnoremap x "_x
+if empty(mapcheck('x', 'n')) " check for a 'better undo' support
+  nnoremap x "_x
+endif
 nnoremap X "_X
+xnoremap x "_x
 nnoremap c "_c
 nnoremap C "_C
 xnoremap c "_c
-xnoremap x "_x
 
 " undo
 inoremap <C-u> <C-g>u<C-u>
