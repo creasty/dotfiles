@@ -134,8 +134,9 @@ command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
 " dim match highlight
 autocmd vimrc_editing User ClearSearchHighlight :
-autocmd vimrc_editing BufReadPost * nohlsearch | doautocmd User ClearSearchHighlight
-nnoremap <silent> <Space><Space> :nohlsearch<CR>:doautocmd User ClearSearchHighlight<CR>
+command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
+autocmd vimrc_editing BufReadPost * ClearSearchHighlight
+nnoremap <silent> <Space><Space> :ClearSearchHighlight<CR>
 
 " back to the last line I edited
 autocmd vimrc_editing BufReadPost *
