@@ -16,6 +16,7 @@ let g:coc_global_extensions = [
   \ 'coc-python',
   \ 'coc-rls',
   \ 'coc-solargraph',
+  \ 'coc-spell-checker',
   \ 'coc-syntax',
   \ 'coc-tabnine',
   \ 'coc-tag',

@@ -86,5 +86,45 @@
         "message": "${Text} [${FromLinter}]"
       }
     }
-  }
+  },
+  "cSpell.userWords": [
+    "CSRF",
+    "Fullscreen",
+    "Hookable",
+    "Overridable",
+    "Readonly",
+    "Typeahead",
+    "Unmount",
+    "Webview",
+    "antialiased",
+    "autosave",
+    "bitflag",
+    "commentable",
+    "creasty",
+    "debouncing",
+    "dein",
+    "deserialize",
+    "deserialized",
+    "focusable",
+    "grpc",
+    "iframe",
+    "outdent",
+    "paleblue",
+    "pluggable",
+    "preload",
+    "proto",
+    "protobuf",
+    "rgba",
+    "serializer",
+    "serializers",
+    "struct",
+    "strval",
+    "uint",
+    "unprocessable",
+    "unstyled",
+    "upcase",
+    "uploader",
+    "uuid",
+    "wantedly"
+  ]
 }
