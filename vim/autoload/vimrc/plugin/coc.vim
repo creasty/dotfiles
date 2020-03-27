@@ -76,11 +76,11 @@ xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-" Use <TAB> for selections ranges.
+" Selection range.
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
 " coc-tsserver, coc-python are the examples of servers that support it.
-" nmap <silent> <Tab> <Plug>(coc-range-select)
-" xmap <silent> <Tab> <Plug>(coc-range-select)
+nmap <silent> gs <Plug>(coc-range-select)
+xmap <silent> gs <Plug>(coc-range-select)
 
 " Refactoring
 nmap gr <Plug>(coc-rename)
