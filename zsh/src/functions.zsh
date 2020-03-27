@@ -35,6 +35,9 @@ bindkey '\C-x\C-e' edit-command-line
 # paste last word
 bindkey '^o^w' copy-prev-shell-word
 
+# word motion
+bindkey '^g' forward-word
+
 #=== Helper
 #==============================================================================================
 _register_keycommand() {
