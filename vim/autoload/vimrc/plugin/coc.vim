@@ -17,6 +17,7 @@ let g:coc_global_extensions = [
   \ 'coc-rls',
   \ 'coc-solargraph',
   \ 'coc-spell-checker',
+  \ 'coc-styled-components',
   \ 'coc-syntax',
   \ 'coc-tabnine',
   \ 'coc-tag',
