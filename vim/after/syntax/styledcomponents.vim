@@ -2,6 +2,11 @@
 " Copied from https://github.com/styled-components/vim-styled-components
 "-----------------------------------------------
 
+if exists('b:current_syntax')
+  let s:current_syntax=b:current_syntax
+  unlet b:current_syntax
+endif
+
 " fix for "-" before cssPositioningProp
 "   - needs to be above CSS include to not match cssVendor definitions
 syn region cssCustomPositioningPrefix contained
@@ -242,3 +247,7 @@ syn cluster typescriptValue add=styledPrefix,jsFuncCall,styledTypescriptPrefix
 syn match typescriptIdentifierName extend
       \ "\<css\>\|\<keyframes\>\|\<injectGlobal\>\|\<fontFace\>\|\<createGlobalStyle\>"
       \ nextgroup=styledDefinition
+
+if exists('s:current_syntax')
+  let b:current_syntax=s:current_syntax
+endif

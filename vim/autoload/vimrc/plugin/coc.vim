@@ -1,5 +1,3 @@
-scriptencoding utf-8
-
 " [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin
 " [coc-eslint] npm install -g eslint
 " [coc-css] npm install -g vscode-css-languageserver-bin
@@ -29,7 +27,7 @@ let g:coc_global_extensions = [
 
 set completeopt+=noinsert " auto select
 set completeopt-=preview " disable the preview window feature
-set shortmess+=c " silence anoyying messages
+set shortmess+=c " silence annoying messages
 
 function! vimrc#plugin#coc#init() abort
   if g:colors_name ==# 'candle'
@@ -67,9 +65,6 @@ command! -nargs=0 -range=% Format
 
 "  Key mappings
 "-----------------------------------------------
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
 " Introduce function text object
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
