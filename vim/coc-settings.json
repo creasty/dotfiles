@@ -5,7 +5,16 @@
   "diagnostic.warningSign": "∆",
   "diagnostic.infoSign": "▸",
   "diagnostic.hintSign": "▪︎",
+  "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "←",
+  "diagnostic.refreshAfterSave": true,
+
+  "list.normalMappings": {
+    "<C-j>": "do:defaultaction"
+  },
+  "list.insertMappings": {
+    "<C-v>": "eval:@@"
+  },
 
   "languageserver": {
     "gopls": {

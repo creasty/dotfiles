@@ -56,6 +56,7 @@ endfunction
 nnoremap <silent> <Plug>(coc-hover) :call CocAction('doHover')<CR>
 nnoremap <silent> <Plug>(coc-peek-definition) :call CocAction('jumpDefinition', v:false)<CR>
 nnoremap <silent> <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefinition', v:false)<CR>
+xnoremap <silent> <Plug>(coc-codeaction) :CocAction<CR>
 
 command! -nargs=0 -range=% Format
   \ if <range> == 0 |
@@ -85,6 +86,7 @@ xmap <silent> gs <Plug>(coc-range-select)
 " Refactoring
 nmap gr <Plug>(coc-rename)
 nmap gq <Plug>(coc-codeaction)
+xmap gq <Plug>(coc-codeaction)
 
 " GoTo code navigation.
 nmap gd <Plug>(coc-definition)
