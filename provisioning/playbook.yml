@@ -8,7 +8,7 @@
     is_ci:         '{{ lookup("env", "CI") | bool }}'
 
   environment:
-    PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ anyenv.envs_dir }}/nodenv/shims:{{ lookup("env", "PATH") }}'
+    PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ lookup("env", "PATH") }}'
 
   roles:
     #  basic
@@ -37,6 +37,8 @@
       tags: ['lang', 'golang']
     - role: rust
       tags: ['lang', 'rust']
+    - role: java
+      tags: ['lang', 'java']
 
     #  app
     #-----------------------------------------------
