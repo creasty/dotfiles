@@ -12,7 +12,7 @@
     state: present
 
 - name: install old versions
-  homebrew:
+  homebrew_cask:
     name: adoptopenjdk11
     state: present
 

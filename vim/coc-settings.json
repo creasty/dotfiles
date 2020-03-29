@@ -31,7 +31,8 @@
     },
     "kotlin": {
       "command": "kotlin-language-server",
-      "filetypes": ["kotlin"]
+      "filetypes": ["kotlin"],
+      "rootPatterns": ["gradle.properties"]
     }
   },
 
