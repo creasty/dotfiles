@@ -107,3 +107,7 @@ on_ft = ['plantuml']
 [[plugins]] # Vim configuration for Rust
 repo  = 'rust-lang/rust.vim'
 on_ft = ['rust']
+
+[[plugins]] # Kotlin plugin for Vim. Featuring: syntax highlighting, basic indentation, Syntastic support
+repo = 'udalov/kotlin-vim'
+on_ft = ['kotlin']
