@@ -19,8 +19,6 @@
     accept_external_apps: yes
   with_items: '{{ homebrew.applications }}'
   when: homebrew.applications
-  retries: 2
-  delay: 5
 
 - name: install homebrew packages
   homebrew:
