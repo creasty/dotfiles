@@ -19,6 +19,7 @@
     accept_external_apps: yes
   with_items: '{{ homebrew.applications }}'
   when: homebrew.applications
+  ignore_errors: yes
 
 - name: install homebrew packages
   homebrew:
