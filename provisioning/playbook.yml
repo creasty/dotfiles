@@ -7,9 +7,6 @@
     dotfiles_path: '{{ home_path }}/dotfiles'
     is_ci:         '{{ lookup("env", "CI") | bool }}'
 
-  environment:
-    PATH: '/usr/local/bin:{{ lookup("env", "PATH") }}'
-
   roles:
     #  basic
     #-----------------------------------------------

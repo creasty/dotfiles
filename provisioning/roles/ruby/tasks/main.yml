@@ -41,12 +41,12 @@
 
 - name: get openssl dir
   command: |
-    brew --prefix openssl
+    /usr/local/bin/brew --prefix openssl
   register: openssl_dir
 
 - name: get readline dir
   command: |
-    brew --prefix readline
+    /usr/local/bin/brew --prefix readline
   register: readline_dir
 
 - name: install ruby
