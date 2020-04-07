@@ -41,8 +41,8 @@
     #-----------------------------------------------
     - role: vim
       tags: ['app', 'app.vim']
-    - role: vagrant
-      tags: ['app', 'app.vagrant']
+    #- role: vagrant
+    #  tags: ['app', 'app.vagrant']
     - role: vscode
       tags: ['app', 'app.vscode']
 
