@@ -35,13 +35,11 @@ homebrew:
     - tableplus                # https://tableplus.io/
     - transmit                 # https://panic.com/transmit/
     - tunnelbear               # https://www.tunnelbear.com/
-    - vagrant                  # https://www.vagrantup.com/
     - webpquicklook            # https://github.com/dchest/webp-quicklook
     - wwdc                     # https://wwdc.io/
 
     #- android-sdk    # https://developer.android.com/index.html
     #- android-studio # https://developer.android.com/studio/index.html
-    #- virtualbox     # https://www.virtualbox.org/
 
   packages:
     - bat                                   # Clone of cat(1) with syntax highlighting and Git integration
