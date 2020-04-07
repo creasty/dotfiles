@@ -1,5 +1,6 @@
 - set_fact:
     vscode: {}
+    code_bin: '{{ brew_bin_path }}/code'
 
 - set_fact:
     vscode_path: '{{ home_path }}/Library/Application Support/Code/User'
@@ -57,12 +58,12 @@
 - block:
     - name: get installed extensions
       command: |
-        code --list-extensions
+        {{ code_bin }} --list-extensions
       register: installed_vscode_exts
 
     - name: install extensions
       command: |
-        code --install-extension {{ item | quote }}
+        {{ code_bin }} --install-extension {{ item | quote }}
       when: |
         vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
       with_items: '{{ vscode.extensions }}'
