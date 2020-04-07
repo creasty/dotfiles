@@ -12,7 +12,7 @@ env:
     - HOMEBREW_VERBOSE=1
     - DOTFILES_NOEDIT_SECRETS=1
   jobs:
-    - UP_OPTS='--skip-tags=zsh'
+    - UP_OPTS='--skip-tags=zsh,cask,mas'
     - UP_OPTS='--tags=cask,mas'
 
 before_script:
