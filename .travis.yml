@@ -17,7 +17,7 @@ env:
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
-  - [ -d ~/.anyenv ] && rm -rf ~/.anyenv
+  - test -d ~/.anyenv && rm -rf ~/.anyenv || true
 
   - openssl aes-256-cbc -K $encrypted_31e70e09acef_key -iv $encrypted_31e70e09acef_iv -in .travis.key.enc -out .travis.key -d
   - mv .travis.key ~/.ssh/id_rsa
