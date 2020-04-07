@@ -1,6 +1,14 @@
 - set_fact:
     vagrant: {}
 
+- name: install applications
+  homebrew_cask:
+    name:
+      - vagrant    # https://www.vagrantup.com/
+      - virtualbox # https://www.virtualbox.org/
+    state: present
+    accept_external_apps: yes
+
 - name: get installed boxes
   command: |
     vagrant box list
