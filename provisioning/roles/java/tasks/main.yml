@@ -1,0 +1,36 @@
+- set_fact:
+    java: {}
+
+- name: install openjdk
+  homebrew:
+    name: openjdk
+    state: present
+
+- name: tap adoptopenjdk/openjdk
+  homebrew_tap:
+    tap:   adoptopenjdk/openjdk
+    state: present
+
+- name: install old versions
+  homebrew_cask:
+    name: adoptopenjdk11
+    state: present
+
+- name: check jenv
+  command: |
+    bash -lc 'which jenv'
+  register: which_jenv
+  ignore_errors: yes
+
+- name: install jenv
+  command: |
+    bash -lc 'anyenv install jenv'
+  when: which_jenv.rc > 0
+
+- name: enable export plugin
+  command: |
+    bash -lc 'jenv enable-plugin export'
+
+- name: enable export plugin
+  command: |
+    bash -lc 'jenv add "$(/usr/libexec/java_home)"'
