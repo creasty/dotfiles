@@ -20,6 +20,7 @@
   with_items: '{{ homebrew.applications }}'
   when: homebrew.applications
   ignore_errors: yes
+  tags: cask
 
 - name: install homebrew packages
   homebrew:

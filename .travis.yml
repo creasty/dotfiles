@@ -11,7 +11,9 @@ env:
   global:
     - HOMEBREW_VERBOSE=1
     - DOTFILES_NOEDIT_SECRETS=1
-    - SKIP_TAGS=zsh
+  jobs:
+    - UP_OPTS='--skip-tags=zsh'
+    - UP_OPTS='--tags=cask,mas'
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
@@ -26,7 +28,7 @@ before_script:
   - sh go-travis-wait.sh -b .
 
 script:
-  - ./go-travis-wait -timeout 90m -interval 1m ./up --skip-tags="$SKIP_TAGS" -vvvv
+  - ./go-travis-wait -timeout 90m -interval 1m ./up "$UP_OPTS" -vvvv
 
 notifications:
   email: false
