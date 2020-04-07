@@ -8,7 +8,7 @@
     is_ci:         '{{ lookup("env", "CI") | bool }}'
 
   environment:
-    PATH: '/usr/local/bin:{{ anyenv.envs_dir }}/rbenv/shims:{{ lookup("env", "PATH") }}'
+    PATH: '/usr/local/bin:{{ lookup("env", "PATH") }}'
 
   roles:
     #  basic
