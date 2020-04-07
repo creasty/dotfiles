@@ -6,6 +6,7 @@
     home_path:     '{{ lookup("env", "HOME") }}'
     dotfiles_path: '{{ home_path }}/dotfiles'
     is_ci:         '{{ lookup("env", "CI") | bool }}'
+    brew_bin_path: '/usr/local/bin'
 
   roles:
     #  basic
