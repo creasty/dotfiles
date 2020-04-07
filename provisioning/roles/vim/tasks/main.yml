@@ -19,18 +19,6 @@
     - vim-vint
     - pynvim
 
-- block:
-    - name: solargraph | install python library
-      pip:
-        executable: pip3
-        name:       solargraph-utils.py
-        state:      latest
-    - name: solargraph | install ruby gem
-      command: |
-        bash -lc 'gem install solargraph'
-        bash -lc 'yard gems'
-        bash -lc 'yard config --gem-install-yri'
-
 - name: install macvim
   homebrew:
     name:  macvim

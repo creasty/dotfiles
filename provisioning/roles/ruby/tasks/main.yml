@@ -62,3 +62,7 @@
   command: |
     bash -lc 'rbenv global {{ ruby.versions[0] | quote }}'
   when: ruby.versions
+
+- name: install solargraph
+  command: |
+    bash -lc 'gem install solargraph'

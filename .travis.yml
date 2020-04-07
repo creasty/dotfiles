@@ -12,8 +12,8 @@ env:
     - HOMEBREW_VERBOSE=1
     - DOTFILES_NOEDIT_SECRETS=1
   jobs:
-    - UP_OPTS='--skip-tags=zsh,cask,mas'
-    - UP_OPTS='--tags=cask,mas'
+    - UP_OPTS='--tags=basic,install,lang --skip-tags=install.homebrew.cask,install.mas,system.zsh'
+    - UP_OPTS='--tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh'
 
 before_script:
   - ln -sf $PWD $HOME/dotfiles
