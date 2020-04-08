@@ -1,12 +1,4 @@
 homebrew:
-  repositories:
-    - creasty/tools
-    - dtan4/tools
-    - heroku/brew
-    - homebrew/cask-fonts
-    - jakehilborn/jakehilborn
-    - ktr0731/evans
-
   applications:
     - adobe-creative-cloud     # https://creative.adobe.com/products/creative-cloud
     - alacritty                # https://github.com/jwilm/alacritty
