@@ -18,19 +18,19 @@
 
 - name: check jenv
   command: |
-    bash -c 'which jenv'
+    bash -lc 'which jenv'
   register: which_jenv
   ignore_errors: yes
 
 - name: install jenv
   command: |
-    bash -c 'anyenv install jenv'
+    bash -lc 'anyenv install jenv'
   when: which_jenv.rc > 0
 
 - name: enable export plugin
   command: |
-    bash -c 'jenv enable-plugin export'
+    bash -lc 'jenv enable-plugin export'
 
 - name: enable export plugin
   command: |
-    bash -c 'jenv add "$(/usr/libexec/java_home)"'
+    bash -lc 'jenv add "$(/usr/libexec/java_home)"'

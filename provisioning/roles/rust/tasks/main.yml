@@ -21,7 +21,7 @@
 
 - name: get the location of rustup binary
   command: |
-    bash -c 'which rustup'
+    bash -lc 'which rustup'
   register: which_rustup
 
 - name: rustup update
