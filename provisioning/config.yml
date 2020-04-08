@@ -119,37 +119,38 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
-  bash/bash_profile:    .bash_profile
-  bash/bashrc:          .bashrc
-  config/agignore:      .agignore
-  config/alacritty.yml: .config/alacritty/alacritty.yml
-  config/ansible.cfg:   .ansible.cfg
-  config/aws/config:    .aws/config
-  config/bat:           .config/bat/config
-  config/cargo/config:  .cargo/config
-  config/ctags:         .ctags
-  config/curlrc:        .curlrc
-  config/gitconfig:     .gitconfig
-  config/gitignore:     .gitignore
-  config/peco:          .peco
-  config/pgclirc:       .pgclirc
-  config/termtosvg:     .config/termtosvg
-  ruby/bundle/config:   .bundle/config
-  ruby/gemrc:           .gemrc
-  ruby/irbrc:           .irbrc
-  ruby/pryrc:           .pryrc
-  ruby/railsrc:         .railsrc
-  ruby/rspec:           .rspec
-  ruby/rubocop.yml:     .rubocop.yml
-  tmux/tmux.conf:       .tmux.conf
-  tmux:                 .tmux
-  vim/gvimrc:           .gvimrc
-  vim/vimrc:            .vimrc
-  vim/neovim_init.vim:  .config/nvim/init.vim
-  vim:                  .vim
-  zsh/zshenv:           .zshenv
-  zsh/zshrc:            .zshrc
-  zsh:                  .zsh
+  config/agignore:         .agignore
+  config/alacritty.yml:    .config/alacritty/alacritty.yml
+  config/ansible.cfg:      .ansible.cfg
+  config/aws/config:       .aws/config
+  config/bat:              .config/bat/config
+  config/cargo/config:     .cargo/config
+  config/ctags:            .ctags
+  config/curlrc:           .curlrc
+  config/gitconfig:        .gitconfig
+  config/gitignore:        .gitignore
+  config/peco:             .peco
+  config/pgclirc:          .pgclirc
+  config/termtosvg:        .config/termtosvg
+  ruby/bundle/config:      .bundle/config
+  ruby/gemrc:              .gemrc
+  ruby/irbrc:              .irbrc
+  ruby/pryrc:              .pryrc
+  ruby/railsrc:            .railsrc
+  ruby/rspec:              .rspec
+  ruby/rubocop.yml:        .rubocop.yml
+  shell/bash/bash_profile: .bash_profile
+  shell/bash/bashrc:       .bashrc
+  shell/profile:           .profile
+  shell/zsh/zshenv:        .zshenv
+  shell/zsh/zshrc:         .zshrc
+  shell/zsh:               .zsh
+  tmux/tmux.conf:          .tmux.conf
+  tmux:                    .tmux
+  vim/gvimrc:              .gvimrc
+  vim/neovim_init.vim:     .config/nvim/init.vim
+  vim/vimrc:               .vimrc
+  vim:                     .vim
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'

@@ -1,9 +1,9 @@
-[submodule "zsh/plugins/zsh-syntax-highlighting"]
-	path = zsh/plugins/zsh-syntax-highlighting
+[submodule "shell/zsh/plugins/zsh-syntax-highlighting"]
+	path = shell/zsh/plugins/zsh-syntax-highlighting
 	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "zsh/plugins/zsh-autosuggestions"]
-	path = zsh/plugins/zsh-autosuggestions
+[submodule "shell/zsh/plugins/zsh-autosuggestions"]
+	path = shell/zsh/plugins/zsh-autosuggestions
 	url = git://github.com/tarruda/zsh-autosuggestions.git
-[submodule "zsh/plugins/zsh-completions"]
-	path = zsh/plugins/zsh-completions
+[submodule "shell/zsh/plugins/zsh-completions"]
+	path = shell/zsh/plugins/zsh-completions
 	url = git://github.com/zsh-users/zsh-completions.git
