@@ -12,7 +12,7 @@ env:
     - HOMEBREW_VERBOSE=1
     - DOTFILES_NOEDIT_SECRETS=1
   jobs:
-    - UP_OPTS='--tags=basic,install.homebrew.formula,lang'
+    - UP_OPTS='--tags=base,install.homebrew.formula,lang'
     - UP_OPTS='--tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh'
 
 before_script:

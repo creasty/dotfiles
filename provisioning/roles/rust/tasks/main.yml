@@ -1,21 +1,35 @@
 - set_fact:
     rust: {}
+    rustup_init_bin: '{{ brew_bin_path }}/rustup-init'
 
 - name: install rustup-init
   homebrew:
     name:  rustup
     state: present
 
+- name: get stat of the binary
+  stat:
+    path: '{{ rustup_init_bin }}'
+  register: rustup_init_bin_stat
+- fail:
+    msg: 'The binary does not exist'
+  when: rustup_init_bin_stat.stat.executable != True
+
 - name: install rust
   command: |
-    bash -lc 'rustup-init -v -y --no-modify-path'
+    {{ rustup_init_bin }} -v -y --no-modify-path'
+
+- name: get the location of rustup binary
+  command: |
+    bash -c 'which rustup'
+  register: which_rustup
 
 - name: rustup update
   command: |
-    bash -lc 'rustup update'
+    {{ which_rustup_bin.stdout }} update
 
 - name: install components
   command: |
-    bash -lc 'rustup component add {{ item | quote }}'
+    {{ which_rustup_bin.stdout }} component add {{ item | quote }}
   with_items: '{{ rust.components }}'
   when: rust.components

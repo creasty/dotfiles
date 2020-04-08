@@ -8,14 +8,12 @@
     brew_bin_path: '/usr/local/bin'
 
   roles:
-    #  basic
+    #  base
     #-----------------------------------------------
-    - role: anyenv
-      tags: ['basic', 'basic.anyenv']
     - role: link
-      tags: ['basic', 'basic.link']
+      tags: ['base', 'base.link']
     - role: ssh
-      tags: ['basic', 'basic.ssh']
+      tags: ['base', 'base.ssh']
 
     #  install
     #-----------------------------------------------
@@ -26,25 +24,27 @@
 
     #  lang
     #-----------------------------------------------
+    - role: anyenv
+      tags: ['lang', 'lang.anyenv']
     - role: ruby
-      tags: ['lang', 'lang.ruby']
+      tags: ['lang', 'lang.anyenv', 'lang.anyenv.ruby']
     - role: nodejs
-      tags: ['lang', 'lang.nodejs']
+      tags: ['lang', 'lang.anyenv', 'lang.anyenv.nodejs']
+    - role: java
+      tags: ['lang', 'lang.anyenv', 'lang.anyenv.java']
     - role: golang
       tags: ['lang', 'lang.golang']
     - role: rust
       tags: ['lang', 'lang.rust']
-    - role: java
-      tags: ['lang', 'lang.java']
 
     #  app
     #-----------------------------------------------
     - role: vim
       tags: ['app', 'app.vim']
-    #- role: vagrant
-    #  tags: ['app', 'app.vagrant']
     - role: vscode
       tags: ['app', 'app.vscode']
+    #- role: vagrant
+    #  tags: ['app', 'app.vagrant']
 
     #  system
     #-----------------------------------------------

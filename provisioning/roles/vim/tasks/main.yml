@@ -1,3 +1,7 @@
+- set_fact:
+    macvim_app_path: '/usr/local/opt/macvim/MacVim.app'
+    vim_bin: '{{ brew_bin_path }}/vim'
+
 - name: install dein.vim
   git:
     repo:   https://github.com/Shougo/dein.vim
@@ -24,17 +28,22 @@
     name:  macvim
     state: present
 
+- name: install neovim
+  homebrew:
+    name:  neovim
+    state: present
+
 - name: link app
   file:
-    src:   /usr/local/opt/macvim/MacVim.app
+    src:   '{{ macvim_app_path }}'
     dest:  /Applications/MacVim.app
     state: link
     force: yes
 
 - name: link vim binary
   file:
-    src:   /usr/local/opt/macvim/MacVim.app/Contents/bin/vim
-    dest:  /usr/local/bin/vim
+    src:   '{{ macvim_app_path }}/Contents/bin/vim'
+    dest:  '{{ vim_bin }}'
     state: link
     force: yes
 

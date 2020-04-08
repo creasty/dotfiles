@@ -1,19 +1,20 @@
 - set_fact:
     vscode: {}
     code_bin: '{{ brew_bin_path }}/code'
-
-- set_fact:
     vscode_path: '{{ home_path }}/Library/Application Support/Code/User'
-  when: ansible_distribution == 'MacOSX'
-
-- set_fact:
-    vscode_path: '{{ home_path }}/.config/Code/User'
-  when: ansible_distribution != 'MacOSX'
 
 - name: install vscode
   homebrew_cask:
     name:  visual-studio-code
     state: present
+
+- name: get stat of the binary
+  stat:
+    path: '{{ code_bin }}'
+  register: code_bin_stat
+- fail:
+    msg: 'The binary does not exist'
+  when: code_bin_stat.stat.executable != True
 
 - block:
     - name: allocate parent directories
@@ -55,17 +56,14 @@
 
   when: vscode.link
 
-- block:
-    - name: get installed extensions
-      command: |
-        {{ code_bin }} --list-extensions
-      register: installed_vscode_exts
+- name: get installed extensions
+  command: |
+    {{ code_bin }} --list-extensions
+  register: installed_vscode_exts
 
-    - name: install extensions
-      command: |
-        {{ code_bin }} --install-extension {{ item | quote }}
-      when: |
-        vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
-      with_items: '{{ vscode.extensions }}'
-
-  when: ansible_distribution == 'MacOSX'
+- name: install extensions
+  command: |
+    {{ code_bin }} --install-extension {{ item | quote }}
+  when: |
+    vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
+  with_items: '{{ vscode.extensions }}'

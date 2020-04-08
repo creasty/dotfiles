@@ -24,6 +24,7 @@
 - name: change login shell to zsh
   command: |
     chpass -s '{{ zsh_bin }}'
+  become: yes
   register: chpass_result
   until: chpass_result.rc == 0
   retries: 3

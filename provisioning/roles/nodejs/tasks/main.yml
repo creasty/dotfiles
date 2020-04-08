@@ -3,13 +3,13 @@
 
 - name: check nodenv
   command: |
-    bash -lc 'which nodenv'
+    bash -c 'which nodenv'
   register: which_nodenv
   ignore_errors: yes
 
 - name: install nodenv
   command: |
-    bash -lc 'anyenv install nodenv'
+    bash -c 'anyenv install nodenv'
   when: which_nodenv.rc > 0
 
 - name: install plugins
@@ -28,21 +28,21 @@
 
 - name: get installed versions
   command: |
-    bash -lc 'nodenv versions'
+    bash -c 'nodenv versions'
   register: installed_versions
 
 - name: install nodejs
   command: |
-    bash -lc 'nodenv install {{ item | quote }}'
+    bash -c 'nodenv install {{ item | quote }}'
   when: |
     nodejs.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ nodejs.versions }}'
 
 - name: set global nodejs
   command: |
-    bash -lc 'nodenv global {{ nodejs.versions[0] | quote }}'
+    bash -c 'nodenv global {{ nodejs.versions[0] | quote }}'
   when: nodejs.versions
 
 - name: install default packages
   command: |
-    bash -lc 'nodenv default-packages install'
+    bash -c 'nodenv default-packages install'

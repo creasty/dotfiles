@@ -3,13 +3,13 @@
 
 - name: check rbenv
   command: |
-    bash -lc 'which rbenv'
+    bash -c 'which rbenv'
   register: which_rbenv
   ignore_errors: yes
 
 - name: install rbenv
   command: |
-    bash -lc 'anyenv install rbenv'
+    bash -c 'anyenv install rbenv'
   when: which_rbenv.rc > 0
 
 - name: install plugins
@@ -28,7 +28,7 @@
 
 - name: get installed versions
   command: |
-    bash -lc 'rbenv versions'
+    bash -c 'rbenv versions'
   register: installed_versions
 
 - name: install dependency
@@ -41,17 +41,17 @@
 
 - name: get openssl dir
   command: |
-    bash -lc 'brew --prefix openssl'
+    bash -c 'brew --prefix openssl'
   register: openssl_dir
 
 - name: get readline dir
   command: |
-    bash -lc 'brew --prefix readline'
+    bash -c 'brew --prefix readline'
   register: readline_dir
 
 - name: install ruby
   command: |
-    bash -lc 'rbenv install {{ item | quote }}'
+    bash -c 'rbenv install {{ item | quote }}'
   environment:
     RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }}'
   when: |
@@ -60,9 +60,9 @@
 
 - name: set global ruby
   command: |
-    bash -lc 'rbenv global {{ ruby.versions[0] | quote }}'
+    bash -c 'rbenv global {{ ruby.versions[0] | quote }}'
   when: ruby.versions
 
 - name: install solargraph
   command: |
-    bash -lc 'gem install solargraph'
+    bash -c 'gem install solargraph'

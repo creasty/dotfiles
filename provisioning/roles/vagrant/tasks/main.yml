@@ -10,6 +10,14 @@
     state: present
     accept_external_apps: yes
 
+- name: get stat of the binary
+  stat:
+    path: '{{ vagrant_bin }}'
+  register: vagrant_bin_stat
+- fail:
+    msg: 'The binary does not exist'
+  when: vagrant_bin_stat.stat.executable != True
+
 - name: get installed boxes
   command: |
     {{ vagrant_bin }} box list

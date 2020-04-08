@@ -28,14 +28,14 @@
 
 - name: install packages
   command: |
-     bash -lc 'go get {{ item | quote }}@latest'
+     bash -c 'go get {{ item | quote }}@latest'
   with_items: '{{ golang.packages }}'
   when: golang.packages
 
 #- block:
 #    - name: optimize goimports | install
 #      command: |
-#        bash -lc 'go get -u {{ item | quote }}'
+#        bash -c 'go get -u {{ item | quote }}'
 #      environment:
 #        GO111MODULE: off
 #      with_items:
@@ -44,7 +44,7 @@
 #        - github.com/pwaller/goimports-update-ignore
 #    - name: optimize goimports | run goimports-update-ignore
 #      command: |
-#        bash -lc 'goimports-update-ignore -max-depth 5'
+#        bash -c 'goimports-update-ignore -max-depth 5'
 #    - name: optimize goimports | run dragon-imports
 #      command: |
-#        bash -lc 'dragon-imports'
+#        bash -c 'dragon-imports'
