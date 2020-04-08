@@ -26,10 +26,10 @@
 
 - name: rustup update
   command: |
-    {{ which_rustup_bin.stdout }} update
+    {{ which_rustup.stdout }} update
 
 - name: install components
   command: |
-    {{ which_rustup_bin.stdout }} component add {{ item | quote }}
+    {{ which_rustup.stdout }} component add {{ item | quote }}
   with_items: '{{ rust.components }}'
   when: rust.components
