@@ -15,7 +15,7 @@ fpath=(
 autoload -Uz compinit
 compinit
 
-for file in ~/.zsh/src/{functions,prompt,term}.zsh; do
+for file in ~/.zsh/src/{aliases,functions,prompt,term}.zsh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
