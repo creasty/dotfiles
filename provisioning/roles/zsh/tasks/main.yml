@@ -1,21 +1,15 @@
+- set_fact:
+    zsh_bin: '{{ brew_bin_path }}/zsh'
+
 - name: install zsh
   homebrew:
     name:  zsh
     state: present
 
-- name: search zsh bin path
-  command: |
-    which zsh
-  register: which_zsh
-  ignore_errors: yes
-
-- debug:
-    msg: '{{ which_zsh.stdout }}'
-
 - name: add zsh to /etc/shells
   lineinfile:
     dest: /etc/shells
-    line: '{{ which_zsh.stdout }}'
+    line: '{{ zsh_bin }}'
   become: yes
 
 - name: check presence of /etc/zshenv
@@ -29,9 +23,10 @@
 
 - name: change login shell to zsh
   command: |
-    chpass -s '{{ which_zsh.stdout }}'
+    chpass -s '{{ zsh_bin }}'
+  become: yes
   register: chpass_result
   until: chpass_result.rc == 0
   retries: 3
   when: |
-    lookup("env", "SHELL") != which_zsh.stdout
+    lookup("env", "SHELL") != zsh_bin

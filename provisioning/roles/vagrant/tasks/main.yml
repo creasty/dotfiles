@@ -1,5 +1,6 @@
 - set_fact:
     vagrant: {}
+    vagrant_bin: '{{ brew_bin_path }}/vagrant'
 
 - name: install applications
   homebrew_cask:
@@ -9,26 +10,34 @@
     state: present
     accept_external_apps: yes
 
+- name: get stat of the binary
+  stat:
+    path: '{{ vagrant_bin }}'
+  register: vagrant_bin_stat
+- fail:
+    msg: 'The binary does not exist'
+  when: vagrant_bin_stat.stat.executable != True
+
 - name: get installed boxes
   command: |
-    vagrant box list
+    {{ vagrant_bin }} box list
   register: installed_boxes
 
 - name: install box
   command: |
-    vagrant box add '{{ item.key }}' '{{ item.value }}'
+    {{ vagrant_bin }} box add {{ item.key | quote }} {{ item.value | quote }}
   when: |
     vagrant.boxes and installed_boxes.stdout.find(item.key) == -1
   with_dict: '{{ vagrant.boxes }}'
 
 - name: get installed plugins
   command: |
-    vagrant plugin list
+    {{ vagrant_bin }} plugin list
   register: installed_plugins
 
 - name: install plugin
   command: |
-    vagrant plugin install '{{ item }}'
+    {{ vagrant_bin }} plugin install {{ item | quote }}
   when: |
     vagrant.plugins and installed_plugins.stdout.find(item) == -1
   with_items: '{{ vagrant.plugins }}'
