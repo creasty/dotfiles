@@ -46,3 +46,8 @@
 - name: install default packages
   command: |
     bash -lc 'nodenv default-packages install'
+
+- name: install yarn
+  homebrew:
+    name: yarn # JavaScript package manager
+    state: present

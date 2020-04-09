@@ -3,6 +3,11 @@
 set -eu
 set -o pipefail
 
+if ! command -v 'displayplacer' > /dev/null 2>&1; then
+  # macOS command line utility to configure multi-display resolutions and arrangements.
+  brew install jakehilborn/jakehilborn/displayplacer
+fi
+
 case "$(hostname)" in
   creasty-bw-mbp16.local)
     displayplacer 'id:1BAE06CB-9452-9E7F-D1A2-C3AAE5FC4AFC res:3072x1920' &
