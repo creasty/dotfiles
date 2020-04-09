@@ -88,7 +88,10 @@ alias ag="ag --pager='less -R' --width 1000"
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
-alias skey='ssh-keygen -q -b 2048 -t rsa -N "" -C "" -f'
+
+# ssh-keygen [-q] [-b bits] [-t dsa | ecdsa | ed25519 | rsa] [-N new_passphrase] [-C comment] [-f output_keyfile]
+alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
+alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
 
 alias o='finder'
 alias c='see'
