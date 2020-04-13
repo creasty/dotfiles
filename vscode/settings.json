@@ -153,8 +153,7 @@
     "unstyled",
     "upcase",
     "uploader",
-    "uuid",
-    "wantedly"
+    "uuid"
   ],
   "cSpell.enableFiletypes": [
     "asciidoc",

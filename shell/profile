@@ -37,9 +37,6 @@ export PATH=$PATH:$GOPATH/bin
 # libxml2
 export PATH=/usr/local/opt/libxml2/bin:$PATH
 
-# Wantedly
-export PATH=$PATH:$HOME/.wantedly/bin
-
 # VSCode
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 

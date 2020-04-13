@@ -223,8 +223,3 @@ alias swiftc='SDKPATH=$(/usr/bin/env xcrun --show-sdk-path --sdk macosx) xcrun s
 
 alias xcb='xcodebuild'
 alias xct='xctool'
-
-#  Wantedly
-#-----------------------------------------------
-alias valec='envchain wtd valec'
-alias kube='envchain wtd kube'
