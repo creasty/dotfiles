@@ -18,15 +18,15 @@ Screenshots
 Performance
 -----------
 
-`zsh` starts up in ~500ms.
+`zsh` starts up in ~370ms.
 
 ```sh-session
 $ for i in $(seq 1 5); do time zsh -i -c exit; done
-zsh -i -c exit  0.25s user 0.28s system 100% cpu 0.528 total
-zsh -i -c exit  0.25s user 0.27s system 101% cpu 0.515 total
-zsh -i -c exit  0.24s user 0.28s system 100% cpu 0.517 total
-zsh -i -c exit  0.24s user 0.27s system 101% cpu 0.504 total
-zsh -i -c exit  0.25s user 0.27s system 100% cpu 0.511 total
+zsh -i -c exit  0.18s user 0.18s system 97% cpu 0.363 total
+zsh -i -c exit  0.18s user 0.19s system 97% cpu 0.377 total
+zsh -i -c exit  0.18s user 0.19s system 98% cpu 0.378 total
+zsh -i -c exit  0.18s user 0.18s system 98% cpu 0.374 total
+zsh -i -c exit  0.18s user 0.18s system 98% cpu 0.371 total
 ```
 
 `vim` starts up in ~160ms.
