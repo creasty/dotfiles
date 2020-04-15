@@ -223,9 +223,3 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
 #  Direnv
 #-----------------------------------------------
 eval "$(direnv hook zsh)"
-
-#  Anyenv
-#-----------------------------------------------
-if [ -d $HOME/.anyenv ]; then
-  eval "$(anyenv init -)"
-fi
