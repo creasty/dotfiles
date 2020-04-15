@@ -20,6 +20,11 @@ for file in ~/.zsh/src/{aliases,functions,prompt,term}.zsh; do
 done
 unset file
 
+# Compile zshrc
+if [ ! -f ~/.zshrc.zwc ] || [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+  zcompile ~/.zshrc
+fi
+
 #  Base
 #-----------------------------------------------
 HISTFILE=~/.zsh_history
