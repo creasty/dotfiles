@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+for env in `anyenv envs`; do
+  command "$env" rehash
+done
