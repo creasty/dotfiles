@@ -223,3 +223,9 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
 #  Direnv
 #-----------------------------------------------
 eval "$(direnv hook zsh)"
+
+#  Profiling mode
+#-----------------------------------------------
+if [ -n "${ZSH_PROF_ENABLED:-}" ]; then
+  zprof
+fi
