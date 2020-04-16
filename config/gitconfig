@@ -71,15 +71,15 @@
   cmpm = compare master
 
   s  = status -s
-  d  = diff --diff-filter=M
-  dc = diff --diff-filter=M --cached
   ds = diff --stat master HEAD
+  d  = diff --irreversible-delete
+  dc = diff --irreversible-delete --cached
 
-  w  = show --diff-filter=M
-  w0 = show --diff-filter=M HEAD
-  w1 = show --diff-filter=M HEAD~
-  w2 = show --diff-filter=M HEAD~~
-  w3 = show --diff-filter=M HEAD~~~
+  w  = show --irreversible-delete
+  w0 = show --irreversible-delete HEAD
+  w1 = show --irreversible-delete HEAD~
+  w2 = show --irreversible-delete HEAD~~
+  w3 = show --irreversible-delete HEAD~~~
 
   l  = log --oneline
   lg = log --oneline --graph
