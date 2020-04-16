@@ -33,9 +33,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-# disable r command so that I can use r-lang one
-disable r
-
 #  Options
 #-----------------------------------------------
 # history
