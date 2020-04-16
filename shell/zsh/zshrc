@@ -16,7 +16,9 @@ autoload -Uz compinit
 compinit
 
 for file in ~/.zsh/src/{aliases,functions,prompt,term}.zsh; do
-  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+  if [ -r "$file" ] && [ -f "$file" ]; then
+    source "$file"
+  fi
 done
 unset file
 
@@ -222,7 +224,9 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
 
 #  Direnv
 #-----------------------------------------------
-eval "$(direnv hook zsh)"
+if command -v direnv > /dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
 
 #  Profiling mode
 #-----------------------------------------------
