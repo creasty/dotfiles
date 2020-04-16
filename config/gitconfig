@@ -67,14 +67,19 @@
   y  = deploy
   pr = github-compare
 
-  cmp = compare
+  cmp  = compare
   cmpm = compare master
 
   s  = status -s
-  w  = show --diff-filter=M
   d  = diff --diff-filter=M
   dc = diff --diff-filter=M --cached
   ds = diff --stat master HEAD
+
+  w  = show --diff-filter=M
+  w0 = show --diff-filter=M HEAD
+  w1 = show --diff-filter=M HEAD~
+  w2 = show --diff-filter=M HEAD~~
+  w3 = show --diff-filter=M HEAD~~~
 
   l  = log --oneline
   lg = log --oneline --graph
@@ -98,16 +103,12 @@
   res1 = reset --soft HEAD~
   res2 = reset --soft HEAD~~
   res3 = reset --soft HEAD~~~
-  res4 = reset --soft HEAD~~~~
-  res5 = reset --soft HEAD~~~~~
 
   reh  = reset --hard
   reh0 = reset --hard HEAD
   reh1 = reset --hard HEAD~
   reh2 = reset --hard HEAD~~
   reh3 = reset --hard HEAD~~~
-  reh4 = reset --hard HEAD~~~~
-  reh5 = reset --hard HEAD~~~~~
 
   # emf: edit modified files
   # ecf: edit conflicted files
