@@ -57,3 +57,10 @@
 --regex-clojure=/\([ \t]*defstruct[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/s,struct/
 --regex-clojure=/\([ \t]*intern[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/v,intern/
 --regex-clojure=/\([ \t]*ns[ \t]+([-[:alnum:]*+!_:\/.?]+)/\1/n,namespace/
+
+--langdef=proto
+--langmap=proto:.proto
+--regex-proto=/^[ \t]*message[ \t]+([a-zA-Z0-9_\.]+)/\1/m,message/
+--regex-proto=/^[ \t]*enum[ \t]+([a-zA-Z0-9_\.]+)/\1/e,enum/
+--regex-proto=/^[ \t]*(required|repeated|optional)[ \t]+[a-zA-Z0-9_\.]+[ \t]+([a-zA-Z0-9_]+)[ \t]*=/\2/f,field/
+--regex-proto=/^[ \t]*([A-Z0-9_]+)[ \t]*=/\1/f,enum/
