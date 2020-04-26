@@ -7,7 +7,6 @@
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "←",
-  "diagnostic.refreshAfterSave": true,
 
   "list.normalMappings": {
     "<C-j>": "do:defaultaction"
