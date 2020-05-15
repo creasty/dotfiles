@@ -8,8 +8,8 @@ if ! command -v 'displayplacer' > /dev/null 2>&1; then
   brew install jakehilborn/jakehilborn/displayplacer
 fi
 
-case "$(hostname)" in
-  creasty-bw-mbp16.local)
-    displayplacer 'id:1BAE06CB-9452-9E7F-D1A2-C3AAE5FC4AFC res:3072x1920' &
-    ;;
-esac
+LIST="$(displayplacer list)"
+CURRENT_SCREEN_ID="$(sed -n -E 's/^Persistent screen id: ([0-9A-F-]+)/\1/p;10q' <<< "$LIST")"
+PHYSICAL_RESOLUTION="$(sed -n -E 's/^Resolution: ([0-9]+x[0-9]+)/\1/p;10q' <<< "$LIST")"
+
+( set -x; displayplacer "id:$CURRENT_SCREEN_ID res:$PHYSICAL_RESOLUTION" & )
