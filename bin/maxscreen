@@ -8,8 +8,24 @@ if ! command -v 'displayplacer' > /dev/null 2>&1; then
   brew install jakehilborn/jakehilborn/displayplacer
 fi
 
-LIST="$(displayplacer list)"
-CURRENT_SCREEN_ID="$(sed -n -E 's/^Persistent screen id: ([0-9A-F-]+)/\1/p;10q' <<< "$LIST")"
-PHYSICAL_RESOLUTION="$(sed -n -E 's/^Resolution: ([0-9]+x[0-9]+)/\1/p;10q' <<< "$LIST")"
+SCREEN_IDS="$(
+  displayplacer list \
+    | sed -n -E 's/^Persistent screen id: ([0-9A-F-]+)/\1/p' \
+    | sort \
+    | paste -sd '+' -
+)"
 
-( set -x; displayplacer "id:$CURRENT_SCREEN_ID res:$PHYSICAL_RESOLUTION" & )
+BUITLIN_SCREEN_ID='1BAE06CB-9452-9E7F-D1A2-C3AAE5FC4AFC'
+BUITLIN_SCREEN_RES='3072x1920'
+
+SUB_SCREEN_ID='1B03F104-EAF7-6F40-6262-67F023417D97' # LG UltraFine 4K Display
+SUB_SCREEN_RES='3840x2160'
+
+case "$SCREEN_IDS" in
+  "${SUB_SCREEN_ID}+${BUITLIN_SCREEN_ID}")
+    displayplacer "id:$SCREEN_IDS res:$SUB_SCREEN_RES" &
+    ;;
+  "${BUITLIN_SCREEN_ID}")
+    displayplacer "id:$SCREEN_IDS res:$BUITLIN_SCREEN_RES" &
+    ;;
+esac
