@@ -8,24 +8,44 @@ if ! command -v 'displayplacer' > /dev/null 2>&1; then
   brew install jakehilborn/jakehilborn/displayplacer
 fi
 
-SCREEN_IDS="$(
-  displayplacer list \
-    | sed -n -E 's/^Persistent screen id: ([0-9A-F-]+)/\1/p' \
-    | sort \
-    | paste -sd '+' -
-)"
+get_layout() {
+  local buitlin_id='1BAE06CB-9452-9E7F-D1A2-C3AAE5FC4AFC' # LCD
+  local buitlin_res='3072x1920'
 
-BUITLIN_SCREEN_ID='1BAE06CB-9452-9E7F-D1A2-C3AAE5FC4AFC'
-BUITLIN_SCREEN_RES='3072x1920'
+  local lg4k_id='1B03F104-EAF7-6F40-6262-67F023417D97' # LG UltraFine 4K Display
+  local lg4k_res='3840x2160'
 
-SUB_SCREEN_ID='1B03F104-EAF7-6F40-6262-67F023417D97' # LG UltraFine 4K Display
-SUB_SCREEN_RES='3840x2160'
+  case "$1" in
+    "${buitlin_id}")
+      echo "res:$buitlin_res"
+      ;;
+    "${lg4k_id}")
+      echo "res:$lg4k_res"
+      ;;
+    "${lg4k_id}+${buitlin_id}")
+      echo "res:$lg4k_res"
+      ;;
+  esac
+}
 
-case "$SCREEN_IDS" in
-  "${SUB_SCREEN_ID}+${BUITLIN_SCREEN_ID}")
-    displayplacer "id:$SCREEN_IDS res:$SUB_SCREEN_RES" &
-    ;;
-  "${BUITLIN_SCREEN_ID}")
-    displayplacer "id:$SCREEN_IDS res:$BUITLIN_SCREEN_RES" &
-    ;;
-esac
+mirroring_status() {
+  system_profiler -json SPDisplaysDataType \
+    | jq -r '.SPDisplaysDataType[] | select(has("spdisplays_ndrvs")) | .spdisplays_ndrvs[0].spdisplays_mirror'
+}
+
+join_if_mirroring() {
+  if [ "$(mirroring_status)" = 'spdisplays_on' ]; then
+    cat | sort | paste -sd '+' -
+  else
+    cat
+  fi
+}
+
+layout() {
+  displayplacer "id:$1 $(get_layout "$1")" &
+}
+
+displayplacer list \
+  | sed -n -E 's/^Persistent screen id: ([0-9A-F-]+)/\1/p' \
+  | join_if_mirroring \
+  | while IFS= read -r id; do layout "$id"; done
