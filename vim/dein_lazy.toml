@@ -42,7 +42,6 @@ on_func = ['emmet']
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
 repo    = 'Shougo/denite.nvim'
-rev     = '2.1'
 on_cmd  = ['Denite']
 depends = ['vim-hug-neovim-rpc']
 
