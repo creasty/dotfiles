@@ -38,6 +38,10 @@ on_map = ['<Plug>(textmanip-']
 repo    = 'mattn/emmet-vim'
 on_func = ['emmet']
 
+[[plugins]] # Vim motions on speed!
+repo   = 'easymotion/vim-easymotion'
+on_map = ['<Plug>(easymotion-']
+
 #  Utils
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8

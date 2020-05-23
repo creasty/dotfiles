@@ -143,6 +143,16 @@ if dein#tap('emmet-vim')
   \ }
 endif
 
+if dein#tap('vim-easymotion')
+  let g:EasyMotion_do_mapping = 0
+  let g:EasyMotion_verbose = 0
+
+  nmap <Space>f <Plug>(easymotion-f)
+  nmap <Space>F <Plug>(easymotion-F)
+  nmap <Space>t <Plug>(easymotion-t)
+  nmap <Space>T <Plug>(easymotion-T)
+endif
+
 if dein#tap('operator-camelize.vim')
   xmap C <Plug>(operator-camelize-toggle)
 endif
