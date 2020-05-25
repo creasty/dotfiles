@@ -26,6 +26,13 @@ call submode#map(       'move-to-fold', 'n', '', 'j',  'zj')
 call submode#enter_with('move-to-fold', 'n', '', 'zk', 'zk')
 call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
 
+"  Word motions
+"-----------------------------------------------
+call submode#enter_with('n-ge', 'n', '', 'ge', 'ge')
+call submode#map(       'n-ge', 'n', '', 'e',  'ge')
+call submode#enter_with('n-gE', 'n', '', 'gE', 'gE')
+call submode#map(       'n-gE', 'n', '', 'E',  'gE')
+
 "  Better undo
 "-----------------------------------------------
 function! s:better_undo(key) abort
@@ -34,13 +41,13 @@ function! s:better_undo(key) abort
 endfunction
 
 noremap <silent> <Plug>(my-x) :<C-u>call <SID>better_undo('"_x')<CR>
-call submode#enter_with('my_x', 'n', '',  'x', '"_x')
-call submode#map(       'my_x', 'n', 'r', 'x', '<Plug>(my-x)')
+call submode#enter_with('better-x', 'n', '',  'x', '"_x')
+call submode#map(       'better-x', 'n', 'r', 'x', '<Plug>(my-x)')
 
 noremap <silent> <Plug>(my-ca) :<C-u>call <SID>better_undo('<C-a>')<CR>
-call submode#enter_with('my_ca', 'n', '',  '<C-a>', '<C-a>')
-call submode#map(       'my_ca', 'n', 'r', '<C-a>', '<Plug>(my-ca)')
+call submode#enter_with('better-ca', 'n', '',  '<C-a>', '<C-a>')
+call submode#map(       'better-ca', 'n', 'r', '<C-a>', '<Plug>(my-ca)')
 
 noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
-call submode#enter_with('my_ca', 'n', '',  '<C-x>', '<C-x>')
-call submode#map(       'my_ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
+call submode#enter_with('better-ca', 'n', '',  '<C-x>', '<C-x>')
+call submode#map(       'better-ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')
