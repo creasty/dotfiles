@@ -68,10 +68,8 @@ function! vimrc#ui#status_line(w, cw) abort
 
   let l:bufname =
     \ empty(l:_bufname) ? '[No Name]' :
-    \ l:_bufname ==# '__Tagbar__' ? 'Tagbar' :
-    \ l:_bufname =~# '__Gundo\|NERD_tree' || l:ft ==# 'nerdtree' ? 'File' :
-    \ l:ft ==# 'denite' ? 'Denite' :
-    \ l:ft ==# 'help' ? 'Help' :
+    \ l:ft ==# 'denite' ? '>>>>' :
+    \ l:ft ==# 'denite-filter' ? 'Denite' :
     \ ''
 
   let l:is_file = empty(l:bufname)
