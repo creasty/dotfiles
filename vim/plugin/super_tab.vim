@@ -14,14 +14,13 @@ let g:loaded_super_tab = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-function! InsCtrlR()
+function! s:tab_r()
   call UltiSnips#ExpandSnippetOrJump()
   if g:ulti_expand_or_jump_res > 0
     return ''
   endif
 
   " return lexima#expand('<TAB>', 'i')
-
   call feedkeys("\<Tab>", 'n')
   return ''
 endfunction
@@ -34,7 +33,7 @@ function! s:tab_i() abort
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
   else
-    return "\<C-r>=InsCtrlR()\<CR>"
+    return "\<Plug>(supertab-ctrl-r)"
   endif
 endfunction
 
@@ -51,8 +50,10 @@ function! s:tab_x() abort
 endfunction
 
 inoremap <Plug>(supertab-undo) <C-e>
-inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
 inoremap <Plug>(supertab-accept) <C-y>
+inoremap <Plug>(supertab-ctrl-r) <C-r>=<SID>tab_r()<CR>
+inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+imap <Plug>(supertab-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
 
 imap <silent> <expr> <Tab> <SID>tab_i()
 smap <silent> <expr> <Tab> <SID>tab_s()
@@ -60,7 +61,7 @@ xmap <silent> <expr> <Tab> <SID>tab_x()
 
 imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
 imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
-imap <silent> <expr> <C-j> pumvisible() ? "\<Plug>(supertab-accept)" : "\<C-g>u\<CR>\<C-r>=coc#on_enter()\<CR>"
+imap <silent> <expr> <C-j> pumvisible() ? "\<Plug>(supertab-accept)" : "\<Plug>(supertab-enter)"
 
 augroup super_tab
   autocmd!
