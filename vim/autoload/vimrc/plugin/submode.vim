@@ -30,8 +30,8 @@ call submode#map(       'move-to-fold', 'n', '', 'k',  'zk')
 "-----------------------------------------------
 call submode#enter_with('n-ge', 'n', '', 'ge', 'ge')
 call submode#map(       'n-ge', 'n', '', 'e',  'ge')
-call submode#enter_with('n-gE', 'n', '', 'gE', 'gE')
-call submode#map(       'n-gE', 'n', '', 'E',  'gE')
+call submode#enter_with('n-ge', 'n', '', 'gE', 'gE')
+call submode#map(       'n-ge', 'n', '', 'E',  'gE')
 
 "  Better undo
 "-----------------------------------------------
