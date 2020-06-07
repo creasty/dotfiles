@@ -51,10 +51,10 @@ endfunction
 
 "  Custom actions
 "-----------------------------------------------
-nnoremap <silent> <Plug>(coc-hover) :call CocAction('doHover')<CR>
-nnoremap <silent> <Plug>(coc-peek-definition) :call CocAction('jumpDefinition', v:false)<CR>
-nnoremap <silent> <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefinition', v:false)<CR>
-xnoremap <silent> <Plug>(coc-codeaction) :CocAction<CR>
+nnoremap <Plug>(coc-hover) :call CocAction('doHover')<CR>
+nnoremap <Plug>(coc-peek-definition) :call CocAction('jumpDefinition', v:false)<CR>
+nnoremap <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefinition', v:false)<CR>
+xnoremap <Plug>(coc-codeaction) :CocAction<CR>
 
 command! -nargs=0 -range=% Format
   \ if <range> == 0 |
@@ -67,10 +67,10 @@ command! -nargs=0 -range=% Format
 "-----------------------------------------------
 " Introduce function text object
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
+xmap <silent> if <Plug>(coc-funcobj-i)
+xmap <silent> af <Plug>(coc-funcobj-a)
+omap <silent> if <Plug>(coc-funcobj-i)
+omap <silent> af <Plug>(coc-funcobj-a)
 
 " Selection range.
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
@@ -79,14 +79,14 @@ nmap <silent> gs <Plug>(coc-range-select)
 xmap <silent> gs <Plug>(coc-range-select)
 
 " Refactoring
-nmap gr <Plug>(coc-rename)
-nmap gq <Plug>(coc-codeaction)
-xmap gq <Plug>(coc-codeaction)
+nmap <silent> gr <Plug>(coc-rename)
+nmap <silent> gq <Plug>(coc-codeaction)
+xmap <silent> gq <Plug>(coc-codeaction)
 
 " GoTo code navigation.
-nmap gd <Plug>(coc-definition)
-nmap gD <Plug>(coc-peek-definition)
-nmap gh <Plug>(coc-hover)
-nmap gt <Plug>(coc-type-definition)
-nmap gT <Plug>(coc-peek-type-definition)
-nmap gR <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gD <Plug>(coc-peek-definition)
+nmap <silent> gh <Plug>(coc-hover)
+nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gT <Plug>(coc-peek-type-definition)
+nmap <silent> gR <Plug>(coc-references)
