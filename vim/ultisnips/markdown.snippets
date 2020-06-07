@@ -43,3 +43,7 @@ context "re.match('^[^\-=\s].*', snip.buffer[snip.line-1])"
 snippet /^[\-=]/ "Headering" remA
 `!p snip.rv = match.group(0) * screen_len(snip.context.group(0)) + "\n"`
 endsnippet
+
+snippet /(\b|\s+)br/ "Break line" r
+<br>
+endsnippet

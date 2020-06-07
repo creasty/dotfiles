@@ -35,6 +35,8 @@
     }
   },
 
+  "tabnine.disable_filetypes": ["markdown"],
+
   "diagnostic-languageserver.filetypes": {
     "bash": ["shellcheck"],
     "sh": ["shellcheck"],
