@@ -1,5 +1,6 @@
 {
   "coc.preferences.formatOnType": true,
+  "coc.preferences.extensionUpdateCheck": "weekly",
 
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",
@@ -104,6 +105,7 @@
     "Hookable",
     "Overridable",
     "Readonly",
+    "Scrollable",
     "Typeahead",
     "Unmount",
     "Webview",

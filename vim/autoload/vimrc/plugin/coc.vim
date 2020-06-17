@@ -25,6 +25,10 @@ let g:coc_global_extensions = [
   \ 'coc-vimlsp',
 \ ]
 
+let g:coc_selectmode_mapping = 0
+let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
+let g:coc_snippet_prev = '<Plug>(coc-snippet-prev)'
+
 set completeopt+=noinsert " auto select
 set completeopt-=preview " disable the preview window feature
 set shortmess+=c " silence annoying messages
