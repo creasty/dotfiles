@@ -49,7 +49,13 @@ function! s:tab_x() abort
   return ":\<C-u>call UltiSnips#SaveLastVisualSelection()\<CR>gvs"
 endfunction
 
-inoremap <Plug>(supertab-undo) <C-e>
+function! s:cancel_completion() abort
+  " <C-e>
+  call coc#_cancel()
+  return ''
+endfunction
+
+inoremap <expr> <Plug>(supertab-undo) <SID>cancel_completion()
 inoremap <Plug>(supertab-accept) <C-y>
 inoremap <Plug>(supertab-ctrl-r) <C-r>=<SID>tab_r()<CR>
 inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
