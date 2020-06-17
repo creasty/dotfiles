@@ -4,7 +4,6 @@
 " - mattn/emmet-vim
 " - SirVer/ultisnips
 " - cohama/lexima.vim
-" - funcsig
 
 if exists('g:loaded_super_tab') || v:version < 702
   finish
@@ -28,8 +27,6 @@ endfunction
 function! s:tab_i() abort
   if pumvisible()
     return coc#_select_confirm()
-  elseif funcsig#should_trigger()
-    return "\<Esc>:call funcsig#select_placeholder()\<CR>"
   elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
   else
@@ -38,11 +35,7 @@ function! s:tab_i() abort
 endfunction
 
 function! s:tab_s() abort
-  if funcsig#should_trigger()
-    return "\<Esc>:call funcsig#select_placeholder()\<CR>"
-  else
-    return "\<Esc>:call UltiSnips#ExpandSnippetOrJump()\<CR>"
-  endif
+  return "\<Esc>:call UltiSnips#ExpandSnippetOrJump()\<CR>"
 endfunction
 
 function! s:tab_x() abort
@@ -68,12 +61,6 @@ xmap <silent> <expr> <Tab> <SID>tab_x()
 imap <silent> <expr> <C-c> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
 imap <silent> <expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
 imap <silent> <expr> <C-j> pumvisible() ? "\<Plug>(supertab-accept)" : "\<Plug>(supertab-enter)"
-
-augroup super_tab
-  autocmd!
-  " autocmd CompleteDone * call funcsig#on_completion()
-  " autocmd CursorHold * call funcsig#on_cursor_hold()
-augroup END
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
