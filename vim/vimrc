@@ -144,6 +144,25 @@ if dein#tap('emmet-vim')
 endif
 
 if dein#tap('vim-easymotion')
+  " Due to the modification of buffer text, some highlights vanish.
+  " Here to restore those lost highlights by forcibly triggering InsertLeave.
+  let s:easymotion_active = 0
+  function! s:easy_motion_coc_nvim_fix() abort
+    if EasyMotion#is_active()
+      let s:easymotion_active = 1
+    elseif s:easymotion_active == 1
+      let s:easymotion_active = 0
+      " @see https://github.com/neoclide/coc.nvim/blob/4f729a73eebea549646a6d0a80599299a60f5a46/src/diagnostic/manager.ts#L94-L104
+      doautocmd InsertLeave
+    endif
+  endfunction
+
+  function! s:easy_motion_lazy_init() abort
+    autocmd vimrc TextChanged,CursorMoved * call s:easy_motion_coc_nvim_fix()
+  endfunction
+
+  call dein#set_hook('vim-easymotion', 'hook_source', function('<SID>easy_motion_lazy_init'))
+
   let g:EasyMotion_do_mapping = 0
   let g:EasyMotion_verbose = 0
 
