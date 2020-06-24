@@ -31,7 +31,7 @@ set nocursorline
 set lazyredraw
 
 " limit syntax highlighting
-set synmaxcol=512
+" set synmaxcol=512
 
 " display very very long line at the end of file
 set display& display+=lastline
