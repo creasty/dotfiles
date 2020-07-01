@@ -101,6 +101,12 @@ function! vimrc#ui#status_line(w, cw) abort
   if l:active && l:ft ==# 'denite'
     let l:l1 += [denite#get_status('sources')]
   endif
+  if l:is_file
+    let l:last_saved_time = getbufvar(l:bufnr, 'auto_save_last_saved_time', 0)
+    if 0 < l:last_saved_time && l:last_saved_time >= localtime() - 60
+      let l:l1 += [strftime('✔️ %T', l:last_saved_time)]
+    endif
+  endif
 
   " r1
   if l:active
