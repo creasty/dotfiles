@@ -83,13 +83,6 @@
   //==============================================================================================
   "tabnine.experimentalAutoImports": true
 
-  //=== Customize UI
-  //==============================================================================================
-  "customizeUI.stylesheet": {
-    // ".tabs-and-actions-container .editor-actions ul.actions-container": "display: none;"
-    // ".cursor": "transition: all 80ms;"
-  },
-
   //=== Emmet
   //==============================================================================================
   "emmet.triggerExpansionOnTab": true,
