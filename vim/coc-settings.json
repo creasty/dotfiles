@@ -37,6 +37,7 @@
     }
   },
 
+  "tabnine.priority": 90,
   "tabnine.disable_filetypes": ["markdown"],
 
   "diagnostic-languageserver.filetypes": {
