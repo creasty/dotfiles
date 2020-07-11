@@ -52,6 +52,10 @@ nnoremap g0 :NextFile<CR>
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
+" fix broken syntax highlight
+" @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
+nnoremap <C-l> <Esc>:syntax sync fromstart<CR>
+
 command! Profile
   \ profile start ~/vim_profile.log |
   \ profile func * |
