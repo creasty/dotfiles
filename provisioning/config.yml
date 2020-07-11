@@ -30,8 +30,9 @@ homebrew:
     - webpquicklook            # https://github.com/dchest/webp-quicklook
     - wwdc                     # https://wwdc.io/
 
-    #- android-sdk    # https://developer.android.com/index.html
-    #- android-studio # https://developer.android.com/studio/index.html
+    #- intellij-idea-ce
+    #- android-sdk
+    #- android-studio
 
   packages:
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
