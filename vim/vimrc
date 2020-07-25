@@ -262,6 +262,7 @@ endif
 
 if dein#tap('coc.nvim')
   call vimrc#plugin#coc#init()
+  autocmd vimrc User ForceRefresh call coc#util#clear_signs()
 end
 
 if dein#tap('nerdtree')
