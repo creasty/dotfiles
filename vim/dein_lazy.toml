@@ -114,3 +114,8 @@ on_ft = ['rust']
 [[plugins]] # Kotlin plugin for Vim. Featuring: syntax highlighting, basic indentation, Syntastic support
 repo = 'udalov/kotlin-vim'
 on_ft = ['kotlin']
+
+[[plugins]] #  A Vim plugin that provides GraphQL file detection, syntax highlighting, and indentation
+repo = 'jparise/vim-graphql'
+on_ft = ['javascript', 'typescript', 'graphql']
+merged = 0
