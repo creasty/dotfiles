@@ -19,6 +19,10 @@ function! s:tab_r()
     return ''
   endif
 
+  if &filetype =~# 'x\?html\|xml\|s\?css\|javascript\|typescript' && emmet#isExpandable()
+    return emmet#expandAbbr(0, '')
+  endif
+
   " return lexima#expand('<TAB>', 'i')
   call feedkeys("\<Tab>", 'n')
   return ''
@@ -27,8 +31,6 @@ endfunction
 function! s:tab_i() abort
   if pumvisible()
     return coc#_select_confirm()
-  elseif &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
-    return "\<C-g>u\<C-r>=emmet#expandAbbr(0, '')\<CR>"
   else
     return "\<Plug>(supertab-ctrl-r)"
   endif
