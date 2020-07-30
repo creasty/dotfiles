@@ -1,7 +1,7 @@
 " fonts
 set linespace=2
-command! -nargs=1 Font :set guifont=Menlo:h<args>
-Font 12
+command! -nargs=? Font exec 'set' 'guifont=Menlo:h' . (<q-args> ? <q-args> : 12)
+Font
 
 " maximize window
 set lines=999 columns=9999
