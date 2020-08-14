@@ -91,7 +91,7 @@
       "command": "golangci-lint",
       "rootPatterns": [".git", "go.mod"],
       "debounce": 100,
-      "args": ["run", "--out-format", "json", "%file"],
+      "args": ["run", "--out-format", "json", "--disable", "deadcode,unused", "%file"],
       "sourceName": "golangci-lint",
       "parseJson": {
         "errorsRoot": "Issues",
