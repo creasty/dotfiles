@@ -37,6 +37,9 @@ let g:loaded_logipat = 1
 let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
 
+" python provider
+set pyxversion=3
+
 " unregister autocmds
 augroup vimrc
   autocmd!
