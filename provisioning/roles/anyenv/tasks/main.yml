@@ -4,7 +4,6 @@
 - name: fetch anyenv repo
   git:
     repo:    https://github.com/anyenv/anyenv
-    version: riywo
     dest:    '{{ anyenv.dir }}'
   when: anyenv.dir
 
