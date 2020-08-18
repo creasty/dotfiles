@@ -277,6 +277,8 @@ if dein#tap('nerdtree')
 endif
 
 if dein#tap('denite.nvim')
+  " NOTE: See :UpdateRemotePlugins
+
   call dein#set_hook('denite.nvim', 'hook_source', function('vimrc#plugin#denite#lazy_init'))
 
   nnoremap <silent> <C-q> :<C-u>call vimrc#plugin#denite#open_best()<CR>
