@@ -146,6 +146,7 @@ anyenv:
   dir:         '{{ home_path }}/.anyenv'
   plugins_dir: '{{ home_path }}/.anyenv/plugins'
   envs_dir:    '{{ home_path }}/.anyenv/envs'
+  bin_dir:     '{{ home_path }}/.anyenv/bin'
 
 golang:
   packages:

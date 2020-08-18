@@ -21,4 +21,4 @@
 
 - name: initialize install manifest directory
   command: |
-    bash -lc 'anyenv install --init'
+    {{ anyenv.bin_dir | quote }}/anyenv install --init
