@@ -21,4 +21,6 @@
 
 - name: initialize install manifest directory
   command: |
-    {{ anyenv.bin_dir | quote }}/anyenv install --init
+    {{ anyenv.libexec_dir | quote }}/anyenv-install --init
+  environment:
+    SKIP_ANYENV_INIT: true
