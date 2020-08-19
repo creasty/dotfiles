@@ -1,13 +1,13 @@
 #  General
 #-----------------------------------------------
-export LC_ALL=ja_JP.UTF-8
 export LANG=ja_JP.UTF-8
-export LC_CTYPE=ja_JP.UTF-8
-export EDITOR=vim
+export LC_ALL=$LANG
+export LC_CTYPE=$LANG
 
+export EDITOR=vim
 export LSCOLORS='Gxfxcxdxbxegedabagacad'
 
-#  Path
+#  Named path
 #-----------------------------------------------
 # Dotfiles
 export DOTFILES_PATH="$HOME/dotfiles"
@@ -41,7 +41,7 @@ export PATH=/usr/local/opt/libxml2/bin:$PATH
 # Rust
 export PATH=$PATH:$HOME/.cargo/bin
 
-#  Other config
+#  App config
 #-----------------------------------------------
 # Git
 export GIT_MERGE_AUTOEDIT='no'
