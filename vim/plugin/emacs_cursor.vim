@@ -44,5 +44,11 @@ cnoremap <C-f> <Right>
 cnoremap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
+smap <C-a> <C-g>I
+smap <C-e> <C-g>A
+smap <C-b> <C-g>I
+smap <C-f> <C-g>A
+smap <C-v> <C-g>r
+
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
