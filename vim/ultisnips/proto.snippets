@@ -1,0 +1,129 @@
+#=== Timestamp
+#==============================================================================================
+snippet "import timestamp" "import from google/protobuf" b
+import "google/protobuf/timestamp.proto";
+endsnippet
+
+snippet Timestamp "google.protobuf.Timestamp" b
+google.protobuf.Timestamp
+endsnippet
+
+#=== Wrapper
+#==============================================================================================
+# @see https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/wrappers.proto
+
+snippet "import wrappers" "import from google/protobuf" b
+import "google/protobuf/wrappers.proto";
+endsnippet
+
+snippet DoubleValue "google.protobuf.DoubleValue" b
+google.protobuf.DoubleValue
+endsnippet
+
+snippet FloatValue "google.protobuf.FloatValue" b
+google.protobuf.FloatValue
+endsnippet
+
+snippet Int64Value "google.protobuf.Int64Value" b
+google.protobuf.Int64Value
+endsnippet
+
+snippet UInt64Value "google.protobuf.UInt64Value" b
+google.protobuf.UInt64Value
+endsnippet
+
+snippet Int32Value "google.protobuf.Int32Value" b
+google.protobuf.Int32Value
+endsnippet
+
+snippet UInt32Value "google.protobuf.UInt32Value" b
+google.protobuf.UInt32Value
+endsnippet
+
+snippet BoolValue "google.protobuf.BoolValue" b
+google.protobuf.BoolValue
+endsnippet
+
+snippet StringValue "google.protobuf.StringValue" b
+google.protobuf.StringValue
+endsnippet
+
+snippet BytesValue "google.protobuf.BytesValue" b
+google.protobuf.BytesValue
+endsnippet
+
+#=== Field behavior
+#==============================================================================================
+# @see https://github.com/googleapis/googleapis/blob/master/google/api/field_behavior.proto
+
+snippet "import field_behavior" "import from google/api" b
+import "google/api/field_behavior.proto";
+endsnippet
+
+snippet OPTIONAL "Specifically denotes a field as optional" w
+(google.api.field_behavior) = OPTIONAL
+endsnippet
+
+snippet REQUIRED "Denotes a field as required" w
+(google.api.field_behavior) = REQUIRED
+endsnippet
+
+snippet OUTPUT_ONLY "Denotes a field as output only" w
+(google.api.field_behavior) = OUTPUT_ONLY
+endsnippet
+
+snippet INPUT_ONLY "Denotes a field as input only." w
+(google.api.field_behavior) = INPUT_ONLY
+endsnippet
+
+snippet IMMUTABLE "Denotes a field as immutable" w
+(google.api.field_behavior) = IMMUTABLE
+endsnippet
+
+#=== Empty
+#==============================================================================================
+snippet "import empty" "import from google/protobuf" b
+import "google/protobuf/empty.proto";
+endsnippet
+
+snippet Empty "google.protobuf.Empty" w
+google.protobuf.Empty
+endsnippet
+
+#=== FieldMask
+#==============================================================================================
+snippet "import field_mask" "import from google/protobuf" b
+import "google/protobuf/field_mask.proto";
+endsnippet
+
+snippet FieldMask "google.protobuf.FieldMask" w
+google.protobuf.FieldMask
+endsnippet
+
+#=== Any
+#==============================================================================================
+snippet "import any" "import from google/protobuf" b
+import "google/protobuf/any.proto";
+endsnippet
+
+snippet Any "google.protobuf.Any" w
+google.protobuf.Any
+endsnippet
+
+#=== MultiUpdate
+#==============================================================================================
+snippet "message UpdateMulti request" "define bulk update request" b
+message UpdateMulti${1:Name}Request {
+	// 更新用レコード
+	repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
+
+	message Record {
+		// 傷病名
+		${2:$1} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', t[2]).lower()` = 1 [ (google.api.field_behavior) = REQUIRED ];
+		// レコード操作
+		RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
+		// マスク
+		google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
+	}
+}$0
+endsnippet
