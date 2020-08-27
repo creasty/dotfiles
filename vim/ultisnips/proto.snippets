@@ -1,3 +1,16 @@
+snippet syntax "syntax proto3" b
+syntax = "proto3";
+endsnippet
+
+snippet package "package" b
+package $1;
+endsnippet
+
+snippet option-java "java options" b
+option java_package = "$1";
+option java_multiple_files = true;
+endsnippet
+
 #=== Timestamp
 #==============================================================================================
 snippet "import timestamp" "import from google/protobuf" b
@@ -123,7 +136,7 @@ message UpdateMulti${1:Name}Request {
 	repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
 
 	message Record {
-		// 傷病名
+		// $3
 		${2:$1} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', t[2]).lower()` = 1 [ (google.api.field_behavior) = REQUIRED ];
 		// レコード操作
 		RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
