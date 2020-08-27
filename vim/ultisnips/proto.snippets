@@ -100,6 +100,11 @@ snippet FieldMask "google.protobuf.FieldMask" w
 google.protobuf.FieldMask
 endsnippet
 
+snippet update_mask "define update_mask" b
+// マスク
+google.protobuf.FieldMask update_mask = $1 [ (google.api.field_behavior) = REQUIRED ];
+endsnippet
+
 #=== Any
 #==============================================================================================
 snippet "import any" "import from google/protobuf" b
@@ -125,5 +130,21 @@ message UpdateMulti${1:Name}Request {
 		// マスク
 		google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
 	}
-}$0
+}
+endsnippet
+
+#=== Pagination
+#==============================================================================================
+# @see https://cloud.google.com/apis/design/design_patterns#list_pagination
+
+snippet pagination "pagination request fields" b
+// ページサイズ
+int32 page_size = $1 [ (google.api.field_behavior) = REQUIRED ];
+// ページトークン
+string page_token = `!p snip.rv = int(t[1]) + 1 if t[1] else ''` [ (google.api.field_behavior) = REQUIRED ];
+endsnippet
+
+snippet next_page_token "pagination response field" b
+// 次のページトークン
+string next_page_token = $1 [ (google.api.field_behavior) = REQUIRED ];
 endsnippet
