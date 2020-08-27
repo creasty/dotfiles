@@ -50,6 +50,14 @@ call lexima#add_rule({
   \ 'input': '<BS><CR><Tab>',
 \ })
 
+" JavaScript: arrow function brackets
+call lexima#add_rule({
+  \ 'char':     '<CR>',
+  \ 'at':       ') => \%#',
+  \ 'input':    '{}<Left><CR><Tab>',
+  \ 'filetype': ['javascript', 'typescript', 'javascript.tsx', 'typescript.tsx'],
+\ })
+
 "  C-l
 "-----------------------------------------------
 call lexima#add_rule({ 'char': '<C-l>', 'input': '' })
