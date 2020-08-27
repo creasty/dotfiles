@@ -19,7 +19,7 @@ function! s:tab_r()
     return ''
   endif
 
-  if &filetype =~# 'x\?html\|xml\|s\?css\|javascript\|typescript' && emmet#isExpandable()
+  if &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
     return emmet#expandAbbr(0, '')
   endif
 
