@@ -1,53 +1,33 @@
+function! s:keywords(kws) abort
+  let l:h = {}
+
+  let l:len = len(a:kws)
+  let l:i = 0
+  while l:i < l:len
+    let l:h['\<' . escape(a:kws[l:i], '.') . '\>'] = a:kws[(l:i + 1) % l:len]
+    let l:i += 1
+  endwhile
+
+  return l:h
+endfunction
+
 let g:switch_custom_definitions = [
-  \ {
-    \ ':\(\w\+\)': '''\1''',
-  \ },
-  \ {
-    \ '\<\(\w\+\): \(\s*\)': '''\1'' \2=> ',
-    \ '''\(\w\+\)'' \(\s*\)=> ': '\1: \2',
-  \ },
-  \ {
-    \ '\<public\>': 'protected',
-    \ '\<protected\>': 'private',
-    \ '\<private\>': 'public',
-  \ },
-  \ {
-    \ '\<\(it\|describe\|context\|senario\)\>': 'x\1',
-    \ '\<x\(it\|describe\|context\|senario\)\>': '\1',
-  \ },
-  \ {
-    \ '\<and\>': 'or',
-    \ '\<or\>': 'and',
-  \ },
-  \ {
-    \ '\<if\>': 'unless',
-    \ '\<unless\>': 'if',
-  \ },
-  \ {
-    \ '\<true\>': 'false',
-    \ '\<false\>': 'true',
-  \ },
-  \ {
-    \ '\<TRUE\>': 'FALSE',
-    \ '\<FALSE\>': 'TRUE',
-  \ },
-  \ {
-    \ '\<on\>': 'off',
-    \ '\<off\>': 'on',
-  \ },
-  \ {
-    \ '\<ON\>': 'OFF',
-    \ '\<OFF\>': 'ON',
-  \ },
-  \ {
-    \ '\<yes\>': 'no',
-    \ '\<no\>': 'yes',
-  \ },
-  \ {
-    \ '\<YES\>': 'NO',
-    \ '\<NO\>': 'YES',
-  \ },
+  \ s:keywords(['public', 'protected', 'private']),
+  \ s:keywords(['and', 'or']),
+  \ s:keywords(['if', 'unless']),
+  \ s:keywords(['true', 'false']),
+  \ s:keywords(['True', 'False']),
+  \ s:keywords(['TRUE', 'FALSE']),
+  \ s:keywords(['on', 'off']),
+  \ s:keywords(['ON', 'OFF']),
+  \ s:keywords(['yes', 'no']),
+  \ s:keywords(['Yes', 'No']),
+  \ s:keywords(['YES', 'NO']),
 \ ]
+
+function! vimrc#plugin#switch#keywords(kws) abort
+  return s:keywords(a:kws)
+endfunction
 
 function! vimrc#plugin#switch#toggle() abort
   let l:line = getline('.')
