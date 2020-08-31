@@ -11,6 +11,17 @@ option java_package = "$1";
 option java_multiple_files = true;
 endsnippet
 
+snippet rpc "define rpc" b
+rpc ${1:Name} (${2:$1Request}) returns (${3:$1Response}) {
+}
+endsnippet
+
+snippet service "define service" b
+service ${1:Name}Service {
+	$0
+}
+endsnippet
+
 #=== Timestamp
 #==============================================================================================
 snippet "import timestamp" "import from google/protobuf" b
