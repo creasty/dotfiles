@@ -101,6 +101,42 @@
       }
     }
   },
+  "cSpell.enabledLanguageIds": [
+    "vim",
+    "asciidoc",
+    "c",
+    "cpp",
+    "csharp",
+    "css",
+    "git-commit",
+    "go",
+    "handlebars",
+    "haskell",
+    "html",
+    "jade",
+    "java",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "jsonc",
+    "latex",
+    "less",
+    "markdown",
+    "php",
+    "plaintext",
+    "python",
+    "pug",
+    "restructuredtext",
+    "rust",
+    "scala",
+    "scss",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "yaml",
+    "yml",
+    "proto"
+  ],
   "cSpell.userWords": [
     "CSRF",
     "Calculatable",
@@ -143,6 +179,8 @@
     "unstyled",
     "upcase",
     "uploader",
-    "uuid"
+    "upsert",
+    "uuid",
+    "uuids"
   ]
 }

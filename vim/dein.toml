@@ -65,6 +65,10 @@ repo = 'kana/vim-submode'
 
 [[plugins]] # sequencial numbering with pattern
 repo = 'deris/vim-rengbang'
+on_source = '''
+let g:rengbang_default_usefirst = 1
+let g:rengbang_default_pattern = '\(\<\d\+\>\)'
+'''
 
 #  Appearance
 #-----------------------------------------------

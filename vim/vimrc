@@ -321,6 +321,11 @@ if dein#tap('vim-submode')
   call vimrc#plugin#submode#init()
 endif
 
+if dein#tap('vim-rengbang')
+  let g:rengbang_default_usefirst = 1
+  let g:rengbang_default_pattern = '\(\<\d\+\>\)'
+endif
+
 if dein#tap('vim-signature')
   " hide upper case marks
   let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'

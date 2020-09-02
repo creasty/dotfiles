@@ -56,11 +56,11 @@ message $1Response {
 endsnippet
 
 snippet single "define a single field" b
-${1:Type} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()` = $2;
+${1:Type} ${2:`!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()`} = $3;
 endsnippet
 
 snippet repeated "define a repeated field" b
-repeated ${1:Type} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()` = $2;
+repeated ${1:Type} ${2:`!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()`} = $3;
 endsnippet
 
 snippet "message update-multi-request" "define bulk update request" b
