@@ -11,14 +11,71 @@ option java_package = "$1";
 option java_multiple_files = true;
 endsnippet
 
-snippet rpc "define rpc" b
+snippet rpc "define a rpc" b
 rpc ${1:Name} (${2:$1Request}) returns (${3:$1Response}) {
 }
 endsnippet
 
-snippet service "define service" b
+snippet service "define a service" b
 service ${1:Name}Service {
 	$0
+}
+endsnippet
+
+snippet enum "define a enum" b
+enum $1 {
+	$0
+}
+endsnippet
+
+snippet message "define a message" b
+message $1 {
+	$0
+}
+endsnippet
+
+snippet "message request" "define a request message" b
+message $1Request {
+	$0
+}
+endsnippet
+
+snippet "message response" "define a response message" b
+message $1Response {
+	$0
+}
+endsnippet
+
+snippet "message request-response" "define request & response messages" b
+message $1Request {
+	$0
+}
+
+message $1Response {
+}
+endsnippet
+
+snippet single "define a single field" b
+${1:Type} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()` = $2;
+endsnippet
+
+snippet repeated "define a repeated field" b
+repeated ${1:Type} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()` = $2;
+endsnippet
+
+snippet "message update-multi-request" "define bulk update request" b
+message UpdateMulti${1:Name}Request {
+	// 更新用レコード
+	repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
+
+	message Record {
+		// $3
+		${2:$1} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', t[2]).lower()` = 1 [ (google.api.field_behavior) = REQUIRED ];
+		// レコード操作
+		RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
+		// マスク
+		google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
+	}
 }
 endsnippet
 
@@ -137,24 +194,6 @@ endsnippet
 
 snippet Any "google.protobuf.Any" w
 google.protobuf.Any
-endsnippet
-
-#=== MultiUpdate
-#==============================================================================================
-snippet "message UpdateMulti request" "define bulk update request" b
-message UpdateMulti${1:Name}Request {
-	// 更新用レコード
-	repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
-
-	message Record {
-		// $3
-		${2:$1} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', t[2]).lower()` = 1 [ (google.api.field_behavior) = REQUIRED ];
-		// レコード操作
-		RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
-		// マスク
-		google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
-	}
-}
 endsnippet
 
 #=== Pagination

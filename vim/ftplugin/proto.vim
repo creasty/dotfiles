@@ -9,5 +9,6 @@ let b:switch_custom_definitions = [
   \ vimrc#plugin#switch#keywords(['uint32', 'google.protobuf.UInt32Value']),
   \ vimrc#plugin#switch#keywords(['bool', 'google.protobuf.BoolValue']),
   \ vimrc#plugin#switch#keywords(['bytes', 'google.protobuf.BytesValue']),
+  \ vimrc#plugin#switch#keywords(['string', 'google.protobuf.StringValue']),
   \ vimrc#plugin#switch#keywords(['field_mask', 'update_mask']),
 \ ]
