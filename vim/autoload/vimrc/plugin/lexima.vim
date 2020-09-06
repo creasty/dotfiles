@@ -112,8 +112,15 @@ unlet s:pa
 " tag close
 call lexima#add_rule({
   \ 'char':  '<C-l>',
-  \ 'at':    '<[a-zA-Z0-9_-]\+[^>]*>\%#',
+  \ 'at':    '<[a-zA-Z0-9_.-]\+[^>]*>\%#',
   \ 'input': '<Esc>F<<Right>"xyiwf>a</><Esc><Left>"xpF<i',
+\ })
+
+" tag self-close
+call lexima#add_rule({
+  \ 'char':  '<C-l>',
+  \ 'at':    '<\([a-zA-Z0-9_.-]\+\)[^>]*>\%#</\1>',
+  \ 'input': '<Esc>ldf>i /<Right>',
 \ })
 
 " Golang: channel
@@ -280,5 +287,13 @@ call lexima#add_rule({
   \ 'char':  '<Space>',
   \ 'at':    '^font\%#',
   \ 'input': "\<C-u>Font ",
+  \ 'mode':  ':',
+\ })
+
+" softtab
+call lexima#add_rule({
+  \ 'char':  '<Space>',
+  \ 'at':    '^soft\%#',
+  \ 'input': "\<C-u>SoftTab ",
   \ 'mode':  ':',
 \ })

@@ -6,8 +6,8 @@ snippet useState "Variable for React.useState" b
 const [${1:state}, set${1/^(is|has)?(.+)/\u$2/}] = useState<${2:${1/^(is|has)?(.+)/\u$2/}}>($0);
 endsnippet
 
-snippet useLinkedState "Variable for bw-hook.useLinkedState" b
-const [${1:state}, set${1/^(is|has)?(.+)/\u$2/}] = useLinkedState<${2:${1/^(is|has)?(.+)/\u$2/}}>($0);
+snippet useAdaptiveState "Variable for useAdaptiveState" b
+const [${1:state}, set${1/^(is|has)?(.+)/\u$2/}] = useAdaptiveState<${2:${1/^(is|has)?(.+)/\u$2/}}>($0);
 endsnippet
 
 snippet useRef "Variable for React.useRef" b
