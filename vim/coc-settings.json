@@ -10,6 +10,8 @@
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "←",
 
+  "suggest.preferCompleteThanJumpPlaceholder": true,
+
   "list.normalMappings": {
     "<C-j>": "do:defaultaction"
   },
