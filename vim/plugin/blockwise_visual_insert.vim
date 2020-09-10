@@ -15,7 +15,7 @@ function! s:force_blockwise_visual(next_key) abort
   let l:m = mode()
 
   let s:blockwise_visual_paste = 1
-  set paste
+  " set paste
 
   if l:m ==# 'v'
     return "\<C-v>" . a:next_key
