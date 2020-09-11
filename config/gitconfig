@@ -9,7 +9,9 @@
 [core]
   editor       = /usr/local/bin/vim
   excludesfile = ~/.gitignore
-  pager        = diff-so-fancy | less --tabs=4 -RFX
+
+  # To turn off diff-so-fancy temporarily, you can do `g --no-pager d`.
+  pager = diff-so-fancy | less --tabs=4 -RFX
 
 [color]
   ui = true
@@ -136,6 +138,3 @@
 
 [ghq]
   root = ~/go/src
-
-[diff-so-fancy]
-  stripLeadingSymbols = false
