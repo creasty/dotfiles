@@ -56,6 +56,13 @@ repo = 'tpope/vim-repeat'
 
 [[plugins]] # a tree explorer
 repo = 'scrooloose/nerdtree'
+hook_add = '''
+let g:NERDSpaceDelims = 1
+let g:NERDShutUp = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeIgnore = ['\~$', '\.git$']
+let g:NERDTreeAutoDeleteBuffer = 1
+'''
 
 [[plugins]] # run commands quickly
 repo = 'thinca/vim-quickrun'
@@ -65,7 +72,7 @@ repo = 'kana/vim-submode'
 
 [[plugins]] # sequencial numbering with pattern
 repo = 'deris/vim-rengbang'
-on_source = '''
+hook_add = '''
 let g:rengbang_default_usefirst = 1
 let g:rengbang_default_pattern = '\(\<\d\+\>\)'
 '''
@@ -77,6 +84,10 @@ repo = 'creasty/candle.vim'
 
 [[plugins]] # toggle, display and navigate marks
 repo = 'kshenoy/vim-signature'
+hook_add = '''
+let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
+let g:SignatureMarkTextHL = 'Statement'
+'''
 
 [[plugins]] # search status
 repo = 'osyo-manga/vim-anzu'

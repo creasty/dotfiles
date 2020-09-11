@@ -137,15 +137,6 @@ if dein#tap('vim-easy-align')
   xnoremap <silent> L :EasyAlign<cr>
 endif
 
-if dein#tap('emmet-vim')
-  let g:user_emmet_install_global = 0
-  let g:user_emmet_mode = 'i'
-  let g:user_emmet_leader_key = '<Nop>'
-  let g:user_emmet_settings = {
-    \ 'indentation': '  ',
-  \ }
-endif
-
 if dein#tap('vim-easymotion')
   " Due to the modification of buffer text, some highlights vanish.
   " Here to restore those lost highlights by forcibly triggering InsertLeave.
@@ -177,6 +168,7 @@ if dein#tap('vim-easymotion')
 endif
 
 if dein#tap('operator-camelize.vim')
+  nmap gC <Plug>(operator-camelize-toggle)
   xmap C <Plug>(operator-camelize-toggle)
 endif
 
@@ -268,14 +260,6 @@ if dein#tap('coc.nvim')
   autocmd vimrc User ForceRefresh call coc#util#clear_signs()
 end
 
-if dein#tap('nerdtree')
-  let g:NERDSpaceDelims = 1
-  let g:NERDShutUp = 1
-  let g:NERDTreeShowHidden = 1
-  let g:NERDTreeIgnore = ['\~$', '\.git$']
-  let g:NERDTreeAutoDeleteBuffer = 1
-endif
-
 if dein#tap('denite.nvim')
   " NOTE: See :UpdateRemotePlugins
 
@@ -319,19 +303,6 @@ endif
 
 if dein#tap('vim-submode')
   call vimrc#plugin#submode#init()
-endif
-
-if dein#tap('vim-rengbang')
-  let g:rengbang_default_usefirst = 1
-  let g:rengbang_default_pattern = '\(\<\d\+\>\)'
-endif
-
-if dein#tap('vim-signature')
-  " hide upper case marks
-  let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
-
-  " highlight
-  let g:SignatureMarkTextHL = 'Statement'
 endif
 
 if dein#tap('vim-searchhi')
