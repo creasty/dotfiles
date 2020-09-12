@@ -19,6 +19,9 @@
     "<C-v>": "eval:@@"
   },
 
+  "javascript.preferences.useAliasesForRenames": false,
+  "typescript.preferences.useAliasesForRenames": false,
+
   "languageserver": {
     "gopls": {
       "command": "gopls",

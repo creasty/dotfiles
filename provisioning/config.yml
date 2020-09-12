@@ -85,6 +85,7 @@ homebrew:
     - termtosvg           # Record terminal sessions as SVG animations
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
+    - watchman            # Watch files and take action when they change
     - webp                # Image format providing lossless and lossy compression for web images
 
     #- xctool # Drop-in replacement for xcodebuild with a few extra features
