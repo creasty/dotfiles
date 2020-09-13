@@ -66,6 +66,9 @@ command! -nargs=0 -range=% Format
   \   call CocAction('formatSelected', visualmode()) |
   \ endif
 
+command! -nargs=0 OrganizeImport
+  \ call CocAction('runCommand', 'editor.action.organizeImport')
+
 "  Key mappings
 "-----------------------------------------------
 " Introduce function text object
@@ -93,3 +96,7 @@ nmap <silent> gh <Plug>(coc-hover)
 nmap <silent> gt <Plug>(coc-type-definition)
 nmap <silent> gT <Plug>(coc-peek-type-definition)
 nmap <silent> gR <Plug>(coc-references)
+
+" Navigate diagnostics
+nmap <silent> g[ <Plug>(coc-diagnostic-prev)
+nmap <silent> g] <Plug>(coc-diagnostic-next)
