@@ -83,7 +83,7 @@ xmap <silent> gs <Plug>(coc-range-select)
 
 " Refactoring
 nmap <silent> gr <Plug>(coc-rename)
-nmap <silent> gq <Plug>(coc-codeaction-line)
+nmap <silent> gq <Plug>(coc-codeaction-selected)l
 xmap <silent> gq <Plug>(coc-codeaction-selected)
 
 " GoTo code navigation.
