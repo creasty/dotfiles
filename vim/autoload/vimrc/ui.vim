@@ -108,6 +108,14 @@ function! vimrc#ui#status_line(w, cw) abort
     endif
   endif
 
+  if exists("*coc#status")
+    let l:l1 += [coc#status()]
+    let l:coc_current_function = getbufvar(l:bufnr, 'coc_current_function', '')
+    if l:coc_current_function !=# ''
+      let l:l1 += [l:coc_current_function]
+    endif
+  endif
+
   " r1
   if l:active
     let l:diagnostics = {
