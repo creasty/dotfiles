@@ -67,23 +67,25 @@ function! vimrc#util#rename_file(file) abort
   let l:extension_changed = fnamemodify(tolower(l:new_path), ':e') !=# fnamemodify(tolower(l:old_path), ':e')
 
   if l:case_changed && filereadable(l:new_path)
-    " Confirm to overwrite
-    " call vimrc#util#delete_file(l:new_path)
-    exec 'echomsg' 'Destination already exists:' l:new_path
-    return
+    let l:answer = input(l:new_path . ' already exists, overwrite? (y/n)')
+    call inputrestore()
+    if l:answer =~# '^[yY]$'
+      call vimrc#util#delete_file(l:new_path)
+    else
+      return
+    endif
   endif
 
   call s:rename_file(l:old_path, l:new_path)
 
-  let l:view = winsaveview()
   if l:case_changed
+    exec 'keepalt' 'enew'
     exec l:bufnr . 'bwipeout!'
     exec 'keepalt' 'edit' fnameescape(l:new_path)
   else
     exec 'keepalt' 'edit' fnameescape(l:new_path)
     exec l:bufnr . 'bwipeout!'
   endif
-  call winrestview(l:view)
 
   if l:extension_changed
     filetype detect
@@ -96,6 +98,7 @@ function! s:rename_file(old, new) abort
 py3 << EOF
 import os
 old_path, new_path = vim.eval("a:old"), vim.eval("a:new")
+os.makedirs(os.path.dirname(new_path), exist_ok = True)
 os.rename(old_path, new_path)
 EOF
 endfunction
