@@ -108,17 +108,6 @@ function! vimrc#ui#status_line(w, cw) abort
     endif
   endif
 
-  let l:coc_status = get(g:, 'coc_status', '')
-  if l:coc_status !=# ''
-    let l:l1 += [l:coc_status]
-  endif
-
-  let l:coc_current_function = getbufvar(l:bufnr, 'coc_current_function', '')
-  if l:coc_current_function !=# ''
-    let l:l1 += [l:coc_current_function]
-  endif
-
-  " r1
   if l:active
     let l:diagnostics = {
       \ 'E': 0,
@@ -136,17 +125,28 @@ function! vimrc#ui#status_line(w, cw) abort
     end
 
     if l:diagnostics['E'] > 0
-      let l:r1 += ['%#StatusLineDiagnosticError#' . '✗', l:diagnostics['E'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticError#' . '✗', l:diagnostics['E'] . '%*']
     end
     if l:diagnostics['W'] > 0
-      let l:r1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:diagnostics['W'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticWarning#' . '∆', l:diagnostics['W'] . '%*']
     end
     if l:diagnostics['I'] > 0
-      let l:r1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:diagnostics['I'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticInfo#' . '▸', l:diagnostics['I'] . '%*']
     end
     if l:diagnostics['H'] > 0
-      let l:r1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:diagnostics['H'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticMessage#' . '▪︎', l:diagnostics['H'] . '%*']
     end
+  endif
+
+  " r1
+  let l:coc_current_function = getbufvar(l:bufnr, 'coc_current_function', '')
+  if l:active && l:coc_current_function !=# ''
+    let l:r1 += [l:coc_current_function]
+  endif
+
+  let l:coc_status = get(g:, 'coc_status', '')
+  if l:active && l:coc_status !=# ''
+    let l:r1 += [l:coc_status]
   endif
 
   " r0
