@@ -46,17 +46,58 @@ endfunction
 
 " rename
 function! vimrc#util#rename_file(file) abort
-  let l:src = expand('%:p')
-  let l:dst = expand(a:file)
+  let l:bufnr = bufnr('%')
+  let l:old_path = expand('%:p')
+  let l:new_path = fnamemodify(expand(a:file), ':p')
 
-  exec 'keepalt saveas' fnameescape(l:dst)
-
-  if l:src !=# expand('%:p')
-    exec 'bwipe' fnameescape(l:src)
-    call delete(l:src)
+  if l:new_path ==# l:old_path || l:new_path ==# ''
+    return
   endif
 
-  filetype detect
+  if !filereadable(l:old_path)
+    exec 'write' fnameescape(l:new_path)
+    return
+  endif
+
+  if &modified
+    noautocmd w
+  endif
+
+  let l:case_changed = (tolower(l:new_path) ==# tolower(l:old_path))
+  let l:extension_changed = fnamemodify(tolower(l:new_path), ':e') !=# fnamemodify(tolower(l:old_path), ':e')
+
+  if l:case_changed && filereadable(l:new_path)
+    " Confirm to overwrite
+    " call vimrc#util#delete_file(l:new_path)
+    exec 'echomsg' 'Destination already exists:' l:new_path
+    return
+  endif
+
+  call s:rename_file(l:old_path, l:new_path)
+
+  let l:view = winsaveview()
+  if l:case_changed
+    exec l:bufnr . 'bwipeout!'
+    exec 'keepalt' 'edit' fnameescape(l:new_path)
+  else
+    exec 'keepalt' 'edit' fnameescape(l:new_path)
+    exec l:bufnr . 'bwipeout!'
+  endif
+  call winrestview(l:view)
+
+  if l:extension_changed
+    filetype detect
+  endif
+endfunction
+
+function! s:rename_file(old, new) abort
+  " https://github.com/facebook/watchman
+  " @see https://man7.org/linux/man-pages/man2/rename.2.html
+py3 << EOF
+import os
+old_path, new_path = vim.eval("a:old"), vim.eval("a:new")
+os.rename(old_path, new_path)
+EOF
 endfunction
 
 " edit a next file in the same directory
