@@ -1,4 +1,4 @@
-" [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin
+" [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin && brew install watchman
 " [coc-eslint] npm install -g eslint
 " [coc-css] npm install -g vscode-css-languageserver-bin
 " [coc-rls] rustup update && rustup component add rls rust-analysis rust-src
@@ -12,6 +12,7 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-prettier',
   \ 'coc-python',
+  \ 'coc-react-refactor',
   \ 'coc-rls',
   \ 'coc-solargraph',
   \ 'coc-spell-checker',
@@ -19,7 +20,6 @@ let g:coc_global_extensions = [
   \ 'coc-syntax',
   \ 'coc-tabnine',
   \ 'coc-tag',
-  \ 'coc-tslint-plugin',
   \ 'coc-tsserver',
   \ 'coc-ultisnips',
   \ 'coc-vimlsp',
