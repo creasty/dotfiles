@@ -64,7 +64,7 @@ function! vimrc#ui#status_line(w, cw) abort
   let l:_bufname = bufname(l:bufnr)
   let l:active = (a:w == a:cw)
   let l:ft = getbufvar(l:bufnr, '&ft')
-  " let l:enough_width = (winwidth(a:w) > 70)
+  let l:enough_width = (winwidth(a:w) > 120)
 
   let l:bufname =
     \ empty(l:_bufname) ? '[No Name]' :
@@ -140,7 +140,7 @@ function! vimrc#ui#status_line(w, cw) abort
 
   " r1
   let l:coc_current_function = getbufvar(l:bufnr, 'coc_current_function', '')
-  if l:active && l:coc_current_function !=# ''
+  if l:active && l:enough_width && l:coc_current_function !=# ''
     let l:r1 += [l:coc_current_function]
   endif
 
