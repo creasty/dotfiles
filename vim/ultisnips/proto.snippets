@@ -6,6 +6,10 @@ snippet package "package" b
 package $1;
 endsnippet
 
+snippet import "import" b
+import "$1";
+endsnippet
+
 snippet option-java "java options" b
 option java_package = "$1";
 option java_multiple_files = true;
@@ -194,6 +198,16 @@ endsnippet
 
 snippet Any "google.protobuf.Any" w
 google.protobuf.Any
+endsnippet
+
+#=== Date
+#==============================================================================================
+snippet "import date" "import from google/type" b
+import "google/type/date.proto";
+endsnippet
+
+snippet Date "google.type.Date" w
+google.type.Date
 endsnippet
 
 #=== Pagination
