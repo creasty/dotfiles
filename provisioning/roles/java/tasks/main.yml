@@ -31,6 +31,6 @@
   command: |
     bash -lc 'jenv enable-plugin export'
 
-- name: enable export plugin
+- name: register java home
   command: |
     bash -lc 'jenv add "$(/usr/libexec/java_home)"'
