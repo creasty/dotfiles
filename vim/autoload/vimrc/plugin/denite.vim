@@ -23,15 +23,23 @@ function! vimrc#plugin#denite#lazy_init() abort
   " call denite#custom#option('_', 'split', 'floating')
 
   " use ag
-  call denite#custom#var('grep', 'command', ['ag'])
-  call denite#custom#var('grep', 'default_opts', ['--nopager', '--vimgrep'])
-  call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'pattern_opt', [])
-  call denite#custom#var('grep', 'separator', ['--'])
-  call denite#custom#var('grep', 'final_opts', [])
+  call denite#custom#var('grep', {
+    \ 'command': ['ag'],
+    \ 'default_opts': ['--nopager', '--vimgrep'],
+    \ 'recursive_opts': [],
+    \ 'pattern_opt': [],
+    \ 'separator': ['--'],
+    \ 'final_opts': [],
+  \ })
+  call denite#custom#source('grep', {
+    \ 'matchers': [],
+    \ 'sorters': [],
+  \ })
 
   " file_rec
-  call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-U', '-g', ''])
+  call denite#custom#var('file/rec', 'command', [
+    \ 'ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-U', '-g', '',
+  \ ])
 endfunction
 
 function! vimrc#plugin#denite#control_parent(f) abort

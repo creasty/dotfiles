@@ -271,6 +271,7 @@ if dein#tap('denite.nvim')
 
   command! Ag :Denite -buffer-name=grep -resume grep
   nnoremap <Space>/ :Ag<CR>
+  nnoremap <silent> <Space>* :DeniteCursorWord -buffer-name=grep grep<CR>
 
   command! I18n :Denite -buffer-name=i18n_flow -resume i18n_flow
   nnoremap <Space>i :I18n<CR>

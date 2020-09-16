@@ -120,10 +120,10 @@ nmap <C-w><C-r> <Plug>(lcb-restore)
 xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
 " replace selection
-xnoremap <Space>r "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+xnoremap <Space>s "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
-nnoremap <Space>* "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
+nnoremap <Space>s "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
 " auto escaping
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
