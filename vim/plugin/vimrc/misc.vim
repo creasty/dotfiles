@@ -60,6 +60,12 @@ function s:force_refresh() abort
   " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
   syntax sync fromstart
 
+  " clear textprops
+  call prop_clear(1, line('$'))
+
+  " fix glitches
+  redraw!
+
   " plugins
   doautocmd User ForceRefresh
 
