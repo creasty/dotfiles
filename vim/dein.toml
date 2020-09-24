@@ -40,9 +40,11 @@ hook_add = '''
 let g:ctrlsf_ackprg = 'ag'
 let g:ctrlsf_auto_focus = { "at": "start" }
 let g:ctrlsf_case_sensitive = 'yes'
+let g:ctrlsf_winsize = '30'
 let g:ctrlsf_position = 'bottom'
 let g:ctrlsf_regex_pattern = 1
 let g:ctrlsf_context = ''
+let g:ctrlsf_default_view_mode = 'compact'
 '''
 
 #  Completion
