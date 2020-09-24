@@ -24,6 +24,7 @@ call lexima#add_rule({ 'char': '<lt>', 'at': '\\\%#' })
 call lexima#add_rule({ 'char': '>', 'at': '[^>]\%#>', 'leave': 1 })
 call lexima#add_rule({ 'char': '<BS>', 'at': '<\%#>', 'delete': 1 })
 call lexima#add_rule({ 'char': '>', 'at': '< \%#', 'input': '<BS>', 'input_after': '>' })
+call lexima#add_rule({ 'char': '>', 'at': '< \%#\S', 'input': '<BS>', 'input_after': '><Space>' })
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
 call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
@@ -32,6 +33,13 @@ call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': 
 " comma
 call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
 call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
+
+" no merge: ? !
+call lexima#add_rule({ 'char': '!', 'at': ' ? \%#' })
+
+" Kotlin: elvis operator
+call lexima#add_rule({ 'char': '<Space>', 'at': ' ? :\%#', 'input': '<BS><BS>:<Space>' })
+call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Space>?:<Space>' })
 
 " Rust: lifetime
 call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
@@ -70,7 +78,7 @@ call lexima#add_rule({
   \ 'priority': 10,
 \ })
 
-" delete spaces around
+" spaces around operators
 call lexima#add_rule({
   \ 'char':  '<C-l>',
   \ 'at':    '\S ' . s:all_ops . '\+ \%#',
