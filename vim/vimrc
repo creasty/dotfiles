@@ -267,10 +267,11 @@ if dein#tap('denite.nvim')
 
   call dein#set_hook('denite.nvim', 'hook_source', function('vimrc#plugin#denite#lazy_init'))
 
-  nnoremap <silent> <C-q> :<C-u>call vimrc#plugin#denite#open_best()<CR>
+  command! Open :call vimrc#plugin#denite#open_best()
+  nnoremap <silent> <C-q> :<C-u>Open<CR>
 
-  command! Ag :Denite -buffer-name=grep -resume grep
-  nnoremap <Space>/ :Ag<CR>
+  command! Ag :Denite -buffer-name=grep grep
+  nnoremap <Space>/ :Denite -buffer-name=grep -resume grep<CR>
   nnoremap <silent> <Space>* :DeniteCursorWord -buffer-name=grep grep<CR>
 
   command! I18n :Denite -buffer-name=i18n_flow -resume i18n_flow
