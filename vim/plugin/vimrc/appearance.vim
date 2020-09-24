@@ -12,6 +12,11 @@ augroup vimrc_appearance
   autocmd!
 augroup END
 
+" enable 24-bits colors
+if has('termguicolors')
+  set termguicolors
+endif
+
 " always show statusline
 set laststatus=2
 

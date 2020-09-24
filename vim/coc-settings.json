@@ -8,7 +8,7 @@
   "diagnostic.warningSign": "∆",
   "diagnostic.infoSign": "▸",
   "diagnostic.hintSign": "▪︎",
-  "diagnostic.virtualText": true,
+  "diagnostic.virtualText": false,
   "diagnostic.virtualTextPrefix": "←",
 
   "suggest.preferCompleteThanJumpPlaceholder": true,
@@ -171,7 +171,9 @@
     "focusable",
     "grpc",
     "iframe",
+    "macos",
     "monospaced",
+    "nvim",
     "outdent",
     "paleblue",
     "pluggable",
