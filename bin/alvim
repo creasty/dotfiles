@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+exec open -n -a Alacritty --args \
+  --config-file="$DOTFILES_PATH/config/alacritty-nvim.yml" \
+  --class=alnvim \
+  --working-directory="$HOME"
