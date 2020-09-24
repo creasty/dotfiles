@@ -34,16 +34,15 @@ repo = 'SirVer/ultisnips'
 [[plugins]] # auto close parentheses and repeat by dot
 repo = 'cohama/lexima.vim'
 
-[[plugins]] # Find And Replace
-repo = 'brooth/far.vim'
+[[plugins]] # A code search and view tool
+repo = 'dyng/ctrlsf.vim'
 hook_add = '''
-let g:far#source = 'ag'
-let g:far#window_layout = 'tab'
-let g:far#auto_delete_replaced_buffers = 1
-let g:far#auto_preview = 0
-let g:far#auto_preview_on_start = 0
-let g:far#result_preview = 0
-let g:far#default_file_mask = '*'
+let g:ctrlsf_ackprg = 'ag'
+let g:ctrlsf_auto_focus = { "at": "start" }
+let g:ctrlsf_case_sensitive = 'yes'
+let g:ctrlsf_position = 'bottom'
+let g:ctrlsf_regex_pattern = 1
+let g:ctrlsf_context = ''
 '''
 
 #  Completion
