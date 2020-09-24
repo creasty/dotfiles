@@ -61,7 +61,9 @@ function s:force_refresh() abort
   syntax sync fromstart
 
   " clear textprops
-  call prop_clear(1, line('$'))
+  if has('textprop')
+    call prop_clear(1, line('$'))
+  endif
 
   " fix glitches
   redraw!
