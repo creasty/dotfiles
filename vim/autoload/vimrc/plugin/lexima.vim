@@ -3,6 +3,8 @@ endfunction
 
 let g:lexima_map_escape = ''
 
+let s:js_filetypes = ['javascript', 'typescript', 'javascript.tsx', 'typescript.tsx']
+
 "  Operators
 "-----------------------------------------------
 let s:all_ops = opfmt#all_operators_regexp()
@@ -34,12 +36,14 @@ call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': 
 call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
 call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
 
-" no merge: ? !
-call lexima#add_rule({ 'char': '!', 'at': ' ? \%#' })
+" no merge: ?!, &!, |!
+call lexima#add_rule({ 'char': '!', 'at': '? \%#' })
+call lexima#add_rule({ 'char': '!', 'at': '& \%#' })
+call lexima#add_rule({ 'char': '!', 'at': '| \%#' })
 
 " Kotlin: elvis operator
 call lexima#add_rule({ 'char': '<Space>', 'at': ' ? :\%#', 'input': '<BS><BS>:<Space>' })
-call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Space>?:<Space>' })
+call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Space>?:<Space>', 'filetype': ['kotlin'] })
 
 " Rust: lifetime
 call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
@@ -61,9 +65,15 @@ call lexima#add_rule({
 " JavaScript: arrow function brackets
 call lexima#add_rule({
   \ 'char':     '<CR>',
-  \ 'at':       ') => \%#',
+  \ 'at':       '=>\%#',
+  \ 'input':    '<Space>{}<Left><CR><Tab>',
+  \ 'filetype': s:js_filetypes,
+\ })
+call lexima#add_rule({
+  \ 'char':     '<CR>',
+  \ 'at':       '=> \%#',
   \ 'input':    '{}<Left><CR><Tab>',
-  \ 'filetype': ['javascript', 'typescript', 'javascript.tsx', 'typescript.tsx'],
+  \ 'filetype': s:js_filetypes,
 \ })
 
 "  C-l
