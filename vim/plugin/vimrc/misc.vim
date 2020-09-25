@@ -67,6 +67,7 @@ function s:force_refresh() abort
 
   " fix glitches
   redraw!
+  redrawstatus
 
   " plugins
   doautocmd User ForceRefresh
