@@ -1,3 +1,11 @@
+function! s:jobstart(cmd) abort
+  if has('nvim')
+    call jobstart(a:cmd)
+  else
+    call job_start(a:cmd)
+  endif
+endfunction
+
 " clean up hidden buffers
 function! vimrc#util#clean_buffers() abort
   redir => l:bufs
@@ -28,7 +36,7 @@ function! vimrc#util#delete_file(file) abort
 
   let l:trash_dir = $HOME . '/.Trash'
   if isdirectory(l:trash_dir)
-    call job_start(['mv', l:file, l:trash_dir])
+    call s:jobstart(['mv', l:file, l:trash_dir])
   else
     call delete(l:file)
   endif
@@ -41,7 +49,7 @@ function! vimrc#util#chmod(file, mode) abort
     return
   endif
 
-  call job_start(['chmod', a:mode, l:file])
+  call s:jobstart(['chmod', a:mode, l:file])
 endfunction
 
 " rename
