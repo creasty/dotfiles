@@ -23,6 +23,7 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-ultisnips',
   \ 'coc-vimlsp',
+  \ 'coc-git',
 \ ]
 
 let g:coc_config_home = '~/.vim'

@@ -46,6 +46,8 @@
   "tabnine.priority": 90,
   "tabnine.disable_filetypes": ["markdown"],
 
+  "git.branchCharacter": "@",
+
   "diagnostic-languageserver.filetypes": {
     "bash": ["shellcheck"],
     "sh": ["shellcheck"],
