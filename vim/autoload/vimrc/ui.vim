@@ -146,7 +146,7 @@ function! vimrc#ui#status_line(w, cw) abort
 
   let l:coc_status = get(g:, 'coc_status', '')
   if l:active && l:coc_status !=# ''
-    let l:r1 += [l:coc_status]
+    let l:r1 += [l:coc_status[0:30]]
   endif
 
   " r0
