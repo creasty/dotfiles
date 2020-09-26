@@ -55,7 +55,10 @@ command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans
 " force refresh buffer
 autocmd vimrc_misc User ForceRefresh :
 nnoremap <expr> <C-l> <SID>force_refresh()
-function s:force_refresh() abort
+function! s:force_refresh() abort
+  " reload if modified externally
+  silent! checktime
+
   " fix broken syntax highlight
   " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
   syntax sync fromstart
