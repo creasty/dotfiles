@@ -52,6 +52,9 @@ nnoremap g0 :NextFile<CR>
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
+" font
+command! -nargs=? Font :call vimrc#util#change_font_size(<q-args> ? <q-args> : 12)
+
 " force refresh buffer
 autocmd vimrc_misc User ForceRefresh :
 nnoremap <expr> <C-l> <SID>force_refresh()

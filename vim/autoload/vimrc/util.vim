@@ -6,6 +6,14 @@ function! s:jobstart(cmd) abort
   endif
 endfunction
 
+function! vimrc#util#change_font_size(size) abort
+  exec 'set' 'guifont=Menlo:h' . a:size
+
+  if $NVIM_GUI ==# 'kitty'
+    call s:jobstart(['kitty', '@', 'set-font-size', a:size])
+  endif
+endfunction
+
 " clean up hidden buffers
 function! vimrc#util#clean_buffers() abort
   redir => l:bufs
