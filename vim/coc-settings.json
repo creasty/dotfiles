@@ -9,15 +9,16 @@
   "diagnostic.infoSign": "▸",
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": false,
-  "diagnostic.virtualTextPrefix": "←",
 
   "suggest.preferCompleteThanJumpPlaceholder": true,
 
   "list.normalMappings": {
-    "<C-j>": "do:defaultaction"
+    "<C-j>": "do:defaultaction",
+    "<C-c>": "do:exit"
   },
   "list.insertMappings": {
-    "<C-v>": "eval:@@"
+    "<C-v>": "eval:@@",
+    "<C-c>": "do:exit"
   },
 
   "javascript.preferences.useAliasesForRenames": false,
