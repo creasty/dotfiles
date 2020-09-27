@@ -17,8 +17,9 @@ alias tf='tail -f'
 alias less='less -R'
 alias le='less -R'
 
-alias v='vim'
-alias vi='vim'
+alias vim='nvim'
+alias v='nvim'
+alias vi='nvim'
 alias vv='mvim'
 
 alias sort='LC_ALL=C sort'
