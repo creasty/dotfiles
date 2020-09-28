@@ -172,6 +172,7 @@
     "deserialize",
     "deserialized",
     "focusable",
+    "graphql",
     "grpc",
     "iframe",
     "macos",
