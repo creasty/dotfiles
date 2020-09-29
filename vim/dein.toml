@@ -47,6 +47,12 @@ let g:ctrlsf_context = ''
 let g:ctrlsf_default_view_mode = 'compact'
 '''
 
+[[plugins]] # EditorConfig Vim Plugin
+repo = 'editorconfig/editorconfig-vim'
+hook_add = '''
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+'''
+
 #  Completion
 #-----------------------------------------------
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
