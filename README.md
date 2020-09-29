@@ -18,13 +18,11 @@ Screenshots
 Performance
 -----------
 
-Highly customized and fine-tuned.
-
 ### zsh
 
 Starts up in ~380ms.
 
-- 600 code lines of Zsh config
+- 600 loc of Zsh config
 - 3 plugins
 
 <details><summary>`cloc` result</summary>
@@ -69,8 +67,8 @@ zsh -i -c exit  0.19s user 0.19s system 99% cpu 0.386 total
 
 Starts up in ~180ms.
 
-- 3200 code lines of VimScript config
-- 50 plugins (extra 74k code lines of VimScript & 105k code lines of other various languages)
+- 3200 loc of VimScript config
+- 50 plugins (extra 74k loc of VimScript & 105k of other various languages)
 
 <details><summary>`cloc` result</summary>
 
