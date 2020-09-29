@@ -5,10 +5,13 @@
 " [coc-solargraph] gem install solargraph
 " [coc-python] pip install python-language-server
 let g:coc_global_extensions = [
+  \ 'coc-actions',
   \ 'coc-calc',
   \ 'coc-css',
   \ 'coc-diagnostic',
   \ 'coc-eslint',
+  \ 'coc-git',
+  \ 'coc-graphql',
   \ 'coc-json',
   \ 'coc-prettier',
   \ 'coc-python',
@@ -23,8 +26,6 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-ultisnips',
   \ 'coc-vimlsp',
-  \ 'coc-git',
-  \ 'coc-actions',
 \ ]
 
 let g:coc_config_home = '~/.vim'
