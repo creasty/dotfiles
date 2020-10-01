@@ -41,6 +41,26 @@
       "command": "kotlin-language-server",
       "filetypes": ["kotlin"],
       "rootPatterns": ["gradle.properties"]
+    },
+    "graphql": {
+      "enable": false,
+      "command": "graphql-lsp",
+      "args": ["server", "-m", "stream"],
+      "rootPatterns": [
+        ".graphqlrc",
+        ".graphqlrc.yml",
+        ".graphql.yaml",
+        ".graphqlrc.json",
+        "graphql.config.js",
+        ".graphqlrc.js"
+      ],
+      "filetypes": [
+        "graphql",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+      ]
     }
   },
 
@@ -100,7 +120,14 @@
       "command": "golangci-lint",
       "rootPatterns": [".git", "go.mod"],
       "debounce": 100,
-      "args": ["run", "--out-format", "json", "--disable", "deadcode,unused", "%file"],
+      "args": [
+        "run",
+        "--out-format",
+        "json",
+        "--disable",
+        "deadcode,unused",
+        "%file"
+      ],
       "sourceName": "golangci-lint",
       "parseJson": {
         "errorsRoot": "Issues",

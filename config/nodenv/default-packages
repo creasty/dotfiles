@@ -1,6 +1,7 @@
 bash-language-server
 create-react-app
 eslint
+graphql-language-service-cli
 tslint
 typescript
 typescript-language-server

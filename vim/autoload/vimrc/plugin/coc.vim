@@ -4,6 +4,7 @@
 " [coc-rls] rustup update && rustup component add rls rust-analysis rust-src
 " [coc-solargraph] gem install solargraph
 " [coc-python] pip install python-language-server
+" [+graphql] npm i -g graphql-language-service-cli
 let g:coc_global_extensions = [
   \ 'coc-actions',
   \ 'coc-calc',
@@ -11,7 +12,6 @@ let g:coc_global_extensions = [
   \ 'coc-diagnostic',
   \ 'coc-eslint',
   \ 'coc-git',
-  \ 'coc-graphql',
   \ 'coc-json',
   \ 'coc-prettier',
   \ 'coc-python',
