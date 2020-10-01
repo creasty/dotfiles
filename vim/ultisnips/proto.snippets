@@ -225,3 +225,17 @@ snippet next_page_token "pagination response field" b
 // 次のページトークン
 string next_page_token = $1 [ (google.api.field_behavior) = REQUIRED ];
 endsnippet
+
+#=== proto2graphql
+#==============================================================================================
+snippet "import proto2graphql.option" "import from proto2graphql/option" b
+import "proto2graphql/option.proto";
+endsnippet
+
+snippet skip_on_type "proto2graphql.option" w
+(proto2graphql.option).skip_on_type = true
+endsnippet
+
+snippet skip_on_input "proto2graphql.option" w
+(proto2graphql.option).skip_on_input = true
+endsnippet
