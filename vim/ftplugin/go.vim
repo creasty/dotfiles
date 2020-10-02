@@ -17,6 +17,14 @@ command! GoImports
 
 "  Fmt
 "-----------------------------------------------
+function! s:jobstart(cmd) abort
+  if has('nvim')
+    call jobstart(a:cmd)
+  else
+    call job_start(a:cmd)
+  endif
+endfunction
+
 function! s:auto_gofmt(path) abort
   if empty(a:path)
     return
@@ -27,7 +35,7 @@ function! s:auto_gofmt(path) abort
     call job_stop(l:auto_gofmt_job, 'kill')
   endif
 
-  let b:auto_gofmt_job = job_start(['gofmt', '-s', '-w', a:path])
+  let b:auto_gofmt_job = s:jobstart(['gofmt', '-s', '-w', a:path])
 endfunction
 
 autocmd vim_ftplugin_go FocusLost,BufLeave *.go
