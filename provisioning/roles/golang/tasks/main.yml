@@ -28,7 +28,7 @@
 
 - name: install packages
   command: |
-     bash -lc 'go get {{ item | quote }}@latest'
+     bash -lc 'go get {{ item | quote }}'
   with_items: '{{ golang.packages }}'
   when: golang.packages
 
