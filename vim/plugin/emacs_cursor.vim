@@ -50,6 +50,7 @@ smap <C-e> <C-g>A
 smap <C-b> <C-g>I
 smap <C-f> <C-g>A
 smap <C-v> <C-g>ra
+smap <C-c> <Esc>
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
