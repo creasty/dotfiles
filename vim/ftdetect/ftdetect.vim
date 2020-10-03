@@ -26,7 +26,8 @@ augroup custom_filetypes
   autocmd BufNewFile,BufRead *.m setlocal ft=objc
   autocmd BufNewFile,BufRead *.md setlocal ft=markdown
   autocmd BufNewFile,BufRead *.pde setlocal ft=processing
-  autocmd BufNewFile,BufRead gitconfig setlocal ft=toml
+  autocmd BufNewFile,BufRead gitconfig setlocal ft=gitconfig.toml
+  autocmd BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
   autocmd BufNewFile,BufRead *.psgi,*.t,cpanfile setlocal ft=perl
   autocmd BufNewFile,BufRead Guardfile,Vagrantfile,*.rake,*.jbuilder setlocal ft=ruby
 
