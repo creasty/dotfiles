@@ -55,41 +55,7 @@ command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans
 " font
 command! -nargs=? Font :call vimrc#util#change_font_size(<q-args> ? <q-args> : 12)
 
-" force refresh buffer
-autocmd vimrc_misc User ForceRefresh :
-nnoremap <expr> <C-l> <SID>force_refresh(1)
-autocmd vimrc_misc FocusGained,BufEnter call <SID>force_refresh(0)
-function! s:force_refresh(normal) abort
-  " reload if modified externally
-  silent! checktime
-
-  " fix broken syntax highlight
-  " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
-  if a:normal
-    syntax sync fromstart
-  endif
-
-  " clear textprops
-  if has('textprop')
-    call prop_clear(1, line('$'))
-  endif
-  if has('nvim')
-    call nvim_buf_clear_namespace(0, -1, 1, line('$'))
-  endif
-
-  " fix glitches
-  redraw!
-  redrawstatus
-
-  " plugins
-  doautocmd User ForceRefresh
-
-  " trigger content change event
-  doautocmd InsertLeave
-
-  return 'zz'
-endfunction
-
+" profiler
 command! Profile
   \ profile start ~/vim_profile.log |
   \ profile func * |
@@ -104,15 +70,6 @@ autocmd vimrc_misc BufWritePost,BufReadPost,BufEnter *
   \ if &l:filetype ==# '' || exists('b:ftdetect') |
     \ unlet! b:ftdetect |
     \ filetype detect |
-  \ endif
-
-" forcibly reload file
-autocmd vimrc_misc BufEnter,BufReadPost *
-  \ let b:filereadable = filereadable(expand('%:p'))
-
-autocmd vimrc_misc BufEnter *
-  \ if b:filereadable |
-    \ silent! execute 'checktime' bufnr('%') |
   \ endif
 
 " hash-bang file
