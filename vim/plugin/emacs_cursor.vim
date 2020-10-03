@@ -8,12 +8,12 @@ set cpoptions&vim
 
 function! s:insert_enter() abort
   set eventignore+=InsertLeave,InsertEnter
-  return ''
+  return "\<Left>\<Right>"
 endfunction
 
 function! s:insert_leave() abort
   set eventignore-=InsertLeave,InsertEnter
-  return ''
+  return "\<Left>\<Right>"
 endfunction
 
 inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
