@@ -26,6 +26,7 @@ inoremap <expr> <Plug>(emacs-bol) (col('.') == 2) ? "\<Left>" : "\<C-g>u\<C-o>g0
 inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
 
 map <C-c> <Esc>
+nmap <C-j> <CR>
 imap <C-j> <CR>
 imap <C-h> <BS>
 inoremap <C-b> <Left>

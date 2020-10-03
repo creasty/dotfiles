@@ -14,11 +14,16 @@
 
   "list.normalMappings": {
     "<C-j>": "do:defaultaction",
-    "<C-c>": "do:exit"
+    "<C-c>": "do:exit",
+    "/": "do:toggleMode"
   },
   "list.insertMappings": {
     "<C-v>": "eval:@@",
-    "<C-c>": "do:exit"
+    "<C-c>": "do:exit", // "do:toggleMode"
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "<C-f>": "feedkeys:\\<Right>",
+    "<C-b>": "feedkeys:\\<Left>"
   },
 
   "javascript.preferences.useAliasesForRenames": false,
