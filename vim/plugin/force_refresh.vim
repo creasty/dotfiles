@@ -7,10 +7,10 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 function! s:is_enabled() abort
-  if getbufvar('%', '&ft') =~# 'denite'
+  if &ft =~# 'denite'
     return v:false
   endif
-  if getbufvar('%', '&readonly') || !getbufvar('%', '&modifiable')
+  if &readonly || !&modifiable
     return v:false
   endif
   return v:true
@@ -67,8 +67,8 @@ augroup force_refresh
 
   autocmd User ForceRefresh :
 
-  autocmd BufLeave * call setbufvar('%', 'force_refresh_enabled', v:false)
-  autocmd BufEnter * call setbufvar('%', 'force_refresh_enabled', <SID>is_enabled())
+  autocmd BufLeave * let b:force_refresh_enabled = v:false
+  autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled()
   autocmd BufEnter * call <SID>reload_display(0)
   autocmd FocusGained * call <SID>reload_display(1)
   autocmd FocusGained,BufEnter,BufReadPost * call <SID>reload_file()
