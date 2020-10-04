@@ -259,8 +259,21 @@ endif
 
 if dein#tap('coc.nvim')
   call vimrc#plugin#coc#init()
-  autocmd vimrc User ForceRefresh call coc#util#clear_signs()
-end
+  autocmd vimrc User ForceRefresh call <SID>clear_signs()
+
+  function! s:clear_signs()
+    let l:b = bufnr('%')
+    let l:sign_ids = []
+    let l:lines = split(execute('sign place buffer='.b), "\n")
+    for l:line in l:lines
+      let l:ms = matchlist(l:line, 'id=\(\d\+\)\s\+name=Coc')
+      if len(l:ms) > 0
+        call add(l:sign_ids, l:ms[1])
+      endif
+    endfor
+    call coc#util#unplace_signs(l:b, l:sign_ids)
+  endfunction
+endif
 
 if dein#tap('denite.nvim')
   " NOTE: See :UpdateRemotePlugins

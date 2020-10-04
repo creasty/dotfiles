@@ -6,20 +6,27 @@ let g:loaded_force_refresh = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-augroup force_refresh
-  autocmd!
-augroup END
+function! s:is_enabled() abort
+  if getbufvar('%', '&ft') =~# 'denite'
+    return v:false
+  endif
+  if getbufvar('%', '&readonly') || !getbufvar('%', '&modifiable')
+    return v:false
+  endif
+  return v:true
+endfunction
 
-autocmd force_refresh User ForceRefresh :
+function! s:reload_display(level) abort
+  if !getbufvar('%', 'force_refresh_enabled', v:false)
+    return
+  endif
 
-" force refresh buffer
-function! s:force_refresh(normal) abort
-  " reload if modified externally
-  silent! checktime
+  if a:level >= 3
+    " reload if modified externally
+    silent! checktime
 
-  " fix broken syntax highlight
-  " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
-  if a:normal
+    " fix broken syntax highlight
+    " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
     syntax sync fromstart
   endif
 
@@ -31,11 +38,13 @@ function! s:force_refresh(normal) abort
     call nvim_buf_clear_namespace(0, -1, 1, line('$'))
   endif
 
-  " fix glitches
-  redraw!
-  redrawstatus
+  if a:level >= 2
+    " fix glitches
+    redraw!
+    redrawstatus
+  endif
 
-  " plugins
+  " for plugins
   doautocmd User ForceRefresh
 
   " trigger content change event
@@ -44,17 +53,26 @@ function! s:force_refresh(normal) abort
   return 'zz'
 endfunction
 
-nnoremap <expr> <C-l> <SID>force_refresh(1)
-autocmd force_refresh FocusGained,BufEnter call <SID>force_refresh(0)
+function! s:reload_file() abort
+  let b:filereadable = filereadable(expand('%:p'))
+  if b:filereadable
+    silent! execute 'checktime' bufnr('%')
+  endif
+endfunction
 
-" forcibly reload file
-autocmd force_refresh BufEnter,BufReadPost *
-  \ let b:filereadable = filereadable(expand('%:p'))
+nnoremap <expr> <C-l> <SID>reload_display(3)
 
-autocmd force_refresh BufEnter *
-  \ if b:filereadable |
-    \ silent! execute 'checktime' bufnr('%') |
-  \ endif
+augroup force_refresh
+  autocmd!
+
+  autocmd User ForceRefresh :
+
+  autocmd BufLeave * call setbufvar('%', 'force_refresh_enabled', v:false)
+  autocmd BufEnter * call setbufvar('%', 'force_refresh_enabled', <SID>is_enabled())
+  autocmd BufEnter * call <SID>reload_display(0)
+  autocmd FocusGained * call <SID>reload_display(1)
+  autocmd FocusGained,BufEnter,BufReadPost * call <SID>reload_file()
+augroup END
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

@@ -17,6 +17,8 @@ set -o pipefail
 NAME=the-postgres
 IMAGE=postgres:9.6.1-alpine
 
+DB_USER=$USER
+
 #  Utils
 #-----------------------------------------------
 do_help() {
@@ -27,7 +29,7 @@ do_help() {
 #  Commands
 #-----------------------------------------------
 _ping() {
-  docker exec -it $NAME psql --username=$USER -c 'select 1;' > /dev/null 2>&1
+  docker exec -it $NAME psql --username=$DB_USER -c 'select 1;' > /dev/null 2>&1
 }
 
 server_stop() {
@@ -62,7 +64,7 @@ server_create() {
   docker run \
     -p 5432:5432 \
     --name $NAME \
-    -e POSTGRES_USER=$USER \
+    -e POSTGRES_USER=$DB_USER \
     -e POSTGRES_PASSWORD= \
     -v ~/docker/postgres:/var/lib/postgresql/data \
     -d \
@@ -70,15 +72,15 @@ server_create() {
 }
 
 exec_psql() {
-  docker exec -it $NAME psql --username=$USER
+  docker exec -it $NAME psql --username=$DB_USER
 }
 
 exec_createdb() {
-  docker exec -it $NAME createdb --username=$USER "$1"
+  docker exec -it $NAME createdb --username=$DB_USER "$1"
 }
 
 exec_createuser() {
-  docker exec -it $NAME createuser --username=$USER "$1" -d -s
+  docker exec -it $NAME createuser --username=$DB_USER "$1" -d -s
 }
 
 exec_logs() {
