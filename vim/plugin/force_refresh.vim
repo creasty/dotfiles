@@ -54,8 +54,7 @@ function! s:reload_display(level) abort
 endfunction
 
 function! s:reload_file() abort
-  let b:filereadable = filereadable(expand('%:p'))
-  if b:filereadable
+  if getbufvar('%', 'filereadable', v:false)
     silent! execute 'checktime' bufnr('%')
   endif
 endfunction
@@ -71,6 +70,8 @@ augroup force_refresh
   autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled()
   autocmd BufEnter * call <SID>reload_display(0)
   autocmd FocusGained * call <SID>reload_display(1)
+
+  autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * let b:filereadable = filereadable(expand('%:p'))
   autocmd FocusGained,BufEnter,BufReadPost * nested call <SID>reload_file()
 augroup END
 
