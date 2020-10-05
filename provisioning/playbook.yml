@@ -25,7 +25,7 @@
     #  lang
     #-----------------------------------------------
     - role: anyenv
-      tags: ['lang', 'lang.anyenv']
+      tags: ['lang', 'lang.anyenv', 'lang.anyenv.anyenv']
     - role: ruby
       tags: ['lang', 'lang.anyenv', 'lang.anyenv.ruby']
     - role: nodejs

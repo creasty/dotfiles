@@ -34,5 +34,3 @@
 - name: register java home
   command: |
     bash -lc 'jenv add "$(/usr/libexec/java_home)"'
-  environment:
-    JENV_DEBUG: 1
