@@ -266,7 +266,7 @@ if dein#tap('coc.nvim')
     let l:sign_ids = []
     let l:lines = split(execute('sign place buffer='.b), "\n")
     for l:line in l:lines
-      let l:ms = matchlist(l:line, 'id=\(\d\+\)\s\+name=(Coc\w+)')
+      let l:ms = matchlist(l:line, 'id=\(\d\+\)\s\+name=\(Coc\w\+\)')
       if len(l:ms) > 0 && l:ms[2] !~# '^CocGit'
         call add(l:sign_ids, l:ms[1])
       endif
