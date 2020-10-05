@@ -1,7 +1,3 @@
-- set_fact:
-    macvim_app_path: '/usr/local/opt/macvim/MacVim.app'
-    vim_bin: '{{ brew_bin_path }}/vim'
-
 - name: install dein.vim
   git:
     repo:   https://github.com/Shougo/dein.vim
@@ -23,38 +19,31 @@
     - vim-vint
     - pynvim
 
-- name: install macvim
-  homebrew:
-    name:  macvim
-    state: present
-
 - name: install neovim
   homebrew:
     name:  neovim
     state: present
 
-- name: link app
-  file:
-    src:   '{{ macvim_app_path }}'
-    dest:  /Applications/MacVim.app
-    state: link
-    force: yes
-
-- name: link vim binary
-  file:
-    src:   '{{ macvim_app_path }}/Contents/bin/vim'
-    dest:  '{{ vim_bin }}'
-    state: link
-    force: yes
-
-- name: add padding to MacVim window
-  osx_defaults:
-    domain: org.vim.MacVim
-    key:    '{{ item }}'
-    type:   int
-    value:  6
-  with_items:
-    - MMTextInsetTop
-    - MMTextInsetRight
-    - MMTextInsetBottom
-    - MMTextInsetLeft
+#- name: install macvim
+#  homebrew:
+#    name:  macvim
+#    state: present
+#
+#- name: link app
+#  file:
+#    src:   /usr/local/opt/macvim/MacVim.app
+#    dest:  /Applications/MacVim.app
+#    state: link
+#    force: yes
+#
+#- name: add padding to MacVim window
+#  osx_defaults:
+#    domain: org.vim.MacVim
+#    key:    '{{ item }}'
+#    type:   int
+#    value:  6
+#  with_items:
+#    - MMTextInsetTop
+#    - MMTextInsetRight
+#    - MMTextInsetBottom
+#    - MMTextInsetLeft
