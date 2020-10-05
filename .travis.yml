@@ -14,8 +14,7 @@ env:
     - DOTFILES_NOEDIT_SECRETS=1
   jobs:
     - UP_OPTS='--tags=base,install.homebrew.formula'
-    - UP_OPTS='--tags=base,lang --skip-tags=lang.anyenv.java'
-    - UP_OPTS='--tags=base,lang.anyenv.anyenv,lang.anyenv.java'
+    - UP_OPTS='--tags=base,lang --skip-tags=skip-on-ci'
     - UP_OPTS='--tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh'
 
 before_script:
