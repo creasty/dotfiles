@@ -71,7 +71,7 @@ augroup force_refresh
   autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled()
   autocmd BufEnter * call <SID>reload_display(0)
   autocmd FocusGained * call <SID>reload_display(1)
-  autocmd FocusGained,BufEnter,BufReadPost * call <SID>reload_file()
+  autocmd FocusGained,BufEnter,BufReadPost * nested call <SID>reload_file()
 augroup END
 
 let &cpoptions = s:save_cpo
