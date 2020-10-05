@@ -10,9 +10,6 @@ set cpoptions&vim
 set splitright
 set splitbelow
 
-" use double width to print non-ascii charactors
-set ambiwidth=double
-
 " line offset when scrolling
 set scrolloff=5
 
