@@ -159,10 +159,9 @@ golang:
     - github.com/rakyll/hey         # HTTP load generator, ApacheBench (ab) replacement
 
     # dev tools
-    - github.com/mithrandie/csvq # SQL-like query language for csv
-    - github.com/rogpeppe/godef  # find symbol information in Go source
-    - golang.org/x/lint/golint   # Golint is a linter for Go source code
-    - golang.org/x/tools/gopls   # LSP server for Go
+    - github.com/rogpeppe/godef # find symbol information in Go source
+    - golang.org/x/lint/golint  # Golint is a linter for Go source code
+    - golang.org/x/tools/gopls  # LSP server for Go
 
 nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
