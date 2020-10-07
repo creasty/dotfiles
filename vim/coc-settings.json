@@ -142,6 +142,8 @@
       }
     }
   },
+
+  "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.enabledLanguageIds": [
     "vim",
     "asciidoc",
