@@ -86,6 +86,8 @@ if dein#tap('candle.vim')
   colorscheme candle
   set t_Co=256
   syntax enable
+  " autocmd vimrc VimEnter,Syntax *
+  "   \ hi NormalFloat ctermfg=248 guifg=#a8a8a8 ctermbg=232 guibg=#111111
 endif
 
 if dein#tap('vim-textobj-multiblock')

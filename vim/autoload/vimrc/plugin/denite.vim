@@ -20,7 +20,13 @@ function! vimrc#plugin#denite#lazy_init() abort
   call denite#custom#option('_', 'highlight_matched_range', 'Normal')
   call denite#custom#option('_', 'highlight_matched_char', 'Constant')
   call denite#custom#option('_', 'match_highlight', v:true)
-  " call denite#custom#option('_', 'split', 'floating')
+
+  if has('nvim') && exists('*nvim_open_win')
+    call denite#custom#option('_', 'split', 'floating')
+    call denite#custom#option('_', 'filter_split_direction', 'floating')
+    call denite#custom#option('_', 'highlight_filter_background', 'StatusLine')
+    call denite#custom#option('_', 'highlight_window_background', 'NormalFloat')
+  endif
 
   " use ag
   call denite#custom#var('grep', {
