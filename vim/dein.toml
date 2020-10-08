@@ -44,7 +44,6 @@ let g:ctrlsf_winsize = '30'
 let g:ctrlsf_position = 'bottom'
 let g:ctrlsf_regex_pattern = 1
 let g:ctrlsf_context = ''
-let g:ctrlsf_default_view_mode = 'compact'
 '''
 
 [[plugins]] # EditorConfig Vim Plugin
