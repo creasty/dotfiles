@@ -85,3 +85,7 @@ switch `!p snip.rv = match.group(1)` {
 	$0
 }
 endsnippet
+
+snippet "(\S+)\.append" "expr = append(expr, _)" r
+`!p snip.rv = match.group(1)` = append(`!p snip.rv = match.group(1)`, $1)
+endsnippet
