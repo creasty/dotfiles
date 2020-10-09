@@ -8,7 +8,7 @@ set cpoptions&vim
 
 function! s:insert_enter() abort
   set eventignore+=InsertLeave,InsertEnter
-  return "\<Left>\<Right>"
+  return ""
 endfunction
 
 function! s:insert_leave() abort
