@@ -139,6 +139,7 @@ function! s:change_highlight_for_mode() abort
 
   if l:m =~# '[sS]$'
     call candle#highlight('Visual', 'blue', 'dark_blue', 'bold')
+    redraw
   else
     call candle#highlight('Visual', 'none', 'selection', 'none')
   endif
