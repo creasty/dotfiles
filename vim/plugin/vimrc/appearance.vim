@@ -68,6 +68,14 @@ hi ColorColumn guibg=#1f1f1f ctermbg=234
 " always show sign column
 set signcolumn=yes
 
+" transparent pmenu
+if exists('&pumblend')
+  set pumblend=10
+endif
+
+" enables 24-bit RGB color in the TUI
+set termguicolors
+
 " folding
 set foldmethod=indent
 set fillchars="fold:"
