@@ -124,14 +124,14 @@ function! s:refresh_statusline() abort
   endfor
 endfunction
 
-function! s:change_status_line_for_mode() abort
+function! s:change_highlight_for_mode() abort
   let l:m = vimrc#ui#get_mode()
 
   let l:cursor_color =
-    \ l:m =~# '^i' ? 'blue' :
+    \ l:m =~# '^i' ? 'green' :
     \ l:m =~# '[vV]$' ? 'orange' :
-    \ l:m =~# '^[rR]' ? 'purple' :
-    \ l:m =~# '[sS]$' ? 'red' :
+    \ l:m =~# '^[rR]\|o' ? 'purple' :
+    \ l:m =~# '[sS]$' ? 'blue' :
     \ 'foreground'
 
   call candle#highlight('StatusLineMode', l:cursor_color, '', '')
@@ -140,7 +140,7 @@ function! s:change_status_line_for_mode() abort
   if l:m =~# '[sS]$'
     call candle#highlight('Visual', 'blue', 'dark_blue', 'bold')
   else
-    call candle#highlight('Visual', '', 'selection', 'none')
+    call candle#highlight('Visual', 'none', 'selection', 'none')
   endif
 endfunction
 
@@ -154,7 +154,7 @@ if g:colors_name ==# 'candle'
     \ call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '') |
     \ call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
 
-  autocmd vimrc_appearance User ModeDidChange call <SID>change_status_line_for_mode()
+  autocmd vimrc_appearance User ModeDidChange call s:change_highlight_for_mode()
 endif
 
 let &cpoptions = s:save_cpo
