@@ -146,10 +146,10 @@ if dein#tap('vim-easymotion')
   function! s:easy_motion_coc_nvim_fix() abort
     if EasyMotion#is_active()
       let s:easymotion_active = 1
+      silent! CocDisable
     elseif s:easymotion_active == 1
       let s:easymotion_active = 0
-      " @see https://github.com/neoclide/coc.nvim/blob/4f729a73eebea549646a6d0a80599299a60f5a46/src/diagnostic/manager.ts#L94-L104
-      doautocmd InsertLeave
+      silent! CocEnable
     endif
   endfunction
 
@@ -281,6 +281,9 @@ if dein#tap('denite.nvim')
   " NOTE: See :UpdateRemotePlugins
 
   call dein#set_hook('denite.nvim', 'hook_source', function('vimrc#plugin#denite#lazy_init'))
+
+  autocmd vimrc FileType denite call vimrc#plugin#denite#init_denite_list()
+  autocmd vimrc FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
 
   command! Open :call vimrc#plugin#denite#open_best()
   nnoremap <silent> <C-q> :<C-u>Open<CR>

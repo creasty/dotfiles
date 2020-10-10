@@ -75,7 +75,7 @@ function! s:init_denite() abort
   inoremap <silent><buffer><expr> <C-l> denite#do_map('redraw')
 endfunction
 
-function! s:init_denite_list() abort
+function! vimrc#plugin#denite#init_denite_list() abort
   call s:init_denite()
   nnoremap <silent><buffer><expr> i denite#do_map('open_filter_buffer')
   nnoremap <silent><buffer><expr> d denite#do_map('do_action', 'delete')
@@ -85,7 +85,7 @@ function! s:init_denite_list() abort
   nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select') . 'j'
 endfunction
 
-function! s:init_denite_filter() abort
+function! vimrc#plugin#denite#init_denite_filter() abort
   let b:coc_suggest_disable = 1
 
   call s:init_denite()
@@ -93,6 +93,3 @@ function! s:init_denite_filter() abort
   inoremap <silent><buffer><expr> <C-p> vimrc#plugin#denite#control_parent({-> cursor(line('.') - 1, 0) })
   inoremap <silent><buffer><expr> <C-n> vimrc#plugin#denite#control_parent({-> cursor(line('.') + 1, 0) })
 endfunction
-
-autocmd vimrc FileType denite call s:init_denite_list()
-autocmd vimrc FileType denite-filter call s:init_denite_filter()
