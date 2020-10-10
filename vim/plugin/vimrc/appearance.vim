@@ -125,16 +125,23 @@ function! s:refresh_statusline() abort
 endfunction
 
 function! s:change_status_line_for_mode() abort
-  let l:m = g:mode_observer_current_mode
+  let l:m = vimrc#ui#get_mode()
 
-  let l:color =
-    \ l:m ==# 'i' ? 'blue' :
-    \ l:m ==# 'v' ? 'orange' :
-    \ l:m ==# 'r' ? 'purple' :
+  let l:cursor_color =
+    \ l:m =~# '^i' ? 'blue' :
+    \ l:m =~# '[vV]$' ? 'orange' :
+    \ l:m =~# '^[rR]' ? 'purple' :
+    \ l:m =~# '[sS]$' ? 'red' :
     \ 'foreground'
 
-  call candle#highlight('StatusLineMode', l:color, '', '')
-  call candle#highlight('Cursor', '', l:color, '')
+  call candle#highlight('StatusLineMode', l:cursor_color, '', '')
+  call candle#highlight('Cursor', '', l:cursor_color, '')
+
+  if l:m =~# '[sS]$'
+    call candle#highlight('Visual', 'blue', 'dark_blue', 'bold')
+  else
+    call candle#highlight('Visual', '', 'selection', 'none')
+  endif
 endfunction
 
 if g:colors_name ==# 'candle'

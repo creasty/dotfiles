@@ -1,5 +1,25 @@
 scriptencoding utf-8
 
+let s:mode_observer_key = 'mode_observer_current_mode'
+
+function! s:get_mode(winnr)
+  return getwinvar(a:winnr, s:mode_observer_key, '')
+endfunction
+
+function! s:update_mode(winnr)
+  let l:prev_mode = s:get_mode(a:winnr)
+  let l:mode = mode()
+
+  if l:mode !=# l:prev_mode
+    call setwinvar(a:winnr, s:mode_observer_key, mode())
+    doautocmd User ModeDidChange
+  endif
+endfunction
+
+function! vimrc#ui#get_mode() abort
+  return s:get_mode(winnr())
+endfunction
+
 function! vimrc#ui#fold_text() abort
   let l:fs = v:foldstart
 
@@ -75,6 +95,10 @@ function! vimrc#ui#status_line(w, cw) abort
   let l:is_file = empty(l:bufname)
   if l:is_file
     let l:bufname = fnamemodify(l:_bufname, ':t')
+  endif
+
+  if l:active
+    call s:update_mode(a:cw)
   endif
 
   " l0
