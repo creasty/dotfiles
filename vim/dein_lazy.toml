@@ -44,8 +44,8 @@ let g:user_emmet_leader_key = '<Nop>'
 '''
 
 [[plugins]] # Vim motions on speed!
-repo   = 'easymotion/vim-easymotion'
-on_map = ['<Plug>(easymotion-']
+repo    = 'easymotion/vim-easymotion'
+on_func = ['EasyMotion#S']
 
 #  Utils
 #-----------------------------------------------
