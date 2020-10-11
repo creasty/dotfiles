@@ -1,7 +1,7 @@
 {
   "coc.preferences.formatOnType": true,
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "coc.preferences.formatOnSaveFiletypes": ["go", "typescript.tsx"],
+  "coc.preferences.formatOnSaveFiletypes": ["go"],
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
 
   "diagnostic.errorSign": "✗",

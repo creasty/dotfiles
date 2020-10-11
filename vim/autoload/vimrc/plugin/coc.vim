@@ -103,12 +103,13 @@ xmap <silent> <expr> gq
   \ has('nvim') ? "\<Plug>(coc-codeaction-refined)" : "\<Plug>(coc-codeaction-selected)"
 
 " GoTo code navigation.
+nmap <silent> gh <Plug>(coc-hover)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-peek-definition)
-nmap <silent> gh <Plug>(coc-hover)
 nmap <silent> gt <Plug>(coc-type-definition)
 nmap <silent> gT <Plug>(coc-peek-type-definition)
-nmap <silent> gR <Plug>(coc-references)
+nmap <silent> gR <Plug>(coc-references-used)
+nmap <silent> gi <Plug>(coc-implementation)
 
 " Navigate diagnostics
 nmap <silent> g[ <Plug>(coc-diagnostic-prev)
