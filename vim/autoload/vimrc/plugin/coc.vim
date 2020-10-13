@@ -89,7 +89,7 @@ xmap <silent> af <Plug>(coc-funcobj-a)
 omap <silent> if <Plug>(coc-funcobj-i)
 omap <silent> af <Plug>(coc-funcobj-a)
 
-" Selection range.
+" Selection range
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
 " coc-tsserver, coc-python are the examples of servers that support it.
 nmap <silent> gs <Plug>(coc-range-select)
@@ -102,7 +102,7 @@ nmap <silent> <expr> gq
 xmap <silent> <expr> gq
   \ has('nvim') ? "\<Plug>(coc-codeaction-refined)" : "\<Plug>(coc-codeaction-selected)"
 
-" GoTo code navigation.
+" GoTo code navigation
 nmap <silent> gh <Plug>(coc-hover)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-peek-definition)
@@ -111,6 +111,8 @@ nmap <silent> gT <Plug>(coc-peek-type-definition)
 nmap <silent> gR <Plug>(coc-references-used)
 nmap <silent> gi <Plug>(coc-implementation)
 
-" Navigate diagnostics
-nmap <silent> g[ <Plug>(coc-diagnostic-prev)
-nmap <silent> g] <Plug>(coc-diagnostic-next)
+" Navigate through diagnostics
+nmap <silent> [d <Plug>(coc-diagnostic-prev)
+nmap <silent> ]d <Plug>(coc-diagnostic-next)
+nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
+nmap <silent> ]e <Plug>(coc-diagnostic-next-error)

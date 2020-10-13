@@ -11,6 +11,7 @@
   "diagnostic.virtualText": false,
 
   "suggest.preferCompleteThanJumpPlaceholder": true,
+  "coc.preferences.snippets.enable": false,
 
   "list.normalMappings": {
     "<C-j>": "do:defaultaction",
