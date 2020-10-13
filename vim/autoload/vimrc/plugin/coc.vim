@@ -112,6 +112,9 @@ nmap <silent> gR <Plug>(coc-references-used)
 nmap <silent> gi <Plug>(coc-implementation)
 
 " Navigate through diagnostics
+nnoremap <silent> gll :<C-u>CocListResume<CR>
+nnoremap <silent> gld :<C-u>CocList diagnostics<CR>
+nnoremap <silent> gls :<C-u>CocList symbols<CR>
 nmap <silent> [d <Plug>(coc-diagnostic-prev)
 nmap <silent> ]d <Plug>(coc-diagnostic-next)
 nmap <silent> [e <Plug>(coc-diagnostic-prev-error)

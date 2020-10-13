@@ -19,6 +19,7 @@
     "/": "do:toggleMode"
   },
   "list.insertMappings": {
+    "<C-j>": "do:defaultaction",
     "<C-v>": "eval:@@",
     "<C-c>": "do:exit", // "do:toggleMode"
     "<C-n>": "normal:j",
@@ -26,6 +27,7 @@
     "<C-f>": "feedkeys:\\<Right>",
     "<C-b>": "feedkeys:\\<Left>"
   },
+  "list.source.diagnostics.defaultOptions": ["--normal"],
 
   "javascript.preferences.useAliasesForRenames": false,
   "typescript.preferences.useAliasesForRenames": false,
