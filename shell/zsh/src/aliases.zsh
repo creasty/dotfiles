@@ -224,3 +224,9 @@ alias swiftc='SDKPATH=$(/usr/bin/env xcrun --show-sdk-path --sdk macosx) xcrun s
 
 alias xcb='xcodebuild'
 alias xct='xctool'
+
+#  Gradle
+#-----------------------------------------------
+alias gr='./gradlew'
+alias grb='./gradlew build'
+alias grr='./gradlew run'
