@@ -23,3 +23,12 @@
 --regex-proto=/^[ \t]*enum[ \t]+([a-zA-Z0-9_\.]+)/\1/e,enum/
 --regex-proto=/^[ \t]*(required|repeated|optional)[ \t]+[a-zA-Z0-9_\.]+[ \t]+([a-zA-Z0-9_]+)[ \t]*=/\2/f,field/
 --regex-proto=/^[ \t]*([A-Z0-9_]+)[ \t]*=/\1/f,enum/
+
+--langdef=graphql
+--langmap=graphql:.graphql
+--regex-graphql=/^[ \t]*enum[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/e,enum/
+--regex-graphql=/^[ \t]*query[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/q,query/
+--regex-graphql=/^[ \t]*fragment[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/f,fragment/
+--regex-graphql=/^[ \t]*type[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/t,type/
+--regex-graphql=/^[ \t]*input[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/i,input/
+--regex-graphql=/^[ \t]*mutation[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/m,mutation/
