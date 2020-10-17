@@ -8,7 +8,6 @@ vendor/bundle
 .bundle
 .envrc
 tmp/
-.idea/
 .vscode/
 
 .rubocop.yml
