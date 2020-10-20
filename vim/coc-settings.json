@@ -3,6 +3,7 @@
   "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.formatOnSaveFiletypes": ["go"],
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "coc.preferences.snippets.enable": false,
 
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",
@@ -11,12 +12,13 @@
   "diagnostic.virtualText": false,
 
   "suggest.preferCompleteThanJumpPlaceholder": true,
-  "coc.preferences.snippets.enable": false,
 
   "list.normalMappings": {
     "<C-j>": "do:defaultaction",
     "<C-c>": "do:exit",
-    "/": "do:toggleMode"
+    "/": "do:toggleMode",
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k"
   },
   "list.insertMappings": {
     "<C-j>": "do:defaultaction",
