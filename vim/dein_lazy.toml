@@ -68,21 +68,13 @@ on_cmd = ['Gblame', 'Gbrowse']
 
 #  Language
 #-----------------------------------------------
-[[plugins]] # syntax highlight for Haml
-repo  = 'tpope/vim-haml'
-on_ft = ['haml']
+# [[plugins]] # syntax highlight for Haml
+# repo  = 'tpope/vim-haml'
+# on_ft = ['haml']
 
 [[plugins]] # syntax highlight for Markdown
 repo  = 'tpope/vim-markdown'
 on_ft = ['markdown']
-
-[[plugins]] # syntax highlight for CoffeeScript
-repo  = 'kchmck/vim-coffee-script'
-on_ft = ['coffee']
-
-[[plugins]] # syntax highlight for SCSS
-repo  = 'cakebaker/scss-syntax.vim'
-on_ft = ['scss']
 
 # [[plugins]] # syntax highlight for Haskell
 # repo  = 'kana/vim-filetype-haskell'
