@@ -44,7 +44,16 @@ function! s:get_root_directory() abort
 endfunction
 
 function! s:can_change_directory() abort
-  return match(expand('%:p'), '^\w\+://.*') == -1 && empty(&buftype)
+  if match(expand('%:p'), '^\w\+://.*') != -1
+    return v:false
+  endif
+  if !empty(&buftype)
+    return v:false
+  endif
+  if get(g:, 'project_dir_only_home', v:true) && getcwd() !=# $HOME
+    return v:false
+  endif
+  return v:true
 endfunction
 
 function! s:change_directory(dir) abort
