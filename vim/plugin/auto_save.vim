@@ -12,9 +12,8 @@ augroup auto_save
   autocmd!
   autocmd User AutoSavePre :
   autocmd User AutoSavePost call <SID>record_time()
-  " autocmd CursorHoldI,CompleteDone * call <SID>auto_save()
-  autocmd CursorHold,InsertLeave * call <SID>auto_save()
-  autocmd BufLeave,FocusLost * call <SID>auto_save()
+  autocmd CursorHold,InsertLeave * ++nested call <SID>auto_save()
+  autocmd BufLeave,FocusLost * ++nested call <SID>auto_save()
   autocmd BufWritePost * call <SID>record_time()
 augroup END
 
@@ -30,7 +29,7 @@ function! s:auto_save() abort
   endif
 
   doautocmd User AutoSavePre
-  silent! wa
+  silent! w
 
   if &modified
     return

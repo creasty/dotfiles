@@ -80,7 +80,7 @@ augroup force_refresh
   autocmd FocusGained * call <SID>reload_display(1)
 
   autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * let b:filereadable = filereadable(expand('%:p'))
-  autocmd FocusGained,BufEnter * nested call <SID>reload_file()
+  autocmd FocusGained,BufEnter * ++nested call <SID>reload_file()
 augroup END
 
 let &cpoptions = s:save_cpo
