@@ -1,8 +1,20 @@
 extends _clike_stmt
 extends _clike_postfix
 
-snippet log "console.log()" b
+snippet cdebug "console.debug()" b
+console.debug($0);
+endsnippet
+
+snippet clog "console.log()" b
 console.log($0);
+endsnippet
+
+snippet cerror "console.error()" b
+console.error($0);
+endsnippet
+
+snippet cwarn "console.error()" b
+console.wran($0);
 endsnippet
 
 snippet times ".times"
