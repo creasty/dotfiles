@@ -37,8 +37,8 @@ endfunction
 
 augroup last_closed_buffer
   autocmd!
-  autocmd vimrc BufEnter * call <SID>lcb_remember_on_enter()
-  autocmd vimrc BufLeave * call <SID>lcb_remember_on_leave()
+  autocmd BufEnter * call <SID>lcb_remember_on_enter()
+  autocmd BufLeave * call <SID>lcb_remember_on_leave()
 augroup END
 
 nnoremap <silent> <Plug>(lcb-restore) :call <SID>lcb_restore()<CR>
