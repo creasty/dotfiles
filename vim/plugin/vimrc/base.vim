@@ -60,6 +60,9 @@ set modelines=0
 set wildmenu
 set wildmode=list:full
 
+" ignore case in filenames
+set wildignorecase
+
 " fast terminal connection
 set ttyfast
 
