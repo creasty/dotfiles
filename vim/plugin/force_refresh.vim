@@ -7,10 +7,10 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 function! s:is_enabled() abort
-  if &ft =~# 'denite'
+  if &readonly || !&modifiable
     return v:false
   endif
-  if &readonly || !&modifiable
+  if !empty(&buftype)
     return v:false
   endif
   return v:true
