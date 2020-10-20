@@ -159,6 +159,8 @@ if g:colors_name ==# 'candle'
     \ call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
 
   autocmd vimrc_appearance User ModeDidChange call s:change_highlight_for_mode()
+
+  autocmd vimrc_appearance FocusGained,BufEnter,BufReadPost,BufWritePost * let b:filereadable = filereadable(expand('%:p'))
 endif
 
 let &cpoptions = s:save_cpo
