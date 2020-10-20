@@ -20,6 +20,9 @@ function! s:reload_display(level) abort
   if !getbufvar('%', 'force_refresh_enabled', v:false)
     return
   endif
+  if !s:is_enabled()
+    return
+  endif
 
   if a:level >= 3
     " reload if modified externally
@@ -45,7 +48,11 @@ function! s:reload_display(level) abort
   endif
 
   " for plugins
-  doautocmd User ForceRefresh
+  if a:level >= 3
+    doautocmd User ForceRefresh3
+  else
+    doautocmd User ForceRefresh
+  endif
 
   " trigger content change event
   doautocmd InsertLeave
@@ -65,9 +72,10 @@ augroup force_refresh
   autocmd!
 
   autocmd User ForceRefresh :
+  autocmd User ForceRefresh3 :
 
   autocmd BufLeave * let b:force_refresh_enabled = v:false
-  autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled()
+  autocmd BufEnter * let b:force_refresh_enabled = v:true
   autocmd BufEnter * call <SID>reload_display(0)
   autocmd FocusGained * call <SID>reload_display(1)
 

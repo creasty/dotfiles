@@ -250,14 +250,16 @@ endif
 if dein#tap('coc.nvim')
   call vimrc#plugin#coc#init()
 
-  autocmd vimrc User ForceRefresh call <SID>clear_signs()
-  function! s:clear_signs()
+  autocmd vimrc User ForceRefresh3 call coc#util#close_floats()
+  autocmd vimrc User ForceRefresh3 call <SID>clear_signs(v:true)
+  autocmd vimrc User ForceRefresh call <SID>clear_signs(v:false)
+  function! s:clear_signs(all)
     let l:b = bufnr('%')
     let l:sign_ids = []
     let l:lines = split(execute('sign place buffer='.b), "\n")
     for l:line in l:lines
       let l:ms = matchlist(l:line, 'id=\(\d\+\)\s\+name=\(Coc\w\+\)')
-      if len(l:ms) > 0 && l:ms[2] !~# '^CocGit'
+      if len(l:ms) > 0 && (a:all || l:ms[2] !~# '^CocGit')
         call add(l:sign_ids, l:ms[1])
       endif
     endfor
