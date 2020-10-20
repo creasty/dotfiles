@@ -1,0 +1,3 @@
+mutation FILE_BASE_NAME {
+  <+CURSOR+>
+}

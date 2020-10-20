@@ -210,6 +210,7 @@ if dein#tap('mold.vim')
   let s:mold_template_macro = {
     \ 'FILE_PATH': "\\=expand('%:p')",
     \ 'FILE_NAME': "\\=expand('%:t')",
+    \ 'FILE_BASE_NAME': "\\=expand('%:t:r')",
     \ 'FULL_NAME': 'Yuki Iwanaga',
     \ 'USER_NAME': 'Creasty',
   \ }

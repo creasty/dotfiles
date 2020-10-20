@@ -1,0 +1,3 @@
+fragment FILE_BASE_NAME on FILE_BASE_NAME {
+  <+CURSOR+>
+}

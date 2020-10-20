@@ -1,8 +1,5 @@
-<%-
-name = File.basename('FILE_NAME', '.ts')
--%>
 import { Resolver } from "resolvers/type";
 
-export const <%= name %>: Resolver<"<%= name %>"> = async (_parent, args, context, _info) => {
+export const FILE_BASE_NAME: Resolver<"FILE_BASE_NAME"> = async (_parent, args, context, _info) => {
   <+CURSOR+>
 };
