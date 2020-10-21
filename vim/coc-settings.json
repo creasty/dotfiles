@@ -188,9 +188,11 @@
   "cSpell.userWords": [
     "CSRF",
     "Calculatable",
+    "Debounced",
     "Droppable",
     "Fullscreen",
     "Hookable",
+    "Keybind",
     "Overridable",
     "Promisified",
     "Readonly",
