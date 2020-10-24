@@ -29,7 +29,7 @@
     "<C-f>": "feedkeys:\\<Right>",
     "<C-b>": "feedkeys:\\<Left>"
   },
-  "list.source.diagnostics.defaultOptions": ["--normal"],
+  "list.source.diagnostics.defaultOptions": ["--normal", "--no-sort"],
 
   "javascript.preferences.useAliasesForRenames": false,
   "typescript.preferences.useAliasesForRenames": false,

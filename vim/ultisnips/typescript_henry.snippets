@@ -1,0 +1,15 @@
+snippet api-client-general "API Client for general" b
+export class ${1:Name}API extends BaseClient<I$1ServiceClient> {
+	constructor(clientAuth?: ClientAuth) {
+		super(GENERAL_API_HOST, $1ServiceClient, clientAuth);
+	}
+}
+endsnippet
+
+snippet api-client-receipt "API Client for receipt" b
+export class ${1:Name}API extends BaseClient<I$1ServiceClient> {
+	constructor(clientAuth?: ClientAuth) {
+		super(RECEIPT_API_HOST, $1ServiceClient, clientAuth);
+	}
+}
+endsnippet
