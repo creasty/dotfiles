@@ -82,6 +82,7 @@ homebrew:
     - pcre                # Perl compatible regular expressions library
     - protobuf            # Protocol buffers (Google's data interchange format)
     - python              # Interpreted, interactive, object-oriented programming language
+    - ripgrep             # Search tool like grep and The Silver Searcher
     - shellcheck          # https://www.shellcheck.net/
     - termtosvg           # Record terminal sessions as SVG animations
     - the_silver_searcher # Code-search similar to ack
@@ -125,6 +126,7 @@ link:
   config/peco:             .peco
   config/pgclirc:          .pgclirc
   config/termtosvg:        .config/termtosvg
+  config/rigpregrc:        .config/ripgreprc
   ruby/bundle/config:      .bundle/config
   ruby/gemrc:              .gemrc
   ruby/irbrc:              .irbrc

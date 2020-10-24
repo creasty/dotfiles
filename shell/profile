@@ -55,6 +55,9 @@ export RUST_BACKTRACE=1
 # Create React App
 export BROWSER=none
 
+# ripgrep
+export RIPGREP_CONFIG_PATH=$HOME/.config/.ripgreprc
+
 #  Anyenv
 #-----------------------------------------------
 if [ -z "$SKIP_ANYENV_INIT" ] && [ -d "$HOME/.anyenv" ] && command -v 'anyenv' > /dev/null 2>&1; then
