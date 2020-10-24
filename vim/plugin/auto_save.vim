@@ -19,10 +19,26 @@ augroup END
 
 command! AutoSaveToggle :call <SID>auto_save_toggle()
 
+function! s:is_enabled() abort
+  if &readonly || !&modifiable
+    return v:false
+  endif
+  if !empty(&buftype)
+    return v:false
+  endif
+  if bufname() =~# '^__coc_'
+    return v:false
+  endif
+  return v:true
+endfunction
+
 function! s:auto_save() abort
   if s:auto_save_enabled == 0
     return
   end
+  if !s:is_enabled()
+    return
+  endif
 
   if !&modified
     return
