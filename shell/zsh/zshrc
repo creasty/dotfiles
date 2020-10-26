@@ -5,6 +5,9 @@ zmodload -i zsh/complist
 
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -f ~/google-cloud-sdk/completion.zsh.inc ]; then
+  source ~/google-cloud-sdk/completion.zsh.inc
+fi
 
 fpath=(
   ~/.zsh/plugins/zsh-completions/src

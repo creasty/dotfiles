@@ -41,6 +41,9 @@ export PATH=/usr/local/opt/libxml2/bin:$PATH
 # Rust
 export PATH=$PATH:$HOME/.cargo/bin
 
+# google-clould-sdk
+export PATH=$HOME/google-cloud-sdk/bin:$PATH
+
 #  App config
 #-----------------------------------------------
 # Git

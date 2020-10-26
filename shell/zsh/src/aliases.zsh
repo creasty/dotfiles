@@ -157,10 +157,10 @@ alias dk-clean='docker-clean'
 
 #  Google Cloud SDK
 #-----------------------------------------------
-alias gcloud='google-cloud-sdk gcloud'
-alias gsutil='google-cloud-sdk gsutil'
-alias bq='google-cloud-sdk bq'
-alias kubectl='google-cloud-sdk kubectl'
+# alias gcloud='google-cloud-sdk gcloud'
+# alias gsutil='google-cloud-sdk gsutil'
+# alias bq='google-cloud-sdk bq'
+# alias kubectl='google-cloud-sdk kubectl'
 
 alias ku='kubectl'
 alias ku-oneshot='kubectl-oneshot'
