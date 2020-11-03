@@ -127,6 +127,7 @@ link:
   config/pgclirc:          .pgclirc
   config/termtosvg:        .config/termtosvg
   config/rigpregrc:        .config/ripgreprc
+  config/goneovim.toml:    .config/goneovim/setting.toml
   ruby/bundle/config:      .bundle/config
   ruby/gemrc:              .gemrc
   ruby/irbrc:              .irbrc
