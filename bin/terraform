@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-docker run \
-  --rm \
-  -it \
-  -w /workdir \
-  -v "$(pwd)":/workdir \
-  creasty/terraform:latest \
-  "$@"
