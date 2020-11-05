@@ -7,7 +7,7 @@ FontSize = 12
 Linespace = 2
 
 ExtCmdline   = false
-ExtPopupmenu = true
+ExtPopupmenu = false
 ExtTabline   = false
 ExtMessages  = false
 
