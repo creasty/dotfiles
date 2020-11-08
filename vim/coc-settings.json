@@ -1,5 +1,5 @@
 {
-  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnType": false,
   "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.formatOnSaveFiletypes": ["go"],
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
@@ -76,8 +76,6 @@
 
   "tabnine.priority": 90,
   "tabnine.disable_filetypes": ["markdown"],
-
-  "git.branchCharacter": "@",
 
   "diagnostic-languageserver.filetypes": {
     "bash": ["shellcheck"],
