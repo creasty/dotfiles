@@ -315,3 +315,45 @@ call lexima#add_rule({
   \ 'input': "\<C-u>SoftTab ",
   \ 'mode':  ':',
 \ })
+
+"  Search and replace
+"-----------------------------------------------
+for s:del in ['/', '~', '!', '@', '#', '%', ':']
+  call lexima#add_rule({
+    \ 'char':        s:del,
+    \ 'at':          '^\(%\|' . "'<,'>" . '\)\?s\%#',
+    \ 'input':       s:del . '\v',
+    \ 'input_after': s:del . s:del . 'g',
+    \ 'mode':        ':',
+  \ })
+
+  call lexima#add_rule({
+    \ 'char':  s:del,
+    \ 'at':    '^\(%\|' . "'<,'>" . '\)\?s' . s:del . '.\+\\%#',
+    \ 'input': s:del,
+    \ 'mode':  ':',
+  \ })
+  call lexima#add_rule({
+    \ 'char':  s:del,
+    \ 'at':    '^\(%\|' . "'<,'>" . '\)\?s' . s:del . '.\+\%#',
+    \ 'input': '\' . s:del,
+    \ 'mode':  ':',
+  \ })
+endfor
+unlet s:del
+
+for s:del in ['/', '?']
+  call lexima#add_rule({
+    \ 'char':  s:del,
+    \ 'at':    '\\\%#',
+    \ 'input': s:del,
+    \ 'mode':  s:del,
+  \ })
+  call lexima#add_rule({
+    \ 'char':  s:del,
+    \ 'at':    '\%#',
+    \ 'input': '\' . s:del,
+    \ 'mode':  s:del,
+  \ })
+endfor
+unlet s:del

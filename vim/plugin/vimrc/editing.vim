@@ -125,10 +125,6 @@ xnoremap <Space>s "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 " replace word under cursor
 nnoremap <Space>s "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
-" auto escaping
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
-
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
