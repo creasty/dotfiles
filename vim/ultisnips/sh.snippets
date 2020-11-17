@@ -32,7 +32,7 @@ ask() {
 endsnippet
 
 snippet cdrt "cd to the script's location" b
-cd "$(dirname \$0)/.."
+cd "$(dirname "\$0")" | exit 1
 endsnippet
 
 snippet command "Check if a command is available" b
@@ -55,7 +55,7 @@ endsnippet
 
 snippet do_help "do_help()" b
 do_help() {
-	cat "\$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+	sed -n -E '/^#>/s/^#>[ ]?//p' < "\$0"
 	exit 1
 }
 endsnippet
