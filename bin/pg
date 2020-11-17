@@ -1,28 +1,29 @@
 #!/usr/bin/env bash
-#> postgres <command>
+#> pg <command>
 #>
 #> COMMANDS:
-#>     postgres start
-#>     postgres stop
-#>     postgres destroy
-#>     postgres psql
-#>     postgres createdb $dbname
-#>     postgres createuser $username
-#>     postgres status
-#>     postgres logs
+#>     pg start
+#>     pg stop
+#>     pg destroy
+#>     pg status
+#>     pg logs
+#>
+#>     pg psql [ARGS...]
+#>     pg createdb $dbname
+#>     pg createuser $username
 
 set -eu
 set -o pipefail
 
 NAME=the-postgres
-IMAGE=postgres:9.6.1-alpine
+IMAGE=postgres:12-alpine
 
-DB_USER=$USER
+DB_USER=postgres
 
 #  Utils
 #-----------------------------------------------
 do_help() {
-  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
   exit 1
 }
 
@@ -65,14 +66,16 @@ server_create() {
     -p 5432:5432 \
     --name $NAME \
     -e POSTGRES_USER=$DB_USER \
-    -e POSTGRES_PASSWORD= \
-    -v ~/docker/postgres:/var/lib/postgresql/data \
+    -e POSTGRES_PASSWORD=password \
+    -e POSTGRES_HOST_AUTH_METHOD=trust \
+    -v "$HOME/.docker-data/$NAME:/var/lib/postgresql/data" \
     -d \
-    $IMAGE
+    $IMAGE \
+    postgres
 }
 
 exec_psql() {
-  docker exec -it $NAME psql --username=$DB_USER
+  docker exec -it $NAME psql --username=$DB_USER "$@"
 }
 
 exec_createdb() {
@@ -108,7 +111,7 @@ case "$COMMAND" in
   start)      server_start ;;
   stop)       server_stop ;;
   destroy)    server_destory ;;
-  psql)       exec_psql ;;
+  psql)       exec_psql "$@" ;;
   createdb)   exec_createdb "$1" ;;
   createuser) exec_createuser "$1" ;;
   status)     exec_status ;;
