@@ -9,10 +9,10 @@ let b:switch_custom_definitions = [
 \ ]
 
 command! -nargs=0 -range=% SwapSwitchCase
-  \ <line1>,<line2>s/\v<case\s+([^:]+):((\s|\n)*)return\s+([^;]+);/case \4:\2return \1;/g
+  \ keeppatterns <line1>,<line2>s/\v<case\s+([^:]+):((\s|\n)*)return\s+([^;]+);/case \4:\2return \1;/g
 
 command! -nargs=0 -range=% ConvertToApiDef
-  \ <line1>,<line2>s/\v(\w{-})API/\l\1: () => new \0(clientAuth).promise/g
+  \ keeppatterns <line1>,<line2>s/\v(\w{-})API/\l\1: () => new \0(clientAuth).promise/g
 
 command! -nargs=+ GenAdaptor
   \ call <SID>gen_adaptor(<f-args>)
