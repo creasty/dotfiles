@@ -19,35 +19,82 @@ function! s:gen_adaptor(...) abort
   let @x = ''
 
   for l:name in a:000
-    if l:name =~ '^-ns=\(.\+\)'
-      let l:proto_ns = substitute(l:name, '^-ns=\(.\+\)', '\1', '')
+    let l:m = matchlist(l:name, '^-ns=\(.\+\)')
+    if !empty(l:m)
+      let l:proto_ns = l:m[1]
       continue
     endif
 
+    " CONVERSION TYPE:
+    "   M - message (proto)
+    "   E - enum (proto)
+    "   t - type (graphql)
+    "   i - input (graphql)
+    "   e - enum (graphql)
+    let l:type = ''
+    let l:m = matchlist(l:name, '\(.\+\):\([MEtie]\)$')
+    if !empty(l:m)
+      let l:name = l:m[1]
+      let l:type = l:m[2]
+    endif
+    if empty(l:type)
+      let l:type = (l:name =~# 'Input$') ? 'i' : 'M'
+    endif
+
     let l:body = ''
-    if l:name =~# 'Input$'
+    if l:type ==# 'i'
       let l:body = ''
         \ . "export function {funcName}ToPb(\n"
         \ . "  input: graphql.{GraphqlType}\n"
         \ . "): {ProtoType} {\n"
         \ . "  return new {ProtoType}();\n"
         \ . "}\n"
-    else
+    elseif l:type ==# 't'
+      let l:body = ''
+        \ . "export function {funcName}ToPb(\n"
+        \ . "  type: graphql.{GraphqlType}\n"
+        \ . "): {ProtoType} {\n"
+        \ . "  return new {ProtoType}();\n"
+        \ . "}\n"
+    elseif l:type ==# 'M'
       let l:body = ''
         \ . "export function {funcName}ToType(\n"
         \ . "  pb: {ProtoType}\n"
         \ . "): Named<graphql.{GraphqlType}> {\n"
         \ . "  return {};\n"
         \ . "}\n"
+    elseif l:type ==# 'E'
+      let l:body = ''
+        \ . "export function {funcName}ToType(\n"
+        \ . "  pb: {ProtoType}\n"
+        \ . "): graphql.{GraphqlType} {\n"
+        \ . "  switch (pb) {\n"
+        \ . "    case {ProtoType}.UNSPECIFIED:\n"
+        \ . "      return graphql.{GraphqlType}.Unspecified;\n"
+        \ . "  }\n"
+        \ . "}\n"
+    elseif l:type ==# 'e'
+      let l:body = ''
+        \ . "export function {funcName}ToPb(\n"
+        \ . "  type: graphql.{GraphqlType}\n"
+        \ . "): {ProtoType} {\n"
+        \ . "  switch (type) {\n"
+        \ . "    case graphql.{GraphqlType}.Unspecified:\n"
+        \ . "      return {ProtoType}.UNSPECIFIED;\n"
+        \ . "  }\n"
+        \ . "}\n"
     endif
 
-    let l:proto_type = substitute(l:name, 'Input$', '', '')
-    let l:func_name = substitute(l:proto_type, '^.', '\l\0', '')
-    let l:proto_type_with_ns = empty(l:proto_ns) ? l:proto_type : l:proto_ns . '.' . l:proto_type
+    let l:func_name = substitute(
+      \ substitute(l:name, '^.', '\l\0', ''),
+      \ '\.\(.\)', '\U\1', 'g')
+
+    let l:proto_type = substitute(substitute(l:name, 'Input$', '', ''), '_', '.', 'g')
+    let l:proto_type = empty(l:proto_ns) ? l:proto_type : l:proto_ns . '.' . l:proto_type
 
     let l:body = substitute(l:body, '{funcName}', l:func_name, 'g')
     let l:body = substitute(l:body, '{GraphqlType}', l:name, 'g')
-    let l:body = substitute(l:body, '{ProtoType}', l:proto_type_with_ns, 'g')
+    let l:body = substitute(l:body, '{ProtoType}', l:proto_type, 'g')
 
     let @x .= l:body
   endfor
