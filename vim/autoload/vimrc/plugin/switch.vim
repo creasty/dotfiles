@@ -1,33 +1,11 @@
-function! s:keywords(kws) abort
-  let l:h = {}
-
-  let l:len = len(a:kws)
-  let l:i = 0
-  while l:i < l:len
-    let l:h['\<' . escape(a:kws[l:i], '.') . '\>'] = a:kws[(l:i + 1) % l:len]
-    let l:i += 1
-  endwhile
-
-  return l:h
-endfunction
-
 let g:switch_custom_definitions = [
-  \ s:keywords(['public', 'protected', 'private']),
-  \ s:keywords(['and', 'or']),
-  \ s:keywords(['if', 'unless']),
-  \ s:keywords(['true', 'false']),
-  \ s:keywords(['True', 'False']),
-  \ s:keywords(['TRUE', 'FALSE']),
-  \ s:keywords(['on', 'off']),
-  \ s:keywords(['ON', 'OFF']),
-  \ s:keywords(['yes', 'no']),
-  \ s:keywords(['Yes', 'No']),
-  \ s:keywords(['YES', 'NO']),
+  \ switch#Words(['public', 'protected', 'private']),
+  \ switch#Words(['and', 'or']),
+  \ switch#Words(['if', 'unless']),
+  \ switch#NormalizedCaseWords(['true', 'false']),
+  \ switch#NormalizedCaseWords(['on', 'off']),
+  \ switch#NormalizedCaseWords(['yes', 'no']),
 \ ]
-
-function! vimrc#plugin#switch#keywords(kws) abort
-  return s:keywords(a:kws)
-endfunction
 
 function! vimrc#plugin#switch#toggle() abort
   let l:line = getline('.')

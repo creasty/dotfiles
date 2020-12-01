@@ -1,17 +1,17 @@
 let b:switch_custom_definitions = [
-  \ vimrc#plugin#switch#keywords(['const', 'let']),
-  \ vimrc#plugin#switch#keywords(['onFocus', 'onBlur']),
-  \ vimrc#plugin#switch#keywords(['onMouseOver', 'onMouseOut']),
-  \ vimrc#plugin#switch#keywords(['onMouseEnter', 'onMouseLeave']),
-  \ vimrc#plugin#switch#keywords(['onMouseDown', 'onMouseUp']),
-  \ vimrc#plugin#switch#keywords(['onKeyUp', 'onKeyDown', 'onKeyPress']),
-  \ vimrc#plugin#switch#keywords(['useState', 'useAdaptiveState']),
+  \ switch#Words(['const', 'let']),
+  \ switch#Words(['onFocus', 'onBlur']),
+  \ switch#Words(['onMouseOver', 'onMouseOut']),
+  \ switch#Words(['onMouseEnter', 'onMouseLeave']),
+  \ switch#Words(['onMouseDown', 'onMouseUp']),
+  \ switch#Words(['onKeyUp', 'onKeyDown', 'onKeyPress']),
+  \ switch#Words(['useState', 'useAdaptiveState']),
 \ ]
 
 command! -nargs=0 -range=% SwapSwitchCase
   \ keeppatterns <line1>,<line2>s/\v<case\s+([^:]+):((\s|\n)*)return\s+([^;]+);/case \4:\2return \1;/g
 
-command! -nargs=0 -range=% ConvertToApiDef
+command! -nargs=0 -range=% ConvertApiDef
   \ keeppatterns <line1>,<line2>s/\v(\w{-})API/\l\1: () => new \0(clientAuth).promise/g
 
 command! -nargs=+ GenAdaptor
