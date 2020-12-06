@@ -56,10 +56,6 @@ set viminfo='50,<1000,s100
 " disable mode lines
 set modelines=0
 
-" command line completion
-set wildmenu
-set wildmode=list:full
-
 " ignore case in filenames
 set wildignorecase
 
