@@ -251,7 +251,7 @@ endif
 if dein#tap('coc.nvim')
   call vimrc#plugin#coc#init()
 
-  autocmd vimrc User ForceRefresh3 call coc#util#close_floats()
+  autocmd vimrc User ForceRefresh3 call coc#float#close_all()
   autocmd vimrc User ForceRefresh3 call <SID>clear_signs(v:true)
   autocmd vimrc User ForceRefresh call <SID>clear_signs(v:false)
   function! s:clear_signs(all)
