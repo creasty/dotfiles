@@ -6,18 +6,17 @@ let g:loaded_emacs_cursor = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
+augroup emacs_cursor
+  autocmd!
+  autocmd InsertEnter * set eventignore-=InsertLeave
+augroup END
+
 function! s:insert_enter() abort
-  set eventignore+=InsertLeave,InsertEnter
+  set eventignore+=InsertLeave
   return ""
 endfunction
 
-function! s:insert_leave() abort
-  set eventignore-=InsertLeave,InsertEnter
-  return "\<Left>\<Right>"
-endfunction
-
 inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
-inoremap <expr> <Plug>(insert-leave) <SID>insert_leave()
 
 inoremap <Plug>(emacs-down) <C-g>u<C-o>gj
 inoremap <Plug>(emacs-up) <C-g>u<C-o>gk
@@ -32,11 +31,11 @@ imap <C-h> <BS>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
-imap <C-p> <Plug>(insert-enter)<Plug>(emacs-up)<Plug>(insert-leave)
-imap <C-n> <Plug>(insert-enter)<Plug>(emacs-down)<Plug>(insert-leave)
-imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)<Plug>(insert-leave)
-imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)<Plug>(insert-leave)
-imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)<Plug>(insert-leave)
+imap <C-p> <Plug>(insert-enter)<Plug>(emacs-up)
+imap <C-n> <Plug>(insert-enter)<Plug>(emacs-down)
+imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)
+imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)
+imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)
 
 cmap <C-h> <BS>
 cnoremap <C-a> <Home>
