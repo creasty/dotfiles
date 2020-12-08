@@ -57,7 +57,7 @@ function! s:reload_display(level) abort
   " trigger content change event
   doautocmd InsertLeave
 
-  return 'zz'
+  return ''
 endfunction
 
 function! s:reload_file() abort
