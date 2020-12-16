@@ -71,7 +71,7 @@ server_create() {
     -v "$HOME/.docker-data/$NAME:/var/lib/postgresql/data" \
     -d \
     $IMAGE \
-    postgres
+    postgres -c log_statement=all
 }
 
 exec_psql() {
@@ -87,7 +87,7 @@ exec_createuser() {
 }
 
 exec_logs() {
-  docker logs -f $NAME
+  docker logs -f --tail 0 $NAME
 }
 
 exec_status() {
