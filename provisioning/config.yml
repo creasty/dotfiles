@@ -23,7 +23,6 @@ homebrew:
     - quicklook-json           # http://www.sagtau.com/quicklookjson.html
     - rightfont                # https://rightfontapp.com/
     - shift                    # https://tryshift.com/
-    - skype                    # https://www.skype.com/
     - spotify                  # https://www.spotify.com/
     - tableplus                # https://tableplus.io/
     - transmit                 # https://panic.com/transmit/
@@ -99,15 +98,14 @@ mas:
   #   $ mas list
   #
   applications:
-    - '1031280567' # Postico
     - '1066302071' # New File Menu Free
     - '1091189122' # Bear
-    - '1333542190' # 1Password 7
+    - '1333542190' # 1Password
     - '425424353'  # The Unarchiver
     - '497799835'  # Xcode
     - '498672703'  # Droplr
-    - '904280696'  # Things3
-    - '975937182'  # Fantastical 2
+    - '904280696'  # Things
+    - '975937182'  # Fantastical
 
 launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
