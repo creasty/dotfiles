@@ -188,6 +188,7 @@
     "Calculatable",
     "Debounced",
     "Droppable",
+    "Finalizable",
     "Fullscreen",
     "Hookable",
     "Keybind",
