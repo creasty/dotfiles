@@ -1,3 +1,77 @@
+global !p
+import re
+
+def gen_rpc_def(name):
+	m = re.match('^(List|Search|Get|Create|UpdateMulti|Update|Delete)(\w+)$', name)
+
+	if m is None:
+		return f'rpc {name} ({name}Request) returns ({name}Response);'
+
+	verb = m.group(1)
+	obj = m.group(2)
+
+	if verb == 'Get':
+		return f'rpc {name} ({name}Request) returns ({obj});';
+	if verb == 'Create':
+		return f'rpc {name} ({obj}) returns ({obj});';
+	if verb == 'Update':
+		return f'rpc {name} ({name}Request) returns ({obj});';
+	if verb == 'Delete':
+		return f'rpc {name} ({name}Request) returns (google.protobuf.Empty);';
+
+	return f'rpc {name} ({name}Request) returns ({name}Response);'
+
+def gen_message_def(name):
+	m = re.match('^(List|Search|Get|Create|UpdateMulti|Update|Delete)(\w+?)(Request|Response)$', name)
+
+	if m is None:
+		return ''
+
+	verb = m.group(1)
+	obj = m.group(2)
+	obj_snake = re.sub('([a-z0-9])([A-Z])', r'\1_\2', obj).lower()
+	msg_type = m.group(3)
+
+	if msg_type == 'Request':
+		if verb == 'Search':
+			return '    string query = 1 [ (google.api.field_behavior) = REQUIRED ];'
+		if verb == 'Get':
+			return '    string uuid = 1 [ (google.api.field_behavior) = REQUIRED ];'
+		if verb == 'Update':
+			return (
+				f'    {obj} {obj_snake} = 1 [ (google.api.field_behavior) = REQUIRED ];\n'
+				'    // マスク\n'
+				'    google.protobuf.FieldMask update_mask = 2 [ (google.api.field_behavior) = REQUIRED ];'
+			)
+		if verb == 'UpdateMulti':
+			return (
+				'    // 更新用レコード\n'
+				'    repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];\n'
+				'\n'
+				'    message Record {\n'
+				f'        {obj} {obj_snake} = 1 [ (google.api.field_behavior) = REQUIRED ];\n'
+				'        // レコード操作\n'
+				'        RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];\n'
+				'        // マスク\n'
+				'        google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];\n'
+				'    }'
+			)
+		if verb == 'Delete':
+			return '    string uuid = 1 [ (google.api.field_behavior) = REQUIRED ];'
+	if msg_type == 'Response':
+		if verb == 'List':
+			return f'    repeated {obj} {obj_snake} = 1 [ (google.api.field_behavior) = REQUIRED ];'
+		if verb == 'Search':
+			return f'    repeated {obj} {obj_snake} = 1 [ (google.api.field_behavior) = REQUIRED ];'
+		if verb == 'Get':
+			return f'    {obj} {obj_snake} = 1 [ (google.api.field_behavior) = REQUIRED ];'
+		if verb == 'UpdateMulti':
+			return f'    repeated {obj} {obj_snake} = 1 [ (google.api.field_behavior) = REQUIRED ];'
+
+	return ''
+
+endglobal
+
 snippet syntax "syntax proto3" b
 syntax = "proto3";
 endsnippet
@@ -16,8 +90,11 @@ option java_multiple_files = true;
 endsnippet
 
 snippet rpc "define a rpc" b
-rpc ${1:Name} (${2:$1Request}) returns (${3:$1Response}) {
-}
+rpc ${1:Name} (${2:$1Request}) returns (${3:$1Response});
+endsnippet
+
+snippet "rpc (\w+)" "define a rpc" br
+`!p snip.rv = gen_rpc_def(match.group(1))`
 endsnippet
 
 snippet service "define a service" b
@@ -38,24 +115,9 @@ message $1 {
 }
 endsnippet
 
-snippet "message request" "define a request message" b
-message $1Request {
-	$0
-}
-endsnippet
-
-snippet "message response" "define a response message" b
-message $1Response {
-	$0
-}
-endsnippet
-
-snippet "message request-response" "define request & response messages" b
-message $1Request {
-	$0
-}
-
-message $1Response {
+snippet "(msg|message) (\w+)" "define a message" br
+message `!p snip.rv = match.group(2)` {
+`!p snip.rv = gen_message_def(match.group(2))`$0
 }
 endsnippet
 
@@ -65,22 +127,6 @@ endsnippet
 
 snippet repeated "define a repeated field" b
 repeated ${1:Type} ${2:`!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', re.sub('(.+\.)?([^.]+)$', r'\2', t[1])).lower()`} = $3;
-endsnippet
-
-snippet "message update-multi-request" "define bulk update request" b
-message UpdateMulti${1:Name}Request {
-	// 更新用レコード
-	repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
-
-	message Record {
-		// $3
-		${2:$1} `!p snip.rv = re.sub('([a-z0-9])([A-Z])', r'\1_\2', t[2]).lower()` = 1 [ (google.api.field_behavior) = REQUIRED ];
-		// レコード操作
-		RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
-		// マスク
-		google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
-	}
-}
 endsnippet
 
 #=== Timestamp
