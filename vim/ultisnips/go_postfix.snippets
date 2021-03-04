@@ -74,6 +74,12 @@ for ${1:k}, ${2:v} := range `!p snip.rv = match.group(1)` {
 }
 endsnippet
 
+snippet "(\S+)\.forv" "for _, v := range expr" r
+for _, ${1:v} := range `!p snip.rv = match.group(1)` {
+	$0
+}
+endsnippet
+
 snippet "(\S+)\.while" "for expr" r
 for `!p snip.rv = match.group(1)` {
 	$0
