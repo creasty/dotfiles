@@ -129,10 +129,6 @@ alias flush-dns='sudo killall -HUP mDNSResponder'
 alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
-rbserver() {
-  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start'
-}
-
 ipf() {
   curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
 }
@@ -188,6 +184,18 @@ alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
 alias rdbm='rake-db-migrate'
 alias rdba='rake-db-migrate-all'
+
+rbserver() {
+  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start'
+}
+
+uuid() {
+  if [ "$1" = '-' ]; then
+    ruby -r 'securerandom' -e 'print SecureRandom.uuid' | pbcopy
+  else
+    ruby -r 'securerandom' -e '[ARGV[0].to_i, 1].max.times { puts SecureRandom.uuid }' "$1"
+  fi
+}
 
 #  Rust
 #-----------------------------------------------
