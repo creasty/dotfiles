@@ -1,10 +1,24 @@
 #!/usr/bin/env bash
+#> gcloud-pubsub <command>
+#>
+#> COMMANDS:
+#>     gcloud-pubsub start
+#>     gcloud-pubsub stop
+#>     gcloud-pubsub destroy
+#>     gcloud-pubsub env-init
 
 set -eu
 set -o pipefail
 
 NAME=the-pubsub
 : ${PORT:=8085}
+
+#  Utils
+#-----------------------------------------------
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
+}
 
 #  Commands
 #-----------------------------------------------
@@ -37,6 +51,10 @@ server_create() {
     gcloud beta emulators pubsub start --host-port="0.0.0.0:$PORT"
 }
 
+exec_env_init() {
+  docker exec -it $NAME gcloud beta emulators pubsub env-init
+}
+
 #  Entrypoint
 #-----------------------------------------------
 COMMAND="${1:-}"
@@ -46,4 +64,6 @@ case "$COMMAND" in
   start)    server_start ;;
   stop)     server_stop ;;
   destroy)  server_destory ;;
+  env-init) exec_env_init ;;
+  *)        do_help ;;
 esac
