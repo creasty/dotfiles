@@ -88,7 +88,8 @@ alias ag="ag --pager='less -R' --width 1000"
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
-alias sha1='echo -n "${1}" | openssl sha1 | sed "s/^.* //"'
+alias sha1='openssl sha1 | sed "s/^.* //"'
+alias uuidgen="uuidgen | tr 'A-F' 'a-f'"
 
 # ssh-keygen [-q] [-b bits] [-t dsa | ecdsa | ed25519 | rsa] [-N new_passphrase] [-C comment] [-f output_keyfile]
 alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
@@ -187,14 +188,6 @@ alias rdba='rake-db-migrate-all'
 
 rbserver() {
   ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start'
-}
-
-uuid() {
-  if [ "$1" = '-' ]; then
-    ruby -r 'securerandom' -e 'print SecureRandom.uuid' | pbcopy
-  else
-    ruby -r 'securerandom' -e '[ARGV[0].to_i, 1].max.times { puts SecureRandom.uuid }' "$1"
-  fi
 }
 
 #  Rust
