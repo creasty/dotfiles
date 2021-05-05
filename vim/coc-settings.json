@@ -31,9 +31,6 @@
   },
   "list.source.diagnostics.defaultOptions": ["--normal", "--no-sort"],
 
-  "javascript.preferences.useAliasesForRenames": false,
-  "typescript.preferences.useAliasesForRenames": false,
-
   "languageserver": {
     "gopls": {
       "command": "gopls",
@@ -190,6 +187,7 @@
     "Dataset",
     "Debounced",
     "Droppable",
+    "FRRF",
     "Finalizable",
     "Fullscreen",
     "Hookable",
