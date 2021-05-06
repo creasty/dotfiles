@@ -24,6 +24,14 @@ function! s:reload_display(level) abort
     return
   endif
 
+  " clear highlights
+  if has('textprop')
+    call prop_clear(1, line('$'))
+  endif
+  if has('nvim')
+    call nvim_buf_clear_namespace(0, -1, 1, line('$'))
+  endif
+
   if a:level >= 3
     " reload if modified externally
     silent! checktime
@@ -33,14 +41,6 @@ function! s:reload_display(level) abort
     syntax sync fromstart
   endif
 
-  " clear highlights
-  if has('textprop')
-    call prop_clear(1, line('$'))
-  endif
-  if has('nvim')
-    call nvim_buf_clear_namespace(0, -1, 1, line('$'))
-  endif
-
   if a:level >= 2
     " fix glitches
     redraw!
@@ -48,14 +48,10 @@ function! s:reload_display(level) abort
   endif
 
   " for plugins
+  doautocmd User ForceRefresh
   if a:level >= 3
     doautocmd User ForceRefresh3
-  else
-    doautocmd User ForceRefresh
   endif
-
-  " trigger content change event
-  doautocmd InsertLeave
 
   return ''
 endfunction
