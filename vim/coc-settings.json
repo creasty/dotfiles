@@ -13,6 +13,8 @@
 
   "suggest.preferCompleteThanJumpPlaceholder": true,
 
+  "dialog.confirmKey": "<C-j>",
+
   "list.normalMappings": {
     "<C-j>": "do:defaultaction",
     "<C-c>": "do:exit",
