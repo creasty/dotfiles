@@ -50,7 +50,6 @@
       "rootPatterns": ["gradle.properties"]
     },
     "graphql": {
-      "enable": false,
       "command": "graphql-lsp",
       "args": ["server", "-m", "stream"],
       "rootPatterns": [

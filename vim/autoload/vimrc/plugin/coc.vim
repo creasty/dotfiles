@@ -74,12 +74,6 @@ command! -nargs=0 -range=% Format
 command! -nargs=0 OrganizeImport
   \ call CocAction('runCommand', 'editor.action.organizeImport')
 
-function! s:code_action_refined(type) abort
-  execute 'CocCommand actions.open ' . a:type
-endfunction
-xnoremap <silent> <Plug>(coc-codeaction-refined) :<C-u>call <SID>code_action_refined(visualmode())<CR>
-nnoremap <silent> <Plug>(coc-codeaction-refined) :<C-u>set operatorfunc=<SID>code_action_refined<CR>g@
-
 "  Key mappings
 "-----------------------------------------------
 " Introduce function text object
@@ -97,10 +91,8 @@ xmap <silent> gs <Plug>(coc-range-select)
 
 " Refactoring
 nmap <silent> gr <Plug>(coc-rename)
-nmap <silent> <expr> gq
-  \ has('nvim') ? "\<Plug>(coc-codeaction-refined)l" : "\<Plug>(coc-codeaction-selected)l"
-xmap <silent> <expr> gq
-  \ has('nvim') ? "\<Plug>(coc-codeaction-refined)" : "\<Plug>(coc-codeaction-selected)"
+nmap <silent> gq <Plug>(coc-codeaction-cursor)
+xmap <silent> gq <Plug>(coc-codeaction-selected)
 
 " GoTo code navigation
 nmap <silent> gh <Plug>(coc-hover)
