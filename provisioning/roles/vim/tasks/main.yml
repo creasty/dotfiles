@@ -23,27 +23,3 @@
   homebrew:
     name:  neovim
     state: present
-
-#- name: install macvim
-#  homebrew:
-#    name:  macvim
-#    state: present
-#
-#- name: link app
-#  file:
-#    src:   /usr/local/opt/macvim/MacVim.app
-#    dest:  /Applications/MacVim.app
-#    state: link
-#    force: yes
-#
-#- name: add padding to MacVim window
-#  osx_defaults:
-#    domain: org.vim.MacVim
-#    key:    '{{ item }}'
-#    type:   int
-#    value:  6
-#  with_items:
-#    - MMTextInsetTop
-#    - MMTextInsetRight
-#    - MMTextInsetBottom
-#    - MMTextInsetLeft
