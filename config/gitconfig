@@ -7,7 +7,7 @@
   privatekey = ~/.ssh/keys/github
 
 [core]
-  editor       = nvim
+  editor = nvim
   excludesfile = ~/.gitignore
 
   # To turn off diff-so-fancy temporarily, you can do `g --no-pager d`.
@@ -18,13 +18,25 @@
 
 [merge]
   tool = vimdiff
-  ff   = false
+  ff = false
 
 [diff]
   indentHeuristic = true
 
 [push]
   default = current
+
+[pull]
+  rebase = false
+
+[browse-remote "github.com"]
+  top = https://{host}/{path}
+  ref = https://{host}/{path}/tree/{short_ref}
+  rev = https://{host}/{path}/commit/{commit}
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+  insteadOf = git://github.com/
 
 [alias]
   a    = smart-add
@@ -66,7 +78,6 @@
 
   pl = auto-ref pull
   pu = auto-ref push
-  y  = deploy
   pr = github-compare
 
   cmp  = compare
@@ -119,7 +130,7 @@
   emf = ! nvim -p `git status -s | cut -b 4- | grep -v '\\/$' | uniq`
   ecf = ! nvim -p `git ls-files --unmerged | cut -f2 | sort -u`
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
-  dmb = ! git branch --merged | grep -v \\* | grep -v master | xargs -n 1 git branch -d
+  dmb = ! git branch --merged | grep -v \\* | grep -v -E 'master|develop' | xargs -n 1 git branch -d
 
 [issue]
   type = github
@@ -127,16 +138,5 @@
 [web]
   browser = google-chrome
 
-[browse-remote "github.com"]
-  top = https://{host}/{path}
-  ref = https://{host}/{path}/tree/{short_ref}
-  rev = https://{host}/{path}/commit/{commit}
-
-[url "git@github.com:"]
-  insteadOf = https://github.com/
-  insteadOf = git://github.com/
-
 [ghq]
   root = ~/go/src
-[pull]
-	rebase = false
