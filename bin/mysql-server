@@ -9,13 +9,14 @@
 set -eu
 set -o pipefail
 
-NAME=the_mysql
+NAME=the-mysql
 IMAGE=mysql:8.0
+DATA_DIR="$HOME/.docker-data"
 
 #  Utils
 #-----------------------------------------------
 do_help() {
-  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
   exit 1
 }
 
@@ -42,7 +43,7 @@ server_create() {
     -p 3306:3306 \
     --name $NAME \
     -e MYSQL_ROOT_PASSWORD=password \
-    -v ~/docker/mysql:/var/lib/mysql \
+    -v "$DATA_DIR/$NAME:/var/lib/mysql" \
     -d \
     $IMAGE
 }

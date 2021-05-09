@@ -23,7 +23,7 @@ INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)[ ]+L([0-9\.]+)'
 R_TEMPLATE='prop.test(c(\1, \3), c(\2, \4), conf.level = \5)'
 
 do_help() {
-  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
   exit 1
 }
 

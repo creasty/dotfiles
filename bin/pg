@@ -17,6 +17,7 @@ set -o pipefail
 
 NAME=the-postgres
 IMAGE=postgres:12-alpine
+DATA_DIR="$HOME/.docker-data"
 
 DB_USER=postgres
 
@@ -68,7 +69,7 @@ server_create() {
     -e POSTGRES_USER=$DB_USER \
     -e POSTGRES_PASSWORD=password \
     -e POSTGRES_HOST_AUTH_METHOD=trust \
-    -v "$HOME/.docker-data/$NAME:/var/lib/postgresql/data" \
+    -v "$DATA_DIR/$NAME:/var/lib/postgresql/data" \
     -d \
     $IMAGE \
     postgres -c log_statement=all

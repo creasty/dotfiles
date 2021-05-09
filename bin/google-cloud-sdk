@@ -8,8 +8,8 @@ docker run \
   -it \
   -w /workdir \
   -v "$(pwd)":/workdir \
-  -v $HOME/.config/gcloud:/root/.config/gcloud \
-  -v $HOME/.kube:/root/.kube \
+  -v "$HOME/.config/gcloud:/root/.config/gcloud" \
+  -v "$HOME/.kube:/root/.kube" \
   -e "K8S_SERVER=${K8S_SERVER:-}" \
   -e "K8S_TOKEN=${K8S_TOKEN:-}" \
   -e "KUBECONFIG=${KUBECONFIG:-}" \

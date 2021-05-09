@@ -19,7 +19,7 @@ set -o pipefail
 ID="${1:-}"
 
 do_help() {
-  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
   exit 1
 }
 

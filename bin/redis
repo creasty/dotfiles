@@ -12,11 +12,12 @@ set -o pipefail
 
 NAME=the-redis
 IMAGE=redis:3.0.7-alpine
+DATA_DIR="$HOME/.docker-data"
 
 #  Utils
 #-----------------------------------------------
 do_help() {
-  cat "$0" | sed -n -E '/^#>/s/^#>[ ]?//p'
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
   exit 1
 }
 
@@ -42,7 +43,7 @@ server_create() {
   docker run \
     -p 6379:6379 \
     --name $NAME \
-    -v ~/docker/redis:/data \
+    -v "$DATA_DIR/$NAME:/data" \
     -d \
     $IMAGE
 }
