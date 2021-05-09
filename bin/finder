@@ -7,21 +7,15 @@ SCRIPT='
   on run argv
     set targetPath to (beginning of argv) as POSIX file
 
-    tell application "System Events"
-      tell application "Finder"
-        activate
-        set currentPath to (target of the front Finder window) as alias
-      end
+    tell application "Finder"
+      activate
 
+      set currentPath to (target of the front Finder window) as alias
       if currentPath is not targetPath as alias then
-        tell process "Finder"
-          click menu item "New Tab" of menu "File" of menu bar 1
-        end
-
-        tell application "Finder"
-          set target of the front Finder window to targetPath
-        end tell
+        tell application "System Events" to keystroke "t" using command down
       end if
+
+      set target of the front Finder window to targetPath
     end tell
   end run
 '
@@ -31,7 +25,7 @@ PATH="${1:-.}"
 if [[ "$PATH" =~ ^:[0-9]+(/.+)?$ ]]; then
   $OPEN_BIN "http://localhost$PATH"
 elif [ -d "$PATH" ]; then
-  $OSAS_BIN -e "$SCRIPT" "$(cd "$PATH"; pwd)" > /dev/null 2>&1
+  $OSAS_BIN -e "$SCRIPT" "$(cd "$PATH"; pwd)/" > /dev/null
 else
   $OPEN_BIN "$@"
 fi
