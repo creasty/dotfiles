@@ -2,14 +2,15 @@
 
 SHA=$1
 
-REPO="$(
+REPO_URL="$(
   git config --get remote.origin.url \
-    | grep github.com \
-    | sed 's/^.*github\.com[:\/]\(.*\)\.git$/\1/' \
+    | grep 'github\.com' \
+    | sed 's/^git:/https:/' \
+    | sed 's/.git$//' \
     | tr -d "\n"
 )"
 
-if [ -z "$REPO" ]; then
+if [ -z "$REPO_URL" ]; then
   echo 'Remote origin is not hosted at github.com' 1>&2
   exit 1
 fi
@@ -25,7 +26,7 @@ PR_NUM="$(
 if [ -z "$PR_NUM" ]; then
   echo "Counldn't find any pull request for the commit"
 else
-  URL="https://github.com/$REPO/pull/$PR_NUM"
+  URL="$REPO_URL/pull/$PR_NUM"
   pbcopy <<< "$URL"
   echo "$URL"
 fi

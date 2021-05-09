@@ -3,15 +3,15 @@
 set -eu
 set -o pipefail
 
-REPO="$(
+REPO_URL="$(
   git config --get remote.origin.url \
-    | grep github.com \
-    | sed 's/^.*github\.com[:\/]//' \
-    | sed 's/\(.*\)\.git$/\1/' \
+    | grep 'github\.com' \
+    | sed 's/^git:/https:/' \
+    | sed 's/.git$//' \
     | tr -d "\n"
 )"
 
-if [ -z "$REPO" ]; then
+if [ -z "$REPO_URL" ]; then
   echo 'Remote origin is not hosted at github.com' 1>&2
   exit 1
 fi
@@ -20,7 +20,7 @@ BASE="$(git config pr.base 2>/dev/null || true)"
 BASE="${BASE:-master}"
 HEAD="$(git symbolic-ref --short HEAD)"
 
-URL="https://github.com/$REPO/compare/$BASE...$HEAD?expand=1"
+URL="$REPO_URL/compare/$BASE...$HEAD?expand=1"
 
 git auto-ref push
 echo "$URL"

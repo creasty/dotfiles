@@ -21,13 +21,12 @@ SCRIPT='
 '
 
 TARGET="${1:-.}"
-REPO_HOST='github.com'
 REPO_URL=
 
 if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
   REPO_URL="$(
     git config --get remote.origin.url \
-      | grep "$REPO_HOST" \
+      | grep 'github\.com' \
       | sed 's/^git:/https:/' \
       | sed 's/.git$//' \
       | tr -d "\n"
