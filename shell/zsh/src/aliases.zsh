@@ -96,7 +96,6 @@ alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
 alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
 
 alias o='finder'
-alias c='see'
 alias ev='envchain'
 alias ne='npm-exec'
 alias gk='grep-kill'

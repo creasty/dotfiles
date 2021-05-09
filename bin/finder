@@ -20,12 +20,43 @@ SCRIPT='
   end run
 '
 
-PATH="${1:-.}"
+TARGET="${1:-.}"
+REPO_HOST='github.com'
+REPO_URL=
 
-if [[ "$PATH" =~ ^:[0-9]+(/.+)?$ ]]; then
-  $OPEN_BIN "http://localhost$PATH"
-elif [ -d "$PATH" ]; then
-  $OSAS_BIN -e "$SCRIPT" "$(cd "$PATH"; pwd)/" > /dev/null
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  REPO_URL="$(
+    git config --get remote.origin.url \
+      | grep "$REPO_HOST" \
+      | sed 's/^git:/https:/' \
+      | sed 's/.git$//' \
+      | tr -d "\n"
+  )"
+fi
+
+if [ -n "$REPO_URL" ]; then
+  if [[ "$TARGET" =~ ^-(i|issue)$ ]]; then
+    open "$REPO_URL/issues"
+    exit
+  elif [[ "$TARGET" =~ ^-i[0-9]+$ ]]; then
+    open "$REPO_URL/issues/${TARGET/i/}"
+    exit
+  elif [[ "$TARGET" =~ ^-(p|pull)$ ]]; then
+    open "$REPO_URL/pulls"
+    exit
+  elif [[ "$TARGET" =~ ^-p[0-9]+$ ]]; then
+    open "$REPO_URL/pull/${TARGET/p/}"
+    exit
+  elif [ "$TARGET" = "-" ]; then
+    open "$REPO_URL"
+    exit
+  fi
+fi
+
+if [[ "$TARGET" =~ ^:[0-9]+(/.+)?$ ]]; then
+  $OPEN_BIN "http://localhost$TARGET"
+elif [ -d "$TARGET" ]; then
+  $OSAS_BIN -e "$SCRIPT" "$(cd "$TARGET"; pwd)/" > /dev/null
 else
   $OPEN_BIN "$@"
 fi
