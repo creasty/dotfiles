@@ -60,7 +60,7 @@ $ ls shell/zsh/plugins | wc -l
 ### nvim/vim
 
 - ~310ms to startup
-- 3200 loc of VimScript config
+- 3000 loc of VimScript config
 - 47 plugins (extra 79k loc of VimScript & 36k of other various languages)
 
 <details>
@@ -76,15 +76,15 @@ nvim --headless -c quit  0.31s user 0.05s system 118% cpu 0.301 total
 
 ```sh-session
 $ cloc --exclude-dir=dein vim
-     145 text files.
-     140 unique files.
+     144 text files.
+     139 unique files.
       57 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.08 s (1173.9 files/s, 71390.9 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.09 s (1018.7 files/s, 60278.0 lines/s)
 --------------------------------------------------------------------------------
 Language                      files          blank        comment           code
 --------------------------------------------------------------------------------
-vim script                       65            735            618           3245
+vim script                       64            701            599           3086
 JSON                              1              8              0            257
 Python                            2             36              2            192
 TOML                              2             45             16            155
@@ -93,15 +93,15 @@ C                                 2             14              6             59
 Go                                2             11              0             29
 C/C++ Header                      1              3              0             12
 HTML                              1              0              0             10
-make                              1              4              0              9
 GraphQL                           3              0              0              9
+make                              1              4              0              9
 Java                              1              1              3              8
 Markdown                          1              3              0              7
-Bourne Again Shell                1              3              0              7
 C++                               1              2              5              7
+Bourne Again Shell                1              3              0              7
 TypeScript                        1              1              0              4
 --------------------------------------------------------------------------------
-SUM:                             93            883            650           4123
+SUM:                             92            849            631           3964
 --------------------------------------------------------------------------------
 ```
 
