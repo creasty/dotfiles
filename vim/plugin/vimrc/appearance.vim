@@ -115,6 +115,12 @@ if g:colors_name ==# 'candle'
   call candle#highlight('TrailingSpace', '', 'line', '')
   autocmd vimrc_appearance BufWinEnter,WinEnter *
     \ call matchadd('TrailingSpace', '\s\+$', 50)
+
+  " snippet placeholder
+  call candle#highlight('SnipPlaceholder', 'blue', 'dark_blue', '')
+  autocmd vimrc_appearance BufWinEnter,WinEnter *
+    \ call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
+    \ call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endif
 
 "  StatusLine
