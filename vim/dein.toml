@@ -16,6 +16,10 @@ depends = ['vim-textobj-user']
 repo    = 'osyo-manga/vim-textobj-multiblock'
 depends = ['vim-textobj-user']
 
+[[plugins]] # Text objects for numbers
+repo    = 'tkhren/vim-textobj-numeral'
+depends = ['vim-textobj-user']
+
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'tpope/vim-surround'
 
