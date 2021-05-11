@@ -3,7 +3,6 @@
 dotfiles [![CircleCI](https://circleci.com/gh/creasty/dotfiles.svg?style=svg)](https://circleci.com/gh/creasty/dotfiles) ![macOS](https://img.shields.io/badge/platform-macOS-lightgray.svg) [![License](https://img.shields.io/github/license/creasty/dotfiles.svg)](./LICENSE.txt)
 ========
 
-A powerful development environment for full-stack engineers.<br>
 Work it harder, make it better, do it faster, makes us stronger.
 
 <pre><code>$ curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
@@ -15,13 +14,12 @@ Screenshots
 |---|---|
 | ![](./docs/images/screenshots/tmux.png) | ![](./docs/images/screenshots/vim.png) |
 
-Performance
------------
+Stats
+-----
 
 ### zsh
 
-Starts up in ~380ms.
-
+- ~440ms to startup
 - 600 loc of Zsh config
 - 3 plugins
 
@@ -33,13 +31,13 @@ $ cloc --exclude-dir=plugins shell/zsh
        6 unique files.
        4 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.01 s (280.3 files/s, 54656.2 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.02 s (251.6 files/s, 49440.2 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-zsh                              4            126             86            568
+zsh                              4            127             92            567
 -------------------------------------------------------------------------------
-SUM:                             4            126             86            568
+SUM:                             4            127             92            567
 -------------------------------------------------------------------------------
 ```
 
@@ -49,61 +47,61 @@ $ ls shell/zsh/plugins | wc -l
 ```
 
 </details>
-
 <details><summary>Benchmark</summary>
 
 ```sh-session
-$ for i in $(seq 1 5); do time zsh -i -c exit; done
-zsh -i -c exit  0.18s user 0.18s system 97% cpu 0.364 total
-zsh -i -c exit  0.19s user 0.19s system 98% cpu 0.382 total
-zsh -i -c exit  0.18s user 0.19s system 99% cpu 0.372 total
-zsh -i -c exit  0.19s user 0.20s system 98% cpu 0.391 total
-zsh -i -c exit  0.19s user 0.19s system 99% cpu 0.386 total
+$ repeat 5 time zsh -i -c exit
+zsh -i -c exit  0.22s user 0.22s system 98% cpu 0.446 total
+zsh -i -c exit  0.21s user 0.21s system 98% cpu 0.429 total
+zsh -i -c exit  0.21s user 0.21s system 98% cpu 0.430 total
+zsh -i -c exit  0.21s user 0.22s system 98% cpu 0.436 total
+zsh -i -c exit  0.23s user 0.22s system 98% cpu 0.459 total
 ```
 
 </details>
 
-### vim/nvim
+### nvim/vim
 
-Starts up in ~180ms.
-
-- 3200 loc of VimScript config
-- 50 plugins (extra 74k loc of VimScript & 105k of other various languages)
+- ~300ms to startup
+- 3300 loc of VimScript config
+- 46 plugins (extra 82k loc of VimScript & 43k of other various languages)
 
 <details><summary>`cloc` result</summary>
 
 ```sh-session
 $ cloc --exclude-dir=dein vim
-     138 text files.
-     134 unique files.
-      54 files ignored.
+     146 text files.
+     141 unique files.
+      57 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.06 s (1477.6 files/s, 92922.7 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.05 s (1906.0 files/s, 119066.7 lines/s)
 --------------------------------------------------------------------------------
 Language                      files          blank        comment           code
 --------------------------------------------------------------------------------
-vim script                       65            739            658           3192
-JSON                              1              8              0            196
+vim script                       66            764            671           3382
+JSON                              1              8              0            257
 Python                            2             36              2            192
-TOML                              2             49             20            172
+TOML                              2             44             17            152
 Ruby                              8             17              0            113
 C                                 2             14              6             59
 Go                                2             11              0             29
 C/C++ Header                      1              3              0             12
 HTML                              1              0              0             10
 make                              1              4              0              9
+GraphQL                           3              0              0              9
 Java                              1              1              3              8
-Bourne Again Shell                1              3              0              7
 C++                               1              2              5              7
 Markdown                          1              3              0              7
+Bourne Again Shell                1              3              0              7
+TypeScript                        1              1              0              4
 --------------------------------------------------------------------------------
-SUM:                             89            890            694           4013
+SUM:                             94            911            704           4257
 --------------------------------------------------------------------------------
 ```
 
 ```sh-session
 $ ag '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
-      50
+      46
 ```
 
 </details>
@@ -111,12 +109,12 @@ $ ag '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
 <details><summary>Benchmark</summary>
 
 ```sh-session
-$ for i in $(seq 1 5); do time nvim -c quit; done
-nvim -c quit  0.18s user 0.06s system 129% cpu 0.187 total
-nvim -c quit  0.16s user 0.06s system 131% cpu 0.171 total
-nvim -c quit  0.18s user 0.07s system 132% cpu 0.183 total
-nvim -c quit  0.17s user 0.06s system 128% cpu 0.178 total
-nvim -c quit  0.17s user 0.06s system 131% cpu 0.178 total
+$ repeat 5 time nvim -c quit
+nvim -c quit  0.30s user 0.05s system 114% cpu 0.314 total
+nvim -c quit  0.29s user 0.05s system 114% cpu 0.297 total
+nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
+nvim -c quit  0.30s user 0.05s system 115% cpu 0.311 total
+nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
 ```
 
 </details>
