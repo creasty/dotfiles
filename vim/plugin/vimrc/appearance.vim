@@ -149,7 +149,10 @@ function! s:change_highlight_for_mode() abort
 endfunction
 
 if g:colors_name ==# 'candle'
+  autocmd vimrc_appearance FocusGained,BufEnter,BufReadPost,BufWritePost * call vimrc#ui#update_filereadable()
   autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
+
+  autocmd vimrc_appearance User ModeDidChange call s:change_highlight_for_mode()
 
   autocmd vimrc_appearance VimEnter,Syntax *
     \ call candle#highlight('StatusLineMode', 'foreground', 'window', '') |
@@ -157,10 +160,6 @@ if g:colors_name ==# 'candle'
     \ call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '') |
     \ call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '') |
     \ call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
-
-  autocmd vimrc_appearance User ModeDidChange call s:change_highlight_for_mode()
-
-  autocmd vimrc_appearance FocusGained,BufEnter,BufReadPost,BufWritePost * let b:filereadable = filereadable(expand('%:p'))
 endif
 
 let &cpoptions = s:save_cpo

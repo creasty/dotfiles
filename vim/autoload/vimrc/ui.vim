@@ -1,6 +1,7 @@
 scriptencoding utf-8
 
 let s:mode_observer_key = 'mode_observer_current_mode'
+let s:filereadable_key = 'filereadable'
 
 function! s:get_mode(winnr)
   return getwinvar(a:winnr, s:mode_observer_key, '')
@@ -14,6 +15,10 @@ function! s:update_mode(winnr)
     call setwinvar(a:winnr, s:mode_observer_key, mode())
     doautocmd User ModeDidChange
   endif
+endfunction
+
+function! vimrc#ui#update_filereadable()
+  let b:filereadable = filereadable(expand('%:p'))
 endfunction
 
 function! vimrc#ui#get_mode() abort
@@ -81,21 +86,11 @@ function! vimrc#ui#status_line(w, cw) abort
 
   " Params
   let l:bufnr = winbufnr(a:w)
-  let l:_bufname = bufname(l:bufnr)
+  let l:bufname = bufname(l:bufnr)
   let l:active = (a:w == a:cw)
   let l:ft = getbufvar(l:bufnr, '&ft')
   let l:enough_width = (winwidth(a:w) > 120)
-
-  let l:bufname =
-    \ empty(l:_bufname) ? '[No Name]' :
-    \ l:ft ==# 'denite' ? '>>>>' :
-    \ l:ft ==# 'denite-filter' ? 'Denite' :
-    \ ''
-
-  let l:is_file = empty(l:bufname)
-  if l:is_file
-    let l:bufname = fnamemodify(l:_bufname, ':t')
-  endif
+  let l:is_file = !empty(l:bufname)
 
   if l:active
     call s:update_mode(a:cw)
@@ -107,24 +102,19 @@ function! vimrc#ui#status_line(w, cw) abort
     if l:is_file || l:ft ==# ''
       let l:l0 += ['∙', empty(&fileencoding) ? 'utf-8' : &fileencoding, &fileformat]
     endif
-  elseif l:is_file
-    let l:l0 += [fnamemodify(l:_bufname, ':p:~:.')]
   else
-    let l:l0 += [l:bufname]
+    let l:l0 += [l:is_file ? fnamemodify(l:bufname, ':p:~:.') : '[No Name]']
   endif
 
   let l:flag = ''
   let l:flag .= getbufvar(l:bufnr, '&readonly') ? '!' : ''
   let l:flag .= getbufvar(l:bufnr, '&mod') ? '+' : ''
-  let l:flag .= l:is_file && !getbufvar(l:bufnr, 'filereadable', v:true) ? '?' : ''
+  let l:flag .= l:is_file && !getbufvar(l:bufnr, s:filereadable_key, v:true) ? '?' : ''
   if !empty(l:flag)
     let l:l0 += [l:flag]
   endif
 
   " l1
-  if l:active && l:ft ==# 'denite'
-    let l:l1 += [denite#get_status('sources')]
-  endif
   if l:is_file
     let l:last_saved_time = getbufvar(l:bufnr, 'auto_save_last_saved_time', 0)
     if 0 < l:last_saved_time && l:last_saved_time >= localtime() - 60
@@ -170,7 +160,7 @@ function! vimrc#ui#status_line(w, cw) abort
 
   let l:coc_status = get(g:, 'coc_status', '')
   if l:active && l:coc_status !=# ''
-    let l:r1 += [l:coc_status[0:30]]
+    let l:r1 += [l:coc_status[0:60]]
   endif
 
   " r0
