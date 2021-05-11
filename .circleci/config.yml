@@ -13,7 +13,10 @@ jobs:
     working_directory: ~/dotfiles
     steps:
       - checkout
-      - run: ./up << parameters.up-opts >> -vvvv
+      - run:
+          name: up
+          command: ./up << parameters.up-opts >> -vvvv
+          no_output_timeout: 90m
 
 workflows:
   main:
