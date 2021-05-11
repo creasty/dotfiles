@@ -6,12 +6,30 @@ function! vimrc#plugin#altr#lazy_init() abort
   call altr#define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
   call altr#define('app/%/%.rb', 'spec/%/%_spec.rb')
   call altr#define('lib/%.rb', 'spec/lib/%_spec.rb')
-  call altr#define('%.html.haml', '%_smart_phone.html.haml')
-  call altr#define('%.html.slim', '%_smart_phone.html.slim')
   call altr#define('Gemfile', 'Gemfile.lock')
 
+  " Frontend
+  call altr#define('%.js', '%.jsx', '%.ts', '%.tsx', '%.css')
+  call altr#define('go.mod', 'go.sum')
+
+  " Golang
+  call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
+  call altr#define('go.mod', 'go.sum')
+
+  " Docker
+  call altr#define('docker-compose.yml', 'Dockerfile')
+
+  " Vim
+  call altr#define('dein.toml', 'dein_lazy.toml')
+
+  " Config
+  call altr#define('.env', '.env.sample', '.env.local', '.env.development', '.env.test')
+  call altr#define('.env.%', '.env.%.local')
+  call altr#define('default.properties', 'local.properties', 'test.properties')
+  call altr#define('%.properties', '%.local.properties')
+
   " I18n
-  let l:locales = ['en', 'ja', 'zh-HK', 'de']
+  let l:locales = ['en', 'ja']
   let l:localized_files = [
     \ 'locales/@.yml',
     \ 'locales/%.@.yml',
@@ -24,25 +42,4 @@ function! vimrc#plugin#altr#lazy_init() abort
     let l:files = map(copy(l:locales), { i, locale -> substitute(l:file, '@', l:locale, 'g') })
     call call('altr#define', l:files)
   endfor
-
-  " Frontend
-  call altr#define('src/%.coffee', 'spec/%_spec.coffee', 'test/%_spec.coffee', 'test/%.coffee')
-  call altr#define('%.js', '%.jsx', '%.ts', '%.tsx', '%.coffee', '%.css', '%.scss', '%.jade', '%.ace')
-
-  " Golang
-  call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
-  call altr#define('glide.yaml', 'glide.lock')
-  call altr#define('Gopkg.toml', 'Gopkg.lock')
-  call altr#define('default.yml', 'development.yml', 'qa.yml', 'production.yml')
-  call altr#define('%.dowm.sql', '%.up.sql')
-
-  " Docker
-  call altr#define('docker-compose.yml', 'Dockerfile')
-  call altr#define('script/ci-build', 'script/ci-deploy', '.travis.yml')
-
-  " Dotenv
-  call altr#define('.env', '.env.sample')
-
-  " Vim
-  call altr#define('dein.toml', 'dein_lazy.toml')
 endfunction
