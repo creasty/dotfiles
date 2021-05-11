@@ -1,4 +1,4 @@
-![creasty's dotfiles](./docs/visual.jpg)
+![creasty's dotfiles](https://user-images.githubusercontent.com/1695538/117818019-254abb00-b2a3-11eb-8676-5cd1415ce2b5.png)
 
 dotfiles [![CircleCI](https://circleci.com/gh/creasty/dotfiles.svg?style=svg)](https://circleci.com/gh/creasty/dotfiles) ![macOS](https://img.shields.io/badge/platform-macOS-lightgray.svg) [![License](https://img.shields.io/github/license/creasty/dotfiles.svg)](./LICENSE.txt)
 ========
@@ -23,7 +23,16 @@ Stats
 - 600 loc of Zsh config
 - 3 plugins
 
-<details><summary>`cloc` result</summary>
+<details>
+
+```sh-session
+$ repeat 5 time zsh -i -c exit
+zsh -i -c exit  0.22s user 0.22s system 98% cpu 0.446 total
+zsh -i -c exit  0.21s user 0.21s system 98% cpu 0.429 total
+zsh -i -c exit  0.21s user 0.21s system 98% cpu 0.430 total
+zsh -i -c exit  0.21s user 0.22s system 98% cpu 0.436 total
+zsh -i -c exit  0.23s user 0.22s system 98% cpu 0.459 total
+```
 
 ```sh-session
 $ cloc --exclude-dir=plugins shell/zsh
@@ -47,18 +56,6 @@ $ ls shell/zsh/plugins | wc -l
 ```
 
 </details>
-<details><summary>Benchmark</summary>
-
-```sh-session
-$ repeat 5 time zsh -i -c exit
-zsh -i -c exit  0.22s user 0.22s system 98% cpu 0.446 total
-zsh -i -c exit  0.21s user 0.21s system 98% cpu 0.429 total
-zsh -i -c exit  0.21s user 0.21s system 98% cpu 0.430 total
-zsh -i -c exit  0.21s user 0.22s system 98% cpu 0.436 total
-zsh -i -c exit  0.23s user 0.22s system 98% cpu 0.459 total
-```
-
-</details>
 
 ### nvim/vim
 
@@ -66,7 +63,16 @@ zsh -i -c exit  0.23s user 0.22s system 98% cpu 0.459 total
 - 3300 loc of VimScript config
 - 46 plugins (extra 82k loc of VimScript & 43k of other various languages)
 
-<details><summary>`cloc` result</summary>
+<details>
+
+```sh-session
+$ repeat 5 time nvim -c quit
+nvim -c quit  0.30s user 0.05s system 114% cpu 0.314 total
+nvim -c quit  0.29s user 0.05s system 114% cpu 0.297 total
+nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
+nvim -c quit  0.30s user 0.05s system 115% cpu 0.311 total
+nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
+```
 
 ```sh-session
 $ cloc --exclude-dir=dein vim
@@ -102,19 +108,6 @@ SUM:                             94            911            704           4257
 ```sh-session
 $ ag '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
       46
-```
-
-</details>
-
-<details><summary>Benchmark</summary>
-
-```sh-session
-$ repeat 5 time nvim -c quit
-nvim -c quit  0.30s user 0.05s system 114% cpu 0.314 total
-nvim -c quit  0.29s user 0.05s system 114% cpu 0.297 total
-nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
-nvim -c quit  0.30s user 0.05s system 115% cpu 0.311 total
-nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
 ```
 
 </details>
