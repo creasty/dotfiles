@@ -39,13 +39,6 @@ command! CleanBuffers :call vimrc#util#clean_buffers()
 " delete current file
 command! -nargs=0 Delete call vimrc#util#delete_file(expand('%:p')) | enew!
 
-" edit a next file in the same directory
-command! -nargs=0 PrevFile call vimrc#util#next_file(-1)
-command! -nargs=0 NextFile call vimrc#util#next_file(1)
-
-nnoremap g9 :PrevFile<CR>
-nnoremap g0 :NextFile<CR>
-
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
 
