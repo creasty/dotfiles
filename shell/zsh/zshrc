@@ -15,8 +15,15 @@ fpath=(
   $fpath
 )
 
+# @see https://gist.github.com/ctechols/ca1035271ad134841284
 autoload -Uz compinit
-compinit
+setopt extendedglob
+if [[ -n "${ZSH_COMPDUMP}"(#qN.mh+24) ]]; then
+  compinit -i -d "${ZSH_COMPDUMP}"
+  compdump
+else
+  compinit -C
+fi
 
 for file in ~/.zsh/src/{aliases,functions,prompt,term}.zsh; do
   if [ -r "$file" ] && [ -f "$file" ]; then
