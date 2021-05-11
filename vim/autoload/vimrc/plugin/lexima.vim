@@ -333,12 +333,6 @@ for s:del in ['/', '~', '!', '@', '#', '%', ':']
     \ 'input': s:del,
     \ 'mode':  ':',
   \ })
-  call lexima#add_rule({
-    \ 'char':  s:del,
-    \ 'at':    '^\(%\|' . "'<,'>" . '\)\?s' . s:del . '.\+\%#',
-    \ 'input': '\' . s:del,
-    \ 'mode':  ':',
-  \ })
 endfor
 unlet s:del
 
