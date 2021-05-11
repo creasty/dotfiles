@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  provisioning:
+    parameters:
+      up-opts:
+        type: string
+    macos:
+      xcode: 12.4.0 # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+    environment:
+      HOMEBREW_VERBOSE: 1
+      DOTFILES_NOEDIT_SECRETS: 1
+    working_directory: ~/dotfiles
+    steps:
+      - checkout
+      - run: ./up << parameters.up-opts >> -vvvv
+
+workflows:
+  main:
+    jobs:
+      - provisioning:
+          matrix:
+            parameters:
+              up-opts:
+                - '--tags=base,install.homebrew.formula'
+                - '--tags=base,lang --skip-tags=skip-on-ci'
+                - '--tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh'
