@@ -90,7 +90,7 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 set wildignore& wildignore+=*.so,*.swp
 
 " find file with suffixes
-set suffixesadd& suffixesadd+=.ts,.tsx,.js,.jsx,.d.ts,.coffee,.swift,.scss,.css
+set suffixesadd& suffixesadd+=.ts,.tsx,.js,.jsx,.d.ts,.swift,.scss,.css
 
 " fast update
 set updatetime=200

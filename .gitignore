@@ -2,15 +2,11 @@
 __pycache__
 *.pyc
 
-.travis.key
+tmp/
 
 vim/.netrwhist
-vim/init.vim
 vim/dein/*
-
-tmp
+!vim/dein/.gitkeep
 
 provisioning/playbook.retry
 provisioning/secrets.yml
-
-!.gitkeep

@@ -1,7 +1,7 @@
 {
   "coc.preferences.formatOnType": false,
+  "coc.preferences.formatOnSaveFiletypes": [],
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "coc.preferences.formatOnSaveFiletypes": ["go"],
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.snippets.enable": false,
 

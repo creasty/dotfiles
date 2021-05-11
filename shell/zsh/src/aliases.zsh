@@ -50,7 +50,6 @@ alias -g P='| peco'
 
 #  Suffix
 #-----------------------------------------------
-alias -s coffee='coffee'
 alias -s go='go run'
 alias -s hs='runhaskell'
 alias -s js='node'
