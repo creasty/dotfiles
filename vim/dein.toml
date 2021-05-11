@@ -54,12 +54,12 @@ merged = 0
 #  Utils
 #-----------------------------------------------
 [[plugins]] # yet another remote plugin framework for neovim
-repo = 'roxma/nvim-yarp'
+repo = 'roxma/nvim-yarp' # Used by denite.nvim
 if   = "!has('nvim')"
 
 [[plugins]] # a compatibility layer for neovim rpc client working on vim8
-repo = 'roxma/vim-hug-neovim-rpc'
-# depends = ['nvim-yarp']
+repo = 'roxma/vim-hug-neovim-rpc' # Used by denite.nvim
+if   = "!has('nvim')"
 
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'

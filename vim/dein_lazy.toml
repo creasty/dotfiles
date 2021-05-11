@@ -51,9 +51,8 @@ on_func = ['EasyMotion#S']
 #  Utils
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
-repo    = 'Shougo/denite.nvim'
-on_cmd  = ['Denite']
-depends = ['vim-hug-neovim-rpc']
+repo   = 'Shougo/denite.nvim'
+on_cmd = ['Denite']
 
 [[plugins]] # hex editing system
 repo   = 'Shougo/vinarise.vim'

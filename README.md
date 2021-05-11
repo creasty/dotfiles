@@ -59,19 +59,19 @@ $ ls shell/zsh/plugins | wc -l
 
 ### nvim/vim
 
-- ~300ms to startup
+- ~310ms to startup
 - 3300 loc of VimScript config
 - 46 plugins (extra 82k loc of VimScript & 43k of other various languages)
 
 <details>
 
 ```sh-session
-$ repeat 5 time nvim -c quit
-nvim -c quit  0.30s user 0.05s system 114% cpu 0.314 total
-nvim -c quit  0.29s user 0.05s system 114% cpu 0.297 total
-nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
-nvim -c quit  0.30s user 0.05s system 115% cpu 0.311 total
-nvim -c quit  0.29s user 0.05s system 114% cpu 0.299 total
+$ repeat 5 time nvim --headless -c quit
+nvim --headless -c quit  0.33s user 0.05s system 117% cpu 0.323 total
+nvim --headless -c quit  0.30s user 0.05s system 117% cpu 0.298 total
+nvim --headless -c quit  0.31s user 0.05s system 118% cpu 0.305 total
+nvim --headless -c quit  0.31s user 0.05s system 117% cpu 0.303 total
+nvim --headless -c quit  0.31s user 0.05s system 118% cpu 0.301 total
 ```
 
 ```sh-session
