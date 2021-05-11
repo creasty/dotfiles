@@ -13,15 +13,20 @@ jobs:
     working_directory: ~/dotfiles
     steps:
       - checkout
-      - run: ./up << parameters.up-opts >> -vvvv
+      - run:
+          name: up
+          command: ./up << parameters.up-opts >> -vvvv
+          no_output_timeout: 90m
 
 workflows:
   main:
     jobs:
       - provisioning:
-          matrix:
-            parameters:
-              up-opts:
-                - '--tags=base,install.homebrew.formula'
-                - '--tags=base,lang --skip-tags=skip-on-ci'
-                - '--tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh'
+          name: provisioning-lib
+          up-opts: --tags=base,install.homebrew.formula
+      - provisioning:
+          name: provisioning-lang
+          up-opts: --tags=base,lang --skip-tags=skip-on-ci
+      - provisioning:
+          name: provisioning-app
+          up-opts: --tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh
