@@ -66,13 +66,13 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':     '<CR>',
   \ 'at':       '=>\%#',
-  \ 'input':    '<Space>{}<Left><CR><Tab>',
+  \ 'input':    '<Space>{}<Left><CR>',
   \ 'filetype': s:js_filetypes,
 \ })
 call lexima#add_rule({
   \ 'char':     '<CR>',
   \ 'at':       '=> \%#',
-  \ 'input':    '{}<Left><CR><Tab>',
+  \ 'input':    '{}<Left><CR>',
   \ 'filetype': s:js_filetypes,
 \ })
 
