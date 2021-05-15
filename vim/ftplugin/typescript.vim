@@ -6,6 +6,7 @@ let b:switch_custom_definitions = [
   \ switch#Words(['onMouseDown', 'onMouseUp']),
   \ switch#Words(['onKeyUp', 'onKeyDown', 'onKeyPress']),
   \ switch#Words(['useState', 'useAdaptiveState']),
+  \ switch#Words(['useCallback', 'useCurriedCallback']),
 \ ]
 
 command! -nargs=0 -range=% SwapSwitchCase
