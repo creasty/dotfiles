@@ -1,24 +1,9 @@
 #!/usr/bin/env bash
 
-ARGS="$@"
-
 ps aux \
-  | grep -v $0 \
+  | grep -v "$0" \
   | sed '1d' \
-  | {
-    if [ "$ARGS" = '' ]; then
-      cat | peco
-    else
-      cat | peco --query "$ARGS"
-    fi
-  } \
-  | {
-    sel="$(cat)"
-
-    if ! [ -z "$sel" ]; then
-      echo "$sel"
-      echo "$sel" \
-        | awk '{ print $2 }' \
-        | xargs kill -9
-    fi
-  }
+  | peco --query "$*" \
+  | awk '{ print $0; print $0 > "/dev/stderr" }' \
+  | awk '{ print $2 }' \
+  | xargs kill -9

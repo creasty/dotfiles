@@ -15,18 +15,11 @@ alias tree='exa --tree'
 alias df='df -h'
 alias tf='tail -f'
 alias less='less -R'
-alias le='less -R'
-
-alias vim='nvim'
-alias v='nvim'
-alias vi='nvim'
-alias vv='mvim'
 
 alias sort='LC_ALL=C sort'
-
-alias :q='exit'
-
 alias path='echo -e ${PATH//:/\\n}'
+alias vim='nvim'
+alias :q='exit'
 
 #  Global
 #-----------------------------------------------
@@ -53,11 +46,9 @@ alias -g P='| peco'
 alias -s go='go run'
 alias -s hs='runhaskell'
 alias -s js='node'
-alias -s php='php -f'
 alias -s py='python'
 alias -s rb='ruby'
 alias -s swift='xcrun swift'
-alias -s txt='cat'
 
 alias -s {gif,jpg,jpeg,png,bmp}='display'
 
@@ -72,7 +63,7 @@ _run_c() {
 alias -s c='_run_c'
 
 _run_java() {
-  className=$1
+  local className=$1
   className=${className%.java}
   javac $1
   shift
@@ -82,9 +73,6 @@ alias -s java='_run_java'
 
 #  Bin
 #-----------------------------------------------
-alias g='envchain crst git'
-alias ag="ag --pager='less -R' --width 1000"
-
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='openssl sha1 | sed "s/^.* //"'
@@ -93,6 +81,9 @@ alias uuidgen="uuidgen | tr 'A-F' 'a-f'"
 # ssh-keygen [-q] [-b bits] [-t dsa | ecdsa | ed25519 | rsa] [-N new_passphrase] [-C comment] [-f output_keyfile]
 alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
 alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
+
+alias g='envchain crst git'
+alias ag="ag --pager='less -R' --width 1000"
 
 alias o='finder'
 alias ev='envchain'
@@ -128,15 +119,14 @@ alias flush-dns='sudo killall -HUP mDNSResponder'
 alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
-ipf() {
-  curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
-}
-
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
   alias "$method"="curl -X '$method'"
 done
 
-# Run `dig` and display the most useful info
+ipf() {
+  curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
+}
+
 digga() {
   dig +nocmd "$1" any +multiline +noall +answer
 }
