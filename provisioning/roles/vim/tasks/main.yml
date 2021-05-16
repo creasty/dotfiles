@@ -23,3 +23,14 @@
   homebrew:
     name:  neovim
     state: present
+
+- name: install python-language-server
+  pip:
+    executable: pip3
+    name:       python-language-server
+    state:      present
+
+- name: install llvm # clangd, clang-format
+  homebrew:
+    name: llvm
+    state: present

@@ -44,6 +44,9 @@ export PATH=$PATH:$HOME/.cargo/bin
 # google-clould-sdk
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
 
+# llvm
+export PATH=/usr/local/opt/llvm/bin:$PATH
+
 #  App config
 #-----------------------------------------------
 # Git
