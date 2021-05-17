@@ -18,8 +18,8 @@ fpath=(
 # @see https://gist.github.com/ctechols/ca1035271ad134841284
 autoload -Uz compinit
 setopt extendedglob
-if [[ -n "${ZSH_COMPDUMP}"(#qN.mh+24) ]]; then
-  compinit -i -d "${ZSH_COMPDUMP}"
+if [[ -n "$ZSH_COMPDUMP"(#qN.mh+24) ]]; then
+  compinit -i -d "$ZSH_COMPDUMP"
   compdump
 else
   compinit -C
