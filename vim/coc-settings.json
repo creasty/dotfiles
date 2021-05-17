@@ -47,12 +47,12 @@
       "ignoredRootPaths": ["~"]
     },
     "kotlin": {
-      "command": "kotlin-language-server",
+      "command": "kotlin-language-server", // github.com/fwcd/kotlin-language-server
       "filetypes": ["kotlin"],
       "rootPatterns": ["gradle.properties"]
     },
     "graphql": {
-      "command": "graphql-lsp",
+      "command": "graphql-lsp", // npm i -g graphql-language-service-cli
       "args": ["server", "-m", "stream"],
       "rootPatterns": [
         ".graphqlrc",
@@ -69,6 +69,11 @@
         "typescript",
         "typescriptreact"
       ]
+    },
+    "clangd": {
+      "command": "clangd", // brew install llvm
+      "filetypes": ["c", "cpp", "objc", "objcpp", "proto"],
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".clang-format"]
     }
   },
 
