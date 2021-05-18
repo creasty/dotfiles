@@ -19,6 +19,7 @@ alias less='less -R'
 alias sort='LC_ALL=C sort'
 alias path='echo -e ${PATH//:/\\n}'
 alias vim='nvim'
+alias vi='nvim'
 alias :q='exit'
 
 #  Global
