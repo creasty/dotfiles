@@ -16,7 +16,7 @@ function! s:insert_enter() abort
   return ""
 endfunction
 
-inoremap <expr> <Plug>(insert-enter) <SID>insert_enter()
+inoremap <expr> <Plug>(emacs-ins) <SID>insert_enter()
 
 inoremap <Plug>(emacs-down) <C-g>u<C-o>gj
 inoremap <Plug>(emacs-up) <C-g>u<C-o>gk
@@ -31,11 +31,11 @@ imap <C-h> <BS>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
-imap <C-p> <Plug>(insert-enter)<Plug>(emacs-up)
-imap <C-n> <Plug>(insert-enter)<Plug>(emacs-down)
-imap <C-a> <Plug>(insert-enter)<Plug>(emacs-bol)
-imap <C-e> <Plug>(insert-enter)<Plug>(emacs-eol)
-imap <C-k> <Plug>(insert-enter)<Plug>(emacs-kill)
+imap <C-p> <Plug>(emacs-ins)<Plug>(emacs-up)
+imap <C-n> <Plug>(emacs-ins)<Plug>(emacs-down)
+imap <C-a> <Plug>(emacs-ins)<Plug>(emacs-bol)
+imap <C-e> <Plug>(emacs-ins)<Plug>(emacs-eol)
+imap <C-k> <Plug>(emacs-ins)<Plug>(emacs-kill)
 
 cmap <C-h> <BS>
 cnoremap <C-a> <Home>
@@ -49,6 +49,7 @@ smap <C-e> <C-g>A
 smap <C-b> <C-g>I
 smap <C-f> <C-g>A
 smap <C-v> <C-g>ra
+smap <C-d> <Del>
 smap <C-c> <Esc>
 
 let &cpoptions = s:save_cpo
