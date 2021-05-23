@@ -26,7 +26,7 @@ workflows:
           up-opts: --tags=base,install.homebrew.formula
       - provisioning:
           name: provisioning-lang
-          up-opts: --tags=base,lang --skip-tags=skip-on-ci
+          up-opts: --tags=base,lang
       - provisioning:
           name: provisioning-app
-          up-opts: --tags=install,app,system --skip-tags=install.homebrew.formula,system.zsh
+          up-opts: --tags=install,app,system --skip-tags=install.homebrew.formula

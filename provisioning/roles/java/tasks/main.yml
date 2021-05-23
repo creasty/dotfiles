@@ -34,4 +34,3 @@
 - name: register java home
   command: |
     bash -lc 'jenv add "$(/usr/libexec/java_home)"'
-  tags: ['skip-on-ci'] # FIXME: Workaround
