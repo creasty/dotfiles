@@ -3,7 +3,8 @@
 docker run \
   --rm \
   -it \
+  --network host \
   -w /workdir \
   -v "$(pwd)":/workdir \
-  izumin5210/ridgepole:latest \
+  creasty/ridgepole:latest \
   "$@"
