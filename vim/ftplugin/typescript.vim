@@ -26,7 +26,13 @@ command! -nargs=0 -range=% ConvertProtoToType
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<(\w+)\>;/\1: fmap(pb.get\u\1(), \l\2ToType),/ge
 
 command! -nargs=0 -range=% ConvertInputToProto
-  \ silent keeppatterns <line1>,<line2>s/\v\s*(\S+)\s*\?\s*(\w+)\(\1\)\s*:\s*undefined>/fmap(\1, \2)/g
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\>;/.set\u\1(input.\1)/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\>;/.set\u\1List(input.\1)/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<(\w+)\>;/.set\u\1List(input.\1.map(\l\2ToPb))/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Array\<(\w+)\>\>;/.set\u\1List(input.\1.map(\l\2ToPb))/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Scalars\['(\w+)'\];/.set\u\1(input.\1)/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): (\w+);/.set\u\1(\l\2ToPb(input.\1))/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<(\w+)\>;/.set\u\1(fmap(input.\1, \l\2ToPb))/ge
 
 command! -nargs=+ GenAdaptor
   \ call <SID>gen_adaptor(<f-args>)
