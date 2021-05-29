@@ -44,6 +44,15 @@ hook_add = '''
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 '''
 
+[[plugins]] # Neovim/Vim plugin for easy async search and replace across multiple files
+repo = 'eugen0329/vim-esearch'
+hook_add = '''
+let g:esearch = {}
+let g:esearch.regex = 1
+let g:esearch.textobj = 0
+let g:esearch.case = 'smart'
+'''
+
 #  Completion
 #-----------------------------------------------
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
