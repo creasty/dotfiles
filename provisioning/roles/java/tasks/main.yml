@@ -31,6 +31,12 @@
   command: |
     bash -lc 'jenv enable-plugin export'
 
+# @see https://github.com/jenv/jenv/pull/200
+- name: apply patch to export plugin
+  patch:
+    src: export_jenv_hook.zsh.patch
+    dest: '{{ anyenv.envs_dir }}/jenv/plugins/export/etc/jenv.d/init/export_jenv_hook.zsh'
+
 - name: register java home
   command: |
     bash -lc 'jenv add "$(/usr/libexec/java_home)"'

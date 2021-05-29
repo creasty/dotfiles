@@ -1,0 +1,19 @@
+diff --git a/available-plugins/export/etc/jenv.d/init/export_jenv_hook.zsh b/available-plugins/export/etc/jenv.d/init/export_jenv_hook.zsh
+index 8067640..b689546 100644
+--- a/available-plugins/export/etc/jenv.d/init/export_jenv_hook.zsh
++++ b/available-plugins/export/etc/jenv.d/init/export_jenv_hook.zsh
+@@ -6,7 +6,7 @@
+ 
+   if [ -e "$JAVA_HOME/bin/javac" ]
+   then
+-    export JDK_HOME=$(jenv javahome)
++    export JDK_HOME="$JAVA_HOME"
+     export JENV_FORCEJDKHOME=true
+   fi
+  }
+@@ -21,4 +21,4 @@ function install_hook {
+ }
+ install_hook
+ 
+-_jenv_export_hook
++#_jenv_export_hook
