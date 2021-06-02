@@ -15,11 +15,14 @@ zsh/plugins/*
 .bundle
 vendor
 Godeps
-node_modules
 Carthage
 Pods
 
+node_modules
+.next
+
 build/
+dist/
 
 *.git
 .gitkeep
