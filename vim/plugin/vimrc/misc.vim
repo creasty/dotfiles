@@ -13,7 +13,6 @@ augroup END
 " edit configurations
 command! Vimrc edit $MYVIMRC
 command! Dotfiles exec 'lcd' g:vimrc#env.path.dotfiles
-command! MacVim exec 'lcd' g:vimrc#env.path.runtime
 
 " profiler
 command! ProfileStart

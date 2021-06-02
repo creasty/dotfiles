@@ -15,7 +15,6 @@ function! s:get_env() abort
     \ 'dein_toml':      l:vim_path . '/dein.toml',
     \ 'dein_lazy_toml': l:vim_path . '/dein_lazy.toml',
     \ 'vimrcd':         l:vim_path . '/vimrc.d',
-    \ 'runtime':        '/usr/local/opt/macvim/MacVim.app/Contents/Resources/vim/runtime',
   \ }
 
   return l:env
