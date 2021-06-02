@@ -19,7 +19,7 @@ Stats
 
 ### zsh
 
-- ~360ms to startup
+- ~340ms to startup
 - 600 loc of Zsh config
 - 3 plugins
 
@@ -27,11 +27,11 @@ Stats
 
 ```sh-session
 $ repeat 5 time zsh -i -c exit
-zsh -i -c exit  0.17s user 0.19s system 100% cpu 0.357 total
-zsh -i -c exit  0.17s user 0.19s system 100% cpu 0.362 total
-zsh -i -c exit  0.17s user 0.19s system 99% cpu 0.364 total
-zsh -i -c exit  0.17s user 0.19s system 100% cpu 0.361 total
-zsh -i -c exit  0.17s user 0.18s system 99% cpu 0.353 total
+zsh -i -c exit  0.15s user 0.16s system 98% cpu 0.319 total
+zsh -i -c exit  0.17s user 0.18s system 99% cpu 0.352 total
+zsh -i -c exit  0.16s user 0.17s system 100% cpu 0.335 total
+zsh -i -c exit  0.16s user 0.17s system 100% cpu 0.335 total
+zsh -i -c exit  0.16s user 0.17s system 99% cpu 0.335 total
 ```
 
 ```sh-session

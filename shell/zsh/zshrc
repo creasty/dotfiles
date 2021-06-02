@@ -157,10 +157,9 @@ hash -d t=~/Desktop
 hash -d l=~/Downloads
 hash -d d=~/Dropbox
 
-if command -v ghq > /dev/null 2>&1; then
-  hash -d q=$(ghq root)
-  hash -d g=$(ghq root)/github.com
-fi
+# ghq
+hash -d q=~/go/src
+hash -d g=~/go/src/github.com
 
 #  Type ahead auto suggestion
 #-----------------------------------------------
