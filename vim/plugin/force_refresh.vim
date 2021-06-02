@@ -23,6 +23,10 @@ function! s:reload_display(level) abort
   if !s:is_enabled()
     return
   endif
+  if get(b:, "force_refresh_initial_load", v:true)
+    let b:force_refresh_initial_load = v:false
+    return
+  endif
 
   " clear highlights
   if has('textprop')

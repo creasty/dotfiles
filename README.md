@@ -65,7 +65,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim/vim
 
-- ~350ms to startup
+- ~170ms to startup
 - 3000 loc of VimScript config
 - 47 plugins (extra 79k loc of VimScript & 36k of other various languages)
 
@@ -73,11 +73,11 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.32s user 0.09s system 115% cpu 0.357 total
-nvim --headless -c quit  0.31s user 0.08s system 113% cpu 0.340 total
-nvim --headless -c quit  0.32s user 0.08s system 115% cpu 0.347 total
-nvim --headless -c quit  0.31s user 0.08s system 114% cpu 0.341 total
-nvim --headless -c quit  0.31s user 0.08s system 112% cpu 0.351 total
+nvim --headless -c quit  0.16s user 0.07s system 137% cpu 0.168 total
+nvim --headless -c quit  0.15s user 0.07s system 139% cpu 0.157 total
+nvim --headless -c quit  0.16s user 0.07s system 138% cpu 0.165 total
+nvim --headless -c quit  0.16s user 0.07s system 137% cpu 0.165 total
+nvim --headless -c quit  0.15s user 0.07s system 139% cpu 0.161 total
 ```
 
 ```sh-session
@@ -114,6 +114,12 @@ SUM:                             92            849            631           3964
 ```sh-session
 $ ag '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
       47
+```
+
+Profile:
+
+```sh-session
+$ nvim --headless --startuptime /dev/stdout -c quit
 ```
 
 </details>
