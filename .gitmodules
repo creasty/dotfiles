@@ -4,6 +4,3 @@
 [submodule "shell/zsh/plugins/zsh-autosuggestions"]
 	path = shell/zsh/plugins/zsh-autosuggestions
 	url = git://github.com/tarruda/zsh-autosuggestions.git
-[submodule "shell/zsh/plugins/zsh-completions"]
-	path = shell/zsh/plugins/zsh-completions
-	url = git://github.com/zsh-users/zsh-completions.git
