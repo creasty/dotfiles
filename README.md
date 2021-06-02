@@ -19,7 +19,7 @@ Stats
 
 ### zsh
 
-- ~390ms to startup
+- ~360ms to startup
 - 600 loc of Zsh config
 - 3 plugins
 
@@ -27,11 +27,11 @@ Stats
 
 ```sh-session
 $ repeat 5 time zsh -i -c exit
-zsh -i -c exit  0.19s user 0.18s system 98% cpu 0.383 total
-zsh -i -c exit  0.20s user 0.19s system 100% cpu 0.389 total
-zsh -i -c exit  0.20s user 0.19s system 99% cpu 0.387 total
-zsh -i -c exit  0.20s user 0.20s system 99% cpu 0.393 total
-zsh -i -c exit  0.20s user 0.19s system 99% cpu 0.391 total
+zsh -i -c exit  0.17s user 0.19s system 100% cpu 0.357 total
+zsh -i -c exit  0.17s user 0.19s system 100% cpu 0.362 total
+zsh -i -c exit  0.17s user 0.19s system 99% cpu 0.364 total
+zsh -i -c exit  0.17s user 0.19s system 100% cpu 0.361 total
+zsh -i -c exit  0.17s user 0.18s system 99% cpu 0.353 total
 ```
 
 ```sh-session
@@ -65,7 +65,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim/vim
 
-- ~310ms to startup
+- ~340ms to startup
 - 3000 loc of VimScript config
 - 47 plugins (extra 79k loc of VimScript & 36k of other various languages)
 
@@ -73,11 +73,11 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ```sh-session
 $ repeat 5 time nvim --headless -c quit
-nvim --headless -c quit  0.33s user 0.05s system 117% cpu 0.323 total
-nvim --headless -c quit  0.30s user 0.05s system 117% cpu 0.298 total
-nvim --headless -c quit  0.31s user 0.05s system 118% cpu 0.305 total
-nvim --headless -c quit  0.31s user 0.05s system 117% cpu 0.303 total
-nvim --headless -c quit  0.31s user 0.05s system 118% cpu 0.301 total
+nvim --headless -c quit  0.31s user 0.08s system 113% cpu 0.351 total
+nvim --headless -c quit  0.31s user 0.09s system 114% cpu 0.340 total
+nvim --headless -c quit  0.31s user 0.08s system 114% cpu 0.339 total
+nvim --headless -c quit  0.30s user 0.08s system 115% cpu 0.331 total
+nvim --headless -c quit  0.30s user 0.08s system 114% cpu 0.334 total
 ```
 
 ```sh-session
