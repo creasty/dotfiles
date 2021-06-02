@@ -22,19 +22,19 @@ Meticulously customized, highly performance optimized.
 
 ### zsh
 
-- ~310ms to startup
+- ~150ms to startup
 - 560 loc of Zsh config
-- 2 plugins
+- 2 plugins + anyenv + direnv
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time zsh -i -c exit ; sleep 0.1 )
-zsh -i -c exit  0.14s user 0.15s system 98% cpu 0.299 total
-zsh -i -c exit  0.15s user 0.16s system 100% cpu 0.314 total
-zsh -i -c exit  0.15s user 0.16s system 101% cpu 0.311 total
-zsh -i -c exit  0.15s user 0.16s system 100% cpu 0.310 total
-zsh -i -c exit  0.15s user 0.16s system 101% cpu 0.312 total
+zsh -i -c exit  0.08s user 0.06s system 96% cpu 0.146 total
+zsh -i -c exit  0.08s user 0.06s system 96% cpu 0.149 total
+zsh -i -c exit  0.08s user 0.07s system 96% cpu 0.155 total
+zsh -i -c exit  0.08s user 0.06s system 96% cpu 0.143 total
+zsh -i -c exit  0.08s user 0.06s system 97% cpu 0.147 total
 ```
 
 ```sh-session

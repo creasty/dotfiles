@@ -66,7 +66,15 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/.ripgreprc
 
 #  Anyenv
 #-----------------------------------------------
-if [ -z "$SKIP_ANYENV_INIT" ] && [ -d "$HOME/.anyenv" ] && command -v 'anyenv' > /dev/null 2>&1; then
-  eval "$(anyenv init - --no-rehash)"
-  (anyenv rehash &) 2> /dev/null # Lazy rehashing
+if [ -z "$SKIP_ANYENV_INIT" ] && [ -d "$ANYENV_DIR" ] && command -v 'anyenv' > /dev/null 2>&1; then
+  # Cache init script
+  ANYENV_SHELL="$(basename "$SHELL")"
+  ANYENV_INIT_FILE="$ANYENV_DIR/init.$ANYENV_SHELL"
+  if [ ! -f "$ANYENV_INIT_FILE" ]; then
+    anyenv init - --no-rehash > "$ANYENV_INIT_FILE"
+  fi
+  source "$ANYENV_INIT_FILE"
+
+  # Lazy rehashing
+  (anyenv rehash &) 2> /dev/null
 fi

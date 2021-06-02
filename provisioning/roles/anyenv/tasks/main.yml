@@ -24,3 +24,10 @@
     {{ anyenv.libexec_dir | quote }}/anyenv-install --force-init
   environment:
     SKIP_ANYENV_INIT: true
+
+- name: clear init script cache
+  file:
+    dest: '{{ item }}'
+    state: absent
+  with_fileglob:
+    - '{{ anyenv.dir }}/init.*'

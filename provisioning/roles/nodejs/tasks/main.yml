@@ -26,6 +26,13 @@
     state: link
     force: yes
 
+- name: clear init script cache
+  file:
+    dest: '{{ item }}'
+    state: absent
+  with_fileglob:
+    - '{{ anyenv.dir }}/init.*'
+
 - name: get installed versions
   command: |
     bash -lc 'nodenv versions'
