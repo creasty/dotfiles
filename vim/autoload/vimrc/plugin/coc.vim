@@ -11,6 +11,8 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-git',
   \ 'coc-json',
+  \ 'coc-lua',
+  \ 'coc-metals',
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-react-refactor',
