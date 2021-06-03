@@ -57,6 +57,9 @@ function! vimrc#plugin#coc#init() abort
 
   " Auto hide floating windows
   autocmd vimrc CmdlineEnter * silent call coc#float#close_all()
+
+  " Remove search highlight from floating windows
+  autocmd vimrc User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winhighlight', 'Search:')
 endfunction
 
 "  Custom actions
