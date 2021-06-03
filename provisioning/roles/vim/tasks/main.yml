@@ -24,13 +24,21 @@
     name:  neovim
     state: present
 
-- name: install python-language-server
+#  coc.nvim
+#-----------------------------------------------
+- name: coc.nvim | install deps via brew
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - watchman
+    - llvm # (clangd, clang-format)
+    - shellcheck
+
+- name: coc.nvim | install deps via pip3
   pip:
     executable: pip3
-    name:       python-language-server
+    name:       '{{ item }}'
     state:      present
-
-- name: install llvm # clangd, clang-format
-  homebrew:
-    name: llvm
-    state: present
+  with_items:
+    - python-language-server

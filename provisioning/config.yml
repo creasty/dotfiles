@@ -9,6 +9,7 @@ homebrew:
     - docker                   # https://www.docker.com/community-edition
     - figma                    # https://www.figma.com/
     - google-chrome            # https://www.google.com/chrome/
+    - google-cloud-sdk         # https://cloud.google.com/sdk/
     - google-drive-file-stream # https://www.google.com/drive/
     - google-hangouts          # https://www.google.com/tools/dlpage/hangoutplugin
     - google-japanese-ime      # https://www.google.co.jp/ime/
@@ -30,10 +31,6 @@ homebrew:
     - webpquicklook            # https://github.com/dchest/webp-quicklook
     - wwdc                     # https://wwdc.io/
 
-    #- intellij-idea-ce
-    #- android-sdk
-    #- android-studio
-
   packages:
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
     - binutils            # FSF Binutils for native development
@@ -44,7 +41,6 @@ homebrew:
     - ctags               # Reimplementation of ctags(1)
     - diff-so-fancy       # Good-lookin' diffs with diff-highlight and more
     - direnv              # Load/unload environment variables based on $PWD
-    - dtan4/tools/k8sec   # CLI tool to manage Kubernetes Secrets easily
     - envchain            # Secure your credentials in environment variables
     - eot-utils           # Tools to convert fonts from OTF/TTF to EOT format
     - exa                 # https://the.exa.website
@@ -61,7 +57,6 @@ homebrew:
     - git                 # Distributed revision control system
     - git-lfs             # Git extension for versioning large files
     - gnupg               # GNU Pretty Good Privacy (PGP) package
-    - gradle              # Open-source build automation tool based on the Groovy and Kotlin DSL
     - heroku/brew/heroku  # Everything you need to get started with Heroku
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
@@ -82,12 +77,10 @@ homebrew:
     - protobuf            # Protocol buffers (Google's data interchange format)
     - python              # Interpreted, interactive, object-oriented programming language
     - ripgrep             # Search tool like grep and The Silver Searcher
-    - shellcheck          # https://www.shellcheck.net/
     - termtosvg           # Record terminal sessions as SVG animations
     - terraform           # Tool to build, change, and version infrastructure
     - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
-    - watchman            # Watch files and take action when they change
     - webp                # Image format providing lossless and lossy compression for web images
 
     #- xctool # Drop-in replacement for xcodebuild with a few extra features
