@@ -13,7 +13,6 @@ homebrew:
     - google-drive-file-stream # https://www.google.com/drive/
     - google-hangouts          # https://www.google.com/tools/dlpage/hangoutplugin
     - google-japanese-ime      # https://www.google.co.jp/ime/
-    - imageoptim               # https://imageoptim.com/mac
     - istat-menus              # https://bjango.com/mac/istatmenus/
     - kitty                    # https://github.com/kovidgoyal/kitty
     - ngrok                    # https://ngrok.com/
@@ -26,10 +25,12 @@ homebrew:
     - shift                    # https://tryshift.com/
     - spotify                  # https://www.spotify.com/
     - tableplus                # https://tableplus.io/
-    - transmit                 # https://panic.com/transmit/
     - tunnelbear               # https://www.tunnelbear.com/
     - webpquicklook            # https://github.com/dchest/webp-quicklook
     - wwdc                     # https://wwdc.io/
+
+    #- imageoptim # https://imageoptim.com/mac
+    #- transmit   # https://panic.com/transmit/
 
   packages:
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
