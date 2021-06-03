@@ -13,7 +13,7 @@ let g:loaded_super_tab = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-let s:placeholder_delim = ['{{+', '+}}']
+let s:placeholder_delim = ['{'.'{+', '+}}']
 let s:placeholder_pattern = '\V' . s:placeholder_delim[0] . '\.\{-}' . s:placeholder_delim[1]
 
 function! s:is_placeholder_selectable() abort

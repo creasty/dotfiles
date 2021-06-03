@@ -37,29 +37,33 @@ set completeopt-=preview " disable the preview window feature
 set shortmess+=c " silence annoying messages
 
 function! vimrc#plugin#coc#init() abort
-  if g:colors_name ==# 'candle'
-    autocmd vimrc BufWinEnter,WinEnter *
-      \ call candle#highlight('CocErrorSign', 'red', '', '') |
-      \ call candle#highlight('CocWarningSign', 'yellow', '', '') |
-      \ call candle#highlight('CocInfoSign', 'blue', '', '') |
-      \ call candle#highlight('CocHintSign', 'green', '', '') |
-      \ call candle#highlight('CocErrorHighlight', 'red', '', 'undercurl') |
-      \ call candle#highlight('CocWarningHighlight', 'yellow', '', 'undercurl') |
-      \ call candle#highlight('CocInfoHighlight', 'blue', '', 'undercurl') |
-      \ call candle#highlight('CocHintHighlight', 'green', '', 'undercurl')
-  endif
+  augroup vimrc_plugin_coc
+    autocmd!
 
-  " Highlight the symbol and its references when holding the cursor.
-  autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
+    if g:colors_name ==# 'candle'
+      autocmd BufWinEnter,WinEnter *
+        \ call candle#highlight('CocErrorSign', 'red', '', '') |
+        \ call candle#highlight('CocWarningSign', 'yellow', '', '') |
+        \ call candle#highlight('CocInfoSign', 'blue', '', '') |
+        \ call candle#highlight('CocHintSign', 'green', '', '') |
+        \ call candle#highlight('CocErrorHighlight', 'red', '', 'undercurl') |
+        \ call candle#highlight('CocWarningHighlight', 'yellow', '', 'undercurl') |
+        \ call candle#highlight('CocInfoHighlight', 'blue', '', 'undercurl') |
+        \ call candle#highlight('CocHintHighlight', 'green', '', 'undercurl')
+    endif
 
-  " Update signature help on jump placeholder.
-  autocmd vimrc User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
+    " Highlight the symbol and its references when holding the cursor.
+    autocmd CursorHold * silent call CocActionAsync('highlight')
 
-  " Auto hide floating windows
-  autocmd vimrc CmdlineEnter * silent call coc#float#close_all()
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
 
-  " Remove search highlight from floating windows
-  autocmd vimrc User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winhighlight', 'Search:')
+    " Auto hide floating windows
+    autocmd CmdlineEnter * silent call coc#float#close_all()
+
+    " Remove search highlight from floating windows
+    autocmd User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winhighlight', 'Search:')
+  augroup END
 endfunction
 
 "  Custom actions
