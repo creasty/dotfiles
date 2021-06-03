@@ -67,6 +67,7 @@ endfunction
 nnoremap <Plug>(coc-hover) :call CocAction('doHover')<CR>
 nnoremap <Plug>(coc-peek-definition) :call CocAction('jumpDefinition', v:false)<CR>
 nnoremap <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefinition', v:false)<CR>
+inoremap <Plug>(coc-signature-help) <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
 command! -nargs=0 -range=% Format
   \ if <range> == 0 |
@@ -99,13 +100,16 @@ nmap <silent> gq <Plug>(coc-codeaction-cursor)
 xmap <silent> gq <Plug>(coc-codeaction-selected)
 
 " GoTo code navigation
-nmap <silent> gh <Plug>(coc-hover)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-peek-definition)
 nmap <silent> gt <Plug>(coc-type-definition)
 nmap <silent> gT <Plug>(coc-peek-type-definition)
 nmap <silent> gR <Plug>(coc-references-used)
 nmap <silent> gi <Plug>(coc-implementation)
+
+" Quick help
+nmap <silent> gh <Plug>(coc-hover)
+imap <silent> <C-x>p <Plug>(coc-signature-help)
 
 " Navigate through diagnostics
 nnoremap <silent> gll :<C-u>CocListResume<CR>
