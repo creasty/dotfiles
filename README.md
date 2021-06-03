@@ -24,7 +24,7 @@ Meticulously customized, highly performance optimized.
 
 - ~150ms to startup
 - 560 loc of Zsh config
-- 2 plugins + anyenv + direnv
+- 2 plugins + anyenv (rbenv, nodenv, jenv) + direnv
 
 <details>
 
