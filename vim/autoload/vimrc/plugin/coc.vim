@@ -63,9 +63,16 @@ function! vimrc#plugin#coc#init() abort
     " Auto hide floating windows
     autocmd CmdlineEnter * silent call coc#float#close_all()
 
-    " Remove search highlight from floating windows
-    autocmd User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winhighlight', 'Search:')
+    " Customize floating windows
+    autocmd User CocOpenFloat call vimrc#plugin#coc#configure_float(g:coc_last_float_win)
   augroup END
+endfunction
+
+function! vimrc#plugin#coc#configure_float(winid) abort
+  " Remove search highlight from floating windows
+  let l:value = getwinvar(a:winid, '&winhighlight')
+  let l:newValue = join(filter([l:value, 'Search:'], '!empty(v:val)'), ',')
+  call setwinvar(a:winid, '&winhighlight', l:newValue)
 endfunction
 
 "  Custom actions
@@ -82,7 +89,7 @@ command! -nargs=0 -range=% Format
   \   call CocAction('formatSelected', visualmode()) |
   \ endif
 
-command! -nargs=0 OrganizeImport
+command! -nargs=0 Import
   \ call CocAction('runCommand', 'editor.action.organizeImport')
 
 "  Key mappings
