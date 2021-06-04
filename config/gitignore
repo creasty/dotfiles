@@ -9,6 +9,7 @@ vendor/bundle
 .envrc
 tmp/
 .vscode/
+.metals/
 
 .rubocop.yml
 

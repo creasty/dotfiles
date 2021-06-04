@@ -49,7 +49,8 @@
     "kotlin": {
       "command": "kotlin-language-server", // github.com/fwcd/kotlin-language-server
       "filetypes": ["kotlin"],
-      "rootPatterns": ["gradle.properties"]
+      "rootPatterns": ["gradle.properties"],
+      "requireRootPattern": true
     },
     "graphql": {
       "command": "graphql-lsp", // npm i -g graphql-language-service-cli
@@ -68,12 +69,14 @@
         "javascriptreact",
         "typescript",
         "typescriptreact"
-      ]
+      ],
+      "requireRootPattern": true
     },
     "clangd": {
       "command": "clangd", // brew install llvm
       "filetypes": ["c", "cpp", "objc", "objcpp", "proto"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".clang-format"]
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".clang-format"],
+      "requireRootPattern": true
     }
   },
 
