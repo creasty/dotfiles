@@ -60,9 +60,6 @@ function! vimrc#plugin#coc#init() abort
     " Update signature help on jump placeholder.
     autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
 
-    " Auto hide floating windows
-    autocmd CmdlineEnter * silent call coc#float#close_all()
-
     " Customize floating windows
     autocmd User CocOpenFloat call vimrc#plugin#coc#configure_float(g:coc_last_float_win)
   augroup END
