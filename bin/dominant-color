@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#> Extract dominant colors from the given image.
+#> Usage:
+#>     dominant-color IMAGE_FILE
+
+set -euo pipefail
+
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
+}
+
+if [ $# -eq 0 ]; then
+  do_help
+fi
+
+convert "$1" \
+  -scale 50x50! \
+  -depth 8 \
+  +dither \
+  -colors 8 \
+  -format '%c' \
+  histogram:info: \
+  | sort -r -n -k 1 -t ":" \
+  | sed -n 's/^[ ]*\(.*\):.*[#]\([0-9a-fA-F]*\) .*$/#\2  \1/p' \
+  | tr 'A-F' 'a-f'
