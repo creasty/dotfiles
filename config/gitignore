@@ -1,16 +1,20 @@
 .DS_Store
 Thumb.db
 *.log
-.tags
-tags
 .vimprojectroot
-vendor/bundle
-.bundle
 .envrc
 tmp/
-.vscode/
-.metals/
 
+# Tags
+.tags
+tags
+
+# Editor
+.vscode/
+
+# Ruby
+vendor/bundle/
+.bundle/
 .rubocop.yml
 
 # Rust
@@ -18,3 +22,9 @@ target/debug/
 target/release/
 target/rls/
 *.rs.bk
+
+# Scala Metals
+.metals/
+.bloop/
+.ammonite/
+project/metals.sbt
