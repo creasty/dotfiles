@@ -119,7 +119,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 
 " Quick help
 nmap <silent> gh <Plug>(coc-hover)
-imap <silent> <C-x>p <Plug>(coc-signature-help)
+imap <silent> <C-s>p <Plug>(coc-signature-help)
 
 " Navigate through diagnostics
 nnoremap <silent> gll :<C-u>CocListResume<CR>

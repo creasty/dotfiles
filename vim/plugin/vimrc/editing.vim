@@ -95,25 +95,20 @@ nnoremap <C-]> g<C-]>
 " tab pages / buffers
 nmap <C-s> <C-w>
 
-nmap <C-w><C-t> <C-w>t
-nnoremap <C-w>t :tabnew<CR>
-
-nmap <C-w><C-v> <C-w>v
-nnoremap <C-w>v :vnew<CR>
-
-nmap <C-w><C-s> <C-w>s
-nnoremap <C-w>s :split +enew<CR>
-
-nmap <C-w><C-c> <Nop>
-nnoremap <C-w>c <Nop>
-
-nmap <C-w><C-d> <C-w>d
-nnoremap <C-w>d :quit<CR>
-
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
+nnoremap <C-w><C-t> :<C-u>tabnew<CR>
+nnoremap <C-w>t     :<C-u>tabnew<CR>
+nnoremap <C-w><C-v> :<C-u>vnew<CR>
+nnoremap <C-w>v     :<C-u>vnew<CR>
+nnoremap <C-w><C-d> <C-w><C-q>
+nnoremap <C-w>d     <C-w>q
+nnoremap <C-w><C-s> <C-w><C-n>
+nnoremap <C-w>s     <C-w>n
+nnoremap <C-w><C-c> <Nop>
+nnoremap <C-w>c     <Nop>
 
-nmap <C-w>r <Plug>(lcb-restore)
+nmap <C-w>r     <Plug>(lcb-restore)
 nmap <C-w><C-r> <Plug>(lcb-restore)
 
 " search selection
