@@ -34,11 +34,11 @@ let g:coc_selectmode_mapping = 0
 let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
 let g:coc_snippet_prev = '<Plug>(coc-snippet-prev)'
 
-set completeopt+=noinsert " auto select
-set completeopt-=preview " disable the preview window feature
-set shortmess+=c " silence annoying messages
-
 function! vimrc#plugin#coc#init() abort
+  set completeopt+=noinsert " auto select
+  set completeopt-=preview " disable the preview window feature
+  set shortmess+=c " silence annoying messages
+
   augroup vimrc_plugin_coc
     autocmd!
 
@@ -100,7 +100,6 @@ omap <silent> af <Plug>(coc-funcobj-a)
 
 " Selection range
 " NOTE: Requires 'textDocument/selectionRange' support from the language server.
-" coc-tsserver, coc-python are the examples of servers that support it.
 nmap <silent> gs <Plug>(coc-range-select)
 xmap <silent> gs <Plug>(coc-range-select)
 
@@ -109,22 +108,20 @@ nmap <silent> gr <Plug>(coc-rename)
 nmap <silent> gq <Plug>(coc-codeaction-cursor)
 xmap <silent> gq <Plug>(coc-codeaction-selected)
 
-" GoTo code navigation
+" Cross references
 nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gD <Plug>(coc-peek-definition)
 nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gD <Plug>(coc-peek-definition)
 nmap <silent> gT <Plug>(coc-peek-type-definition)
 nmap <silent> gR <Plug>(coc-references-used)
-nmap <silent> gi <Plug>(coc-implementation)
 
-" Quick help
+" Hover
 nmap <silent> gh <Plug>(coc-hover)
+imap <silent> <C-s><C-p> <Plug>(coc-signature-help)
 imap <silent> <C-s>p <Plug>(coc-signature-help)
 
-" Navigate through diagnostics
-nnoremap <silent> gll :<C-u>CocListResume<CR>
-nnoremap <silent> gld :<C-u>CocList diagnostics<CR>
-nnoremap <silent> gls :<C-u>CocList symbols<CR>
+" Diagnostics
 nmap <silent> [d <Plug>(coc-diagnostic-prev)
 nmap <silent> ]d <Plug>(coc-diagnostic-next)
 nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
@@ -135,6 +132,11 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
+
+" List
+nnoremap <silent> gll :<C-u>CocListResume<CR>
+nnoremap <silent> gld :<C-u>CocList diagnostics<CR>
+nnoremap <silent> gls :<C-u>CocList symbols<CR>
 
 "  coc-git
 "-----------------------------------------------
