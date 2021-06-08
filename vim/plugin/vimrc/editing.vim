@@ -64,11 +64,11 @@ inoremap <C-s>l <C-t>
 
 " easy key
 nnoremap <Space>h g^
-nnoremap <Space>l g$
-nnoremap <Space>m %
 xnoremap <Space>h g^
+nnoremap <Space>l g$
 xnoremap <Space>l g$
-xnoremap <Space>m %
+nmap <Space>m %
+xmap <Space>m %
 
 " insert blank lines without going into insert mode
 nnoremap <Space>o mZo<Esc>`ZmZ
