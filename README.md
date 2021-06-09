@@ -55,7 +55,6 @@ SUM:                             4            126             81            562
 
 ```sh-session
 $ ls shell/zsh/plugins | wc -l
-       2
 ```
 
 Profiling:
@@ -69,7 +68,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 ### nvim
 
 - ~170ms to startup
-- 3100 loc of VimScript config
+- 3200 loc of VimScript config
 - 48 plugins (extra 87k loc of VimScript & 41k of other various languages)
 
 <details>
@@ -85,16 +84,16 @@ nvim --headless -c quit  0.15s user 0.07s system 139% cpu 0.161 total
 
 ```sh-session
 $ cloc --exclude-dir=dein vim
-     144 text files.
-     139 unique files.
+     145 text files.
+     140 unique files.
       56 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.08 s (1161.7 files/s, 68614.5 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.10 s (975.9 files/s, 58190.8 lines/s)
 --------------------------------------------------------------------------------
 Language                      files          blank        comment           code
 --------------------------------------------------------------------------------
-vim script                       65            704            598           3117
-JSON                              1              8              0            265
+vim script                       66            713            613           3202
+JSON                              1              8              0            268
 Python                            2             36              2            192
 TOML                              2             46             16            163
 Ruby                              8             17              0            113
@@ -105,20 +104,18 @@ HTML                              1              0              0             10
 make                              1              4              0              9
 GraphQL                           3              0              0              9
 Java                              1              1              3              8
-Markdown                          1              3              0              7
 C++                               1              2              5              7
+Markdown                          1              3              0              7
 Bourne Again Shell                1              3              0              6
 TypeScript                        1              1              0              4
 --------------------------------------------------------------------------------
-SUM:                             93            853            630           4010
+SUM:                             94            862            645           4098
 --------------------------------------------------------------------------------
 ```
 
 ```sh-session
 $ ag '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
-      48
 $ cloc vim/dein/repos
-(omitted)
 ```
 
 Profiling:
