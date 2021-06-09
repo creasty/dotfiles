@@ -23,8 +23,8 @@ function! s:reload_display(level) abort
   if !s:is_enabled()
     return
   endif
-  if get(b:, "force_refresh_initial_load", v:true)
-    let b:force_refresh_initial_load = v:false
+  if get(b:, "force_refresh_initial_reload_display", v:true)
+    let b:force_refresh_initial_reload_display = v:false
     return
   endif
 
@@ -61,6 +61,11 @@ function! s:reload_display(level) abort
 endfunction
 
 function! s:reload_file() abort
+  if get(b:, "force_refresh_initial_reload_file", v:true)
+    let b:force_refresh_initial_reload_file = v:false
+    return
+  endif
+
   if filereadable(expand('%:p'))
     silent! execute 'checktime' bufnr('%')
   endif
