@@ -319,6 +319,7 @@ call lexima#add_rule({
 "  Search and replace
 "-----------------------------------------------
 for s:del in ['/', '~', '!', '@', '#', '%', ':']
+  " :s -- Standard substitute
   call lexima#add_rule({
     \ 'char':        s:del,
     \ 'at':          '^\(%\|' . "'<,'>" . '\)\?s\%#',
@@ -327,11 +328,31 @@ for s:del in ['/', '~', '!', '@', '#', '%', ':']
     \ 'mode':        ':',
   \ })
 
+  " :sc -- Case sensitive substitute
   call lexima#add_rule({
-    \ 'char':  s:del,
-    \ 'at':    '^\(%\|' . "'<,'>" . '\)\?s' . s:del . '.\+\\%#',
-    \ 'input': s:del,
-    \ 'mode':  ':',
+    \ 'char':        s:del,
+    \ 'at':          '^\(%\|' . "'<,'>" . '\)\?sc\%#',
+    \ 'input':       '<BS>' . s:del . '\C\v',
+    \ 'input_after': s:del . s:del . 'g',
+    \ 'mode':        ':',
+  \ })
+
+  " :si -- Case insensitive substitute
+  call lexima#add_rule({
+    \ 'char':        s:del,
+    \ 'at':          '^\(%\|' . "'<,'>" . '\)\?si\%#',
+    \ 'input':       '<BS>' . s:del . '\c\v',
+    \ 'input_after': s:del . s:del . 'g',
+    \ 'mode':        ':',
+  \ })
+
+  " :sm -- Match-case substitute
+  call lexima#add_rule({
+    \ 'char':        s:del,
+    \ 'at':          '^\(%\|' . "'<,'>" . '\)\?sm\%#',
+    \ 'input':       '<BS><BS>SubMC' . s:del . '\v',
+    \ 'input_after': s:del . s:del . 'g',
+    \ 'mode':        ':',
   \ })
 endfor
 unlet s:del

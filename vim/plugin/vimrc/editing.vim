@@ -123,6 +123,9 @@ nnoremap <Space>s "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
+" substitute with match case
+command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
+
 " dim match highlight
 autocmd vimrc_editing User ClearSearchHighlight :
 command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
