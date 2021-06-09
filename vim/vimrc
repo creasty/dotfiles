@@ -244,6 +244,11 @@ if dein#tap('ultisnips')
   let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips-jump-forward)'
   let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
   let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
+
+  if dein#tap('coc.nvim')
+    autocmd vimrc User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
+    autocmd vimrc User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
+  endif
 endif
 
 if dein#tap('coc.nvim')
