@@ -157,6 +157,11 @@ if dein#tap('vim-easymotion')
   nmap s :<C-u>call <SID>easymotion_refined(2)<CR>
 endif
 
+if dein#tap('vim-swap')
+  nmap g< <Plug>(swap-prev)
+  nmap g> <Plug>(swap-next)
+endif
+
 if dein#tap('operator-camelize.vim')
   nmap gC <Plug>(operator-camelize-toggle)
   xmap C <Plug>(operator-camelize-toggle)
