@@ -47,9 +47,9 @@ let s:sep_3_patterns = s:create_dict([
 "  Skip functions
 "-----------------------------------------------
 function! s:skip_by_syntax(line, col) abort
-  for l:syn in synstack(a:line, a:col)
+  for l:syn in synstack(a:line, a:col - 1)
     let l:name = synIDattr(synIDtrans(l:syn), 'name')
-    if l:name =~? '\vreg(ular)?ex|htmltag|jsxelement|string'
+    if l:name =~? '\vreg(ular)?ex|htmltag|jsxelement|string|specialchar'
       return v:true
     endif
   endfor
