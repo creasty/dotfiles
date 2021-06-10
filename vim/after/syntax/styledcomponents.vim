@@ -248,6 +248,10 @@ syn match typescriptIdentifierName extend
       \ "\<css\>\|\<keyframes\>\|\<injectGlobal\>\|\<fontFace\>\|\<createGlobalStyle\>"
       \ nextgroup=styledDefinition
 
+" emmet.vim
+syntax match styledEmmetAbbreviation "^\s*[a-z0-9+!%\-]\+\s*$" containedin=styledDefinition contained
+hi def link styledEmmetAbbreviation SpecialChar
+
 if exists('s:current_syntax')
   let b:current_syntax=s:current_syntax
 endif

@@ -60,13 +60,26 @@ function! s:select_placeholder() abort
   let @s = l:old_s
 endfunction
 
-function! s:tab_r()
+function! s:tab_r() abort
   call UltiSnips#ExpandSnippetOrJump()
   if g:ulti_expand_or_jump_res > 0
     return ''
   endif
 
-  if &filetype =~# 'x\?html\|xml\|s\?css' && emmet#isExpandable()
+  " emmet
+  let l:emmet_enabled = &filetype =~# 'x\?html\|xml\|s\?css'
+  if &filetype =~# '[jt]sx'
+    let l:line = line('.')
+    let l:col = col('.')
+    for l:syn in synstack(l:line, l:col - 1)
+      let l:name = synIDattr(synIDtrans(l:syn), 'name')
+      if l:name =~? '\vstyledDefinition'
+        let l:emmet_enabled = v:true
+        break
+      endif
+    endfor
+  endif
+  if l:emmet_enabled && emmet#isExpandable()
     return emmet#expandAbbr(0, '')
   endif
 
