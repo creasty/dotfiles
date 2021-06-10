@@ -1,5 +1,3 @@
-#  Base
-#-----------------------------------------------
 [[plugins]] # dark powered vim/neovim plugin manager
 repo = 'Shougo/dein.vim'
 
@@ -38,10 +36,25 @@ repo = 'SirVer/ultisnips'
 [[plugins]] # auto close parentheses and repeat by dot
 repo = 'cohama/lexima.vim'
 
-[[plugins]] # EditorConfig Vim Plugin
-repo = 'editorconfig/editorconfig-vim'
+[[plugins]] # enable repeating supported plugin maps with dot
+repo = 'tpope/vim-repeat'
+
+[[plugins]] # create your own submodes
+repo = 'kana/vim-submode'
+
+[[plugins]] # run commands quickly
+repo = 'thinca/vim-quickrun'
+
+[[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
+repo   = 'neoclide/coc.nvim'
+rev    = 'release'
+merged = 0
+
+[[plugins]] # sequencial numbering with pattern
+repo = 'deris/vim-rengbang'
 hook_add = '''
-let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+let g:rengbang_default_usefirst = 1
+let g:rengbang_default_pattern = '\(\<\d\+\>\)'
 '''
 
 [[plugins]] # Neovim/Vim plugin for easy async search and replace across multiple files
@@ -53,50 +66,13 @@ let g:esearch.textobj = 0
 let g:esearch.case = 'smart'
 '''
 
-#  Completion
-#-----------------------------------------------
-[[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
-repo   = 'neoclide/coc.nvim'
-rev    = 'release'
-merged = 0
-
-#  Utils
-#-----------------------------------------------
-[[plugins]] # yet another remote plugin framework for neovim
-repo = 'roxma/nvim-yarp' # Used by denite.nvim
-if   = "!has('nvim')"
-
-[[plugins]] # a compatibility layer for neovim rpc client working on vim8
-repo = 'roxma/vim-hug-neovim-rpc' # Used by denite.nvim
-if   = "!has('nvim')"
-
-[[plugins]] # enable repeating supported plugin maps with dot
-repo = 'tpope/vim-repeat'
-
-[[plugins]] # a tree explorer
-repo = 'scrooloose/nerdtree'
+[[plugins]] # EditorConfig Vim Plugin
+repo = 'editorconfig/editorconfig-vim'
 hook_add = '''
-let g:NERDSpaceDelims = 1
-let g:NERDShutUp = 1
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeIgnore = ['\~$', '\.git$']
-let g:NERDTreeAutoDeleteBuffer = 1
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 '''
 
-[[plugins]] # run commands quickly
-repo = 'thinca/vim-quickrun'
-
-[[plugins]] # create your own submodes
-repo = 'kana/vim-submode'
-
-[[plugins]] # sequencial numbering with pattern
-repo = 'deris/vim-rengbang'
-hook_add = '''
-let g:rengbang_default_usefirst = 1
-let g:rengbang_default_pattern = '\(\<\d\+\>\)'
-'''
-
-#  Appearance
+#  UI
 #-----------------------------------------------
 [[plugins]] # candle theme
 repo = 'creasty/candle.vim'
@@ -113,3 +89,23 @@ repo = 'osyo-manga/vim-anzu'
 
 [[plugins]] # Highlight the current search result differently
 repo = 'qxxxb/vim-searchhi'
+
+[[plugins]] # a tree explorer
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+let g:NERDSpaceDelims = 1
+let g:NERDShutUp = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeIgnore = ['\~$', '\.git$']
+let g:NERDTreeAutoDeleteBuffer = 1
+'''
+
+#  Utils
+#-----------------------------------------------
+[[plugins]] # yet another remote plugin framework for neovim
+repo = 'roxma/nvim-yarp' # Used by denite.nvim
+if   = "!has('nvim')"
+
+[[plugins]] # a compatibility layer for neovim rpc client working on vim8
+repo = 'roxma/vim-hug-neovim-rpc' # Used by denite.nvim
+if   = "!has('nvim')"
