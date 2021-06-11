@@ -181,7 +181,17 @@ if dein#tap('lexima.vim')
 endif
 
 if dein#tap('switch.vim')
-  nnoremap <silent> - :call vimrc#plugin#switch#toggle()<CR>
+  call dein#set_hook('switch.vim', 'hook_source', function('vimrc#plugin#switch#lazy_init'))
+
+  nnoremap <silent> - :call <SID>my_switch()<CR>
+
+  function! s:my_switch() abort
+    if quote_toggler#toggle()
+      return
+    endif
+
+    :Switch
+  endfunction
 endif
 
 if dein#tap('vim-textmanip')
