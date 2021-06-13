@@ -50,6 +50,9 @@ repo   = 'neoclide/coc.nvim'
 rev    = 'release'
 merged = 0
 
+[[plugins]] # switch segments of text with predefined replacements
+repo = 'AndrewRadev/switch.vim'
+
 [[plugins]] # sequencial numbering with pattern
 repo = 'deris/vim-rengbang'
 hook_add = '''

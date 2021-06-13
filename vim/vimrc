@@ -181,7 +181,14 @@ if dein#tap('lexima.vim')
 endif
 
 if dein#tap('switch.vim')
-  call dein#set_hook('switch.vim', 'hook_source', function('vimrc#plugin#switch#lazy_init'))
+  let g:switch_custom_definitions = [
+    \ switch#Words(['public', 'protected', 'private']),
+    \ switch#Words(['and', 'or']),
+    \ switch#Words(['if', 'unless']),
+    \ switch#NormalizedCaseWords(['true', 'false']),
+    \ switch#NormalizedCaseWords(['on', 'off']),
+    \ switch#NormalizedCaseWords(['yes', 'no']),
+  \ ]
 
   nnoremap <silent> - :call <SID>my_switch()<CR>
 
