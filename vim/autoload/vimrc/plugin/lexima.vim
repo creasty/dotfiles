@@ -350,7 +350,7 @@ for s:del in ['/', '~', '!', '@', '#', '%', ':']
   call lexima#add_rule({
     \ 'char':        s:del,
     \ 'at':          '^\(%\|' . "'<,'>" . '\)\?sm\%#',
-    \ 'input':       '<BS><BS>SubMC' . s:del . '\v',
+    \ 'input':       '<BS><BS>SubMC' . s:del . '\v\c',
     \ 'input_after': s:del . s:del . 'g',
     \ 'mode':        ':',
   \ })
