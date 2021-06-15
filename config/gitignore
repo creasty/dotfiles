@@ -2,7 +2,6 @@
 Thumb.db
 *.log
 .vimprojectroot
-.envrc
 tmp/
 
 # Tags
