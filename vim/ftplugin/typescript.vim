@@ -108,11 +108,12 @@ function! s:gen_adaptor(...) abort
         \ . "}\n"
     endif
 
-    let l:func_name = substitute(
-      \ substitute(l:name, '^.', '\l\0', ''),
-      \ '\.\(.\)', '\U\1', 'g')
+    let l:func_name = substitute(l:name, '^.', '\l\0', '')
+    let l:func_name = substitute(l:func_name, '\.\(.\)', '\U\1', 'g')
+    let l:func_name = substitute(l:func_name, '_', '', 'g')
 
-    let l:proto_type = substitute(substitute(l:name, 'Input$', '', ''), '_', '.', 'g')
+    let l:proto_type = substitute(l:name, 'Input$', '', '')
+    let l:proto_type = substitute(l:proto_type, '_', '.', 'g')
     let l:proto_type = empty(l:proto_ns) ? l:proto_type : l:proto_ns . '.' . l:proto_type
 
     let l:body = substitute(l:body, '{funcName}', l:func_name, 'g')
@@ -121,5 +122,5 @@ function! s:gen_adaptor(...) abort
 
     let @x .= l:body
   endfor
-  call feedkeys('"xp', 'n')
+  call feedkeys('"xP', 'n')
 endfunction

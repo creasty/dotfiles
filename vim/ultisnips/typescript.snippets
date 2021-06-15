@@ -29,3 +29,28 @@ endsnippet
 snippet useLayoutEffect "Variable for React.useLayoutEffect" b
 useLayoutEffect(() => $1, [$2]);
 endsnippet
+
+snippet FC "Define FC" b
+const ${1:Name}: React.FC$2 = ($3) => {
+	$0
+};
+endsnippet
+
+snippet VFC "Define VFC" b
+const ${1:Name}: React.FC$2 = ($3) => {
+	$0
+};
+endsnippet
+
+#=== Apollo
+#==============================================================================================
+snippet fetchPolicy "Useful pair of fetchPolicy and nextFetchPolicy" b
+fetchPolicy: "cache-and-network",
+nextFetchPolicy: "cache-first",
+endsnippet
+
+snippet refetchQueries "Define refetchQueries" b
+function refetchQueries(): (string | PureQueryOptions)[] {
+	return [$0];
+}
+endsnippet
