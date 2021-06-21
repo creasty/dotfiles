@@ -3,43 +3,9 @@
 set -eu
 set -o pipefail
 
-: ${DOTFILES_PATH:="$HOME/dotfiles"}
-: ${DOTFILES_BRANCH:=master}
-
-ARGS=('')
-for a in "$@"; do
-  ARGS=(${ARGS[@]} "$a")
-done
-
-#=== Utils
-#==============================================================================================
-compare_versions() {
-  declare -a v1=(${1//./ })
-  declare -a v2=(${2//./ })
-  local i=""
-
-  for (( i=${#v1[@]}; i<${#v2[@]}; i++ )); do
-    v1[i]=0
-  done
-
-  for (( i=0; i<${#v1[@]}; i++ )); do
-    if [[ -z ${v2[i]} ]]; then
-      v2[i]=0
-    fi
-
-    if (( 10#${v1[i]} > 10#${v2[i]} )); then
-      printf ">"
-      return 0
-    fi
-
-    if (( 10#${v1[i]} < 10#${v2[i]} )); then
-      printf "<"
-      return 0
-    fi
-  done
-
-  printf "="
-}
+: "${DOTFILES_PATH:="$HOME/dotfiles"}"
+: "${DOTFILES_BRANCH:=master}"
+: "${DOTFILES_NOEDIT_SECRETS:=0}"
 
 #=== Steps
 #==============================================================================================
@@ -65,12 +31,7 @@ print_header() {
 }
 
 check_os() {
-  if [ "$(uname -s)" == "Darwin" ]; then
-    if [ $(compare_versions "$(sw_vers -productVersion)" "10.9") == '<' ]; then
-      echo "Sorry, this script is intended only for OS X 10.9.0+"
-      exit 1
-    fi
-  else
+  if [ "$(uname -s)" != "Darwin" ]; then
     echo "Sorry, this script is intended only for OS X"
     exit 1
   fi
@@ -137,7 +98,21 @@ install_ansible() {
 
 run_provisioning() {
   echo 'Provisioning...'
-  $DOTFILES_PATH/provisioning/run.sh ${ARGS[@]}
+
+  cd "$DOTFILES_PATH/provisioning"
+
+  if ! [ -f ./secrets.yml ]; then
+    cp ./secrets{.sample,}.yml
+    [ "$DOTFILES_NOEDIT_SECRETS" -eq 0 ] && vim ./secrets.yml
+  fi
+
+  ansible-playbook \
+    -i 'localhost,' \
+    --extra-vars='@config.yml' \
+    --extra-vars='@secrets.yml' \
+    "$@" \
+    playbook.yml
+
   echo 'done'
 }
 
@@ -150,7 +125,7 @@ main() {
   check_xcode_license_approved
   install_homebrew
   install_ansible
-  run_provisioning
+  run_provisioning "$@"
 }
 
-main
+main "$@"
