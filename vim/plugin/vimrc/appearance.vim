@@ -17,6 +17,9 @@ if has('termguicolors')
   set termguicolors
 endif
 
+" skip intro screen
+set shortmess+=I
+
 " always show statusline
 set laststatus=2
 
