@@ -133,7 +133,7 @@ peco_insert_path() {
       | _peco_select \
       | _buffer_insert_files
   else
-    fd -t f \
+    fd -t f --follow --hidden \
       | _peco_select \
       | _buffer_insert_files
   fi

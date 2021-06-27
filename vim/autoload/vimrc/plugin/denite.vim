@@ -44,7 +44,7 @@ function! vimrc#plugin#denite#lazy_init() abort
     \ 'sorters': [],
   \ })
 
-  call denite#custom#var('file/rec', 'command', ['fd', '-t', 'f', '--full-path'])
+  call denite#custom#var('file/rec', 'command', ['fd', '-t', 'f', '--full-path', '--follow', '--hidden'])
 endfunction
 
 function! vimrc#plugin#denite#control_parent(f) abort

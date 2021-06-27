@@ -16,6 +16,10 @@ vendor/bundle/
 .bundle/
 .rubocop.yml
 
+# JS
+node_modules/
+.next/
+
 # Rust
 target/debug/
 target/release/
@@ -27,3 +31,7 @@ target/rls/
 .bloop/
 .ammonite/
 project/metals.sbt
+
+# Python
+__pycache__
+*.pyc

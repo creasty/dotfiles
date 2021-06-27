@@ -112,6 +112,7 @@ link:
   config/cargo/config:     .cargo/config
   config/ctags:            .ctags
   config/curlrc:           .curlrc
+  config/fdignore:         .fdignore
   config/gitconfig:        .gitconfig
   config/gitignore:        .gitignore
   config/goneovim.toml:    .config/goneovim/setting.toml
