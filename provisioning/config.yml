@@ -75,6 +75,7 @@ homebrew:
     - nkf                 # Network Kanji code conversion Filter (NKF)
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
+    - procs               # Modern replacement for ps written by Rust
     - protobuf            # Protocol buffers (Google's data interchange format)
     - python              # Interpreted, interactive, object-oriented programming language
     - ripgrep             # Search tool like grep and The Silver Searcher

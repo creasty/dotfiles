@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# @see https://github.com/dalance/procs
+if command -v 'procs' > /dev/null 2>&1; then
+  procs --no-header --sorta cpu --nand "$0" \
+    | peco --query "$*" \
+    | awk '{ print $0; print $0 > "/dev/stderr" }' \
+    | awk '{ print $1 }' \
+    | xargs kill -9
+  exit
+fi
+
 ps aux \
   | grep -v "$0" \
   | sed '1d' \
