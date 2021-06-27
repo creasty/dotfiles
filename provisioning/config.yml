@@ -115,7 +115,6 @@ link:
   config/fdignore:         .fdignore
   config/gitconfig:        .gitconfig
   config/gitignore:        .gitignore
-  config/goneovim.toml:    .config/goneovim/setting.toml
   config/kitty.conf:       .config/kitty/kitty.conf
   config/peco:             .peco
   config/pgclirc:          .pgclirc
