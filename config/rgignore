@@ -1,0 +1,38 @@
+.DS_Store
+Thumb.db
+
+*.git
+.gitkeep
+.keep
+
+.tags
+.idea/
+
+tmp/
+cache/
+.cache/
+
+build/
+dist/
+
+# Ruby
+.bundle/
+vendor/
+
+# Swift
+Carthage/
+Pods/
+
+# JS
+node_modules/
+.next/
+
+# Rust
+target/debug/
+target/release/
+target/rls/
+*.rs.bk
+
+# Python
+__pycache__
+*.pyc

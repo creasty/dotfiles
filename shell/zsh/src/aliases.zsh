@@ -27,7 +27,7 @@ alias :q='exit'
 alias -g A='| awk'
 alias -g C='| cat'
 alias -g D='| sed'
-alias -g G='| ag'
+alias -g G='| rg'
 alias -g H='| head'
 alias -g J='| jq .'
 alias -g JL='| jq -C . | less'
@@ -84,7 +84,11 @@ alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
 alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
 
 alias g='envchain crst git'
-alias ag="ag --pager='less -R' --width 1000"
+
+alias ag="rg"
+rg() {
+  command rg -p -M 1000 "$@" | less -R
+}
 
 alias o='finder'
 alias ev='envchain'

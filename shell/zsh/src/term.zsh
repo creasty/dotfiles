@@ -133,7 +133,7 @@ peco_insert_path() {
       | _peco_select \
       | _buffer_insert_files
   else
-    ag --follow --nocolor --nogroup --hidden -U -g '' \
+    fd -t f \
       | _peco_select \
       | _buffer_insert_files
   fi

@@ -108,12 +108,6 @@ set incsearch
 " match highlight
 set hlsearch
 
-" ag
-if executable('ag')
-  set grepprg=ag\ --nogroup\ -iS
-  set grepformat=%f:%l:%m
-endif
-
 " indent
 set noautoindent
 set smartindent

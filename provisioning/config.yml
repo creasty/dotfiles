@@ -81,7 +81,6 @@ homebrew:
     - ripgrep             # Search tool like grep and The Silver Searcher
     - termtosvg           # Record terminal sessions as SVG animations
     - terraform           # Tool to build, change, and version infrastructure
-    - the_silver_searcher # Code-search similar to ack
     - tmux                # Terminal multiplexer
     - webp                # Image format providing lossless and lossy compression for web images
 
@@ -106,7 +105,6 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
-  config/agignore:         .agignore
   config/alacritty.yml:    .config/alacritty/alacritty.yml
   config/ansible.cfg:      .ansible.cfg
   config/aws/config:       .aws/config
@@ -116,12 +114,13 @@ link:
   config/curlrc:           .curlrc
   config/gitconfig:        .gitconfig
   config/gitignore:        .gitignore
+  config/goneovim.toml:    .config/goneovim/setting.toml
   config/kitty.conf:       .config/kitty/kitty.conf
   config/peco:             .peco
   config/pgclirc:          .pgclirc
+  config/rgignore:         .rgignore
+  config/ripgreprc:        .config/.ripgreprc
   config/termtosvg:        .config/termtosvg
-  config/rigpregrc:        .config/ripgreprc
-  config/goneovim.toml:    .config/goneovim/setting.toml
   ruby/bundle/config:      .bundle/config
   ruby/gemrc:              .gemrc
   ruby/irbrc:              .irbrc

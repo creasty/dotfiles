@@ -296,7 +296,7 @@ if dein#tap('denite.nvim')
   command! Open :call vimrc#plugin#denite#open_best()
   nnoremap <silent> <C-q> :<C-u>Open<CR>
 
-  command! Ag :Denite -buffer-name=grep grep
+  command! Rg :Denite -buffer-name=grep grep
   nnoremap <Space>/ :Denite -buffer-name=grep -resume grep<CR>
   nnoremap <silent> <Space>* :DeniteCursorWord -buffer-name=grep grep<CR>
 

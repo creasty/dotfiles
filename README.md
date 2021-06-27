@@ -114,7 +114,7 @@ SUM:                             94            862            645           4098
 ```
 
 ```sh-session
-$ ag '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
+$ rg '^\[\[plugins' vim/dein.toml vim/dein_lazy.toml | wc -l
 $ cloc vim/dein/repos
 ```
 

@@ -31,10 +31,9 @@ function! vimrc#plugin#denite#lazy_init() abort
     call denite#custom#option('_', 'highlight_window_background', 'NormalFloat')
   endif
 
-  " use ag
   call denite#custom#var('grep', {
-    \ 'command': ['ag'],
-    \ 'default_opts': ['--nopager', '--vimgrep'],
+    \ 'command': ['rg'],
+    \ 'default_opts': ['--vimgrep'],
     \ 'recursive_opts': [],
     \ 'pattern_opt': [],
     \ 'separator': ['--'],
@@ -45,10 +44,7 @@ function! vimrc#plugin#denite#lazy_init() abort
     \ 'sorters': [],
   \ })
 
-  " file_rec
-  call denite#custom#var('file/rec', 'command', [
-    \ 'ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-U', '-g', '',
-  \ ])
+  call denite#custom#var('file/rec', 'command', ['fd', '-t', 'f', '--full-path'])
 endfunction
 
 function! vimrc#plugin#denite#control_parent(f) abort
