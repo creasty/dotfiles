@@ -70,6 +70,9 @@ function! vimrc#plugin#coc#configure_float(winid) abort
   let l:value = getwinvar(a:winid, '&winhighlight')
   let l:newValue = join(filter([l:value, 'Search:'], '!empty(v:val)'), ',')
   call setwinvar(a:winid, '&winhighlight', l:newValue)
+
+  " Make foldcolumn blank
+  call setwinvar(a:winid, '&foldenable', 0)
 endfunction
 
 "  Custom actions
