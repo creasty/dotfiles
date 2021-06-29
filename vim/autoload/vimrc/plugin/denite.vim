@@ -1,18 +1,22 @@
+let s:last_win_size = ''
+
 function! vimrc#plugin#denite#open_best() abort
   let l:cwd = getcwd()
   let l:is_startup_dir = (l:cwd == $HOME || l:cwd == '/')
   let l:is_same_dir = (l:cwd == get(g:, 'denite_last_cwd', ''))
   let g:denite_last_cwd = l:cwd
 
-  let l:resume = l:is_same_dir ? '-resume' : ''
-  let l:source = l:is_startup_dir ? 'ghq' : 'file/rec'
-
   " Work around misplacement issue
-  let l:buffer_name = l:source . '-' . &columns . 'x' . &lines
+  let l:win_size = &columns . 'x' . &lines
+  let l:win_size_changed = s:last_win_size !=# l:win_size
+  let s:last_win_size = l:win_size
+
+  let l:resume = !l:win_size_changed && l:is_same_dir ? '-resume' : ''
+  let l:source = l:is_startup_dir ? 'ghq' : 'file/rec'
 
   exec 'Denite'
     \ '-start-filter'
-    \ '-buffer-name=' . l:buffer_name
+    \ '-buffer-name=' . l:source
     \ l:resume
     \ l:source
 endfunction
