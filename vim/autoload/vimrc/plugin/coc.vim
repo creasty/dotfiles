@@ -74,16 +74,16 @@ endfunction
 
 "  Custom actions
 "-----------------------------------------------
-nnoremap <Plug>(coc-hover) :call CocAction('doHover')<CR>
-nnoremap <Plug>(coc-peek-definition) :call CocAction('jumpDefinition', v:false)<CR>
-nnoremap <Plug>(coc-peek-type-definition) :call CocAction('jumpTypeDefinition', v:false)<CR>
+nnoremap <Plug>(coc-hover) :call CocActionAsync('doHover')<CR>
+nnoremap <Plug>(coc-peek-definition) :call CocActionAsync('jumpDefinition', v:false)<CR>
+nnoremap <Plug>(coc-peek-type-definition) :call CocActionAsync('jumpTypeDefinition', v:false)<CR>
 inoremap <Plug>(coc-signature-help) <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
 command! -nargs=0 -range=% Format
   \ if <range> == 0 |
-  \   call CocAction('format') |
+  \   call CocActionAsync('format') |
   \ else |
-  \   call CocAction('formatSelected', visualmode()) |
+  \   call CocActionAsync('formatSelected', visualmode()) |
   \ endif
 
 command! -nargs=0 Import
