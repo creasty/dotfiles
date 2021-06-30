@@ -198,6 +198,8 @@
     "Dataset",
     "Debounced",
     "Droppable",
+    "Duplicatable",
+    "FREC",
     "FRRF",
     "Finalizable",
     "Fullscreen",
