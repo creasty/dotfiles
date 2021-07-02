@@ -1,7 +1,7 @@
 - name: install dein.vim
   git:
     repo:   https://github.com/Shougo/dein.vim
-    dest:   '{{ dotfiles_path }}/vim/dein/repos/github.com/Shougo/dein.vim'
+    dest:   '{{ dotfiles_path }}/nvim/dein/repos/github.com/Shougo/dein.vim'
     update: False
 
 - name: install python3

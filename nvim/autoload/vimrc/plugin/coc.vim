@@ -28,8 +28,6 @@ let g:coc_global_extensions = [
   \ 'coc-vimlsp',
 \ ]
 
-let g:coc_config_home = '~/.vim'
-
 let g:coc_selectmode_mapping = 0
 let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
 let g:coc_snippet_prev = '<Plug>(coc-snippet-prev)'

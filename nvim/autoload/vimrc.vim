@@ -6,7 +6,7 @@ function! s:get_env() abort
     let l:dotfiles_path = $HOME . '/dotfiles'
   endif
 
-  let l:vim_path = l:dotfiles_path . '/vim'
+  let l:vim_path = l:dotfiles_path . '/nvim'
 
   let l:env.path = {
     \ 'dotfiles':       l:dotfiles_path,
@@ -14,7 +14,6 @@ function! s:get_env() abort
     \ 'dein_repo':      l:vim_path . '/dein/repos/github.com/Shougo/dein.vim',
     \ 'dein_toml':      l:vim_path . '/dein.toml',
     \ 'dein_lazy_toml': l:vim_path . '/dein_lazy.toml',
-    \ 'vimrcd':         l:vim_path . '/vimrc.d',
   \ }
 
   return l:env
