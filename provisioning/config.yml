@@ -136,10 +136,7 @@ link:
   shell/zsh:               .zsh
   tmux/tmux.conf:          .tmux.conf
   tmux:                    .tmux
-  vim/gvimrc:              .gvimrc
-  vim/neovim_init.vim:     .config/nvim/init.vim
-  vim/vimrc:               .vimrc
-  vim:                     .vim
+  nvim:                    .config/nvim
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'

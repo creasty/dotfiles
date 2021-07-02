@@ -4,9 +4,9 @@ __pycache__
 
 tmp/
 
-vim/.netrwhist
-vim/dein/*
-!vim/dein/.gitkeep
+nvim/.netrwhist
+nvim/dein/*
+!nvim/dein/.gitkeep
 
 provisioning/playbook.retry
 provisioning/secrets.yml
