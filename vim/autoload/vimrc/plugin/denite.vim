@@ -24,7 +24,7 @@ endfunction
 function! vimrc#plugin#denite#lazy_init() abort
   " default options
   call denite#custom#option('_', 'statusline', v:false)
-  call denite#custom#option('_', 'highlight_matched_range', 'Normal')
+  call denite#custom#option('_', 'highlight_matched_range', '')
   call denite#custom#option('_', 'highlight_matched_char', 'Constant')
   call denite#custom#option('_', 'match_highlight', v:true)
 
