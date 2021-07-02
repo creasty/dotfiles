@@ -73,19 +73,11 @@ function! s:clean_buffers() abort
   endfor
 endfunction
 
-function! s:jobstart(cmd) abort
-  if has('nvim')
-    call jobstart(a:cmd)
-  else
-    call job_start(a:cmd)
-  endif
-endfunction
-
 function! s:change_font_size(size) abort
   exec 'set' 'guifont=Menlo:h' . a:size
 
   if $NVIM_GUI ==# 'kitty'
-    call s:jobstart(['kitty', '@', 'set-font-size', a:size])
+    call jobstart(['kitty', '@', 'set-font-size', a:size])
   endif
 endfunction
 
@@ -103,7 +95,7 @@ function! s:delete_file(file) abort
 
   let l:trash_dir = $HOME . '/.Trash'
   if isdirectory(l:trash_dir)
-    call s:jobstart(['mv', l:file, l:trash_dir])
+    call jobstart(['mv', l:file, l:trash_dir])
   else
     call delete(l:file)
   endif
@@ -115,7 +107,7 @@ function! s:chmod(file, mode) abort
     return
   endif
 
-  call s:jobstart(['chmod', a:mode, l:file])
+  call jobstart(['chmod', a:mode, l:file])
 endfunction
 
 let &cpoptions = s:save_cpo

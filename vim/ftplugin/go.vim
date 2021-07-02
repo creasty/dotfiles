@@ -9,22 +9,8 @@ let g:go_highlight_space_tab_error = 0
 let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 
-"  Imports
-"-----------------------------------------------
-command! GoImports
-  \ call system('goimports -w ' . shellescape(expand('%:p'))) |
-  \ e
-
 "  Fmt
 "-----------------------------------------------
-function! s:jobstart(cmd) abort
-  if has('nvim')
-    call jobstart(a:cmd)
-  else
-    call job_start(a:cmd)
-  endif
-endfunction
-
 function! s:auto_gofmt(path) abort
   if empty(a:path)
     return
@@ -35,7 +21,7 @@ function! s:auto_gofmt(path) abort
     call job_stop(l:auto_gofmt_job, 'kill')
   endif
 
-  let b:auto_gofmt_job = s:jobstart(['gofmt', '-s', '-w', a:path])
+  let b:auto_gofmt_job = jobstart(['gofmt', '-s', '-w', a:path])
 endfunction
 
 autocmd vim_ftplugin_go FocusLost,BufLeave *.go

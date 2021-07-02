@@ -117,13 +117,3 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['\~$', '\.git$']
 let g:NERDTreeAutoDeleteBuffer = 1
 '''
-
-#  Utils
-#-----------------------------------------------
-[[plugins]] # yet another remote plugin framework for neovim
-repo = 'roxma/nvim-yarp' # Used by denite.nvim
-if   = "!has('nvim')"
-
-[[plugins]] # a compatibility layer for neovim rpc client working on vim8
-repo = 'roxma/vim-hug-neovim-rpc' # Used by denite.nvim
-if   = "!has('nvim')"
