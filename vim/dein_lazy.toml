@@ -71,39 +71,10 @@ on_cmd = ['Gblame', 'Gbrowse']
 repo  = 'tpope/vim-markdown'
 on_ft = ['markdown']
 
-[[plugins]] # Vastly improved Javascript indentation and syntax support
-repo  = 'pangloss/vim-javascript'
-on_ft = ['javascript']
-
-[[plugins]] # React JSX syntax pretty highlighting for vim
-repo = 'maxmellon/vim-jsx-pretty'
-on_ft = ['javascript', 'typescript']
-
-[[plugins]] # TypesSript syntax files for Vim
-repo  = 'leafgarland/typescript-vim'
-on_ft = ['typescript']
-
 [[plugins]] # Vim syntax highlighting for Google's Protocol Buffers
 repo  = 'uarun/vim-protobuf'
 on_ft = ['proto']
 
-[[plugins]] # Vim syntax for TOML
-repo  = 'cespare/vim-toml'
-on_ft = ['toml']
-
 [[plugins]] # vim syntax file for plantuml
 repo  = 'aklt/plantuml-syntax'
 on_ft = ['plantuml']
-
-[[plugins]] # Vim configuration for Rust
-repo  = 'rust-lang/rust.vim'
-on_ft = ['rust']
-
-[[plugins]] # Kotlin plugin for Vim. Featuring: syntax highlighting, basic indentation, Syntastic support
-repo = 'udalov/kotlin-vim'
-on_ft = ['kotlin']
-
-[[plugins]] #  A Vim plugin that provides GraphQL file detection, syntax highlighting, and indentation
-repo = 'jparise/vim-graphql'
-on_ft = ['javascript', 'typescript', 'graphql']
-merged = 0

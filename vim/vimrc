@@ -201,6 +201,23 @@ if dein#tap('switch.vim')
   endfunction
 endif
 
+if dein#tap('nvim-treesitter')
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  },
+  autotag = {
+    enable = true,
+  },
+}
+EOF
+endif
+
 if dein#tap('vim-textmanip')
   let g:textmanip_enable_mappings = 0
 

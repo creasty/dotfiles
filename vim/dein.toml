@@ -75,6 +75,21 @@ hook_add = '''
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 '''
 
+#  Treesitter
+#-----------------------------------------------
+[[plugins]] # Treesitter configurations and abstraction layer for Neovim
+repo = 'nvim-treesitter/nvim-treesitter'
+merged = 0
+hook_post_update = '''
+:TSUpdate
+'''
+
+[[plugins]] # Neovim Treesitter Playground
+repo = 'nvim-treesitter/playground'
+
+[[plugins]] # Use treesitter to autoclose and autorename html tag
+repo = 'windwp/nvim-ts-autotag'
+
 #  UI
 #-----------------------------------------------
 [[plugins]] # candle theme
