@@ -9,6 +9,7 @@ local schema = {
   gray500 = '#2c2c2c',
   gray550 = '#262626',
   gray600 = '#1b1b1b',
+  gray610 = '#191919',
   gray650 = '#161616',
   gray700 = '#0f0f0f',
   black   = '#000000',
@@ -53,6 +54,6 @@ schema.selection = schema.gray400
 schema.line = schema.gray450
 schema.window = schema.gray550
 schema.background = schema.gray600
-schema.guide = schema.gray650
+schema.guide = schema.gray610
 
 return schema

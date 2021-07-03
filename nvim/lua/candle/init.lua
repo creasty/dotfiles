@@ -18,7 +18,7 @@ function M.setup()
   local s = M.schema
 
   -- Vim editor colors
-  hi.Normal = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
+  hi.Normal = { fg = s.foreground, bg = 'none', gui = nil, sp = nil }
   hi.Bold = { fg = nil, bg = nil, gui = 'bold', sp = nil }
   hi.Debug = { fg = s.brown, bg = nil, gui = nil, sp = nil }
   hi.Directory = { fg = s.blue, bg = nil, gui = nil, sp = nil }
@@ -42,7 +42,7 @@ function M.setup()
   hi.WildMenu = { fg = s.yellow, bg = s.background, gui = nil, sp = nil }
   hi.Title = { fg = s.foreground, bg = nil, gui = 'none', sp = nil }
   hi.Cursor = { fg = s.background, bg = s.foreground, gui = nil, sp = nil }
-  hi.NonText = { fg = s.comment, bg = nil, gui = nil, sp = nil }
+  hi.NonText = { fg = s.window, bg = nil, gui = nil, sp = nil }
   hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.SignColumn = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.StatusLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
@@ -104,9 +104,7 @@ function M.setup()
   hi.DiffText = { fg = s.blue, bg = 'none', gui = 'none', sp = nil }
 
   -- LSP
-  -- hi.LspReferenceText = { fg = nil, bg = nil, gui = 'underline', sp = s.gray200 }
-  -- hi.LspReferenceRead = { fg = nil, bg = nil, gui = 'underline', sp = s.gray200 }
-  -- hi.LspReferenceWrite = { fg = nil, bg = nil, gui = 'underline', sp = s.gray200 }
+  -- hi.LspReferenceText = { fg = nil, bg = nil, gui = nil, sp = nil }
   hi.LspDiagnosticsDefaultError = { fg = s.red, bg = nil, gui = 'none', sp = nil }
   hi.LspDiagnosticsDefaultWarning = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
   hi.LspDiagnosticsDefaultInformation = { fg = s.blue, bg = nil, gui = 'none', sp = nil }
@@ -159,8 +157,6 @@ function M.setup()
 
   -- coc.nvim
   hi.CocHighlightText = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
-  hi.CocHighlightRead = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
-  hi.CocHighlightWrite = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
   hi.CocErrorSign = { fg = s.red, bg = nil, gui = nil, sp = nil }
   hi.CocWarningSign = { fg = s.yellow, bg = nil, gui = nil, sp = nil }
   hi.CocInfoSign = { fg = s.blue, bg = nil, gui = nil, sp = nil }

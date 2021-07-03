@@ -17,8 +17,8 @@ function! s:auto_gofmt(path) abort
   end
 
   let l:auto_gofmt_job = get(b:, 'auto_gofmt_job', v:null)
-  if l:auto_gofmt_job != v:null && job_status(l:auto_gofmt_job) ==# 'run'
-    call job_stop(l:auto_gofmt_job, 'kill')
+  if l:auto_gofmt_job != v:null
+    call jobstop(l:auto_gofmt_job)
   endif
 
   let b:auto_gofmt_job = jobstart(['gofmt', '-s', '-w', a:path])
