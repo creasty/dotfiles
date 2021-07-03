@@ -84,12 +84,6 @@ hook_post_update = '''
 :TSUpdate
 '''
 
-[[plugins]] # Neovim Treesitter Playground
-repo = 'nvim-treesitter/playground'
-
-[[plugins]] # Use treesitter to autoclose and autorename html tag
-repo = 'windwp/nvim-ts-autotag'
-
 #  UI
 #-----------------------------------------------
 [[plugins]] # toggle, display and navigate marks

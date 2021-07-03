@@ -51,6 +51,15 @@ on_map = ['<Plug>(swap-']
 repo   = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']
 
+[[plugins]] # Use treesitter to autoclose and autorename html tag
+repo = 'windwp/nvim-ts-autotag'
+on_ft = [
+  'html',
+  'javascript', 'javascriptreact', 'jsx',
+  'typescript', 'typescriptreact', 'tsx',
+  'handlebars','hbs',
+]
+
 #  Navigation
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
@@ -64,6 +73,12 @@ on_map = ['<Plug>(altr-']
 [[plugins]] # A Git wrapper so awesome, it should be illegal
 repo   = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gbrowse']
+
+#  Util
+#-----------------------------------------------
+[[plugins]] # Neovim Treesitter Playground
+repo = 'nvim-treesitter/playground'
+on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
 
 #  Language
 #-----------------------------------------------
