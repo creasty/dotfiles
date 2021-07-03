@@ -40,18 +40,6 @@ function! vimrc#plugin#coc#init() abort
   augroup vimrc_plugin_coc
     autocmd!
 
-    if g:colors_name ==# 'candle'
-      autocmd BufWinEnter,WinEnter *
-        \ call candle#highlight('CocErrorSign', 'red', '', '') |
-        \ call candle#highlight('CocWarningSign', 'yellow', '', '') |
-        \ call candle#highlight('CocInfoSign', 'blue', '', '') |
-        \ call candle#highlight('CocHintSign', 'green', '', '') |
-        \ call candle#highlight('CocErrorHighlight', 'red', '', 'undercurl') |
-        \ call candle#highlight('CocWarningHighlight', 'yellow', '', 'undercurl') |
-        \ call candle#highlight('CocInfoHighlight', 'blue', '', 'undercurl') |
-        \ call candle#highlight('CocHintHighlight', 'green', '', 'undercurl')
-    endif
-
     " Highlight the symbol and its references when holding the cursor.
     autocmd CursorHold * silent call CocActionAsync('highlight')
 

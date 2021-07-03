@@ -92,9 +92,6 @@ repo = 'windwp/nvim-ts-autotag'
 
 #  UI
 #-----------------------------------------------
-[[plugins]] # candle theme
-repo = 'creasty/candle.vim'
-
 [[plugins]] # toggle, display and navigate marks
 repo = 'kshenoy/vim-signature'
 hook_add = '''

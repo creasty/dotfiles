@@ -67,8 +67,6 @@ if dein#check_install()
   call dein#install()
 endif
 
-filetype plugin indent on
-
 "  Commands
 "-----------------------------------------------
 command! DeinUpdate call dein#update()
@@ -82,11 +80,9 @@ command! DeinPrunePlugins
 
 "=== Load
 "==============================================================================================
-if dein#tap('candle.vim')
-  colorscheme candle
-  set t_Co=256
-  syntax enable
-endif
+colorscheme candle2
+set t_Co=256
+syntax enable
 
 if dein#tap('vim-textobj-multiblock')
   let g:textobj_multiblock_blocks = [
@@ -370,10 +366,5 @@ if dein#tap('vim-searchhi')
   if dein#tap('vim-anzu')
     autocmd vimrc User SearchHiOn AnzuUpdateSearchStatusOutput
     autocmd vimrc User SearchHiOff echo g:anzu_no_match_word
-  endif
-
-  if g:colors_name ==# 'candle'
-    autocmd vimrc VimEnter,Syntax *
-      \ call candle#highlight('CurrentSearch', 'background', 'orange', 'bold')
   endif
 endif

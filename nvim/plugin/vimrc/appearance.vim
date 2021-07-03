@@ -66,7 +66,6 @@ endif
 
 " color column
 set colorcolumn=90
-hi ColorColumn guibg=#1f1f1f ctermbg=234
 
 " always show sign column
 set signcolumn=yes
@@ -97,34 +96,24 @@ set tabline=%!vimrc#ui#tab_line()
 
 "  Custom highlights
 "-----------------------------------------------
-if g:colors_name ==# 'candle'
-  " highlight full-width space
-  call candle#highlight('ZenkakuSpace', '', 'dark_purple', '')
-  autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('ZenkakuSpace', '　') |
-    \ call matchadd("SpellRare", '[０１２３４５６７８９]') |
-    \ call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]') |
-    \ call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
+" highlight full-width space
+autocmd vimrc_appearance BufWinEnter,WinEnter *
+  \ call matchadd('FullwidthSpace', '　') |
+  \ call matchadd("SpellRare", '[０１２３４５６７８９]') |
+  \ call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]') |
+  \ call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
 
-  " highlight extra blank lines
-  " autocmd vimrc_appearance BufWinEnter,WinEnter *
-  "   \ call matchadd("SpellBad", '^\n\ze\n\+\%$\@!')
+autocmd vimrc_appearance BufWinEnter,WinEnter *
+  \ call matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50)
 
-  call candle#highlight('GitConflictMarker', 'red', 'dark_red', '')
-  autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50)
+" highlight trailing spaces
+autocmd vimrc_appearance BufWinEnter,WinEnter *
+  \ call matchadd('TrailingSpace', '\s\+$', 50)
 
-  " highlight trailing spaces
-  call candle#highlight('TrailingSpace', '', 'line', '')
-  autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('TrailingSpace', '\s\+$', 50)
-
-  " snippet placeholder
-  call candle#highlight('SnipPlaceholder', 'blue', 'dark_blue', '')
-  autocmd vimrc_appearance BufWinEnter,WinEnter *
-    \ call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
-    \ call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
-endif
+" snippet placeholder
+autocmd vimrc_appearance BufWinEnter,WinEnter *
+  \ call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
+  \ call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 
 "  StatusLine
 "-----------------------------------------------
@@ -136,40 +125,42 @@ function! s:refresh_statusline() abort
   endfor
 endfunction
 
-function! s:change_highlight_for_mode() abort
-  let l:m = vimrc#ui#get_mode()
+autocmd vimrc_appearance FocusGained,BufEnter,BufReadPost,BufWritePost * call vimrc#ui#update_filereadable()
+autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
 
-  let l:cursor_color =
-    \ l:m =~# '^i' ? 'green' :
-    \ l:m =~# '[vV]$' ? 'orange' :
-    \ l:m =~# '^[rR]\|o' ? 'purple' :
-    \ l:m =~# '[sS]$' ? 'blue' :
-    \ 'foreground'
-
-  call candle#highlight('StatusLineMode', l:cursor_color, '', '')
-  call candle#highlight('Cursor', '', l:cursor_color, '')
-
-  if l:m =~# '[sS]$'
-    call candle#highlight('Visual', 'blue', 'dark_blue', 'bold')
-    redraw
-  else
-    call candle#highlight('Visual', 'none', 'selection', 'none')
+"  Highlighting
+"-----------------------------------------------
+autocmd vimrc_appearance User ModeDidChange call s:update_mode_highlight()
+function! s:update_mode_highlight() abort
+  if g:colors_name !=# 'candle2'
+    return
   endif
+
+  lua <<EOF
+    local mode = vim.api.nvim_eval('vimrc#ui#get_mode()')
+    require'candle2'.update_mode_highlight(mode)
+EOF
 endfunction
 
-if g:colors_name ==# 'candle'
-  autocmd vimrc_appearance FocusGained,BufEnter,BufReadPost,BufWritePost * call vimrc#ui#update_filereadable()
-  autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
+autocmd vimrc_appearance WinEnter,Syntax * call s:setup_highlighting()
+function s:setup_highlighting() abort
+  if g:colors_name !=# 'candle2'
+    return
+  endif
 
-  autocmd vimrc_appearance User ModeDidChange call s:change_highlight_for_mode()
+  lua <<EOF
+    local candle = require'candle2'
+    local hi = candle.highlight
+    local s = candle.schema
 
-  autocmd vimrc_appearance VimEnter,Syntax *
-    \ call candle#highlight('StatusLineMode', 'foreground', 'window', '') |
-    \ call candle#highlight('StatusLineDiagnosticError', 'red', 'window', '') |
-    \ call candle#highlight('StatusLineDiagnosticWarning', 'yellow', 'window', '') |
-    \ call candle#highlight('StatusLineDiagnosticInfo', 'blue', 'window', '') |
-    \ call candle#highlight('StatusLineDiagnosticMessage', 'green', 'window', '')
-endif
+    hi.FullwidthSpace = { fg = nil, bg = s.dark_purple, gui = nil, sp = nil }
+    hi.GitConflictMarker = { fg = s.red, bg = s.dark_red, gui = nil, sp = nil }
+    hi.TrailingSpace = { fg = nil, bg = s.line, gui = nil, sp = nil }
+    hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue, gui = nil, sp = nil }
+
+    hi.StatusLineMode = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
+EOF
+endfunction
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
