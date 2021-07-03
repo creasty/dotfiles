@@ -40,7 +40,7 @@ function M.setup()
   hi.Visual = { fg = nil, bg = s.selection, gui = nil, sp = nil }
   hi.WarningMsg = { fg = s.red, bg = nil, gui = nil, sp = nil }
   hi.WildMenu = { fg = s.yellow, bg = s.background, gui = nil, sp = nil }
-  hi.Title = { fg = s.foreground, bg = nil, gui = 'none', sp = nil }
+  hi.Title = { fg = s.foreground, bg = nil, gui = 'bold', sp = nil }
   hi.Cursor = { fg = s.background, bg = s.foreground, gui = nil, sp = nil }
   hi.NonText = { fg = s.window, bg = nil, gui = nil, sp = nil }
   hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
@@ -168,6 +168,17 @@ function M.setup()
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.orange, gui = 'bold', sp = nil }
+
+  -- markdown
+  hi.markdownH1 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
+  hi.markdownH2 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
+  hi.markdownH3 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
+  hi.markdownH4 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
+  hi.markdownH5 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
+  hi.markdownH6 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
+  hi.markdownLink = { fg = s.comment, bg = nil, gui = nil, sp = nil }
+  hi.markdownLinkText = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
+  hi.markdownCodeBlock = { fg = s.green, bg = nil, gui = nil, sp = nil }
 end
 
 function M.update_mode_highlight(mode)
