@@ -52,8 +52,8 @@ function M.setup()
   hi.CursorColumn = { fg = nil, bg = s.line, gui = 'none', sp = nil }
   hi.CursorLine = { fg = nil, bg = s.line, gui = 'none', sp = nil }
   hi.CursorLineNr = { fg = s.gray200, bg = nil, gui = 'bold', sp = nil }
-  hi.PMenu = { fg = s.foreground, bg = s.selection, gui = 'none', sp = nil }
-  hi.PMenuSel = { fg = s.selection, bg = s.foreground, gui = nil, sp = nil }
+  hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none', sp = nil }
+  hi.PMenuSel = { fg = s.foreground, bg = s.selection, gui = nil, sp = nil }
   hi.TabLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none', sp = nil }
@@ -122,7 +122,7 @@ function M.setup()
   hi.TSConstant = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
   hi.TSConstBuiltin = { fg = s.yellow, bg = nil, gui = 'italic', sp = nil }
   hi.TSConstMacro = { fg = s.yellow, bg = nil, gui = 'bold', sp = nil }
-  hi.TSError = { fg = nil, bg = s.dark_red, gui = 'none', sp = nil }
+  -- hi.TSError = { fg = nil, bg = s.dark_red, gui = 'none', sp = nil }
   hi.TSField = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
   hi.TSFuncBuiltin = { fg = s.pink, bg = nil, gui = 'italic', sp = nil }
   hi.TSFuncMacro = { fg = s.pink, bg = nil, gui = 'bold', sp = nil }
