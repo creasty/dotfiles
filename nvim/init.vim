@@ -368,3 +368,62 @@ if dein#tap('vim-searchhi')
     autocmd vimrc User SearchHiOff echo g:anzu_no_match_word
   endif
 endif
+
+if dein#tap('telescope.nvim')
+  " Find files using Telescope command-line sugar.
+  nnoremap <leader>tf <cmd>Telescope find_files<cr>
+  nnoremap <leader>tg <cmd>Telescope live_grep<cr>
+  nnoremap <leader>tb <cmd>Telescope buffers<cr>
+  nnoremap <leader>th <cmd>Telescope help_tags<cr>
+
+  lua <<EOF
+    local telescope = require('telescope')
+    local sorters = require('telescope.sorters')
+    local previewers = require('telescope.previewers')
+
+    telescope.load_extension('ghq')
+    telescope.load_extension('coc')
+
+    telescope.setup{
+      defaults = {
+        vimgrep_arguments = {
+          'rg',
+          '--color=never',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+        },
+        initial_mode = "insert",
+        selection_strategy = "reset",
+        sorting_strategy = "descending",
+        layout_strategy = "flex",
+        layout_config = {
+          horizontal = {
+            mirror = false,
+          },
+          vertical = {
+            mirror = false,
+          },
+        },
+        file_sorter =  sorters.get_fuzzy_file,
+        file_ignore_patterns = {},
+        generic_sorter =  sorters.get_generic_fuzzy_sorter,
+        shorten_path = true,
+        winblend = 0,
+        border = {},
+        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        color_devicons = true,
+        use_less = true,
+        set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
+        file_previewer = previewers.vim_buffer_cat.new,
+        grep_previewer = previewers.vim_buffer_vimgrep.new,
+        qflist_previewer = previewers.vim_buffer_qflist.new,
+
+        -- Developer configurations: Not meant for general override
+        buffer_previewer_maker = previewers.buffer_previewer_maker,
+      }
+    }
+EOF
+endif

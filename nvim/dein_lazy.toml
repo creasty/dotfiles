@@ -77,7 +77,7 @@ on_cmd = ['Gblame', 'Gbrowse']
 #  Util
 #-----------------------------------------------
 [[plugins]] # Neovim Treesitter Playground
-repo = 'nvim-treesitter/playground'
+repo   = 'nvim-treesitter/playground'
 on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
 
 #  Language

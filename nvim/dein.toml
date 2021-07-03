@@ -75,8 +75,6 @@ hook_add = '''
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 '''
 
-#  Treesitter
-#-----------------------------------------------
 [[plugins]] # Treesitter configurations and abstraction layer for Neovim
 repo = 'nvim-treesitter/nvim-treesitter'
 merged = 0
@@ -108,3 +106,16 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['\~$', '\.git$']
 let g:NERDTreeAutoDeleteBuffer = 1
 '''
+
+[[plugins]] # An implementation of the Popup API from vim in Neovim
+repo = 'nvim-lua/popup.nvim'
+
+[[plugins]] # All the lua functions I don't want to write twice
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo = 'fannheyward/telescope-coc.nvim'
+
+[[plugins]] # Gaze deeply into unknown regions using the power of the moon
+repo    = 'nvim-telescope/telescope.nvim'
+depends = ['popup.nvim', 'plenary.nvim']
