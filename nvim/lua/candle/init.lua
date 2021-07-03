@@ -54,6 +54,8 @@ function M.setup()
   hi.CursorLineNr = { fg = s.gray200, bg = nil, gui = 'bold', sp = nil }
   hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none', sp = nil }
   hi.PMenuSel = { fg = s.foreground, bg = s.selection, gui = nil, sp = nil }
+  hi.PMenuSbar = { fg = nil, bg = s.window, gui = nil, sp = nil }
+  hi.PMenuThumb = { fg = nil, bg = s.gray300, gui = nil, sp = nil }
   hi.TabLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none', sp = nil }

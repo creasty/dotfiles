@@ -370,11 +370,9 @@ if dein#tap('vim-searchhi')
 endif
 
 if dein#tap('telescope.nvim')
-  " Find files using Telescope command-line sugar.
-  nnoremap <leader>tf <cmd>Telescope find_files<cr>
-  nnoremap <leader>tg <cmd>Telescope live_grep<cr>
-  nnoremap <leader>tb <cmd>Telescope buffers<cr>
-  nnoremap <leader>th <cmd>Telescope help_tags<cr>
+  nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
+  nnoremap <Space>tf <Cmd>Telescope find_files<CR>
+  nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
 
   lua <<EOF
     local telescope = require('telescope')
