@@ -1,6 +1,6 @@
 local M = {}
 
-M.schema = require'candle2.schema'
+M.schema = require('candle.schema')
 
 M.highlight = setmetatable({}, {
   __newindex = function(_, hlgroup, opt)
@@ -98,10 +98,10 @@ function M.setup()
   hi.SpellRare = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_purple }
 
   -- Diff highlighting
-  hi.DiffAdd = { fg = s.green, bg = s.dark_green, gui = nil, sp = nil }
-  hi.DiffChange = { fg = s.purple, bg = s.dark_purple, gui = nil, sp = nil }
-  hi.DiffDelete = { fg = s.red, bg = s.dark_red, gui = nil, sp = nil }
-  hi.DiffText = { fg = s.blue, bg = s.dark_blue, gui = nil, sp = nil }
+  hi.DiffAdd = { fg = s.green, bg = 'none', gui = 'none', sp = nil }
+  hi.DiffChange = { fg = s.purple, bg = 'none', gui = 'none', sp = nil }
+  hi.DiffDelete = { fg = s.red, bg = 'none', gui = 'none', sp = nil }
+  hi.DiffText = { fg = s.blue, bg = 'none', gui = 'none', sp = nil }
 
   -- LSP
   -- hi.LspReferenceText = { fg = nil, bg = nil, gui = 'underline', sp = s.gray200 }
@@ -146,14 +146,25 @@ function M.setup()
   hi.TSVariable = { fg = s.blue, bg = nil, gui = 'none', sp = nil }
   hi.TSVariableBuiltin = { fg = s.blue, bg = nil, gui = 'italic', sp = nil }
 
+  -- custom
+  hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window, gui = 'none', sp = nil }
+  hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window, gui = 'none', sp = nil }
+  hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window, gui = 'none', sp = nil }
+  hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window, gui = 'none', sp = nil }
+
+  hi.FullwidthSpace = { fg = nil, bg = s.dark_purple, gui = nil, sp = nil }
+  hi.GitConflictMarker = { fg = s.red, bg = s.dark_red, gui = nil, sp = nil }
+  hi.ExtraWhitespace = { fg = nil, bg = s.line, gui = nil, sp = nil }
+  hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue, gui = nil, sp = nil }
+
   -- coc.nvim
   hi.CocHighlightText = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
   hi.CocHighlightRead = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
   hi.CocHighlightWrite = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
-  hi.CocErrorSign = { fg = 'red', bg = nil, gui = nil, sp = nil }
-  hi.CocWarningSign = { fg = 'yellow', bg = nil, gui = nil, sp = nil }
-  hi.CocInfoSign = { fg = 'blue', bg = nil, gui = nil, sp = nil }
-  hi.CocHintSign = { fg = 'green', bg = nil, gui = nil, sp = nil }
+  hi.CocErrorSign = { fg = s.red, bg = nil, gui = nil, sp = nil }
+  hi.CocWarningSign = { fg = s.yellow, bg = nil, gui = nil, sp = nil }
+  hi.CocInfoSign = { fg = s.blue, bg = nil, gui = nil, sp = nil }
+  hi.CocHintSign = { fg = s.green, bg = nil, gui = nil, sp = nil }
   hi.CocErrorHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_red }
   hi.CocWarningHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_yellow }
   hi.CocInfoHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_blue }
@@ -161,12 +172,6 @@ function M.setup()
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.orange, gui = 'bold', sp = nil }
-
-  -- special
-  hi.FullwidthSpace = { fg = nil, bg = s.dark_purple, gui = nil, sp = nil }
-  hi.GitConflictMarker = { fg = s.red, bg = s.dark_red, gui = nil, sp = nil }
-  hi.TrailingSpace = { fg = nil, bg = s.line, gui = nil, sp = nil }
-  hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue, gui = nil, sp = nil }
 end
 
 function M.update_mode_highlight(mode)

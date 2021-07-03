@@ -139,16 +139,16 @@ function! vimrc#ui#status_line(w, cw) abort
     end
 
     if l:diagnostics['E'] > 0
-      let l:l1 += ['%#LspDiagnosticsDefaultError#' . '✗', l:diagnostics['E'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticsError#' . '✗', l:diagnostics['E'] . '%*']
     end
     if l:diagnostics['W'] > 0
-      let l:l1 += ['%#LspDiagnosticsDefaultWarning#' . '∆', l:diagnostics['W'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticsWarning#' . '∆', l:diagnostics['W'] . '%*']
     end
     if l:diagnostics['I'] > 0
-      let l:l1 += ['%#LspDiagnosticsDefaultInfo#' . '▸', l:diagnostics['I'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticsInfo#' . '▸', l:diagnostics['I'] . '%*']
     end
     if l:diagnostics['H'] > 0
-      let l:l1 += ['%#LspDiagnosticsDefaultHint#' . '▪︎', l:diagnostics['H'] . '%*']
+      let l:l1 += ['%#StatusLineDiagnosticsHint#' . '▪︎', l:diagnostics['H'] . '%*']
     end
   endif
 

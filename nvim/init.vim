@@ -80,7 +80,7 @@ command! DeinPrunePlugins
 
 "=== Load
 "==============================================================================================
-colorscheme candle2
+colorscheme candle
 set t_Co=256
 syntax enable
 

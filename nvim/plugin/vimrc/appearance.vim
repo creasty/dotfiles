@@ -94,27 +94,6 @@ set title titlestring=%{vimrc#ui#title_text()}
 " tabline
 set tabline=%!vimrc#ui#tab_line()
 
-"  Custom highlights
-"-----------------------------------------------
-" highlight full-width space
-autocmd vimrc_appearance BufWinEnter,WinEnter *
-  \ call matchadd('FullwidthSpace', '　') |
-  \ call matchadd("SpellRare", '[０１２３４５６７８９]') |
-  \ call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]') |
-  \ call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
-
-autocmd vimrc_appearance BufWinEnter,WinEnter *
-  \ call matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50)
-
-" highlight trailing spaces
-autocmd vimrc_appearance BufWinEnter,WinEnter *
-  \ call matchadd('TrailingSpace', '\s\+$', 50)
-
-" snippet placeholder
-autocmd vimrc_appearance BufWinEnter,WinEnter *
-  \ call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50) |
-  \ call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
-
 "  StatusLine
 "-----------------------------------------------
 function! s:refresh_statusline() abort
@@ -128,38 +107,37 @@ endfunction
 autocmd vimrc_appearance FocusGained,BufEnter,BufReadPost,BufWritePost * call vimrc#ui#update_filereadable()
 autocmd vimrc_appearance VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
 
-"  Highlighting
+"  Custom highlighting
 "-----------------------------------------------
 autocmd vimrc_appearance User ModeDidChange call s:update_mode_highlight()
 function! s:update_mode_highlight() abort
-  if g:colors_name !=# 'candle2'
+  if g:colors_name !=# 'candle'
     return
   endif
 
   lua <<EOF
     local mode = vim.api.nvim_eval('vimrc#ui#get_mode()')
-    require'candle2'.update_mode_highlight(mode)
+    require('candle').update_mode_highlight(mode)
 EOF
 endfunction
 
-autocmd vimrc_appearance WinEnter,Syntax * call s:setup_highlighting()
-function s:setup_highlighting() abort
-  if g:colors_name !=# 'candle2'
-    return
-  endif
+autocmd vimrc_appearance BufWinEnter,WinEnter * call s:setup_matchadd()
+function s:setup_matchadd() abort
+  " full-width charactors
+  call matchadd('FullwidthSpace', '　')
+  call matchadd("SpellRare", '[０１２３４５６７８９]')
+  call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]')
+  call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
 
-  lua <<EOF
-    local candle = require'candle2'
-    local hi = candle.highlight
-    local s = candle.schema
+  " git
+  call matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50)
 
-    hi.FullwidthSpace = { fg = nil, bg = s.dark_purple, gui = nil, sp = nil }
-    hi.GitConflictMarker = { fg = s.red, bg = s.dark_red, gui = nil, sp = nil }
-    hi.TrailingSpace = { fg = nil, bg = s.line, gui = nil, sp = nil }
-    hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue, gui = nil, sp = nil }
+  " trailing spaces
+  call matchadd('ExtraWhitespace', '\s\+$', 50)
 
-    hi.StatusLineMode = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
-EOF
+  " snippet placeholder
+  call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
+  call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
 endfunction
 
 let &cpoptions = s:save_cpo
