@@ -35,7 +35,7 @@ function M.setup()
   hi.MoreMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
   hi.Question = { fg = s.background, bg = s.green, gui = nil, sp = nil }
   hi.Search = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }
-  hi.SpecialKey = { fg = s.gray700, bg = nil, gui = 'none', sp = nil }
+  hi.SpecialKey = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
   hi.Underlined = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
   hi.Visual = { fg = nil, bg = s.selection, gui = nil, sp = nil }
   hi.WarningMsg = { fg = s.red, bg = nil, gui = nil, sp = nil }
@@ -58,7 +58,8 @@ function M.setup()
   hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none', sp = nil }
 
-  hi.FloatBorder = { fg = s.window, bg = s.background, gui = 'bold', sp = nil }
+  hi.BorderedFloat = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
+  hi.FloatBorder = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
   hi.NvimInternalError = { fg = s.background, bg = s.red, gui = 'none', sp = nil }
 
   -- Standard syntax highlighting
