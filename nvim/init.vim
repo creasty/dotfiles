@@ -115,26 +115,6 @@ if dein#tap('vim-easy-align')
   xnoremap <silent> L :EasyAlign<cr>
 endif
 
-if dein#tap('vim-easymotion')
-  " @see https://github.com/easymotion/vim-easymotion/issues/402
-  function! s:easymotion_refined(direction) abort
-    silent! CocDisable
-    try
-      call EasyMotion#S(1, 0, a:direction)
-    finally
-      silent! CocEnable
-      doautocmd InsertLeave
-    endtry
-  endfunction
-
-  let g:EasyMotion_do_mapping = 0
-  let g:EasyMotion_verbose = 0
-  let g:EasyMotion_smartcase = 1
-  let g:EasyMotion_use_smartsign_us = 1
-
-  nmap s :<C-u>call <SID>easymotion_refined(2)<CR>
-endif
-
 if dein#tap('switch.vim')
   let g:switch_mapping = ''
   let g:switch_custom_definitions = [

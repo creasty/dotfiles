@@ -10,7 +10,6 @@
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": false,
 
-  "suggest.snippetsSupport": false,
   "suggest.preferCompleteThanJumpPlaceholder": true,
 
   "dialog.confirmKey": "<C-j>",

@@ -51,9 +51,15 @@ let g:user_emmet_mode = 'i'
 let g:user_emmet_leader_key = '<Nop>'
 '''
 
-[[plugins]] # Vim motions on speed!
-repo = 'easymotion/vim-easymotion'
-on_func = ['EasyMotion#S']
+[[plugins]] # Neovim motions on speed!
+repo = 'phaazon/hop.nvim'
+on_cmd = ['HopChar1']
+hook_add = '''
+nnoremap s <Cmd>HopChar1<CR>
+'''
+hook_source = '''
+lua require'hop'.setup()
+'''
 
 [[plugins]] # hex editing system
 repo = 'Shougo/vinarise.vim'
