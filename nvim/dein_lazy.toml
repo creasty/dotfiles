@@ -88,7 +88,7 @@ on_source = ['telescope.nvim']
 repo    = 'nvim-telescope/telescope.nvim'
 depends = ['popup.nvim', 'plenary.nvim']
 on_cmd  = ['Telescope']
-hook_add = '''
+hook_source = '''
 lua require('creasty.plugins.telescope')
 '''
 
