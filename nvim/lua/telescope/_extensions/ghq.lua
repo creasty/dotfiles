@@ -1,5 +1,3 @@
----@diagnostic disable: undefined-global
-
 local actions = require('telescope.actions')
 local actions_set = require('telescope.actions.set')
 local conf = require('telescope.config').values

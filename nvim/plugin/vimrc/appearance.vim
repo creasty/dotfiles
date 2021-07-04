@@ -121,7 +121,7 @@ function! s:update_mode_highlight() abort
 EOF
 endfunction
 
-autocmd vimrc_appearance BufWinEnter,WinEnter * call s:setup_matchadd()
+autocmd vimrc_appearance BufWinEnter * call s:setup_matchadd()
 function s:setup_matchadd() abort
   " full-width charactors
   call matchadd('FullwidthSpace', '　')

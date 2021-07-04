@@ -3,7 +3,6 @@
   "coc.preferences.formatOnSaveFiletypes": [],
   "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
-  "coc.preferences.snippets.enable": false,
 
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",
@@ -11,6 +10,7 @@
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": false,
 
+  "suggest.snippetsSupport": false,
   "suggest.preferCompleteThanJumpPlaceholder": true,
 
   "dialog.confirmKey": "<C-j>",
@@ -151,6 +151,8 @@
       }
     }
   },
+
+  "Lua.diagnostics.globals": ["vim"],
 
   "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.enabledLanguageIds": [
