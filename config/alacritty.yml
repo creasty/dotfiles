@@ -27,38 +27,38 @@ font:
 
 colors:
   primary:
-    background: '0x1a1a1a' # candle-theme: background
-    foreground: '0xa8a8a8' # candle-theme: foreground
+    background: '0x1b1b1b' # candle-theme: background
+    foreground: '0xc0c0c0' # candle-theme: foreground
 
   normal:
-    black:   '0x444444' # candle-theme: selection
-    red:     '0xaf7070' # candle-theme: red
-    green:   '0xa3a46f' # candle-theme: green
-    yellow:  '0xceb481' # candle-theme: yellow
-    blue:    '0x8397a9' # candle-theme: blue
-    magenta: '0x9d91a9' # candle-theme: purple
-    cyan:    '0x8aaaa5' # candle-theme: aqua
-    white:   '0x626262' # candle-theme: comment
+    black:   '0x424242' # candle-theme: gray400
+    red:     '0xa57572' # candle-theme: red
+    green:   '0xa6b083' # candle-theme: green
+    yellow:  '0xd0b888' # candle-theme: yellow
+    blue:    '0x8ca2b6' # candle-theme: blue
+    magenta: '0xa186a3' # candle-theme: purple
+    cyan:    '0x9abbb6' # candle-theme: aqua
+    white:   '0x575757' # candle-theme: gray300
 
   bright:
-    black:   '0x444444' # candle-theme: selection
-    red:     '0xaf7070' # candle-theme: red
-    green:   '0xa3a46f' # candle-theme: green
-    yellow:  '0xceb481' # candle-theme: yellow
-    blue:    '0x8397a9' # candle-theme: blue
-    magenta: '0x9d91a9' # candle-theme: purple
-    cyan:    '0x8aaaa5' # candle-theme: aqua
-    white:   '0x626262' # candle-theme: comment
+    black:   '0x424242' # candle-theme: gray400
+    red:     '0xb56e6a' # candle-theme: bright_red
+    green:   '0xa5b56b' # candle-theme: bright_green
+    yellow:  '0xd8b775' # candle-theme: bright_yellow
+    blue:    '0x82a4c3' # candle-theme: bright_blue
+    magenta: '0xb07bb4' # candle-theme: bright_purple
+    cyan:    '0x80c7bc' # candle-theme: bright_aqua
+    white:   '0x575757' # candle-theme: gray300
 
   dim:
-    black:   '0x444444' # candle-theme: selection
+    black:   '0x424242' # candle-theme: gray400
     red:     '0x503131' # candle-theme: dark_red
     green:   '0x4c4b30' # candle-theme: dark_green
     yellow:  '0x5f5138' # candle-theme: dark_yellow
     blue:    '0x39444d' # candle-theme: dark_blue
     magenta: '0x47404d' # candle-theme: dark_purple
     cyan:    '0x3c4e4b' # candle-theme: dark_aqua
-    white:   '0x626262' # candle-theme: comment
+    white:   '0x575757' # candle-theme: gray300
 
 mouse:
   hide_when_typing: true
