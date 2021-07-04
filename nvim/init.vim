@@ -100,17 +100,6 @@ if dein#tap('vim-textobj-multiblock')
   xmap ib <Plug>(textobj-multiblock-i)
 endif
 
-if dein#tap('surround.vim')
-  nmap ,( csw(
-  nmap ,) csw)
-  nmap ,{ csw{
-  nmap ,} csw}
-  nmap ,[ csw[
-  nmap ,] csw]
-  nmap ,' csw'
-  nmap ," csw"
-endif
-
 if dein#tap('vim-easy-align')
   let g:easy_align_delimiters = {
     \ '=': {
@@ -149,29 +138,6 @@ if dein#tap('vim-easymotion')
   let g:EasyMotion_use_smartsign_us = 1
 
   nmap s :<C-u>call <SID>easymotion_refined(2)<CR>
-endif
-
-if dein#tap('vim-swap')
-  nmap g< <Plug>(swap-prev)
-  nmap g> <Plug>(swap-next)
-endif
-
-if dein#tap('operator-camelize.vim')
-  nmap gC <Plug>(operator-camelize-toggle)
-  xmap C <Plug>(operator-camelize-toggle)
-endif
-
-if dein#tap('vim-operator-replace')
-  nmap r <Plug>(operator-replace)
-  xmap r <Plug>(operator-replace)
-  omap r <Plug>(operator-replace)
-  nnoremap R r
-  xnoremap R r
-  onoremap R r
-endif
-
-if dein#tap('lexima.vim')
-  call vimrc#plugin#lexima#init()
 endif
 
 if dein#tap('switch.vim')
@@ -285,8 +251,6 @@ if dein#tap('ultisnips')
 endif
 
 if dein#tap('coc.nvim')
-  call vimrc#plugin#coc#init()
-
   autocmd vimrc User ForceRefresh3 call coc#float#close_all()
   autocmd vimrc User ForceRefresh call <SID>coc_re_enable()
   function! s:coc_re_enable() abort
@@ -298,8 +262,6 @@ endif
 
 if dein#tap('denite.nvim')
   " NOTE: See :UpdateRemotePlugins
-
-  call dein#set_hook('denite.nvim', 'hook_source', function('vimrc#plugin#denite#lazy_init'))
 
   autocmd vimrc FileType denite call vimrc#plugin#denite#init_denite_list()
   autocmd vimrc FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
@@ -313,17 +275,6 @@ if dein#tap('denite.nvim')
 
   command! I18n :Denite -buffer-name=i18n_flow -resume i18n_flow
   nnoremap <Space>i :I18n<CR>
-endif
-
-if dein#tap('vim-altr')
-  call dein#set_hook('vim-altr', 'hook_source', function('vimrc#plugin#altr#lazy_init'))
-
-  nmap ga <Plug>(altr-forward)
-  nmap gA <Plug>(altr-back)
-endif
-
-if dein#tap('vim-fugitive')
-  call dein#set_hook('vim-fugitive', 'hook_source', function('vimrc#plugin#fugitive#lazy_init'))
 endif
 
 if dein#tap('vim-quickrun')
@@ -340,10 +291,6 @@ if dein#tap('vim-quickrun')
   \ }
 
   nmap <Leader>r <Plug>(quickrun)
-endif
-
-if dein#tap('vim-submode')
-  call vimrc#plugin#submode#init()
 endif
 
 if dein#tap('vim-searchhi')
@@ -365,10 +312,4 @@ if dein#tap('vim-searchhi')
     autocmd vimrc User SearchHiOn AnzuUpdateSearchStatusOutput
     autocmd vimrc User SearchHiOff echo g:anzu_no_match_word
   endif
-endif
-
-if dein#tap('telescope.nvim')
-  nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
-  nnoremap <Space>tf <Cmd>Telescope find_files hidden=true follow=true<CR>
-  nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
 endif

@@ -7,15 +7,15 @@ repo = 'Shougo/dein.vim'
 repo = 'kana/vim-textobj-user'
 
 [[plugins]] # text objects for indented blocks of lines
-repo    = 'kana/vim-textobj-indent'
+repo = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
 
 [[plugins]] # text objects for multiple types of parentheses
-repo    = 'osyo-manga/vim-textobj-multiblock'
+repo = 'osyo-manga/vim-textobj-multiblock'
 depends = ['vim-textobj-user']
 
 [[plugins]] # Text objects for numbers
-repo    = 'tkhren/vim-textobj-numeral'
+repo = 'tkhren/vim-textobj-numeral'
 depends = ['vim-textobj-user']
 
 [[plugins]] # deleting, changing, and adding surroundings
@@ -32,20 +32,29 @@ repo = 'SirVer/ultisnips'
 
 [[plugins]] # auto close parentheses and repeat by dot
 repo = 'cohama/lexima.vim'
+hook_add = '''
+call vimrc#plugin#lexima#init()
+'''
 
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 
 [[plugins]] # create your own submodes
 repo = 'kana/vim-submode'
+hook_add = '''
+call vimrc#plugin#submode#init()
+'''
 
 [[plugins]] # run commands quickly
 repo = 'thinca/vim-quickrun'
 
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
-repo   = 'neoclide/coc.nvim'
-rev    = 'release'
+repo = 'neoclide/coc.nvim'
+rev = 'release'
 merged = 0
+hook_add = '''
+call vimrc#plugin#coc#init()
+'''
 
 [[plugins]] # switch segments of text with predefined replacements
 repo = 'AndrewRadev/switch.vim'

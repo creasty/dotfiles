@@ -1,33 +1,45 @@
 #  Editing
 #-----------------------------------------------
 [[plugins]] # define your own operator easily
-repo  = 'kana/vim-operator-user'
+repo = 'kana/vim-operator-user'
 on_if = 1
 
 [[plugins]] # operator to camelize/decamelize a specified text
-repo    = 'tyru/operator-camelize.vim'
+repo = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
 on_map = [
   '<Plug>(operator-camelize)',
   '<Plug>(operator-decamelize)',
   '<Plug>(operator-camelize-toggle)',
 ]
+hook_add = '''
+nmap gC <Plug>(operator-camelize-toggle)
+xmap C <Plug>(operator-camelize-toggle)
+'''
 
 [[plugins]] # operator to replace text with register content
-repo    = 'kana/vim-operator-replace'
+repo = 'kana/vim-operator-replace'
 depends = ['vim-operator-user']
-on_map  = ['<Plug>(operator-replace)']
+on_map = ['<Plug>(operator-replace)']
+hook_add = '''
+nmap r <Plug>(operator-replace)
+xmap r <Plug>(operator-replace)
+omap r <Plug>(operator-replace)
+nnoremap R r
+xnoremap R r
+onoremap R r
+'''
 
 [[plugins]] # a simple, easy-to-use Vim alignment plugin
-repo   = 'junegunn/vim-easy-align'
+repo = 'junegunn/vim-easy-align'
 on_cmd = ['EasyAlign']
 
 [[plugins]] # insert several candidates with a single key
-repo    = 'kana/vim-smartchr'
+repo = 'kana/vim-smartchr'
 on_func = ['smartchr']
 
 [[plugins]] # maniplate selected text easily
-repo   = 't9md/vim-textmanip'
+repo = 't9md/vim-textmanip'
 on_map = ['<Plug>(textmanip-']
 
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
@@ -40,15 +52,19 @@ let g:user_emmet_leader_key = '<Nop>'
 '''
 
 [[plugins]] # Vim motions on speed!
-repo    = 'easymotion/vim-easymotion'
+repo = 'easymotion/vim-easymotion'
 on_func = ['EasyMotion#S']
 
 [[plugins]] # A Vim text editor plugin to swap delimited items
-repo   = 'machakann/vim-swap'
+repo = 'machakann/vim-swap'
 on_map = ['<Plug>(swap-']
+hook_add = '''
+nmap g< <Plug>(swap-prev)
+nmap g> <Plug>(swap-next)
+'''
 
 [[plugins]] # hex editing system
-repo   = 'Shougo/vinarise.vim'
+repo = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']
 
 [[plugins]] # Use treesitter to autoclose and autorename html tag
@@ -63,16 +79,29 @@ on_ft = [
 #  Navigation
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
-repo   = 'Shougo/denite.nvim'
+repo = 'Shougo/denite.nvim'
 on_cmd = ['Denite']
+hook_source = '''
+call vimrc#plugin#denite#lazy_init()
+'''
 
 [[plugins]] # switch to the missing file without interaction
-repo   = 'kana/vim-altr'
+repo = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']
+hook_source = '''
+call vimrc#plugin#altr#lazy_init()
+'''
+hook_add = '''
+nmap ga <Plug>(altr-forward)
+nmap gA <Plug>(altr-back)
+'''
 
 [[plugins]] # A Git wrapper so awesome, it should be illegal
-repo   = 'tpope/vim-fugitive'
+repo = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gbrowse']
+hook_source = '''
+call vimrc#plugin#fugitive#lazy_init()
+'''
 
 [[plugins]] # An implementation of the Popup API from vim in Neovim
 repo = 'nvim-lua/popup.nvim'
@@ -81,29 +110,34 @@ repo = 'nvim-lua/popup.nvim'
 repo = 'nvim-lua/plenary.nvim'
 
 [[plugins]]
-repo      = 'fannheyward/telescope-coc.nvim'
+repo = 'fannheyward/telescope-coc.nvim'
 on_source = ['telescope.nvim']
 
 [[plugins]] # Gaze deeply into unknown regions using the power of the moon
-repo    = 'nvim-telescope/telescope.nvim'
+repo  = 'nvim-telescope/telescope.nvim'
 depends = ['popup.nvim', 'plenary.nvim']
-on_cmd  = ['Telescope']
+on_cmd = ['Telescope']
 hook_source = '''
 lua require('creasty.plugins.telescope')
+'''
+hook_add = '''
+nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
+nnoremap <Space>tf <Cmd>Telescope find_files hidden=true follow=true<CR>
+nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
 '''
 
 #  Util
 #-----------------------------------------------
 [[plugins]] # Neovim Treesitter Playground
-repo   = 'nvim-treesitter/playground'
+repo = 'nvim-treesitter/playground'
 on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
 
 #  Language
 #-----------------------------------------------
 [[plugins]] # Vim syntax highlighting for Google's Protocol Buffers
-repo  = 'uarun/vim-protobuf'
+repo = 'uarun/vim-protobuf'
 on_ft = ['proto']
 
 [[plugins]] # vim syntax file for plantuml
-repo  = 'aklt/plantuml-syntax'
+repo = 'aklt/plantuml-syntax'
 on_ft = ['plantuml']
