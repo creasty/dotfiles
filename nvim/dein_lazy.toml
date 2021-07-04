@@ -74,6 +74,24 @@ on_map = ['<Plug>(altr-']
 repo   = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gbrowse']
 
+[[plugins]] # An implementation of the Popup API from vim in Neovim
+repo = 'nvim-lua/popup.nvim'
+
+[[plugins]] # All the lua functions I don't want to write twice
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
+repo      = 'fannheyward/telescope-coc.nvim'
+on_source = ['telescope.nvim']
+
+[[plugins]] # Gaze deeply into unknown regions using the power of the moon
+repo    = 'nvim-telescope/telescope.nvim'
+depends = ['popup.nvim', 'plenary.nvim']
+on_cmd  = ['Telescope']
+hook_add = '''
+lua require("creasty.plugins.telescope")
+'''
+
 #  Util
 #-----------------------------------------------
 [[plugins]] # Neovim Treesitter Playground
