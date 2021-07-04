@@ -83,36 +83,24 @@ nvim --headless -c quit  0.15s user 0.07s system 139% cpu 0.161 total
 ```
 
 ```sh-session
-$ cloc --exclude-dir=dein nvim
-     144 text files.
-     138 unique files.
-      57 files ignored.
+$ cloc --exclude-dir=dein,template nvim
+      98 text files.
+      94 unique files.
+      34 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.08 s (1131.0 files/s, 70940.4 lines/s)
---------------------------------------------------------------------------------
-Language                      files          blank        comment           code
---------------------------------------------------------------------------------
-vim script                       61            675            545           3125
-Lua                               4             36             16            373
-JSON                              1              9              0            273
-TOML                              2             42             12            203
-Python                            2             36              2            192
-Ruby                              8             17              0            113
-C                                 2             14              6             59
-Go                                2             11              0             29
-C/C++ Header                      1              3              0             12
-HTML                              1              0              0             10
-Scheme                            1              1              0             10
-make                              1              4              0              9
-GraphQL                           3              0              0              9
-Java                              1              1              3              8
-Markdown                          1              3              0              7
-C++                               1              2              5              7
-Bourne Again Shell                1              3              0              6
-TypeScript                        1              1              0              4
---------------------------------------------------------------------------------
-SUM:                             94            858            589           4449
---------------------------------------------------------------------------------
+github.com/AlDanial/cloc v 1.84  T=0.05 s (1563.4 files/s, 122162.5 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+vim script                      60            669            543           3072
+Lua                              5             36             16            433
+JSON                             1              9              0            273
+TOML                             2             42             12            202
+Python                           2             36              2            192
+Scheme                           1              1              0             10
+-------------------------------------------------------------------------------
+SUM:                            71            793            573           4182
+-------------------------------------------------------------------------------
 ```
 
 ```sh-session
