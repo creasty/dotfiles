@@ -87,6 +87,13 @@ merged = 0
 hook_post_update = '''
 :TSUpdate
 '''
+hook_post_source = '''
+lua require('creasty.plugins.treesitter')
+'''
+
+[[plugins]] # Create your own textobjects using tree-sitter queries!
+repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+depends = ['nvim-treesitter']
 
 #  UI
 #-----------------------------------------------

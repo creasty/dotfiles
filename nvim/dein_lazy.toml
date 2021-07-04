@@ -55,14 +55,6 @@ let g:user_emmet_leader_key = '<Nop>'
 repo = 'easymotion/vim-easymotion'
 on_func = ['EasyMotion#S']
 
-[[plugins]] # A Vim text editor plugin to swap delimited items
-repo = 'machakann/vim-swap'
-on_map = ['<Plug>(swap-']
-hook_add = '''
-nmap g< <Plug>(swap-prev)
-nmap g> <Plug>(swap-next)
-'''
-
 [[plugins]] # hex editing system
 repo = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']

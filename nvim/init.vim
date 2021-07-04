@@ -60,6 +60,8 @@ if dein#check_install()
   call dein#install()
 endif
 
+autocmd vimrc VimEnter * call dein#call_hook('post_source')
+
 "  Commands
 "-----------------------------------------------
 command! DeinUpdate call dein#update()
@@ -134,6 +136,7 @@ if dein#tap('vim-easymotion')
 endif
 
 if dein#tap('switch.vim')
+  let g:switch_mapping = ''
   let g:switch_custom_definitions = [
     \ switch#Words(['public', 'protected', 'private']),
     \ switch#Words(['and', 'or']),
@@ -152,23 +155,6 @@ if dein#tap('switch.vim')
 
     :Switch
   endfunction
-endif
-
-if dein#tap('nvim-treesitter')
-  lua <<EOF
-    require('nvim-treesitter.configs').setup {
-      ensure_installed = "maintained",
-      highlight = {
-        enable = true,
-      },
-      indent = {
-        enable = true,
-      },
-      autotag = {
-        enable = true,
-      },
-    }
-EOF
 endif
 
 if dein#tap('vim-textmanip')

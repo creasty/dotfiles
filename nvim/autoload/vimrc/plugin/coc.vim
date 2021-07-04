@@ -80,18 +80,6 @@ command! -nargs=0 Import
 
 "  Key mappings
 "-----------------------------------------------
-" Introduce function text object
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap <silent> if <Plug>(coc-funcobj-i)
-xmap <silent> af <Plug>(coc-funcobj-a)
-omap <silent> if <Plug>(coc-funcobj-i)
-omap <silent> af <Plug>(coc-funcobj-a)
-
-" Selection range
-" NOTE: Requires 'textDocument/selectionRange' support from the language server.
-nmap <silent> gs <Plug>(coc-range-select)
-xmap <silent> gs <Plug>(coc-range-select)
-
 " Refactoring
 nmap <silent> gr <Plug>(coc-rename)
 nmap <silent> gq <Plug>(coc-codeaction-cursor)
@@ -134,5 +122,5 @@ nmap [g <Plug>(coc-git-prevchunk)
 nmap ]g <Plug>(coc-git-nextchunk)
 
 " navigate conflicts of current buffer
-nmap [c <Plug>(coc-git-prevconflict)
-nmap ]c <Plug>(coc-git-nextconflict)
+nmap [C <Plug>(coc-git-prevconflict)
+nmap ]C <Plug>(coc-git-nextconflict)
