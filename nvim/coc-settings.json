@@ -32,6 +32,12 @@
   },
   "list.source.diagnostics.defaultOptions": ["--normal", "--no-sort"],
 
+  "git.changedSign.text": "┃",
+  "git.addedSign.text": "┃",
+  "git.changeRemovedSign.text": "┣",
+  "git.removedSign.text": "▁",
+  "git.topRemovedSign.text": "▔",
+
   "languageserver": {
     "gopls": {
       "command": "gopls",
