@@ -50,13 +50,6 @@ function! vimrc#plugin#denite#lazy_init() abort
   call denite#custom#var('file/rec', 'command', ['fd', '-t', 'f', '--full-path', '--follow', '--hidden'])
 endfunction
 
-function! vimrc#plugin#denite#control_parent(f) abort
-  call denite#move_to_parent()
-  call a:f()
-  call denite#move_to_filter()
-  return ''
-endfunction
-
 function! s:init_denite() abort
   nnoremap <silent><buffer><expr> <Esc> denite#do_map('quit')
 
@@ -92,6 +85,6 @@ function! vimrc#plugin#denite#init_denite_filter() abort
 
   call s:init_denite()
   imap <silent><buffer> <Esc> <Plug>(denite_filter_quit)
-  inoremap <silent><buffer><expr> <C-p> vimrc#plugin#denite#control_parent({-> cursor(line('.') - 1, 0) })
-  inoremap <silent><buffer><expr> <C-n> vimrc#plugin#denite#control_parent({-> cursor(line('.') + 1, 0) })
+  inoremap <silent><buffer><expr> <C-p> denite#increment_parent_cursor(-1)
+  inoremap <silent><buffer><expr> <C-n> denite#increment_parent_cursor(1)
 endfunction
