@@ -1,10 +1,11 @@
+let s:last_cwd = ''
 let s:last_win_size = ''
 
 function! vimrc#plugin#denite#open_best() abort
   let l:cwd = getcwd()
   let l:is_startup_dir = (l:cwd == $HOME || l:cwd == '/')
-  let l:is_same_dir = (l:cwd == get(g:, 'denite_last_cwd', ''))
-  let g:denite_last_cwd = l:cwd
+  let l:is_same_dir = (l:cwd == s:last_cwd)
+  let s:last_cwd = l:cwd
 
   " Work around misplacement issue
   let l:win_size = &columns . 'x' . &lines
