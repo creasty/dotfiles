@@ -29,17 +29,6 @@ local function search_readme(dir)
   return nil
 end
 
-local function gen_from_ghq(opts)
-  return function(line)
-    return {
-      value = line,
-      ordinal = line,
-      path = opts.root_path .. '/' .. line,
-      display = line,
-    }
-  end
-end
-
 local function get_ghq_root(bin)
   local f = assert(io.popen(bin .. ' root', 'r'))
   local s = assert(f:read('*a'))
@@ -49,11 +38,23 @@ local function get_ghq_root(bin)
   return s
 end
 
+local function gen_from_ghq(opts)
+  local root_path = get_ghq_root(opts.bin)
+
+  return function(line)
+    return {
+      value = line,
+      ordinal = line,
+      path = root_path .. '/' .. line,
+      display = line,
+    }
+  end
+end
+
 local function list(opts)
   opts = opts or {}
   opts.bin = opts.bin and vim.fn.expand(opts.bin) or 'ghq'
   opts.cwd = utils.get_lazy_default(opts.cwd, vim.loop.cwd)
-  opts.root_path = get_ghq_root(opts.bin)
   opts.entry_maker = utils.get_lazy_default(opts.entry_maker, gen_from_ghq, opts)
 
   local bin = vim.fn.expand(opts.bin)
@@ -63,18 +64,23 @@ local function list(opts)
       {bin, 'list'},
       opts
     ),
-    previewer = previewers.new_termopen_previewer{
-      get_command = function(entry)
-        local dir = from_entry.path(entry)
-        local doc = search_readme(dir)
-        if doc then
-          if vim.fn.executable'bat' == 1 then
-            return {'bat', '--style', 'header,grid', doc}
-          end
-          return {'cat', doc}
-        end
-        return {'echo', ''}
+    previewer = previewers.new_buffer_previewer {
+      title = "File Preview",
+      dyn_title = function(_, entry)
+        return path.normalize(from_entry.path(entry, true), opts.cwd)
       end,
+      get_buffer_by_name = function(_, entry)
+        return from_entry.path(entry, true)
+      end,
+      define_preview = function(self, entry, _)
+        local dir = from_entry.path(entry, true)
+        local doc = search_readme(dir)
+        local p = doc or dir
+        if p == nil or p == '' then return end
+        conf.buffer_previewer_maker(p, self.state.bufnr, {
+          bufname = self.state.bufname
+        })
+      end
     },
     sorter = conf.file_sorter(opts),
     attach_mappings = function(prompt_bufnr)

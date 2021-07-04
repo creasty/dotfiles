@@ -198,19 +198,19 @@ if dein#tap('switch.vim')
 endif
 
 if dein#tap('nvim-treesitter')
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = true,
-  },
-  autotag = {
-    enable = true,
-  },
-}
+  lua <<EOF
+    require('nvim-treesitter.configs').setup {
+      ensure_installed = "maintained",
+      highlight = {
+        enable = true,
+      },
+      indent = {
+        enable = true,
+      },
+      autotag = {
+        enable = true,
+      },
+    }
 EOF
 endif
 
@@ -371,7 +371,7 @@ endif
 
 if dein#tap('telescope.nvim')
   nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
-  nnoremap <Space>tf <Cmd>Telescope find_files<CR>
+  nnoremap <Space>tf <Cmd>Telescope find_files hidden=true follow=true<CR>
   nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
 
   lua <<EOF
@@ -393,35 +393,39 @@ if dein#tap('telescope.nvim')
           '--column',
           '--smart-case',
         },
-        initial_mode = "insert",
-        selection_strategy = "reset",
-        sorting_strategy = "descending",
-        layout_strategy = "flex",
+        initial_mode = 'insert',
+        selection_strategy = 'reset',
+        sorting_strategy = 'ascending',
+        layout_strategy = 'vertical',
+        scroll_strategy = 'limit',
         layout_config = {
           horizontal = {
             mirror = false,
           },
           vertical = {
-            mirror = false,
+            mirror = true,
           },
         },
-        file_sorter =  sorters.get_fuzzy_file,
+        file_sorter = sorters.get_fuzzy_file,
         file_ignore_patterns = {},
-        generic_sorter =  sorters.get_generic_fuzzy_sorter,
+        generic_sorter = sorters.get_generic_fuzzy_sorter,
         shorten_path = true,
         winblend = 0,
         border = {},
         borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
         color_devicons = true,
         use_less = true,
-        set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
         file_previewer = previewers.vim_buffer_cat.new,
         grep_previewer = previewers.vim_buffer_vimgrep.new,
         qflist_previewer = previewers.vim_buffer_qflist.new,
-
-        -- Developer configurations: Not meant for general override
         buffer_previewer_maker = previewers.buffer_previewer_maker,
-      }
+
+        mappings = {
+          i = {
+            ['<C-u>'] = false,
+          },
+        },
+      },
     }
 EOF
 endif
