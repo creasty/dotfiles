@@ -6,15 +6,21 @@ require('nvim-treesitter.configs').setup {
   indent = {
     enable = true,
   },
-  autotag = {
-    enable = true,
-  },
   incremental_selection = {
     enable = true,
     keymaps = {
       init_selection = 'gs',
       node_incremental = 'gs',
     },
+  },
+  autotag = {
+    enable = true,
+  },
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25,
+    persist_queries = false,
   },
   textobjects = {
     select = {
