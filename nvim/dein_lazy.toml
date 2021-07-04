@@ -89,7 +89,7 @@ repo    = 'nvim-telescope/telescope.nvim'
 depends = ['popup.nvim', 'plenary.nvim']
 on_cmd  = ['Telescope']
 hook_add = '''
-lua require("creasty.plugins.telescope")
+lua require('creasty.plugins.telescope')
 '''
 
 #  Util
@@ -100,10 +100,6 @@ on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
 
 #  Language
 #-----------------------------------------------
-[[plugins]] # syntax highlight for Markdown
-repo  = 'tpope/vim-markdown'
-on_ft = ['markdown']
-
 [[plugins]] # Vim syntax highlighting for Google's Protocol Buffers
 repo  = 'uarun/vim-protobuf'
 on_ft = ['proto']

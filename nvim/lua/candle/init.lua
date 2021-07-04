@@ -181,6 +181,7 @@ function M.setup()
   hi.markdownH6 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
   hi.markdownLink = { fg = s.comment, bg = nil, gui = nil, sp = nil }
   hi.markdownLinkText = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
+  hi.markdownCode = { fg = s.green, bg = nil, gui = nil, sp = nil }
   hi.markdownCodeBlock = { fg = s.green, bg = nil, gui = nil, sp = nil }
 end
 
