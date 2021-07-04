@@ -123,21 +123,20 @@ endfunction
 
 autocmd vimrc_appearance BufWinEnter * call s:setup_matchadd()
 function s:setup_matchadd() abort
-  " full-width charactors
-  call matchadd('FullwidthSpace', '　')
-  call matchadd("SpellRare", '[０１２３４５６７８９]')
-  call matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]')
-  call matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]')
+  for l:match_id in get(w:, 'vimrc_appearance_match_ids', [])
+    call matchdelete(l:match_id)
+  endfor
 
-  " git
-  call matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50)
-
-  " trailing spaces
-  call matchadd('ExtraWhitespace', '\s\+$', 50)
-
-  " snippet placeholder
-  call matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50)
-  call matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50)
+  let w:vimrc_appearance_match_ids = [
+    \ matchadd('FullwidthSpace', '　'),
+    \ matchadd("SpellRare", '[０１２３４５６７８９]'),
+    \ matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]'),
+    \ matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]'),
+    \ matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50),
+    \ matchadd('ExtraWhitespace', '\s\+$', 50),
+    \ matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50),
+    \ matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50),
+  \ ]
 endfunction
 
 let &cpoptions = s:save_cpo
