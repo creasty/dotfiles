@@ -20,12 +20,6 @@ set textwidth=0
 set nobackup
 set noswapfile
 
-" reload when files modified outside of vim
-set autoread
-
-" delete over lines and indents
-set backspace=indent,eol,start
-
 " automatic formatting
 set formatoptions&
 set formatoptions+=lmq " add multibyte option
@@ -41,9 +35,6 @@ set browsedir=buffer
 " move cursor over lines
 set whichwrap=b,s,h,l,<,>,[,]
 
-" display commands in statusline
-set showcmd
-
 " unnecessary, use lightline
 set noshowmode
 
@@ -58,9 +49,6 @@ set modelines=0
 
 " ignore case in filenames
 set wildignorecase
-
-" fast terminal connection
-set ttyfast
 
 " command history
 set history=1000
@@ -102,17 +90,9 @@ set wrapscan
 set ignorecase
 set smartcase
 
-" incremental search
-set incsearch
-
-" match highlight
-set hlsearch
-
 " indent
-set noautoindent
 set smartindent
 set cindent
-set smarttab
 set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=0
 set shiftround

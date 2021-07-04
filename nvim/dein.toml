@@ -21,9 +21,6 @@ depends = ['vim-textobj-user']
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'tpope/vim-surround'
 
-[[plugins]] # extended % matching
-repo = 'tmhedberg/matchit'
-
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
 
