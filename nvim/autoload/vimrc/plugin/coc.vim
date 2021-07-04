@@ -63,9 +63,9 @@ endfunction
 
 "  Custom actions
 "-----------------------------------------------
-nnoremap <Plug>(coc-hover) :call CocActionAsync('doHover')<CR>
-nnoremap <Plug>(coc-peek-definition) :call CocActionAsync('jumpDefinition', v:false)<CR>
-nnoremap <Plug>(coc-peek-type-definition) :call CocActionAsync('jumpTypeDefinition', v:false)<CR>
+nnoremap <Plug>(coc-hover) <Cmd>call CocActionAsync('doHover')<CR>
+nnoremap <Plug>(coc-peek-definition) <Cmd>call CocActionAsync('jumpDefinition', v:false)<CR>
+nnoremap <Plug>(coc-peek-type-definition) <Cmd>call CocActionAsync('jumpTypeDefinition', v:false)<CR>
 inoremap <Plug>(coc-signature-help) <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
 command! -nargs=0 -range=% Format
@@ -111,9 +111,9 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
 endif
 
 " List
-nnoremap <silent> gll :<C-u>CocListResume<CR>
-nnoremap <silent> gld :<C-u>CocList diagnostics<CR>
-nnoremap <silent> gls :<C-u>CocList symbols<CR>
+nnoremap <silent> gll <Cmd>CocListResume<CR>
+nnoremap <silent> gld <Cmd>CocList diagnostics<CR>
+nnoremap <silent> gls <Cmd>CocList symbols<CR>
 
 "  coc-git
 "-----------------------------------------------

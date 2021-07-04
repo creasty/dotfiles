@@ -112,7 +112,7 @@ if dein#tap('vim-easy-align')
     \ },
   \ }
 
-  xnoremap <silent> L :EasyAlign<cr>
+  xnoremap <silent> L <Cmd>EasyAlign<CR>
 endif
 
 if dein#tap('switch.vim')
@@ -126,7 +126,7 @@ if dein#tap('switch.vim')
     \ switch#NormalizedCaseWords(['yes', 'no']),
   \ ]
 
-  nnoremap <silent> - :call <SID>my_switch()<CR>
+  nnoremap <silent> - <Cmd>call <SID>my_switch()<CR>
 
   function! s:my_switch() abort
     if quote_toggler#toggle()
@@ -226,14 +226,14 @@ if dein#tap('denite.nvim')
   autocmd vimrc FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
 
   command! Open :call vimrc#plugin#denite#open_best()
-  nnoremap <silent> <C-q> :<C-u>Open<CR>
+  nnoremap <silent> <C-q> <Cmd>Open<CR>
 
   command! Rg :Denite -buffer-name=grep grep
-  nnoremap <Space>/ :Denite -buffer-name=grep -resume grep<CR>
-  nnoremap <silent> <Space>* :DeniteCursorWord -buffer-name=grep grep<CR>
+  nnoremap <Space>/ <Cmd>Denite -buffer-name=grep -resume grep<CR>
+  nnoremap <silent> <Space>* <Cmd>DeniteCursorWord -buffer-name=grep grep<CR>
 
   command! I18n :Denite -buffer-name=i18n_flow -resume i18n_flow
-  nnoremap <Space>i :I18n<CR>
+  nnoremap <Space>i <Cmd>I18n<CR>
 endif
 
 if dein#tap('vim-quickrun')

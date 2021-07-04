@@ -41,7 +41,7 @@ augroup last_closed_buffer
   autocmd BufLeave * call <SID>lcb_remember_on_leave()
 augroup END
 
-nnoremap <silent> <Plug>(lcb-restore) :call <SID>lcb_restore()<CR>
+nnoremap <silent> <Plug>(lcb-restore) <Cmd>call <SID>lcb_restore()<CR>
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

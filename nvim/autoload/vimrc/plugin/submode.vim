@@ -40,14 +40,14 @@ function! s:better_undo(key) abort
   exec 'normal!' a:key
 endfunction
 
-noremap <silent> <Plug>(my-x) :<C-u>call <SID>better_undo('"_x')<CR>
+noremap <silent> <Plug>(my-x) <Cmd>call <SID>better_undo('"_x')<CR>
 call submode#enter_with('better-x', 'n', '',  'x', '"_x')
 call submode#map(       'better-x', 'n', 'r', 'x', '<Plug>(my-x)')
 
-noremap <silent> <Plug>(my-ca) :<C-u>call <SID>better_undo('<C-a>')<CR>
+noremap <silent> <Plug>(my-ca) <Cmd>call <SID>better_undo('<C-a>')<CR>
 call submode#enter_with('better-ca', 'n', '',  '<C-a>', '<C-a>')
 call submode#map(       'better-ca', 'n', 'r', '<C-a>', '<Plug>(my-ca)')
 
-noremap <silent> <Plug>(my-cx) :<C-u>call <SID>better_undo('<C-x>')<CR>
+noremap <silent> <Plug>(my-cx) <Cmd>call <SID>better_undo('<C-x>')<CR>
 call submode#enter_with('better-ca', 'n', '',  '<C-x>', '<C-x>')
 call submode#map(       'better-ca', 'n', 'r', '<C-x>', '<Plug>(my-cx)')

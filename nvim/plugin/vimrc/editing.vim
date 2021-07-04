@@ -87,9 +87,9 @@ nnoremap ZQ <Nop>
 xnoremap K <Nop>
 
 " tags
-nnoremap tn :tn<CR>
-nnoremap tp :tp<CR>
-nnoremap tl :tags<CR>
+nnoremap tn <Cmd>tn<CR>
+nnoremap tp <Cmd>tp<CR>
+nnoremap tl <Cmd>tags<CR>
 nnoremap <C-]> g<C-]>
 
 " tab pages / buffers
@@ -97,10 +97,10 @@ nmap <C-s> <C-w>
 
 nnoremap <C-w><C-n> gt
 nnoremap <C-w><C-b> gT
-nnoremap <C-w><C-t> :<C-u>tabnew<CR>
-nnoremap <C-w>t     :<C-u>tabnew<CR>
-nnoremap <C-w><C-v> :<C-u>vnew<CR>
-nnoremap <C-w>v     :<C-u>vnew<CR>
+nnoremap <C-w><C-t> <Cmd>tabnew<CR>
+nnoremap <C-w>t     <Cmd>tabnew<CR>
+nnoremap <C-w><C-v> <Cmd>vnew<CR>
+nnoremap <C-w>v     <Cmd>vnew<CR>
 nnoremap <C-w><C-d> <C-w><C-q>
 nnoremap <C-w>d     <C-w>q
 nnoremap <C-w><C-s> <C-w><C-n>
@@ -115,10 +115,10 @@ nmap <C-w><C-r> <Plug>(lcb-restore)
 xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
 " replace selection
-xnoremap <Space>s "xy:%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+xnoremap <Space>s "xy<Cmd>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
-nnoremap <Space>s "xyiw:%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
+nnoremap <Space>s "xyiw<Cmd>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
@@ -130,7 +130,7 @@ command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args
 autocmd vimrc_editing User ClearSearchHighlight :
 command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
 autocmd vimrc_editing BufReadPost * ClearSearchHighlight
-nnoremap <silent> <Space><Space> :ClearSearchHighlight<CR>
+nnoremap <silent> <Space><Space> <Cmd>ClearSearchHighlight<CR>
 
 " back to the last line I edited
 autocmd vimrc_editing BufReadPost *

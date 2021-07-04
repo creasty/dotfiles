@@ -102,12 +102,12 @@ function! s:tab_s() abort
   if s:is_placeholder_selectable()
     return "\<Esc>\<Plug>(supertab-select-placeholder)"
   else
-    return "\<Esc>:call UltiSnips#ExpandSnippetOrJump()\<CR>"
+    return "\<Esc>\<Cmd>call UltiSnips#ExpandSnippetOrJump()\<CR>"
   endif
 endfunction
 
 function! s:tab_x() abort
-  return ":\<C-u>call UltiSnips#SaveLastVisualSelection()\<CR>gvs"
+  return "\<Cmd>call UltiSnips#SaveLastVisualSelection()\<CR>gvs"
 endfunction
 
 function! s:cancel_completion() abort
@@ -116,7 +116,7 @@ function! s:cancel_completion() abort
   return ''
 endfunction
 
-nnoremap <Plug>(supertab-select-placeholder) :<C-u>call <SID>select_placeholder()<CR>
+nnoremap <Plug>(supertab-select-placeholder) <Cmd>call <SID>select_placeholder()<CR>
 inoremap <expr> <Plug>(supertab-undo) <SID>cancel_completion()
 inoremap <Plug>(supertab-accept) <C-y>
 inoremap <Plug>(supertab-ctrl-r) <C-r>=<SID>tab_r()<CR>
