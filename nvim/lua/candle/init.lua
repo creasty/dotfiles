@@ -188,28 +188,26 @@ end
 function M.update_mode_highlight(mode)
   local hi = M.highlight
   local s = M.schema
-  local color
+  local color = s.foreground
 
   if string.match(mode, '^i') then
     color = s.green
   elseif string.match(mode, '[vV]$') then
     color = s.orange
-  elseif string.match(mode, '^[rR]') or string.match(mode, '^o') then
+  elseif string.match(mode, '^[rR]') or string.match(mode, 'o') then
     color = s.purple
   elseif string.match(mode, '[sS]$') then
     color = s.blue
-  else
-    color = s.foreground
   end
 
   hi.StatusLineMode = { fg = color, bg = s.window, gui = nil, sp = nil }
   hi.Cursor = { fg = s.background, bg = color, gui = nil, sp = nil }
 
   if string.match(mode, '[sS]$') then
-    hi.Viual = { fg = s.blue, bg = s.dark_blue, gui = 'bold', sp = nil }
-    vim.api.cmd('redraw')
+    hi.Visual = { fg = s.blue, bg = s.dark_blue, gui = 'bold', sp = nil }
+    vim.cmd('redraw')
   else
-    hi.Viual = { fg = 'none', bg = s.selection, gui = 'none', sp = nil }
+    hi.Visual = { fg = 'none', bg = s.selection, gui = 'none', sp = nil }
   end
 end
 

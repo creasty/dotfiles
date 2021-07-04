@@ -81,8 +81,6 @@ command! DeinPrunePlugins
 "=== Load
 "==============================================================================================
 colorscheme candle
-set t_Co=256
-syntax enable
 
 if dein#tap('vim-textobj-multiblock')
   let g:textobj_multiblock_blocks = [
