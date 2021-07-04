@@ -41,6 +41,13 @@ function! s:reload_display(level) abort
     " fix broken syntax highlight
     " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
     syntax sync fromstart
+
+    " fix broken treesitter highlight
+    " @see https://github.com/nvim-treesitter/nvim-treesitter/issues/78
+    if exists(':TSBufEnable') == 2
+      silent! edit
+      TSBufEnable highlight
+    endif
   endif
 
   if a:level >= 2
