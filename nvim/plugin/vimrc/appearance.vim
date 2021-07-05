@@ -12,13 +12,11 @@ augroup vimrc_appearance
   autocmd!
 augroup END
 
-" enable 24-bits colors
-if has('termguicolors')
-  set termguicolors
-endif
-
 " skip intro screen
 set shortmess+=I
+
+" stop showing mode
+set noshowmode
 
 " always show statusline
 set laststatus=2
@@ -26,11 +24,14 @@ set laststatus=2
 " always show tabline
 set showtabline=2
 
-" match pairs
-set showmatch
+" always show sign column
+set signcolumn=yes
 
 " show line numbers
 set number
+
+" match pairs
+set showmatch
 
 " highlighting current line will slow down vim
 set nocursorline
@@ -49,28 +50,17 @@ set list
 set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
 
 " indent wrapped lines
-if has('linebreak')
-  set breakindent
-  let &showbreak = '   ›'
-else
-  let &showbreak = '›'
-end
+set breakindent
+let &showbreak = '   ›'
 
 " conceal
-if has('conceal')
-  set conceallevel=2 concealcursor=
-endif
+set conceallevel=2 concealcursor=
 
 " color column
 set colorcolumn=90
 
-" always show sign column
-set signcolumn=yes
-
 " transparent pmenu
-if exists('&pumblend')
-  set pumblend=10
-endif
+set pumblend=10
 
 " enables 24-bit RGB color in the TUI
 set termguicolors

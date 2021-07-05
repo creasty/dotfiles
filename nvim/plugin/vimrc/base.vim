@@ -32,9 +32,6 @@ set browsedir=buffer
 " move cursor over lines
 set whichwrap=b,s,h,l,<,>,[,]
 
-" unnecessary, use lightline
-set noshowmode
-
 " disable mode lines
 set modelines=0
 
