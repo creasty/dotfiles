@@ -1,28 +1,9 @@
 scriptencoding utf-8
 
-let s:mode_observer_key = 'mode_observer_current_mode'
 let s:filereadable_key = 'filereadable'
 
-function! s:get_mode(winnr)
-  return getwinvar(a:winnr, s:mode_observer_key, '')
-endfunction
-
-function! s:update_mode(winnr)
-  let l:prev_mode = s:get_mode(a:winnr)
-  let l:mode = mode()
-
-  if l:mode !=# l:prev_mode
-    call setwinvar(a:winnr, s:mode_observer_key, mode())
-    doautocmd User ModeDidChange
-  endif
-endfunction
-
-function! vimrc#ui#update_filereadable()
-  let b:filereadable = filereadable(expand('%:p'))
-endfunction
-
-function! vimrc#ui#get_mode() abort
-  return s:get_mode(winnr())
+function! s:get_filereadable(bufnr)
+  return getbufvar(a:bufnr, s:filereadable_key, v:false)
 endfunction
 
 function! vimrc#ui#fold_text() abort
@@ -93,7 +74,7 @@ function! vimrc#ui#status_line(w, cw) abort
   let l:is_file = !empty(l:bufname)
 
   if l:active
-    call s:update_mode(a:cw)
+    call mode_observer#update_mode(a:cw)
   endif
 
   " l0
@@ -109,7 +90,7 @@ function! vimrc#ui#status_line(w, cw) abort
   let l:flag = ''
   let l:flag .= getbufvar(l:bufnr, '&readonly') ? '!' : ''
   let l:flag .= getbufvar(l:bufnr, '&mod') ? '+' : ''
-  let l:flag .= l:is_file && !getbufvar(l:bufnr, s:filereadable_key, v:true) ? '?' : ''
+  let l:flag .= l:is_file && !s:get_filereadable(l:bufnr) ? '?' : ''
   if !empty(l:flag)
     let l:l0 += [l:flag]
   endif
@@ -180,4 +161,21 @@ function! vimrc#ui#status_line(w, cw) abort
     \ + ['%*']
 
   return join(l:s, ' ')
+endfunction
+
+function! s:update_statusline() abort
+  let l:cw = winnr()
+  for l:nr in range(1, winnr('$'))
+    call setwinvar(l:nr, '&statusline', '%!vimrc#ui#status_line(' . l:nr . ', ' . l:cw . ')')
+  endfor
+endfunction
+
+function! vimrc#ui#setup_statusline() abort
+  augroup vimrc_ui_statusline
+    autocmd!
+    autocmd VimEnter,WinEnter,BufWinEnter *
+      \ call <SID>update_statusline()
+    autocmd FocusGained,BufEnter,BufReadPost,BufWritePost *
+      \ let b:filereadable = filereadable(expand('%:p'))
+  augroup END
 endfunction

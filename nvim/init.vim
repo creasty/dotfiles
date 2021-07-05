@@ -174,18 +174,8 @@ set title titlestring=%{vimrc#ui#title_text()}
 " tabline
 set tabline=%!vimrc#ui#tab_line()
 
-"  StatusLine
-"-----------------------------------------------
-function! s:refresh_statusline() abort
-  let l:cw = winnr()
-
-  for l:nr in range(1, winnr('$'))
-    call setwinvar(l:nr, '&statusline', '%!vimrc#ui#status_line(' . l:nr . ', ' . l:cw . ')')
-  endfor
-endfunction
-
-autocmd vimrc FocusGained,BufEnter,BufReadPost,BufWritePost * call vimrc#ui#update_filereadable()
-autocmd vimrc VimEnter,WinEnter,BufWinEnter * call <SID>refresh_statusline()
+" statusline
+call vimrc#ui#setup_statusline()
 
 "=== Editing
 "==============================================================================================
