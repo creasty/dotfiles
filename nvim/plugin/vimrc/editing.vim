@@ -10,12 +10,6 @@ augroup vimrc_editing
   autocmd!
 augroup END
 
-" disable arrow keys
-nnoremap <Up> <Nop>
-nnoremap <Down> <Nop>
-nnoremap <Left> <Nop>
-nnoremap <Right> <Nop>
-
 " move cursor visually with long lines
 nmap j gj
 xmap j gj
@@ -39,7 +33,7 @@ nnoremap c "_c
 nnoremap C "_C
 xnoremap c "_c
 
-" undo
+" break undo with chunk delete actions
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
 
@@ -80,10 +74,8 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " select all
 nnoremap <Space>a ggVG
 
-" avoid suicide
+" remove default mappings
 nnoremap ZQ <Nop>
-
-" useless and annoying
 xnoremap K <Nop>
 
 " tags
@@ -128,14 +120,22 @@ command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args
 
 " dim match highlight
 autocmd vimrc_editing User ClearSearchHighlight :
-command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
 autocmd vimrc_editing BufReadPost * ClearSearchHighlight
+
+command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
 nnoremap <silent> <Space><Space> <Cmd>ClearSearchHighlight<CR>
 
 " back to the last line I edited
 autocmd vimrc_editing BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \ exe "normal! g`\"" |
+  \ endif
+
+" file detect on read / save
+autocmd vimrc_editing BufWritePost,BufReadPost,BufEnter *
+  \ if &l:filetype ==# '' || exists('b:ftdetect') |
+    \ unlet! b:ftdetect |
+    \ filetype detect |
   \ endif
 
 let &cpoptions = s:save_cpo
