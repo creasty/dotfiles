@@ -13,6 +13,12 @@ depends = ['vim-textobj-user']
 [[plugins]] # text objects for multiple types of parentheses
 repo = 'osyo-manga/vim-textobj-multiblock'
 depends = ['vim-textobj-user']
+hook_add = '''
+omap ab <Plug>(textobj-multiblock-a)
+omap ib <Plug>(textobj-multiblock-i)
+xmap ab <Plug>(textobj-multiblock-a)
+xmap ib <Plug>(textobj-multiblock-i)
+'''
 
 [[plugins]] # Text objects for numbers
 repo = 'tkhren/vim-textobj-numeral'
@@ -26,9 +32,25 @@ repo = 'sickill/vim-pasta'
 
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
+hook_add = '''
+augroup _init_mold
+  autocmd!
+  autocmd User MoldTemplateLoadPre  call vimrc#plugin#mold#before_load()
+  autocmd User MoldTemplateLoadPost call vimrc#plugin#mold#after_load()
+augroup END
+'''
 
 [[plugins]] # The ultimate snippet solution for Vim
 repo = 'SirVer/ultisnips'
+hook_add = '''
+let g:UltiSnipsSnippetDirectories = ['ultisnips']
+let g:UltiSnipsRemoveSelectModeMappings = 0
+let g:UltiSnipsEnableSnipMate = 0
+let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips-expand)'
+let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips-jump-forward)'
+let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
+let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
+'''
 
 [[plugins]] # auto close parentheses and repeat by dot
 repo = 'cohama/lexima.vim'

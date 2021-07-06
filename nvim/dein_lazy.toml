@@ -32,7 +32,10 @@ onoremap R r
 
 [[plugins]] # a simple, easy-to-use Vim alignment plugin
 repo = 'junegunn/vim-easy-align'
-on_cmd = ['EasyAlign']
+on_map = ['<Plug>(EasyAlign)']
+hook_add = '''
+vmap <silent> L <Plug>(EasyAlign)
+'''
 
 [[plugins]] # insert several candidates with a single key
 repo = 'kana/vim-smartchr'
@@ -43,7 +46,7 @@ repo = 't9md/vim-textmanip'
 on_map = ['<Plug>(textmanip-']
 
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
-repo    = 'mattn/emmet-vim'
+repo = 'mattn/emmet-vim'
 on_func = ['emmet']
 hook_add = '''
 let g:user_emmet_install_global = 0
@@ -112,7 +115,7 @@ repo = 'fannheyward/telescope-coc.nvim'
 on_source = ['telescope.nvim']
 
 [[plugins]] # Gaze deeply into unknown regions using the power of the moon
-repo  = 'nvim-telescope/telescope.nvim'
+repo = 'nvim-telescope/telescope.nvim'
 depends = ['popup.nvim', 'plenary.nvim']
 on_cmd = ['Telescope']
 hook_source = '''

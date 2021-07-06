@@ -28,7 +28,7 @@ let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
 
 " unregister autocmds
-augroup vimrc
+augroup _init
   autocmd!
 augroup END
 
@@ -289,20 +289,20 @@ command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
 
 " dim match highlight
-autocmd vimrc User ClearSearchHighlight :
-autocmd vimrc BufReadPost * ClearSearchHighlight
+autocmd _init User ClearSearchHighlight :
+autocmd _init BufReadPost * ClearSearchHighlight
 
 command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
 nnoremap <silent> <Space><Space> <Cmd>ClearSearchHighlight<CR>
 
 " back to the last line I edited
-autocmd vimrc BufReadPost *
+autocmd _init BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \ exe "normal! g`\"" |
   \ endif
 
 " file detect on read / save
-autocmd vimrc BufWritePost,BufReadPost,BufEnter *
+autocmd _init BufWritePost,BufReadPost,BufEnter *
   \ if &l:filetype ==# '' || exists('b:ftdetect') |
     \ unlet! b:ftdetect |
     \ filetype detect |
@@ -366,7 +366,7 @@ function! s:delete_file(file) abort
 endfunction
 
 " create directories if not exist
-autocmd vimrc BufWritePre *
+autocmd _init BufWritePre *
   \ call <SID>mkdir(expand('<afile>:p:h'))
 
 function! s:mkdir(dir) abort
@@ -384,7 +384,11 @@ endif
 let g:dein#_plugins = {}
 
 if dein#load_state(g:vimrc#env.path.dein)
-  call dein#begin(g:vimrc#env.path.dein, [expand('<sfile>'), g:vimrc#env.path.dein_toml, g:vimrc#env.path.dein_lazy_toml])
+  call dein#begin(g:vimrc#env.path.dein, [
+    \ expand('<sfile>'),
+    \ g:vimrc#env.path.dein_toml,
+    \ g:vimrc#env.path.dein_lazy_toml,
+  \ ])
 
   call dein#load_toml(g:vimrc#env.path.dein_toml,      { 'lazy': 0 })
   call dein#load_toml(g:vimrc#env.path.dein_lazy_toml, { 'lazy': 1 })
@@ -397,7 +401,7 @@ if dein#check_install()
   call dein#install()
 endif
 
-autocmd vimrc VimEnter * call dein#call_hook('post_source')
+autocmd _init VimEnter * call dein#call_hook('post_source')
 
 "  Commands
 "-----------------------------------------------
@@ -412,44 +416,6 @@ command! DeinPrunePlugins
 
 "=== Plugins
 "==============================================================================================
-if dein#tap('vim-textobj-multiblock')
-  let g:textobj_multiblock_blocks = [
-    \ [ '(', ')' ],
-    \ [ '[', ']' ],
-    \ [ '{', '}' ],
-    \ [ '<', '>' ],
-    \ [ '"', '"' ],
-    \ [ "'", "'" ],
-    \ [ '「', '」' ],
-    \ [ '（', '）' ],
-  \ ]
-
-  omap ab <Plug>(textobj-multiblock-a)
-  omap ib <Plug>(textobj-multiblock-i)
-  xmap ab <Plug>(textobj-multiblock-a)
-  xmap ib <Plug>(textobj-multiblock-i)
-endif
-
-if dein#tap('vim-easy-align')
-  let g:easy_align_delimiters = {
-    \ '=': {
-      \ 'pattern':       '===\|<=>\|=\~[#?]\?\|=>\|[:+/*!%^=><&|.-?]*=[#?]\?'
-      \                  . '\|[-=]>\|<[-=]',
-      \ 'left_margin':   1,
-      \ 'right_margin':  1,
-      \ 'stick_to_left': 0,
-    \ },
-    \ ';': {
-      \ 'pattern':       ':',
-      \ 'left_margin':   0,
-      \ 'right_margin':  1,
-      \ 'stick_to_left': 1
-    \ },
-  \ }
-
-  xnoremap <silent> L <Cmd>EasyAlign<CR>
-endif
-
 if dein#tap('switch.vim')
   let g:switch_mapping = ''
   let g:switch_custom_definitions = [
@@ -497,68 +463,27 @@ if dein#tap('vim-textmanip')
   xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 endif
 
-if dein#tap('mold.vim')
-  let s:mold_template_macro = {
-    \ 'FILE_PATH': "\\=expand('%:p')",
-    \ 'FILE_NAME': "\\=expand('%:t')",
-    \ 'FILE_BASE_NAME': "\\=expand('%:t:r')",
-    \ 'FULL_NAME': 'Yuki Iwanaga',
-    \ 'USER_NAME': 'Creasty',
-  \ }
-
-  function! s:mold_before_load() abort
-    let b:mold_saved_cursor = getcurpos()
-  endfunction
-
-  function! s:mold_after_load() abort
-    for [l:macro, l:def] in items(s:mold_template_macro)
-      silent exec '%s/\<' . l:macro . '\>/' . l:def . '/ge'
-    endfor
-
-    silent! %!erb -T '-'
-
-    if search('<+CURSOR+>')
-      execute 'normal! "_da>'
-    else
-      call setpos('.', b:mold_saved_cursor)
-    endif
-  endfunction
-
-  autocmd vimrc User MoldTemplateLoadPre  call s:mold_before_load()
-  autocmd vimrc User MoldTemplateLoadPost call s:mold_after_load()
-endif
-
-if dein#tap('ultisnips')
-  let g:UltiSnipsSnippetDirectories = ['ultisnips']
-  let g:UltiSnipsRemoveSelectModeMappings = 0
-  let g:UltiSnipsEnableSnipMate = 0
-
-  let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips-expand)'
-  let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips-jump-forward)'
-  let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
-  let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
-
-  if dein#tap('coc.nvim')
-    autocmd vimrc User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
-    autocmd vimrc User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
-  endif
-endif
-
 if dein#tap('coc.nvim')
-  autocmd vimrc User ForceRefresh3 call coc#float#close_all()
-  autocmd vimrc User ForceRefresh call <SID>coc_re_enable()
   function! s:coc_re_enable() abort
     silent! CocDisable
     silent! CocEnable
     doautocmd InsertLeave
   endfunction
+
+  autocmd _init User ForceRefresh3 call coc#float#close_all()
+  autocmd _init User ForceRefresh call <SID>coc_re_enable()
+
+  if dein#tap('ultisnips')
+    autocmd _init User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
+    autocmd _init User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
+  endif
 endif
 
 if dein#tap('denite.nvim')
   " NOTE: See :UpdateRemotePlugins
 
-  autocmd vimrc FileType denite call vimrc#plugin#denite#init_denite_list()
-  autocmd vimrc FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
+  autocmd _init FileType denite call vimrc#plugin#denite#init_denite_list()
+  autocmd _init FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
 
   command! Open :call vimrc#plugin#denite#open_best()
   nnoremap <silent> <C-q> <Cmd>Open<CR>
@@ -598,12 +523,12 @@ if dein#tap('vim-searchhi')
   nmap # <Plug>(searchhi-#)
   nmap g# <Plug>(searchhi-g#)
 
-  autocmd vimrc User ClearSearchHighlight
+  autocmd _init User ClearSearchHighlight
     \ call searchhi#clear(0, 0) |
     \ call searchhi#await(0, 0)
 
   if dein#tap('vim-anzu')
-    autocmd vimrc User SearchHiOn AnzuUpdateSearchStatusOutput
-    autocmd vimrc User SearchHiOff echo g:anzu_no_match_word
+    autocmd _init User SearchHiOn AnzuUpdateSearchStatusOutput
+    autocmd _init User SearchHiOff echo g:anzu_no_match_word
   endif
 endif
