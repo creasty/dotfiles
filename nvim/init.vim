@@ -27,11 +27,6 @@ let g:loaded_netrwPlugin = 1
 let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
 
-" unregister autocmds
-augroup _init
-  autocmd!
-augroup END
-
 "=== Basic
 "==============================================================================================
 " split to right / bottom
@@ -289,24 +284,33 @@ command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
 
 " dim match highlight
-autocmd _init User ClearSearchHighlight :
-autocmd _init BufReadPost * ClearSearchHighlight
+augroup _clear_hlsearch
+  autocmd!
+  autocmd User ClearHlsearch :
+  autocmd BufReadPost * ClearHlsearch
+augroup END
 
-command! -nargs=0 ClearSearchHighlight nohlsearch | doautocmd User ClearSearchHighlight
-nnoremap <silent> <Space><Space> <Cmd>ClearSearchHighlight<CR>
+command! -nargs=0 ClearHlsearch nohlsearch | doautocmd User ClearHlsearch
+nnoremap <silent> <Space><Space> <Cmd>ClearHlsearch<CR>
 
 " back to the last line I edited
-autocmd _init BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \ exe "normal! g`\"" |
-  \ endif
+augroup _restore_last_pos
+  autocmd!
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+      \ exe "normal! g`\"" |
+    \ endif
+augroup END
 
 " file detect on read / save
-autocmd _init BufWritePost,BufReadPost,BufEnter *
-  \ if &l:filetype ==# '' || exists('b:ftdetect') |
-    \ unlet! b:ftdetect |
-    \ filetype detect |
-  \ endif
+augroup _enhance_ftdetect
+  autocmd!
+  autocmd BufWritePost,BufReadPost,BufEnter *
+    \ if &l:filetype ==# '' || exists('b:ftdetect') |
+      \ unlet! b:ftdetect |
+      \ filetype detect |
+    \ endif
+augroup END
 
 "=== Misc
 "==============================================================================================
@@ -366,8 +370,10 @@ function! s:delete_file(file) abort
 endfunction
 
 " create directories if not exist
-autocmd _init BufWritePre *
-  \ call <SID>mkdir(expand('<afile>:p:h'))
+augroup _auto_mkdir
+  autocmd!
+  autocmd BufWritePre * call <SID>mkdir(expand('<afile>:p:h'))
+augroup END
 
 function! s:mkdir(dir) abort
   if !isdirectory(a:dir)
@@ -401,7 +407,10 @@ if dein#check_install()
   call dein#install()
 endif
 
-autocmd _init VimEnter * call dein#call_hook('post_source')
+augroup _dein_hook
+  autocmd!
+  autocmd VimEnter * call dein#call_hook('post_source')
+augroup END
 
 "  Commands
 "-----------------------------------------------
@@ -470,20 +479,27 @@ if dein#tap('coc.nvim')
     doautocmd InsertLeave
   endfunction
 
-  autocmd _init User ForceRefresh3 call coc#float#close_all()
-  autocmd _init User ForceRefresh call <SID>coc_re_enable()
+  augroup _init_coc
+    autocmd!
 
-  if dein#tap('ultisnips')
-    autocmd _init User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
-    autocmd _init User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
-  endif
+    autocmd User ForceRefresh3 call coc#float#close_all()
+    autocmd User ForceRefresh call <SID>coc_re_enable()
+
+    if dein#tap('ultisnips')
+      autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
+      autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
+    endif
+  augroup END
 endif
 
 if dein#tap('denite.nvim')
   " NOTE: See :UpdateRemotePlugins
 
-  autocmd _init FileType denite call vimrc#plugin#denite#init_denite_list()
-  autocmd _init FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
+  augroup _init_denite
+    autocmd!
+    autocmd FileType denite call vimrc#plugin#denite#init_denite_list()
+    autocmd FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
+  augroup END
 
   command! Open :call vimrc#plugin#denite#open_best()
   nnoremap <silent> <C-q> <Cmd>Open<CR>
@@ -523,12 +539,16 @@ if dein#tap('vim-searchhi')
   nmap # <Plug>(searchhi-#)
   nmap g# <Plug>(searchhi-g#)
 
-  autocmd _init User ClearSearchHighlight
-    \ call searchhi#clear(0, 0) |
-    \ call searchhi#await(0, 0)
+  augroup _init_searchhi
+    autocmd!
 
-  if dein#tap('vim-anzu')
-    autocmd _init User SearchHiOn AnzuUpdateSearchStatusOutput
-    autocmd _init User SearchHiOff echo g:anzu_no_match_word
-  endif
+    autocmd User ClearHlsearch
+      \ call searchhi#clear(0, 0) |
+      \ call searchhi#await(0, 0)
+
+    if dein#tap('vim-anzu')
+      autocmd User SearchHiOn AnzuUpdateSearchStatusOutput
+      autocmd User SearchHiOff echo g:anzu_no_match_word
+    endif
+  augroup END
 endif
