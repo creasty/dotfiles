@@ -1,14 +1,12 @@
 function! s:homepage_for_url(url) abort
   let l:domain_pattern = 'github\.com'
   let l:domains = get(g:, 'github_enterprise_urls', get(g:, 'fugitive_github_domains', []))
-  call map(copy(l:domains), 'substitute(v:val, "/$", "", "")')
 
   for l:domain in l:domains
-    let l:domain_pattern .= '\|' . escape(split(l:domain, '://')[-1], '.')
+    let l:domain_pattern .= '\|' . escape(split(substitute(l:domain, '/$', '', ''), '://')[-1], '.')
   endfor
 
-  let l:base = matchstr(a:url, '^\%(https\=://\|git://\|git@\|ssh://git@\)\=\zs\(' . l:domain_pattern . '\)[/:].\{-\}\ze\%(\.git\)\=$')
-
+  let l:base = matchstr(a:url, '^\%(https\=://\%([^@/:]*@\)\=\|git://\|git@\|ssh://git@\|org-\d\+@\|ssh://org-\d\+@\)\=\zs\('.l:domain_pattern.'\)[/:].\{-\}\ze\%(\.git\)\=/\=$')
   if index(l:domains, 'http://' . matchstr(l:base, '^[^:/]*')) >= 0
     return 'http://' . tr(l:base, ':', '/')
   elseif !empty(l:base)
@@ -18,43 +16,46 @@ function! s:homepage_for_url(url) abort
   return ''
 endfunction
 
-function! vimrc#plugin#fugitive#browse_handler(opts, ...) abort
-  if a:0 || type(a:opts) != type({})
+function! vimrc#plugin#fugitive#browse_handler(...) abort
+  if a:0 == 1 || type(a:1) == type({})
+    let l:opts = a:1
+    let l:root = s:homepage_for_url(get(l:opts, 'remote', ''))
+  else
     return ''
   endif
 
-  let l:root = s:homepage_for_url(get(a:opts, 'remote'))
   if empty(l:root)
     return ''
   endif
 
-  let l:path = substitute(a:opts.path, '^/', '', '')
+  let l:path = substitute(l:opts.path, '^/', '', '')
   if l:path =~# '^\.git/refs/heads/'
     return l:root . '/commits/' . l:path[16:-1]
   elseif l:path =~# '^\.git/refs/tags/'
     return l:root . '/releases/tag/' . l:path[15:-1]
   elseif l:path =~# '^\.git/refs/remotes/[^/]\+/.'
-    return l:root . '/commits/' . matchstr(l:path,'remotes/[^/]\+/\zs.*')
+    return l:root . '/commits/' . matchstr(l:path, 'remotes/[^/]\+/\zs.*')
   elseif l:path =~# '^\.git/\%(config$\|hooks\>\)'
     return l:root . '/admin'
   elseif l:path =~# '^\.git\>'
     return l:root
   endif
 
-  let l:commit = a:opts.commit
-  if l:commit =~# '^\d\=$'
+  if l:opts.commit =~# '^\d\=$'
     return ''
+  else
+    let l:commit = l:opts.commit
   endif
 
-  if get(a:opts, 'type', '') ==# 'tree' || a:opts.path =~# '/$'
+  if get(l:opts, 'type', '') ==# 'tree' || l:opts.path =~# '/$'
     let l:url = substitute(l:root . '/tree/' . l:commit . '/' . l:path, '/$', '', 'g')
-  elseif get(a:opts, 'type', '') ==# 'blob' || a:opts.path =~# '[^/]$'
+  elseif get(l:opts, 'type', '') ==# 'blob' || l:opts.path =~# '[^/]$'
     let l:escaped_commit = substitute(l:commit, '#', '%23', 'g')
     let l:url = l:root . '/blob/' . l:escaped_commit . '/' . l:path
-    if get(a:opts, 'line2') && a:opts.line1 == a:opts.line2
-      let l:url .= '#L' . a:opts.line1
-    elseif get(a:opts, 'line2')
-      let l:url .= '#L' . a:opts.line1 . '-L' . a:opts.line2
+    if get(l:opts, 'line2') > 0 && get(l:opts, 'line1') == l:opts.line2
+      let l:url .= '#L' . l:opts.line1
+    elseif get(l:opts, 'line1') > 0 && get(l:opts, 'line2') > 0
+      let l:url .= '#L' . l:opts.line1 . '-L' . l:opts.line2
     endif
   else
     let l:url = l:root . '/commit/' . l:commit

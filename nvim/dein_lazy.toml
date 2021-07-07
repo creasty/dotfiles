@@ -99,7 +99,7 @@ nmap gA <Plug>(altr-back)
 
 [[plugins]] # A Git wrapper so awesome, it should be illegal
 repo = 'tpope/vim-fugitive'
-on_cmd = ['Gblame', 'Gbrowse']
+on_cmd = ['GBlame', 'GBrowse']
 hook_source = '''
 call vimrc#plugin#fugitive#lazy_init()
 '''
