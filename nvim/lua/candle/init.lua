@@ -102,9 +102,9 @@ function M.setup()
 
   -- Diff highlighting
   hi.DiffAdd = { fg = s.green, bg = 'none', gui = 'none', sp = nil }
-  hi.DiffChange = { fg = s.purple, bg = 'none', gui = 'none', sp = nil }
+  hi.DiffChange = { fg = s.blue, bg = 'none', gui = 'none', sp = nil }
   hi.DiffDelete = { fg = s.red, bg = 'none', gui = 'none', sp = nil }
-  hi.DiffText = { fg = s.blue, bg = 'none', gui = 'none', sp = nil }
+  hi.DiffText = { fg = s.blue, bg = 'none', gui = 'bold', sp = nil }
 
   -- LSP
   -- hi.LspReferenceText = { fg = nil, bg = nil, gui = nil, sp = nil }
