@@ -7,30 +7,15 @@ function! s:shortcut.async_call(ft) abort
   call timer_start(50, function(s:shortcut.call))
 endfunction
 
-function! s:detect_header_filetype()
-  if match(getline(1, min([line('$'), 200])), '@interface\|@end\|@class\|\#import\|Foundation/') > -1
-    setf objc
-  elseif exists('c_syntax_for_h')
-    setf c
-  elseif exists('ch_syntax_for_h')
-    setf ch
-  else
-    setf cpp
-  endif
-endfunction
-
 augroup custom_filetypes
   autocmd!
 
   autocmd BufNewFile,BufRead *.er setlocal ft=conf
-  autocmd BufNewFile,BufRead *.m setlocal ft=objc
-  autocmd BufNewFile,BufRead *.md setlocal ft=markdown
-  autocmd BufNewFile,BufRead *.pde setlocal ft=processing
   autocmd BufNewFile,BufRead *.graphql setlocal ft=graphql
-  autocmd BufNewFile,BufRead gitconfig setlocal ft=gitconfig.toml
+  autocmd BufNewFile,BufRead gitconfig setlocal ft=gitconfig
   autocmd BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
-  autocmd BufNewFile,BufRead *.psgi,*.t,cpanfile setlocal ft=perl
-  autocmd BufNewFile,BufRead Vagrantfile,*.rake,*.jbuilder setlocal ft=ruby
+  autocmd BufNewFile,BufRead cpanfile setlocal ft=perl
+  autocmd BufNewFile,BufRead Vagrantfile,*.jbuilder setlocal ft=ruby
 
   "  Compound filetypes
   "-----------------------------------------------
@@ -49,8 +34,4 @@ augroup custom_filetypes
   autocmd FileType md call s:shortcut.async_call('markdown')
   autocmd FileType bq call s:shortcut.async_call('sql.bq')
   autocmd FileType pg call s:shortcut.async_call('sql.pg')
-
-  "  Header file
-  "-----------------------------------------------
-  autocmd BufNewFile,BufRead *.h call s:detect_header_filetype()
 augroup END
