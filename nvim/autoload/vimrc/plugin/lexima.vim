@@ -3,7 +3,7 @@ endfunction
 
 let g:lexima_map_escape = ''
 
-let s:js_filetypes = ['javascript', 'typescript', 'javascript.tsx', 'typescript.tsx']
+let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
 
 "  Operators
 "-----------------------------------------------
