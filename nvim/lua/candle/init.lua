@@ -18,8 +18,12 @@ function M.setup()
   local s = M.schema
 
   -- Vim editor colors
-  hi.Normal = { fg = s.foreground, bg = 'none', gui = nil, sp = nil }
   hi.Bold = { fg = nil, bg = nil, gui = 'bold', sp = nil }
+  hi.ColorColumn = { fg = nil, bg = s.guide, gui = 'none', sp = nil }
+  hi.Cursor = { fg = s.background, bg = s.foreground, gui = nil, sp = nil }
+  hi.CursorColumn = { fg = nil, bg = s.line, gui = 'none', sp = nil }
+  hi.CursorLine = { fg = nil, bg = s.line, gui = 'none', sp = nil }
+  hi.CursorLineNr = { fg = s.gray200, bg = nil, gui = 'bold', sp = nil }
   hi.Debug = { fg = s.brown, bg = nil, gui = nil, sp = nil }
   hi.Directory = { fg = s.blue, bg = nil, gui = nil, sp = nil }
   hi.Error = { fg = s.red, bg = nil, gui = nil, sp = nil }
@@ -29,36 +33,32 @@ function M.setup()
   hi.Folded = { fg = s.comment, bg = s.background, gui = 'underline', sp = nil }
   hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, gui = 'none', sp = nil }
   hi.Italic = { fg = nil, bg = nil, gui = 'none', sp = nil }
+  hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.Macro = { fg = s.purple, bg = nil, gui = nil, sp = nil }
   hi.MatchParen = { fg = nil, bg = s.selection, gui = nil, sp = nil }
   hi.ModeMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
   hi.MoreMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
+  hi.NonText = { fg = s.window, bg = nil, gui = nil, sp = nil }
+  hi.Normal = { fg = s.foreground, bg = 'none', gui = nil, sp = nil }
+  hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none', sp = nil }
+  hi.PMenuSbar = { fg = nil, bg = s.window, gui = nil, sp = nil }
+  hi.PMenuSel = { fg = s.foreground, bg = s.selection, gui = nil, sp = nil }
+  hi.PMenuThumb = { fg = nil, bg = s.gray300, gui = nil, sp = nil }
   hi.Question = { fg = s.background, bg = s.green, gui = nil, sp = nil }
   hi.Search = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }
-  hi.SpecialKey = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
-  hi.Underlined = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
-  hi.Visual = { fg = nil, bg = s.selection, gui = nil, sp = nil }
-  hi.WarningMsg = { fg = s.red, bg = nil, gui = nil, sp = nil }
-  hi.WildMenu = { fg = s.yellow, bg = s.background, gui = nil, sp = nil }
-  hi.Title = { fg = s.foreground, bg = nil, gui = 'bold', sp = nil }
-  hi.Cursor = { fg = s.background, bg = s.foreground, gui = nil, sp = nil }
-  hi.NonText = { fg = s.window, bg = nil, gui = nil, sp = nil }
-  hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.SignColumn = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
+  hi.SpecialKey = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
   hi.StatusLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.StatusLineNC = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
-  hi.VertSplit = { fg = s.window, bg = s.window, gui = 'none', sp = nil }
-  hi.ColorColumn = { fg = nil, bg = s.guide, gui = 'none', sp = nil }
-  hi.CursorColumn = { fg = nil, bg = s.line, gui = 'none', sp = nil }
-  hi.CursorLine = { fg = nil, bg = s.line, gui = 'none', sp = nil }
-  hi.CursorLineNr = { fg = s.gray200, bg = nil, gui = 'bold', sp = nil }
-  hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none', sp = nil }
-  hi.PMenuSel = { fg = s.foreground, bg = s.selection, gui = nil, sp = nil }
-  hi.PMenuSbar = { fg = nil, bg = s.window, gui = nil, sp = nil }
-  hi.PMenuThumb = { fg = nil, bg = s.gray300, gui = nil, sp = nil }
   hi.TabLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
   hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none', sp = nil }
+  hi.Title = { fg = s.foreground, bg = nil, gui = 'bold', sp = nil }
+  hi.Underlined = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
+  hi.VertSplit = { fg = s.window, bg = s.window, gui = 'none', sp = nil }
+  hi.Visual = { fg = nil, bg = s.selection, gui = nil, sp = nil }
+  hi.WarningMsg = { fg = s.red, bg = nil, gui = nil, sp = nil }
+  hi.WildMenu = { fg = s.yellow, bg = s.background, gui = nil, sp = nil }
 
   hi.BorderedFloat = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
   hi.FloatBorder = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
@@ -118,32 +118,32 @@ function M.setup()
   hi.LspDiagnosticsUnderlineHint = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_green }
 
   -- Treesitter
+  -- hi.TSError = { fg = nil, bg = s.dark_red, gui = 'none', sp = nil }
   hi.TSAnnotation = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
   hi.TSAttribute = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.TSConstructor = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.TSConstant = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
   hi.TSConstBuiltin = { fg = s.yellow, bg = nil, gui = 'italic', sp = nil }
   hi.TSConstMacro = { fg = s.yellow, bg = nil, gui = 'bold', sp = nil }
-  -- hi.TSError = { fg = nil, bg = s.dark_red, gui = 'none', sp = nil }
+  hi.TSConstant = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
+  hi.TSConstructor = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
+  hi.TSEmphasis = { fg = nil, bg = nil, gui = 'italic', sp = nil }
   hi.TSField = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
   hi.TSFuncBuiltin = { fg = s.pink, bg = nil, gui = 'italic', sp = nil }
   hi.TSFuncMacro = { fg = s.pink, bg = nil, gui = 'bold', sp = nil }
   hi.TSKeywordOperator = { fg = s.aqua, bg = nil, gui = 'italic', sp = nil }
+  hi.TSLiteral = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
   hi.TSNamespace = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
   hi.TSNone = { fg = s.foreground, bg = nil, gui = 'none', sp = nil }
   hi.TSProperty = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
-  hi.TSStringRegex = { fg = s.aqua, bg = nil, gui = 'none', sp = nil }
+  hi.TSStrike = { fg = nil, bg = nil, gui = 'strikethrough', sp = nil }
   hi.TSStringEscape = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
+  hi.TSStringRegex = { fg = s.aqua, bg = nil, gui = 'none', sp = nil }
+  hi.TSStrong = { fg = nil, bg = nil, gui = 'bold', sp = nil }
   hi.TSSymbol = { fg = s.red, bg = nil, gui = 'none', sp = nil }
   hi.TSTag = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
   hi.TSTagDelimiter = { fg = s.gray200, bg = nil, gui = 'none', sp = nil }
-  hi.TSStrong = { fg = nil, bg = nil, gui = 'bold', sp = nil }
-  hi.TSEmphasis = { fg = nil, bg = nil, gui = 'italic', sp = nil }
-  hi.TSUnderline = { fg = nil, bg = nil, gui = 'underline', sp = nil }
-  hi.TSStrike = { fg = nil, bg = nil, gui = 'strikethrough', sp = nil }
-  hi.TSLiteral = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
-  hi.TSURI = { fg = nil, bg = nil, gui = 'underline', sp = s.bright_blue }
   hi.TSTypeBuiltin = { fg = s.yellow, bg = nil, gui = 'italic', sp = nil }
+  hi.TSURI = { fg = nil, bg = nil, gui = 'underline', sp = s.bright_blue }
+  hi.TSUnderline = { fg = nil, bg = nil, gui = 'underline', sp = nil }
   hi.TSVariable = { fg = s.blue, bg = nil, gui = 'none', sp = nil }
   hi.TSVariableBuiltin = { fg = s.blue, bg = nil, gui = 'italic', sp = nil }
 
