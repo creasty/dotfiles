@@ -85,7 +85,6 @@ alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
 
 alias g='envchain crst git'
 
-alias ag="rg"
 rg() {
   command rg -p -M 1000 "$@" | less -R
 }
