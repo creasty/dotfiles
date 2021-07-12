@@ -82,6 +82,10 @@ function! vimrc#plugin#denite#init_denite_list() abort
 endfunction
 
 function! vimrc#plugin#denite#init_denite_filter() abort
+  " Remove search highlight
+  setl winhighlight+=,Search:
+
+  " Disable completion
   let b:coc_suggest_disable = 1
 
   call s:init_denite()

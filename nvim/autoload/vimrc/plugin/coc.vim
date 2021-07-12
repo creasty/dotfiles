@@ -52,7 +52,7 @@ function! vimrc#plugin#coc#init() abort
 endfunction
 
 function! vimrc#plugin#coc#configure_float(winid) abort
-  " Remove search highlight from floating windows
+  " Remove search highlight
   let l:value = getwinvar(a:winid, '&winhighlight')
   let l:newValue = join(filter([l:value, 'Search:'], '!empty(v:val)'), ',')
   call setwinvar(a:winid, '&winhighlight', l:newValue)
