@@ -39,12 +39,6 @@
   "git.topRemovedSign.text": "▔",
 
   "languageserver": {
-    "gopls": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod"],
-      "disableWorkspaceFolders": true,
-      "filetypes": ["go"]
-    },
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
@@ -80,7 +74,11 @@
     "clangd": {
       "command": "clangd", // brew install llvm
       "filetypes": ["c", "cpp", "objc", "objcpp", "proto"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".clang-format"],
+      "rootPatterns": [
+        "compile_flags.txt",
+        "compile_commands.json",
+        ".clang-format"
+      ],
       "requireRootPattern": true
     }
   },
@@ -168,6 +166,14 @@
   "typescript.suggest.includeCompletionsWithSnippetText": false,
 
   "pyright.completion.snippetSupport": false,
+
+  "go.goplsOptions": {
+    "completeUnimported": true,
+    "usePlaceholders": true
+  },
+  "go.disable": {
+    "workspaceFolder": true
+  },
 
   "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.enabledLanguageIds": [

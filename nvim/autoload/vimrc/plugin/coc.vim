@@ -10,6 +10,7 @@ let g:coc_global_extensions = [
   \ 'coc-diagnostic',
   \ 'coc-eslint',
   \ 'coc-git',
+  \ 'coc-go',
   \ 'coc-json',
   \ 'coc-lua',
   \ 'coc-metals',
@@ -48,6 +49,9 @@ function! vimrc#plugin#coc#init() abort
 
     " Customize floating windows
     autocmd User CocOpenFloat call vimrc#plugin#coc#configure_float(g:coc_last_float_win)
+
+    " Auto format
+    autocmd FocusLost,BufLeave *.go silent call CocActionAsync('format')
   augroup END
 endfunction
 
