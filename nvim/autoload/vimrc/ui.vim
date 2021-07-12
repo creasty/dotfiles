@@ -150,7 +150,7 @@ function! vimrc#ui#status_line(w, cw) abort
   endif
 
   " Build
-  let l:s = [l:active ? '%#StatusLineMode#' : '%#StatusLine#']
+  let l:s = [l:active ? '%#StatusLineMode#█' : '%#StatusLine#']
     \ + l:l0
     \ + ['%*']
     \ + l:l1
