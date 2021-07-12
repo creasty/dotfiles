@@ -158,6 +158,12 @@
   },
 
   "Lua.diagnostics.globals": ["vim"],
+  "Lua.workspace.library": {
+    "/usr/local/share/nvim/runtime/lua": true,
+    "/usr/local/share/nvim/runtime/lua/vim": true,
+    "/usr/local/share/nvim/runtime/lua/vim/lsp": true,
+    "/usr/local/share/nvim/runtime/lua/vim/treesitter": true
+  },
 
   "typescript.suggest.includeCompletionsWithSnippetText": false,
 
