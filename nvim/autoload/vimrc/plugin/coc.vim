@@ -3,7 +3,7 @@
 " [coc-css] npm install -g vscode-css-languageserver-bin
 " [coc-rls] rustup update && rustup component add rls rust-analysis rust-src
 " [coc-solargraph] gem install solargraph
-" [coc-python] pip install python-language-server
+" [coc-pyright] npm install -g pyright
 let g:coc_global_extensions = [
   \ 'coc-calc',
   \ 'coc-css',
@@ -14,7 +14,7 @@ let g:coc_global_extensions = [
   \ 'coc-lua',
   \ 'coc-metals',
   \ 'coc-prettier',
-  \ 'coc-python',
+  \ 'coc-pyright',
   \ 'coc-react-refactor',
   \ 'coc-rls',
   \ 'coc-solargraph',

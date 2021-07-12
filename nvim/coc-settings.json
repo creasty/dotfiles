@@ -159,6 +159,10 @@
 
   "Lua.diagnostics.globals": ["vim"],
 
+  "typescript.suggest.includeCompletionsWithSnippetText": false,
+
+  "pyright.completion.snippetSupport": false,
+
   "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.enabledLanguageIds": [
     "vim",
