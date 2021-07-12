@@ -11,16 +11,6 @@
     name:  dep
     state: present
 
-- block:
-  - name: grapi | tap
-    homebrew_tap:
-      tap:   izumin5210/tools
-      state: present
-  - name: grapi | install
-    homebrew:
-      name:  izumin5210/tools/grapi
-      state: present
-
 - name: golangci-lint
   homebrew:
     name:  golangci/tap/golangci-lint

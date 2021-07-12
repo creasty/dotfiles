@@ -7,11 +7,7 @@ on_if = 1
 [[plugins]] # operator to camelize/decamelize a specified text
 repo = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
-on_map = [
-  '<Plug>(operator-camelize)',
-  '<Plug>(operator-decamelize)',
-  '<Plug>(operator-camelize-toggle)',
-]
+on_map = ['<Plug>(operator-camelize)']
 hook_add = '''
 nmap gC <Plug>(operator-camelize-toggle)
 xmap C <Plug>(operator-camelize-toggle)
@@ -34,7 +30,7 @@ onoremap R r
 repo = 'junegunn/vim-easy-align'
 on_map = ['<Plug>(EasyAlign)']
 hook_add = '''
-vmap <silent> L <Plug>(EasyAlign)
+xmap <silent> L <Plug>(EasyAlign)
 '''
 
 [[plugins]] # insert several candidates with a single key
@@ -44,6 +40,27 @@ on_func = ['smartchr']
 [[plugins]] # maniplate selected text easily
 repo = 't9md/vim-textmanip'
 on_map = ['<Plug>(textmanip-']
+hook_add = '''
+let g:textmanip_enable_mappings = 0
+
+let g:textmanip_hooks = {}
+function! g:textmanip_hooks.finish(tm) abort
+  let l:tm = a:tm
+  let l:helper = textmanip#helper#get()
+  if !l:tm.linewise
+    call l:helper.remove_trailing_WS(l:tm)
+  endif
+endfunction
+
+xmap <C-j> <Plug>(textmanip-move-down)
+xmap <C-k> <Plug>(textmanip-move-up)
+xmap <C-h> <Plug>(textmanip-move-left)
+xmap <C-l> <Plug>(textmanip-move-right)
+xmap <Space><C-j> <Plug>(textmanip-duplicate-down)
+xmap <Space><C-k> <Plug>(textmanip-duplicate-up)
+xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
+xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
+'''
 
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo = 'mattn/emmet-vim'
@@ -72,8 +89,8 @@ on_cmd = ['Vinarise', 'VinariseDump']
 repo = 'windwp/nvim-ts-autotag'
 on_ft = [
   'html',
-  'javascript', 'javascriptreact', 'jsx',
-  'typescript', 'typescriptreact', 'tsx',
+  'javascript', 'javascriptreact',
+  'typescript', 'typescriptreact',
   'handlebars','hbs',
 ]
 
@@ -84,6 +101,20 @@ repo = 'Shougo/denite.nvim'
 on_cmd = ['Denite']
 hook_source = '''
 call vimrc#plugin#denite#lazy_init()
+'''
+hook_add = '''
+augroup _init_denite
+  autocmd!
+  autocmd FileType denite call vimrc#plugin#denite#init_denite_list()
+  autocmd FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
+augroup END
+
+command! Open :call vimrc#plugin#denite#open_best()
+nnoremap <silent> <C-q> <Cmd>Open<CR>
+
+command! Rg :Denite -buffer-name=grep grep
+nnoremap <silent> <Space>/ <Cmd>Denite -buffer-name=grep -resume grep<CR>
+nnoremap <silent> <Space>* <Cmd>DeniteCursorWord -buffer-name=grep grep<CR>
 '''
 
 [[plugins]] # switch to the missing file without interaction

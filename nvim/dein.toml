@@ -69,6 +69,15 @@ call vimrc#plugin#submode#init()
 
 [[plugins]] # run commands quickly
 repo = 'thinca/vim-quickrun'
+hook_add = '''
+let g:quickrun_config = {}
+let g:quickrun_config['_'] = {
+  \ 'runner': 'job',
+  \ 'outputter/buffer/split': ':botright 15sp',
+\ }
+
+nmap <Leader>r <Plug>(quickrun)
+'''
 
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 repo = 'neoclide/coc.nvim'
@@ -80,6 +89,17 @@ call vimrc#plugin#coc#init()
 
 [[plugins]] # switch segments of text with predefined replacements
 repo = 'AndrewRadev/switch.vim'
+hook_add = '''
+let g:switch_mapping = ''
+let g:switch_custom_definitions = [
+  \ switch#Words(['public', 'protected', 'private']),
+  \ switch#Words(['and', 'or']),
+  \ switch#Words(['if', 'unless']),
+  \ switch#NormalizedCaseWords(['true', 'false']),
+  \ switch#NormalizedCaseWords(['on', 'off']),
+  \ switch#NormalizedCaseWords(['yes', 'no']),
+\ ]
+'''
 
 [[plugins]] # sequencial numbering with pattern
 repo = 'deris/vim-rengbang'
@@ -131,6 +151,17 @@ repo = 'osyo-manga/vim-anzu'
 
 [[plugins]] # Highlight the current search result differently
 repo = 'qxxxb/vim-searchhi'
+hook_add = '''
+let g:searchhi_user_autocmds_enabled = 1
+let g:searchhi_redraw_before_on = 1
+
+nmap n <Plug>(searchhi-n)
+nmap N <Plug>(searchhi-N)
+nmap * <Plug>(searchhi-*)
+nmap g* <Plug>(searchhi-g*)
+nmap # <Plug>(searchhi-#)
+nmap g# <Plug>(searchhi-g#)
+'''
 
 [[plugins]] # a tree explorer
 repo = 'scrooloose/nerdtree'

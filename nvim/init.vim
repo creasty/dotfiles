@@ -380,7 +380,7 @@ function! s:mkdir(dir) abort
   endif
 endfunction
 
-"=== Dein
+"=== Plugins
 "==============================================================================================
 if has('vim_starting')
   let &g:rtp .= ',' . g:vimrc#env.path.dein_repo
@@ -411,7 +411,7 @@ augroup _dein_hook
   autocmd VimEnter * call dein#call_hook('post_source')
 augroup END
 
-"  Commands
+"  Dein commands
 "-----------------------------------------------
 command! DeinUpdate call dein#update()
 command! DeinPurgeCache
@@ -422,57 +422,18 @@ command! DeinPrunePlugins
   \ exec 'DeinPurgeCache' |
   \ echo 'done'
 
-"=== Plugins
-"==============================================================================================
+"  Cross-plugin integration
+"-----------------------------------------------
 if dein#tap('switch.vim')
-  let g:switch_mapping = ''
-  let g:switch_custom_definitions = [
-    \ switch#Words(['public', 'protected', 'private']),
-    \ switch#Words(['and', 'or']),
-    \ switch#Words(['if', 'unless']),
-    \ switch#NormalizedCaseWords(['true', 'false']),
-    \ switch#NormalizedCaseWords(['on', 'off']),
-    \ switch#NormalizedCaseWords(['yes', 'no']),
-  \ ]
-
   nnoremap <silent> - <Cmd>call <SID>my_switch()<CR>
-
   function! s:my_switch() abort
-    if quote_toggler#toggle()
-      return
-    endif
-
+    if quote_toggler#toggle() | return | endif
     :Switch
   endfunction
 endif
 
-if dein#tap('vim-textmanip')
-  let g:textmanip_enable_mappings = 0
-
-  let g:textmanip_hooks = {}
-  function! g:textmanip_hooks.finish(tm) abort
-    let l:tm = a:tm
-    let l:helper = textmanip#helper#get()
-    if !l:tm.linewise
-      call l:helper.remove_trailing_WS(l:tm)
-    endif
-  endfunction
-
-  " move selection
-  xmap <C-j> <Plug>(textmanip-move-down)
-  xmap <C-k> <Plug>(textmanip-move-up)
-  xmap <C-h> <Plug>(textmanip-move-left)
-  xmap <C-l> <Plug>(textmanip-move-right)
-
-  " duplicate line
-  xmap <Space><C-j> <Plug>(textmanip-duplicate-down)
-  xmap <Space><C-k> <Plug>(textmanip-duplicate-up)
-  xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
-  xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
-endif
-
 if dein#tap('coc.nvim')
-  function! s:coc_re_enable() abort
+  function! s:coc_refresh() abort
     silent! CocDisable
     silent! CocEnable
     doautocmd InsertLeave
@@ -482,7 +443,7 @@ if dein#tap('coc.nvim')
     autocmd!
 
     autocmd User ForceRefresh3 call coc#float#close_all()
-    autocmd User ForceRefresh call <SID>coc_re_enable()
+    autocmd User ForceRefresh call s:coc_refresh()
 
     if dein#tap('ultisnips')
       autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
@@ -491,53 +452,7 @@ if dein#tap('coc.nvim')
   augroup END
 endif
 
-if dein#tap('denite.nvim')
-  " NOTE: See :UpdateRemotePlugins
-
-  augroup _init_denite
-    autocmd!
-    autocmd FileType denite call vimrc#plugin#denite#init_denite_list()
-    autocmd FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
-  augroup END
-
-  command! Open :call vimrc#plugin#denite#open_best()
-  nnoremap <silent> <C-q> <Cmd>Open<CR>
-
-  command! Rg :Denite -buffer-name=grep grep
-  nnoremap <Space>/ <Cmd>Denite -buffer-name=grep -resume grep<CR>
-  nnoremap <silent> <Space>* <Cmd>DeniteCursorWord -buffer-name=grep grep<CR>
-
-  command! I18n :Denite -buffer-name=i18n_flow -resume i18n_flow
-  nnoremap <Space>i <Cmd>I18n<CR>
-endif
-
-if dein#tap('vim-quickrun')
-  let g:quickrun_config = {}
-  let g:quickrun_config['_'] = {
-    \ 'runner': 'job',
-    \ 'outputter/buffer/split': ':botright 15sp',
-  \ }
-  let g:quickrun_config['ruby.rspec'] = {
-    \ 'type': 'ruby.rspec',
-    \ 'command': 'rspec',
-    \ 'cmdopt': 'bundle exec',
-    \ 'exec': '%o %c %s',
-  \ }
-
-  nmap <Leader>r <Plug>(quickrun)
-endif
-
 if dein#tap('vim-searchhi')
-  let g:searchhi_user_autocmds_enabled = 1
-  let g:searchhi_redraw_before_on = 1
-
-  nmap n <Plug>(searchhi-n)
-  nmap N <Plug>(searchhi-N)
-  nmap * <Plug>(searchhi-*)
-  nmap g* <Plug>(searchhi-g*)
-  nmap # <Plug>(searchhi-#)
-  nmap g# <Plug>(searchhi-g#)
-
   augroup _init_searchhi
     autocmd!
 
