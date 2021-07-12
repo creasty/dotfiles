@@ -161,6 +161,9 @@ hash -d d=~/Dropbox
 hash -d q=~/go/src
 hash -d g=~/go/src/github.com
 
+# nvim
+hash -d nvim=/usr/local/share/nvim/runtime
+
 #  Type ahead auto suggestion
 #-----------------------------------------------
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
