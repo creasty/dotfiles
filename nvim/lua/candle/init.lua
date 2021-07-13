@@ -38,7 +38,7 @@ function M.setup()
   hi.MatchParen = { fg = nil, bg = s.selection, gui = nil, sp = nil }
   hi.ModeMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
   hi.MoreMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
-  hi.NonText = { fg = s.window, bg = nil, gui = nil, sp = nil }
+  hi.NonText = { fg = s.gray500, bg = nil, gui = nil, sp = nil }
   hi.Normal = { fg = s.foreground, bg = 'none', gui = nil, sp = nil }
   hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none', sp = nil }
   hi.PMenuSbar = { fg = nil, bg = s.window, gui = nil, sp = nil }
