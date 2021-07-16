@@ -117,19 +117,19 @@ endsnippet
 
 snippet print_info "print_info()" b
 print_info() {
-	printf -- "\e[0;34m[Info]\e[0m \$@\n" 1>&2
+	printf -- "\e[0;34m[Info]\e[0m \$*\n" 1>&2
 }
 endsnippet
 
 snippet print_error "print_success()" b
 print_success() {
-	printf -- "\e[0;32m[Success]\e[0m \$@\n" 1>&2
+	printf -- "\e[0;32m[Success]\e[0m \$*\n" 1>&2
 }
 endsnippet
 
 snippet print_error "print_error()" b
 print_error() {
-	printf -- "\e[0;31m[Error]\e[0m \$@\n" 1>&2
+	printf -- "\e[0;31m[Error]\e[0m \$*\n" 1>&2
 }
 endsnippet
 
@@ -145,13 +145,13 @@ endsnippet
 
 snippet section "section()" b
 section() {
-	printf -- "\e[33m==> \$@\e[0m\n"
+	printf -- "\e[33m==> \$*\e[0m\n"
 }
 endsnippet
 
 snippet subsection "subsection" b
 subsection() {
-	printf -- "\e[34m--> \$@\e[0m\n"
+	printf -- "\e[34m--> \$*\e[0m\n"
 }
 endsnippet
 
