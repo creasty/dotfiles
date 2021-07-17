@@ -139,6 +139,10 @@ lua require('creasty.plugins.treesitter')
 repo = 'nvim-treesitter/nvim-treesitter-textobjects'
 depends = ['nvim-treesitter']
 
+[[plugins]] # Use treesitter to autoclose and autorename html tag
+repo = 'windwp/nvim-ts-autotag'
+depends = ['nvim-treesitter']
+
 #  UI
 #-----------------------------------------------
 [[plugins]] # toggle, display and navigate marks

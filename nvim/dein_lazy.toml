@@ -85,15 +85,6 @@ lua require'hop'.setup()
 repo = 'Shougo/vinarise.vim'
 on_cmd = ['Vinarise', 'VinariseDump']
 
-[[plugins]] # Use treesitter to autoclose and autorename html tag
-repo = 'windwp/nvim-ts-autotag'
-on_ft = [
-  'html',
-  'javascript', 'javascriptreact',
-  'typescript', 'typescriptreact',
-  'handlebars','hbs',
-]
-
 #  Navigation
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
