@@ -171,4 +171,6 @@ let g:NERDShutUp = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeIgnore = ['\~$', '\.git$']
 let g:NERDTreeAutoDeleteBuffer = 1
+
+let g:loaded_nerdtree_fs_menu = 1
 '''
