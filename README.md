@@ -18,7 +18,7 @@ Screenshots
 Stats
 -----
 
-Meticulously customized, highly performance optimized.
+Heavily customized, meticulously optimized for high performance.
 
 ### zsh
 
@@ -67,39 +67,39 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~170ms to startup
-- 3700 loc of config (VimScript + Lua + Python)
+- ~150ms to startup
+- 3,500 loc of config
 - 47 plugins
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.16s user 0.07s system 137% cpu 0.168 total
-nvim --headless -c quit  0.15s user 0.07s system 139% cpu 0.157 total
-nvim --headless -c quit  0.16s user 0.07s system 138% cpu 0.165 total
-nvim --headless -c quit  0.16s user 0.07s system 137% cpu 0.165 total
-nvim --headless -c quit  0.15s user 0.07s system 139% cpu 0.161 total
+nvim --headless -c quit  0.13s user 0.08s system 150% cpu 0.140 total
+nvim --headless -c quit  0.14s user 0.09s system 151% cpu 0.150 total
+nvim --headless -c quit  0.13s user 0.08s system 153% cpu 0.140 total
+nvim --headless -c quit  0.15s user 0.09s system 155% cpu 0.152 total
+nvim --headless -c quit  0.14s user 0.08s system 152% cpu 0.150 total
 ```
 
 ```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      98 text files.
-      94 unique files.
-      34 files ignored.
+      97 text files.
+      93 unique files.
+      36 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.05 s (1563.4 files/s, 122162.5 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.09 s (725.9 files/s, 48312.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      60            669            543           3072
+vim script                      57            497            313           2331
 Lua                              5             36             16            433
-JSON                             1              9              0            273
-TOML                             2             42             12            202
+JSON                             1             13              0            292
+TOML                             2             50             12            292
 Python                           2             36              2            192
 Scheme                           1              1              0             10
 -------------------------------------------------------------------------------
-SUM:                            71            793            573           4182
+SUM:                            68            633            343           3550
 -------------------------------------------------------------------------------
 ```
 
