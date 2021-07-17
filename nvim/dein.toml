@@ -54,12 +54,6 @@ let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
 let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
 '''
 
-[[plugins]] # auto close parentheses and repeat by dot
-repo = 'cohama/lexima.vim'
-hook_add = '''
-call vimrc#plugin#lexima#init()
-'''
-
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 

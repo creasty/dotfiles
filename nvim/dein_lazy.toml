@@ -37,6 +37,17 @@ xmap <silent> L <Plug>(EasyAlign)
 repo = 'kana/vim-smartchr'
 on_func = ['smartchr']
 
+[[plugins]] # auto close parentheses and repeat by dot
+repo = 'cohama/lexima.vim'
+on_func = ['lexima#']
+on_event = ['InsertEnter', 'CmdlineEnter']
+hook_add = '''
+let g:lexima_map_escape = ''
+'''
+hook_source = '''
+call vimrc#plugin#lexima#init()
+'''
+
 [[plugins]] # maniplate selected text easily
 repo = 't9md/vim-textmanip'
 on_map = ['<Plug>(textmanip-']
