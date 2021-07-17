@@ -62,12 +62,16 @@ repo = 'thinca/vim-quickrun'
 hook_add = '''
 let g:quickrun_config = {}
 let g:quickrun_config['_'] = {
-  \ 'runner': 'job',
+  \ 'runner': 'neovim_job',
   \ 'outputter/buffer/split': ':botright 15sp',
 \ }
 
 nmap <Leader>r <Plug>(quickrun)
 '''
+
+[[plugins]] # Non official job runner of vim-quickrun for Neovim
+repo = 'lambdalisue/vim-quickrun-neovim-job'
+depends = ['vim-quickrun']
 
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 repo = 'neoclide/coc.nvim'

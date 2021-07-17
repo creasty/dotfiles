@@ -150,7 +150,7 @@ repo = 'nvim-lua/popup.nvim'
 [[plugins]] # All the lua functions I don't want to write twice
 repo = 'nvim-lua/plenary.nvim'
 
-[[plugins]]
+[[plugins]] # An extension for telescope.nvim that allows you to find/filter/preview/pick results from coc.nvim.
 repo = 'fannheyward/telescope-coc.nvim'
 on_source = ['telescope.nvim']
 
