@@ -57,12 +57,6 @@ let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
 [[plugins]] # enable repeating supported plugin maps with dot
 repo = 'tpope/vim-repeat'
 
-[[plugins]] # create your own submodes
-repo = 'kana/vim-submode'
-hook_add = '''
-call vimrc#plugin#submode#init()
-'''
-
 [[plugins]] # run commands quickly
 repo = 'thinca/vim-quickrun'
 hook_add = '''

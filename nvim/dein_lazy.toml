@@ -73,6 +73,13 @@ xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
 xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 '''
 
+[[plugins]] # create your own submodes
+repo = 'kana/vim-submode'
+on_event = ['CursorHold', 'FocusLost']
+hook_source = '''
+call vimrc#plugin#submode#init()
+'''
+
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
 repo = 'mattn/emmet-vim'
 on_func = ['emmet']
