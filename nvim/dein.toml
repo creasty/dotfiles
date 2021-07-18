@@ -124,7 +124,7 @@ hook_post_update = '''
 :TSUpdate
 '''
 hook_post_source = '''
-lua require('creasty.plugins.treesitter')
+lua require('user.plugin.treesitter')
 '''
 
 [[plugins]] # Create your own textobjects using tree-sitter queries!

@@ -159,7 +159,7 @@ repo = 'nvim-telescope/telescope.nvim'
 depends = ['popup.nvim', 'plenary.nvim']
 on_cmd = ['Telescope']
 hook_source = '''
-lua require('creasty.plugins.telescope')
+lua require('user.plugin.telescope')
 '''
 hook_add = '''
 nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
