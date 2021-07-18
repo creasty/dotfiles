@@ -27,6 +27,9 @@ depends = ['vim-textobj-user']
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'tpope/vim-surround'
 
+[[plugins]] # enable repeating supported plugin maps with dot
+repo = 'tpope/vim-repeat'
+
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
 
@@ -53,25 +56,6 @@ let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips-jump-forward)'
 let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
 let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
 '''
-
-[[plugins]] # enable repeating supported plugin maps with dot
-repo = 'tpope/vim-repeat'
-
-[[plugins]] # run commands quickly
-repo = 'thinca/vim-quickrun'
-hook_add = '''
-let g:quickrun_config = {}
-let g:quickrun_config['_'] = {
-  \ 'runner': 'neovim_job',
-  \ 'outputter/buffer/split': ':botright 15sp',
-\ }
-
-nmap <Leader>r <Plug>(quickrun)
-'''
-
-[[plugins]] # Non official job runner of vim-quickrun for Neovim
-repo = 'lambdalisue/vim-quickrun-neovim-job'
-depends = ['vim-quickrun']
 
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 repo = 'neoclide/coc.nvim'
@@ -100,15 +84,6 @@ repo = 'deris/vim-rengbang'
 hook_add = '''
 let g:rengbang_default_usefirst = 1
 let g:rengbang_default_pattern = '\(\<\d\+\>\)'
-'''
-
-[[plugins]] # Neovim/Vim plugin for easy async search and replace across multiple files
-repo = 'eugen0329/vim-esearch'
-hook_add = '''
-let g:esearch = {}
-let g:esearch.regex = 1
-let g:esearch.textobj = 0
-let g:esearch.case = 'smart'
 '''
 
 [[plugins]] # EditorConfig Vim Plugin
@@ -171,4 +146,31 @@ let g:NERDTreeIgnore = ['\~$', '\.git$']
 let g:NERDTreeAutoDeleteBuffer = 1
 
 let g:loaded_nerdtree_fs_menu = 1
+'''
+
+#  Util
+#-----------------------------------------------
+[[plugins]] # run commands quickly
+repo = 'thinca/vim-quickrun'
+hook_add = '''
+let g:quickrun_config = {}
+let g:quickrun_config['_'] = {
+  \ 'runner': 'neovim_job',
+  \ 'outputter/buffer/split': ':botright 15sp',
+\ }
+
+nmap <Leader>r <Plug>(quickrun)
+'''
+
+[[plugins]] # Non official job runner of vim-quickrun for Neovim
+repo = 'lambdalisue/vim-quickrun-neovim-job'
+depends = ['vim-quickrun']
+
+[[plugins]] # Neovim/Vim plugin for easy async search and replace across multiple files
+repo = 'eugen0329/vim-esearch'
+hook_add = '''
+let g:esearch = {}
+let g:esearch.regex = 1
+let g:esearch.textobj = 0
+let g:esearch.case = 'smart'
 '''

@@ -63,11 +63,3 @@ function! user#plugin#fugitive#browse_handler(...) abort
 
   return l:url
 endfunction
-
-function! user#plugin#fugitive#lazy_init() abort
-  if !exists('g:fugitive_browse_handlers')
-    let g:fugitive_browse_handlers = []
-  endif
-
-  call insert(g:fugitive_browse_handlers, function('user#plugin#fugitive#browse_handler'))
-endfunction
