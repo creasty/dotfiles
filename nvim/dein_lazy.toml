@@ -45,7 +45,7 @@ hook_add = '''
 let g:lexima_map_escape = ''
 '''
 hook_source = '''
-call vimrc#plugin#lexima#init()
+call user#plugin#lexima#init()
 '''
 
 [[plugins]] # maniplate selected text easily
@@ -77,7 +77,7 @@ xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 repo = 'kana/vim-submode'
 on_event = ['CursorHold', 'FocusLost']
 hook_source = '''
-call vimrc#plugin#submode#init()
+call user#plugin#submode#init()
 '''
 
 [[plugins]] # emmet for vim: HTML and CSS hi-speed coding
@@ -109,16 +109,16 @@ on_cmd = ['Vinarise', 'VinariseDump']
 repo = 'Shougo/denite.nvim'
 on_cmd = ['Denite']
 hook_source = '''
-call vimrc#plugin#denite#lazy_init()
+call user#plugin#denite#lazy_init()
 '''
 hook_add = '''
 augroup _init_denite
   autocmd!
-  autocmd FileType denite call vimrc#plugin#denite#init_denite_list()
-  autocmd FileType denite-filter call vimrc#plugin#denite#init_denite_filter()
+  autocmd FileType denite call user#plugin#denite#init_denite_list()
+  autocmd FileType denite-filter call user#plugin#denite#init_denite_filter()
 augroup END
 
-command! Open :call vimrc#plugin#denite#open_best()
+command! Open :call user#plugin#denite#open_best()
 nnoremap <silent> <C-q> <Cmd>Open<CR>
 
 command! Rg :Denite -buffer-name=grep grep
@@ -130,7 +130,7 @@ nnoremap <silent> <Space>* <Cmd>DeniteCursorWord -buffer-name=grep grep<CR>
 repo = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']
 hook_source = '''
-call vimrc#plugin#altr#lazy_init()
+call user#plugin#altr#lazy_init()
 '''
 hook_add = '''
 nmap ga <Plug>(altr-forward)
@@ -141,7 +141,7 @@ nmap gA <Plug>(altr-back)
 repo = 'tpope/vim-fugitive'
 on_cmd = ['GBlame', 'GBrowse']
 hook_source = '''
-call vimrc#plugin#fugitive#lazy_init()
+call user#plugin#fugitive#lazy_init()
 '''
 
 [[plugins]] # An implementation of the Popup API from vim in Neovim

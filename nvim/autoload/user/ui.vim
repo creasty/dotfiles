@@ -6,7 +6,7 @@ function! s:get_filereadable(bufnr)
   return getbufvar(a:bufnr, s:filereadable_key, v:false)
 endfunction
 
-function! vimrc#ui#fold_text() abort
+function! user#ui#fold_text() abort
   let l:fs = v:foldstart
 
   while getline(l:fs) =~# '^\s*$' | let l:fs = nextnonblank(l:fs + 1)
@@ -26,7 +26,7 @@ function! vimrc#ui#fold_text() abort
   return l:line . l:expansion . l:linecounter
 endfunction
 
-function! vimrc#ui#title_text() abort
+function! user#ui#title_text() abort
   let l:path = expand('%:p')
   let l:path = (l:path !=# '') ? l:path : getcwd()
   let l:path = substitute(l:path, $HOME, '~', '')
@@ -34,7 +34,7 @@ function! vimrc#ui#title_text() abort
   return l:path
 endfunction
 
-function! vimrc#ui#tab_line() abort
+function! user#ui#tab_line() abort
   let l:s = ''
   let l:current = tabpagenr()
 
@@ -59,7 +59,7 @@ function! vimrc#ui#tab_line() abort
   return l:s
 endfunction
 
-function! vimrc#ui#status_line(w, cw) abort
+function! user#ui#status_line(w, cw) abort
   let l:l0 = []
   let l:l1 = []
   let l:r0 = []
@@ -166,12 +166,12 @@ endfunction
 function! s:update_statusline() abort
   let l:cw = winnr()
   for l:nr in range(1, winnr('$'))
-    call setwinvar(l:nr, '&statusline', '%!vimrc#ui#status_line(' . l:nr . ', ' . l:cw . ')')
+    call setwinvar(l:nr, '&statusline', '%!user#ui#status_line(' . l:nr . ', ' . l:cw . ')')
   endfor
 endfunction
 
-function! vimrc#ui#setup_statusline() abort
-  augroup vimrc_ui_statusline
+function! user#ui#setup_statusline() abort
+  augroup user_ui_statusline
     autocmd!
     autocmd VimEnter,WinEnter,BufWinEnter *
       \ call <SID>update_statusline()

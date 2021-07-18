@@ -1,7 +1,7 @@
 let s:last_cwd = ''
 let s:last_win_size = ''
 
-function! vimrc#plugin#denite#open_best() abort
+function! user#plugin#denite#open_best() abort
   let l:cwd = getcwd()
   let l:is_startup_dir = (l:cwd == $HOME || l:cwd == '/')
   let l:is_same_dir = (l:cwd == s:last_cwd)
@@ -22,7 +22,7 @@ function! vimrc#plugin#denite#open_best() abort
     \ l:source
 endfunction
 
-function! vimrc#plugin#denite#lazy_init() abort
+function! user#plugin#denite#lazy_init() abort
   " default options
   call denite#custom#option('_', 'statusline', v:false)
   call denite#custom#option('_', 'highlight_matched_range', '')
@@ -71,7 +71,7 @@ function! s:init_denite() abort
   inoremap <silent><buffer><expr> <C-l> denite#do_map('redraw')
 endfunction
 
-function! vimrc#plugin#denite#init_denite_list() abort
+function! user#plugin#denite#init_denite_list() abort
   call s:init_denite()
   nnoremap <silent><buffer><expr> i denite#do_map('open_filter_buffer')
   nnoremap <silent><buffer><expr> d denite#do_map('do_action', 'delete')
@@ -81,7 +81,7 @@ function! vimrc#plugin#denite#init_denite_list() abort
   nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select') . 'j'
 endfunction
 
-function! vimrc#plugin#denite#init_denite_filter() abort
+function! user#plugin#denite#init_denite_filter() abort
   " Remove search highlight
   setl winhighlight+=,Search:
 

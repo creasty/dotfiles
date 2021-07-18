@@ -1,4 +1,4 @@
-function! vimrc#plugin#lexima#init() abort
+function! user#plugin#lexima#init() abort
 endfunction
 
 let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']

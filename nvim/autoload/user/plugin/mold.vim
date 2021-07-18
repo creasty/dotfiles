@@ -6,11 +6,11 @@ let s:macro = {
   \ 'USER_NAME': 'Creasty',
 \ }
 
-function! vimrc#plugin#mold#before_load() abort
+function! user#plugin#mold#before_load() abort
   let b:mold_saved_cursor = getcurpos()
 endfunction
 
-function! vimrc#plugin#mold#after_load() abort
+function! user#plugin#mold#after_load() abort
   for [l:macro, l:def] in items(s:macro)
     silent exec '%s/\<' . l:macro . '\>/' . l:def . '/ge'
   endfor

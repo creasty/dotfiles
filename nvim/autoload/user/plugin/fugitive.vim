@@ -16,7 +16,7 @@ function! s:homepage_for_url(url) abort
   return ''
 endfunction
 
-function! vimrc#plugin#fugitive#browse_handler(...) abort
+function! user#plugin#fugitive#browse_handler(...) abort
   if a:0 == 1 || type(a:1) == type({})
     let l:opts = a:1
     let l:root = s:homepage_for_url(get(l:opts, 'remote', ''))
@@ -64,10 +64,10 @@ function! vimrc#plugin#fugitive#browse_handler(...) abort
   return l:url
 endfunction
 
-function! vimrc#plugin#fugitive#lazy_init() abort
+function! user#plugin#fugitive#lazy_init() abort
   if !exists('g:fugitive_browse_handlers')
     let g:fugitive_browse_handlers = []
   endif
 
-  call insert(g:fugitive_browse_handlers, function('vimrc#plugin#fugitive#browse_handler'))
+  call insert(g:fugitive_browse_handlers, function('user#plugin#fugitive#browse_handler'))
 endfunction

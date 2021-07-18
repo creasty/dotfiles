@@ -160,16 +160,16 @@ set foldmethod=indent
 set fillchars="fold:"
 set foldlevel=20
 set foldlevelstart=20
-set foldtext=vimrc#ui#fold_text()
+set foldtext=user#ui#fold_text()
 
 " window title
-set title titlestring=%{vimrc#ui#title_text()}
+set title titlestring=%{user#ui#title_text()}
 
 " tabline
-set tabline=%!vimrc#ui#tab_line()
+set tabline=%!user#ui#tab_line()
 
 " statusline
-call vimrc#ui#setup_statusline()
+call user#ui#setup_statusline()
 
 "=== Editing
 "==============================================================================================
@@ -383,20 +383,20 @@ endfunction
 "=== Plugins
 "==============================================================================================
 if has('vim_starting')
-  let &g:rtp .= ',' . g:vimrc#env.path.dein_repo
+  let &g:rtp .= ',' . g:user#env.path.dein_repo
 endif
 
 let g:dein#_plugins = {}
 
-if dein#load_state(g:vimrc#env.path.dein)
-  call dein#begin(g:vimrc#env.path.dein, [
+if dein#load_state(g:user#env.path.dein)
+  call dein#begin(g:user#env.path.dein, [
     \ expand('<sfile>'),
-    \ g:vimrc#env.path.dein_toml,
-    \ g:vimrc#env.path.dein_lazy_toml,
+    \ g:user#env.path.dein_toml,
+    \ g:user#env.path.dein_lazy_toml,
   \ ])
 
-  call dein#load_toml(g:vimrc#env.path.dein_toml,      { 'lazy': 0 })
-  call dein#load_toml(g:vimrc#env.path.dein_lazy_toml, { 'lazy': 1 })
+  call dein#load_toml(g:user#env.path.dein_toml,      { 'lazy': 0 })
+  call dein#load_toml(g:user#env.path.dein_lazy_toml, { 'lazy': 1 })
 
   call dein#end()
   call dein#save_state()

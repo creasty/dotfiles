@@ -1,4 +1,4 @@
-function! vimrc#plugin#altr#lazy_init() abort
+function! user#plugin#altr#lazy_init() abort
   " Header files
   call altr#define('%.c', '%.h', '%.m')
 

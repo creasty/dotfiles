@@ -33,12 +33,12 @@ let g:coc_selectmode_mapping = 0
 let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
 let g:coc_snippet_prev = '<Plug>(coc-snippet-prev)'
 
-function! vimrc#plugin#coc#init() abort
+function! user#plugin#coc#init() abort
   set completeopt+=noinsert " auto select
   set completeopt-=preview " disable the preview window feature
   set shortmess+=c " silence annoying messages
 
-  augroup vimrc_plugin_coc
+  augroup user_plugin_coc
     autocmd!
 
     " Highlight the symbol and its references when holding the cursor.
@@ -48,14 +48,14 @@ function! vimrc#plugin#coc#init() abort
     autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
 
     " Customize floating windows
-    autocmd User CocOpenFloat call vimrc#plugin#coc#configure_float(g:coc_last_float_win)
+    autocmd User CocOpenFloat call user#plugin#coc#configure_float(g:coc_last_float_win)
 
     " Auto format
     autocmd FocusLost,BufLeave *.go silent call CocActionAsync('format')
   augroup END
 endfunction
 
-function! vimrc#plugin#coc#configure_float(winid) abort
+function! user#plugin#coc#configure_float(winid) abort
   " Remove search highlight
   let l:value = getwinvar(a:winid, '&winhighlight')
   let l:newValue = join(filter([l:value, 'Search:'], '!empty(v:val)'), ',')

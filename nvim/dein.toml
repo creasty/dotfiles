@@ -37,8 +37,8 @@ let g:mold_dir = expand('~/.config/nvim/template')
 
 augroup _init_mold
   autocmd!
-  autocmd User MoldTemplateLoadPre  call vimrc#plugin#mold#before_load()
-  autocmd User MoldTemplateLoadPost call vimrc#plugin#mold#after_load()
+  autocmd User MoldTemplateLoadPre  call user#plugin#mold#before_load()
+  autocmd User MoldTemplateLoadPost call user#plugin#mold#after_load()
 augroup END
 '''
 
@@ -78,7 +78,7 @@ repo = 'neoclide/coc.nvim'
 rev = 'release'
 merged = 0
 hook_add = '''
-call vimrc#plugin#coc#init()
+call user#plugin#coc#init()
 '''
 
 [[plugins]] # switch segments of text with predefined replacements
