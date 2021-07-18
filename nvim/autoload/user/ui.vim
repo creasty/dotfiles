@@ -160,14 +160,19 @@ function! s:render_statusline(w, active) abort
   return join(l:s, ' ')
 endfunction
 
-function! user#ui#statusline(active) abort
-  let l:winnr = winnr()
-
+function! user#ui#statusline(winnr, active) abort
   if a:active
-    call mode_observer#update_mode(l:winnr)
+    call mode_observer#update_mode(a:winnr)
   endif
+  return s:render_statusline(a:winnr, a:active)
+endfunction
 
-  return s:render_statusline(l:winnr, a:active)
+function! s:update_statusline() abort
+  let l:cw = winnr()
+  for l:nr in range(1, winnr('$'))
+    let l:active = l:cw == l:nr
+    call setwinvar(l:nr, '&statusline', '%!user#ui#statusline(' . l:nr . ',' . l:active . ')')
+  endfor
 endfunction
 
 function! user#ui#setup_statusline() abort
@@ -176,8 +181,6 @@ function! user#ui#setup_statusline() abort
     autocmd FocusGained,BufEnter,BufReadPost,BufWritePost *
       \ call s:update_filereadable()
     autocmd WinEnter,BufWinEnter *
-      \ setl statusline=%!user#ui#statusline(v:true)
-    autocmd WinLeave *
-      \ setl statusline=%!user#ui#statusline(v:false)
+      \ call s:update_statusline()
   augroup END
 endfunction
