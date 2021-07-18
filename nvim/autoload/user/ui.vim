@@ -2,6 +2,13 @@ scriptencoding utf-8
 
 let s:filereadable_key = 'filereadable'
 
+function! s:update_filereadable() abort
+  let l:path = expand('%:p')
+  if !empty(l:path)
+    let b:filereadable = filereadable(l:path)
+  endif
+endfunction
+
 function! s:get_filereadable(bufnr)
   return getbufvar(a:bufnr, s:filereadable_key, v:false)
 endfunction
@@ -59,7 +66,7 @@ function! user#ui#tab_line() abort
   return l:s
 endfunction
 
-function! user#ui#status_line(w, cw) abort
+function! s:render_statusline(w, active) abort
   let l:l0 = []
   let l:l1 = []
   let l:r0 = []
@@ -68,17 +75,12 @@ function! user#ui#status_line(w, cw) abort
   " Params
   let l:bufnr = winbufnr(a:w)
   let l:bufname = bufname(l:bufnr)
-  let l:active = (a:w == a:cw)
   let l:ft = getbufvar(l:bufnr, '&ft')
   let l:enough_width = (winwidth(a:w) > 120)
   let l:is_file = !empty(l:bufname)
 
-  if l:active
-    call mode_observer#update_mode(a:cw)
-  endif
-
   " l0
-  if l:active
+  if a:active
     let l:l0 += [(l:ft ==# '' ? 'plain' : l:ft)]
     if l:is_file || l:ft ==# ''
       let l:l0 += ['∙', empty(&fileencoding) ? 'utf-8' : &fileencoding, &fileformat]
@@ -103,7 +105,7 @@ function! user#ui#status_line(w, cw) abort
     endif
   endif
 
-  if l:active
+  if a:active
     let l:diagnostics = {
       \ 'E': 0,
       \ 'W': 0,
@@ -134,23 +136,18 @@ function! user#ui#status_line(w, cw) abort
   endif
 
   " r1
-  let l:coc_current_function = getbufvar(l:bufnr, 'coc_current_function', '')
-  if l:active && l:enough_width && l:coc_current_function !=# ''
-    let l:r1 += [l:coc_current_function]
-  endif
-
   let l:coc_status = get(g:, 'coc_status', '')
-  if l:active && l:coc_status !=# ''
+  if a:active && l:coc_status !=# ''
     let l:r1 += [l:coc_status[0:60]]
   endif
 
   " r0
-  if l:active
+  if a:active
     let l:r0 += ['%l:%c', '∙', '%p%%']
   endif
 
   " Build
-  let l:s = [l:active ? '%#StatusLineMode#█' : '%#StatusLine#']
+  let l:s = [a:active ? '%#StatusLineMode#' : '%#StatusLine#']
     \ + l:l0
     \ + ['%*']
     \ + l:l1
@@ -163,19 +160,24 @@ function! user#ui#status_line(w, cw) abort
   return join(l:s, ' ')
 endfunction
 
-function! s:update_statusline() abort
-  let l:cw = winnr()
-  for l:nr in range(1, winnr('$'))
-    call setwinvar(l:nr, '&statusline', '%!user#ui#status_line(' . l:nr . ', ' . l:cw . ')')
-  endfor
+function! user#ui#statusline(active) abort
+  let l:winnr = winnr()
+
+  if a:active
+    call mode_observer#update_mode(l:winnr)
+  endif
+
+  return s:render_statusline(l:winnr, a:active)
 endfunction
 
 function! user#ui#setup_statusline() abort
   augroup user_ui_statusline
     autocmd!
-    autocmd VimEnter,WinEnter,BufWinEnter *
-      \ call <SID>update_statusline()
     autocmd FocusGained,BufEnter,BufReadPost,BufWritePost *
-      \ let b:filereadable = filereadable(expand('%:p'))
+      \ call s:update_filereadable()
+    autocmd WinEnter,BufWinEnter *
+      \ setl statusline=%!user#ui#statusline(v:true)
+    autocmd WinLeave *
+      \ setl statusline=%!user#ui#statusline(v:false)
   augroup END
 endfunction

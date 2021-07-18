@@ -2,7 +2,6 @@
   "coc.preferences.formatOnType": false,
   "coc.preferences.formatOnSaveFiletypes": [],
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
 
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",

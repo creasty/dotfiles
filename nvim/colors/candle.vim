@@ -25,10 +25,8 @@ function! s:update_mode_highlight() abort
     return
   endif
 
-  lua <<EOF
-    local mode = vim.api.nvim_eval('w:mode_observer_current_mode')
-    require('candle').update_mode_highlight(mode)
-EOF
+  let l:mode = get(w:, 'mode_observer_current_mode', 'n')
+  call v:lua.require('candle').update_mode_highlight(l:mode)
 endfunction
 
 augroup candle_theme
