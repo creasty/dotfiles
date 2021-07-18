@@ -1,7 +1,24 @@
+let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
+
 function! user#plugin#lexima#init() abort
 endfunction
 
-let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
+function! user#plugin#lexima#loop(...) abort
+  let l:literals = a:000 + [a:000[0]]
+
+  for l:i in range(len(l:literals) - 1, 1, -1)
+    let l:l1 = l:literals[l:i]
+    let l:l2 = l:literals[l:i - 1]
+
+    if search('\V' . escape(l:l2, '\') . '\%#', 'bcn')
+      return (pumvisible() ? "\<C-e>" : '')
+        \ . repeat("\<BS>", strchars(l:l2))
+        \ . l:l1
+    endif
+  endfor
+
+  return l:literals[0]
+endfunction
 
 "  Operators
 "-----------------------------------------------
@@ -31,7 +48,7 @@ call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
 call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': '><Space>' })
 
 " comma
-call lexima#add_rule({ 'char': ',', 'input': "<C-r>=smartchr#loop(', ', ',')<CR>" })
+call lexima#add_rule({ 'char': ',', 'input': "<C-r>=user#plugin#lexima#loop(', ', ',')<CR>" })
 call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
 
 " no merge: ?!, &!, |!
@@ -143,7 +160,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':     '<C-l>',
   \ 'at':       '\(chan\|<-chan\|chan<-\)\%#',
-  \ 'input':    "<C-r>=smartchr#loop('chan', '<-chan', 'chan<-')<CR>",
+  \ 'input':    "<C-r>=user#plugin#lexima#loop('chan', '<-chan', 'chan<-')<CR>",
   \ 'filetype': ['go'],
 \ })
 
@@ -227,7 +244,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':     '%',
   \ 'at':       '<%[=-]\? \%# %>',
-  \ 'input':    "<C-r>=smartchr#loop('% ', '%= ', '%- ')<CR>",
+  \ 'input':    "<C-r>=user#plugin#lexima#loop('% ', '%= ', '%- ')<CR>",
   \ 'filetype': ['html', 'eruby'],
 \ })
 

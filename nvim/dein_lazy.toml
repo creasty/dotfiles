@@ -33,10 +33,6 @@ hook_add = '''
 xmap <silent> L <Plug>(EasyAlign)
 '''
 
-[[plugins]] # insert several candidates with a single key
-repo = 'kana/vim-smartchr'
-on_func = ['smartchr']
-
 [[plugins]] # auto close parentheses and repeat by dot
 repo = 'cohama/lexima.vim'
 on_func = ['lexima#']
