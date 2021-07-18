@@ -67,7 +67,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~150ms to startup
+- ~140ms to startup
 - 3,500 loc of config
 - 47 plugins
 
@@ -75,31 +75,31 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.13s user 0.08s system 150% cpu 0.140 total
-nvim --headless -c quit  0.14s user 0.09s system 151% cpu 0.150 total
-nvim --headless -c quit  0.13s user 0.08s system 153% cpu 0.140 total
-nvim --headless -c quit  0.15s user 0.09s system 155% cpu 0.152 total
-nvim --headless -c quit  0.14s user 0.08s system 152% cpu 0.150 total
+nvim --headless -c quit  0.13s user 0.07s system 148% cpu 0.134 total
+nvim --headless -c quit  0.14s user 0.08s system 153% cpu 0.145 total
+nvim --headless -c quit  0.13s user 0.08s system 151% cpu 0.136 total
+nvim --headless -c quit  0.14s user 0.08s system 152% cpu 0.139 total
+nvim --headless -c quit  0.14s user 0.08s system 153% cpu 0.144 total
 ```
 
 ```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      97 text files.
-      93 unique files.
-      36 files ignored.
+      93 text files.
+      89 unique files.
+      34 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.09 s (725.9 files/s, 48312.3 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.06 s (1109.0 files/s, 78046.8 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      57            497            313           2331
+vim script                      53            493            313           2312
 Lua                              5             36             16            433
-JSON                             1             13              0            292
-TOML                             2             50             12            292
+TOML                             2             50             14            292
+JSON                             1             13              0            291
 Python                           2             36              2            192
 Scheme                           1              1              0             10
 -------------------------------------------------------------------------------
-SUM:                            68            633            343           3550
+SUM:                            64            629            345           3530
 -------------------------------------------------------------------------------
 ```
 
