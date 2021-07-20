@@ -105,11 +105,12 @@ set shortmess+=I
 " stop showing mode
 set noshowmode
 
-" always show statusline
+" always show statusline & tabline
 set laststatus=2
-
-" always show tabline
 set showtabline=2
+
+" tabline & statusline
+lua require('user.ui').setup()
 
 " always show sign column
 set signcolumn=yes
@@ -160,16 +161,37 @@ set foldmethod=indent
 set fillchars="fold:"
 set foldlevel=20
 set foldlevelstart=20
-set foldtext=user#ui#fold_text()
+set foldtext=MyFoldText()
+
+function! MyFoldText() abort
+  let l:fs = v:foldstart
+  while getline(l:fs) =~# '^\s*$'
+    let l:fs = nextnonblank(l:fs + 1)
+  endwhile
+
+  if l:fs > v:foldend
+    let l:line = getline(v:foldstart)
+  else
+    let l:line = substitute(getline(l:fs), '\t', repeat(' ', &tabstop), 'g')
+  endif
+
+  let l:w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
+  let l:expansion = repeat(' ', l:w - strwidth(l:num . l:line))
+  let l:num = ' (' . (1 + v:foldend - v:foldstart) . ')'
+
+  return l:line . l:expansion . l:num
+endfunction
 
 " window title
-set title titlestring=%{user#ui#title_text()}
+set title titlestring=%{MyTitleString()}
 
-" tabline
-set tabline=%!user#ui#tab_line()
-
-" statusline
-call user#ui#setup_statusline()
+function! MyTitleString() abort
+  let l:path = expand('%:p')
+  let l:path = (l:path !=# '') ? l:path : getcwd()
+  let l:path = substitute(l:path, $HOME, '~', '')
+  let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
+  return l:path
+endfunction
 
 "=== Editing
 "==============================================================================================

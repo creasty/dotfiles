@@ -1,0 +1,199 @@
+local filereadable_key = 'filereadable'
+
+local function file_exists(name)
+  local f = io.open(name, 'r')
+  return f ~= nil and io.close(f)
+end
+
+local function buf_get_var(bufnr, name, default)
+  local ok, value = pcall(vim.api.nvim_buf_get_var, bufnr, name)
+  if ok then return value end
+  return default
+end
+
+local function update_filereadable()
+  local path = vim.api.nvim_buf_get_name(0)
+  if path ~= '' then
+    vim.api.nvim_buf_set_var(0, filereadable_key, file_exists(path))
+  end
+end
+
+local function tabline()
+  local line = {}
+
+  local current = vim.fn.tabpagenr()
+  for tabnr = 1, vim.fn.tabpagenr('$') do
+    local winnr = vim.fn.tabpagewinnr(tabnr)
+    local buflist = vim.fn.tabpagebuflist(tabnr)
+    local bufnr = buflist[winnr]
+    local path = vim.api.nvim_buf_get_name(bufnr)
+
+    local name = vim.fn.fnamemodify(path, ':t')
+    name = name ~= '' and name or '[No Name]'
+
+    local flags = {}
+    if vim.bo[bufnr].mod then
+      table.insert(flags, '+')
+    end
+    local readable = buf_get_var(bufnr, filereadable_key, true)
+    if not readable then
+      table.insert(flags, '?')
+    end
+
+    local tab = {
+      '%', tabnr, 'T',
+      (tabnr == current and '%#TabLineSel#' or '%#TabLine#'),
+      ' ', name,
+      (#flags > 0 and ' ' .. table.concat(flags, '') or ''),
+      ' ',
+    }
+    table.insert(line, table.concat(tab, ''))
+  end
+
+  table.insert(line, '%#TabLineFill#')
+
+  return table.concat(line, '')
+end
+
+local function render_statusline(winnr, active)
+  local bufnr = vim.fn.winbufnr(winnr)
+  local path = vim.api.nvim_buf_get_name(bufnr)
+  local is_file = (path ~= '')
+
+  local l0 = {}
+  local l1 = {}
+  local r1 = {}
+  local r0 = {}
+
+  if active then
+    table.insert(l0, '%#StatusLineMode#')
+  else
+    table.insert(l0, '%#StatusLine#')
+  end
+
+  if active then
+    local filetype = vim.bo[bufnr].filetype
+    table.insert(l0, filetype == '' and 'plain' or filetype)
+
+    if is_file or filetype == '' then
+      local encoding = vim.bo[bufnr].fileencoding
+      local format = vim.bo[bufnr].fileformat
+      table.insert(l0, '∙')
+      table.insert(l0, encoding == '' and 'utf-8' or encoding)
+      table.insert(l0, format)
+    end
+  else
+    if is_file then
+      local rel_path = vim.fn.fnamemodify(path, ':p:~:.')
+      table.insert(l0, rel_path)
+    else
+      table.insert(l0, '[No Name]')
+    end
+  end
+
+  local flags = {}
+  if vim.bo[bufnr].readonly then
+    table.insert(flags, '!')
+  end
+  if vim.bo[bufnr].mod then
+    table.insert(flags, '+')
+  end
+  local readable = buf_get_var(bufnr, filereadable_key, true)
+  if not readable then
+    table.insert(flags, '?')
+  end
+  if #flags > 0 then
+    table.insert(l0, table.concat(flags, ''))
+  end
+
+  if is_file then
+    local last_saved_time = buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
+    if 0 < last_saved_time and last_saved_time >= vim.fn.localtime() - 60 then
+      table.insert(l1, vim.fn.strftime('✓ %T', last_saved_time))
+    end
+  end
+
+  if active then
+    local diagnostics = { E = 0, W = 0, I = 0, H = 0 }
+
+    local status = buf_get_var(bufnr, 'coc_diagnostic_info', nil)
+    if status then
+      diagnostics.E = diagnostics.E + (status.error or 0)
+      diagnostics.W = diagnostics.W + (status.warning or 0)
+      diagnostics.I = diagnostics.I + (status.information or 0)
+      diagnostics.H = diagnostics.H + (status.hint or 0)
+    end
+
+    if diagnostics.E > 0 then
+      local text = string.format('%%#StatusLineDiagnosticsError#%s %d%%*', '✗', diagnostics.E)
+      table.insert(l1, text)
+    end
+    if diagnostics.W > 0 then
+      local text = string.format('%%#StatusLineDiagnosticsWarning#%s %d%%*', '∆', diagnostics.W)
+      table.insert(l1, text)
+    end
+    if diagnostics.I > 0 then
+      local text = string.format('%%#StatusLineDiagnosticsInfo#%s %d%%*', '▸', diagnostics.I)
+      table.insert(l1, text)
+    end
+    if diagnostics.H > 0 then
+      local text = string.format('%%#StatusLineDiagnosticsHint#%s %d%%*', '▪︎', diagnostics.H)
+      table.insert(l1, text)
+    end
+  end
+
+  local coc_status = vim.g.coc_status or ''
+  if active and coc_status ~= '' then
+    table.insert(r1, string.sub(coc_status, 0, 60))
+  end
+
+  if active then
+    table.insert(r0, '%l:%c')
+    table.insert(r0, '∙')
+    table.insert(r0, '%p%%')
+  end
+
+  return table.concat({
+    table.concat(l0, ' '),
+    '%*',
+    table.concat(l1, ' '),
+    '%=',
+    table.concat(r1, ' '),
+    '%*',
+    table.concat(r0, ' '),
+    '%*',
+  }, ' ')
+end
+
+local function statusline()
+  local winnr = vim.g.statusline_winid
+  local active = winnr == vim.fn.win_getid()
+
+  if active then
+    vim.fn['mode_observer#update_mode'](winnr)
+  end
+
+  return render_statusline(winnr, active)
+end
+
+local function setup()
+  vim.o.tabline = [[%!v:lua.require'user.ui'.tabline()]]
+
+  vim.o.statusline = [[%!v:lua.require'user.ui'.statusline()]]
+  vim.api.nvim_exec([[
+    augroup user_ui_statusline
+      autocmd!
+      autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * lua require'user.ui'.update_filereadable()
+      autocmd WinLeave,BufLeave * lua vim.wo.statusline=require'user.ui'.statusline()
+      autocmd BufWinEnter,WinEnter,BufEnter * set statusline<
+      autocmd VimResized * redrawstatus
+    augroup END
+  ]], false)
+end
+
+return {
+  setup = setup,
+  statusline = statusline,
+  tabline = tabline,
+  update_filereadable = update_filereadable,
+}
