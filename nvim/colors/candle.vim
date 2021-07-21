@@ -24,9 +24,7 @@ function! s:update_mode_highlight() abort
   if g:colors_name !=# 'candle'
     return
   endif
-
-  let l:mode = get(w:, 'mode_observer_current_mode', 'n')
-  call v:lua.require('candle').update_mode_highlight(l:mode)
+  call v:lua.require('candle').update_mode_highlight()
 endfunction
 
 augroup candle_theme

@@ -1,4 +1,5 @@
 local filereadable_key = 'filereadable'
+local current_mode = 'n'
 
 local function file_exists(name)
   local f = io.open(name, 'r')
@@ -15,6 +16,14 @@ local function update_filereadable()
   local path = vim.api.nvim_buf_get_name(0)
   if path ~= '' then
     vim.api.nvim_buf_set_var(0, filereadable_key, file_exists(path))
+  end
+end
+
+local function update_mode()
+  local mode = vim.fn.mode()
+  if mode ~= current_mode then
+    current_mode = mode
+    vim.cmd([[doautocmd User ModeDidChange]])
   end
 end
 
@@ -170,7 +179,7 @@ local function statusline()
   local active = winnr == vim.fn.win_getid()
 
   if active then
-    vim.fn['mode_observer#update_mode'](winnr)
+    update_mode()
   end
 
   return render_statusline(winnr, active)

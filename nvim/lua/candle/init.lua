@@ -148,6 +148,7 @@ function M.setup()
   hi.TSVariableBuiltin = { fg = s.blue, bg = nil, gui = 'italic', sp = nil }
 
   -- custom
+  hi.StatusLineMode = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window, gui = 'none', sp = nil }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window, gui = 'none', sp = nil }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window, gui = 'none', sp = nil }
@@ -185,18 +186,19 @@ function M.setup()
   hi.markdownCodeBlock = { fg = s.green, bg = nil, gui = nil, sp = nil }
 end
 
-function M.update_mode_highlight(mode)
+function M.update_mode_highlight()
+  local mode = vim.fn.mode()
   local hi = M.highlight
   local s = M.schema
   local color = s.foreground
 
   if string.match(mode, '^i') then
     color = s.green
-  elseif string.match(mode, '[vV]$') then
+  elseif string.match(mode, '[vV\22]$') then
     color = s.orange
-  elseif string.match(mode, '^[rR]') or string.match(mode, 'o') then
+  elseif string.match(mode, '^R') or string.match(mode, 'o') then
     color = s.purple
-  elseif string.match(mode, '[sS]$') then
+  elseif string.match(mode, '[sS\19]$') then
     color = s.blue
   end
 
