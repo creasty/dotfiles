@@ -45,8 +45,7 @@ function! s:reload_display(level) abort
     " fix broken treesitter highlight
     " @see https://github.com/nvim-treesitter/nvim-treesitter/issues/78
     if exists(':TSBufEnable') == 2
-      write
-      edit
+      silent! edit
       :TSBufEnable highlight
     endif
   endif
@@ -77,7 +76,7 @@ function! s:reload_file() abort
   endif
 endfunction
 
-nnoremap <expr> <C-l> <SID>reload_display(3)
+nnoremap <C-l> <Cmd>call <SID>reload_display(3)<CR>
 
 augroup force_refresh
   autocmd!
