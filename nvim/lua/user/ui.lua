@@ -73,14 +73,6 @@ local function render_statusline(winnr, active)
   if active then
     local filetype = vim.bo[bufnr].filetype
     table.insert(l0, filetype == '' and 'plain' or filetype)
-
-    if is_file or filetype == '' then
-      local encoding = vim.bo[bufnr].fileencoding
-      local format = vim.bo[bufnr].fileformat
-      table.insert(l0, '∙')
-      table.insert(l0, encoding == '' and 'utf-8' or encoding)
-      table.insert(l0, format)
-    end
   else
     if is_file then
       local rel_path = vim.fn.fnamemodify(path, ':p:~:.')
@@ -146,6 +138,11 @@ local function render_statusline(winnr, active)
   end
 
   if active then
+    local encoding = vim.bo[bufnr].fileencoding
+    local format = vim.bo[bufnr].fileformat
+    table.insert(r0, encoding == '' and 'utf-8' or encoding)
+    table.insert(r0, format)
+    table.insert(r0, '∙')
     table.insert(r0, '%l:%c')
     table.insert(r0, '∙')
     table.insert(r0, '%p%%')
