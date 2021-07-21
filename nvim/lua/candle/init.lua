@@ -190,7 +190,7 @@ end
 M.current_mode = 'n'
 
 function M.update_mode_highlight()
-  local mode = vim.fn.mode()
+  local mode = vim.api.nvim_get_mode().mode
   if mode == M.current_mode then
     return
   end

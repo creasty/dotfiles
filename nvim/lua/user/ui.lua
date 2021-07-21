@@ -104,10 +104,10 @@ local function render_statusline(winnr, active)
     table.insert(l0, table.concat(flags, ''))
   end
 
-  if is_file then
+  if active and is_file then
     local last_saved_time = buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
-    if 0 < last_saved_time and last_saved_time >= vim.fn.localtime() - 60 then
-      table.insert(l1, vim.fn.strftime('✓ %T', last_saved_time))
+    if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
+      table.insert(l1, os.date('✓ %X', last_saved_time))
     end
   end
 
