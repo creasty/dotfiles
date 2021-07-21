@@ -174,3 +174,6 @@ let g:esearch.regex = 1
 let g:esearch.textobj = 0
 let g:esearch.case = 'smart'
 '''
+
+[[plugins]] # Interactive neovim scratchpad for lua
+repo = 'rafcamlet/nvim-luapad'
