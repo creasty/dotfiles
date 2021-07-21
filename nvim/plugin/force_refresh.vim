@@ -45,8 +45,9 @@ function! s:reload_display(level) abort
     " fix broken treesitter highlight
     " @see https://github.com/nvim-treesitter/nvim-treesitter/issues/78
     if exists(':TSBufEnable') == 2
-      silent! edit
-      TSBufEnable highlight
+      write
+      edit
+      :TSBufEnable highlight
     endif
   endif
 

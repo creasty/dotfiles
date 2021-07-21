@@ -148,6 +148,7 @@ function M.setup()
   hi.TSVariableBuiltin = { fg = s.blue, bg = nil, gui = 'italic', sp = nil }
 
   -- custom
+  hi.StatusLineL0 = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
   hi.StatusLineMode = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window, gui = 'none', sp = nil }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window, gui = 'none', sp = nil }
@@ -186,8 +187,15 @@ function M.setup()
   hi.markdownCodeBlock = { fg = s.green, bg = nil, gui = nil, sp = nil }
 end
 
+M.current_mode = 'n'
+
 function M.update_mode_highlight()
   local mode = vim.fn.mode()
+  if mode == M.current_mode then
+    return
+  end
+  M.current_mode = mode
+
   local hi = M.highlight
   local s = M.schema
   local color = s.foreground

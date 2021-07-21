@@ -20,15 +20,7 @@ function! s:setup_matchadd() abort
   \ ]
 endfunction
 
-function! s:update_mode_highlight() abort
-  if g:colors_name !=# 'candle'
-    return
-  endif
-  call v:lua.require('candle').update_mode_highlight()
-endfunction
-
 augroup candle_theme
   autocmd!
   autocmd BufWinEnter * call s:setup_matchadd()
-  autocmd User ModeDidChange call s:update_mode_highlight()
 augroup END

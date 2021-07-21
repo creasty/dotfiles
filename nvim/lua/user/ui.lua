@@ -1,5 +1,4 @@
 local filereadable_key = 'filereadable'
-local current_mode = 'n'
 
 local function file_exists(name)
   local f = io.open(name, 'r')
@@ -16,14 +15,6 @@ local function update_filereadable()
   local path = vim.api.nvim_buf_get_name(0)
   if path ~= '' then
     vim.api.nvim_buf_set_var(0, filereadable_key, file_exists(path))
-  end
-end
-
-local function update_mode()
-  local mode = vim.fn.mode()
-  if mode ~= current_mode then
-    current_mode = mode
-    vim.cmd([[doautocmd User ModeDidChange]])
   end
 end
 
@@ -44,8 +35,7 @@ local function tabline()
     if vim.bo[bufnr].mod then
       table.insert(flags, '+')
     end
-    local readable = buf_get_var(bufnr, filereadable_key, true)
-    if not readable then
+    if not buf_get_var(bufnr, filereadable_key, true) then
       table.insert(flags, '?')
     end
 
@@ -75,7 +65,7 @@ local function render_statusline(winnr, active)
   local r0 = {}
 
   if active then
-    table.insert(l0, '%#StatusLineMode#')
+    table.insert(l0, '%#StatusLineMode#▌%#StatusLineL0#')
   else
     table.insert(l0, '%#StatusLine#')
   end
@@ -107,8 +97,7 @@ local function render_statusline(winnr, active)
   if vim.bo[bufnr].mod then
     table.insert(flags, '+')
   end
-  local readable = buf_get_var(bufnr, filereadable_key, true)
-  if not readable then
+  if not buf_get_var(bufnr, filereadable_key, true) then
     table.insert(flags, '?')
   end
   if #flags > 0 then
@@ -179,7 +168,7 @@ local function statusline()
   local active = winnr == vim.fn.win_getid()
 
   if active then
-    update_mode()
+    require('candle').update_mode_highlight()
   end
 
   return render_statusline(winnr, active)
