@@ -63,6 +63,26 @@ call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Sp
 " Rust: lifetime
 call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
 
+"  End-wise
+"-----------------------------------------------
+function! s:add_endwise_rule(at, end, filetype, syntax)
+  call lexima#add_rule({
+    \ 'char': '<CR>',
+    \ 'input': '<CR>',
+    \ 'input_after': '<CR>' . a:end,
+    \ 'at': a:at,
+    \ 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1' . a:end,
+    \ 'filetype': a:filetype,
+    \ 'syntax': a:syntax,
+  \ })
+endfunction
+
+call s:add_endwise_rule(
+  \ '^\<\(function\|if .\{-} then\|while .\{-} do\|for .\{-} do\)\>\%(.*[^.:@$]\<end\>\)\@!.*\%#',
+  \ 'end',
+  \ 'lua', []
+\ )
+
 "  CR
 "-----------------------------------------------
 " indent on after =>
