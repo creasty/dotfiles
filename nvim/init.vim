@@ -428,10 +428,7 @@ if dein#check_install()
   call dein#install()
 endif
 
-augroup _dein_hook
-  autocmd!
-  autocmd VimEnter * call dein#call_hook('post_source')
-augroup END
+call dein#call_hook('post_source')
 
 "  Dein commands
 "-----------------------------------------------
