@@ -17,24 +17,18 @@ function! s:is_enabled() abort
 endfunction
 
 function! s:reload_display(level) abort
-  if !getbufvar('%', 'force_refresh_enabled', v:false)
+  if !get(b:, 'force_refresh_enabled', v:false)
     return
   endif
-  if !s:is_enabled()
-    return
-  endif
-  if get(b:, "force_refresh_initial_reload_display", v:true)
+  if get(b:, 'force_refresh_initial_reload_display', v:true)
     let b:force_refresh_initial_reload_display = v:false
     return
   endif
 
   " clear highlights
-  if has('textprop')
-    call prop_clear(1, line('$'))
-  endif
   call nvim_buf_clear_namespace(0, -1, 1, line('$'))
 
-  if a:level >= 3
+  if a:level == 3
     " reload if modified externally
     silent! checktime
 
@@ -58,21 +52,8 @@ function! s:reload_display(level) abort
 
   " for plugins
   doautocmd User ForceRefresh
-  if a:level >= 3
+  if a:level == 3
     doautocmd User ForceRefresh3
-  endif
-
-  return ''
-endfunction
-
-function! s:reload_file() abort
-  if get(b:, "force_refresh_initial_reload_file", v:true)
-    let b:force_refresh_initial_reload_file = v:false
-    return
-  endif
-
-  if filereadable(expand('%:p'))
-    silent! execute 'checktime' bufnr('%')
   endif
 endfunction
 
@@ -85,11 +66,8 @@ augroup force_refresh
   autocmd User ForceRefresh3 :
 
   autocmd BufLeave * let b:force_refresh_enabled = v:false
-  autocmd BufEnter * let b:force_refresh_enabled = v:true
-  autocmd BufEnter * call <SID>reload_display(0)
+  autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled() | call <SID>reload_display(0)
   autocmd FocusGained * call <SID>reload_display(1)
-
-  autocmd FocusGained,BufEnter * ++nested call <SID>reload_file()
 augroup END
 
 let &cpoptions = s:save_cpo
