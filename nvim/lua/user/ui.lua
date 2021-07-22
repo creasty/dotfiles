@@ -86,7 +86,7 @@ local function render_statusline(winnr, active)
   if vim.bo[bufnr].readonly then
     table.insert(flags, '!')
   end
-  if vim.bo[bufnr].mod then
+  if vim.bo[bufnr].modified then
     table.insert(flags, '+')
   end
   if not buf_get_var(bufnr, filereadable_key, true) then
@@ -140,7 +140,7 @@ local function render_statusline(winnr, active)
   if active then
     local encoding = vim.bo[bufnr].fileencoding
     local format = vim.bo[bufnr].fileformat
-    table.insert(r0, encoding == '' and 'utf-8' or encoding)
+    table.insert(r0, encoding ~= '' and encoding or vim.o.encoding)
     table.insert(r0, format)
     table.insert(r0, '∙')
     table.insert(r0, '%l:%c')
