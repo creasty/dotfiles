@@ -58,3 +58,13 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+local parser_config = require 'nvim-treesitter.parsers'.get_parser_configs()
+
+parser_config.proto = {
+  install_info = {
+    url = 'https://github.com/mitchellh/tree-sitter-proto',
+    branch = 'main',
+    files = {'src/parser.c'},
+  },
+}

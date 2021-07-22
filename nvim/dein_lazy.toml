@@ -167,13 +167,3 @@ nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
 [[plugins]] # Neovim Treesitter Playground
 repo = 'nvim-treesitter/playground'
 on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
-
-#  Language
-#-----------------------------------------------
-[[plugins]] # Vim syntax highlighting for Google's Protocol Buffers
-repo = 'uarun/vim-protobuf'
-on_ft = ['proto']
-
-[[plugins]] # vim syntax file for plantuml
-repo = 'aklt/plantuml-syntax'
-on_ft = ['plantuml']

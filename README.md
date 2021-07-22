@@ -69,7 +69,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~140ms to startup
 - 3,500 loc of config
-- 46 plugins
+- 45 plugins
 
 <details>
 
