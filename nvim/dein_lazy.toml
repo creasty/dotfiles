@@ -2,12 +2,11 @@
 #-----------------------------------------------
 [[plugins]] # define your own operator easily
 repo = 'kana/vim-operator-user'
-on_if = 1
 
 [[plugins]] # operator to camelize/decamelize a specified text
 repo = 'tyru/operator-camelize.vim'
 depends = ['vim-operator-user']
-on_map = ['<Plug>(operator-camelize)']
+on_map = ['<Plug>(operator-camelize-toggle)']
 hook_add = '''
 nmap gC <Plug>(operator-camelize-toggle)
 xmap C <Plug>(operator-camelize-toggle)
