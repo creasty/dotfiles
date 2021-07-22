@@ -31,7 +31,7 @@ function M.setup()
   hi.Exception = { fg = s.purple, bg = nil, gui = nil, sp = nil }
   hi.FoldColumn = { fg = s.selection, bg = s.background, gui = nil, sp = nil }
   hi.Folded = { fg = s.comment, bg = s.background, gui = 'underline', sp = nil }
-  hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, gui = 'none', sp = nil }
+  hi.IncSearch = { fg = s.background, bg = s.orange, gui = 'bold', sp = nil }
   hi.Italic = { fg = nil, bg = nil, gui = 'none', sp = nil }
   hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.Macro = { fg = s.purple, bg = nil, gui = nil, sp = nil }
