@@ -3,7 +3,7 @@ local actions_set = require('telescope.actions.set')
 local conf = require('telescope.config').values
 local finders = require('telescope.finders')
 local from_entry = require('telescope.from_entry')
-local path = require('telescope.path')
+local path = require('plenary.path')
 local pickers = require('telescope.pickers')
 local previewers = require('telescope.previewers')
 local utils = require('telescope.utils')
@@ -19,7 +19,7 @@ end
 
 local function search_readme(dir)
   for _, name in pairs{'README', 'README.md', 'README.markdown'} do
-    local filepath = dir..path.separator..name
+    local filepath = dir .. '/' .. name
     if is_readable(filepath) then
       return filepath
     end
