@@ -2,16 +2,13 @@ if exists('did_load_filetypes')
   finish
 endif
 
-let s:shortcut = { 'ft': '', 'timer': -1 }
-function! s:shortcut.call(...) abort
-  exec 'setf' self.ft
+let s:shortcut = { 'timer_id': -1 }
+function! s:shortcut.call(ft, timer_id) abort
+  exec 'setf' a:ft
 endfunction
 function! s:shortcut.async_call(ft) abort
-  let self.ft = a:ft
-  if self.timer >= 0
-    call timer_stop(self.timer)
-  endif
-  let self.timer = timer_start(50, function(self.call))
+  call timer_stop(self.timer_id)
+  let self.timer_id = timer_start(50, function(self.call, [a:ft]))
 endfunction
 
 augroup filetypedetect
