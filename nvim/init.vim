@@ -37,10 +37,12 @@ set scrolloff=5
 
 " no backup and swap files
 set nobackup
+set nowritebackup
 set noswapfile
 
-" nohidden buffers
-set nohidden
+" enable hidden buffers
+set hidden
+set autowrite
 
 " automatic formatting
 set formatoptions&
