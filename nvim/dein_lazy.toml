@@ -94,10 +94,6 @@ hook_source = '''
 lua require'hop'.setup()
 '''
 
-[[plugins]] # hex editing system
-repo = 'Shougo/vinarise.vim'
-on_cmd = ['Vinarise', 'VinariseDump']
-
 #  Navigation
 #-----------------------------------------------
 [[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8

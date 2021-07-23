@@ -10,16 +10,6 @@ repo = 'kana/vim-textobj-user'
 repo = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
 
-[[plugins]] # text objects for multiple types of parentheses
-repo = 'osyo-manga/vim-textobj-multiblock'
-depends = ['vim-textobj-user']
-hook_add = '''
-omap ab <Plug>(textobj-multiblock-a)
-omap ib <Plug>(textobj-multiblock-i)
-xmap ab <Plug>(textobj-multiblock-a)
-xmap ib <Plug>(textobj-multiblock-i)
-'''
-
 [[plugins]] # Text objects for numbers
 repo = 'tkhren/vim-textobj-numeral'
 depends = ['vim-textobj-user']
