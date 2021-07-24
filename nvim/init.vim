@@ -129,9 +129,6 @@ set nocursorline
 " do not redraw during command
 set lazyredraw
 
-" limit syntax highlighting
-set synmaxcol=512
-
 " display nonprintable charactors as hex
 set display+=uhex
 
@@ -163,26 +160,6 @@ set foldmethod=indent
 set fillchars="fold:"
 set foldlevel=20
 set foldlevelstart=20
-set foldtext=MyFoldText()
-
-function! MyFoldText() abort
-  let l:fs = v:foldstart
-  while getline(l:fs) =~# '^\s*$'
-    let l:fs = nextnonblank(l:fs + 1)
-  endwhile
-
-  if l:fs > v:foldend
-    let l:line = getline(v:foldstart)
-  else
-    let l:line = substitute(getline(l:fs), '\t', repeat(' ', &tabstop), 'g')
-  endif
-
-  let l:w = winwidth(0) - &foldcolumn - (&number ? 8 : 0)
-  let l:expansion = repeat(' ', l:w - strwidth(l:num . l:line))
-  let l:num = ' (' . (1 + v:foldend - v:foldstart) . ')'
-
-  return l:line . l:expansion . l:num
-endfunction
 
 " window title
 set title titlestring=%{MyTitleString()}
@@ -208,10 +185,11 @@ xmap k gk
 
 " paste
 inoremap <C-v> <C-r><C-p>*
-cnoremap <C-v> <C-r>*
-
 inoremap <C-\> <C-v>
+cnoremap <C-v> <C-r>*
 cnoremap <C-\> <C-v>
+snoremap <C-v> <C-g>"_c<C-r><C-p>*
+snoremap <C-\> <C-v>
 
 " do not store to register with x, c
 nnoremap x "_x
