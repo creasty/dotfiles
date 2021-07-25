@@ -57,6 +57,17 @@ function! s:reload_display(level) abort
   endif
 endfunction
 
+function! s:reload_file() abort
+  if get(b:, "force_refresh_initial_reload_file", v:true)
+    let b:force_refresh_initial_reload_file = v:false
+    return
+  endif
+
+  if filereadable(expand('%:p'))
+    silent! execute 'checktime' bufnr('%')
+  endif
+endfunction
+
 nnoremap <C-l> <Cmd>call <SID>reload_display(3)<CR>
 
 augroup force_refresh
@@ -68,6 +79,8 @@ augroup force_refresh
   autocmd BufLeave * let b:force_refresh_enabled = v:false
   autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled() | call <SID>reload_display(0)
   autocmd FocusGained * call <SID>reload_display(1)
+
+  autocmd FocusGained,BufEnter * call <SID>reload_file()
 augroup END
 
 let &cpoptions = s:save_cpo
