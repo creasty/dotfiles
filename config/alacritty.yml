@@ -71,4 +71,4 @@ shell:
 
 key_bindings:
   - { key: Q, mods: Control, chars: "\x11" } # @see https://github.com/jwilm/alacritty/issues/1359
-  - { key: N, mods: Command, command: { program: "open", args: ["-n", "/Applications/Alacritty.app"] } }
+  - { key: V, mods: Control, action: Paste }
