@@ -1,6 +1,3 @@
-autoload -Uz colors
-colors
-
 __gitdir() {
   if [ -z "${1-}" ]; then
     if [ -n "${__git_dir-}" ]; then
@@ -103,7 +100,7 @@ __git_ps1() {
     # git rev-parse --verify refs/stash >/dev/null 2>&1 && s="$"
   fi
 
-  printf -- " \e[0;38;5;238m@ ${fg[white]}%s ${fg[red]}%s%s%s${reset_color}" "$c${b##refs/heads/}" "$w$i$s$u$x" "$r"
+  printf -- " \e[0;38;5;237m@ %%F{white}%s %%F{red}%s%s%s%%f" "$c${b##refs/heads/}" "$w$i$s$u$x" "$r"
 }
 
 PROMPT="%F{white}\${(%):-%~}%f\$(__git_ps1)%f
