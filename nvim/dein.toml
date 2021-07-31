@@ -26,8 +26,6 @@ repo = 'sickill/vim-pasta'
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
 hook_add = '''
-let g:mold_dir = stdpath('config') . '/template'
-
 augroup _init_mold
   autocmd!
   autocmd User MoldTemplateLoadPre  call user#plugin#mold#before_load()
