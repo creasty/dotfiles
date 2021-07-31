@@ -389,21 +389,27 @@ endfunction
 
 "=== Plugins
 "==============================================================================================
+let s:config_path = stdpath('config')
+let s:dein_path = s:config_path . '/dein'
+let s:dein_repo_path = s:dein_path . '/repos/github.com/Shougo/dein.vim'
+let s:dein_toml_path = s:config_path . '/dein.toml'
+let s:dein_lazy_toml_path = s:config_path . '/dein_lazy.toml'
+
 if has('vim_starting')
-  let &g:rtp .= ',' . g:user#env.path.dein_repo
+  let &g:rtp .= ',' . s:dein_repo_path
 endif
 
 let g:dein#_plugins = {}
 
-if dein#load_state(g:user#env.path.dein)
-  call dein#begin(g:user#env.path.dein, [
+if dein#load_state(s:dein_path)
+  call dein#begin(s:dein_path, [
     \ expand('<sfile>'),
-    \ g:user#env.path.dein_toml,
-    \ g:user#env.path.dein_lazy_toml,
+    \ s:dein_toml_path,
+    \ s:dein_lazy_toml_path,
   \ ])
 
-  call dein#load_toml(g:user#env.path.dein_toml,      { 'lazy': 0 })
-  call dein#load_toml(g:user#env.path.dein_lazy_toml, { 'lazy': 1 })
+  call dein#load_toml(s:dein_toml_path,      { 'lazy': 0 })
+  call dein#load_toml(s:dein_lazy_toml_path, { 'lazy': 1 })
 
   call dein#end()
   call dein#save_state()
