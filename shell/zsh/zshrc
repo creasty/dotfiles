@@ -1,8 +1,5 @@
 #  Load
 #-----------------------------------------------
-zmodload -i zsh/mathfunc
-zmodload -i zsh/complist
-
 fpath=(
   ~/.zsh/completions
   $fpath
@@ -116,10 +113,8 @@ setopt print_exit_value
 
 #  Completion
 #-----------------------------------------------
-WORDCHARS=''
-
-# should this be in keybindings?
-bindkey -M menuselect '^o' accept-and-infer-next-history
+# Fix backward-word and forward-word
+export WORDCHARS=
 
 zstyle ':completion:*:match:*' original only
 
