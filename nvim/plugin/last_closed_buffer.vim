@@ -7,26 +7,30 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 let g:lcb_max_restore_count = 5
+let g:lcb_leaved = 0
+let g:lcb_closed = []
 
-let g:lcb_current = 0
-let g:lcb_leaved  = 0
-let g:lcb_closed  = []
+function! s:on_enter() abort
+  if g:lcb_leaved == 0
+    return
+  endif
+  if !empty(&buftype)
+    return
+  endif
 
-function! s:lcb_remember_on_enter() abort
-  let g:lcb_current = bufnr('')
-
-  if g:lcb_leaved > 0 && !bufloaded(g:lcb_leaved) && empty(&buftype)
+  let l:info = getbufinfo(g:lcb_leaved)[0]
+  if l:info.hidden || !l:info.loaded
     let g:lcb_closed = ([g:lcb_leaved] + g:lcb_closed)[0 : g:lcb_max_restore_count - 1]
   endif
 endfunction
 
-function! s:lcb_remember_on_leave() abort
-  if g:lcb_current > 0 && !empty(bufname(g:lcb_current)) && empty(&buftype)
-    let g:lcb_leaved = g:lcb_current
+function! s:on_leave() abort
+  if !empty(bufname()) && empty(&buftype)
+    let g:lcb_leaved = bufnr('')
   endif
 endfunction
 
-function! s:lcb_restore() abort
+function! s:restore() abort
   let l:nr = get(g:lcb_closed, 0, 0)
   let g:lcb_closed = g:lcb_closed[1:]
 
@@ -37,11 +41,11 @@ endfunction
 
 augroup last_closed_buffer
   autocmd!
-  autocmd BufEnter * call <SID>lcb_remember_on_enter()
-  autocmd BufLeave * call <SID>lcb_remember_on_leave()
+  autocmd BufEnter * call <SID>on_enter()
+  autocmd BufLeave * call <SID>on_leave()
 augroup END
 
-nnoremap <silent> <Plug>(lcb-restore) <Cmd>call <SID>lcb_restore()<CR>
+nnoremap <silent> <Plug>(lcb-restore) <Cmd>call <SID>restore()<CR>
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
