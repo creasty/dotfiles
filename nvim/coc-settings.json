@@ -269,6 +269,7 @@
     "minmax",
     "monospaced",
     "nvim",
+    "oneof",
     "openjdk",
     "outdent",
     "paleblue",
