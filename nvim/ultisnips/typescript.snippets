@@ -1,6 +1,6 @@
 extends javascript
 
-#=== React
+#=== React Hooks
 #==============================================================================================
 snippet useState "Variable for React.useState" b
 const [${1:state}, set${1/^(is|has)?(.+)/\u$2/}] = useState<${2:${1/^(is|has)?(.+)/\u$2/}}>($0);
@@ -30,19 +30,7 @@ snippet useLayoutEffect "Variable for React.useLayoutEffect" b
 useLayoutEffect(() => $1, [$2]);
 endsnippet
 
-snippet FC "Define FC" b
-const ${1:Name}: React.FC$2 = ($3) => {
-	$0
-};
-endsnippet
-
-snippet VFC "Define VFC" b
-const ${1:Name}: React.FC$2 = ($3) => {
-	$0
-};
-endsnippet
-
-#=== Apollo
+#=== Apollo Client
 #==============================================================================================
 snippet fetchPolicy "Useful pair of fetchPolicy and nextFetchPolicy" b
 fetchPolicy: "cache-and-network",

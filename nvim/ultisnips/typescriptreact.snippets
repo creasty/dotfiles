@@ -1,1 +1,21 @@
 extends typescript
+
+#=== React
+#==============================================================================================
+snippet FC "Define FC" b
+const ${1:Name}: React.FC$2 = ($3) => {
+	$0
+};
+endsnippet
+
+snippet VFC "Define VFC" b
+const ${1:Name}: React.VFC$2 = ($3) => {
+	$0
+};
+endsnippet
+
+snippet FREC "Define FREC" b
+const ${1:Name} = React.forwardRef<${2:Handles}, ${3:Props}>(($4, ref) => {
+	$0
+});
+endsnippet
