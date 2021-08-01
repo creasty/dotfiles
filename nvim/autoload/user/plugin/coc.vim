@@ -1,11 +1,13 @@
-" [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin && brew install watchman
-" [coc-eslint] npm install -g eslint
+" [coc-clangd] brew install llvm
 " [coc-css] npm install -g vscode-css-languageserver-bin
+" [coc-eslint] npm install -g eslint
+" [coc-pyright] npm install -g pyright
 " [coc-rls] rustup update && rustup component add rls rust-analysis rust-src
 " [coc-solargraph] gem install solargraph
-" [coc-pyright] npm install -g pyright
+" [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin && brew install watchman
 let g:coc_global_extensions = [
   \ 'coc-calc',
+  \ 'coc-clangd',
   \ 'coc-css',
   \ 'coc-diagnostic',
   \ 'coc-eslint',

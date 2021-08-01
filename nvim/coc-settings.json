@@ -2,6 +2,7 @@
   "coc.preferences.formatOnType": false,
   "coc.preferences.formatOnSaveFiletypes": [],
   "coc.preferences.extensionUpdateCheck": "weekly",
+  "coc.preferences.enableMessageDialog": true,
 
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",
@@ -23,7 +24,7 @@
   "list.insertMappings": {
     "<C-j>": "do:defaultaction",
     "<C-v>": "eval:@@",
-    "<C-c>": "do:exit", // "do:toggleMode"
+    "<C-c>": "do:exit",
     "<C-n>": "normal:j",
     "<C-p>": "normal:k",
     "<C-f>": "feedkeys:\\<Right>",
@@ -39,19 +40,22 @@
 
   "languageserver": {
     "bash": {
+      // npm i -g bash-language-server
       "command": "bash-language-server",
       "args": ["start"],
       "filetypes": ["bash"],
       "ignoredRootPaths": ["~"]
     },
     "kotlin": {
-      "command": "kotlin-language-server", // github.com/fwcd/kotlin-language-server
+      // github.com/fwcd/kotlin-language-server
+      "command": "kotlin-language-server",
       "filetypes": ["kotlin"],
       "rootPatterns": ["gradle.properties"],
       "requireRootPattern": true
     },
     "graphql": {
-      "command": "graphql-lsp", // npm i -g graphql-language-service-cli
+      // npm i -g graphql-language-service-cli
+      "command": "graphql-lsp",
       "args": ["server", "-m", "stream"],
       "rootPatterns": [
         ".graphqlrc",
@@ -67,16 +71,6 @@
         "javascriptreact",
         "typescript",
         "typescriptreact"
-      ],
-      "requireRootPattern": true
-    },
-    "clangd": {
-      "command": "clangd", // brew install llvm
-      "filetypes": ["c", "cpp", "objc", "objcpp", "proto"],
-      "rootPatterns": [
-        "compile_flags.txt",
-        "compile_commands.json",
-        ".clang-format"
       ],
       "requireRootPattern": true
     }
@@ -173,6 +167,8 @@
   "go.disable": {
     "workspaceFolder": true
   },
+
+  "metals.enable": false,
 
   "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.enabledLanguageIds": [
