@@ -74,15 +74,28 @@ nnoremap <Plug>(coc-peek-definition) <Cmd>call CocActionAsync('jumpDefinition', 
 nnoremap <Plug>(coc-peek-type-definition) <Cmd>call CocActionAsync('jumpTypeDefinition', v:false)<CR>
 inoremap <Plug>(coc-signature-help) <C-r>=CocActionAsync('showSignatureHelp')<CR>
 
-command! -nargs=0 -range=% Format
-  \ if <range> == 0 |
-  \   call CocActionAsync('format') |
-  \ else |
-  \   call CocActionAsync('formatSelected', visualmode()) |
-  \ endif
-
 command! -nargs=0 Import
   \ call CocAction('runCommand', 'editor.action.organizeImport')
+
+command! -nargs=0 -range=% Format call <SID>run_format(<range>)
+
+function! s:run_format(range) abort
+  if a:range == 0
+    if CocHasProvider('format')
+      call CocActionAsync('format')
+    elseif &ft ==# 'proto' && executable('clang-format')
+      :%!clang-format %
+    else
+      call coc#util#echo_messages('Error', ['format provider not found for current buffer'])
+    endif
+  else
+    if CocHasProvider('formatSelected')
+      call CocActionAsync('formatSelected', visualmode())
+    else
+      call coc#util#echo_messages('Error', ['formatRange provider not found for current buffer'])
+    endif
+  endif
+endfunction
 
 "  Key mappings
 "-----------------------------------------------
