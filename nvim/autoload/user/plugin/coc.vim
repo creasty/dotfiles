@@ -77,23 +77,24 @@ inoremap <Plug>(coc-signature-help) <C-r>=CocActionAsync('showSignatureHelp')<CR
 command! -nargs=0 Import
   \ call CocAction('runCommand', 'editor.action.organizeImport')
 
-command! -nargs=0 -range=% Format call <SID>run_format(<range>)
+command! -nargs=0 -range=% Format call <SID>run_format(<range>, <line1>, <line2>)
 
-function! s:run_format(range) abort
+function! s:run_format(range, line1, line2) abort
+  if &ft ==# 'proto' && executable('clang-format')
+    normal mZ
+    if a:range == 0
+      exec '%!clang-format' '%'
+    else
+      exec '%!clang-format' '-lines='.a:line1.':'.a:line2 '%'
+    endif
+    normal 'Zzz
+    return
+  end
+
   if a:range == 0
-    if CocHasProvider('format')
-      call CocActionAsync('format')
-    elseif &ft ==# 'proto' && executable('clang-format')
-      :%!clang-format %
-    else
-      call coc#util#echo_messages('Error', ['format provider not found for current buffer'])
-    endif
+    call CocActionAsync('format')
   else
-    if CocHasProvider('formatSelected')
-      call CocActionAsync('formatSelected', visualmode())
-    else
-      call coc#util#echo_messages('Error', ['formatRange provider not found for current buffer'])
-    endif
+    call CocActionAsync('formatSelected', visualmode())
   endif
 endfunction
 
