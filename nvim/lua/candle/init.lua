@@ -31,7 +31,7 @@ function M.setup()
   hi.Exception = { fg = s.purple, bg = nil, gui = nil, sp = nil }
   hi.FoldColumn = { fg = s.selection, bg = s.background, gui = nil, sp = nil }
   hi.Folded = { fg = s.comment, bg = s.background, gui = 'underline', sp = nil }
-  hi.IncSearch = { fg = s.background, bg = s.orange, gui = 'bold', sp = nil }
+  hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold', sp = nil }
   hi.Italic = { fg = nil, bg = nil, gui = 'none', sp = nil }
   hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.Macro = { fg = s.purple, bg = nil, gui = nil, sp = nil }
@@ -45,7 +45,7 @@ function M.setup()
   hi.PMenuSel = { fg = s.foreground, bg = s.selection, gui = nil, sp = nil }
   hi.PMenuThumb = { fg = nil, bg = s.gray300, gui = nil, sp = nil }
   hi.Question = { fg = s.background, bg = s.green, gui = nil, sp = nil }
-  hi.Search = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }
+  hi.Search = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold', sp = nil }
   hi.SignColumn = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
   hi.SpecialKey = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
   hi.StatusLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
@@ -172,7 +172,7 @@ function M.setup()
   hi.CocHintHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_green }
 
   -- vim-searchhi
-  hi.CurrentSearch = { fg = s.background, bg = s.orange, gui = 'bold', sp = nil }
+  hi.CurrentSearch = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }
 
   -- markdown
   hi.markdownH1 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
