@@ -230,6 +230,7 @@
     "Scrollable",
     "Strikethrough",
     "Typeahead",
+    "UNCANCEL",
     "Unmount",
     "Webview",
     "antialiased",
