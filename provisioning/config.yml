@@ -17,12 +17,12 @@ homebrew:
     - kitty                    # https://github.com/kovidgoyal/kitty
     - ngrok                    # https://ngrok.com/
     - notion                   # https://www.notion.so/
+    - pushplaylabs-sidekick    # https://www.meetsidekick.com/
     - qlcolorcode              # https://github.com/anthonygelibert/QLColorCode
     - qlmarkdown               # https://github.com/toland/qlmarkdown
     - qlstephen                # https://whomwah.github.io/qlstephen/
     - quicklook-json           # http://www.sagtau.com/quicklookjson.html
     - rightfont                # https://rightfontapp.com/
-    - shift                    # https://tryshift.com/
     - spotify                  # https://www.spotify.com/
     - tableplus                # https://tableplus.io/
     - tunnelbear               # https://www.tunnelbear.com/
@@ -98,7 +98,6 @@ mas:
     - '1333542190' # 1Password
     - '425424353'  # The Unarchiver
     - '497799835'  # Xcode
-    - '498672703'  # Droplr
     - '904280696'  # Things
     - '975937182'  # Fantastical
 
