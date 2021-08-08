@@ -1,5 +1,5 @@
 {
-  "coc.preferences.formatOnType": false,
+  "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": [],
   "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.enableMessageDialog": true,
