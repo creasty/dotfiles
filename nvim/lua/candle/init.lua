@@ -170,6 +170,9 @@ function M.setup()
   hi.CocWarningHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_yellow }
   hi.CocInfoHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_blue }
   hi.CocHintHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_green }
+  hi.CocDiffAdd = { fg = s.dark_green, bg = 'none', gui = 'none', sp = nil }
+  hi.CocDiffChange = { fg = s.dark_blue, bg = 'none', gui = 'none', sp = nil }
+  hi.CocDiffDelete = { fg = s.dark_red, bg = 'none', gui = 'none', sp = nil }
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }

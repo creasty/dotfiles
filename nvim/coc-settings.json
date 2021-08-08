@@ -33,10 +33,15 @@
   "list.source.diagnostics.defaultOptions": ["--normal", "--no-sort"],
 
   "git.changedSign.text": "┃",
+  "git.changedSign.hlGroup": "CocDiffChange",
   "git.addedSign.text": "┃",
+  "git.addedSign.hlGroup": "CocDiffAdd",
   "git.changeRemovedSign.text": "┣",
+  "git.changeRemovedSign.hlGroup": "CocDiffChange",
   "git.removedSign.text": "▁",
+  "git.removedSign.hlGroup":"CocDiffDelete",
   "git.topRemovedSign.text": "▔",
+  "git.topRemovedSign.hlGroup": "CocDiffDelete",
 
   "languageserver": {
     "bash": {
