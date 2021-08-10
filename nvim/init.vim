@@ -41,7 +41,7 @@ set nowritebackup
 set noswapfile
 
 " enable hidden buffers
-set hidden
+" set hidden
 set autowrite
 
 " automatic formatting
