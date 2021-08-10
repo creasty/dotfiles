@@ -18,16 +18,10 @@ export GOPATH=$HOME/go
 # Android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
-# Anyenv
-export ANYENV_DIR=$HOME/.anyenv
-
 #  Search path
 #-----------------------------------------------
 # Local
 export PATH=/usr/local/bin:$PATH
-
-# Anyenv
-export PATH=$ANYENV_DIR/bin:$PATH
 
 # Dotfiles
 export PATH=$DOTFILES_PATH/bin:$PATH
@@ -66,10 +60,10 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/.ripgreprc
 
 #  Anyenv
 #-----------------------------------------------
-if [ -z "$SKIP_ANYENV_INIT" ] && [ -d "$ANYENV_DIR" ] && command -v 'anyenv' > /dev/null 2>&1; then
+if [ -z "$SKIP_ANYENV_INIT" ] && command -v 'anyenv' > /dev/null 2>&1; then
   # Cache init script
   ANYENV_SHELL="$(basename "$SHELL")"
-  ANYENV_INIT_FILE="$ANYENV_DIR/init.$ANYENV_SHELL"
+  ANYENV_INIT_FILE="$HOME/.anyenv-init-$ANYENV_SHELL"
   if [ ! -f "$ANYENV_INIT_FILE" ]; then
     anyenv init - --no-rehash > "$ANYENV_INIT_FILE"
   fi

@@ -1,27 +1,14 @@
 - set_fact:
     anyenv: {}
 
-- name: fetch anyenv repo
-  git:
-    repo: https://github.com/anyenv/anyenv
-    dest: '{{ anyenv.dir }}'
-  when: anyenv.dir
+- name: install anyenv
+  homebrew:
+    name:  anyenv
+    state: present
 
-- name: create plugins dir
-  file:
-    dest:  '{{ anyenv.plugins_dir }}'
-    state: directory
-  when: anyenv.plugins_dir
-
-- name: fetch anyenv update repo
-  git:
-    repo: https://github.com/znz/anyenv-update
-    dest: '{{ anyenv.plugins_dir }}/anyenv-update'
-  when: anyenv.plugins_dir
-
-- name: initialize install manifest directory
+- name: initialize manifest
   command: |
-    {{ anyenv.libexec_dir | quote }}/anyenv-install --force-init
+    bash -lc 'anyenv install --force-init'
   environment:
     SKIP_ANYENV_INIT: true
 
@@ -30,4 +17,4 @@
     dest: '{{ item }}'
     state: absent
   with_fileglob:
-    - '{{ anyenv.dir }}/init.*'
+    - '{{ home_path }}/.anyenv-init-*'
