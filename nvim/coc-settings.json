@@ -244,6 +244,7 @@
     "datasets",
     "datetime",
     "debouncing",
+    "deduped",
     "dein",
     "deletable",
     "denite",
