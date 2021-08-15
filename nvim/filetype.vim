@@ -2,13 +2,11 @@ if exists('did_load_filetypes')
   finish
 endif
 
-let s:shortcut = { 'timer_id': -1 }
-function! s:shortcut.call(ft, timer_id) abort
-  exec 'setf' a:ft
-endfunction
-function! s:shortcut.async_call(ft) abort
-  call timer_stop(self.timer_id)
-  let self.timer_id = timer_start(50, function(self.call, [a:ft]))
+function! s:setf_delayed(ft) abort
+  if exists('s:timer_id')
+    call timer_stop(s:timer_id)
+  endif
+  let s:timer_id = timer_start(50, {-> execute('setf ' . a:ft) })
 endfunction
 
 augroup filetypedetect
@@ -28,11 +26,11 @@ augroup filetypedetect
 
   "  Shortcuts
   "-----------------------------------------------
-  autocmd! FileType js call s:shortcut.async_call('javascript')
-  autocmd! FileType jsx call s:shortcut.async_call('javascriptreact')
-  autocmd! FileType ts call s:shortcut.async_call('typescript')
-  autocmd! FileType tsx call s:shortcut.async_call('typescriptreact')
-  autocmd! FileType md call s:shortcut.async_call('markdown')
-  autocmd! FileType bq call s:shortcut.async_call('sql.bq')
-  autocmd! FileType pg call s:shortcut.async_call('sql.pg')
+  autocmd! FileType js call s:setf_delayed('javascript')
+  autocmd! FileType jsx call s:setf_delayed('javascriptreact')
+  autocmd! FileType ts call s:setf_delayed('typescript')
+  autocmd! FileType tsx call s:setf_delayed('typescriptreact')
+  autocmd! FileType md call s:setf_delayed('markdown')
+  autocmd! FileType bq call s:setf_delayed('sql.bq')
+  autocmd! FileType pg call s:setf_delayed('sql.pg')
 augroup END

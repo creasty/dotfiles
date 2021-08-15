@@ -162,9 +162,9 @@ set foldlevel=20
 set foldlevelstart=20
 
 " window title
-set title titlestring=%{MyTitleString()}
+set title titlestring=%{UserTitleString()}
 
-function! MyTitleString() abort
+function! UserTitleString() abort
   let l:path = expand('%:p')
   let l:path = (l:path !=# '') ? l:path : getcwd()
   let l:path = substitute(l:path, $HOME, '~', '')
