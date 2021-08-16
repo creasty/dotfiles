@@ -47,5 +47,10 @@ augroup END
 
 nnoremap <silent> <Plug>(lcb-restore) <Cmd>call <SID>restore()<CR>
 
+if !get(g:, 'last_closed_buffer_no_mappings', v:false)
+  nmap <C-w>r <Plug>(lcb-restore)
+  nmap <C-w><C-r> <Plug>(lcb-restore)
+endif
+
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

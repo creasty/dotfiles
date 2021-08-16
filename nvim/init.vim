@@ -203,14 +203,14 @@ xnoremap c "_c
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
 
-" why are you left out??
+" make Y more intuitive
 nnoremap Y y$
 
 " keep the cursor in place while joining lines
 nnoremap J mZJ`ZmZ
 
 " split lines: inverse of J
-nnoremap <silent> K ylpr<Enter>
+nnoremap K ylpr<Enter>
 
 " reselect visual block after indent/outdent
 xnoremap < <gv
@@ -243,47 +243,20 @@ nnoremap ZQ <Nop>
 xnoremap K <Nop>
 
 " tags
+set tagfunc=user#tagfunc#fn
+
 nnoremap tn <Cmd>tn<CR>
 nnoremap tp <Cmd>tp<CR>
 nnoremap tl <Cmd>tags<CR>
 nnoremap <C-]> g<C-]>
 
-set tagfunc=UserTagFunc
-
-function! UserTagFunc(pattern, flags, info) abort
-  let l:pattern = a:pattern
-  let l:bufname = get(a:info, 'buf_ffname', expand('%:p'))
-  let l:ft = getbufvar(l:bufname, '&filetype')
-
-  if a:flags ==# 'c'
-    let l:pattern = '\<' . l:pattern . '\>'
-  endif
-
-  let l:Cmp = funcref('s:taglist_item_cmp', [l:bufname, l:ft])
-
-  let l:result = taglist(l:pattern, l:bufname)
-  call sort(l:result, { a, b -> l:Cmp(a) - l:Cmp(b) })
-  return l:result
-endfunction
-
-function! s:taglist_item_cmp(bufname, ft, item) abort
-  if a:item.filename ==# a:bufname
-    return -3
-  endif
-  if a:item.language ==# a:ft
-    return -2
-  endif
-  if !a:item.static
-    return -1
-  endif
-  return 1
-endfunction
-
 " window and buffer navigation
 nmap <C-s> <C-w>
 
 nnoremap <C-w><C-n> gt
+nnoremap <C-w>n     gt
 nnoremap <C-w><C-b> gT
+nnoremap <C-w>b     gT
 nnoremap <C-w><C-t> <Cmd>tabnew<CR>
 nnoremap <C-w>t     <Cmd>tabnew<CR>
 nnoremap <C-w><C-v> <Cmd>vnew<CR>
@@ -294,9 +267,6 @@ nnoremap <C-w><C-s> <C-w><C-n>
 nnoremap <C-w>s     <C-w>n
 nnoremap <C-w><C-c> <Nop>
 nnoremap <C-w>c     <Nop>
-
-nmap <C-w>r     <Plug>(lcb-restore)
-nmap <C-w><C-r> <Plug>(lcb-restore)
 
 " search selection
 xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
@@ -336,7 +306,7 @@ augroup END
 augroup _enhance_ftdetect
   autocmd!
   autocmd BufWritePost,BufReadPost,BufEnter *
-    \ if &l:filetype ==# '' || exists('b:ftdetect') |
+    \ if &filetype ==# '' || exists('b:ftdetect') |
       \ unlet! b:ftdetect |
       \ filetype detect |
     \ endif
@@ -428,8 +398,6 @@ if has('vim_starting')
   let &g:rtp .= ',' . s:dein_repo_path
 endif
 
-let g:dein#_plugins = {}
-
 if dein#load_state(s:dein_path)
   call dein#begin(s:dein_path, [
     \ expand('<sfile>'),
@@ -452,14 +420,14 @@ call dein#call_hook('post_source')
 
 "  Dein commands
 "-----------------------------------------------
-command! DeinUpdate call dein#update()
+command! DeinUpdate
+  \ call dein#update()
 command! DeinPurgeCache
   \ call dein#recache_runtimepath() |
   \ call dein#clear_state()
 command! DeinPrunePlugins
   \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
-  \ exec 'DeinPurgeCache' |
-  \ echo 'done'
+  \ exec 'DeinPurgeCache'
 
 "  Cross-plugin integration
 "-----------------------------------------------

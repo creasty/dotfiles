@@ -14,9 +14,7 @@ augroup filetypedetect
   autocmd! BufNewFile,BufRead *.graphql setlocal ft=graphql
   autocmd! BufNewFile,BufRead gitconfig setlocal ft=gitconfig
   autocmd! BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
-  autocmd! BufNewFile,BufRead Vagrantfile,*.jbuilder setlocal ft=ruby
   autocmd! BufNewFile,BufRead LICENSE,LICENSE.txt set filetype=license
-  autocmd! BufNewFile,BufRead *.pbxproj set filetype=pbxproj
 
   "  Compound filetypes
   "-----------------------------------------------
