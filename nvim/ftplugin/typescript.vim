@@ -9,13 +9,13 @@ let b:switch_custom_definitions = [
   \ switch#Words(['useCallback', 'useCurriedCallback']),
 \ ]
 
-command! -nargs=0 -range=% SwapSwitchCase
+command! -buffer -nargs=0 -range=% SwapSwitchCase
   \ silent keeppatterns <line1>,<line2>s/\v<case\s+([^:]+):((\s|\n)*)return\s+([^;]+);/case \4:\2return \1;/g
 
-command! -nargs=0 -range=% ConvertApiDef
+command! -buffer -nargs=0 -range=% ConvertApiDef
   \ silent keeppatterns <line1>,<line2>s/\v(\w{-})API/\l\1: () => new \0(clientAuth, forwardedIps).promise/g
 
-command! -nargs=0 -range=% ConvertProtoToType
+command! -buffer -nargs=0 -range=% ConvertProtoToType
   \ silent keeppatterns <line1>,<line2>s/\v__typename\?: '(\w+)';/__typename: "\1",/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\>;/\1: pb.get\u\1(),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\>;/\1: pb.get\u\1List(),/ge |
@@ -25,7 +25,7 @@ command! -nargs=0 -range=% ConvertProtoToType
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): (\w+);/\1: \l\2ToType(requireNotNull(pb.get\u\1(), "\1")),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<(\w+)\>;/\1: fmap(pb.get\u\1(), \l\2ToType),/ge
 
-command! -nargs=0 -range=% ConvertInputToProto
+command! -buffer -nargs=0 -range=% ConvertInputToProto
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\>;/.set\u\1(input.\1)/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\>;/.set\u\1List(input.\1)/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<(\w+)\>;/.set\u\1List(input.\1.map(\l\2ToPb))/ge |
@@ -34,7 +34,7 @@ command! -nargs=0 -range=% ConvertInputToProto
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): (\w+);/.set\u\1(\l\2ToPb(input.\1))/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<(\w+)\>;/.set\u\1(fmap(input.\1, \l\2ToPb))/ge
 
-command! -nargs=+ GenAdaptor
+command! -buffer -nargs=+ GenAdaptor
   \ call <SID>gen_adaptor(<f-args>)
 
 function! s:gen_adaptor(...) abort

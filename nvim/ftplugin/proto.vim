@@ -13,7 +13,7 @@ let b:switch_custom_definitions = [
   \ switch#Words(['field_mask', 'update_mask']),
 \ ]
 
-command! -nargs=0 -range=% ConvertProtoField
+command! -buffer -nargs=0 -range=% ConvertProtoField
   \ keeppatterns <line1>,<line2>s!``!!ge |
   \ keeppatterns <line1>,<line2>s!` `! !ge |
   \ keeppatterns <line1>,<line2>s!\v^(\s*)- (Add: )?`(\w+): ([^`]+)`\s+(.+)!\1// \5\r\1\4 \3 = 1;!ge |
