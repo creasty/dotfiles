@@ -1,9 +1,8 @@
 let s:last_cwd = ''
 let s:last_win_size = ''
 
-function! user#plugin#denite#open_best() abort
+function! s:can_resume() abort
   let l:cwd = getcwd()
-  let l:is_startup_dir = (l:cwd == $HOME || l:cwd == '/')
   let l:is_same_dir = (l:cwd == s:last_cwd)
   let s:last_cwd = l:cwd
 
@@ -12,14 +11,26 @@ function! user#plugin#denite#open_best() abort
   let l:win_size_changed = s:last_win_size !=# l:win_size
   let s:last_win_size = l:win_size
 
-  let l:resume = !l:win_size_changed && l:is_same_dir ? '-resume' : ''
+  return !l:win_size_changed && l:is_same_dir
+endfunction
+
+function! user#plugin#denite#open() abort
+  let l:is_startup_dir = (getcwd() == $HOME)
   let l:source = l:is_startup_dir ? 'ghq' : 'file/rec'
 
   exec 'Denite'
     \ '-start-filter'
     \ '-buffer-name=' . l:source
-    \ l:resume
+    \ s:can_resume() ? '-resume' : ''
     \ l:source
+endfunction
+
+function! user#plugin#denite#rg(path, resume) abort
+  exec 'Denite'
+    \ '-buffer-name=grep'
+    \ (len(a:path) > 0 ? '-path='.a:path : '')
+    \ a:resume && s:can_resume() ? '-resume' : ''
+    \ 'grep'
 endfunction
 
 function! user#plugin#denite#lazy_init() abort

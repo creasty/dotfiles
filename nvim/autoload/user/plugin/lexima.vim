@@ -351,6 +351,14 @@ call lexima#add_rule({
   \ 'mode':  ':',
 \ })
 
+" rg
+call lexima#add_rule({
+  \ 'char':  '<Space>',
+  \ 'at':    '^rg\%#',
+  \ 'input': "\<C-u>Rg ",
+  \ 'mode':  ':',
+\ })
+
 "  Search and replace
 "-----------------------------------------------
 for s:del in ['/', '~', '!', '@', '#', '%', ':']

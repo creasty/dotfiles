@@ -109,12 +109,11 @@ augroup _init_denite
   autocmd FileType denite-filter call user#plugin#denite#init_denite_filter()
 augroup END
 
-command! Open :call user#plugin#denite#open_best()
-nnoremap <silent> <C-q> <Cmd>Open<CR>
+command! -nargs=0 Open :call user#plugin#denite#open()
+command! -nargs=? -bang -complete=dir Rg :call user#plugin#denite#rg(<q-args>, <bang>0)
 
-command! Rg :Denite -buffer-name=grep grep
-nnoremap <silent> <Space>/ <Cmd>Denite -buffer-name=grep -resume grep<CR>
-nnoremap <silent> <Space>* <Cmd>DeniteCursorWord -buffer-name=grep grep<CR>
+nnoremap <silent> <C-q> <Cmd>Open<CR>
+nnoremap <silent> <Space>/ <Cmd>Rg!<CR>
 '''
 
 [[plugins]] # switch to the missing file without interaction
