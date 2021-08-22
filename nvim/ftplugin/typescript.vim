@@ -49,44 +49,44 @@ function! s:gen_adaptor(...) abort
     endif
 
     " CONVERSION TYPE:
-    "   M - message (proto)
-    "   E - enum (proto)
-    "   t - type (graphql)
-    "   i - input (graphql)
-    "   e - enum (graphql)
+    "   pm - proto message
+    "   pe - proto enum
+    "   gt - graphql type
+    "   gi - graphql input
+    "   ge - graphql enum
     let l:type = ''
-    let l:m = matchlist(l:name, '\(.\+\):\([MEtie]\)$')
+    let l:m = matchlist(l:name, '\v(.+):(pm|pe|gt|gi|ge)$')
     if !empty(l:m)
       let l:name = l:m[1]
       let l:type = l:m[2]
     endif
     if empty(l:type)
-      let l:type = (l:name =~# 'Input$') ? 'i' : 'M'
+      let l:type = (l:name =~# 'Input$') ? 'gi' : 'pm'
     endif
 
     let l:body = ''
-    if l:type ==# 'i'
+    if l:type ==# 'gi'
       let l:body = ''
         \ . "export function {funcName}ToPb(\n"
         \ . "  input: graphql.{GraphqlType}\n"
         \ . "): {ProtoType} {\n"
         \ . "  return new {ProtoType}();\n"
         \ . "}\n"
-    elseif l:type ==# 't'
+    elseif l:type ==# 'gt'
       let l:body = ''
         \ . "export function {funcName}ToPb(\n"
         \ . "  type: graphql.{GraphqlType}\n"
         \ . "): {ProtoType} {\n"
         \ . "  return new {ProtoType}();\n"
         \ . "}\n"
-    elseif l:type ==# 'M'
+    elseif l:type ==# 'pm'
       let l:body = ''
         \ . "export function {funcName}ToType(\n"
         \ . "  pb: {ProtoType}\n"
         \ . "): Named<graphql.{GraphqlType}> {\n"
         \ . "  return {};\n"
         \ . "}\n"
-    elseif l:type ==# 'E'
+    elseif l:type ==# 'pe'
       let l:body = ''
         \ . "export function {funcName}ToType(\n"
         \ . "  pb: {ProtoType}\n"
@@ -96,7 +96,7 @@ function! s:gen_adaptor(...) abort
         \ . "      return graphql.{GraphqlType}.Unspecified;\n"
         \ . "  }\n"
         \ . "}\n"
-    elseif l:type ==# 'e'
+    elseif l:type ==# 'ge'
       let l:body = ''
         \ . "export function {funcName}ToPb(\n"
         \ . "  type: graphql.{GraphqlType}\n"
