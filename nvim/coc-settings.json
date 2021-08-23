@@ -55,7 +55,8 @@
       "command": "kotlin-language-server",
       "filetypes": ["kotlin"],
       "rootPatterns": ["gradle.properties"],
-      "requireRootPattern": true
+      "requireRootPattern": true,
+      "progressOnInitialization": false
     },
     "graphql": {
       // npm i -g graphql-language-service-cli
@@ -76,7 +77,8 @@
         "typescript",
         "typescriptreact"
       ],
-      "requireRootPattern": true
+      "requireRootPattern": true,
+      "progressOnInitialization": false
     }
   },
 
