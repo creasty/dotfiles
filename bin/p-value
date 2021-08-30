@@ -89,8 +89,10 @@ module Util
 end
 
 class CLI
-  def initialize(argv)
+  def initialize(argv, stdout, stderr)
     @argv = argv
+    @stdout = stdout
+    @stderr = stderr
   end
 
   def run!
@@ -106,14 +108,14 @@ class CLI
   end
 
   private def do_help!
-    $stderr.puts <<-EOS
-p-value [-l] N1/D1 N0/D0
+    @stderr.puts <<-EOS
+p-value N1/D1 N2/D2
 
 ARGS
     N*  Numerator
     D*  Denominator
-    *0  An control group (Old)
-    *1  An experimental group (New)
+    *1  An control group (Old)
+    *2  An experimental group (New)
 EOS
     exit(1)
   end
@@ -146,17 +148,17 @@ EOS
       ['🤷', '~0.05 marginal']
     end
 
-    render('   Rate:  <b>%.2f</b> -> <b>%.2f%%</b> %s', r1 * 100, r2 * 100, dr_sign)
-    render('          <g>%+.2fpt, %+.2f%%</g>', dr * 100, dr > 0 ? r2 / r1 : -1 + r2 / r1)
+    render('   Rate:  <b>%.2f</b> → <b>%.2f%%</b> %s', r1 * 100, r2 * 100, dr_sign)
+    render('          <g>%+.1fpt, %+.1f%%</g>', dr * 100, (dr > 0 ? r2 / r1 : -1 + r2 / r1) * 100)
     render('P-value:  <b>%.5f</b> %s', p_value, p_value_sign)
     render('          <g>%s</g>', p_value_msg)
   end
 
   private def render(format, *args)
-    puts (format % args)
+    @stdout.puts (format % args)
       .gsub(%r<<b>(.+?)</b>>, "\e[1m\\1\e[22m") # bold
       .gsub(%r<<g>(.+?)</g>>, "\e[37m\\1\e[0m") # gray
   end
 end
 
-CLI.new(ARGV).run!
+CLI.new(ARGV, $stdout, $stderr).run!
