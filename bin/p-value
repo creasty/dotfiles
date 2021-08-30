@@ -1,67 +1,162 @@
-#!/usr/bin/env bash
-#> p-value [-l] N1/D1 N0/D0
-#>
-#> ARGS
-#>     N*  Numerator
-#>     D*  Denominator
-#>     *0  An control group (Old)
-#>     *1  An experimental group (New)
-#>
-#> OPTIONS
-#>     -l CONF_LEVEL  Specify a confidence level (Default: 0.95)
+#!/usr/bin/env ruby
 
-set -eu
-set -o pipefail
+module Util
+  extend self
 
-CONF_LEVEL='0.95'
+  SQ2PI = Math.sqrt(2 * Math::PI)
 
-SHARED_PATH="$HOME/.docker-data/r-base"
-SCRIPT_FILE='p-value.r'
-OUTPUT_FILE='p-value.log'
+  # Normal cumulative distribution function
+  # Returns the integral of normal distribution over (-INF, z].
+  #
+  # @see https://github.com/clbustos/distribution
+  def normal_cdf(z)
+    return 0.0 if z < -12
+    return 1.0 if z > 12
+    return 0.5 if z == 0.0
 
-INPUT_PATTERN='([0-9]+)\/([0-9]+)[ ]+([0-9]+)\/([0-9]+)[ ]+L([0-9\.]+)'
-R_TEMPLATE='prop.test(c(\1, \3), c(\2, \4), conf.level = \5)'
+    e = z > 0.0
 
-do_help() {
-  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
-  exit 1
-}
+    z = -z unless e
+    z = z.to_f
+    z2 = z * z
 
-for opt in "$@"; do
-  case $opt in
-    -l)
-      CONF_LEVEL=$2
-      shift 2
-      ;;
-    --)
-      shift
-      break
-      ;;
-  esac
-done
+    t = q = z * Math.exp(-0.5 * z2) / SQ2PI
 
-if ! [ -d "$SHARED_PATH" ]; then
-  mkdir -p "$SHARED_PATH"
-fi
+    3.step(199, 2) do |i|
+      prev = q
+      t *= z2 / i
+      q += t
+      return (e ? 0.5 + q : 0.5 - q) if q <= prev
+    end
 
-echo "$* L$CONF_LEVEL" \
-  | {
-    grep -o -m 1 -E "$INPUT_PATTERN" || do_help
-  } \
-  | sed -E "s/$INPUT_PATTERN/$R_TEMPLATE/" \
-  | tee "$SHARED_PATH/$SCRIPT_FILE"
+    e ? 1.0 : 0.0
+  end
 
-r-base Rscript "/shared/$SCRIPT_FILE" \
-  | tee "$SHARED_PATH/$OUTPUT_FILE" \
-  | sed -E $'s/(p-value [<=] [0-9e.-]+)/\e[0;32m\\1\e[0m/' \
-  | sed -E $'/percent confidence interval/{n;s/(.+)/\e[0;32m\\1\e[0m/;}'
+  # Chi-square distribution
+  # Integral over [x, +INF).
+  #
+  # @see https://github.com/clbustos/distribution
+  def q_chi2(df, chi2)
+    chi2 = chi2.to_f
 
-cat "$SHARED_PATH/$OUTPUT_FILE" \
-  | sed -n -E 's/^.+p-value [<=] ([0-9e.-]+)/\1/p' \
-  | awk '
-    {
-      if ($1 + 0.02 < 0.05) print "👍 Good.\nA small p-value (< 0.05) indicates strong evidence against the null hypothesis,\nso you reject the null hypothesis.";
-      else if ($1 - 0.02 > 0.05) print "👎 Bad.\nA large p-value (> 0.05) indicates weak evidence against the null hypothesis,\nso you fail to reject the null hypothesis.";
-      else print "🤷 Not sure.\np-values very close to the cutoff (0.05) are considered to be marginal (could go either way).";
-    }
-  '
+    if (df & 1) != 0
+      chi = Math.sqrt(chi2)
+
+      return 2 * (1.0 - normal_cdf(chi)) if df == 1
+
+      s = t = chi * Math.exp(-0.5 * chi2) / SQ2PI
+      k = 3
+
+      while k < df
+        t *= chi2 / k
+        s += t
+        k += 2
+      end
+
+      2 * (1.0 - (normal_cdf(chi)) + s)
+    else
+      s = t = Math.exp(-0.5 * chi2)
+      k = 2
+
+      while k < df
+        t *= chi2 / k
+        s += t
+        k += 2
+      end
+      s
+    end
+  end
+
+  # Replication of R's prop.test
+  # It is equivalent to:
+  #
+  # ```
+  # prop.test(c(x1, x2), c(n1, n2), conf.level = 95)
+  # ```
+  #
+  # @see https://qiita.com/reikubonaga/items/7b3ccf9f362ad72f6f41
+  def prop_test(x1:, n1:, x2:, n2:, yates: 0.5)
+    p = (x1 + x2) / (n1 + n2).to_f
+    diff = ((x1 - n1 * p).abs - yates) ** 2
+
+    stats = diff / (n1 * p) +
+      diff / (n1 * (1 - p)) +
+      diff / (n2 * p) +
+      diff / (n2 * (1 - p))
+
+    q_chi2(1, stats)
+  end
+end
+
+class CLI
+  def initialize(argv)
+    @argv = argv
+  end
+
+  def run!
+    parse_args!
+    do_exec!
+  end
+
+  private def parse_args!
+    do_help! unless @argv.size == 2
+
+    @x1, @n1 = @argv[0].split('/').map(&:to_f)
+    @x2, @n2 = @argv[1].split('/').map(&:to_f)
+  end
+
+  private def do_help!
+    $stderr.puts <<-EOS
+p-value [-l] N1/D1 N0/D0
+
+ARGS
+    N*  Numerator
+    D*  Denominator
+    *0  An control group (Old)
+    *1  An experimental group (New)
+EOS
+    exit(1)
+  end
+
+  private def do_exec!
+    r1 = @x1 / @n1
+    r2 = @x2 / @n2
+    p_value = Util.prop_test(x1: @x1, n1: @n1, x2: @x2, n2: @n2)
+
+    dr = r2 - r1
+
+    dr_sign = if dr > 0
+      '⬆️'
+    elsif dr < 0
+      '⬇️'
+    else
+      '➡️'
+    end
+
+    p_value_sign, p_value_msg = if p_value < 0.05
+      # A small p-value (< 0.05) indicates strong evidence against the null hypothesis,
+      # so you reject the null hypothesis.
+      ['👍', '<0.05 strong evidence']
+    elsif p_value > 0.05
+      # A large p-value (> 0.05) indicates weak evidence against the null hypothesis,
+      # so you fail to reject the null hypothesis.
+      ['👎', '>0.05 weak evidence']
+    else
+      # p-values very close to the cutoff (0.05) are considered to be marginal (could go either way).
+      ['🤷', '~0.05 marginal']
+    end
+
+    render('   Rate:  <b>%.2f</b> -> <b>%.2f%%</b> %s', r1 * 100, r2 * 100, dr_sign)
+    render('          <g>%+.2fpt, %+.2f%%</g>', dr * 100, dr > 0 ? r2 / r1 : -1 + r2 / r1)
+    render('P-value:  <b>%.5f</b> %s', p_value, p_value_sign)
+    render('          <g>%s</g>', p_value_msg)
+  end
+
+  private def render(format, *args)
+    puts (format % args)
+      .gsub(%r<<b>(.+?)</b>>, "\e[1m\\1\e[22m") # bold
+      .gsub(%r<<g>(.+?)</g>>, "\e[37m\\1\e[0m") # gray
+  end
+end
+
+CLI.new(ARGV).run!
