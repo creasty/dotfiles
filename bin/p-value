@@ -15,7 +15,7 @@ set -o pipefail
 
 CONF_LEVEL='0.95'
 
-SHARED_PATH="$HOME/docker/r-base"
+SHARED_PATH="$HOME/.docker-data/r-base"
 SCRIPT_FILE='p-value.r'
 OUTPUT_FILE='p-value.log'
 
@@ -40,7 +40,11 @@ for opt in "$@"; do
   esac
 done
 
-echo "$@ L$CONF_LEVEL" \
+if ! [ -d "$SHARED_PATH" ]; then
+  mkdir -p "$SHARED_PATH"
+fi
+
+echo "$* L$CONF_LEVEL" \
   | {
     grep -o -m 1 -E "$INPUT_PATTERN" || do_help
   } \
