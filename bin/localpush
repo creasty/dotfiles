@@ -1,11 +1,16 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-set -eu
-set -o pipefail
+require 'json'
+require 'open3'
 
-ruby -r json -e '
-  title, desc = ARGV
-  script = "display notification %s" % [desc.to_json]
-  script << " with title %s" % [title.to_json] if title
-  puts script
-' "$1" "${2:-}" | osascript
+title, desc = ARGV
+
+Open3.popen3('osascript') do |i, o, e, w|
+  i.write 'display notification %s' % [desc.to_s.to_json]
+  i.write ' with title %s' % [title.to_json] if title
+  i.close
+
+  e.each { |line| puts line }
+
+  exit w.value.exitstatus
+end
