@@ -5,9 +5,13 @@ module Util
 
   SQ2PI = Math.sqrt(2 * Math::PI)
 
+  CUTOFF_MARGIN = 0.01
+  CUTOFF_RANGE = (0.05 - CUTOFF_MARGIN)..(0.05 + CUTOFF_MARGIN)
+
   # Normal cumulative distribution function
   # Returns the integral of normal distribution over (-INF, z].
   #
+  # @see Distribution::Normal.cdf
   # @see https://github.com/clbustos/distribution
   def normal_cdf(z)
     return 0.0 if z < -12
@@ -16,10 +20,8 @@ module Util
 
     e = z > 0.0
 
-    z = -z unless e
-    z = z.to_f
+    z = z.abs.to_f
     z2 = z * z
-
     t = q = z * Math.exp(-0.5 * z2) / SQ2PI
 
     3.step(199, 2) do |i|
@@ -32,46 +34,11 @@ module Util
     e ? 1.0 : 0.0
   end
 
-  # Chi-square distribution
-  # Integral over [x, +INF).
-  #
-  # @see https://github.com/clbustos/distribution
-  def q_chi2(df, chi2)
-    chi2 = chi2.to_f
-
-    if (df & 1) != 0
-      chi = Math.sqrt(chi2)
-
-      return 2 * (1.0 - normal_cdf(chi)) if df == 1
-
-      s = t = chi * Math.exp(-0.5 * chi2) / SQ2PI
-      k = 3
-
-      while k < df
-        t *= chi2 / k
-        s += t
-        k += 2
-      end
-
-      2 * (1.0 - (normal_cdf(chi)) + s)
-    else
-      s = t = Math.exp(-0.5 * chi2)
-      k = 2
-
-      while k < df
-        t *= chi2 / k
-        s += t
-        k += 2
-      end
-      s
-    end
-  end
-
   # Replication of R's prop.test
   # It is equivalent to:
   #
   # ```
-  # prop.test(c(x1, x2), c(n1, n2), conf.level = 95)
+  # prop.test(c(x1, x2), c(n1, n2), conf.level = 0.95)
   # ```
   #
   # @see https://qiita.com/reikubonaga/items/7b3ccf9f362ad72f6f41
@@ -79,12 +46,30 @@ module Util
     p = (x1 + x2) / (n1 + n2).to_f
     diff = ((x1 - n1 * p).abs - yates) ** 2
 
-    stats = diff / (n1 * p) +
+    chi2 = diff / (n1 * p) +
       diff / (n1 * (1 - p)) +
       diff / (n2 * p) +
       diff / (n2 * (1 - p))
 
-    q_chi2(1, stats)
+    # Same as `Distribution::ChiSquare.q_chi2(1, chi2)`
+    # @see https://github.com/clbustos/distribution
+    chi = Math.sqrt(chi2)
+    2 * (1.0 - normal_cdf(chi))
+  end
+
+  def p_value_category(p_value)
+    if p_value < CUTOFF_RANGE.min
+      # A small p-value (< 0.05) indicates strong evidence against the null hypothesis,
+      # so you reject the null hypothesis.
+      :strong
+    elsif p_value > CUTOFF_RANGE.max
+      # A large p-value (> 0.05) indicates weak evidence against the null hypothesis,
+      # so you fail to reject the null hypothesis.
+      :weak
+    else
+      # p-values very close to the cutoff (0.05) are considered to be marginal (could go either way).
+      :marginal
+    end
   end
 end
 
@@ -105,6 +90,8 @@ class CLI
 
     @x1, @n1 = @argv[0].split('/').map(&:to_f)
     @x2, @n2 = @argv[1].split('/').map(&:to_f)
+
+    do_help! if [@x1, @n1, @x2, @n2].any?(&:nil?)
   end
 
   private def do_help!
@@ -115,7 +102,7 @@ ARGS
     N*  Numerator
     D*  Denominator
     *1  An control group (Old)
-    *2  An experimental group (New)
+    *2  An experiment group (New)
 EOS
     exit(1)
   end
@@ -126,6 +113,7 @@ EOS
     p_value = Util.prop_test(x1: @x1, n1: @n1, x2: @x2, n2: @n2)
 
     dr = r2 - r1
+    rr = r2 / r1 - (dr > 0 ? 0 : 1)
 
     dr_sign = if dr > 0
       '⬆️'
@@ -135,21 +123,17 @@ EOS
       '➡️'
     end
 
-    p_value_sign, p_value_msg = if p_value < 0.05
-      # A small p-value (< 0.05) indicates strong evidence against the null hypothesis,
-      # so you reject the null hypothesis.
+    p_value_sign, p_value_msg = case Util.p_value_category(p_value)
+    when :strong
       ['👍', '<0.05 strong evidence']
-    elsif p_value > 0.05
-      # A large p-value (> 0.05) indicates weak evidence against the null hypothesis,
-      # so you fail to reject the null hypothesis.
+    when :weak
       ['👎', '>0.05 weak evidence']
-    else
-      # p-values very close to the cutoff (0.05) are considered to be marginal (could go either way).
+    when :marginal
       ['🤷', '~0.05 marginal']
     end
 
     render('   Rate:  <b>%.2f</b> → <b>%.2f%%</b> %s', r1 * 100, r2 * 100, dr_sign)
-    render('          <g>%+.1fpt, %+.1f%%</g>', dr * 100, (dr > 0 ? r2 / r1 : -1 + r2 / r1) * 100)
+    render('          <g>%+.1fpt, %+.1f%%</g>', dr * 100, rr * 100)
     render('P-value:  <b>%.5f</b> %s', p_value, p_value_sign)
     render('          <g>%s</g>', p_value_msg)
   end
