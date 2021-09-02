@@ -91,7 +91,6 @@ rg() {
 
 alias o='finder'
 alias ev='envchain'
-alias ne='npm-exec'
 alias gk='grep-kill'
 
 alias va='vagrant'
