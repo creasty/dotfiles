@@ -38,7 +38,7 @@ local schema = {
 
   -- dark
   dark_red    = '#503131',
-  dark_brown  = '#8f6e58', -- TODO
+  dark_brown  = '#55453a', -- TODO
   dark_orange = '#573f2e',
   dark_yellow = '#5f5138',
   dark_green  = '#4c4b30',

@@ -173,6 +173,7 @@ function M.setup()
   hi.CocDiffAdd = { fg = s.dark_green, bg = 'none', gui = 'none', sp = nil }
   hi.CocDiffChange = { fg = s.dark_blue, bg = 'none', gui = 'none', sp = nil }
   hi.CocDiffDelete = { fg = s.dark_red, bg = 'none', gui = 'none', sp = nil }
+  hi.CocFadeOut = { fg = s.dark_brown, bg = 'none', gui = 'none', sp = nil }
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }
