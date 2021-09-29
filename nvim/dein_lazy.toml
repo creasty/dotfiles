@@ -134,29 +134,29 @@ hook_add = '''
 let g:fugitive_browse_handlers = [function('user#plugin#fugitive#browse_handler')]
 '''
 
-[[plugins]] # An implementation of the Popup API from vim in Neovim
-repo = 'nvim-lua/popup.nvim'
-
 [[plugins]] # All the lua functions I don't want to write twice
 repo = 'nvim-lua/plenary.nvim'
 on_lua = 'plenary'
 
-[[plugins]] # An extension for telescope.nvim that allows you to find/filter/preview/pick results from coc.nvim.
-repo = 'fannheyward/telescope-coc.nvim'
-on_source = ['telescope.nvim']
+# [[plugins]] # An implementation of the Popup API from vim in Neovim
+# repo = 'nvim-lua/popup.nvim'
 
-[[plugins]] # Gaze deeply into unknown regions using the power of the moon
-repo = 'nvim-telescope/telescope.nvim'
-depends = ['popup.nvim', 'plenary.nvim']
-on_cmd = ['Telescope']
-hook_source = '''
-lua require('user.plugin.telescope')
-'''
-hook_add = '''
-nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
-nnoremap <Space>tf <Cmd>Telescope find_files hidden=true follow=true<CR>
-nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
-'''
+# [[plugins]] # An extension for telescope.nvim that allows you to find/filter/preview/pick results from coc.nvim.
+# repo = 'fannheyward/telescope-coc.nvim'
+# on_source = ['telescope.nvim']
+
+# [[plugins]] # Gaze deeply into unknown regions using the power of the moon
+# repo = 'nvim-telescope/telescope.nvim'
+# depends = ['popup.nvim', 'plenary.nvim']
+# on_cmd = ['Telescope']
+# hook_source = '''
+# lua require('user.plugin.telescope')
+# '''
+# hook_add = '''
+# nnoremap <Space>tr <Cmd>Telescope ghq list<CR>
+# nnoremap <Space>tf <Cmd>Telescope find_files hidden=true follow=true<CR>
+# nnoremap <Space>tg <Cmd>Telescope live_grep<CR>
+# '''
 
 #  Util
 #-----------------------------------------------

@@ -150,9 +150,6 @@ let g:quickrun_config['_'] = {
 nmap <Leader>r <Plug>(quickrun)
 '''
 
-[[plugins]] # Interactive neovim scratchpad for lua
-repo = 'rafcamlet/nvim-luapad'
-
 #  Language
 #-----------------------------------------------
 [[plugins]] # vim syntax file for plantuml
