@@ -22,19 +22,19 @@ Heavily customized, meticulously optimized for high performance.
 
 ### zsh
 
-- ~130ms to startup
+- ~150ms to startup
 - 560 loc of config
-- 2 plugins + anyenv (rbenv, nodenv, jenv) + direnv
+- 2 zsh plugins + anyenv (rbenv, nodenv, jenv) + direnv
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time zsh -i -c exit ; sleep 0.1 )
-zsh -i -c exit  0.07s user 0.06s system 94% cpu 0.139 total
-zsh -i -c exit  0.07s user 0.06s system 95% cpu 0.130 total
-zsh -i -c exit  0.07s user 0.05s system 95% cpu 0.133 total
-zsh -i -c exit  0.07s user 0.05s system 96% cpu 0.130 total
-zsh -i -c exit  0.07s user 0.05s system 94% cpu 0.130 total
+zsh -i -c exit  0.08s user 0.07s system 96% cpu 0.148 total
+zsh -i -c exit  0.08s user 0.07s system 96% cpu 0.151 total
+zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.145 total
+zsh -i -c exit  0.08s user 0.06s system 94% cpu 0.148 total
+zsh -i -c exit  0.08s user 0.06s system 94% cpu 0.148 total
 ```
 
 ```sh-session
@@ -67,19 +67,19 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~130ms to startup
-- 3,500 loc of config
-- 43 plugins
+- ~150ms to startup
+- 3,600 loc of config
+- 39 third-party plugins
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.12s user 0.07s system 145% cpu 0.129 total
-nvim --headless -c quit  0.12s user 0.07s system 148% cpu 0.130 total
-nvim --headless -c quit  0.12s user 0.08s system 147% cpu 0.135 total
-nvim --headless -c quit  0.12s user 0.07s system 145% cpu 0.127 total
-nvim --headless -c quit  0.13s user 0.08s system 147% cpu 0.137 total
+nvim --headless -c quit  0.14s user 0.09s system 151% cpu 0.149 total
+nvim --headless -c quit  0.13s user 0.09s system 149% cpu 0.146 total
+nvim --headless -c quit  0.13s user 0.08s system 150% cpu 0.145 total
+nvim --headless -c quit  0.13s user 0.08s system 150% cpu 0.142 total
+nvim --headless -c quit  0.14s user 0.09s system 150% cpu 0.148 total
 ```
 
 ```sh-session
@@ -88,19 +88,18 @@ $ cloc --exclude-dir=dein,template nvim
       90 unique files.
       35 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.08 s (823.2 files/s, 58123.6 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.08 s (768.0 files/s, 55214.9 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      51            453            306           2187
-Lua                              6             68             16            614
-JSON                             1             13              0            291
-TOML                             2             45             14            266
+vim script                      52            458            309           2234
+Lua                              6             68             16            651
+JSON                             1             14              0            289
+TOML                             2             44             31            246
 Python                           2             36              2            192
 Scheme                           1              1              0             10
-Markdown                         1              1              0              4
 -------------------------------------------------------------------------------
-SUM:                            64            617            338           3564
+SUM:                            64            621            358           3622
 -------------------------------------------------------------------------------
 ```
 
