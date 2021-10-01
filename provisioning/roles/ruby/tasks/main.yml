@@ -42,13 +42,15 @@
   homebrew:
     name:
       - ruby-build
-      - openssl
       - readline
+      - openssl@1.1
+      - libyaml
+      - zlib
     state: present
 
 - name: get openssl dir
   command: |
-    bash -lc 'brew --prefix openssl'
+    bash -lc 'brew --prefix openssl@1.1'
   register: openssl_dir
 
 - name: get readline dir
@@ -56,11 +58,23 @@
     bash -lc 'brew --prefix readline'
   register: readline_dir
 
+- name: get libyaml dir
+  command: |
+    bash -lc 'brew --prefix libyaml'
+  register: libyaml_dir
+
+- name: get zlib dir
+  command: |
+    bash -lc 'brew --prefix zlib'
+  register: zlib_dir
+
+# @see https://gist.github.com/Neutrollized/37841827940b28b27ec2e54abbbcc408
 - name: install ruby
   command: |
     bash -lc 'rbenv install {{ item | quote }}'
   environment:
-    RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }}'
+    CFLAGS: '-Wno-error=implicit-function-declaration'
+    RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }} --with-libyaml-dir={{ libyaml_dir.stdout | quote }} --with-zlib-dir={{ zlib_dir.stdout | quote }}'
   when: |
     ruby.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ ruby.versions }}'

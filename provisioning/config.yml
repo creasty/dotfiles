@@ -169,7 +169,7 @@ ruby:
   default_gems_path: '{{ dotfiles_path }}/ruby/rbenv/default-gems'
 
   versions:
-    - '3.0.2'
+    - '2.7.4'
 
   plugins:
     - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
