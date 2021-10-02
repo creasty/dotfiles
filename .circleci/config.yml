@@ -6,7 +6,7 @@ jobs:
       up-opts:
         type: string
     macos:
-      xcode: 12.4.0 # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+      xcode: 13.0.0 # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
     environment:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
