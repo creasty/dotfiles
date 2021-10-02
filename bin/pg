@@ -87,6 +87,10 @@ exec_createuser() {
   docker exec -it $NAME createuser --username=$DB_USER "$1" -d -s
 }
 
+exec_dropdb() {
+  docker exec -it $NAME dropdb --username=$DB_USER "$1"
+}
+
 exec_logs() {
   docker logs -f --tail 0 $NAME
 }
@@ -115,6 +119,7 @@ case "$COMMAND" in
   psql)       exec_psql "$@" ;;
   createdb)   exec_createdb "$1" ;;
   createuser) exec_createuser "$1" ;;
+  dropdb)     exec_dropdb "$1" ;;
   status)     exec_status ;;
   logs)       exec_logs ;;
   *)          do_help ;;
