@@ -43,14 +43,14 @@
     name:
       - ruby-build
       - readline
-      - openssl
+      - openssl@3
       - libyaml
       - zlib
     state: present
 
 - name: get openssl dir
   command: |
-    bash -lc 'brew --prefix openssl'
+    bash -lc 'brew --prefix openssl@3'
   register: openssl_dir
 
 - name: get readline dir
