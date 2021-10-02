@@ -26,11 +26,11 @@ homebrew:
     - spotify                  # https://www.spotify.com/
     - tableplus                # https://tableplus.io/
     - tunnelbear               # https://www.tunnelbear.com/
-    - webpquicklook            # https://github.com/dchest/webp-quicklook
-    - wwdc                     # https://wwdc.io/
+    - webpquicklook            # https://github.com/emin/WebPQuickLook
 
     #- imageoptim # https://imageoptim.com/mac
     #- transmit   # https://panic.com/transmit/
+    #- wwdc       # https://wwdc.io/
 
   packages:
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
