@@ -17,4 +17,4 @@
     dest: '{{ item }}'
     state: absent
   with_fileglob:
-    - '{{ home_path }}/.anyenv-init-*'
+    - '{{ anyenv.init_file_glob }}'

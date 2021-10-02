@@ -144,6 +144,8 @@ anyenv:
   envs_dir:    '{{ home_path }}/.anyenv/envs'
   libexec_dir: '{{ home_path }}/.anyenv/libexec'
 
+  init_file_glob: '{{ home_path }}/.anyenv-init-*'
+
 golang:
   packages:
     # tools
