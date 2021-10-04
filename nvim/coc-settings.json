@@ -1,6 +1,5 @@
 {
-  "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": [],
+  "coc.preferences.formatOnType": false,
   "coc.preferences.extensionUpdateCheck": "weekly",
 
   "diagnostic.errorSign": "✗",
