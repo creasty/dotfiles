@@ -221,6 +221,7 @@
     "Hookable",
     "Keybind",
     "Overridable",
+    "Personalizable",
     "Promisified",
     "Readonly",
     "Schemafile",
