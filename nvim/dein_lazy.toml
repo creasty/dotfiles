@@ -21,7 +21,8 @@ nmap r <Plug>(operator-replace)
 xmap r <Plug>(operator-replace)
 omap r <Plug>(operator-replace)
 nnoremap R r
-xnoremap R r onoremap R r
+xnoremap R r
+onoremap R r
 '''
 
 [[plugins]] # a simple, easy-to-use Vim alignment plugin
