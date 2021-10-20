@@ -129,7 +129,7 @@ nmap gA <Plug>(altr-back)
 
 [[plugins]] # A Git wrapper so awesome, it should be illegal
 repo = 'tpope/vim-fugitive'
-on_cmd = ['GBlame', 'GBrowse']
+on_cmd = ['Git', 'GBrowse']
 hook_add = '''
 let g:fugitive_browse_handlers = [function('user#plugin#fugitive#browse_handler')]
 '''
