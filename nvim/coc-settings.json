@@ -290,6 +290,7 @@
     "struct",
     "strval",
     "timeframe",
+    "treesitter",
     "uint",
     "undernutrition",
     "unprocessable",

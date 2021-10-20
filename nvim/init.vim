@@ -319,16 +319,17 @@ command! ProfStart
   \ profile start /tmp/vim-vimscript.log |
   \ profile func * |
   \ profile! file * |
-  \ lua require('plenary.profile').start('/tmp/vim-lua.log')
+  \ lua pcall(function() require('plenary.profile').start('/tmp/vim-lua.log') end)
 command! ProfStop
   \ profile stop |
-  \ lua require('plenary.profile').stop()
+  \ lua pcall(function() require('plenary.profile').stop() end)
 command! ProfOpen
   \ vsplit /tmp/vim-vimscript.log |
   \ vsplit /tmp/vim-lua.log
 
 " inspect syntax
 command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
+command! ScopeInfoTS lua require'user.treesitter-helper'.show_hl_captures()
 
 " font
 command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)

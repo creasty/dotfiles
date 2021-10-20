@@ -56,15 +56,18 @@ require('nvim-treesitter.configs').setup {
       node_incremental = 'gs',
     },
   },
+  -- windwp/nvim-ts-autotag
   autotag = {
     enable = true,
   },
+  -- nvim-treesitter/playground
   playground = {
     enable = true,
     disable = {},
     updatetime = 25,
     persist_queries = false,
   },
+  -- nvim-treesitter/nvim-treesitter-textobjects
   textobjects = {
     select = {
       enable = true,

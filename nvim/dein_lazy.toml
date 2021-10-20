@@ -21,8 +21,7 @@ nmap r <Plug>(operator-replace)
 xmap r <Plug>(operator-replace)
 omap r <Plug>(operator-replace)
 nnoremap R r
-xnoremap R r
-onoremap R r
+xnoremap R r onoremap R r
 '''
 
 [[plugins]] # a simple, easy-to-use Vim alignment plugin
@@ -134,9 +133,9 @@ hook_add = '''
 let g:fugitive_browse_handlers = [function('user#plugin#fugitive#browse_handler')]
 '''
 
-[[plugins]] # All the lua functions I don't want to write twice
-repo = 'nvim-lua/plenary.nvim'
-on_lua = 'plenary'
+# [[plugins]] # All the lua functions I don't want to write twice
+# repo = 'nvim-lua/plenary.nvim'
+# on_lua = 'plenary'
 
 # [[plugins]] # An implementation of the Popup API from vim in Neovim
 # repo = 'nvim-lua/popup.nvim'
@@ -160,6 +159,6 @@ on_lua = 'plenary'
 
 #  Util
 #-----------------------------------------------
-[[plugins]] # Neovim Treesitter Playground
-repo = 'nvim-treesitter/playground'
-on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
+# [[plugins]] # Neovim Treesitter Playground
+# repo = 'nvim-treesitter/playground'
+# on_cmd = ['TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor']
