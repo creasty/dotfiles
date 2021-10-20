@@ -68,8 +68,8 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 ### nvim
 
 - ~150ms to startup
-- 3,600 loc of config
-- 39 third-party plugins
+- 3,700 loc of config
+- 37 third-party plugins
 
 <details>
 
@@ -84,22 +84,22 @@ nvim --headless -c quit  0.14s user 0.09s system 150% cpu 0.148 total
 
 ```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      94 text files.
-      90 unique files.
+      95 text files.
+      91 unique files.
       35 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.08 s (768.0 files/s, 55214.9 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.09 s (737.4 files/s, 53433.4 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      52            458            309           2234
-Lua                              6             68             16            651
-JSON                             1             14              0            289
-TOML                             2             44             31            246
+vim script                      52            458            309           2235
+Lua                              7             88             21            734
+JSON                             1             14              0            290
+TOML                             2             44             37            239
 Python                           2             36              2            192
 Scheme                           1              1              0             10
 -------------------------------------------------------------------------------
-SUM:                            64            621            358           3622
+SUM:                            65            641            369           3700
 -------------------------------------------------------------------------------
 ```
 
