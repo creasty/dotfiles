@@ -14,6 +14,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Fix environment
+          command: |
+            rm /usr/local/lib/python3.9/site-packages/six.py
+      - run:
           name: up
           command: ./up << parameters.up-opts >> -vvvv
           no_output_timeout: 90m
