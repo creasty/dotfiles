@@ -9,7 +9,6 @@ function M.get_treesitter_hl()
   row = row - 1
 
   local self = highlighter.active[buf]
-
   if not self then
     return {}
   end
@@ -45,18 +44,19 @@ function M.get_treesitter_hl()
         local c = query._query.captures[capture] -- name of the capture in the query
         if c ~= nil then
           local general_hl = query:_get_hl_from_capture(capture)
-          local line = "* **@" .. c .. "** -> " .. hl
+          local line = "- @" .. c .. " -> " .. hl
           if general_hl ~= hl then
-            line = line .. " -> **" .. general_hl .. "**"
+            line = line .. " -> " .. general_hl
           end
           if metadata.priority then
-            line = line .. " *(priority " .. metadata.priority .. ")*"
+            line = line .. " (" .. metadata.priority .. ")"
           end
           table.insert(matches, line)
         end
       end
     end
   end, true)
+
   return matches
 end
 
@@ -68,7 +68,7 @@ function M.get_syntax_hl()
     local i2 = vim.fn.synIDtrans(i1)
     local n1 = vim.fn.synIDattr(i1, "name")
     local n2 = vim.fn.synIDattr(i2, "name")
-    table.insert(matches, "* " .. n1 .. " -> **" .. n2 .. "**")
+    table.insert(matches, "- " .. n1 .. " -> " .. n2)
   end
   return matches
 end
@@ -79,7 +79,7 @@ function M.show_hl_captures()
 
   local function show_matches(matches)
     if #matches == 0 then
-      table.insert(lines, "* No highlight groups found")
+      table.insert(lines, "No highlight groups found")
     end
     for _, line in ipairs(matches) do
       table.insert(lines, line)
@@ -99,7 +99,7 @@ function M.show_hl_captures()
     show_matches(matches)
   end
 
-  vim.lsp.util.open_floating_preview(lines, "markdown", { border = "single", pad_left = 4, pad_right = 4 })
+  vim.lsp.util.open_floating_preview(lines, "markdown")
 end
 
 return M
