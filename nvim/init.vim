@@ -40,8 +40,7 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-" enable hidden buffers
-" set hidden
+" enable auto write
 set autowrite
 
 " automatic formatting
@@ -202,9 +201,6 @@ xnoremap c "_c
 " break undo with chunk delete actions
 inoremap <C-u> <C-g>u<C-u>
 inoremap <C-w> <C-g>u<C-w>
-
-" make Y more intuitive
-nnoremap Y y$
 
 " keep the cursor in place while joining lines
 nnoremap J mZJ`ZmZ

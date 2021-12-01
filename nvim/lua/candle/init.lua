@@ -26,7 +26,7 @@ function M.setup()
   hi.CursorLineNr = { fg = s.gray200, bg = nil, gui = 'bold', sp = nil }
   hi.Debug = { fg = s.brown, bg = nil, gui = nil, sp = nil }
   hi.Directory = { fg = s.blue, bg = nil, gui = nil, sp = nil }
-  hi.Error = { fg = s.red, bg = nil, gui = nil, sp = nil }
+  hi.Error = { fg = s.red, bg = 'none', gui = nil, sp = nil }
   hi.ErrorMsg = { fg = s.background, bg = s.red, gui = nil, sp = nil }
   hi.Exception = { fg = s.purple, bg = nil, gui = nil, sp = nil }
   hi.FoldColumn = { fg = s.selection, bg = s.background, gui = nil, sp = nil }
