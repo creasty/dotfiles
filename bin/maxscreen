@@ -12,8 +12,11 @@ get_layout() {
   local buitlin_id='1BAE06CB-9452-9E7F-D1A2-C3AAE5FC4AFC' # LCD
   local buitlin_res='3072x1920'
 
-  local lg5k_id='605C4F44-6635-645F-50ED-F0F24C400DE1' # LG UltraFine 5K Display
-  local lg5k_res='3008x1692'
+  local lg5k1_id='605C4F44-6635-645F-50ED-F0F24C400DE1' # LG UltraFine 5K Display (alone)
+  local lg5k1_res='3008x1692'
+
+  local lg5k2_id='CD5CB82B-DC1B-14A0-D2BC-65EF4037CD83' # LG UltraFine 5K Display (with 4K)
+  local lg5k2_res='3008x1692'
 
   local lg4k_id='1B03F104-EAF7-6F40-6262-67F023417D97' # LG UltraFine 4K Display
   local lg4k_res='2560x1440'
@@ -25,8 +28,11 @@ get_layout() {
     "${lg4k_id}")
       echo "res:$lg4k_res origin:(3008,0)"
       ;;
-    "${lg5k_id}")
-      echo "res:$lg5k_res origin:(0,0)"
+    "${lg5k1_id}")
+      echo "res:$lg5k1_res origin:(0,0)"
+      ;;
+    "${lg5k2_id}")
+      echo "res:$lg5k2_res origin:(0,0)"
       ;;
     "${lg4k_id}+${buitlin_id}")
       echo "res:$lg4k_res"
