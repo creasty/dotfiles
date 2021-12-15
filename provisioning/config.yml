@@ -11,7 +11,7 @@ homebrew:
     - google-chrome            # https://www.google.com/chrome/
     - google-cloud-sdk         # https://cloud.google.com/sdk/
     - google-drive-file-stream # https://www.google.com/drive/
-    - google-hangouts          # https://www.google.com/tools/dlpage/hangoutplugin
+    - google-chat              # https://gsuite.google.com/products/chat/
     - google-japanese-ime      # https://www.google.co.jp/ime/
     - istat-menus              # https://bjango.com/mac/istatmenus/
     - kitty                    # https://github.com/kovidgoyal/kitty
@@ -236,7 +236,7 @@ vscode:
     - ipatalas.vscode-postfix-ts
     - jebbs.plantuml
     - jock.svg
-    - jpoissonnier.vscode-styled-components
+    #- jpoissonnier.vscode-styled-components
     - jtanx.ctagsx
     - kaiwood.endwise
     - karunamurti.haml
