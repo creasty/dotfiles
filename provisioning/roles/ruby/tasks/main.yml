@@ -37,6 +37,7 @@
   command: |
     bash -lc 'rbenv versions'
   register: installed_versions
+  ignore_errors: yes
 
 - name: install dependency
   homebrew:

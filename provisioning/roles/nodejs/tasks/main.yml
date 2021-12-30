@@ -37,6 +37,7 @@
   command: |
     bash -lc 'nodenv versions'
   register: installed_versions
+  ignore_errors: yes
 
 - name: install nodejs
   command: |
