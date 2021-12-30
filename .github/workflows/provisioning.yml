@@ -9,6 +9,7 @@ jobs:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
     strategy:
+      fail-fast: false
       matrix:
         opts:
           - --tags=base,install.homebrew.formula
@@ -20,5 +21,11 @@ jobs:
         run: |
           brew list | xargs brew uninstall --force --ignore-dependencies
           brew list --cask | xargs brew uninstall --force
+      - name: Install SSH key
+        run: |
+          base64 -D <<< "$ID_RSA_FILE_B64" > ~/.ssh/id_rsa
+          chmod 0600 ~/.ssh/id_rsa
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
       - name: Run
         run: ./up -vvvv ${{ matrix.opts }}
