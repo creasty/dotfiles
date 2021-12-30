@@ -27,6 +27,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Debug
+        run: |
+          cat provisioning/roles/nodejs/tasks/main.yml
+
       - name: Clean slate
         run: |
           brew list | xargs brew uninstall --force --ignore-dependencies
