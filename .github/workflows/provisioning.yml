@@ -15,6 +15,9 @@ jobs:
     env:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
+    concurrency:
+      group: ${{ github.head_ref }}
+      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
@@ -26,10 +29,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Debug
-        run: |
-          cat provisioning/roles/nodejs/tasks/main.yml
 
       - name: Clean slate
         run: |
