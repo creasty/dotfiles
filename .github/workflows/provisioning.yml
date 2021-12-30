@@ -8,9 +8,6 @@ jobs:
     env:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
-    concurrency:
-      group: ${{ github.head_ref }}
-      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
