@@ -1,6 +1,13 @@
 name: provisioning
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
   provisioning:
@@ -17,6 +24,8 @@ jobs:
           - --tags=install,app,system --skip-tags=install.homebrew.formula
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Clean slate
         run: |
