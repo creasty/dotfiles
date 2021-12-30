@@ -33,16 +33,9 @@
   with_fileglob:
     - '{{ anyenv.init_file_glob }}'
 
-- name: get installed versions
-  command: |
-    bash -lc 'nodenv versions'
-  register: installed_versions
-
 - name: install nodejs
   command: |
-    bash -lc 'nodenv install {{ item | quote }}'
-  when: |
-    nodejs.versions and installed_versions.stdout.find(item) == -1
+    bash -lc 'nodenv install -s {{ item | quote }}'
   with_items: '{{ nodejs.versions }}'
 
 - name: set global nodejs

@@ -33,11 +33,6 @@
   with_fileglob:
     - '{{ anyenv.init_file_glob }}'
 
-- name: get installed versions
-  command: |
-    bash -lc 'rbenv versions'
-  register: installed_versions
-
 - name: install dependency
   homebrew:
     name:
@@ -71,12 +66,10 @@
 # @see https://gist.github.com/Neutrollized/37841827940b28b27ec2e54abbbcc408
 - name: install ruby
   command: |
-    bash -lc 'rbenv install {{ item | quote }}'
+    bash -lc 'rbenv install -s {{ item | quote }}'
   environment:
     CFLAGS: '-Wno-error=implicit-function-declaration'
     RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }} --with-libyaml-dir={{ libyaml_dir.stdout | quote }} --with-zlib-dir={{ zlib_dir.stdout | quote }}'
-  when: |
-    ruby.versions and installed_versions.stdout.find(item) == -1
   with_items: '{{ ruby.versions }}'
 
 - name: set global ruby

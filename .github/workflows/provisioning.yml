@@ -1,0 +1,40 @@
+name: provisioning
+
+on: [push]
+
+jobs:
+  provisioning:
+    runs-on: macos-latest
+    env:
+      HOMEBREW_VERBOSE: 1
+      DOTFILES_NOEDIT_SECRETS: 1
+    strategy:
+      fail-fast: false
+      matrix:
+        opts:
+          - --tags=base,install.homebrew.formula
+          - --tags=base,lang
+          - --tags=install,app,system --skip-tags=install.homebrew.formula
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Link to home
+        run: |
+          ln -sf "$PWD" "$HOME/dotfiles"
+
+      - name: Clean slate
+        run: |
+          brew list | xargs brew uninstall --force --ignore-dependencies
+          brew list --cask | xargs brew uninstall --force
+
+      - name: Install SSH key
+        run: |
+          base64 -D <<< "$ID_RSA_FILE_B64" > ~/.ssh/id_rsa
+          chmod 0600 ~/.ssh/id_rsa
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+        env:
+          ID_RSA_FILE_B64: ${{ secrets.ID_RSA_FILE_B64 }}
+
+      - name: Run
+        run: ./up -vvvv ${{ matrix.opts }}
