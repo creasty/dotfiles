@@ -17,15 +17,20 @@ jobs:
           - --tags=install,app,system --skip-tags=install.homebrew.formula
     steps:
       - uses: actions/checkout@v2
+
       - name: Clean slate
         run: |
           brew list | xargs brew uninstall --force --ignore-dependencies
           brew list --cask | xargs brew uninstall --force
+
       - name: Install SSH key
         run: |
           base64 -D <<< "$ID_RSA_FILE_B64" > ~/.ssh/id_rsa
           chmod 0600 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
+        env:
+          ID_RSA_FILE_B64: ${{ secrets.ID_RSA_FILE_B64 }}
+
       - name: Run
         run: ./up -vvvv ${{ matrix.opts }}
