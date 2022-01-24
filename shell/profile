@@ -58,6 +58,9 @@ export BROWSER=none
 # ripgrep
 export RIPGREP_CONFIG_PATH=$HOME/.config/.ripgreprc
 
+# homebrew
+export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
+
 #  Anyenv
 #-----------------------------------------------
 if [ -z "$SKIP_ANYENV_INIT" ] && command -v 'anyenv' > /dev/null 2>&1; then
