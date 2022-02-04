@@ -10,8 +10,8 @@ fi
 
 DEFAULT_HEAD="$(git symbolic-ref --short HEAD)"
 
-BASE="${1:-"$DEFAULT_BASE"}"
-HEAD="${2:-"$DEFAULT_HEAD"}"
+BASE="${2:-"$DEFAULT_BASE"}"
+HEAD="${1:-"$DEFAULT_HEAD"}"
 
 #  Files
 #-----------------------------------------------
