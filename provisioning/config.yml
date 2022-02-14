@@ -2,16 +2,15 @@ homebrew:
   applications:
     - adobe-creative-cloud     # https://creative.adobe.com/products/creative-cloud
     - alacritty                # https://github.com/jwilm/alacritty
-    - alfred                   # https://www.alfredapp.com/
     - appcleaner               # https://freemacsoft.net/appcleaner/
     - chromedriver             # https://sites.google.com/a/chromium.org/chromedriver/home
     - creasty/tools/keyboard   # https://github.com/creasty/Keyboard
     - docker                   # https://www.docker.com/community-edition
     - figma                    # https://www.figma.com/
+    - google-chat              # https://gsuite.google.com/products/chat/
     - google-chrome            # https://www.google.com/chrome/
     - google-cloud-sdk         # https://cloud.google.com/sdk/
     - google-drive-file-stream # https://www.google.com/drive/
-    - google-chat              # https://gsuite.google.com/products/chat/
     - google-japanese-ime      # https://www.google.co.jp/ime/
     - istat-menus              # https://bjango.com/mac/istatmenus/
     - kitty                    # https://github.com/kovidgoyal/kitty
@@ -22,6 +21,7 @@ homebrew:
     - qlmarkdown               # https://github.com/toland/qlmarkdown
     - qlstephen                # https://whomwah.github.io/qlstephen/
     - quicklook-json           # http://www.sagtau.com/quicklookjson.html
+    - raycast                  # https://raycast.app/
     - rightfont                # https://rightfontapp.com/
     - spotify                  # https://www.spotify.com/
     - tableplus                # https://tableplus.io/
