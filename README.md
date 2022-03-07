@@ -67,39 +67,39 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~150ms to startup
+- ~140ms to startup
 - 3,700 loc of config
-- 37 third-party plugins
+- 36 third-party plugins
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.14s user 0.09s system 151% cpu 0.149 total
-nvim --headless -c quit  0.13s user 0.09s system 149% cpu 0.146 total
-nvim --headless -c quit  0.13s user 0.08s system 150% cpu 0.145 total
-nvim --headless -c quit  0.13s user 0.08s system 150% cpu 0.142 total
-nvim --headless -c quit  0.14s user 0.09s system 150% cpu 0.148 total
+nvim --headless -c quit  0.11s user 0.08s system 147% cpu 0.129 total
+nvim --headless -c quit  0.12s user 0.08s system 147% cpu 0.135 total
+nvim --headless -c quit  0.12s user 0.08s system 146% cpu 0.134 total
+nvim --headless -c quit  0.12s user 0.08s system 146% cpu 0.138 total
+nvim --headless -c quit  0.12s user 0.08s system 144% cpu 0.135 total
 ```
 
 ```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      95 text files.
-      91 unique files.
+      96 text files.
+      92 unique files.
       35 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.09 s (737.4 files/s, 53433.4 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.08 s (780.8 files/s, 56028.0 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      52            458            309           2235
+vim script                      52            457            307           2236
 Lua                              7             88             21            734
-JSON                             1             14              0            290
-TOML                             2             44             37            239
+JSON                             1             14              0            292
+TOML                             3             44             14            262
 Python                           2             36              2            192
-Scheme                           1              1              0             10
+Scheme                           1              4              5             28
 -------------------------------------------------------------------------------
-SUM:                            65            641            369           3700
+SUM:                            66            643            349           3744
 -------------------------------------------------------------------------------
 ```
 
