@@ -86,11 +86,11 @@ export class Source extends BaseSource<Params> {
           if (items.length) {
             controller.enqueue(items);
           }
-        } catch (e: unknown) {
+        } catch (e) {
           if (e instanceof DOMException) {
             proc.kill("SIGTERM");
           } else {
-            console.error(e);
+            // console.error(e);
           }
         } finally {
           const [status, stderr] = await Promise.all([
@@ -99,7 +99,8 @@ export class Source extends BaseSource<Params> {
           ]);
           proc.close();
           if (!status.success) {
-            console.error(new TextDecoder().decode(stderr));
+            void stderr;
+            // console.error(new TextDecoder().decode(stderr));
           }
           controller.close();
         }
