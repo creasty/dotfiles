@@ -145,13 +145,19 @@ repo = 'vim-denops/denops.vim'
 repo = 'Shougo/ddu.vim'
 depends = ['vim-denops/denops.vim']
 hook_add = '''
-call user#plugin#ddu#lazy_init()
+call user#plugin#ddu#init()
 
 augroup _init_ddu
   autocmd!
   autocmd FileType ddu-ff call user#plugin#ddu#init_ddu_list()
   autocmd FileType ddu-ff-filter call user#plugin#ddu#init_ddu_filter()
 augroup END
+
+command! -nargs=0 Open :call user#plugin#ddu#open()
+command! -nargs=? -bang -complete=dir Rg :call user#plugin#ddu#search(<q-args>, <bang>0)
+
+nnoremap <silent> <C-q> <Cmd>Open<CR>
+nnoremap <silent> <Space>/ <Cmd>Rg!<CR>
 '''
 
 [[plugins]] # Fuzzy finder ui for ddu.vim
@@ -159,9 +165,6 @@ repo = 'Shougo/ddu-ui-ff'
 
 [[plugins]] # File kind for ddu.vim
 repo = 'Shougo/ddu-kind-file'
-
-[[plugins]] # Substring matcher for ddu.vim
-repo = 'Shougo/ddu-filter-matcher_substring'
 
 [[plugins]] # Action source for ddu.vim
 repo = 'Shougo/ddu-source-action'

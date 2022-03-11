@@ -124,12 +124,13 @@ export class Source extends BaseSource<Params, ActionData> {
 
     return new ReadableStream({
       async start(controller) {
-        const input = args.options.volatile
+        const originalInput = args.options.volatile
           ? args.input
           : args.sourceParams.input;
 
+        const input = originalInput || (await fn.input(args.denops, "Search: ").catch(() => ""));
         if (input != "") {
-          controller.enqueue(await findBy(input));
+          controller.enqueue(await findBy(originalInput));
         }
 
         controller.close();
