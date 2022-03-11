@@ -35,13 +35,13 @@ export class Source extends BaseSource<Params> {
     const { denops, sourceParams } = args;
     return new ReadableStream({
       async start(controller) {
-        let root = await fn.fnamemodify(
+        let root = (await fn.fnamemodify(
           denops,
           sourceParams.path,
-          ":p",
-        ) as string;
+          ":p"
+        )) as string;
         if (root == "") {
-          root = await fn.getcwd(denops) as string;
+          root = (await fn.getcwd(denops)) as string;
         }
 
         if (!args.sourceParams.cmd.length) {
@@ -61,12 +61,10 @@ export class Source extends BaseSource<Params> {
         });
 
         try {
-          for await (
-            const line of abortable(
-              iterLine(proc.stdout),
-              abortController.signal,
-            )
-          ) {
+          for await (const line of abortable(
+            iterLine(proc.stdout),
+            abortController.signal
+          )) {
             const path = line.trim();
             if (!path.length) continue;
             const fullPath = resolve(root, path);
