@@ -4,7 +4,7 @@ function! user#plugin#ddu#open() abort
 
   call ddu#start({
     \ 'name': l:source,
-    \ 'sources': [{ 'name': l:source, 'path': getcwd() }],
+    \ 'sources': [{ 'name': l:source }],
     \ 'uiParams': { 'ff': { 'startFilter': v:true } },
     \ 'resume': v:true,
   \ })
@@ -33,9 +33,13 @@ function! user#plugin#ddu#init() abort
         \ 'matchers': ['matcher_fzy'],
       \ },
     \ },
-    \ 'kindOptions': {
-      \ 'file': {
-      \   'defaultAction': 'open',
+    \ 'sourceParams': {
+      \ 'rg': {
+        \ 'highlights': {
+          \ 'path': 'Identifier',
+          \ 'lineNr': 'Comment',
+          \ 'word': 'Constant',
+        \ },
       \ },
     \ },
     \ 'uiParams': {
@@ -44,8 +48,13 @@ function! user#plugin#ddu#init() abort
         \ 'filterSplitDirection': 'floating',
         \ 'prompt': '>',
         \ 'highlights': {
-          \ 'floating': 'BorderedFloat',
+          \ 'floating': 'Normal:BorderedFloat,Search:',
         \ }
+      \ },
+    \ },
+    \ 'kindOptions': {
+      \ 'file': {
+      \   'defaultAction': 'open',
       \ },
     \ },
     \ 'filterParams': {
@@ -74,6 +83,7 @@ function! s:init_ddu() abort
   " TODO: <C-r> to preseve the input
   nnoremap <buffer> <C-r> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
   inoremap <buffer> <C-r> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
+
   nnoremap <buffer> <C-l> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
   inoremap <buffer> <C-l> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
 endfunction
@@ -87,9 +97,6 @@ function! user#plugin#ddu#init_ddu_list() abort
 endfunction
 
 function! user#plugin#ddu#init_ddu_filter() abort
-  " Remove search highlight
-  " setl winhighlight+=,Search:
-
   " Disable completion
   let b:coc_suggest_disable = 1
 
