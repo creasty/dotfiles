@@ -1,6 +1,9 @@
 [[plugins]] # dark powered vim/neovim plugin manager
 repo = 'Shougo/dein.vim'
 
+[[plugins]] # An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
+repo = 'vim-denops/denops.vim'
+
 #  Editing
 #-----------------------------------------------
 [[plugins]] # create your own text objects
@@ -136,14 +139,11 @@ let g:NERDTreeAutoDeleteBuffer = 1
 let g:loaded_nerdtree_fs_menu = 1
 '''
 
-#  DDU
+#  ddu
 #-----------------------------------------------
-[[plugins]] # An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
-repo = 'vim-denops/denops.vim'
-
 [[plugins]] # Dark deno-powered UI framework for neovim/Vim8
 repo = 'Shougo/ddu.vim'
-depends = ['vim-denops/denops.vim']
+depends = ['denops.vim']
 hook_add = '''
 call user#plugin#ddu#init()
 

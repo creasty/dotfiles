@@ -46,6 +46,7 @@ function! user#plugin#ddu#init() abort
       \ 'ff': {
         \ 'split': 'floating',
         \ 'filterSplitDirection': 'floating',
+        \ 'floatingBorder': 'rounded',
         \ 'prompt': '>',
         \ 'highlights': {
           \ 'floating': 'Normal:BorderedFloat,Search:',
