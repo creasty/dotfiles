@@ -10,6 +10,7 @@ let g:coc_global_extensions = [
   \ 'coc-clangd',
   \ 'coc-css',
   \ 'coc-diagnostic',
+  \ 'coc-deno',
   \ 'coc-eslint',
   \ 'coc-git',
   \ 'coc-go',
