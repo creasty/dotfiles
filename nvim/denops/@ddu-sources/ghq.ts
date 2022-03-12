@@ -13,62 +13,45 @@ type Params = {
 };
 
 export class Source extends BaseSource<Params, ActionData> {
-  rootPath = "";
   kind = "file";
 
   async onInit(args: OnInitArguments<Params>): Promise<void> {
-    const proc = Deno.run({
-      cmd: [args.sourceParams.bin, "root"],
-      stdin: "null",
-      stdout: "piped",
-      stderr: "piped",
-    });
-    if (!(await proc.status()).success) {
-      args.denops.call(
-        "ddu#util#print_error",
-        `Invalid bin param: ${args.sourceParams.bin}`
-      );
+    if (!args.sourceParams.rootPath) {
+      const proc = Deno.run({
+        cmd: [args.sourceParams.bin, "root"],
+        stdin: "null",
+        stdout: "piped",
+        stderr: "piped",
+      });
+      args.sourceParams.rootPath = new TextDecoder()
+        .decode(await proc.output())
+        .replace(/\r?\n/g, '');
       proc.close();
-      return;
     }
-    this.rootPath = new TextDecoder()
-      .decode(await proc.output())
-      .replace(/\r?\n/g, '');
-    proc.close();
   }
 
   gather(args: GatherArguments<Params>): ReadableStream<Item<ActionData>[]> {
-    const { rootPath } = this;
     return new ReadableStream({
       async start(controller) {
         const proc = Deno.run({
           cmd: [args.sourceParams.bin, "list"],
-          stdin: "piped",
+          stdin: "null",
           stdout: "piped",
         });
-        if (!(await proc.status()).success) {
-          args.denops.call(
-            "ddu#util#print_error",
-            `Invalid bin param: ${args.sourceParams.bin}`
-          );
-          proc.close();
-          return;
-        }
-        const paths = new TextDecoder().decode(await proc.output()).split("\n");
+        const paths = new TextDecoder().decode(await proc.output()).split(/\r?\n/);
         proc.close();
-        controller.enqueue(
-          await Promise.all(
-            paths.map(async (path) => {
-              return {
-                word: path,
-                display: path,
-                action: {
-                  path: join(rootPath, path),
-                },
-              } as Item<ActionData>;
-            })
-          )
-        );
+
+        const items: Item<ActionData>[] = paths.map((path) => {
+          return {
+            word: path,
+            display: path,
+            action: {
+              path: join(args.sourceParams.rootPath, path),
+            },
+          };
+        });
+
+        controller.enqueue(items);
         controller.close();
       },
     });

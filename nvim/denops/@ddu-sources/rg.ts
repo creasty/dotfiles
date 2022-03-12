@@ -92,11 +92,10 @@ export class Source extends BaseSource<Params, ActionData> {
 
   gather(args: GatherArguments<Params>): ReadableStream<Item<ActionData>[]> {
     const findBy = async (input: string) => {
-      const cmd = ["rg", "--json", ...args.sourceParams.args, "--", input];
       const cwd =
         args.sourceParams.path || ((await fn.getcwd(args.denops)) as string);
       const proc = Deno.run({
-        cmd: cmd,
+        cmd: ["rg", "--json", ...args.sourceParams.args, "--", input],
         stdout: "piped",
         stderr: "piped",
         stdin: "null",

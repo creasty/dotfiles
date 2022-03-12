@@ -8,7 +8,6 @@ import { abortable } from "https://deno.land/std@0.129.0/async/mod.ts";
 const enqueueSize1st = 1000;
 
 type Params = {
-  cmd: string[];
   path: string;
   updateItems: number;
 };
@@ -44,17 +43,13 @@ export class Source extends BaseSource<Params> {
           root = (await fn.getcwd(denops)) as string;
         }
 
-        if (!args.sourceParams.cmd.length) {
-          return;
-        }
-
         let items: Item<ActionData>[] = [];
         const enqueueSize2nd = sourceParams.updateItems;
         let enqueueSize = enqueueSize1st;
         let numChunks = 0;
 
         const proc = Deno.run({
-          cmd: sourceParams.cmd,
+          cmd: ["fd", "-t", "f", "--full-path", "--follow", "--hidden"],
           stdout: "piped",
           stderr: "piped",
           cwd: root,
@@ -87,26 +82,14 @@ export class Source extends BaseSource<Params> {
             controller.enqueue(items);
           }
         } catch (e) {
-          if (e instanceof DOMException) {
-            proc.kill("SIGTERM");
-          } else {
-            // console.error(e);
-          }
+          // nothing
         } finally {
-          const [status, stderr] = await Promise.all([
-            proc.status(),
-            proc.stderrOutput(),
-          ]);
           proc.close();
-          if (!status.success) {
-            void stderr;
-            // console.error(new TextDecoder().decode(stderr));
-          }
           controller.close();
         }
       },
 
-      cancel(reason): void {
+      cancel(reason: any): void {
         abortController.abort(reason);
       },
     });
@@ -114,7 +97,6 @@ export class Source extends BaseSource<Params> {
 
   params(): Params {
     return {
-      cmd: ["fd", "-t", "f", "--full-path", "--follow", "--hidden"],
       path: "",
       updateItems: 100000,
     };
