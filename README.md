@@ -69,7 +69,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~140ms to startup
 - 3,700 loc of config
-- 36 third-party plugins
+- 41 third-party plugins
 
 <details>
 
@@ -84,22 +84,22 @@ nvim --headless -c quit  0.12s user 0.08s system 144% cpu 0.135 total
 
 ```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      96 text files.
-      92 unique files.
+      95 text files.
+      91 unique files.
       35 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.08 s (780.8 files/s, 56028.0 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.06 s (1028.8 files/s, 74956.8 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      52            457            307           2236
-Lua                              7             88             21            734
-JSON                             1             14              0            292
-TOML                             3             44             14            262
-Python                           2             36              2            192
+vim script                      52            453            306           2255
+Lua                              5             78             22            597
+JSON                             1             14              0            293
+TypeScript                       3             34              1            270
+TOML                             2             44             12            247
 Scheme                           1              4              5             28
 -------------------------------------------------------------------------------
-SUM:                            66            643            349           3744
+SUM:                            64            627            346           3690
 -------------------------------------------------------------------------------
 ```
 
