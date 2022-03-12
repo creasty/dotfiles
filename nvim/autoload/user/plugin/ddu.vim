@@ -1,3 +1,12 @@
+let s:last_cwd = ''
+
+function! s:can_resume() abort
+  let l:cwd = getcwd()
+  let l:is_same_dir = (l:cwd == s:last_cwd)
+  let s:last_cwd = l:cwd
+  return l:is_same_dir
+endfunction
+
 function! user#plugin#ddu#open() abort
   let l:is_startup_dir = (getcwd() == $HOME)
   let l:source = l:is_startup_dir ? 'ghq' : 'fd'
@@ -6,7 +15,7 @@ function! user#plugin#ddu#open() abort
     \ 'name': l:source,
     \ 'sources': [{ 'name': l:source }],
     \ 'uiParams': { 'ff': { 'startFilter': v:true } },
-    \ 'resume': v:true,
+    \ 'resume': s:can_resume(),
   \ })
 endfunction
 
@@ -14,7 +23,7 @@ function! user#plugin#ddu#search(path, resume) abort
   call ddu#start({
     \ 'name': 'grep',
     \ 'sources': [{ 'name': 'rg', 'params': { 'path': a:path } }],
-    \ 'resume': a:resume,
+    \ 'resume': a:resume && s:can_resume(),
   \ })
 endfunction
 
