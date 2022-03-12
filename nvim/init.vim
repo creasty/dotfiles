@@ -387,12 +387,13 @@ endfunction
 "==============================================================================================
 let s:config_path = stdpath('config')
 let s:dein_path = s:config_path . '/dein'
-let s:dein_repo_path = s:dein_path . '/repos/github.com/Shougo/dein.vim'
+let s:dein_repos_path = s:dein_path . '/repos'
+let s:dein_rtp = s:dein_repos_path . '/github.com/Shougo/dein.vim'
 let s:dein_toml_path = s:config_path . '/dein.toml'
 let s:dein_lazy_toml_path = s:config_path . '/dein_lazy.toml'
 
 if has('vim_starting')
-  let &g:rtp .= ',' . s:dein_repo_path
+  let &g:rtp .= ',' . s:dein_rtp
 endif
 
 if dein#load_state(s:dein_path)
@@ -425,6 +426,8 @@ command! DeinPurgeCache
 command! DeinPrunePlugins
   \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
   \ exec 'DeinPurgeCache'
+command! DeinGotoRepos
+  \ exec 'lcd' s:dein_repos_path
 
 "  Cross-plugin integration
 "-----------------------------------------------
