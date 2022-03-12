@@ -96,26 +96,6 @@ lua require'hop'.setup()
 
 #  Navigation
 #-----------------------------------------------
-[[plugins]] # dark powered asynchronous unite all interfaces for neovim/vim8
-repo = 'Shougo/denite.nvim'
-on_cmd = ['Denite']
-hook_source = '''
-call user#plugin#denite#lazy_init()
-'''
-hook_add = '''
-augroup _init_denite
-  autocmd!
-  autocmd FileType denite call user#plugin#denite#init_denite_list()
-  autocmd FileType denite-filter call user#plugin#denite#init_denite_filter()
-augroup END
-
-command! -nargs=0 Open :call user#plugin#denite#open()
-command! -nargs=? -bang -complete=dir Rg :call user#plugin#denite#rg(<q-args>, <bang>0)
-
-nnoremap <silent> <C-q> <Cmd>Open<CR>
-nnoremap <silent> <Space>/ <Cmd>Rg!<CR>
-'''
-
 [[plugins]] # switch to the missing file without interaction
 repo = 'kana/vim-altr'
 on_map = ['<Plug>(altr-']

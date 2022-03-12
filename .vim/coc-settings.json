@@ -1,0 +1,7 @@
+{
+  "deno.enable": true,
+  "tsserver.enable": false,
+  "cSpell.words": [
+    "Denops"
+  ]
+}

@@ -1,6 +1,9 @@
 [[plugins]] # dark powered vim/neovim plugin manager
 repo = 'Shougo/dein.vim'
 
+[[plugins]] # An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
+repo = 'vim-denops/denops.vim'
+
 #  Editing
 #-----------------------------------------------
 [[plugins]] # create your own text objects
@@ -135,6 +138,39 @@ let g:NERDTreeAutoDeleteBuffer = 1
 
 let g:loaded_nerdtree_fs_menu = 1
 '''
+
+#  ddu
+#-----------------------------------------------
+[[plugins]] # Dark deno-powered UI framework for neovim/Vim8
+repo = 'Shougo/ddu.vim'
+depends = ['denops.vim']
+hook_add = '''
+call user#plugin#ddu#init()
+
+augroup _init_ddu
+  autocmd!
+  autocmd FileType ddu-ff call user#plugin#ddu#init_ddu_list()
+  autocmd FileType ddu-ff-filter call user#plugin#ddu#init_ddu_filter()
+augroup END
+
+command! -nargs=0 Open :call user#plugin#ddu#open()
+command! -nargs=? -bang -complete=dir Rg :call user#plugin#ddu#search(<q-args>, <bang>0)
+
+nnoremap <silent> <C-q> <Cmd>Open<CR>
+nnoremap <silent> <Space>/ <Cmd>Rg!<CR>
+'''
+
+[[plugins]] # Fuzzy finder ui for ddu.vim
+repo = 'Shougo/ddu-ui-ff'
+
+[[plugins]] # File kind for ddu.vim
+repo = 'Shougo/ddu-kind-file'
+
+[[plugins]] # Action source for ddu.vim
+repo = 'Shougo/ddu-source-action'
+
+[[plugins]] # Fzy filter for ddu.vim
+repo = 'matsui54/ddu-filter-fzy'
 
 #  Runner
 #-----------------------------------------------

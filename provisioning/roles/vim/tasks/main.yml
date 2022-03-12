@@ -19,6 +19,11 @@
     - vim-vint
     - pynvim
 
+- name: install deno
+  homebrew:
+    name:  deno
+    state: present
+
 - name: install neovim
   homebrew:
     name:  neovim
