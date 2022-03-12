@@ -31,6 +31,11 @@ local function tabline()
     local name = vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or '[No Name]'
 
+    -- Work around flickering tab with https://github.com/Shougo/ddu-ui-ff
+    if string.match(name, '^ddu-') then
+      name = 'ddu'
+    end
+
     local flags = {}
     if vim.bo[bufnr].mod then
       table.insert(flags, '+')
