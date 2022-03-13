@@ -164,11 +164,18 @@ set foldlevelstart=20
 set title titlestring=%{UserTitleString()}
 
 function! UserTitleString() abort
-  let l:path = expand('%:p')
-  let l:path = (l:path !=# '') ? l:path : getcwd()
-  let l:path = substitute(l:path, $HOME, '~', '')
-  let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
-  return l:path
+  let l:is_file = empty(&buftype)
+  if l:is_file
+    let l:path = expand('%:p')
+    let l:path = (l:path !=# '') ? l:path : getcwd()
+    let l:path = substitute(l:path, $HOME, '~', '')
+    let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
+    return l:path
+  else
+    let l:name = bufname()
+    let l:name = (l:name !=# '') ? l:name : &buftype
+    return l:name
+  endif
 endfunction
 
 "=== Editing

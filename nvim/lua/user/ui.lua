@@ -69,7 +69,8 @@ end
 local function render_statusline(winnr, active)
   local bufnr = vim.api.nvim_win_get_buf(winnr)
   local path = vim.api.nvim_buf_get_name(bufnr)
-  local is_file = (path ~= '')
+  local buftype = vim.bo[bufnr].buftype
+  local is_file = (buftype == '')
 
   local l0 = {}
   local l1 = {}
@@ -86,11 +87,13 @@ local function render_statusline(winnr, active)
     local filetype = vim.bo[bufnr].filetype
     table.insert(l0, filetype == '' and 'plain' or filetype)
   else
-    if is_file then
+    if is_file and path ~= '' then
       local rel_path = vim.fn.fnamemodify(path, ':p:~:.')
       table.insert(l0, rel_path)
-    else
+    elseif is_file then
       table.insert(l0, '[No Name]')
+    else
+      table.insert(l0, buftype)
     end
   end
 
