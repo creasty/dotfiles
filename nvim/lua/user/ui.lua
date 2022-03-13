@@ -1,14 +1,9 @@
 local filereadable_key = 'filereadable'
+local current_normal_winnr_key = 'current_normal_winnr'
 
 local function file_exists(name)
   local f = io.open(name, 'r')
   return f ~= nil and io.close(f)
-end
-
-local function buf_get_var(bufnr, name, default)
-  local ok, value = pcall(vim.api.nvim_buf_get_var, bufnr, name)
-  if ok then return value end
-  return default
 end
 
 local function update_filereadable()
@@ -18,29 +13,47 @@ local function update_filereadable()
   end
 end
 
+local function safe_buf_get_var(bufnr, name, default)
+  local ok, value = pcall(vim.api.nvim_buf_get_var, bufnr, name)
+  if ok then return value end
+  return default
+end
+
+local function safe_tabpage_get_var(tabnr, name, default)
+  local ok, value = pcall(vim.api.nvim_tabpage_get_var, tabnr, name)
+  if ok then return value end
+  return default
+end
+
+local function tabpage_get_win(tabnr)
+  local winnr = vim.api.nvim_tabpage_get_win(tabnr)
+  local config = vim.api.nvim_win_get_config(winnr)
+  local is_normal = config.relative == ''
+  if is_normal then
+    vim.api.nvim_tabpage_set_var(tabnr, current_normal_winnr_key, winnr)
+    return winnr
+  end
+  return safe_tabpage_get_var(tabnr, current_normal_winnr_key, winnr)
+end
+
 local function tabline()
   local line = {}
 
-	local tab_list = vim.api.nvim_list_tabpages()
-	local current = vim.api.nvim_get_current_tabpage()
+  local tab_list = vim.api.nvim_list_tabpages()
+  local current = vim.api.nvim_get_current_tabpage()
   for _, tabnr in ipairs(tab_list) do
-    local winnr = vim.api.nvim_tabpage_get_win(tabnr)
+    local winnr = tabpage_get_win(tabnr)
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
 
     local name = vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or '[No Name]'
 
-    -- Work around flickering tab with https://github.com/Shougo/ddu-ui-ff
-    if string.match(name, '^ddu-') then
-      name = 'ddu'
-    end
-
     local flags = {}
     if vim.bo[bufnr].mod then
       table.insert(flags, '+')
     end
-    if not buf_get_var(bufnr, filereadable_key, true) then
+    if not safe_buf_get_var(bufnr, filereadable_key, true) then
       table.insert(flags, '?')
     end
 
@@ -97,7 +110,7 @@ local function render_statusline(winnr, active)
   if vim.bo[bufnr].modified then
     table.insert(flags, '+')
   end
-  if not buf_get_var(bufnr, filereadable_key, true) then
+  if not safe_buf_get_var(bufnr, filereadable_key, true) then
     table.insert(flags, '?')
   end
   if #flags > 0 then
@@ -105,7 +118,7 @@ local function render_statusline(winnr, active)
   end
 
   if active and is_file then
-    local last_saved_time = buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
+    local last_saved_time = safe_buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
     if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
       table.insert(l1, os.date('✓ %X', last_saved_time))
     end
@@ -114,7 +127,7 @@ local function render_statusline(winnr, active)
   if active then
     local diagnostics = { E = 0, W = 0, I = 0, H = 0 }
 
-    local status = buf_get_var(bufnr, 'coc_diagnostic_info', nil)
+    local status = safe_buf_get_var(bufnr, 'coc_diagnostic_info', nil)
     if status then
       diagnostics.E = diagnostics.E + (status.error or 0)
       diagnostics.W = diagnostics.W + (status.warning or 0)
