@@ -102,6 +102,7 @@ function! user#plugin#ddu#init_ddu_list() abort
   call s:init_ddu()
   nnoremap <buffer> i <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
   nnoremap <buffer> p <Cmd>call ddu#ui#ff#do_action('preview')<CR>
+  nnoremap <buffer> o <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open' })<CR>
   nnoremap <buffer> y <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'yank' })<CR>
   nnoremap <buffer> - <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>j
 endfunction
