@@ -16,25 +16,28 @@ function! s:is_enabled() abort
   return v:true
 endfunction
 
-function! s:reload_display(level) abort
-  if !get(b:, 'force_refresh_enabled', v:false)
-    return
-  endif
+function! s:reload_display(force) abort
   if get(b:, 'force_refresh_initial_reload_display', v:true)
     let b:force_refresh_initial_reload_display = v:false
+    return
+  endif
+  if !get(b:, 'force_refresh_buf_active', v:false)
+    return
+  endif
+  if !s:is_enabled()
     return
   endif
 
   " clear highlights
   call nvim_buf_clear_namespace(0, -1, 1, line('$'))
 
-  if a:level == 3
+  if a:force
     " reload if modified externally
     silent! checktime
 
     " fix broken syntax highlight
     " @see https://vim.fandom.com/wiki/Fix_syntax_highlighting
-    syntax sync fromstart
+    " syntax sync fromstart
 
     " fix broken treesitter highlight
     " @see https://github.com/nvim-treesitter/nvim-treesitter/issues/78
@@ -42,9 +45,7 @@ function! s:reload_display(level) abort
       silent! edit
       :TSBufEnable highlight
     endif
-  endif
 
-  if a:level >= 2
     " fix glitches
     redraw!
     redrawstatus
@@ -52,8 +53,8 @@ function! s:reload_display(level) abort
 
   " for plugins
   doautocmd User ForceRefresh
-  if a:level == 3
-    doautocmd User ForceRefresh3
+  if a:force
+    doautocmd User ForceRefreshForce
   endif
 endfunction
 
@@ -68,17 +69,17 @@ function! s:reload_file() abort
   endif
 endfunction
 
-nnoremap <C-l> <Cmd>call <SID>reload_display(3)<CR>
+nnoremap <C-l> <Cmd>call <SID>reload_display(v:true)<CR>
 
 augroup force_refresh
   autocmd!
 
   autocmd User ForceRefresh :
-  autocmd User ForceRefresh3 :
+  autocmd User ForceRefreshForce :
 
-  autocmd BufLeave * let b:force_refresh_enabled = v:false
-  autocmd BufEnter * let b:force_refresh_enabled = <SID>is_enabled() | call <SID>reload_display(0)
-  autocmd FocusGained * call <SID>reload_display(1)
+  autocmd BufLeave * unlet! b:force_refresh_buf_active
+  autocmd BufEnter * let b:force_refresh_buf_active = v:true
+  autocmd FocusGained * call <SID>reload_display(v:false)
 
   autocmd FocusGained,BufEnter * call <SID>reload_file()
 augroup END

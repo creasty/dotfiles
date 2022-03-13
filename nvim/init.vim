@@ -450,14 +450,13 @@ if dein#tap('coc.nvim')
   function! s:coc_refresh() abort
     silent! CocDisable
     silent! CocEnable
-    doautocmd InsertLeave
   endfunction
 
   augroup _init_coc
     autocmd!
 
-    autocmd User ForceRefresh3 call coc#float#close_all()
     autocmd User ForceRefresh call s:coc_refresh()
+    autocmd User ForceRefreshForce call coc#float#close_all()
 
     if dein#tap('ultisnips')
       autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
