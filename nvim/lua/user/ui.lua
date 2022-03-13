@@ -18,30 +18,23 @@ local function update_filereadable()
   end
 end
 
-local function tabpage_get_win_normal(tabnr)
-  for _, winnr in ipairs(vim.api.nvim_tabpage_list_wins(tabnr)) do
-    local config = vim.api.nvim_win_get_config(winnr)
-    -- `relative` is empty for normal windows
-    if config.relative == '' then
-      return winnr
-    end
-  end
-  -- Fallback
-  return vim.api.nvim_tabpage_get_win(tabnr)
-end
-
 local function tabline()
   local line = {}
 
 	local tab_list = vim.api.nvim_list_tabpages()
 	local current = vim.api.nvim_get_current_tabpage()
   for _, tabnr in ipairs(tab_list) do
-    local winnr = tabpage_get_win_normal(tabnr)
+    local winnr = vim.api.nvim_tabpage_get_win(tabnr)
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
 
     local name = vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or '[No Name]'
+
+    -- Work around flickering tab with https://github.com/Shougo/ddu-ui-ff
+    if string.match(name, '^ddu-') then
+      name = 'ddu'
+    end
 
     local flags = {}
     if vim.bo[bufnr].mod then
