@@ -21,11 +21,11 @@ end
 local function tabline()
   local line = {}
 
-  local current = vim.fn.tabpagenr()
-  for tabnr = 1, vim.fn.tabpagenr('$') do
-    local winnr = vim.fn.tabpagewinnr(tabnr)
-    local buflist = vim.fn.tabpagebuflist(tabnr)
-    local bufnr = buflist[winnr]
+	local tab_list = vim.api.nvim_list_tabpages()
+	local current = vim.api.nvim_get_current_tabpage()
+  for _, tabnr in ipairs(tab_list) do
+    local winnr = vim.api.nvim_tabpage_get_win(tabnr)
+    local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
 
     local name = vim.fn.fnamemodify(path, ':t')
@@ -60,7 +60,7 @@ local function tabline()
 end
 
 local function render_statusline(winnr, active)
-  local bufnr = vim.fn.winbufnr(winnr)
+  local bufnr = vim.api.nvim_win_get_buf(winnr)
   local path = vim.api.nvim_buf_get_name(bufnr)
   local is_file = (path ~= '')
 
