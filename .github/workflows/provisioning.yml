@@ -11,10 +11,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        opts:
-          - --tags=base,install.homebrew.formula
-          - --tags=base,lang
-          - --tags=install,app,system --skip-tags=install.homebrew.formula
+        include:
+          - tags: base,install.homebrew.formula
+          - tags: base,lang
+          - tags: install,app,system
+            skip_tags: install.homebrew.formula
     steps:
       - uses: actions/checkout@v2
 
@@ -37,4 +38,4 @@ jobs:
           ID_RSA_FILE_B64: ${{ secrets.ID_RSA_FILE_B64 }}
 
       - name: Run
-        run: ./up -vvvv ${{ matrix.opts }}
+        run: ./up -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
