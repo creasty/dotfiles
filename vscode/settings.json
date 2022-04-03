@@ -61,7 +61,7 @@
   "workbench.quickOpen.preserveInput": true,
   "workbench.settings.editor": "json",
 
-  "workbench.colorTheme": "Candle Theme",
+  "workbench.colorTheme": "Visual Studio Dark",
   "workbench.colorCustomizations": {
     // https://code.visualstudio.com/api/references/theme-color
     "[Candle Theme]": {
@@ -81,7 +81,7 @@
 
   //=== Tabnine
   //==============================================================================================
-  "tabnine.experimentalAutoImports": true
+  "tabnine.experimentalAutoImports": true,
 
   //=== Emmet
   //==============================================================================================
@@ -308,6 +308,10 @@
   "code-runner.executorMapByGlob": {
     "*_spec.rb": "bundle exec rspec"
   },
+
+  //=== TLA+
+  //==============================================================================================
+  "tlaplus.tlc.statisticsSharing": "share",
 
   //=== VSCodeVim
   //==============================================================================================
