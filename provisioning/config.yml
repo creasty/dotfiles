@@ -156,7 +156,6 @@ golang:
 
     # dev tools
     - github.com/rogpeppe/godef # find symbol information in Go source
-    - golang.org/x/lint/golint  # Golint is a linter for Go source code
     - golang.org/x/tools/gopls  # LSP server for Go
 
 nodejs:
