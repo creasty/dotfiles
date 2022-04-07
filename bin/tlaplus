@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#> tlaplus <command>
+#>
+#> COMMANDS:
+#>     parse <file>             SANY Syntactic Analyzer
+#>     check [<args>] <file>    TLC model checker
+#>     proof [<args>] <file>    TLAPS Proof System
+#>     pcal [<args>] <file>     PlusCal Translator
+#>     tex <file>               TLATeX Pretty-Printer (produces .dvi)
+#>     pdf <file>               TLATeX Pretty-Printer (produces .pdf)
+
+set -euo pipefail
+
+METADIR=./metadir
+
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
+}
+
+run() {
+  docker run \
+    --rm \
+    -it \
+    -w /workdir \
+    -v "$(pwd)":/workdir \
+    creasty/tlaplus:latest \
+    "$@"
+}
+
+run_tool() {
+  run java -XX:+UseParallelGC -classpath /usr/lib/tla2tools.jar "$@"
+}
+
+run_tlapm() {
+  local file="${*: -1}"
+  local -a args=("${@:1:$#-1}" "$(basename "$file")")
+  cd "$(dirname "$file")"
+  run /usr/bin/tlapm -I /usr/lib/tlaps "${args[@]}"
+}
+
+ensure_metadir() {
+  [ -d "$METADIR" ] || mkdir -p "$METADIR"
+}
+
+#  Entrypoint
+#-----------------------------------------------
+TOOL_NAME="${1:-}"
+shift || true
+
+case "$TOOL_NAME" in
+  check)
+    run_tool tlc2.TLC "$@"
+    ;;
+  pcal)
+    run_tool pcal.trans "$@"
+    ;;
+  parse)
+    run_tool tla2sany.SANY "$@"
+    ;;
+  tex)
+    ensure_metadir
+    run_tool tla2tex.TLA -shade -metadir "$METADIR" "$@"
+    ;;
+  pdf)
+    ensure_metadir
+    run_tool tla2tex.TLA -shade -latexCommand pdflatex -latexOutputExt pdf -metadir "$METADIR" "$@"
+    ;;
+  proof)
+    run_tlapm "$@"
+    ;;
+  sh)
+    # For debugging
+    run sh
+    ;;
+  *)
+    do_help
+    ;;
+esac
