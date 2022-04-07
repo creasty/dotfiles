@@ -20,178 +20,178 @@ function M.setup()
   local s = M.schema
 
   -- Vim editor colors
-  hi.Bold = { fg = nil, bg = nil, gui = 'bold', sp = nil }
-  hi.ColorColumn = { fg = nil, bg = s.guide, gui = 'none', sp = nil }
-  hi.Conceal = { fg = s.aqua, bg = nil, gui = nil, sp = nil, clear = true }
-  hi.Cursor = { fg = s.background, bg = s.foreground, gui = nil, sp = nil }
-  hi.CursorColumn = { fg = nil, bg = s.line, gui = 'none', sp = nil }
-  hi.CursorLine = { fg = nil, bg = s.line, gui = 'none', sp = nil }
-  hi.CursorLineNr = { fg = s.gray200, bg = nil, gui = 'bold', sp = nil }
-  hi.Debug = { fg = s.brown, bg = nil, gui = nil, sp = nil }
-  hi.Directory = { fg = s.blue, bg = nil, gui = nil, sp = nil }
-  hi.Error = { fg = s.red, bg = 'none', gui = nil, sp = nil }
-  hi.ErrorMsg = { fg = s.background, bg = s.red, gui = nil, sp = nil }
-  hi.Exception = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.FoldColumn = { fg = s.selection, bg = s.background, gui = nil, sp = nil }
-  hi.Folded = { fg = s.comment, bg = s.background, gui = 'underline', sp = nil }
-  hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold', sp = nil }
-  hi.Italic = { fg = nil, bg = nil, gui = 'none', sp = nil }
-  hi.LineNr = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
-  hi.Macro = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.MatchParen = { fg = nil, bg = s.selection, gui = nil, sp = nil }
-  hi.ModeMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
-  hi.MoreMsg = { fg = s.green, bg = nil, gui = 'bold', sp = nil }
-  hi.NonText = { fg = s.gray500, bg = nil, gui = nil, sp = nil }
-  hi.Normal = { fg = s.foreground, bg = 'none', gui = nil, sp = nil }
-  hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none', sp = nil }
-  hi.PMenuSbar = { fg = nil, bg = s.window, gui = nil, sp = nil }
-  hi.PMenuSel = { fg = s.foreground, bg = s.selection, gui = nil, sp = nil }
-  hi.PMenuThumb = { fg = nil, bg = s.gray300, gui = nil, sp = nil }
-  hi.Question = { fg = s.background, bg = s.green, gui = nil, sp = nil }
-  hi.Search = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold', sp = nil }
-  hi.SignColumn = { fg = s.gray200, bg = s.background, gui = nil, sp = nil }
-  hi.SpecialKey = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
-  hi.StatusLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
-  hi.StatusLineNC = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
-  hi.TabLine = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
-  hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none', sp = nil }
-  hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none', sp = nil }
-  hi.Title = { fg = s.foreground, bg = nil, gui = 'bold', sp = nil }
-  hi.Underlined = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
-  hi.VertSplit = { fg = s.window, bg = s.window, gui = 'none', sp = nil }
-  hi.Visual = { fg = nil, bg = s.selection, gui = nil, sp = nil }
-  hi.WarningMsg = { fg = s.red, bg = nil, gui = nil, sp = nil }
-  hi.WildMenu = { fg = s.yellow, bg = s.background, gui = nil, sp = nil }
+  hi.Bold = { gui = 'bold' }
+  hi.ColorColumn = { bg = s.guide, gui = 'none' }
+  hi.Conceal = { fg = s.aqua, clear = true }
+  hi.Cursor = { fg = s.background, bg = s.foreground }
+  hi.CursorColumn = { bg = s.line, gui = 'none' }
+  hi.CursorLine = { bg = s.line, gui = 'none' }
+  hi.CursorLineNr = { fg = s.gray200, gui = 'bold' }
+  hi.Debug = { fg = s.brown }
+  hi.Directory = { fg = s.blue }
+  hi.Error = { fg = s.red, bg = 'none' }
+  hi.ErrorMsg = { fg = s.background, bg = s.red }
+  hi.Exception = { fg = s.purple }
+  hi.FoldColumn = { fg = s.selection, bg = s.background }
+  hi.Folded = { fg = s.comment, bg = s.background, gui = 'underline' }
+  hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold' }
+  hi.Italic = { gui = 'none' }
+  hi.LineNr = { fg = s.gray200, bg = s.background }
+  hi.Macro = { fg = s.purple }
+  hi.MatchParen = { bg = s.selection }
+  hi.ModeMsg = { fg = s.green, gui = 'bold' }
+  hi.MoreMsg = { fg = s.green, gui = 'bold' }
+  hi.NonText = { fg = s.gray500 }
+  hi.Normal = { fg = s.foreground, bg = 'none' }
+  hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none' }
+  hi.PMenuSbar = { bg = s.window }
+  hi.PMenuSel = { fg = s.foreground, bg = s.selection }
+  hi.PMenuThumb = { bg = s.gray300 }
+  hi.Question = { fg = s.background, bg = s.green }
+  hi.Search = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold' }
+  hi.SignColumn = { fg = s.gray200, bg = s.background }
+  hi.SpecialKey = { fg = s.dark_aqua, gui = 'none' }
+  hi.StatusLine = { fg = s.comment, bg = s.window, gui = 'none' }
+  hi.StatusLineNC = { fg = s.comment, bg = s.window, gui = 'none' }
+  hi.TabLine = { fg = s.comment, bg = s.window, gui = 'none' }
+  hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none' }
+  hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none' }
+  hi.Title = { fg = s.foreground, gui = 'bold' }
+  hi.Underlined = { fg = s.blue, gui = 'underline' }
+  hi.VertSplit = { fg = s.window, bg = s.window, gui = 'none' }
+  hi.Visual = { bg = s.selection }
+  hi.WarningMsg = { fg = s.red }
+  hi.WildMenu = { fg = s.yellow, bg = s.background }
 
-  hi.BorderedFloat = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
-  hi.FloatBorder = { fg = s.foreground, bg = s.background, gui = nil, sp = nil }
-  hi.NvimInternalError = { fg = s.background, bg = s.red, gui = 'none', sp = nil }
+  hi.BorderedFloat = { fg = s.foreground, bg = s.background }
+  hi.FloatBorder = { fg = s.foreground, bg = s.background }
+  hi.NvimInternalError = { fg = s.background, bg = s.red, gui = 'none' }
 
   -- Standard syntax highlighting
-  hi.Boolean = { fg = s.orange, bg = nil, gui = nil, sp = nil }
-  hi.Character = { fg = s.orange, bg = nil, gui = nil, sp = nil }
-  hi.Comment = { fg = s.comment, bg = nil, gui = nil, sp = nil }
-  hi.Conditional = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.Constant = { fg = s.yellow, bg = nil, gui = nil, sp = nil }
-  hi.Define = { fg = s.purple, bg = nil, gui = 'none', sp = nil }
-  hi.Delimiter = { fg = s.gray200, bg = nil, gui = nil, sp = nil }
-  hi.Float = { fg = s.orange, bg = nil, gui = nil, sp = nil }
-  hi.Function = { fg = s.pink, bg = nil, gui = nil, sp = nil }
-  hi.Identifier = { fg = s.blue, bg = nil, gui = 'none', sp = nil }
-  hi.Include = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.Keyword = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.Label = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.Number = { fg = s.orange, bg = nil, gui = nil, sp = nil }
-  hi.Operator = { fg = s.aqua, bg = nil, gui = 'none', sp = nil }
-  hi.PreProc = { fg = s.brown, bg = nil, gui = nil, sp = nil }
-  hi.Repeat = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.Special = { fg = s.aqua, bg = nil, gui = nil, sp = nil }
-  hi.SpecialChar = { fg = s.bright_green, bg = nil, gui = nil, sp = nil }
-  hi.SpecialComment = { fg = s.green, bg = nil, gui = nil, sp = nil }
-  hi.Statement = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.StorageClass = { fg = s.yellow, bg = nil, gui = nil, sp = nil }
-  hi.String = { fg = s.green, bg = nil, gui = nil, sp = nil }
-  hi.Structure = { fg = s.purple, bg = nil, gui = nil, sp = nil }
-  hi.Tag = { fg = s.yellow, bg = nil, gui = nil, sp = nil }
-  hi.Todo = { fg = s.background, bg = s.comment, gui = nil, sp = nil }
-  hi.Type = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.Typedef = { fg = s.purple, bg = nil, gui = nil, sp = nil }
+  hi.Boolean = { fg = s.orange }
+  hi.Character = { fg = s.orange }
+  hi.Comment = { fg = s.comment }
+  hi.Conditional = { fg = s.purple }
+  hi.Constant = { fg = s.yellow }
+  hi.Define = { fg = s.purple, gui = 'none' }
+  hi.Delimiter = { fg = s.gray200 }
+  hi.Float = { fg = s.orange }
+  hi.Function = { fg = s.pink }
+  hi.Identifier = { fg = s.blue, gui = 'none' }
+  hi.Include = { fg = s.purple }
+  hi.Keyword = { fg = s.purple }
+  hi.Label = { fg = s.purple }
+  hi.Number = { fg = s.orange }
+  hi.Operator = { fg = s.aqua, gui = 'none' }
+  hi.PreProc = { fg = s.brown }
+  hi.Repeat = { fg = s.purple }
+  hi.Special = { fg = s.aqua }
+  hi.SpecialChar = { fg = s.bright_green }
+  hi.SpecialComment = { fg = s.green }
+  hi.Statement = { fg = s.purple }
+  hi.StorageClass = { fg = s.yellow }
+  hi.String = { fg = s.green }
+  hi.Structure = { fg = s.purple }
+  hi.Tag = { fg = s.yellow }
+  hi.Todo = { fg = s.background, bg = s.comment }
+  hi.Type = { fg = s.yellow, gui = 'none' }
+  hi.Typedef = { fg = s.purple }
 
   -- Spelling highlighting
-  hi.SpellBad = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_red }
-  hi.SpellLocal = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_aqua }
-  hi.SpellCap = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_blue }
-  hi.SpellRare = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_purple }
+  hi.SpellBad = { gui = 'undercurl', sp = s.bright_red }
+  hi.SpellLocal = { gui = 'undercurl', sp = s.bright_aqua }
+  hi.SpellCap = { gui = 'undercurl', sp = s.bright_blue }
+  hi.SpellRare = { gui = 'undercurl', sp = s.bright_purple }
 
   -- Diff highlighting
-  hi.DiffAdd = { fg = s.green, bg = 'none', gui = 'none', sp = nil }
-  hi.DiffChange = { fg = s.blue, bg = 'none', gui = 'none', sp = nil }
-  hi.DiffDelete = { fg = s.red, bg = 'none', gui = 'none', sp = nil }
-  hi.DiffText = { fg = s.blue, bg = 'none', gui = 'bold', sp = nil }
+  hi.DiffAdd = { fg = s.green, bg = 'none', gui = 'none' }
+  hi.DiffChange = { fg = s.blue, bg = 'none', gui = 'none' }
+  hi.DiffDelete = { fg = s.red, bg = 'none', gui = 'none' }
+  hi.DiffText = { fg = s.blue, bg = 'none', gui = 'bold' }
 
   -- LSP
-  -- hi.LspReferenceText = { fg = nil, bg = nil, gui = nil, sp = nil }
-  hi.LspDiagnosticsDefaultError = { fg = s.red, bg = nil, gui = 'none', sp = nil }
-  hi.LspDiagnosticsDefaultWarning = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.LspDiagnosticsDefaultInformation = { fg = s.blue, bg = nil, gui = 'none', sp = nil }
-  hi.LspDiagnosticsDefaultHint = { fg = s.green, bg = nil, gui = 'none', sp = nil }
-  hi.LspDiagnosticsUnderlineError = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_red }
-  hi.LspDiagnosticsUnderlineWarning = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_yellow }
-  hi.LspDiagnosticsUnderlineInformation = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_blue }
-  hi.LspDiagnosticsUnderlineHint = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_green }
+  -- hi.LspReferenceText = {  }
+  hi.LspDiagnosticsDefaultError = { fg = s.red, gui = 'none' }
+  hi.LspDiagnosticsDefaultWarning = { fg = s.yellow, gui = 'none' }
+  hi.LspDiagnosticsDefaultInformation = { fg = s.blue, gui = 'none' }
+  hi.LspDiagnosticsDefaultHint = { fg = s.green, gui = 'none' }
+  hi.LspDiagnosticsUnderlineError = { gui = 'undercurl', sp = s.bright_red }
+  hi.LspDiagnosticsUnderlineWarning = { gui = 'undercurl', sp = s.bright_yellow }
+  hi.LspDiagnosticsUnderlineInformation = { gui = 'undercurl', sp = s.bright_blue }
+  hi.LspDiagnosticsUnderlineHint = { gui = 'undercurl', sp = s.bright_green }
 
   -- Treesitter
-  -- hi.TSError = { fg = nil, bg = s.dark_red, gui = 'none', sp = nil }
-  hi.TSAnnotation = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
-  hi.TSAttribute = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.TSConstBuiltin = { fg = s.yellow, bg = nil, gui = 'italic', sp = nil }
-  hi.TSConstMacro = { fg = s.yellow, bg = nil, gui = 'bold', sp = nil }
-  hi.TSConstant = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
-  hi.TSConstructor = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.TSEmphasis = { fg = nil, bg = nil, gui = 'italic', sp = nil }
-  hi.TSField = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
-  hi.TSFuncBuiltin = { fg = s.pink, bg = nil, gui = 'italic', sp = nil }
-  hi.TSFuncMacro = { fg = s.pink, bg = nil, gui = 'bold', sp = nil }
-  hi.TSKeywordOperator = { fg = s.aqua, bg = nil, gui = 'italic', sp = nil }
-  hi.TSLiteral = { fg = s.orange, bg = nil, gui = 'none', sp = nil }
-  hi.TSNamespace = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
-  hi.TSNone = { fg = s.foreground, bg = nil, gui = 'none', sp = nil }
-  hi.TSProperty = { fg = s.brown, bg = nil, gui = 'none', sp = nil }
-  hi.TSStrike = { fg = nil, bg = nil, gui = 'strikethrough', sp = nil }
-  hi.TSStringEscape = { fg = s.dark_aqua, bg = nil, gui = 'none', sp = nil }
-  hi.TSStringRegex = { fg = s.aqua, bg = nil, gui = 'none', sp = nil }
-  hi.TSStrong = { fg = nil, bg = nil, gui = 'bold', sp = nil }
-  hi.TSSymbol = { fg = s.red, bg = nil, gui = 'none', sp = nil }
-  hi.TSTag = { fg = s.yellow, bg = nil, gui = 'none', sp = nil }
-  hi.TSTagDelimiter = { fg = s.gray200, bg = nil, gui = 'none', sp = nil }
-  hi.TSTypeBuiltin = { fg = s.yellow, bg = nil, gui = 'italic', sp = nil }
-  hi.TSURI = { fg = nil, bg = nil, gui = 'underline', sp = s.bright_blue }
-  hi.TSUnderline = { fg = nil, bg = nil, gui = 'underline', sp = nil }
-  hi.TSVariable = { fg = s.blue, bg = nil, gui = 'none', sp = nil }
-  hi.TSVariableBuiltin = { fg = s.blue, bg = nil, gui = 'italic', sp = nil }
+  -- hi.TSError = { bg = s.dark_red, gui = 'none' }
+  hi.TSAnnotation = { fg = s.brown, gui = 'none' }
+  hi.TSAttribute = { fg = s.yellow, gui = 'none' }
+  hi.TSConstBuiltin = { fg = s.yellow, gui = 'italic' }
+  hi.TSConstMacro = { fg = s.yellow, gui = 'bold' }
+  hi.TSConstant = { fg = s.orange, gui = 'none' }
+  hi.TSConstructor = { fg = s.yellow, gui = 'none' }
+  hi.TSEmphasis = { gui = 'italic' }
+  hi.TSField = { fg = s.brown, gui = 'none' }
+  hi.TSFuncBuiltin = { fg = s.pink, gui = 'italic' }
+  hi.TSFuncMacro = { fg = s.pink, gui = 'bold' }
+  hi.TSKeywordOperator = { fg = s.aqua, gui = 'italic' }
+  hi.TSLiteral = { fg = s.orange, gui = 'none' }
+  hi.TSNamespace = { fg = s.brown, gui = 'none' }
+  hi.TSNone = { fg = s.foreground, gui = 'none' }
+  hi.TSProperty = { fg = s.brown, gui = 'none' }
+  hi.TSStrike = { gui = 'strikethrough' }
+  hi.TSStringEscape = { fg = s.dark_aqua, gui = 'none' }
+  hi.TSStringRegex = { fg = s.aqua, gui = 'none' }
+  hi.TSStrong = { gui = 'bold' }
+  hi.TSSymbol = { fg = s.red, gui = 'none' }
+  hi.TSTag = { fg = s.yellow, gui = 'none' }
+  hi.TSTagDelimiter = { fg = s.gray200, gui = 'none' }
+  hi.TSTypeBuiltin = { fg = s.yellow, gui = 'italic' }
+  hi.TSURI = { gui = 'underline', sp = s.bright_blue }
+  hi.TSUnderline = { gui = 'underline' }
+  hi.TSVariable = { fg = s.blue, gui = 'none' }
+  hi.TSVariableBuiltin = { fg = s.blue, gui = 'italic' }
 
   -- custom
-  hi.StatusLineL0 = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
-  hi.StatusLineMode = { fg = s.foreground, bg = s.window, gui = nil, sp = nil }
-  hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window, gui = 'none', sp = nil }
-  hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window, gui = 'none', sp = nil }
-  hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window, gui = 'none', sp = nil }
-  hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window, gui = 'none', sp = nil }
+  hi.StatusLineL0 = { fg = s.foreground, bg = s.window }
+  hi.StatusLineMode = { fg = s.foreground, bg = s.window }
+  hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window, gui = 'none' }
+  hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window, gui = 'none' }
+  hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window, gui = 'none' }
+  hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window, gui = 'none' }
 
-  hi.FullwidthSpace = { fg = nil, bg = s.dark_purple, gui = nil, sp = nil }
-  hi.GitConflictMarker = { fg = s.red, bg = s.dark_red, gui = nil, sp = nil }
-  hi.ExtraWhitespace = { fg = nil, bg = s.line, gui = nil, sp = nil }
-  hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue, gui = nil, sp = nil }
+  hi.FullwidthSpace = { bg = s.dark_purple }
+  hi.GitConflictMarker = { fg = s.red, bg = s.dark_red }
+  hi.ExtraWhitespace = { bg = s.line }
+  hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
   -- coc.nvim
-  hi.CocHighlightText = { fg = nil, bg = s.selection, gui = 'none', sp = nil }
-  hi.CocErrorSign = { fg = s.red, bg = nil, gui = nil, sp = nil }
-  hi.CocWarningSign = { fg = s.yellow, bg = nil, gui = nil, sp = nil }
-  hi.CocInfoSign = { fg = s.blue, bg = nil, gui = nil, sp = nil }
-  hi.CocHintSign = { fg = s.green, bg = nil, gui = nil, sp = nil }
-  hi.CocErrorHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_red }
-  hi.CocWarningHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_yellow }
-  hi.CocInfoHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_blue }
-  hi.CocHintHighlight = { fg = nil, bg = nil, gui = 'undercurl', sp = s.bright_green }
-  hi.CocDiffAdd = { fg = s.dark_green, bg = 'none', gui = 'none', sp = nil }
-  hi.CocDiffChange = { fg = s.dark_blue, bg = 'none', gui = 'none', sp = nil }
-  hi.CocDiffDelete = { fg = s.dark_red, bg = 'none', gui = 'none', sp = nil }
-  hi.CocFadeOut = { fg = s.gray200, bg = 'none', gui = 'none', sp = nil }
+  hi.CocHighlightText = { bg = s.selection, gui = 'none' }
+  hi.CocErrorSign = { fg = s.red }
+  hi.CocWarningSign = { fg = s.yellow }
+  hi.CocInfoSign = { fg = s.blue }
+  hi.CocHintSign = { fg = s.green }
+  hi.CocErrorHighlight = { gui = 'undercurl', sp = s.bright_red }
+  hi.CocWarningHighlight = { gui = 'undercurl', sp = s.bright_yellow }
+  hi.CocInfoHighlight = { gui = 'undercurl', sp = s.bright_blue }
+  hi.CocHintHighlight = { gui = 'undercurl', sp = s.bright_green }
+  hi.CocDiffAdd = { fg = s.dark_green, bg = 'none', gui = 'none' }
+  hi.CocDiffChange = { fg = s.dark_blue, bg = 'none', gui = 'none' }
+  hi.CocDiffDelete = { fg = s.dark_red, bg = 'none', gui = 'none' }
+  hi.CocFadeOut = { fg = s.gray200, bg = 'none', gui = 'none' }
 
   -- vim-searchhi
-  hi.CurrentSearch = { fg = s.background, bg = s.yellow, gui = 'bold', sp = nil }
+  hi.CurrentSearch = { fg = s.background, bg = s.yellow, gui = 'bold' }
 
   -- markdown
-  hi.markdownH1 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
-  hi.markdownH2 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
-  hi.markdownH3 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
-  hi.markdownH4 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
-  hi.markdownH5 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
-  hi.markdownH6 = { fg = s.brown, bg = nil, gui = 'bold', sp = nil }
-  hi.markdownLink = { fg = s.comment, bg = nil, gui = nil, sp = nil }
-  hi.markdownLinkText = { fg = s.blue, bg = nil, gui = 'underline', sp = nil }
-  hi.markdownCode = { fg = s.green, bg = nil, gui = nil, sp = nil }
-  hi.markdownCodeBlock = { fg = s.green, bg = nil, gui = nil, sp = nil }
+  hi.markdownH1 = { fg = s.brown, gui = 'bold' }
+  hi.markdownH2 = { fg = s.brown, gui = 'bold' }
+  hi.markdownH3 = { fg = s.brown, gui = 'bold' }
+  hi.markdownH4 = { fg = s.brown, gui = 'bold' }
+  hi.markdownH5 = { fg = s.brown, gui = 'bold' }
+  hi.markdownH6 = { fg = s.brown, gui = 'bold' }
+  hi.markdownLink = { fg = s.comment }
+  hi.markdownLinkText = { fg = s.blue, gui = 'underline' }
+  hi.markdownCode = { fg = s.green }
+  hi.markdownCodeBlock = { fg = s.green }
 end
 
 M.current_mode = 'n'
