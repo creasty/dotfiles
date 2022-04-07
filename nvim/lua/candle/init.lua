@@ -4,6 +4,8 @@ M.schema = require('candle.schema')
 
 M.highlight = setmetatable({}, {
   __newindex = function(_, hlgroup, opt)
+    if opt.clear then vim.cmd('hi clear '..hlgroup) end
+
     local cmd = {'hi', hlgroup}
     if opt.fg then table.insert(cmd, 'guifg='..opt.fg) end
     if opt.bg then table.insert(cmd, 'guibg='..opt.bg) end
@@ -20,6 +22,7 @@ function M.setup()
   -- Vim editor colors
   hi.Bold = { fg = nil, bg = nil, gui = 'bold', sp = nil }
   hi.ColorColumn = { fg = nil, bg = s.guide, gui = 'none', sp = nil }
+  hi.Conceal = { fg = s.aqua, bg = nil, gui = nil, sp = nil, clear = true }
   hi.Cursor = { fg = s.background, bg = s.foreground, gui = nil, sp = nil }
   hi.CursorColumn = { fg = nil, bg = s.line, gui = 'none', sp = nil }
   hi.CursorLine = { fg = nil, bg = s.line, gui = 'none', sp = nil }
