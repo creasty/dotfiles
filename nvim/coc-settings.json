@@ -15,7 +15,6 @@
   "list.normalMappings": {
     "<C-j>": "do:defaultaction",
     "<C-c>": "do:exit",
-    "/": "do:toggleMode",
     "<C-n>": "normal:j",
     "<C-p>": "normal:k"
   },

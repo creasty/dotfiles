@@ -16,11 +16,11 @@
     name:  golangci/tap/golangci-lint
     state: present
 
-- name: install packages
+- name: install commands
   command: |
-     bash -lc 'go get {{ item | quote }}'
-  with_items: '{{ golang.packages }}'
-  when: golang.packages
+     bash -lc 'go install {{ item | quote }}'
+  with_items: '{{ golang.commands }}'
+  when: golang.commands
 
 #- block:
 #    - name: optimize goimports | install

@@ -57,10 +57,12 @@ homebrew:
     - gdbm                # GNU database manager
     - gettext             # GNU internationalization (i18n) and localization (l10n) library
     - ghostscript         # Interpreter for PostScript and PDF
+    - ghq                 # Remote repository management made easy
     - git                 # Distributed revision control system
     - git-lfs             # Git extension for versioning large files
     - gnupg               # GNU Pretty Good Privacy (PGP) package
     - heroku/brew/heroku  # Everything you need to get started with Heroku
+    - hey                 # HTTP load generator, ApacheBench (ab) replacement
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
@@ -77,6 +79,7 @@ homebrew:
     - nkf                 # Network Kanji code conversion Filter (NKF)
     - parallel            # GNU parallel shell command
     - pcre                # Perl compatible regular expressions library
+    - peco                # Simplistic interactive filtering tool
     - procs               # Modern replacement for ps written by Rust
     - protobuf            # Protocol buffers (Google's data interchange format)
     - python              # Interpreted, interactive, object-oriented programming language
@@ -148,15 +151,8 @@ anyenv:
   init_file_glob: '{{ home_path }}/.anyenv-init-*'
 
 golang:
-  packages:
-    # tools
-    - github.com/x-motemen/ghq      # Remote repository management made easy
-    - github.com/peco/peco/cmd/peco # Simplistic interactive filtering tool
-    - github.com/rakyll/hey         # HTTP load generator, ApacheBench (ab) replacement
-
-    # dev tools
-    - github.com/rogpeppe/godef # find symbol information in Go source
-    - golang.org/x/tools/gopls  # LSP server for Go
+  commands:
+    - golang.org/x/tools/gopls@latest # LSP server for Go
 
 nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
