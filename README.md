@@ -3,7 +3,6 @@
 dotfiles [![Build Status](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg)](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml) ![macOS](./docs/images/badges/platform.svg) [![License](./docs/images/badges/license.svg)](./LICENSE.txt)
 ========
 
-Where the world revolves around.<br>
 Work it harder, make it better, do it faster, makes us stronger.
 
 <pre><code>$ curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
@@ -69,7 +68,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~140ms to startup
 - 3,700 loc of config
-- 41 third-party plugins
+- 42 third-party plugins
 
 <details>
 
@@ -84,22 +83,22 @@ nvim --headless -c quit  0.12s user 0.08s system 144% cpu 0.135 total
 
 ```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      95 text files.
-      91 unique files.
-      35 files ignored.
+      96 text files.
+      92 unique files.
+      36 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.06 s (1028.8 files/s, 74956.8 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.08 s (785.4 files/s, 57619.3 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-vim script                      52            453            306           2255
-Lua                              5             78             22            597
+vim script                      52            453            307           2262
+Lua                              5             80             21            615
 JSON                             1             14              0            293
 TypeScript                       3             34              1            270
-TOML                             2             44             12            247
+TOML                             2             45             14            249
 Scheme                           1              4              5             28
 -------------------------------------------------------------------------------
-SUM:                            64            627            346           3690
+SUM:                            64            630            348           3717
 -------------------------------------------------------------------------------
 ```
 
