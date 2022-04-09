@@ -200,40 +200,6 @@ if command -v direnv > /dev/null 2>&1; then
   eval "$(direnv hook zsh)"
 fi
 
-#  Fish shell like syntax highlighting
-#-----------------------------------------------
-# NOTE: Must be at the end of zshrc
-# source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# 
-# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-# 
-# ZSH_HIGHLIGHT_STYLES[alias]=fg=red
-# ZSH_HIGHLIGHT_STYLES[assign]=fg=yellow
-# ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=cyan
-# ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=fg=cyan
-# ZSH_HIGHLIGHT_STYLES[builtin]=fg=magenta
-# ZSH_HIGHLIGHT_STYLES[command]=fg=red
-# ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=cyan
-# ZSH_HIGHLIGHT_STYLES[comment]=fg=white
-# ZSH_HIGHLIGHT_STYLES[cursor]=none
-# ZSH_HIGHLIGHT_STYLES[default]=none
-# ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=cyan
-# ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=fg=white
-# ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=green
-# ZSH_HIGHLIGHT_STYLES[function]=fg=red
-# ZSH_HIGHLIGHT_STYLES[globbing]=fg=green
-# ZSH_HIGHLIGHT_STYLES[hashed-command]=none
-# ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=blue
-# ZSH_HIGHLIGHT_STYLES[path]=fg=green
-# ZSH_HIGHLIGHT_STYLES[path_approx]=fg=green
-# ZSH_HIGHLIGHT_STYLES[path_prefix]=fg=green
-# ZSH_HIGHLIGHT_STYLES[precommand]=fg=red
-# ZSH_HIGHLIGHT_STYLES[redirection]=fg=cyan
-# ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=magenta
-# ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=fg=white
-# ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=green
-# ZSH_HIGHLIGHT_STYLES[unknown-token]=none
-
 #  Profiling mode
 #-----------------------------------------------
 if [ -n "${ZSH_PROF_ENABLED:-}" ]; then
