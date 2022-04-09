@@ -17,23 +17,27 @@ Screenshots
 Stats
 -----
 
-Heavily customized while meticulously optimized for high performance.
+Heavily customized while meticulously optimized for insane performance.
 
 ### zsh
 
 - ~150ms to startup
 - 560 loc of config
-- 2 zsh plugins + anyenv (rbenv, nodenv, jenv) + direnv
+- 4 (+3) third-party plugins and hooks
+  - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
+  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+  - [anyenv](https://github.com/anyenv/anyenv) with `rbenv`, `nodenv` and `jenv`
+  - [direnv](https://github.com/direnv/direnv)
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time zsh -i -c exit ; sleep 0.1 )
-zsh -i -c exit  0.08s user 0.07s system 96% cpu 0.148 total
-zsh -i -c exit  0.08s user 0.07s system 96% cpu 0.151 total
-zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.145 total
-zsh -i -c exit  0.08s user 0.06s system 94% cpu 0.148 total
-zsh -i -c exit  0.08s user 0.06s system 94% cpu 0.148 total
+zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.149 total
+zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.151 total
+zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.142 total
+zsh -i -c exit  0.08s user 0.06s system 94% cpu 0.155 total
+zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.144 total
 ```
 
 ```sh-session
@@ -42,13 +46,13 @@ $ cloc --exclude-dir=plugins shell/zsh
        6 unique files.
        4 files ignored.
 
-github.com/AlDanial/cloc v 1.84  T=0.01 s (296.9 files/s, 57072.9 lines/s)
+github.com/AlDanial/cloc v 1.84  T=0.01 s (277.8 files/s, 53337.7 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-zsh                              4            126             81            562
+zsh                              4            126             81            561
 -------------------------------------------------------------------------------
-SUM:                             4            126             81            562
+SUM:                             4            126             81            561
 -------------------------------------------------------------------------------
 ```
 
