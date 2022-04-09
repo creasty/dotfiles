@@ -192,74 +192,31 @@ vscode:
   link:
     vscode/keybindings.json: keybindings.json
     vscode/settings.json: settings.json
-    vscode/snippets: snippets
 
   # code --list-extensions | sed -e 's/^/- /g' | pbcopy
   extensions:
-    - Equinusocio.vsc-community-material-theme
-    - Equinusocio.vsc-material-theme
-    - HashiCorp.terraform
-    - JerryHong.autofilename
-    - KnisterPeter.vscode-github
     - TabNine.tabnine-vscode
     - Tyriar.sort-lines
-    - alefragnani.Bookmarks
-    - aleksandra.go-group-imports
     - apollographql.vscode-apollo
-    - bungcip.better-toml
-    - castwide.solargraph
     - christian-kohler.npm-intellisense
     - christian-kohler.path-intellisense
     - creasty.vscode-altr
-    - creasty.vscode-candle-theme
     - creasty.vscode-pattern-switch
-    - cssho.vscode-svgviewer
     - dbaeumer.vscode-eslint
     - eamodio.gitlens
     - eg2.vscode-npm-script
-    - equinusocio.vsc-material-theme-icons
-    - esafirm.kotlin-formatter
     - esbenp.prettier-vscode
-    - fallenwood.vimL
     - formulahendry.auto-close-tag
     - formulahendry.auto-rename-tag
-    - formulahendry.code-runner
-    - fwcd.kotlin
-    - geddski.macros
-    - golang.go-nightly
-    - iocave.customize-ui
-    - iocave.monkey-patch
-    - ipatalas.vscode-postfix-ts
-    - jebbs.plantuml
     - jock.svg
-    #- jpoissonnier.vscode-styled-components
-    - jtanx.ctagsx
-    - kaiwood.endwise
-    - karunamurti.haml
-    - lannonbr.vscode-js-annotations
-    - marchrock.vscode-ghq
-    - mikestead.dotenv
-    - mrorz.language-gettext
-    - ms-azuretools.vscode-docker
-    - ms-vscode.vscode-typescript-tslint-plugin
+    - styled-components.vscode-styled-components
     - ms-vsliveshare.vsliveshare
-    - msjsdiag.debugger-for-chrome
-    - naco-siren.gradle-language
     - pflannery.vscode-versionlens
-    - pnp.polacode
-    - rebornix.ruby
-    - shinichi-takii.sql-bigquery
     - sleistner.vscode-fileutils
     - steoates.autoimport
     - streetsidesoftware.code-spell-checker
     - swindh.enumerator
     - vincaslt.highlight-matching-tag
-    - vscodevim.vim
     - wayou.vscode-todo-highlight
-    - wingrunr21.vscode-ruby
-    - wix.vscode-import-cost
     - wmaurer.change-case
     - wwm.better-align
-    - yokoe.vscode-postfix-go
-    - yzhang.markdown-all-in-one
-    - zxh404.vscode-proto3

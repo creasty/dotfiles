@@ -1,15 +1,4 @@
 [
-  {
-    "key": "up",
-    "command": "cursorUp",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-  {
-    "key": "down",
-    "command": "cursorDown",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-
   //=== Quick open
   //==============================================================================================
   {
@@ -26,26 +15,6 @@
   {
     "key": "ctrl+w",
     "command": "-workbench.action.switchWindow"
-  },
-  {
-    "key": "ctrl+w ctrl+w",
-    "command": "extension.ghqOpen",
-    "when": "!inQuickOpen && !vim.active"
-  },
-  {
-    "key": "ctrl+w w",
-    "command": "extension.ghqOpen",
-    "when": "!inQuickOpen && !vim.active"
-  },
-  {
-    "key": "ctrl+w ctrl+w",
-    "command": "extension.ghqOpen",
-    "when": "!inQuickOpen && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+w w",
-    "command": "extension.ghqOpen",
-    "when": "!inQuickOpen && vim.mode == 'Normal'"
   },
   {
     "key": "ctrl+w ctrl+w",
@@ -92,46 +61,42 @@
   //-----------------------------------------------
   {
     "key": "ctrl+w ctrl+s",
-    "command": "workbench.view.search",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.search"
   },
   {
     "key": "ctrl+w s",
-    "command": "workbench.view.search",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.search"
   },
   {
     "key": "ctrl+w ctrl+s",
     "command": "workbench.action.togglePanel",
-    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.view.search'"
+    "when": "panelFocus && activePanel == 'workbench.view.search'"
   },
   {
     "key": "ctrl+w s",
     "command": "workbench.action.togglePanel",
-    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.view.search'"
+    "when": "panelFocus && activePanel == 'workbench.view.search'"
   },
 
   //  Explorer (sidebar)
   //-----------------------------------------------
   {
     "key": "ctrl+w ctrl+e",
-    "command": "workbench.view.explorer",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.explorer"
   },
   {
     "key": "ctrl+w e",
-    "command": "workbench.view.explorer",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.explorer"
   },
   {
     "key": "ctrl+w ctrl+e",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.explorer'"
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.explorer'"
   },
   {
     "key": "ctrl+w e",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.explorer'"
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.explorer'"
   },
   {
     "key": "enter",
@@ -148,69 +113,63 @@
   //-----------------------------------------------
   {
     "key": "ctrl+w ctrl+x",
-    "command": "workbench.view.extensions",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.extensions"
   },
   {
     "key": "ctrl+w x",
-    "command": "workbench.view.extensions",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.extensions"
   },
   {
     "key": "ctrl+w ctrl+x",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.extensions'"
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.extensions'"
   },
   {
     "key": "ctrl+w x",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.extensions'"
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.extensions'"
   },
 
   //  Debug (sidebar)
   //-----------------------------------------------
   {
     "key": "ctrl+w ctrl+d",
-    "command": "workbench.view.debug",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.debug"
   },
   {
     "key": "ctrl+w d",
-    "command": "workbench.view.debug",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.view.debug"
   },
   {
     "key": "ctrl+w ctrl+d",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.debug'"
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.debug'"
   },
   {
     "key": "ctrl+w d",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "vim.active && vim.mode == 'Normal' && sideBarFocus && activeViewlet == 'workbench.view.debug'"
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.debug'"
   },
 
   //  Debug console (panel)
   //-----------------------------------------------
   {
     "key": "ctrl+w ctrl+l",
-    "command": "workbench.debug.action.toggleRepl",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.debug.action.toggleRepl"
   },
   {
     "key": "ctrl+w l",
-    "command": "workbench.debug.action.toggleRepl",
-    "when": "vim.active && vim.mode == 'Normal'"
+    "command": "workbench.debug.action.toggleRepl"
   },
   {
     "key": "ctrl+w ctrl+l",
     "command": "workbench.action.togglePanel",
-    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.panel.repl'"
+    "when": "panelFocus && activePanel == 'workbench.panel.repl'"
   },
   {
     "key": "ctrl+w l",
     "command": "workbench.action.togglePanel",
-    "when": "vim.active && vim.mode == 'Normal' && panelFocus && activePanel == 'workbench.panel.repl'"
+    "when": "panelFocus && activePanel == 'workbench.panel.repl'"
   },
 
   //=== Group/Tab/Sidebar/Panel
@@ -381,52 +340,8 @@
     "when": "editorTextFocus"
   },
 
-  //=== Plugin: Ruby endwise
-  //==============================================================================================
-  {
-    "key": "enter",
-    "command": "-endwise.enter",
-    "when": "editorTextFocus && editorLangId == 'ruby' && vim.mode != 'CommandlineInProgress' && vim.mode != 'Normal' && vim.mode != 'SearchInProgressMode'"
-  },
-  {
-    "key": "enter",
-    "command": "endwise.enter",
-    "when": "editorTextFocus && editorLangId == 'ruby' && vim.mode == 'Insert'"
-  },
-
   //=== Editing
   //==============================================================================================
-  {
-    "key": "ctrl+s l",
-    "command": "editor.action.indentLines",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+s ctrl+l",
-    "command": "editor.action.indentLines",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+s h",
-    "command": "editor.action.outdentLines",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+s ctrl+h",
-    "command": "editor.action.outdentLines",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+l",
-    "command": "patternSwitch.switchUnderCursor",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-
-  {
-    "key": "ctrl+v",
-    "command": "editor.action.clipboardPasteAction",
-    "when": "textInputFocus && !editorReadonly && vim.mode == 'Insert'"
-  },
   {
     "key": "ctrl+v",
     "command": "editor.action.webvieweditor.paste",
@@ -472,76 +387,5 @@
     "key": "right",
     "command": "breadcrumbs.focusNext",
     "when": "breadcrumbsActive && breadcrumbsVisible && !listHasSelectionOrFocus"
-  },
-
-  //=== Vim: (normal mode)
-  //==============================================================================================
-  {
-    "key": ", r",
-    "command": "code-runner.run",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+i",
-    "command": "workbench.action.navigateForward",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
-  },
-  {
-    "key": "ctrl+o",
-    "command": "workbench.action.navigateBack",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Normal'"
-  },
-  {
-    "key": "enter",
-    "command": "workbench.action.keepEditor",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-  {
-    "key": "k",
-    "command": "cursorUp",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-  {
-    "key": "j",
-    "command": "cursorDown",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Normal' && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-
-  //=== Vim: (insert mode) Emacs
-  //==============================================================================================
-  {
-    "key": "ctrl+a",
-    "command": "cursorHome",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+e",
-    "command": "cursorEnd",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+k",
-    "command": "deleteAllRight",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+h",
-    "command": "deleteLeft",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+d",
-    "command": "deleteRight",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+v",
-    "command": "editor.action.clipboardPasteAction",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
-  },
-  {
-    "key": "ctrl+t",
-    "command": "editor.action.transposeLetters",
-    "when": "editorTextFocus && vim.active && vim.mode == 'Insert'"
   }
 ]

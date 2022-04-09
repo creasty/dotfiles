@@ -9,7 +9,7 @@
 
   "editor.cursorBlinking": "smooth",
   "editor.find.autoFindInSelection": "multiline",
-  "editor.find.seedSearchStringFromSelection": false,
+  "editor.find.seedSearchStringFromSelection": "never",
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.minimap.enabled": false,
@@ -62,22 +62,6 @@
   "workbench.settings.editor": "json",
 
   "workbench.colorTheme": "Visual Studio Dark",
-  "workbench.colorCustomizations": {
-    // https://code.visualstudio.com/api/references/theme-color
-    "[Candle Theme]": {
-      "sideBar.border": "#00000030", // "{{scheme.black}}30"
-      "panel.border": "#00000030", // "{{scheme.black}}30"
-      "tab.activeBorder": "#00000000", // "{{colors.transparent}}" !
-      "tab.unfocusedActiveForeground": "#575757", // "{{colors.tabInactiveForeground}}",
-      "tab.unfocusedActiveBorder": "#00000000", // "{{colors.transparent}}" !
-      "inputOption.activeBackground": "#80C7BC30", // "{{colors.accent}}30"
-      "editorOverviewRuler.errorForeground": "#B56E6A90", // "{{scheme.accentRed}}40"
-      "editorOverviewRuler.warningForeground": "#D8B77590", // "{{scheme.accentYellow}}40"
-      "editorOverviewRuler.modifiedForeground": "#82A4C390", // "{{scheme.accentBlue}}90"
-      "editorOverviewRuler.addedForeground": "#82A4C390", // "{{scheme.accentBlue}}90"
-      "editorOverviewRuler.deletedForeground": "#82A4C390" // "{{scheme.accentBlue}}90"
-    }
-  },
 
   //=== Tabnine
   //==============================================================================================
@@ -103,14 +87,11 @@
 
   //=== Version lens
   //==============================================================================================
-  "versionlens.showVersionLensesAtStartup": false,
+  "versionlens.suggestions.showOnStartup": false,
 
   //=== Eslint
   //==============================================================================================
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact"],
 
   //=== Code Spell Checker
   //==============================================================================================
@@ -166,7 +147,6 @@
     "gemfile",
     "git-commit",
     "go",
-    "haml",
     "handlebars",
     "haskell",
     "html",
@@ -176,14 +156,12 @@
     "javascriptreact",
     "json",
     "jsonc",
-    "kotlin",
     "latex",
     "less",
     "makefile",
     "markdown",
     "php",
     "plaintext",
-    "proto3",
     "pug",
     "python",
     "restructuredtext",
@@ -194,7 +172,6 @@
     "shellscript",
     "source.css.styled",
     "sql",
-    "sql-bigquery",
     "swift",
     "text",
     "typescript",
@@ -215,19 +192,7 @@
 
   //=== Prettier
   //==============================================================================================
-  "prettier-stylelint.integration": true,
-  "prettier.eslint.integration": true,
-  "prettier.tslint.integration": true,
   "prettier.trailingComma": "es5",
-
-  //=== Macros
-  //==============================================================================================
-  "macros": {
-    "commitFindWidgetInput": [
-      "closeFindWidget",
-      "cancelSelection"
-    ]
-  },
 
   //=== Highlight Matching Tag
   //==============================================================================================
@@ -283,7 +248,12 @@
     ["src/%.ts", "src/%.test.ts", "test/%.ts", "test/%.test.ts"],
     ["src/%.tsx", "src/%.test.tsx", "test/%.tsx", "test/%.test.tsx"],
     ["Gemfile", "Gemfile.lock"],
-    ["app/models/%.rb", "spec/models/%_spec.rb", "app/serializers/%_serializer.rb", "app/policies/%_policy.rb"],
+    [
+      "app/models/%.rb",
+      "spec/models/%_spec.rb",
+      "app/serializers/%_serializer.rb",
+      "app/policies/%_policy.rb"
+    ],
     ["app/%/%.rb", "spec/%/%_spec.rb"],
     ["lib/%.rb", "spec/lib/%_spec.rb"],
     ["glide.yaml", "glide.lock"],
@@ -292,393 +262,54 @@
     ["docker-compose.yml", "Dockerfile"],
     [".env", ".env.sample"],
     ["keybindings.json", "settings.json"],
-    [".vscode/extensions.json", ".vscode/launch.json", ".vscode/settings.json", ".vscode/tasks.json"],
+    [
+      ".vscode/extensions.json",
+      ".vscode/launch.json",
+      ".vscode/settings.json",
+      ".vscode/tasks.json"
+    ],
 
     ["locales/en.yml", "locales/ja.yml", "locales/zh-HK.yml", "locales/de.yml"],
-    ["locales/%.en.yml", "locales/%.ja.yml", "locales/%.zh-HK.yml", "locales/%.de.yml"],
-    ["locales/%/en.yml", "locales/%/ja.yml", "locales/%/zh-HK.yml", "locales/%/de.yml"],
-    ["locales/en.json", "locales/ja.json", "locales/zh-HK.json", "locales/de.json"],
-    ["locales/%.en.json", "locales/%.ja.json", "locales/%.zh-HK.json", "locales/%.de.json"],
-    ["locales/%/en.json", "locales/%/ja.json", "locales/%/zh-HK.json", "locales/%/de.json"]
+    [
+      "locales/%.en.yml",
+      "locales/%.ja.yml",
+      "locales/%.zh-HK.yml",
+      "locales/%.de.yml"
+    ],
+    [
+      "locales/%/en.yml",
+      "locales/%/ja.yml",
+      "locales/%/zh-HK.yml",
+      "locales/%/de.yml"
+    ],
+    [
+      "locales/en.json",
+      "locales/ja.json",
+      "locales/zh-HK.json",
+      "locales/de.json"
+    ],
+    [
+      "locales/%.en.json",
+      "locales/%.ja.json",
+      "locales/%.zh-HK.json",
+      "locales/%.de.json"
+    ],
+    [
+      "locales/%/en.json",
+      "locales/%/ja.json",
+      "locales/%/zh-HK.json",
+      "locales/%/de.json"
+    ]
   ],
-
-  //=== Code Runner
-  //==============================================================================================
-  "code-runner.showRunIconInEditorTitleMenu": false,
-  "code-runner.executorMapByGlob": {
-    "*_spec.rb": "bundle exec rspec"
-  },
 
   //=== TLA+
   //==============================================================================================
   "tlaplus.tlc.statisticsSharing": "share",
 
-  //=== VSCodeVim
-  //==============================================================================================
-  "vim.incsearch": true,
-  "vim.useSystemClipboard": true,
-  "vim.hlsearch": true,
-  "vim.textwidth": 90,
-  "vim.visualstar": true,
-  "vim.timeout": 500,
-  "vim.leader": " ",
-  "vim.whichwrap": "h,l,<,>,[,]",
-  "vim.debug.silent": true,
-  "vim.useCtrlKeys": true,
-  "vim.handleKeys": {},
-
-  "vim.replaceWithRegister": true,
-  "vim.easymotion": true,
-  "vim.easymotionMarkerFontFamily": "Menlo",
-  "vim.easymotionMarkerFontSize": "12",
-  "vim.camelCaseMotion.enable": true,
-
-  //  Insert mode
-  //-----------------------------------------------
-  "vim.insertModeKeyBindings": [
-  ],
-  "vim.insertModeKeyBindingsNonRecursive": [
-  ],
-
-  //  Normal mode
-  //-----------------------------------------------
-  "vim.normalModeKeyBindings": [
-    //  Easymotion
-    {
-      "before": ["<leader>", "f"],
-      "after": ["<leader>", "<leader>", "f"]
-    },
-    {
-      "before": ["<leader>", "F"],
-      "after": ["<leader>", "<leader>", "F"]
-    },
-    {
-      "before": ["<leader>", "t"],
-      "after": ["<leader>", "<leader>", "t"]
-    },
-    {
-      "before": ["<leader>", "T"],
-      "after": ["<leader>", "<leader>", "T"]
-    }
-  ],
-  "vim.normalModeKeyBindingsNonRecursive": [
-    // {{{ move cursor visually with long lines
-    {
-      "before": ["j"],
-      "after": ["g", "j"]
-    },
-    {
-      "before": ["k"],
-      "after": ["g", "k"]
-    },
-    // }}}
-    {
-      "before": ["Left"], // ctrl+b
-      "after": ["C-b"]
-    },
-    {
-      "before": ["Right"], // ctrl+f
-      "after": ["C-f"]
-    },
-    {
-      "before": ["u"],
-      "commands": ["undo"]
-    },
-    {
-      "before": ["C-r"],
-      "commands": ["redo"]
-    },
-    {
-      "before": ["Y"],
-      "after": ["y", "$"]
-    },
-
-    {
-      "before": [":"],
-      "commands": ["workbench.action.showCommands"]
-    },
-    {
-      "before": ["<leader>", "/"],
-      "commands": ["workbench.view.search"]
-    },
-    {
-      "before": ["/"],
-      "commands": ["actions.find"]
-    },
-    {
-      "before": ["*"],
-      "commands": ["editor.action.nextSelectionMatchFindAction"]
-    },
-    {
-      "before": ["n"],
-      "commands": ["editor.action.nextMatchFindAction"],
-    },
-    {
-      "before": ["N"],
-      "commands": ["editor.action.previousMatchFindAction"],
-    },
-    {
-      "before": ["<leader>", "<leader>"],
-      "commands": [":nohl", "closeFindWidget"]
-    },
-    {
-      "before": ["<leader>", "h"],
-      "after": ["g", "^"]
-    },
-    {
-      "before": ["<leader>", "l"],
-      "after": ["g", "$"]
-    },
-    {
-      // keep the cursor in place while joining lines
-      "before": ["J"],
-      "after": ["m", "Z", "J", "`", "Z", "m", "Z"]
-    },
-    {
-      // split lines: inverse of J
-      "before": ["K"],
-      "after": ["a", "<Enter>", "<Esc>"]
-    },
-    {
-      "before": ["<leader>", "a"],
-      "after": ["g", "g", "V", "G"]
-    },
-    {
-      "before": ["z", "c"],
-      "commands": ["editor.fold"]
-    },
-    {
-      "before": ["z", "C"],
-      "commands": ["editor.foldAll"]
-    },
-    {
-      "before": ["z", "o"],
-      "commands": ["editor.unfold"]
-    },
-    {
-      "before": ["z", "O"],
-      "commands": ["editor.unfoldAll"]
-    },
-    {
-      "before": ["g", "t"],
-      "commands": ["editor.action.goToTypeDefinition"]
-    },
-    {
-      "before": ["g", "R"],
-      "commands": ["editor.action.referenceSearch.trigger"]
-    },
-    {
-      "before": ["g", "D"],
-      "commands": ["editor.action.peekDefinition"]
-    },
-    {
-      "before": ["g", "T"],
-      "commands": ["editor.action.peekTypeDefinition"]
-    },
-    {
-      "before": ["g", "I"],
-      "commands": ["editor.action.peekImplementation"]
-    },
-    {
-      "before": ["g", "r"],
-      "commands": ["editor.action.rename"]
-    },
-    {
-      "before": ["g", "f"],
-      "commands": ["editor.action.openLink"]
-    },
-    {
-      "before": ["g", "q"],
-      "commands": ["editor.action.quickFix"]
-    },
-    {
-      "before": ["g", "o"],
-      "commands": ["breadcrumbs.focus"]
-    },
-    {
-      "before": ["g", "a"],
-      "commands": ["altr.switchToNextFile"]
-    },
-    {
-      "before": ["g", "A"],
-      "commands": ["altr.switchToPreviousFile"]
-    },
-    {
-      "before": ["<leader>", "/"],
-      "commands": ["workbench.view.search"],
-    },
-    {
-      "before": ["@"],
-      "commands": ["workbench.action.gotoSymbol"],
-    },
-
-    // {{{ insert blank lines without going into insert mode
-    {
-      "before": ["<leader>", "o"],
-      "commands": ["editor.action.insertLineAfter"]
-    },
-    {
-      "before": ["<leader>", "O"],
-      "commands": ["editor.action.insertLineBefore"]
-    },
-    // }}}
-
-    // {{{ Bookmarks
-    {
-      "before": ["m", "m"],
-      "commands": ["bookmarks.toggle"],
-    },
-    {
-      "before": ["m", "l"],
-      "commands": ["bookmarks.toggleLabeled"],
-    },
-    {
-      "before": ["'", "m"],
-      "commands": ["bookmarks.jumpToNext"],
-    },
-    {
-      "before": ["'", "n"],
-      "commands": ["bookmarks.jumpToPrevious"],
-    },
-    {
-      "before": ["'", "'"],
-      "commands": ["bookmarks.list"],
-    },
-    // }}}
-
-    // ReplaceWithRegister
-    {
-      "before": ["r"],
-      "after": ["g", "r"]
-    },
-
-    // {{{ do not store to register with x, c
-    {
-      "before": ["x"],
-      "after": ["\"", "_", "x"]
-    },
-    {
-      "before": ["X"],
-      "after": ["\"", "_", "d", "$"]
-    },
-    {
-      "before": ["c"],
-      "after": ["\"", "_", "c"]
-    },
-    {
-      "before": ["C"],
-      "after": ["\"", "_", "c", "$"]
-    }
-  ],
-
-  //  Visual mode
-  //-----------------------------------------------
-  "vim.visualModeKeyBindings": [
-  ],
-  "vim.visualModeKeyBindingsNonRecursive": [
-    {
-      "before": ["j"],
-      "after": ["g", "j"]
-    },
-    {
-      "before": ["k"],
-      "after": ["g", "k"]
-    },
-    {
-      "before": ["p"],
-      "after": ["p", "g", "v", "y"]
-    },
-    {
-      "before": ["="],
-      "commands": ["editor.action.reindentselectedlines"]
-    },
-    {
-      "before": [">"],
-      "commands": ["editor.action.indentLines"]
-    },
-    {
-      "before": ["<"],
-      "commands": ["editor.action.outdentLines"]
-    },
-    {
-      "before": ["/"],
-      "commands": ["actions.findWithSelection"]
-    },
-    {
-      "before": [":"],
-      "commands": ["workbench.action.showCommands"]
-    },
-    {
-      "before": ["g", "q"],
-      "commands": ["editor.action.quickFix"]
-    },
-
-    // {{{ do not store to register with x, c
-    {
-      "before": ["x"],
-      "after": ["\"", "_", "x"]
-    },
-    {
-      "before": ["c"],
-      "after": ["\"", "_", "c"]
-    },
-    // }}}
-
-    // {{{ line-wise manipulations
-    {
-      "before": ["enter"], // C-j
-      "commands": ["editor.action.moveLinesDownAction"]
-    },
-    {
-      "before": ["C-k"],
-      "commands": ["editor.action.moveLinesUpAction"]
-    },
-    {
-      "before": ["<leader>", "enter"], // leader C-j
-      "commands": ["editor.action.copyLinesDownAction"]
-    },
-    {
-      "before": ["<leader>", "C-k"],
-      "commands": ["editor.action.copyLinesUpAction"]
-    },
-    {
-      "before": ["C-h"],
-      "commands": ["editor.action.outdentLines"]
-    },
-    {
-      "before": ["C-l"],
-      "commands": ["editor.action.indentLines"]
-    },
-    // }}}
-
-    // Emulate ReplaceWithRegister for visual mode
-    {
-      "before": ["r"],
-      "after": ["\"", "_", "d", "P"]
-    },
-
-    {
-      "before": ["C"],
-      "commands": ["extension.changeCase.commands"]
-    },
-    {
-      "before": ["J"],
-      "commands": ["editor.action.joinLines"]
-    },
-    {
-      "before": ["L"],
-      "commands": ["wwm.aligncode"]
-    },
-    {
-      "before": ["O"],
-      "commands": ["sortLines.sortLines"]
-    }
-  ],
-
   //=== Lang: Go
   //==============================================================================================
-  "go.formatTool": "goimports",
-  "go.useLanguageServer": true,
+  // "go.formatTool": "goimports",
+  // "go.useLanguageServer": true,
 
   //=== Lang: Javascript
   //==============================================================================================
@@ -700,23 +331,19 @@
 
   //=== Lang: Ruby
   //==============================================================================================
-  "ruby.useLanguageServer": true,
-  "ruby.codeCompletion": true,
-  "ruby.intellisense": true,
-  "ruby.useBundler": true,
-  "ruby.lint": {
-    "ruby": true,
-    "rubocop": {
-      "useBundler": true
-    }
-  },
-  "ruby.format": "rubocop",
+  // "ruby.useLanguageServer": true,
+  // "ruby.codeCompletion": true,
+  // "ruby.intellisense": true,
+  // "ruby.useBundler": true,
+  // "ruby.lint": {
+  //   "ruby": true,
+  //   "rubocop": {
+  //     "useBundler": true
+  //   }
+  // },
+  // "ruby.format": "rubocop",
 
   "[ruby]": {
-    "editor.tabSize": 2,
-    "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/" // ! and ? are omitted
-  },
-  "[haml]": {
     "editor.tabSize": 2,
     "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/" // ! and ? are omitted
   },
