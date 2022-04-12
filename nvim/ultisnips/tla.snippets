@@ -5,3 +5,15 @@ endsnippet
 snippet /^={3,}/ "End of module" rA
 `!v repeat('=', 77)`
 endsnippet
+
+# FooSpec == FooInit /\ [][FooNext]_var
+# FooSpec == FooInit /\ [][FooNext]_<<var1, var2, ...>>
+snippet Spec "Define simple SPECIFICATION" b
+${1:Something}Spec == $1Init /\ [][$1Next]_${2:vars}
+endsnippet
+
+# FooSymmetry == Permutations(VAR)
+# FooSymmetry == Permutations(VAR1) \cup Permutations(VAR2) \cup ...
+snippet Symmetry "Define simple SYMMETRY" b
+${1:Something}Symmetry == Permutations(${2:var})
+endsnippet

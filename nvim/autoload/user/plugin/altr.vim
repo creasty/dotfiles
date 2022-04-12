@@ -9,8 +9,9 @@ function! user#plugin#altr#lazy_init() abort
   call altr#define('Gemfile', 'Gemfile.lock')
 
   " Frontend
-  call altr#define('%.js', '%.jsx', '%.ts', '%.tsx', '%.css')
-  call altr#define('go.mod', 'go.sum')
+  call altr#define('%.js', '%.test.js')
+  call altr#define('%.ts', '%.test.ts')
+  call altr#define('%.tsx', '%.test.tsx')
 
   " Golang
   call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
@@ -27,6 +28,9 @@ function! user#plugin#altr#lazy_init() abort
   call altr#define('.env.%', '.env.%.local')
   call altr#define('default.properties', 'local.properties', 'test.properties')
   call altr#define('%.properties', '%.local.properties')
+
+  " TLA+
+  call altr#define('%.tla', '%.cfg')
 
   " I18n
   let l:locales = ['en', 'ja']
