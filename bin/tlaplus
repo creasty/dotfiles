@@ -34,6 +34,10 @@ run_tool() {
 
 run_tlapm() {
   local file="${*: -1}"
+  if ! [ -f "$file" ]; then
+    echo "File not found: $file" 1>&2
+    exit 1
+  fi
   local -a args=("${@:1:$#-1}" "$(basename "$file")")
   cd "$(dirname "$file")"
   run /usr/bin/tlapm -I /usr/lib/tlaps "${args[@]}"
