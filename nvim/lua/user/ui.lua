@@ -188,6 +188,9 @@ local function statusline()
   if active then
     require('candle').update_mode_highlight()
   end
+  if not winnr then
+    return
+  end
 
   return render_statusline(winnr, active)
 end
