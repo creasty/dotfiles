@@ -198,12 +198,23 @@ snoremap <C-v> <C-g>"_c<C-r><C-p>*
 snoremap <C-\> <C-v>
 
 " do not store to register with x, c
-nnoremap x "_x
 nnoremap X "_X
 xnoremap x "_x
 nnoremap c "_c
 nnoremap C "_C
 xnoremap c "_c
+
+" submode for x
+nnoremap <SID>(x) <Nop>
+nnoremap <script> x "_x<SID>(x)
+nnoremap <script> <SID>(x)x <Cmd>undojoin<CR>x<SID>(x)
+
+" submode for C-a/C-x
+nnoremap <SID>(inc) <Nop>
+nnoremap <script> <C-a> <C-a><SID>(inc)
+nnoremap <script> <C-x> <C-x><SID>(inc)
+nnoremap <script> <SID>(inc)<C-a> <Cmd>undojoin<CR><C-a><SID>(inc)
+nnoremap <script> <SID>(inc)<C-x> <Cmd>undojoin<CR><C-x><SID>(inc)
 
 " break undo with chunk delete actions
 inoremap <C-u> <C-g>u<C-u>
@@ -224,6 +235,13 @@ inoremap <C-s><C-h> <C-d>
 inoremap <C-s><C-l> <C-t>
 inoremap <C-s>h <C-d>
 inoremap <C-s>l <C-t>
+
+" submode for ge/gE
+nnoremap <SID>(word) <Nop>
+nnoremap <script> ge ge<SID>(word)
+nnoremap <script> gE gE<SID>(word)
+nnoremap <script> <SID>(word)e ge<SID>(word)
+nnoremap <script> <SID>(word)E gE<SID>(word)
 
 " easy key
 nnoremap <Space>h g^
@@ -270,6 +288,17 @@ nnoremap <C-w><C-s> <C-w><C-n>
 nnoremap <C-w>s     <C-w>n
 nnoremap <C-w><C-c> <Nop>
 nnoremap <C-w>c     <Nop>
+
+" submode for window resizing
+nnoremap <SID>(ws) <Nop>
+nnoremap <script> <C-w>+ <C-w>+<SID>(ws)
+nnoremap <script> <C-w>- <C-w>-<SID>(ws)
+nnoremap <script> <C-w>> <C-w>><SID>(ws)
+nnoremap <script> <C-w>< <C-w><<SID>(ws)
+nnoremap <script> <SID>(ws)+ <C-w>+<SID>(ws)
+nnoremap <script> <SID>(ws)- <C-w>-<SID>(ws)
+nnoremap <script> <SID>(ws)> <C-w>><SID>(ws)
+nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 
 " search selection
 xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
