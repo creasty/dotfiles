@@ -114,7 +114,7 @@ set showtabline=2
 lua require('user.ui').setup()
 
 " always show sign column
-set signcolumn=yes
+set signcolumn=auto:1-3
 
 " show line numbers
 set number
@@ -122,11 +122,8 @@ set number
 " match pairs
 set showmatch
 
-" highlighting current line will slow down vim
-set nocursorline
-
 " do not redraw during command
-set lazyredraw
+" set lazyredraw
 
 " display nonprintable charactors as hex
 set display+=uhex
