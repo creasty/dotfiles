@@ -43,7 +43,7 @@ local function tabline()
 
   local tab_list = vim.api.nvim_list_tabpages()
   local current = vim.api.nvim_get_current_tabpage()
-  for _, tabnr in ipairs(tab_list) do
+  for i, tabnr in ipairs(tab_list) do
     local winnr = tabpage_get_win(tabnr)
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
@@ -60,11 +60,12 @@ local function tabline()
     end
 
     local tab = {
+      (i > 1 and '∙' or ''),
       '%', tabnr, 'T',
       (tabnr == current and '%#TabLineSel#' or '%#TabLine#'),
       ' ', name,
       (#flags > 0 and ' ' .. table.concat(flags, '') or ''),
-      ' ',
+      ' %#TabLine#',
     }
     table.insert(line, table.concat(tab, ''))
   end
