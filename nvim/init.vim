@@ -107,7 +107,7 @@ set shortmess+=I
 set noshowmode
 
 " always show statusline & tabline
-set laststatus=2
+set laststatus=3
 set showtabline=2
 
 " tabline & statusline

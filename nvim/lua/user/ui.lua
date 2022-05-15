@@ -1,6 +1,8 @@
 local filereadable_key = 'filereadable'
 local current_normal_winnr_key = 'current_normal_winnr'
 
+local indicator = '▌'
+
 local function file_exists(name)
   local f = io.open(name, 'r')
   return f ~= nil and io.close(f)
@@ -84,7 +86,7 @@ local function render_statusline(winnr, active)
   local r0 = {}
 
   if active then
-    table.insert(l0, '%#StatusLineMode#▌%#StatusLineL0#')
+    table.insert(l0, '%#StatusLineMode#'..indicator..'%#StatusLineL0#')
   else
     table.insert(l0, '%#StatusLine#')
   end

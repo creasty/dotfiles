@@ -44,12 +44,12 @@ function M.setup()
   hi.SignColumn = { fg = s.gray200, bg = s.background }
   hi.SpecialKey = { fg = s.dark_aqua }
   hi.StatusLine = { fg = s.comment, bg = s.window }
-  hi.StatusLineNC = { fg = s.comment, bg = s.window }
+  hi.StatusLineNC = {}
   hi.TabLine = { fg = s.comment, bg = s.window }
   hi.TabLineFill = { fg = s.comment, bg = s.window }
-  hi.TabLineSel = { fg = s.window, bg = s.foreground }
+  hi.TabLineSel = { fg = s.foreground, bg = s.window }
   hi.Title = { fg = s.foreground, bold = 1 }
-  hi.VertSplit = { fg = s.window, bg = s.window }
+  hi.WinSeparator = { fg = s.gray400 }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }
   hi.WildMenu = { fg = s.yellow, bg = s.background }
