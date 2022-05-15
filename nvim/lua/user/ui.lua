@@ -3,7 +3,7 @@ local current_normal_winnr_key = 'current_normal_winnr'
 
 local indicator = '▌'
 local separator = '∙'
-local no_name_file = '[new]'
+local no_name_file = 'Untitled-'
 
 local function file_exists(name)
   local f = io.open(name, 'r')
@@ -65,7 +65,7 @@ local function tabline()
     local path = vim.api.nvim_buf_get_name(bufnr)
 
     local name = vim.fn.fnamemodify(path, ':t')
-    name = name ~= '' and name or no_name_file
+    name = name ~= '' and name or no_name_file..bufnr
 
     local flags = get_buffer_flags(bufnr)
 
@@ -111,7 +111,7 @@ local function render_statusline(winnr, active)
       local rel_path = vim.fn.fnamemodify(path, ':p:~:.')
       table.insert(l0, rel_path)
     elseif is_file then
-      table.insert(l0, no_name_file)
+      table.insert(l0, no_name_file..bufnr)
     else
       table.insert(l0, buftype)
     end
