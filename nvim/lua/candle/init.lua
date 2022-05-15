@@ -4,14 +4,7 @@ M.schema = require('candle.schema')
 
 M.highlight = setmetatable({}, {
   __newindex = function(_, hlgroup, opt)
-    if opt.clear then vim.cmd('hi clear '..hlgroup) end
-
-    local cmd = {'hi', hlgroup}
-    if opt.fg then table.insert(cmd, 'guifg='..opt.fg) end
-    if opt.bg then table.insert(cmd, 'guibg='..opt.bg) end
-    if opt.gui then table.insert(cmd, 'gui='..opt.gui) end
-    if opt.sp then table.insert(cmd, 'guisp='..opt.sp) end
-    vim.cmd(table.concat(cmd, ' '))
+    vim.api.nvim_set_hl(0, hlgroup, opt)
   end
 })
 
@@ -20,52 +13,50 @@ function M.setup()
   local s = M.schema
 
   -- Vim editor colors
-  hi.Bold = { gui = 'bold' }
-  hi.ColorColumn = { bg = s.guide, gui = 'none' }
-  hi.Conceal = { fg = s.aqua, clear = true }
+  hi.Bold = { bold = 1 }
+  hi.ColorColumn = { bg = s.guide }
+  hi.Conceal = { fg = s.aqua }
   hi.Cursor = { fg = s.background, bg = s.foreground }
-  hi.CursorColumn = { bg = s.line, gui = 'none' }
-  hi.CursorLine = { bg = s.line, gui = 'none' }
-  hi.CursorLineNr = { fg = s.gray200, gui = 'bold' }
+  hi.CursorColumn = { bg = s.line }
+  hi.CursorLine = {}
+  hi.CursorLineNr = { bg = s.line, bold = 1 }
   hi.Debug = { fg = s.brown }
   hi.Directory = { fg = s.blue }
-  hi.Error = { fg = s.red, bg = 'none' }
+  hi.Error = { fg = s.red }
   hi.ErrorMsg = { fg = s.background, bg = s.red }
   hi.Exception = { fg = s.purple }
   hi.FoldColumn = { fg = s.selection, bg = s.background }
-  hi.Folded = { fg = s.comment, bg = s.background, gui = 'underline' }
-  hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold' }
-  hi.Italic = { gui = 'none' }
+  hi.Folded = { fg = s.comment, bg = s.background, underline = 1 }
+  hi.IncSearch = { fg = s.yellow, bg = s.dark_yellow, bold = 1 }
   hi.LineNr = { fg = s.gray200, bg = s.background }
   hi.Macro = { fg = s.purple }
   hi.MatchParen = { bg = s.selection }
-  hi.ModeMsg = { fg = s.green, gui = 'bold' }
-  hi.MoreMsg = { fg = s.green, gui = 'bold' }
-  hi.NonText = { fg = s.gray500 }
-  hi.Normal = { fg = s.foreground, bg = 'none' }
-  hi.PMenu = { fg = s.foreground, bg = s.gray500, gui = 'none' }
+  hi.ModeMsg = { fg = s.green, bold = 1 }
+  hi.MoreMsg = { fg = s.green, bold = 1 }
+  hi.NonText = { fg = s.gray500, bold = 1 }
+  hi.Normal = { fg = s.foreground }
+  hi.PMenu = { fg = s.foreground, bg = s.gray500 }
   hi.PMenuSbar = { bg = s.window }
   hi.PMenuSel = { fg = s.foreground, bg = s.selection }
   hi.PMenuThumb = { bg = s.gray300 }
-  hi.Question = { fg = s.background, bg = s.green }
-  hi.Search = { fg = s.yellow, bg = s.dark_yellow, gui = 'bold' }
+  hi.Question = { fg = s.background, bg = s.green, bold = 1 }
+  hi.Search = { fg = s.yellow, bg = s.dark_yellow, bold = 1 }
   hi.SignColumn = { fg = s.gray200, bg = s.background }
-  hi.SpecialKey = { fg = s.dark_aqua, gui = 'none' }
-  hi.StatusLine = { fg = s.comment, bg = s.window, gui = 'none' }
-  hi.StatusLineNC = { fg = s.comment, bg = s.window, gui = 'none' }
-  hi.TabLine = { fg = s.comment, bg = s.window, gui = 'none' }
-  hi.TabLineFill = { fg = s.comment, bg = s.window, gui = 'none' }
-  hi.TabLineSel = { fg = s.window, bg = s.foreground, gui = 'none' }
-  hi.Title = { fg = s.foreground, gui = 'bold' }
-  hi.Underlined = { fg = s.blue, gui = 'underline' }
-  hi.VertSplit = { fg = s.window, bg = s.window, gui = 'none' }
+  hi.SpecialKey = { fg = s.dark_aqua }
+  hi.StatusLine = { fg = s.comment, bg = s.window }
+  hi.StatusLineNC = { fg = s.comment, bg = s.window }
+  hi.TabLine = { fg = s.comment, bg = s.window }
+  hi.TabLineFill = { fg = s.comment, bg = s.window }
+  hi.TabLineSel = { fg = s.window, bg = s.foreground }
+  hi.Title = { fg = s.foreground, bold = 1 }
+  hi.VertSplit = { fg = s.window, bg = s.window }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }
   hi.WildMenu = { fg = s.yellow, bg = s.background }
 
   hi.BorderedFloat = { fg = s.foreground, bg = s.background }
   hi.FloatBorder = { fg = s.foreground, bg = s.background }
-  hi.NvimInternalError = { fg = s.background, bg = s.red, gui = 'none' }
+  hi.NvimInternalError = { fg = s.background, bg = s.red }
 
   -- Standard syntax highlighting
   hi.Boolean = { fg = s.orange }
@@ -73,90 +64,90 @@ function M.setup()
   hi.Comment = { fg = s.comment }
   hi.Conditional = { fg = s.purple }
   hi.Constant = { fg = s.yellow }
-  hi.Define = { fg = s.purple, gui = 'none' }
+  hi.Define = { fg = s.purple }
   hi.Delimiter = { fg = s.gray200 }
   hi.Float = { fg = s.orange }
   hi.Function = { fg = s.pink }
-  hi.Identifier = { fg = s.blue, gui = 'none' }
+  hi.Identifier = { fg = s.blue }
   hi.Include = { fg = s.purple }
   hi.Keyword = { fg = s.purple }
   hi.Label = { fg = s.purple }
   hi.Number = { fg = s.orange }
-  hi.Operator = { fg = s.aqua, gui = 'none' }
+  hi.Operator = { fg = s.aqua }
   hi.PreProc = { fg = s.brown }
   hi.Repeat = { fg = s.purple }
   hi.Special = { fg = s.aqua }
   hi.SpecialChar = { fg = s.bright_green }
   hi.SpecialComment = { fg = s.green }
-  hi.Statement = { fg = s.purple }
+  hi.Statement = { fg = s.purple, bold = 1 }
   hi.StorageClass = { fg = s.yellow }
   hi.String = { fg = s.green }
   hi.Structure = { fg = s.purple }
   hi.Tag = { fg = s.yellow }
   hi.Todo = { fg = s.background, bg = s.comment }
-  hi.Type = { fg = s.yellow, gui = 'none' }
+  hi.Type = { fg = s.yellow }
   hi.Typedef = { fg = s.purple }
 
   -- Spelling highlighting
-  hi.SpellBad = { gui = 'undercurl', sp = s.bright_red }
-  hi.SpellLocal = { gui = 'undercurl', sp = s.bright_aqua }
-  hi.SpellCap = { gui = 'undercurl', sp = s.bright_blue }
-  hi.SpellRare = { gui = 'undercurl', sp = s.bright_purple }
+  hi.SpellBad = { undercurl = 1, sp = s.bright_red }
+  hi.SpellLocal = { undercurl = 1, sp = s.bright_aqua }
+  hi.SpellCap = { undercurl = 1, sp = s.bright_blue }
+  hi.SpellRare = { undercurl = 1, sp = s.bright_purple }
 
   -- Diff highlighting
-  hi.DiffAdd = { fg = s.green, bg = 'none', gui = 'none' }
-  hi.DiffChange = { fg = s.blue, bg = 'none', gui = 'none' }
-  hi.DiffDelete = { fg = s.red, bg = 'none', gui = 'none' }
-  hi.DiffText = { fg = s.blue, bg = 'none', gui = 'bold' }
+  hi.DiffAdd = { fg = s.green }
+  hi.DiffChange = { fg = s.blue }
+  hi.DiffDelete = { fg = s.red }
+  hi.DiffText = { fg = s.blue, bold = 1 }
 
   -- LSP
   -- hi.LspReferenceText = {  }
-  hi.LspDiagnosticsDefaultError = { fg = s.red, gui = 'none' }
-  hi.LspDiagnosticsDefaultWarning = { fg = s.yellow, gui = 'none' }
-  hi.LspDiagnosticsDefaultInformation = { fg = s.blue, gui = 'none' }
-  hi.LspDiagnosticsDefaultHint = { fg = s.green, gui = 'none' }
-  hi.LspDiagnosticsUnderlineError = { gui = 'undercurl', sp = s.bright_red }
-  hi.LspDiagnosticsUnderlineWarning = { gui = 'undercurl', sp = s.bright_yellow }
-  hi.LspDiagnosticsUnderlineInformation = { gui = 'undercurl', sp = s.bright_blue }
-  hi.LspDiagnosticsUnderlineHint = { gui = 'undercurl', sp = s.bright_green }
+  hi.LspDiagnosticsDefaultError = { fg = s.red }
+  hi.LspDiagnosticsDefaultWarning = { fg = s.yellow }
+  hi.LspDiagnosticsDefaultInformation = { fg = s.blue }
+  hi.LspDiagnosticsDefaultHint = { fg = s.green }
+  hi.LspDiagnosticsUnderlineError = { undercurl = 1, sp = s.bright_red }
+  hi.LspDiagnosticsUnderlineWarning = { undercurl = 1, sp = s.bright_yellow }
+  hi.LspDiagnosticsUnderlineInformation = { undercurl = 1, sp = s.bright_blue }
+  hi.LspDiagnosticsUnderlineHint = { undercurl = 1, sp = s.bright_green }
 
   -- Treesitter
-  -- hi.TSError = { bg = s.dark_red, gui = 'none' }
-  hi.TSAnnotation = { fg = s.brown, gui = 'none' }
-  hi.TSAttribute = { fg = s.yellow, gui = 'none' }
-  hi.TSConstBuiltin = { fg = s.yellow, gui = 'italic' }
-  hi.TSConstMacro = { fg = s.yellow, gui = 'bold' }
-  hi.TSConstant = { fg = s.orange, gui = 'none' }
-  hi.TSConstructor = { fg = s.yellow, gui = 'none' }
-  hi.TSEmphasis = { gui = 'italic' }
-  hi.TSField = { fg = s.brown, gui = 'none' }
-  hi.TSFuncBuiltin = { fg = s.pink, gui = 'italic' }
-  hi.TSFuncMacro = { fg = s.pink, gui = 'bold' }
-  hi.TSKeywordOperator = { fg = s.aqua, gui = 'italic' }
-  hi.TSLiteral = { fg = s.orange, gui = 'none' }
-  hi.TSNamespace = { fg = s.brown, gui = 'none' }
-  hi.TSNone = { fg = s.foreground, gui = 'none' }
-  hi.TSProperty = { fg = s.brown, gui = 'none' }
-  hi.TSStrike = { gui = 'strikethrough' }
-  hi.TSStringEscape = { fg = s.dark_aqua, gui = 'none' }
-  hi.TSStringRegex = { fg = s.aqua, gui = 'none' }
-  hi.TSStrong = { gui = 'bold' }
-  hi.TSSymbol = { fg = s.red, gui = 'none' }
-  hi.TSTag = { fg = s.yellow, gui = 'none' }
-  hi.TSTagDelimiter = { fg = s.gray200, gui = 'none' }
-  hi.TSTypeBuiltin = { fg = s.yellow, gui = 'italic' }
-  hi.TSURI = { gui = 'underline', sp = s.bright_blue }
-  hi.TSUnderline = { gui = 'underline' }
-  hi.TSVariable = { fg = s.blue, gui = 'none' }
-  hi.TSVariableBuiltin = { fg = s.blue, gui = 'italic' }
+  -- hi.TSError = { bg = s.dark_red }
+  hi.TSAnnotation = { fg = s.brown }
+  hi.TSAttribute = { fg = s.yellow }
+  hi.TSConstBuiltin = { fg = s.yellow, italic = 1 }
+  hi.TSConstMacro = { fg = s.yellow, bold = 1 }
+  hi.TSConstant = { fg = s.orange }
+  hi.TSConstructor = { fg = s.yellow }
+  hi.TSEmphasis = { italic = 1 }
+  hi.TSField = { fg = s.brown }
+  hi.TSFuncBuiltin = { fg = s.pink, italic = 1 }
+  hi.TSFuncMacro = { fg = s.pink, bold = 1 }
+  hi.TSKeywordOperator = { fg = s.aqua, italic = 1 }
+  hi.TSLiteral = { fg = s.orange }
+  hi.TSNamespace = { fg = s.brown }
+  hi.TSNone = { fg = s.foreground }
+  hi.TSProperty = { fg = s.brown }
+  hi.TSStrike = { strikethrough = 1 }
+  hi.TSStringEscape = { fg = s.dark_aqua }
+  hi.TSStringRegex = { fg = s.aqua }
+  hi.TSStrong = { bold = 1 }
+  hi.TSSymbol = { fg = s.red }
+  hi.TSTag = { fg = s.yellow }
+  hi.TSTagDelimiter = { fg = s.gray200 }
+  hi.TSTypeBuiltin = { fg = s.yellow, italic = 1 }
+  hi.TSURI = { underline = 1, sp = s.bright_blue }
+  hi.TSUnderline = { underline = 1 }
+  hi.TSVariable = { fg = s.blue }
+  hi.TSVariableBuiltin = { fg = s.blue, italic = 1 }
 
   -- custom
   hi.StatusLineL0 = { fg = s.foreground, bg = s.window }
   hi.StatusLineMode = { fg = s.foreground, bg = s.window }
-  hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window, gui = 'none' }
-  hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window, gui = 'none' }
-  hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window, gui = 'none' }
-  hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window, gui = 'none' }
+  hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window }
+  hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
+  hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
+  hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window }
 
   hi.FullwidthSpace = { bg = s.dark_purple }
   hi.GitConflictMarker = { fg = s.red, bg = s.dark_red }
@@ -164,32 +155,32 @@ function M.setup()
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
   -- coc.nvim
-  hi.CocHighlightText = { bg = s.selection, gui = 'none' }
+  hi.CocHighlightText = { bg = s.selection }
   hi.CocErrorSign = { fg = s.red }
   hi.CocWarningSign = { fg = s.yellow }
   hi.CocInfoSign = { fg = s.blue }
   hi.CocHintSign = { fg = s.green }
-  hi.CocErrorHighlight = { gui = 'undercurl', sp = s.bright_red }
-  hi.CocWarningHighlight = { gui = 'undercurl', sp = s.bright_yellow }
-  hi.CocInfoHighlight = { gui = 'undercurl', sp = s.bright_blue }
-  hi.CocHintHighlight = { gui = 'undercurl', sp = s.bright_green }
-  hi.CocDiffAdd = { fg = s.dark_green, bg = 'none', gui = 'none' }
-  hi.CocDiffChange = { fg = s.dark_blue, bg = 'none', gui = 'none' }
-  hi.CocDiffDelete = { fg = s.dark_red, bg = 'none', gui = 'none' }
-  hi.CocFadeOut = { fg = s.gray200, bg = 'none', gui = 'none' }
+  hi.CocErrorHighlight = { undercurl = 1, sp = s.bright_red }
+  hi.CocWarningHighlight = { undercurl = 1, sp = s.bright_yellow }
+  hi.CocInfoHighlight = { undercurl = 1, sp = s.bright_blue }
+  hi.CocHintHighlight = { undercurl = 1, sp = s.bright_green }
+  hi.CocDiffAdd = { fg = s.dark_green }
+  hi.CocDiffChange = { fg = s.dark_blue }
+  hi.CocDiffDelete = { fg = s.dark_red }
+  hi.CocFadeOut = { fg = s.gray200 }
 
   -- vim-searchhi
-  hi.CurrentSearch = { fg = s.background, bg = s.yellow, gui = 'bold' }
+  hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
 
   -- markdown
-  hi.markdownH1 = { fg = s.brown, gui = 'bold' }
-  hi.markdownH2 = { fg = s.brown, gui = 'bold' }
-  hi.markdownH3 = { fg = s.brown, gui = 'bold' }
-  hi.markdownH4 = { fg = s.brown, gui = 'bold' }
-  hi.markdownH5 = { fg = s.brown, gui = 'bold' }
-  hi.markdownH6 = { fg = s.brown, gui = 'bold' }
+  hi.markdownH1 = { fg = s.brown, bold = 1 }
+  hi.markdownH2 = { fg = s.brown, bold = 1 }
+  hi.markdownH3 = { fg = s.brown, bold = 1 }
+  hi.markdownH4 = { fg = s.brown, bold = 1 }
+  hi.markdownH5 = { fg = s.brown, bold = 1 }
+  hi.markdownH6 = { fg = s.brown, bold = 1 }
   hi.markdownLink = { fg = s.comment }
-  hi.markdownLinkText = { fg = s.blue, gui = 'underline' }
+  hi.markdownLinkText = { fg = s.blue, underline = 1 }
   hi.markdownCode = { fg = s.green }
   hi.markdownCodeBlock = { fg = s.green }
 end
@@ -217,14 +208,14 @@ function M.update_mode_highlight()
     color = s.blue
   end
 
-  hi.StatusLineMode = { fg = color, bg = s.window, gui = nil, sp = nil }
-  hi.Cursor = { fg = s.background, bg = color, gui = nil, sp = nil }
+  hi.StatusLineMode = { fg = color, bg = s.window }
+  hi.Cursor = { fg = s.background, bg = color }
 
   if string.match(mode, '[sS]$') then
-    hi.Visual = { fg = s.blue, bg = s.dark_blue, gui = 'bold', sp = nil }
+    hi.Visual = { fg = s.blue, bg = s.dark_blue, bold = 1 }
     vim.cmd('redraw')
   else
-    hi.Visual = { fg = 'none', bg = s.selection, gui = 'none', sp = nil }
+    hi.Visual = { bg = s.selection }
   end
 end
 
