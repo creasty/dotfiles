@@ -50,8 +50,8 @@ local schema = {
 
 schema.foreground = schema.gray100
 schema.comment = schema.gray300
-schema.selection = schema.gray400
-schema.line = schema.gray450
+schema.selection = schema.gray450
+schema.line = schema.gray500
 schema.window = schema.gray550
 schema.background = schema.gray600
 schema.guide = schema.gray610

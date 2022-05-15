@@ -211,7 +211,7 @@ function M.update_mode_highlight()
   hi.StatusLineMode = { fg = color, bg = s.window }
   hi.Cursor = { fg = s.background, bg = color }
 
-  if string.match(mode, '[sS]$') then
+  if string.match(mode, '[sS\19]$') then
     hi.Visual = { fg = s.blue, bg = s.dark_blue, bold = 1 }
     vim.cmd('redraw')
   else
