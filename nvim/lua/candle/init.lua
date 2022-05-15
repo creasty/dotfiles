@@ -18,7 +18,7 @@ function M.setup()
   hi.Conceal = { fg = s.aqua }
   hi.Cursor = { fg = s.background, bg = s.foreground }
   hi.CursorColumn = { bg = s.line }
-  hi.CursorLine = {}
+  hi.CursorLine = { bg = s.line }
   hi.CursorLineNr = { bg = s.line, bold = 1 }
   hi.Debug = { fg = s.brown }
   hi.Directory = { fg = s.blue }
@@ -55,7 +55,7 @@ function M.setup()
   hi.WildMenu = { fg = s.yellow, bg = s.background }
 
   hi.BorderedFloat = { fg = s.foreground, bg = s.background }
-  hi.FloatBorder = { fg = s.foreground, bg = s.background }
+  hi.FloatBorder = { fg = s.gray400, bg = s.background }
   hi.NvimInternalError = { fg = s.background, bg = s.red }
 
   -- Standard syntax highlighting
