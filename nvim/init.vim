@@ -28,13 +28,6 @@ let g:tex_flavor = 'latex'
 
 "=== Basic
 "==============================================================================================
-" split to right / bottom
-set splitright
-set splitbelow
-
-" line offset when scrolling
-set scrolloff=5
-
 " no backup and swap files
 set nobackup
 set nowritebackup
@@ -42,18 +35,6 @@ set noswapfile
 
 " enable auto write
 set autowrite
-
-" automatic formatting
-set formatoptions&
-set formatoptions+=lmq] " add multibyte option
-set formatoptions-=ro " don't insert the current comment leader on leading lines
-set formatoptions+=j " remove a comment leader when joining lines
-
-" initial dir of explorer
-set browsedir=buffer
-
-" move cursor over lines
-set whichwrap=b,s,h,l,<,>,[,]
 
 " disable mode lines
 set modelines=0
@@ -64,17 +45,23 @@ set history=1000
 " yank use system clipboard
 set clipboard=unnamed
 
-" inc/decrement
+" initial dir of explorer
+set browsedir=buffer
+
+" automatic formatting
+set formatoptions&
+set formatoptions+=lmq] " add multibyte option
+set formatoptions-=ro " don't insert the current comment leader on leading lines
+set formatoptions+=j " remove a comment leader when joining lines
+
+" in/decrement
 set nrformats=alpha,hex
 
 " wildcard settings
 set wildignore& wildignore+=*.so,*.swp
 
 " find file with suffixes
-set suffixesadd& suffixesadd+=.ts,.tsx,.js,.jsx,.d.ts,.swift,.scss,.css
-
-" fast update
-set updatetime=200
+set suffixesadd& suffixesadd+=.ts,.d.ts,.tsx
 
 " ignore case unless contains upper case
 set ignorecase
@@ -90,15 +77,23 @@ set expandtab
 set shiftround
 set tabstop=2 shiftwidth=2 softtabstop=0
 
+" move cursor over lines
+set whichwrap=b,s,h,l,<,>,[,]
+
 " virtualedit with freedom
 set virtualedit& virtualedit+=block
 
-" python provider
-set pyxversion=3
+" split to right / bottom
+set splitright
+set splitbelow
+
+" customize tag searches
+set tagfunc=user#tagfunc#fn
 
 "=== Appearance
 "==============================================================================================
-colorscheme candle
+" enables 24-bit RGB color in the TUI
+set termguicolors
 
 " skip intro screen
 set shortmess+=I
@@ -110,20 +105,17 @@ set noshowmode
 set laststatus=3
 set showtabline=2
 
-" tabline & statusline
-lua require('user.ui').setup()
-
-" always show sign column
-set signcolumn=auto:1-3
-
 " show line numbers
 set number
 
+" always show sign column
+set signcolumn=yes:2
+
+" color column
+set colorcolumn=90
+
 " match pairs
 set showmatch
-
-" do not redraw during command
-" set lazyredraw
 
 " display nonprintable charactors as hex
 set display+=uhex
@@ -139,17 +131,20 @@ let &showbreak = '   ›'
 " conceal
 set conceallevel=2 concealcursor=
 
-" color column
-set colorcolumn=90
-
 " transparent pmenu
 set pumblend=10
 
-" enables 24-bit RGB color in the TUI
-set termguicolors
-
 " change cursor styles
 set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor
+
+" line offset when scrolling
+set scrolloff=5
+
+" fast update
+set updatetime=200
+
+" do not redraw during command
+" set lazyredraw
 
 " folding
 set foldmethod=indent
@@ -175,10 +170,20 @@ function! UserTitleString() abort
   endif
 endfunction
 
-"=== Editing
+" schema
+colorscheme candle
+
+" tabline & statusline
+lua require('user.ui').setup()
+
+"=== Keymaps
 "==============================================================================================
 " leader key
 let g:mapleader = ','
+
+" remove default mappings
+nnoremap ZQ <Nop>
+xnoremap K <Nop>
 
 " move cursor visually with long lines
 nmap j gj
@@ -186,7 +191,7 @@ xmap j gj
 nmap k gk
 xmap k gk
 
-" paste
+" paste with C-v
 inoremap <C-v> <C-r><C-p>*
 inoremap <C-\> <C-v>
 cnoremap <C-v> <C-r>*
@@ -256,13 +261,7 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " select all
 nnoremap <Space>a ggVG
 
-" remove default mappings
-nnoremap ZQ <Nop>
-xnoremap K <Nop>
-
 " tags
-set tagfunc=user#tagfunc#fn
-
 nnoremap tn <Cmd>tn<CR>
 nnoremap tp <Cmd>tp<CR>
 nnoremap tl <Cmd>tags<CR>
@@ -306,21 +305,16 @@ xnoremap <Space>s "xy<Cmd>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 " replace word under cursor
 nnoremap <Space>s "xyiw<Cmd>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
+" dim match highlight
+nnoremap <silent> <Space><Space> <Cmd>nohlsearch<CR><Cmd>doautocmd User NoHlsearchPost<CR>
+
+"=== Misc
+"==============================================================================================
 " change soft-indent size
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 
 " substitute with match case
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
-
-" dim match highlight
-augroup _clear_hlsearch
-  autocmd!
-  autocmd User ClearHlsearch :
-  autocmd BufReadPost * ClearHlsearch
-augroup END
-
-command! -nargs=0 ClearHlsearch nohlsearch | doautocmd User ClearHlsearch
-nnoremap <silent> <Space><Space> <Cmd>ClearHlsearch<CR>
 
 " back to the last line I edited
 augroup _restore_last_pos
@@ -341,8 +335,6 @@ augroup _enhance_ftdetect
     \ endif
 augroup END
 
-"=== Misc
-"==============================================================================================
 " profiler
 command! ProfStart
   \ profile start /tmp/vim-vimscript.log |
@@ -357,8 +349,7 @@ command! ProfOpen
   \ vsplit /tmp/vim-lua.log
 
 " inspect syntax
-command! ScopeInfo echo map(synstack(line('.'), col('.')), 'synIDattr(synIDtrans(v:val), "name")')
-command! ScopeInfoTS lua require'user.treesitter-helper'.show_hl_captures()
+command! ScopeInfo lua require'user.treesitter-helper'.show_hl_captures()
 
 " font
 command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
@@ -495,7 +486,7 @@ if dein#tap('vim-searchhi')
   augroup _init_searchhi
     autocmd!
 
-    autocmd User ClearHlsearch
+    autocmd User NoHlsearchPost
       \ call searchhi#clear(0, 0) |
       \ call searchhi#await(0, 0)
 
