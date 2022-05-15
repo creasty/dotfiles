@@ -37,7 +37,7 @@ function M.setup()
   hi.Normal = { fg = s.foreground }
   hi.PMenu = { fg = s.foreground, bg = s.gray500 }
   hi.PMenuSbar = { bg = s.window }
-  hi.PMenuSel = { fg = s.foreground, bg = s.selection }
+  hi.PMenuSel = { fg = s.foreground, bg = s.gray400 }
   hi.PMenuThumb = { bg = s.gray300 }
   hi.Question = { fg = s.background, bg = s.green, bold = 1 }
   hi.Search = { fg = s.yellow, bg = s.dark_yellow, bold = 1 }

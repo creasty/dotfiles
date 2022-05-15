@@ -2,6 +2,8 @@ local filereadable_key = 'filereadable'
 local current_normal_winnr_key = 'current_normal_winnr'
 
 local indicator = '▌'
+local separator = '∙'
+local no_name_file = '[new]'
 
 local function file_exists(name)
   local f = io.open(name, 'r')
@@ -38,6 +40,20 @@ local function tabpage_get_win(tabnr)
   return safe_tabpage_get_var(tabnr, current_normal_winnr_key, winnr)
 end
 
+local function get_buffer_flags(bufnr)
+  local flags = {}
+  if vim.bo[bufnr].readonly then
+    table.insert(flags, '!')
+  end
+  if vim.bo[bufnr].modified then
+    table.insert(flags, '+')
+  end
+  if not safe_buf_get_var(bufnr, filereadable_key, true) then
+    table.insert(flags, '?')
+  end
+  return flags
+end
+
 local function tabline()
   local line = {}
 
@@ -49,22 +65,17 @@ local function tabline()
     local path = vim.api.nvim_buf_get_name(bufnr)
 
     local name = vim.fn.fnamemodify(path, ':t')
-    name = name ~= '' and name or '[No Name]'
+    name = name ~= '' and name or no_name_file
 
-    local flags = {}
-    if vim.bo[bufnr].mod then
-      table.insert(flags, '+')
-    end
-    if not safe_buf_get_var(bufnr, filereadable_key, true) then
-      table.insert(flags, '?')
-    end
+    local flags = get_buffer_flags(bufnr)
 
     local tab = {
-      (i > 1 and '∙' or ''),
+      (i > 1 and separator or ''),
       '%', tabnr, 'T',
       (tabnr == current and '%#TabLineSel#' or '%#TabLine#'),
-      ' ', name,
-      (#flags > 0 and ' ' .. table.concat(flags, '') or ''),
+      ' ',
+      (#flags > 0 and '' .. table.concat(flags, '') or ''),
+      name,
       ' %#TabLine#',
     }
     table.insert(line, table.concat(tab, ''))
@@ -100,22 +111,13 @@ local function render_statusline(winnr, active)
       local rel_path = vim.fn.fnamemodify(path, ':p:~:.')
       table.insert(l0, rel_path)
     elseif is_file then
-      table.insert(l0, '[No Name]')
+      table.insert(l0, no_name_file)
     else
       table.insert(l0, buftype)
     end
   end
 
-  local flags = {}
-  if vim.bo[bufnr].readonly then
-    table.insert(flags, '!')
-  end
-  if vim.bo[bufnr].modified then
-    table.insert(flags, '+')
-  end
-  if not safe_buf_get_var(bufnr, filereadable_key, true) then
-    table.insert(flags, '?')
-  end
+  local flags = get_buffer_flags(bufnr)
   if #flags > 0 then
     table.insert(l0, table.concat(flags, ''))
   end
@@ -166,9 +168,9 @@ local function render_statusline(winnr, active)
     local format = vim.bo[bufnr].fileformat
     table.insert(r0, encoding ~= '' and encoding or vim.o.encoding)
     table.insert(r0, format)
-    table.insert(r0, '∙')
+    table.insert(r0, separator)
     table.insert(r0, '%l:%c')
-    table.insert(r0, '∙')
+    table.insert(r0, separator)
     table.insert(r0, '%p%%')
   end
 
