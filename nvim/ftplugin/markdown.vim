@@ -1,3 +1,5 @@
+setl conceallevel=0
+
 function! s:foldexpr_markdown(lnum)
   let l1 = getline(a:lnum)
 

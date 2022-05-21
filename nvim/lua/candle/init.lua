@@ -171,18 +171,6 @@ function M.setup()
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
-
-  -- markdown
-  hi.markdownH1 = { fg = s.brown, bold = 1 }
-  hi.markdownH2 = { fg = s.brown, bold = 1 }
-  hi.markdownH3 = { fg = s.brown, bold = 1 }
-  hi.markdownH4 = { fg = s.brown, bold = 1 }
-  hi.markdownH5 = { fg = s.brown, bold = 1 }
-  hi.markdownH6 = { fg = s.brown, bold = 1 }
-  hi.markdownLink = { fg = s.comment }
-  hi.markdownLinkText = { fg = s.blue, underline = 1 }
-  hi.markdownCode = { fg = s.green }
-  hi.markdownCodeBlock = { fg = s.green }
 end
 
 M.current_mode = 'n'

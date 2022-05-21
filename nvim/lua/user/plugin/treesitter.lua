@@ -1,13 +1,3 @@
-local parser_configs = require 'nvim-treesitter.parsers'.get_parser_configs()
-
-parser_configs.proto = {
-  install_info = {
-    url = 'https://github.com/mitchellh/tree-sitter-proto',
-    branch = 'main',
-    files = {'src/parser.c'},
-  },
-}
-
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
     'bash',
@@ -30,7 +20,10 @@ require('nvim-treesitter.configs').setup {
     'jsonc',
     'kotlin',
     'latex',
+    'latex',
     'lua',
+    'make',
+    'markdown',
     'proto',
     'python',
     'query',
@@ -38,9 +31,12 @@ require('nvim-treesitter.configs').setup {
     'rst',
     'ruby',
     'rust',
+    'swift',
+    'tlaplus',
     'toml',
     'tsx',
     'typescript',
+    'vim',
     'yaml',
   },
   highlight = {

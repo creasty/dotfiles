@@ -70,7 +70,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~140ms to startup
+- ~150ms to startup
 - 3,700 loc of config
 - 41 third-party plugins
 
@@ -78,11 +78,11 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.11s user 0.08s system 147% cpu 0.129 total
-nvim --headless -c quit  0.12s user 0.08s system 147% cpu 0.135 total
-nvim --headless -c quit  0.12s user 0.08s system 146% cpu 0.134 total
-nvim --headless -c quit  0.12s user 0.08s system 146% cpu 0.138 total
-nvim --headless -c quit  0.12s user 0.08s system 144% cpu 0.135 total
+nvim --headless -c quit  0.13s user 0.08s system 141% cpu 0.149 total
+nvim --headless -c quit  0.12s user 0.08s system 141% cpu 0.146 total
+nvim --headless -c quit  0.12s user 0.08s system 141% cpu 0.146 total
+nvim --headless -c quit  0.12s user 0.08s system 141% cpu 0.146 total
+nvim --headless -c quit  0.13s user 0.08s system 141% cpu 0.149 total
 ```
 
 ```sh-session
