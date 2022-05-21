@@ -83,6 +83,8 @@ hook_add = '''
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 '''
 
+#  Treesitter
+#-----------------------------------------------
 [[plugins]] # Treesitter configurations and abstraction layer for Neovim
 repo = 'nvim-treesitter/nvim-treesitter'
 merged = 0
@@ -99,6 +101,14 @@ depends = ['nvim-treesitter']
 
 [[plugins]] # Use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
+depends = ['nvim-treesitter']
+
+[[plugins]] # Yet another tree-sitter powered indent plugin for Neovim
+repo = 'yioneko/nvim-yati'
+depends = ['nvim-treesitter']
+
+[[plugins]] # Wisely add "end" in Ruby, Vimscript, Lua, etc
+repo = 'RRethy/nvim-treesitter-endwise'
 depends = ['nvim-treesitter']
 
 #  UI

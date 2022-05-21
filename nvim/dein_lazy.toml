@@ -38,6 +38,7 @@ on_func = ['lexima#']
 on_event = ['InsertEnter', 'CmdlineEnter']
 hook_add = '''
 let g:lexima_map_escape = ''
+let g:lexima_enable_endwise_rules = 0
 '''
 hook_source = '''
 call user#plugin#lexima#init()

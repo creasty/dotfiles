@@ -103,4 +103,12 @@ require('nvim-treesitter.configs').setup {
       },
     },
   },
+  -- yioneko/nvim-yati
+  yati = {
+    enable = true,
+  },
+  -- RRethy/nvim-treesitter-endwise
+  endwise = {
+    enable = true,
+  },
 }
