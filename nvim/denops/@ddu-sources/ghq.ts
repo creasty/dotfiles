@@ -9,21 +9,21 @@ import { join } from "https://deno.land/std@0.127.0/path/mod.ts";
 
 type Params = {
   bin: string;
-  rootPath: string;
 };
 
 export class Source extends BaseSource<Params, ActionData> {
   kind = "file";
+  private rootPath = "";
 
   async onInit(args: OnInitArguments<Params>): Promise<void> {
-    if (!args.sourceParams.rootPath) {
+    if (!this.rootPath) {
       const proc = Deno.run({
         cmd: [args.sourceParams.bin, "root"],
         stdin: "null",
         stdout: "piped",
         stderr: "piped",
       });
-      args.sourceParams.rootPath = new TextDecoder()
+      this.rootPath = new TextDecoder()
         .decode(await proc.output())
         .replace(/\r?\n/g, '');
       proc.close();
@@ -31,6 +31,8 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   gather(args: GatherArguments<Params>): ReadableStream<Item<ActionData>[]> {
+    const { rootPath } = this;
+
     return new ReadableStream({
       async start(controller) {
         const proc = Deno.run({
@@ -46,7 +48,8 @@ export class Source extends BaseSource<Params, ActionData> {
             word: path,
             display: path,
             action: {
-              path: join(args.sourceParams.rootPath, path),
+              isDirectory: true,
+              path: join(rootPath, path),
             },
           };
         });
@@ -60,7 +63,6 @@ export class Source extends BaseSource<Params, ActionData> {
   params(): Params {
     return {
       bin: "ghq",
-      rootPath: "",
     };
   }
 }
