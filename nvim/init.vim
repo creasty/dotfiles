@@ -52,7 +52,6 @@ set browsedir=buffer
 set formatoptions&
 set formatoptions+=lmq] " add multibyte option
 set formatoptions-=ro " don't insert the current comment leader on leading lines
-set formatoptions+=j " remove a comment leader when joining lines
 
 " in/decrement
 set nrformats=alpha,hex
@@ -217,10 +216,6 @@ nnoremap <script> <C-a> <C-a><SID>(inc)
 nnoremap <script> <C-x> <C-x><SID>(inc)
 nnoremap <script> <SID>(inc)<C-a> <Cmd>undojoin<CR><C-a><SID>(inc)
 nnoremap <script> <SID>(inc)<C-x> <Cmd>undojoin<CR><C-x><SID>(inc)
-
-" break undo with chunk delete actions
-inoremap <C-u> <C-g>u<C-u>
-inoremap <C-w> <C-g>u<C-w>
 
 " keep the cursor in place while joining lines
 nnoremap J mZJ`ZmZ

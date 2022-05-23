@@ -20,7 +20,6 @@ require('nvim-treesitter.configs').setup {
     'jsonc',
     'kotlin',
     'latex',
-    'latex',
     'lua',
     'make',
     'markdown',
