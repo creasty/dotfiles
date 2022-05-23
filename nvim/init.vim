@@ -221,7 +221,7 @@ nnoremap <script> <SID>(inc)<C-x> <Cmd>undojoin<CR><C-x><SID>(inc)
 nnoremap J mZJ`ZmZ
 
 " split lines: inverse of J
-nnoremap K ylpr<Enter>
+nnoremap K ylpr<CR>
 
 " reselect visual block after indent/outdent
 xnoremap < <gv
@@ -295,13 +295,13 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
 
 " replace selection
-xnoremap <Space>s "xy<Cmd>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+xnoremap s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
-nnoremap <Space>s "xyiw<Cmd>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
+nnoremap <Space>* "xyiw:<C-u>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
 " dim match highlight
-nnoremap <silent> <Space><Space> <Cmd>nohlsearch<CR><Cmd>doautocmd User NoHlsearchPost<CR>
+nnoremap <silent> <Space><Space> <Cmd>nohlsearch<Bar>doautocmd User NoHlsearchPost<CR>
 
 "=== Misc
 "==============================================================================================
