@@ -4,6 +4,21 @@ M.schema = require('candle.schema')
 
 M.highlight = setmetatable({}, {
   __newindex = function(_, hlgroup, opt)
+    -- Color:
+    --   fg
+    --   bg
+    --   sp
+    -- Style:
+    --   bold
+    --   underline
+    --   underlineline
+    --   undercurl
+    --   underdot
+    --   underdash
+    --   strikethrough
+    --   reverse / inverse
+    --   italic
+    --   standout
     vim.api.nvim_set_hl(0, hlgroup, opt)
   end
 })
@@ -16,7 +31,7 @@ function M.setup()
   hi.Bold = { bold = 1 }
   hi.ColorColumn = { bg = s.guide }
   hi.Conceal = { fg = s.aqua }
-  hi.Cursor = { fg = s.background, bg = s.foreground }
+  hi.Cursor = { fg = s.background, bg = s.foreground, reverse = 1 }
   hi.CursorColumn = { bg = s.line }
   hi.CursorLine = { bg = s.line }
   hi.CursorLineNr = { bg = s.line, bold = 1 }
@@ -143,7 +158,6 @@ function M.setup()
 
   -- custom
   hi.StatusLineL0 = { fg = s.foreground, bg = s.window }
-  hi.StatusLineMode = { fg = s.foreground, bg = s.window }
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
@@ -182,22 +196,14 @@ function M.update_mode_highlight()
   end
   M.current_mode = mode
 
+  -- if string.match(mode, '^i') then
+  -- elseif string.match(mode, '[vV\22]$') then
+  -- elseif string.match(mode, '^R') or string.match(mode, 'o') then
+  -- elseif string.match(mode, '[sS\19]$') then
+  -- end
+
   local hi = M.highlight
   local s = M.schema
-  local color = s.foreground
-
-  if string.match(mode, '^i') then
-    color = s.green
-  elseif string.match(mode, '[vV\22]$') then
-    color = s.orange
-  elseif string.match(mode, '^R') or string.match(mode, 'o') then
-    color = s.purple
-  elseif string.match(mode, '[sS\19]$') then
-    color = s.blue
-  end
-
-  hi.StatusLineMode = { fg = color, bg = s.window }
-  hi.Cursor = { fg = s.background, bg = color }
 
   if string.match(mode, '[sS\19]$') then
     hi.Visual = { fg = s.blue, bg = s.dark_blue, bold = 1 }

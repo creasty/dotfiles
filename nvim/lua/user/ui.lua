@@ -116,7 +116,7 @@ local function render_statusline(winnr, active)
   local r0 = {}
 
   if active then
-    table.insert(l0, '%#StatusLineMode#'..indicator..'%#StatusLineL0#')
+    table.insert(l0, '%#StatusLineL0#'..indicator)
   else
     table.insert(l0, '%#StatusLine#')
   end

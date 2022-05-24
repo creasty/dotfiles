@@ -134,7 +134,7 @@ set conceallevel=2 concealcursor=
 set pumblend=10
 
 " change cursor styles
-set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor
+set guicursor=n-c-sm:block-Cursor,v:hor20-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor
 
 " line offset when scrolling
 set scrolloff=5
