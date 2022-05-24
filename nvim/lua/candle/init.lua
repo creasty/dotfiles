@@ -187,30 +187,4 @@ function M.setup()
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
 end
 
-M.current_mode = 'n'
-
-function M.update_mode_highlight()
-  local mode = vim.api.nvim_get_mode().mode
-  if mode == M.current_mode then
-    return
-  end
-  M.current_mode = mode
-
-  -- if string.match(mode, '^i') then
-  -- elseif string.match(mode, '[vV\22]$') then
-  -- elseif string.match(mode, '^R') or string.match(mode, 'o') then
-  -- elseif string.match(mode, '[sS\19]$') then
-  -- end
-
-  local hi = M.highlight
-  local s = M.schema
-
-  if string.match(mode, '[sS\19]$') then
-    hi.Visual = { fg = s.blue, bg = s.dark_blue, bold = 1 }
-    vim.cmd('redraw')
-  else
-    hi.Visual = { bg = s.selection }
-  end
-end
-
 return M

@@ -208,9 +208,6 @@ local function statusline()
   local winnr = vim.g.statusline_winid
   local active = winnr == vim.fn.win_getid()
 
-  if active then
-    require('candle').update_mode_highlight()
-  end
   if not winnr then
     return
   end
