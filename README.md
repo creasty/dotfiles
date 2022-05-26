@@ -33,30 +33,7 @@ Heavily customized while meticulously optimized for insane performance.
 
 ```sh-session
 $ repeat 5 ( time zsh -i -c exit ; sleep 0.1 )
-zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.149 total
-zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.151 total
-zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.142 total
-zsh -i -c exit  0.08s user 0.06s system 94% cpu 0.155 total
-zsh -i -c exit  0.08s user 0.06s system 95% cpu 0.144 total
-```
-
-```sh-session
 $ cloc --exclude-dir=plugins shell/zsh
-       6 text files.
-       6 unique files.
-       4 files ignored.
-
-github.com/AlDanial/cloc v 1.84  T=0.01 s (277.8 files/s, 53337.7 lines/s)
--------------------------------------------------------------------------------
-Language                     files          blank        comment           code
--------------------------------------------------------------------------------
-zsh                              4            126             81            561
--------------------------------------------------------------------------------
-SUM:                             4            126             81            561
--------------------------------------------------------------------------------
-```
-
-```sh-session
 $ ls shell/zsh/plugins | wc -l
 ```
 
@@ -71,42 +48,14 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 ### nvim
 
 - ~150ms to startup
-- 3,700 loc of config
+- 3,600 loc of config
 - 41 third-party plugins
 
 <details>
 
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
-nvim --headless -c quit  0.13s user 0.08s system 141% cpu 0.149 total
-nvim --headless -c quit  0.12s user 0.08s system 141% cpu 0.146 total
-nvim --headless -c quit  0.12s user 0.08s system 141% cpu 0.146 total
-nvim --headless -c quit  0.12s user 0.08s system 141% cpu 0.146 total
-nvim --headless -c quit  0.13s user 0.08s system 141% cpu 0.149 total
-```
-
-```sh-session
 $ cloc --exclude-dir=dein,template nvim
-      93 text files.
-      89 unique files.
-      36 files ignored.
-
-github.com/AlDanial/cloc v 1.84  T=0.11 s (572.3 files/s, 43853.1 lines/s)
--------------------------------------------------------------------------------
-Language                     files          blank        comment           code
--------------------------------------------------------------------------------
-vim script                      49            450            299           2256
-Lua                              5             80             21            618
-JSON                             1             14              0            293
-TypeScript                       3             34              1            270
-TOML                             2             44             14            243
-Scheme                           1              4              5             28
--------------------------------------------------------------------------------
-SUM:                            61            626            340           3708
--------------------------------------------------------------------------------
-```
-
-```sh-session
 $ rg '^\[\[plugins' nvim/dein.toml nvim/dein_lazy.toml | wc -l
 ```
 
