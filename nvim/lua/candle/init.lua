@@ -165,7 +165,7 @@ function M.setup()
 
   hi.FullwidthSpace = { bg = s.dark_purple }
   hi.GitConflictMarker = { fg = s.red, bg = s.dark_red }
-  hi.ExtraWhitespace = { bg = s.line }
+  hi.ExtraWhitespace = { sp = s.comment, underdot = 1 }
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
   -- coc.nvim
