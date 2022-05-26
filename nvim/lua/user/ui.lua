@@ -4,7 +4,6 @@ local current_normal_winnr_key = 'current_normal_winnr'
 local indicator = '▌'
 local separator = '∙'
 local no_name_file = 'Untitled-'
-local superscript = {'', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹', '⁺'}
 
 local function file_exists(name)
   local f = io.open(name, 'r')
@@ -41,21 +40,6 @@ local function tabpage_get_win(tabnr)
   return safe_tabpage_get_var(tabnr, current_normal_winnr_key, winnr)
 end
 
-local function tabpage_get_num_wins(tabnr)
-  local wins = vim.api.nvim_tabpage_list_wins(tabnr)
-  local num = 0
-
-  for _, winnr in ipairs(wins) do
-    local config = vim.api.nvim_win_get_config(winnr)
-    local is_normal = config.relative == ''
-    if is_normal then
-      num = num + 1
-    end
-  end
-
-  return num
-end
-
 local function get_buffer_flags(bufnr)
   local flags = {}
   if vim.bo[bufnr].readonly then
@@ -79,7 +63,6 @@ local function tabline()
     local winnr = tabpage_get_win(tabnr)
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
-    -- local num_wins = tabpage_get_num_wins(tabnr)
 
     local name = vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or no_name_file..bufnr
@@ -93,7 +76,6 @@ local function tabline()
       ' ',
       (#flags > 0 and '' .. table.concat(flags, '') or ''),
       name,
-      -- (num_wins > 1 and superscript[math.min(num_wins, 10)] or ''),
       ' %#TabLine#',
     }
     table.insert(line, table.concat(tab, ''))
