@@ -1,1 +1,0 @@
-setlocal indentkeys-=0#,<:>
