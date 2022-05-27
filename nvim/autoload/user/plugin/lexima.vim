@@ -95,14 +95,6 @@ call lexima#add_rule({
 "-----------------------------------------------
 call lexima#add_rule({ 'char': '<C-l>', 'input': '' })
 
-" transpose charactors before/after cursor
-call lexima#add_rule({
-  \ 'char':     '<C-l>',
-  \ 'at':       '\w\%#\w',
-  \ 'input':    '<Esc>"0ylxa<C-r>0<Left>',
-  \ 'priority': 10,
-\ })
-
 " spaces around operators
 call lexima#add_rule({
   \ 'char':  '<C-l>',
@@ -125,23 +117,6 @@ call lexima#add_rule({
   \ 'input': '<BS><BS><lt>',
 \ })
 
-" nesting
-for s:pa in ['()', '[]', '{}']
-  call lexima#add_rule({
-    \ 'char':     '<C-l>',
-    \ 'at':       escape(s:pa[1], '[]') . '\%#',
-    \ 'input':    '<Esc>%i' . s:pa[0] . '<Esc><Right>%a' . s:pa[1],
-    \ 'priority': 10,
-  \ })
-  call lexima#add_rule({
-    \ 'char':     '<C-l>',
-    \ 'at':       '\S\%#' . escape(s:pa[1], '[]'),
-    \ 'input':    '<Esc><Right>%i' . s:pa[0] . '<Esc><Right>%i' . s:pa[1],
-    \ 'priority': 10,
-  \ })
-endfor
-unlet s:pa
-
 " tag close
 call lexima#add_rule({
   \ 'char':  '<C-l>',
@@ -153,7 +128,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':  '<C-l>',
   \ 'at':    '<\([a-zA-Z0-9_.-]\+\)[^>]*>\%#</\1>',
-  \ 'input': '<Esc>ldf>i /<Right>',
+  \ 'input': '<Esc>cf> />',
 \ })
 
 " Golang: channel
@@ -195,65 +170,6 @@ call lexima#add_rule({
   \ 'at':       '\({\|do\)\s*|[^|]*\%#|',
   \ 'leave':    1,
   \ 'filetype': ['ruby', 'ruby.rspec'],
-\ })
-
-"  Lang: HTML
-"-----------------------------------------------
-" attributes
-call lexima#add_rule({
-  \ 'char':   '-',
-  \ 'at':     '\w\+\%#',
-  \ 'syntax': ['htmlTag', 'htmlArg'],
-\ })
-call lexima#add_rule({
-  \ 'char':        '=',
-  \ 'at':          '\w\+\%#',
-  \ 'input':       '="',
-  \ 'input_after': '"',
-  \ 'syntax':      ['htmlTag'],
-\ })
-
-" entity
-call lexima#add_rule({
-  \ 'char':        '&',
-  \ 'at':          '\%#',
-  \ 'input':       '&',
-  \ 'input_after': ';',
-  \ 'filetype':    ['html', 'eruby', 'xml'],
-\ })
-
-" comment
-call lexima#add_rule({
-  \ 'char':        '-',
-  \ 'at':          '<\%#>',
-  \ 'input':       '!-- ',
-  \ 'input_after': ' --',
-  \ 'filetype':    ['html', 'eruby', 'xml', 'markdown'],
-  \ 'syntax':      ['htmlTag'],
-\ })
-
-" server script
-call lexima#add_rule({
-  \ 'char':        '%',
-  \ 'at':          '<\%#>',
-  \ 'input':       '% ',
-  \ 'input_after': ' %',
-  \ 'filetype':    ['html', 'eruby'],
-  \ 'syntax':      ['htmlTag'],
-\ })
-call lexima#add_rule({
-  \ 'char':     '%',
-  \ 'at':       '<%[=-]\? \%# %>',
-  \ 'input':    "<C-r>=user#plugin#lexima#loop('% ', '%= ', '%- ')<CR>",
-  \ 'filetype': ['html', 'eruby'],
-\ })
-
-" program block
-call lexima#add_rule({
-  \ 'char':     '=',
-  \ 'at':       '^\s*\([.#%]\(\w\|-\)\+\)*\%#',
-  \ 'input':    '= ',
-  \ 'filetype': ['haml'],
 \ })
 
 "  Mode: Command
@@ -320,22 +236,6 @@ call lexima#add_rule({
   \ 'char':  '<Space>',
   \ 'at':    '^font\%#',
   \ 'input': "\<C-u>Font ",
-  \ 'mode':  ':',
-\ })
-
-" softtab
-call lexima#add_rule({
-  \ 'char':  '<Space>',
-  \ 'at':    '^soft\%#',
-  \ 'input': "\<C-u>SoftTab ",
-  \ 'mode':  ':',
-\ })
-
-" rg
-call lexima#add_rule({
-  \ 'char':  '<Space>',
-  \ 'at':    '^rg\%#',
-  \ 'input': "\<C-u>Rg ",
   \ 'mode':  ':',
 \ })
 

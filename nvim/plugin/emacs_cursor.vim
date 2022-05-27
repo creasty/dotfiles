@@ -31,6 +31,7 @@ imap <C-h> <BS>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-d> <Del>
+inoremap <C-t> <Esc>"0ylxa<C-r>0<Left>
 imap <C-p> <Plug>(emacs-ins)<Plug>(emacs-up)
 imap <C-n> <Plug>(emacs-ins)<Plug>(emacs-down)
 imap <C-a> <Plug>(emacs-ins)<Plug>(emacs-bol)
