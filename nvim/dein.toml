@@ -164,10 +164,10 @@ augroup _init_ddu
 augroup END
 
 command! -nargs=0 Open :call user#plugin#ddu#open()
-command! -nargs=? -bang -complete=dir Rg :call user#plugin#ddu#search(<q-args>, <bang>0)
+command! -nargs=? -bang -complete=dir Search :call user#plugin#ddu#search(<q-args>, <bang>0)
 
 nnoremap <silent> <C-q> <Cmd>Open<CR>
-nnoremap <silent> <Space>/ <Cmd>Rg!<CR>
+nnoremap <silent> <Space>/ <Cmd>Search!<CR>
 '''
 
 [[plugins]] # Fuzzy finder ui for ddu.vim
