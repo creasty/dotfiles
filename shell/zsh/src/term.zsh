@@ -13,16 +13,16 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
   zle -N zle-line-finish
 fi
 
-# emacs like keybind
+# Emacs like keybind
 bindkey -e
 
-# do history expansion by <Space>
+# Do history expansion by <Space>
 bindkey ' ' magic-space
 
-# delete backward by <Backspace>
+# Delete backward by <Backspace>
 bindkey '^?' backward-delete-char
 
-# delete forward by <Delete>
+# Delete forward by <Delete>
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
 bindkey "\e[3~" delete-char
@@ -32,10 +32,10 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
 
-# paste last word
+# Paste last word
 bindkey '^o^w' copy-prev-shell-word
 
-# word motion
+# Word motion
 bindkey '^g' forward-word
 
 _register_keycommand() {
@@ -50,6 +50,18 @@ _refresh_screen() {
   zle reset-prompt
 }
 _register_keycommand '^l' _refresh_screen
+
+# Paste with C-v
+if [[ "$OSTYPE" =~ ^darwin ]]; then
+  _paste_from_cb() {
+    zle autosuggest-clear
+    local rbuf="$RBUFFER"
+    BUFFER="$LBUFFER$(pbpaste)"
+    CURSOR=$#BUFFER
+    BUFFER="$BUFFER$rbuf"
+  }
+  _register_keycommand '^v' _paste_from_cb
+fi
 
 #=== Helper
 #==============================================================================================
