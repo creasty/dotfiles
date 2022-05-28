@@ -26,7 +26,7 @@ Heavily customized and meticulously optimized for insane performance.
 - 2 third-party plugins and 5 hooks
   - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-  - [anyenv](https://github.com/anyenv/anyenv) (incl. `rbenv`, `nodenv` and `jenv`)
+  - [anyenv](https://github.com/anyenv/anyenv) ([rbenv](https://github.com/rbenv/rbenv), [nodenv](https://github.com/nodenv/nodenv) & [jenv](https://github.com/jenv/jenv))
   - [direnv](https://github.com/direnv/direnv)
 
 <details>
@@ -49,7 +49,13 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~120ms to startup
 - 3,500 loc of config
-- 41 third-party plugins
+- 42 third-party plugins, including:
+  - [coc.nvim](https://github.com/neoclide/coc.nvim)
+  - [copilot.vim](https://github.com/github/copilot.vim)
+  - [ddu.vim](https://github.com/Shougo/ddu.vim)
+  - [lexima.vim](https://github.com/cohama/lexima.vim)
+  - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+  - [ultisnips](https://github.com/SirVer/ultisnips)
 
 <details>
 
