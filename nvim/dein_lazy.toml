@@ -69,15 +69,6 @@ xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
 xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
 '''
 
-[[plugins]] # emmet for vim: HTML and CSS hi-speed coding
-repo = 'mattn/emmet-vim'
-on_func = ['emmet']
-hook_add = '''
-let g:user_emmet_install_global = 0
-let g:user_emmet_mode = 'i'
-let g:user_emmet_leader_key = '<Nop>'
-'''
-
 [[plugins]] # Neovim motions on speed!
 repo = 'phaazon/hop.nvim'
 on_cmd = ['HopChar1']

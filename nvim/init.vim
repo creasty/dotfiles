@@ -489,7 +489,6 @@ endif
 
 if dein#is_available('coc.nvim') && 
   \ dein#is_available('copilot.vim') && 
-  \ dein#is_available('emmet-vim') &&
   \ dein#is_available('lexima.vim')
 
   function! s:super_tab_i() abort
@@ -505,12 +504,6 @@ if dein#is_available('coc.nvim') &&
     if !empty(l:copilot) && !empty(l:copilot.text)
       return copilot#Accept('')
     endif
-
-    " let l:emmet_enabled = &filetype =~# '\vx?html|xml|s?css|[jt]sx'
-    " if l:emmet_enabled && emmet#isExpandable()
-    "   return emmet#expandAbbr(0, '')
-    "   return "\<Plug>(emmet-expand)"
-    " endif
 
     return lexima#expand('<TAB>', 'i')
   endfunction
@@ -535,7 +528,6 @@ if dein#is_available('coc.nvim') &&
   inoremap <Plug>(completion-accept) <C-y>
   inoremap <Plug>(coc-on-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
   inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-  inoremap <Plug>(emmet-expand) <C-r>=emmet#expandAbbr(0, '')<CR>
 
   imap <silent><expr> <Tab> <SID>super_tab_i()
   imap <silent><expr> <Esc> <SID>super_esc_i()
