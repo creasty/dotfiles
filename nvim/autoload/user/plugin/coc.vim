@@ -56,8 +56,9 @@ function! user#plugin#coc#init() abort
     " Auto format
     autocmd FocusLost,BufLeave *.go silent call CocActionAsync('format')
 
-    " Remove rebuild command
+    " Override plugin commands
     autocmd User CocNvimInit delcommand CocRebuild
+    autocmd User CocNvimInit command! -nargs=0 CocRestart :silent call coc#rpc#restart()
   augroup END
 endfunction
 
