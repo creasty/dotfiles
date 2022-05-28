@@ -17,16 +17,16 @@ Screenshots
 Stats
 -----
 
-Heavily customized while meticulously optimized for insane performance.
+Heavily customized and meticulously optimized for insane performance.
 
 ### zsh
 
 - ~150ms to startup
 - 560 loc of config
-- 4 (+3) third-party plugins and hooks
+- 2 third-party plugins and 5 hooks
   - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-  - [anyenv](https://github.com/anyenv/anyenv) with `rbenv`, `nodenv` and `jenv`
+  - [anyenv](https://github.com/anyenv/anyenv) (incl. `rbenv`, `nodenv` and `jenv`)
   - [direnv](https://github.com/direnv/direnv)
 
 <details>
@@ -47,8 +47,8 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~150ms to startup
-- 3,600 loc of config
+- ~120ms to startup
+- 3,500 loc of config
 - 41 third-party plugins
 
 <details>
