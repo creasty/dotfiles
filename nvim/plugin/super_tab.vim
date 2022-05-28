@@ -93,6 +93,8 @@ function! s:tab_i() abort
     return coc#_select_confirm()
   elseif s:is_placeholder_selectable()
     return "\<Esc>\<Plug>(supertab-select-placeholder)"
+  elseif !empty(copilot#GetDisplayedSuggestion())
+    return copilot#Accept('')
   else
     return "\<Plug>(supertab-ctrl-r)"
   endif

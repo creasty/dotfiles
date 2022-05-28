@@ -110,6 +110,7 @@ endfunction
 function! user#plugin#ddu#init_ddu_filter() abort
   " Disable completion
   let b:coc_suggest_disable = 1
+  let b:copilot_enabled = v:false
 
   call s:init_ddu()
   inoremap <buffer> <C-p> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
