@@ -6,25 +6,16 @@ let g:loaded_emacs_cursor = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-augroup emacs_cursor
-  autocmd!
-  autocmd InsertEnter * set eventignore-=InsertLeave
-augroup END
-
-function! s:insert_enter() abort
-  set eventignore+=InsertLeave
-  return ""
-endfunction
-
-inoremap <expr> <Plug>(emacs-ins) <SID>insert_enter()
+inoremap <Plug>(emacs-enter) <Cmd>set eventignore+=InsertEnter,InsertLeave<CR>
+inoremap <Plug>(emacs-leave) <Cmd>set eventignore-=InsertEnter,InsertLeave<CR>
 
 inoremap <Plug>(emacs-down) <C-g>u<C-o>gj
 inoremap <Plug>(emacs-up) <C-g>u<C-o>gk
 inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
-inoremap <expr> <Plug>(emacs-bol) (col('.') == 2) ? "\<Left>" : "\<C-g>u\<C-o>g0"
+inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
 inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
 
-map <C-c> <Esc>
+nmap <C-c> <Esc>
 nmap <C-j> <CR>
 
 imap <C-c> <Esc>
@@ -33,11 +24,11 @@ imap <C-h> <BS>
 imap <C-b> <Left>
 imap <C-f> <Right>
 imap <C-d> <Del>
-imap <C-p> <Plug>(emacs-ins)<Plug>(emacs-up)
-imap <C-n> <Plug>(emacs-ins)<Plug>(emacs-down)
-imap <C-a> <Plug>(emacs-ins)<Plug>(emacs-bol)
-imap <C-e> <Plug>(emacs-ins)<Plug>(emacs-eol)
-imap <C-k> <Plug>(emacs-ins)<Plug>(emacs-kill)
+imap <C-p> <Plug>(emacs-enter)<Plug>(emacs-up)<Plug>(emacs-leave)
+imap <C-n> <Plug>(emacs-enter)<Plug>(emacs-down)<Plug>(emacs-leave)
+imap <C-a> <Plug>(emacs-bol)
+imap <C-e> <Plug>(emacs-eol)
+imap <C-k> <Plug>(emacs-kill)
 inoremap <C-t> <Esc>"0ylxa<C-r>0<Left>
 
 cmap <C-h> <BS>
