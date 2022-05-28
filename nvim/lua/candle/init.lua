@@ -151,7 +151,7 @@ function M.setup()
   hi.TSTag = { fg = s.yellow }
   hi.TSTagDelimiter = { fg = s.gray200 }
   hi.TSTypeBuiltin = { fg = s.yellow, italic = 1 }
-  hi.TSURI = { underline = 1, sp = s.bright_blue }
+  hi.TSURI = { underline = 1, sp = s.dark_blue }
   hi.TSUnderline = { underline = 1 }
   hi.TSVariable = { fg = s.blue }
   hi.TSVariableBuiltin = { fg = s.blue, italic = 1 }
