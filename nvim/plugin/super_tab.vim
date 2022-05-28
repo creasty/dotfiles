@@ -110,14 +110,8 @@ function! s:tab_x() abort
   return "\<Cmd>call UltiSnips#SaveLastVisualSelection()\<CR>gvs"
 endfunction
 
-function! s:cancel_completion() abort
-  " <C-e>
-  call coc#_cancel()
-  return ''
-endfunction
-
 nnoremap <Plug>(supertab-select-placeholder) <Cmd>call <SID>select_placeholder()<CR>
-inoremap <expr> <Plug>(supertab-undo) <SID>cancel_completion()
+inoremap <Plug>(supertab-undo) <C-e>
 inoremap <Plug>(supertab-accept) <C-y>
 inoremap <Plug>(supertab-ctrl-r) <C-r>=<SID>tab_r()<CR>
 inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
