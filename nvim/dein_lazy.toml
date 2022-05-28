@@ -92,6 +92,7 @@ lua require'hop'.setup()
 repo = 'github/copilot.vim'
 on_event = ['InsertEnter']
 on_cmd = ['Copilot']
+on_func = ['copilot#']
 hook_add = '''
 let g:copilot_no_tab_map = v:true
 let g:copilot_assume_mapped = v:true

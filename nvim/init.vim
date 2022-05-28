@@ -445,7 +445,7 @@ command! DeinGotoRepos
 
 "  Cross-plugin integration
 "-----------------------------------------------
-if dein#tap('switch.vim')
+if dein#is_available('switch.vim')
   nnoremap <silent> - <Cmd>call <SID>my_switch()<CR>
   function! s:my_switch() abort
     if quote_toggler#toggle() | return | endif
@@ -453,7 +453,22 @@ if dein#tap('switch.vim')
   endfunction
 endif
 
-if dein#tap('coc.nvim')
+if dein#is_available('vim-searchhi')
+  augroup _init_searchhi
+    autocmd!
+
+    autocmd User NoHlsearchPost
+      \ call searchhi#clear(0, 0) |
+      \ call searchhi#await(0, 0)
+
+    if dein#is_available('vim-anzu')
+      autocmd User SearchHiOn AnzuUpdateSearchStatusOutput
+      autocmd User SearchHiOff echo g:anzu_no_match_word
+    endif
+  augroup END
+endif
+
+if dein#is_available('coc.nvim')
   function! s:coc_refresh() abort
     silent! CocDisable
     silent! CocEnable
@@ -465,24 +480,62 @@ if dein#tap('coc.nvim')
     autocmd User ForceRefresh call s:coc_refresh()
     autocmd User ForceRefreshForce call coc#float#close_all()
 
-    if dein#tap('ultisnips')
+    if dein#is_available('ultisnips')
       autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
       autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
     endif
   augroup END
 endif
 
-if dein#tap('vim-searchhi')
-  augroup _init_searchhi
-    autocmd!
+if dein#is_available('coc.nvim') && 
+  \ dein#is_available('ultisnips') &&
+  \ dein#is_available('copilot.vim') && 
+  \ dein#is_available('emmet-vim') &&
+  \ dein#is_available('lexima.vim')
 
-    autocmd User NoHlsearchPost
-      \ call searchhi#clear(0, 0) |
-      \ call searchhi#await(0, 0)
-
-    if dein#tap('vim-anzu')
-      autocmd User SearchHiOn AnzuUpdateSearchStatusOutput
-      autocmd User SearchHiOff echo g:anzu_no_match_word
+  function! s:supertab_i() abort
+    if pumvisible()
+      return coc#_select_confirm()
     endif
-  augroup END
+
+    if coc#jumpable()
+      return coc#snippet#next()
+    endif
+
+    let l:copilot = copilot#GetDisplayedSuggestion()
+    if !empty(l:copilot) && !empty(l:copilot.text)
+      return copilot#Accept('')
+    endif
+
+    let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
+    if l:snip
+      return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+    endif
+
+    let l:emmet_enabled = &filetype =~# '\vx?html|xml|s?css|[jt]sx'
+    if l:emmet_enabled && emmet#isExpandable()
+      return emmet#expandAbbr(0, '')
+      return "\<C-r>=emmet#expandAbbr(0, '')\<CR>"
+    endif
+
+    return lexima#expand('<TAB>', 'i')
+  endfunction
+
+  function! s:supertab_s() abort
+    if coc#jumpable()
+      return coc#snippet#next()
+    endif
+
+    return "\<Esc>\<Cmd>call UltiSnips#ExpandSnippetOrJump()\<CR>"
+  endfunction
+
+  inoremap <Plug>(supertab-undo) <C-e>
+  inoremap <Plug>(supertab-accept) <C-y>
+  inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+  inoremap <Plug>(supertab-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
+
+  inoremap <silent><expr> <Tab> <SID>supertab_i()
+  snoremap <silent><expr> <Tab> <SID>supertab_s()
+  imap <silent><expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
+  imap <silent><expr> <CR> pumvisible() ? "\<Plug>(supertab-accept)" : "\<Plug>(supertab-enter)"
 endif
