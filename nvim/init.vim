@@ -487,8 +487,8 @@ if dein#is_available('coc.nvim')
   augroup END
 endif
 
-if dein#is_available('coc.nvim') && 
-  \ dein#is_available('copilot.vim') && 
+if dein#is_available('coc.nvim') &&
+  \ dein#is_available('copilot.vim') &&
   \ dein#is_available('lexima.vim')
 
   function! s:super_tab_i() abort

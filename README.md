@@ -49,7 +49,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~120ms to startup
 - 3,500 loc of config
-- 42 third-party plugins, including:
+- 41 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
   - [ddu.vim](https://github.com/Shougo/ddu.vim)
