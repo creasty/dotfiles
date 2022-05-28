@@ -1,5 +1,5 @@
-local filereadable_key = 'filereadable'
-local current_normal_winnr_key = 'current_normal_winnr'
+local file_readable_key = 'user_ui_file_readable'
+local current_normal_winnr_key = 'user_ui_current_normal_winnr'
 
 local indicator = '▌'
 local separator = '∙'
@@ -13,7 +13,7 @@ end
 local function update_filereadable()
   local path = vim.api.nvim_buf_get_name(0)
   if path ~= '' then
-    vim.api.nvim_buf_set_var(0, filereadable_key, file_exists(path))
+    vim.api.nvim_buf_set_var(0, file_readable_key, file_exists(path))
   end
 end
 
@@ -48,7 +48,7 @@ local function get_buffer_flags(bufnr)
   if vim.bo[bufnr].modified then
     table.insert(flags, '+')
   end
-  if not safe_buf_get_var(bufnr, filereadable_key, true) then
+  if not safe_buf_get_var(bufnr, file_readable_key, true) then
     table.insert(flags, '?')
   end
   return flags
