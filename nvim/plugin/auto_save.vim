@@ -44,8 +44,16 @@ function! s:auto_save() abort
     return
   endif
 
+  " Preserve marks that are used to remember start and
+  " end position of the last changed or yanked text (`:h '[`).
+  let first_char_pos = getpos("'[")
+  let last_char_pos = getpos("']")
+
   doautocmd User AutoSavePre
   silent! w
+
+  call setpos("'[", first_char_pos)
+  call setpos("']", last_char_pos)
 
   if &modified
     return
