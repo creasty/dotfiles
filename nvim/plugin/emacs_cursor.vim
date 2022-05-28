@@ -26,23 +26,25 @@ inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\
 
 map <C-c> <Esc>
 nmap <C-j> <CR>
+
+imap <C-c> <Esc>
 imap <C-j> <CR>
 imap <C-h> <BS>
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
-inoremap <C-d> <Del>
-inoremap <C-t> <Esc>"0ylxa<C-r>0<Left>
+imap <C-b> <Left>
+imap <C-f> <Right>
+imap <C-d> <Del>
 imap <C-p> <Plug>(emacs-ins)<Plug>(emacs-up)
 imap <C-n> <Plug>(emacs-ins)<Plug>(emacs-down)
 imap <C-a> <Plug>(emacs-ins)<Plug>(emacs-bol)
 imap <C-e> <Plug>(emacs-ins)<Plug>(emacs-eol)
 imap <C-k> <Plug>(emacs-ins)<Plug>(emacs-kill)
+inoremap <C-t> <Esc>"0ylxa<C-r>0<Left>
 
 cmap <C-h> <BS>
-cnoremap <C-a> <Home>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-cnoremap <C-d> <Del>
+cmap <C-a> <Home>
+cmap <C-b> <Left>
+cmap <C-f> <Right>
+cmap <C-d> <Del>
 cnoremap <C-k> <C-\>e getcmdpos() == 1 ? '' : getcmdline()[:getcmdpos()-2]<CR>
 
 smap <C-a> <C-g>I
