@@ -49,9 +49,7 @@ set clipboard=unnamed
 set browsedir=buffer
 
 " automatic formatting
-set formatoptions&
-set formatoptions+=lmq] " add multibyte option
-set formatoptions-=ro " don't insert the current comment leader on leading lines
+set formatoptions& formatoptions+=lm]
 
 " in/decrement
 set nrformats=alpha,hex
@@ -141,9 +139,6 @@ set scrolloff=5
 
 " fast update
 set updatetime=200
-
-" do not redraw during command
-" set lazyredraw
 
 " folding
 set foldmethod=indent
@@ -256,6 +251,18 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " select all
 nnoremap <Space>a ggVG
 
+" search selection
+xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
+
+" replace selection
+xnoremap s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+
+" replace word under cursor
+nnoremap <Space>* "xyiw:<C-u>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
+
+" dim match highlight
+nnoremap <silent> <Space><Space> <Cmd>nohlsearch<Bar>doautocmd User NoHlsearchPost<CR>
+
 " tags
 nnoremap tn <Cmd>tn<CR>
 nnoremap tp <Cmd>tp<CR>
@@ -290,18 +297,6 @@ nnoremap <script> <SID>(ws)+ <C-w>+<SID>(ws)
 nnoremap <script> <SID>(ws)- <C-w>-<SID>(ws)
 nnoremap <script> <SID>(ws)> <C-w>><SID>(ws)
 nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
-
-" search selection
-xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
-
-" replace selection
-xnoremap s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
-
-" replace word under cursor
-nnoremap <Space>* "xyiw:<C-u>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
-
-" dim match highlight
-nnoremap <silent> <Space><Space> <Cmd>nohlsearch<Bar>doautocmd User NoHlsearchPost<CR>
 
 "=== Misc
 "==============================================================================================
