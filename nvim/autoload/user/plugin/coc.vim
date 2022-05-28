@@ -9,8 +9,8 @@ let g:coc_global_extensions = [
   \ 'coc-calc',
   \ 'coc-clangd',
   \ 'coc-css',
-  \ 'coc-diagnostic',
   \ 'coc-deno',
+  \ 'coc-diagnostic',
   \ 'coc-eslint',
   \ 'coc-git',
   \ 'coc-go',
@@ -21,6 +21,7 @@ let g:coc_global_extensions = [
   \ 'coc-pyright',
   \ 'coc-react-refactor',
   \ 'coc-rls',
+  \ 'coc-snippets',
   \ 'coc-solargraph',
   \ 'coc-spell-checker',
   \ 'coc-styled-components',
@@ -28,13 +29,12 @@ let g:coc_global_extensions = [
   \ 'coc-tabnine',
   \ 'coc-tag',
   \ 'coc-tsserver',
-  \ 'coc-ultisnips',
   \ 'coc-vimlsp',
 \ ]
 
 let g:coc_selectmode_mapping = 0
-let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
-let g:coc_snippet_prev = '<Plug>(coc-snippet-prev)'
+let g:coc_snippet_next = '<Tab>'
+let g:coc_snippet_prev = '<S-Tab>'
 
 function! user#plugin#coc#init() abort
   set completeopt+=noinsert " auto select

@@ -488,18 +488,17 @@ if dein#is_available('coc.nvim')
 endif
 
 if dein#is_available('coc.nvim') && 
-  \ dein#is_available('ultisnips') &&
   \ dein#is_available('copilot.vim') && 
   \ dein#is_available('emmet-vim') &&
   \ dein#is_available('lexima.vim')
 
-  function! s:supertab_i() abort
+  function! s:super_tab_i() abort
     if pumvisible()
       return coc#_select_confirm()
     endif
 
-    if coc#jumpable()
-      return coc#snippet#next()
+    if coc#expandableOrJumpable()
+      return "\<Plug>(coc-snippets-expand-jump)"
     endif
 
     let l:copilot = copilot#GetDisplayedSuggestion()
@@ -507,35 +506,38 @@ if dein#is_available('coc.nvim') &&
       return copilot#Accept('')
     endif
 
-    let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
-    if l:snip
-      return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
-    endif
-
-    let l:emmet_enabled = &filetype =~# '\vx?html|xml|s?css|[jt]sx'
-    if l:emmet_enabled && emmet#isExpandable()
-      return emmet#expandAbbr(0, '')
-      return "\<C-r>=emmet#expandAbbr(0, '')\<CR>"
-    endif
+    " let l:emmet_enabled = &filetype =~# '\vx?html|xml|s?css|[jt]sx'
+    " if l:emmet_enabled && emmet#isExpandable()
+    "   return emmet#expandAbbr(0, '')
+    "   return "\<Plug>(emmet-expand)"
+    " endif
 
     return lexima#expand('<TAB>', 'i')
   endfunction
 
-  function! s:supertab_s() abort
-    if coc#jumpable()
-      return coc#snippet#next()
+  function! s:super_esc_i() abort
+    if pumvisible()
+       return "\<Plug>(completion-undo)"
     endif
 
-    return "\<Esc>\<Cmd>call UltiSnips#ExpandSnippetOrJump()\<CR>"
+    return "\<Plug>(lexima-escape)"
   endfunction
 
-  inoremap <Plug>(supertab-undo) <C-e>
-  inoremap <Plug>(supertab-accept) <C-y>
-  inoremap <Plug>(supertab-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-  inoremap <Plug>(supertab-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
+  function! s:super_cr_i() abort
+    if pumvisible()
+      return "\<Plug>(completion-accept)"
+    endif
 
-  inoremap <silent><expr> <Tab> <SID>supertab_i()
-  snoremap <silent><expr> <Tab> <SID>supertab_s()
-  imap <silent><expr> <Esc> pumvisible() ? "\<Plug>(supertab-undo)" : "\<Plug>(supertab-escape)"
-  imap <silent><expr> <CR> pumvisible() ? "\<Plug>(supertab-accept)" : "\<Plug>(supertab-enter)"
+    return "\<Plug>(coc-on-enter)"
+  endfunction
+
+  inoremap <Plug>(completion-undo) <C-e>
+  inoremap <Plug>(completion-accept) <C-y>
+  inoremap <Plug>(coc-on-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
+  inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
+  inoremap <Plug>(emmet-expand) <C-r>=emmet#expandAbbr(0, '')<CR>
+
+  imap <silent><expr> <Tab> <SID>super_tab_i()
+  imap <silent><expr> <Esc> <SID>super_esc_i()
+  imap <silent><expr> <CR> <SID>super_cr_i()
 endif

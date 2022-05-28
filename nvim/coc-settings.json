@@ -29,6 +29,10 @@
   },
   "list.source.diagnostics.defaultOptions": ["--normal", "--no-sort"],
 
+  "snippets.loadFromExtensions": false,
+  "snippets.loadVSCodeProjectSnippets": false,
+  "snippets.ultisnips.directories": ["ultisnips"],
+
   "git.changedSign.text": "┃",
   "git.changedSign.hlGroup": "CocDiffChange",
   "git.addedSign.text": "┃",
