@@ -480,13 +480,24 @@ if dein#is_available('coc.nvim') &&
   \ dein#is_available('copilot.vim') &&
   \ dein#is_available('lexima.vim')
 
+  function! s:is_copilot_suggested() abort
+    let l:copilot = copilot#GetDisplayedSuggestion()
+    if empty(l:copilot) || empty(l:copilot.text)
+      return v:false
+    endif
+    " Could be a bug?
+    let l:line = getline('.')
+    let l:offset = col('.') - 1
+    let l:ahead = strpart(line, offset, l:copilot.deleteSize)
+    return l:ahead !=# l:copilot.text
+  endfunction
+
   function! s:super_tab_i() abort
     if pumvisible()
       return coc#_select_confirm()
     endif
 
-    let l:copilot = copilot#GetDisplayedSuggestion()
-    if !empty(l:copilot) && !empty(l:copilot.text)
+    if s:is_copilot_suggested()
       return copilot#Accept('')
     endif
 
@@ -502,8 +513,7 @@ if dein#is_available('coc.nvim') &&
        return "\<Plug>(completion-undo)"
     endif
 
-    let l:copilot = copilot#GetDisplayedSuggestion()
-    if !empty(l:copilot) && !empty(l:copilot.text)
+    if s:is_copilot_suggested()
       call copilot#Dismiss()
       return ''
     endif
