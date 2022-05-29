@@ -468,22 +468,11 @@ if dein#is_available('vim-searchhi')
   augroup END
 endif
 
-if dein#is_available('coc.nvim')
-  function! s:coc_refresh() abort
-    silent! CocDisable
-    silent! CocEnable
-  endfunction
-
+if dein#is_available('coc.nvim') && dein#is_available('ultisnips')
   augroup _init_coc
     autocmd!
-
-    autocmd User ForceRefresh call s:coc_refresh()
-    autocmd User ForceRefreshForce call coc#float#close_all()
-
-    if dein#is_available('ultisnips')
-      autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
-      autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
-    endif
+    autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
+    autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
   augroup END
 endif
 
