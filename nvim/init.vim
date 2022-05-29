@@ -485,13 +485,13 @@ if dein#is_available('coc.nvim') &&
       return coc#_select_confirm()
     endif
 
-    if coc#expandableOrJumpable()
-      return "\<Plug>(coc-snippets-expand-jump)"
-    endif
-
     let l:copilot = copilot#GetDisplayedSuggestion()
     if !empty(l:copilot) && !empty(l:copilot.text)
       return copilot#Accept('')
+    endif
+
+    if coc#expandableOrJumpable()
+      return "\<Plug>(coc-snippets-expand-jump)"
     endif
 
     return lexima#expand('<TAB>', 'i')
