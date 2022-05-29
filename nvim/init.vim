@@ -513,6 +513,12 @@ if dein#is_available('coc.nvim') &&
        return "\<Plug>(completion-undo)"
     endif
 
+    let l:copilot = copilot#GetDisplayedSuggestion()
+    if !empty(l:copilot) && !empty(l:copilot.text)
+      call copilot#Dismiss()
+      return ''
+    endif
+
     return "\<Plug>(lexima-escape)"
   endfunction
 
