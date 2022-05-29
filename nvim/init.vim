@@ -306,24 +306,8 @@ command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 " substitute with match case
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
 
-" back to the last line I edited
-augroup _restore_last_pos
-  autocmd!
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-      \ exe "normal! g`\"" |
-    \ endif
-augroup END
-
-" file detect on read / save
-augroup _enhance_ftdetect
-  autocmd!
-  autocmd BufWritePost,BufReadPost,BufEnter *
-    \ if &filetype ==# '' || exists('b:ftdetect') |
-      \ unlet! b:ftdetect |
-      \ filetype detect |
-    \ endif
-augroup END
+" inspect syntax
+command! ScopeInfo lua require'user.treesitter-helper'.show_hl_captures()
 
 " profiler
 command! ProfStart
@@ -337,9 +321,6 @@ command! ProfStop
 command! ProfOpen
   \ vsplit /tmp/vim-vimscript.log |
   \ vsplit /tmp/vim-lua.log
-
-" inspect syntax
-command! ScopeInfo lua require'user.treesitter-helper'.show_hl_captures()
 
 " font
 command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
@@ -384,6 +365,25 @@ function! s:delete_file(file) abort
     call delete(l:file)
   endif
 endfunction
+
+" back to the last line I edited
+augroup _restore_last_pos
+  autocmd!
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+      \ exe "normal! g`\"" |
+    \ endif
+augroup END
+
+" file detect on read / save
+augroup _enhance_ftdetect
+  autocmd!
+  autocmd BufWritePost,BufReadPost,BufEnter *
+    \ if &filetype ==# '' || exists('b:ftdetect') |
+      \ unlet! b:ftdetect |
+      \ filetype detect |
+    \ endif
+augroup END
 
 " create directories if not exist
 augroup _auto_mkdir

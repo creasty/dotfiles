@@ -29,21 +29,6 @@
   },
   "list.source.diagnostics.defaultOptions": ["--normal", "--no-sort"],
 
-  "snippets.loadFromExtensions": false,
-  "snippets.loadVSCodeProjectSnippets": false,
-  "snippets.ultisnips.directories": ["ultisnips"],
-
-  "git.changedSign.text": "┃",
-  "git.changedSign.hlGroup": "CocDiffChange",
-  "git.addedSign.text": "┃",
-  "git.addedSign.hlGroup": "CocDiffAdd",
-  "git.changeRemovedSign.text": "┣",
-  "git.changeRemovedSign.hlGroup": "CocDiffChange",
-  "git.removedSign.text": "▁",
-  "git.removedSign.hlGroup":"CocDiffDelete",
-  "git.topRemovedSign.text": "▔",
-  "git.topRemovedSign.hlGroup": "CocDiffDelete",
-
   "languageserver": {
     "bash": {
       // npm i -g bash-language-server
@@ -84,9 +69,32 @@
     }
   },
 
+  //=== coc-snippets
+  //==============================================================================================
+  "snippets.loadFromExtensions": false,
+  "snippets.loadVSCodeProjectSnippets": false,
+  "snippets.ultisnips.directories": ["ultisnips"],
+
+  //=== coc-git
+  //==============================================================================================
+  "git.changedSign.text": "┃",
+  "git.changedSign.hlGroup": "CocDiffChange",
+  "git.addedSign.text": "┃",
+  "git.addedSign.hlGroup": "CocDiffAdd",
+  "git.changeRemovedSign.text": "┣",
+  "git.changeRemovedSign.hlGroup": "CocDiffChange",
+  "git.removedSign.text": "▁",
+  "git.removedSign.hlGroup":"CocDiffDelete",
+  "git.topRemovedSign.text": "▔",
+  "git.topRemovedSign.hlGroup": "CocDiffDelete",
+
+  //=== coc-tabnine
+  //==============================================================================================
   "tabnine.priority": 90,
   "tabnine.disable_filetypes": ["markdown"],
 
+  //=== coc-diagnostic
+  //==============================================================================================
   "diagnostic-languageserver.filetypes": {
     "bash": ["shellcheck"],
     "sh": ["shellcheck"],
@@ -156,6 +164,8 @@
     }
   },
 
+  //=== coc-lua
+  //==============================================================================================
   "Lua.diagnostics.globals": ["vim"],
   "Lua.workspace.library": {
     "/usr/local/share/nvim/runtime/lua": true,
@@ -164,10 +174,16 @@
     "/usr/local/share/nvim/runtime/lua/vim/treesitter": true
   },
 
+  //=== coc-tsserver
+  //==============================================================================================
   "typescript.suggest.includeCompletionsWithSnippetText": false,
 
+  //=== coc-pyright
+  //==============================================================================================
   "pyright.completion.snippetSupport": false,
 
+  //=== coc-go
+  //==============================================================================================
   "go.goplsOptions": {
     "completeUnimported": true,
     "usePlaceholders": true
@@ -176,8 +192,12 @@
     "workspaceFolder": true
   },
 
+  //=== coc-metals
+  //==============================================================================================
   "metals.enable": false,
 
+  //=== coc-spell-checker
+  //==============================================================================================
   "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.enabledLanguageIds": [
     "c",

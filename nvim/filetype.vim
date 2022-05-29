@@ -15,6 +15,7 @@ augroup filetypedetect
   autocmd! BufNewFile,BufRead gitconfig setlocal ft=gitconfig
   autocmd! BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
   autocmd! BufNewFile,BufRead LICENSE,LICENSE.txt set filetype=license
+  autocmd! BufNewFile,BufRead coc-settings.json set filetype=jsonc
 
   "  Compound filetypes
   "-----------------------------------------------
