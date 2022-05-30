@@ -482,14 +482,7 @@ if dein#is_available('coc.nvim') &&
 
   function! s:is_copilot_suggested() abort
     let l:copilot = copilot#GetDisplayedSuggestion()
-    if empty(l:copilot) || empty(l:copilot.text)
-      return v:false
-    endif
-    " Could be a bug?
-    let l:line = getline('.')
-    let l:offset = col('.') - 1
-    let l:ahead = strpart(line, offset, l:copilot.deleteSize)
-    return l:ahead !=# l:copilot.text
+    return !empty(l:copilot.text)
   endfunction
 
   function! s:super_tab_i() abort
