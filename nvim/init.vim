@@ -468,8 +468,19 @@ if dein#is_available('vim-searchhi')
   augroup END
 endif
 
+if dein#is_available('coc.nvim') && dein#is_available('ddu.vim')
+  let g:coc_enable_locationlist = 0
+
+  nnoremap <silent> gll <Cmd>call user#plugin#ddu#coc_locations(v:true)<CR>
+
+  augroup _init_coc_ddu
+    autocmd!
+    autocmd User CocLocationsChange call user#plugin#ddu#coc_locations(v:false)
+  augroup END
+endif
+
 if dein#is_available('coc.nvim') && dein#is_available('ultisnips')
-  augroup _init_coc
+  augroup _init_coc_ultisnips
     autocmd!
     autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
     autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder

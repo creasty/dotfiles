@@ -40,7 +40,7 @@ function parseJson(cwd: string, list: string[], highlights?: HighlightGroup) {
       highlights.push({
         name: "path",
         hl_group: hlGroupPath,
-        col: 1,
+        col: word.length + 1,
         width: path.length,
       });
       word += `${path} `;
@@ -130,6 +130,11 @@ export class Source extends BaseSource<Params, ActionData> {
       args: [],
       input: "",
       path: "",
+      highlights: {
+        path: 'Identifier',
+        lineNr: 'Comment',
+        word: 'Constant',
+      },
     };
   }
 }

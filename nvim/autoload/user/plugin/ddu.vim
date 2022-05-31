@@ -27,28 +27,23 @@ function! user#plugin#ddu#search(path, resume) abort
   \ })
 endfunction
 
+function! user#plugin#ddu#coc_locations(resume) abort
+  call ddu#start({
+    \ 'name': 'coc-locations',
+    \ 'sources': [{ 'name': 'coc-locations' }],
+    \ 'resume': a:resume && s:can_resume(),
+  \ })
+endfunction
+
 function! user#plugin#ddu#init() abort
   call ddu#custom#patch_global({
     \ 'ui': 'ff',
     \ 'sourceOptions': {
+      \ '_': {
+        \ 'matchers': ['matcher_fzy'],
+      \ },
       \ 'ghq': {
-        \ 'matchers': ['matcher_fzy'],
         \ 'defaultAction': 'cd',
-      \ },
-      \ 'fd': {
-        \ 'matchers': ['matcher_fzy'],
-      \ },
-      \ 'rg': {
-        \ 'matchers': ['matcher_fzy'],
-      \ },
-    \ },
-    \ 'sourceParams': {
-      \ 'rg': {
-        \ 'highlights': {
-          \ 'path': 'Identifier',
-          \ 'lineNr': 'Comment',
-          \ 'word': 'Constant',
-        \ },
       \ },
     \ },
     \ 'uiParams': {
