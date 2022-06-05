@@ -509,7 +509,20 @@ if dein#is_available('coc.nvim') &&
       return "\<Plug>(coc-snippets-expand-jump)"
     endif
 
+    let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
+    if l:snip
+      return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+    endif
+
     return lexima#expand('<TAB>', 'i')
+  endfunction
+
+  function! s:super_tab_s() abort
+    if coc#jumpable()
+      return coc#snippet#next()
+    endif
+
+    return "\<Esc>\<Cmd>call UltiSnips#ExpandSnippetOrJump()\<CR>"
   endfunction
 
   function! s:super_esc_i() abort
@@ -539,6 +552,7 @@ if dein#is_available('coc.nvim') &&
   inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
 
   imap <silent><expr> <Tab> <SID>super_tab_i()
+  smap <silent><expr> <Tab> <SID>super_tab_s()
   imap <silent><expr> <Esc> <SID>super_esc_i()
   imap <silent><expr> <CR> <SID>super_cr_i()
 endif
