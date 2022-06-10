@@ -182,6 +182,7 @@ function M.setup()
   hi.CocDiffChange = { fg = s.dark_blue }
   hi.CocDiffDelete = { fg = s.dark_red }
   hi.CocFadeOut = { fg = s.gray200 }
+  hi.CocSnippetVisual = { fg = s.blue, bg = s.dark_blue }
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
