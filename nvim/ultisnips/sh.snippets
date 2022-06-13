@@ -1,3 +1,7 @@
+snippet set "Useful default behaviors" b
+set -euo pipefail
+endsnippet
+
 snippet if "if [ expr ]; then" b
 if [ $1 ]; then
 	$0
@@ -32,7 +36,7 @@ ask() {
 endsnippet
 
 snippet cdrt "cd to the script's location" b
-cd "$(dirname "\$0")" | exit 1
+cd "$(dirname "\$0")" || exit 1
 endsnippet
 
 snippet command "Check if a command is available" b
