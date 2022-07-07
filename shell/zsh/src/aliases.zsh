@@ -152,7 +152,6 @@ alias dk-clean='docker-clean'
 
 alias ku='kubectl'
 alias ku-oneshot='kubectl-oneshot'
-alias ku-saconfig='kubectl-saconfig'
 
 #  Ruby / Rails
 #-----------------------------------------------
@@ -222,3 +221,10 @@ alias xct='xctool'
 alias gr='./gradlew'
 alias grb='./gradlew build'
 alias grr='./gradlew run'
+
+#  Henry
+#-----------------------------------------------
+hen-proxy-db() {
+  local repo="$(ghq root)/github.com/bw-company/henry-infra"
+  "$repo/script/proxy-database" "$@"
+}
