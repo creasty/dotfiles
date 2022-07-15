@@ -27,14 +27,14 @@
 - name: install neovim
   homebrew:
     name:  neovim
-    state: present
+    state: latest
 
 #  coc.nvim
 #-----------------------------------------------
 - name: coc.nvim | install deps via brew
   homebrew:
     name:  '{{ item }}'
-    state: present
+    state: latest
   with_items:
     - watchman
     - llvm # (clangd, clang-format)
@@ -44,6 +44,6 @@
   pip:
     executable: pip3
     name:       '{{ item }}'
-    state:      present
+    state:      latest
   with_items:
     - python-language-server
