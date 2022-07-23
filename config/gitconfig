@@ -69,7 +69,7 @@
 
   k  = checkout
   kb = checkout -b
-  km = checkout master
+  km = checkout "$(git get-main-branch)"
   kd = checkout develop
 
   fe  = fetch
@@ -77,16 +77,16 @@
   fok = checkout-origin
 
   pl  = pull origin
-  plm = pull origin master
-  pln = pull origin main
-  pld = pull develop
+  plm = pull origin "$(git get-main-branch)"
+  pld = pull origin develop
+  plf = pull forkee
   pu  = push origin
   pr  = github-compare
 
   cmp = compare
 
   s  = status -s
-  ds = diff --stat master HEAD
+  ds = diff --stat "$(git get-main-branch)" HEAD
   d  = diff --irreversible-delete
   dc = diff --irreversible-delete --cached
 
@@ -105,10 +105,9 @@
   v  = revert --no-edit
   p  = cherry-pick
 
-  m   = merge
-  mf  = merge FETCH_HEAD
-  rb  = rebase
-  rbm = rebase master
+  m  = merge
+  mf = merge FETCH_HEAD
+  rb = rebase
 
   sm  = submodule
   smu = submodule update --remote
@@ -142,7 +141,9 @@
   emf = ! nvim -p `git status -s | cut -b 4- | grep -v '\\/$' | uniq`
   ecf = ! nvim -p `git ls-files --unmerged | cut -f2 | sort -u`
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
-  dmb = ! git branch --merged | grep -v \\* | grep -v -E 'master|develop' | xargs -n 1 git branch -d
+  dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
+
+  get-main-branch = ! git branch --sort=-refname | grep -o -m1 -E '\\b(main|master)\\b'
 
 [issue]
   type = github

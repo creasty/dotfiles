@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+ORIGIN_HEAD=origin/HEAD
+
+for branch in develop main; do
+  if git rev-parse --abbrev-ref "$branch" > /dev/null 2>&1; then
+    echo "$branch"
+    exit
+  fi
+done
+
+REV_ORIGIN_HEAD="$(git rev-parse --abbrev-ref "$ORIGIN_HEAD" 2> /dev/null || true)"
+if [ -n "$REV_ORIGIN_HEAD" ] && [ "$REV_ORIGIN_HEAD" != "$ORIGIN_HEAD" ]; then
+  cut -c 8- <<< "$REV_ORIGIN_HEAD"
+  exit
+fi
+
+echo master

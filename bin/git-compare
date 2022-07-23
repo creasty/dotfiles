@@ -3,11 +3,7 @@
 set -eu
 set -o pipefail
 
-DEFAULT_BASE='master'
-if git branch | grep -w develop > /dev/null; then
-  DEFAULT_BASE='develop'
-fi
-
+DEFAULT_BASE="$(git get-default-branch)"
 DEFAULT_HEAD="$(git symbolic-ref --short HEAD)"
 
 BASE="${2:-"$DEFAULT_BASE"}"
