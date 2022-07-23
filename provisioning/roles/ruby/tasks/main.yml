@@ -36,10 +36,11 @@
 - name: install dependency
   homebrew:
     name:
-      - ruby-build
-      - readline
-      - openssl@1.1
+      - libxslt
       - libyaml
+      - openssl@1.1
+      - readline
+      - ruby-build
       - zlib
     state: present
 

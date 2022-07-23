@@ -1,4 +1,5 @@
 homebrew:
+  # brew list --cask --full-name
   applications:
     - adobe-creative-cloud     # https://creative.adobe.com/products/creative-cloud
     - alacritty                # https://github.com/jwilm/alacritty
@@ -12,6 +13,7 @@ homebrew:
     - google-cloud-sdk         # https://cloud.google.com/sdk/
     - google-drive-file-stream # https://www.google.com/drive/
     - google-japanese-ime      # https://www.google.co.jp/ime/
+    - imageoptim               # https://imageoptim.com/mac
     - istat-menus              # https://bjango.com/mac/istatmenus/
     - kitty                    # https://github.com/kovidgoyal/kitty
     - ngrok                    # https://ngrok.com/
@@ -28,63 +30,46 @@ homebrew:
     - tunnelbear               # https://www.tunnelbear.com/
     - webpquicklook            # https://github.com/emin/WebPQuickLook
 
-    #- imageoptim # https://imageoptim.com/mac
-    #- transmit   # https://panic.com/transmit/
-    #- wwdc       # https://wwdc.io/
-
+  # brew leaves | xargs brew desc | sed -E 's/^([^:]*): /- \1 # /g'
   packages:
+    - ansible             # Automate deployment, configuration, and upgrading
+    - anyenv              # All in one for **env
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
-    - binutils            # FSF Binutils for native development
     - circleci            # Enables you to reproduce the CircleCI environment locally
-    - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
+    - cmake               # Cross-platform make
     - creasty/tools/rid   # Run commands in container as if were native
     - ctags               # Reimplementation of ctags(1)
+    - curl                # Get a file from an HTTP, HTTPS or FTP server
     - deno                # Secure runtime for JavaScript and TypeScript
     - diff-so-fancy       # Good-lookin' diffs with diff-highlight and more
     - direnv              # Load/unload environment variables based on $PWD
     - envchain            # Secure your credentials in environment variables
-    - eot-utils           # Tools to convert fonts from OTF/TTF to EOT format
-    - exa                 # https://the.exa.website
+    - exa                 # Modern replacement for 'ls'
     - expect              # Program that can automate interactive applications
     - fd                  # Simple, fast and user-friendly alternative to find
-    - fontconfig          # XML-based font configuration API for X Windows
-    - fontforge           # Command-line outline and bitmap font editor/converter
-    - freetype            # Software library to render fonts
-    - fswatch             # Monitor a directory for changes and run a shell command
-    - gdb                 # GNU debugger
-    - gdbm                # GNU database manager
-    - gettext             # GNU internationalization (i18n) and localization (l10n) library
-    - ghostscript         # Interpreter for PostScript and PDF
+    - ffmpeg              # Play, record, convert, and stream audio and video
+    - gh                  # GitHub command-line tool
     - ghq                 # Remote repository management made easy
     - git                 # Distributed revision control system
     - git-lfs             # Git extension for versioning large files
     - gnupg               # GNU Pretty Good Privacy (PGP) package
-    - heroku/brew/heroku  # Everything you need to get started with Heroku
-    - hey                 # HTTP load generator, ApacheBench (ab) replacement
+    - graphviz            # Graph visualization software from AT&T and Bell Labs
     - imagemagick         # Tools and libraries to manipulate images in many formats
-    - jbig2dec            # JBIG2 decoder and library (for monochrome documents)
     - jo                  # JSON output from a shell
-    - jpeg                # Image manipulation library
     - jq                  # Lightweight and flexible command-line JSON processor
     - ktr0731/evans/evans # Evans: more expressive universal gRPC client
-    - libepoxy            # Library for handling OpenGL function pointer management
     - libiconv            # Conversion library
-    - libpcap             # Portable library for network traffic capture
-    - libxml2             # GNOME XML library
-    - libxslt             # C XSLT library for GNOME
     - massren             # Easily rename multiple files using your text editor
     - ngrep               # Network grep
     - nkf                 # Network Kanji code conversion Filter (NKF)
-    - parallel            # GNU parallel shell command
-    - pcre                # Perl compatible regular expressions library
+    - parallel            # Shell command parallelization utility
     - peco                # Simplistic interactive filtering tool
+    - pre-commit          # Framework for managing multi-language pre-commit hooks
     - procs               # Modern replacement for ps written by Rust
     - protobuf            # Protocol buffers (Google's data interchange format)
-    - python              # Interpreted, interactive, object-oriented programming language
     - ripgrep             # Search tool like grep and The Silver Searcher
     - sd                  # Intuitive find & replace CLI
-    - termtosvg           # Record terminal sessions as SVG animations
     - terraform           # Tool to build, change, and version infrastructure
     - tmux                # Terminal multiplexer
     - webp                # Image format providing lossless and lossy compression for web images

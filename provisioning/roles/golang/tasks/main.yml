@@ -6,11 +6,6 @@
     name:  go
     state: latest
 
-- name: install dep
-  homebrew:
-    name:  dep
-    state: present
-
 - name: golangci-lint
   homebrew:
     name:  golangci/tap/golangci-lint
