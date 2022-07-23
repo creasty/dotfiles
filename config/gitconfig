@@ -23,23 +23,36 @@
 [diff]
   indentHeuristic = true
 
+[remote]
+  pushDefault = origin
+
 [push]
   default = current
+  autoSetupRemote = true
 
 [pull]
   rebase = false
+
+[branch "master"]
+  mergeOptions = --ff-only
+
+[branch "main"]
+  mergeOptions = --ff-only
+
+[branch "develop"]
+  mergeOptions = --ff-only
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+  insteadOf = git://github.com/
 
 [browse-remote "github.com"]
   top = https://{host}/{path}
   ref = https://{host}/{path}/tree/{short_ref}
   rev = https://{host}/{path}/commit/{commit}
 
-[url "git@github.com:"]
-  insteadOf = https://github.com/
-  insteadOf = git://github.com/
-
 [alias]
-  a    = smart-add
+  a    = ! git add -v "${@:--A}"
   ap   = add -p
   c    = commit
   cm   = commit -m
@@ -48,28 +61,14 @@
   cane = commit --amend --no-edit
   ce   = commit --allow-empty -m
 
-  # Temporarily ignoring files
-  #
-  # @see http://gitready.com/intermediate/2009/02/18/temporarily-ignoring-files.html
-  # @see https://stackoverflow.com/questions/13630849/git-difference-between-assume-unchanged-and-skip-worktree
-  sw  = update-index --skip-worktree
-  nsw = update-index --no-skip-worktree
-  au  = update-index --assume-unchanged
-  nau = update-index --no-assume-unchanged
-  ex  = ! $EDITOR "$(git rev-parse --git-dir)/info/exclude"
+  t = tag
 
-  r   = remote
-  ra  = remote add
-  ru  = remote set-url
-  ruo = remote set-url origin
-
-  t  = tag
   b  = branch
   bd = branch -D
   bm = branch -m
 
   k  = checkout
-  kb = checkout-head
+  kb = checkout -b
   km = checkout master
   kd = checkout develop
 
@@ -77,12 +76,14 @@
   fo  = fetch origin
   fok = checkout-origin
 
-  pl = auto-ref pull
-  pu = auto-ref push
-  pr = github-compare
+  pl  = pull origin
+  plm = pull origin master
+  pln = pull origin main
+  pld = pull develop
+  pu  = push origin
+  pr  = github-compare
 
-  cmp  = compare
-  cmpm = compare master
+  cmp = compare
 
   s  = status -s
   ds = diff --stat master HEAD
@@ -123,6 +124,16 @@
   reh1 = reset --hard HEAD~
   reh2 = reset --hard HEAD~~
   reh3 = reset --hard HEAD~~~
+
+  # Temporarily ignoring files
+  #
+  # @see http://gitready.com/intermediate/2009/02/18/temporarily-ignoring-files.html
+  # @see https://stackoverflow.com/questions/13630849/git-difference-between-assume-unchanged-and-skip-worktree
+  sw  = update-index --skip-worktree
+  nsw = update-index --no-skip-worktree
+  au  = update-index --assume-unchanged
+  nau = update-index --no-assume-unchanged
+  ex  = ! $EDITOR "$(git rev-parse --git-dir)/info/exclude"
 
   # emf: edit modified files
   # ecf: edit conflicted files

@@ -4,7 +4,7 @@ set -eu
 set -o pipefail
 
 section() {
-  printf -- "\e[33m==> $@\e[0m\n"
+  printf -- "\e[33m==> $*\e[0m\n"
 }
 
 select_remote_branch() {

@@ -20,12 +20,9 @@ if [ -z "$REPO_URL" ]; then
   exit 1
 fi
 
-BASE="$(git config pr.base 2>/dev/null || true)"
-BASE="${BASE:-master}"
 HEAD="$(git symbolic-ref --short HEAD)"
+URL="$REPO_URL/pull/new/$HEAD"
 
-URL="$REPO_URL/compare/$BASE...$HEAD?expand=1"
-
-git auto-ref push
+git push
 echo "$URL"
 open "$URL"
