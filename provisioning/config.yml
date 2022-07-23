@@ -83,12 +83,12 @@ homebrew:
     - protobuf            # Protocol buffers (Google's data interchange format)
     - python              # Interpreted, interactive, object-oriented programming language
     - ripgrep             # Search tool like grep and The Silver Searcher
+    - sd                  # Intuitive find & replace CLI
     - termtosvg           # Record terminal sessions as SVG animations
     - terraform           # Tool to build, change, and version infrastructure
     - tmux                # Terminal multiplexer
     - webp                # Image format providing lossless and lossy compression for web images
-
-    #- xctool # Drop-in replacement for xcodebuild with a few extra features
+    - xh                  # Friendly and fast tool for sending HTTP requests
 
 mas:
   # List installed apps by
