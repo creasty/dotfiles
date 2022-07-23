@@ -52,11 +52,11 @@
     name:  gradle # Open-source build automation tool based on the Groovy and Kotlin DSL
     state: present
 
-- name: install IDEs
-  homebrew:
-    name:  '{{ item }}'
-    state: present
-  with_items:
-    - intellij-idea-ce
-    # - android-sdk
-    # - android-studio
+# - name: install IDEs
+#   homebrew:
+#     name:  '{{ item }}'
+#     state: present
+#   with_items:
+#     - intellij-idea-ce
+#     - android-sdk
+#     - android-studio
