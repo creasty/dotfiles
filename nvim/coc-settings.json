@@ -238,6 +238,7 @@
     "Dataset",
     "Debounced",
     "Deno",
+    "Draftjs",
     "Droppable",
     "Duplicatable",
     "FREC",
@@ -253,12 +254,14 @@
     "Schemafile",
     "Scrollable",
     "Strikethrough",
+    "Tiptap",
     "Typeahead",
     "UNCANCEL",
     "Unexported",
     "Unmount",
     "Webview",
     "Xcode",
+    "Yxml",
     "antialiased",
     "autosave",
     "bigint",
@@ -311,6 +314,7 @@
     "prehospital",
     "preload",
     "promisify",
+    "prosemirror",
     "proto",
     "protobuf",
     "refetch",
@@ -331,6 +335,7 @@
     "uploader",
     "upsert",
     "uuid",
-    "uuids"
+    "uuids",
+    "ydoc"
   ]
 }
