@@ -36,6 +36,8 @@
       tags: ['lang', 'lang.golang']
     - role: rust
       tags: ['lang', 'lang.rust']
+    - role: swift
+      tags: ['lang', 'lang.swift']
 
     #  app
     #-----------------------------------------------

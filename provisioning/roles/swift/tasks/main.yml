@@ -1,0 +1,9 @@
+- set_fact:
+    swift: {}
+
+- name: install dependency
+  homebrew:
+    name:
+      - carthage # Decentralized dependency manager for Cocoa
+      #- xctool   # Drop-in replacement for xcodebuild with a few extra features
+    state: present

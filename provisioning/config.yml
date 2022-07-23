@@ -35,7 +35,6 @@ homebrew:
   packages:
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
     - binutils            # FSF Binutils for native development
-    - carthage            # Decentralized dependency manager for Cocoa
     - circleci            # Enables you to reproduce the CircleCI environment locally
     - clib                # Package manager for C programming
     - cloc                # Statistics utility to count lines of code
