@@ -186,6 +186,9 @@ function M.setup()
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
+
+  -- copilot.vim
+  hi.CopilotSuggestion = { fg = s.gray300, underdash = 1, sp = s.gray400 }
 end
 
 return M

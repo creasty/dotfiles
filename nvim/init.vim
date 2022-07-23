@@ -508,10 +508,6 @@ if dein#is_available('coc.nvim') &&
       return coc#_select_confirm()
     endif
 
-    if s:is_copilot_suggested()
-      return copilot#Accept('')
-    endif
-
     if coc#expandableOrJumpable()
       return "\<Plug>(coc-snippets-expand-jump)"
     endif
@@ -519,6 +515,10 @@ if dein#is_available('coc.nvim') &&
     let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
     if l:snip
       return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+    endif
+
+    if s:is_copilot_suggested()
+      return copilot#Accept('')
     endif
 
     return lexima#expand('<TAB>', 'i')
