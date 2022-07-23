@@ -110,12 +110,7 @@ export class Source extends BaseSource<Params, ActionData> {
 
     return new ReadableStream({
       async start(controller) {
-        const originalInput = args.options.volatile
-          ? args.input
-          : args.sourceParams.input || args.input;
-        const input =
-          originalInput ||
-          (await fn.input(args.denops, "Search: ").catch(() => ""));
+        const input = args.input || args.sourceParams.input;
 
         if (input != "") {
           controller.enqueue(await findBy(input));
@@ -131,9 +126,9 @@ export class Source extends BaseSource<Params, ActionData> {
       input: "",
       path: "",
       highlights: {
-        path: 'Identifier',
-        lineNr: 'Comment',
-        word: 'Constant',
+        path: "Identifier",
+        lineNr: "Comment",
+        word: "Constant",
       },
     };
   }

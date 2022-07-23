@@ -1,10 +1,26 @@
 let s:last_cwd = ''
+let s:preserved_inputs = {}
 
 function! s:can_resume() abort
   let l:cwd = getcwd()
   let l:is_same_dir = (l:cwd == s:last_cwd)
   let s:last_cwd = l:cwd
   return l:is_same_dir
+endfunction
+
+function! s:get_preserved_input(name, reset) abort
+  if a:reset || get(s:preserved_inputs, a:name, '') ==# ''
+    let s:preserved_inputs[a:name] = input('Search: ')
+  endif
+  return s:preserved_inputs[a:name]
+endfunction
+
+function! user#plugin#ddu#get_preserved_input() abort
+  if has_key(s:preserved_inputs, b:ddu_ui_name)
+    return s:get_preserved_input(b:ddu_ui_name, v:true)
+  else
+    return ''
+  end
 endfunction
 
 function! user#plugin#ddu#open() abort
@@ -20,17 +36,26 @@ function! user#plugin#ddu#open() abort
 endfunction
 
 function! user#plugin#ddu#search(path, resume) abort
+  let l:source = 'rg'
+  let l:resume = a:resume && s:can_resume()
+  let l:input = s:get_preserved_input(l:source, !l:resume)
+
   call ddu#start({
-    \ 'name': 'grep',
-    \ 'sources': [{ 'name': 'rg', 'params': { 'path': a:path } }],
-    \ 'resume': a:resume && s:can_resume(),
+    \ 'name': l:source,
+    \ 'sources': [{
+      \ 'name': l:source,
+      \ 'params': { 'path': a:path, 'input': l:input },
+    \ }],
+    \ 'resume': l:resume,
   \ })
 endfunction
 
 function! user#plugin#ddu#coc_locations(resume) abort
+  let l:source = 'coc-locations'
+
   call ddu#start({
-    \ 'name': 'coc-locations',
-    \ 'sources': [{ 'name': 'coc-locations' }],
+    \ 'name': l:source,
+    \ 'sources': [{ 'name': l:source }],
     \ 'resume': a:resume && s:can_resume(),
   \ })
 endfunction
@@ -71,26 +96,34 @@ function! user#plugin#ddu#init() abort
 endfunction
 
 function! s:init_ddu() abort
-  " b:ddu_ui_name
-  nnoremap <buffer> <Esc> <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer> q <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer> <C-q> <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  inoremap <buffer> <C-q> <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  nnoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  inoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  nnoremap <buffer><script> <Esc> <SID>(quit)
+  nnoremap <buffer><script> q <SID>(quit)
+  nnoremap <buffer><script> <C-q> <SID>(quit)
+  inoremap <buffer><script> <C-q> <SID>(quit)
 
-  nnoremap <buffer> <CR> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  inoremap <buffer> <CR> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer> <C-j> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  inoremap <buffer> <C-j> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer> <SID>(item-action) <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  inoremap <buffer> <SID>(item-action) <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><script> <CR> <SID>(item-action)
+  inoremap <buffer><script> <CR> <SID>(item-action)
+  nnoremap <buffer><script> <C-j> <SID>(item-action)
+  inoremap <buffer><script> <C-j> <SID>(item-action)
 
-  nnoremap <buffer> <Tab> <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
-  inoremap <buffer> <Tab> <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+  nnoremap <buffer> <SID>(choose-action) <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+  inoremap <buffer> <SID>(choose-action) <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+  nnoremap <buffer><script> <Tab> <SID>(choose-action)
+  inoremap <buffer><script> <Tab> <SID>(choose-action)
 
-  " TODO: <C-r> to preseve the input
-  nnoremap <buffer> <C-r> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
-  inoremap <buffer> <C-r> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
+  nnoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#ff#do_action('refreshItems')<CR>
+  inoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#ff#do_action('refreshItems')<CR>
+  nnoremap <buffer><script> <C-l> <SID>(refresh)
+  inoremap <buffer><script> <C-l> <SID>(refresh)
 
-  nnoremap <buffer> <C-l> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
-  inoremap <buffer> <C-l> <Cmd>call ddu#ui#ff#do_action('refreshItems', { 'refreshItems': v:true })<CR>
+  nnoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
+  inoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
+  nnoremap <buffer><script> <C-r> <SID>(reload)
+  inoremap <buffer><script> <C-r> <SID>(reload)
 endfunction
 
 function! user#plugin#ddu#init_ddu_list() abort
