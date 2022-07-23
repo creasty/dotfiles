@@ -143,7 +143,7 @@
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
   dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
 
-  get-main-branch = ! git branch --sort=-refname | grep -o -m1 -E '\\b(main|master)\\b'
+  get-main-branch = ! git branch --sort=-refname | grep -o -m1 -E '\\b(main|master)\\b' || echo master
 
 [issue]
   type = github
