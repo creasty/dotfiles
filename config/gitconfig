@@ -52,8 +52,12 @@
   rev = https://{host}/{path}/commit/{commit}
 
 [alias]
-  a    = ! git add -v "${@:--A}"
-  ap   = add -p
+  # Basic Snapshotting
+  s = status -s
+
+  a  = ! git add -v "${@:--A}"
+  ap = add -p
+
   c    = commit
   cm   = commit -m
   ca   = commit --amend
@@ -61,8 +65,19 @@
   cane = commit --amend --no-edit
   ce   = commit --allow-empty -m
 
-  t = tag
+  res  = reset --soft
+  res0 = reset --soft HEAD
+  res1 = reset --soft HEAD~
+  res2 = reset --soft HEAD~~
+  res3 = reset --soft HEAD~~~
 
+  reh  = reset --hard
+  reh0 = reset --hard HEAD
+  reh1 = reset --hard HEAD~
+  reh2 = reset --hard HEAD~~
+  reh3 = reset --hard HEAD~~~
+
+  # Branching and Merging
   b  = branch
   bd = branch -D
   bm = branch -m
@@ -72,6 +87,15 @@
   km = ! git checkout "$(git get-main-branch)" "$@"
   kd = checkout develop
 
+  m  = merge
+  mf = merge FETCH_HEAD
+
+  t = tag
+
+  st = stash
+  sp = stash pop
+
+  # Sharing and Updating Projects
   fe  = fetch
   fo  = fetch origin
   fok = checkout-origin
@@ -81,11 +105,14 @@
   pld = pull origin develop
   plf = pull forkee
   pu  = push origin
-  pr  = github-compare
 
+  sm  = submodule
+  smu = submodule update -i
+
+  pr  = github-compare
   cmp = compare
 
-  s  = status -s
+  # Inspection and Comparison
   ds = ! git diff --stat "$(git get-main-branch)" HEAD
   d  = diff --irreversible-delete
   dc = diff --irreversible-delete --cached
@@ -100,29 +127,10 @@
   lg = log --oneline --graph
   ll = ! git --no-pager log -1 HEAD
 
-  st = stash
-  sp = stash pop
+  # Patching
   v  = revert --no-edit
   p  = cherry-pick
-
-  m  = merge
-  mf = merge FETCH_HEAD
   rb = rebase
-
-  sm  = submodule
-  smu = submodule update -i
-
-  res  = reset --soft
-  res0 = reset --soft HEAD
-  res1 = reset --soft HEAD~
-  res2 = reset --soft HEAD~~
-  res3 = reset --soft HEAD~~~
-
-  reh  = reset --hard
-  reh0 = reset --hard HEAD
-  reh1 = reset --hard HEAD~
-  reh2 = reset --hard HEAD~~
-  reh3 = reset --hard HEAD~~~
 
   # Temporarily ignoring files
   #
