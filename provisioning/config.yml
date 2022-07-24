@@ -11,7 +11,7 @@ homebrew:
     - google-chat              # https://gsuite.google.com/products/chat/
     - google-chrome            # https://www.google.com/chrome/
     - google-cloud-sdk         # https://cloud.google.com/sdk/
-    - google-drive-file-stream # https://www.google.com/drive/
+    - google-drive             # https://www.google.com/drive/
     - google-japanese-ime      # https://www.google.co.jp/ime/
     - imageoptim               # https://imageoptim.com/mac
     - istat-menus              # https://bjango.com/mac/istatmenus/
