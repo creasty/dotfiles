@@ -70,14 +70,18 @@ export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
 #  Anyenv
 #-----------------------------------------------
-if [ -z "${SKIP_ANYENV_INIT:-}" ] && [ -n "${ANYENV_SHELL:-}" ] && command -v 'anyenv' > /dev/null 2>&1; then
-  # Cache init script
-  ANYENV_INIT_FILE="$HOME/.anyenv-init-$ANYENV_SHELL"
-  if [ ! -f "$ANYENV_INIT_FILE" ]; then
-    anyenv init - --no-rehash "$ANYENV_SHELL" > "$ANYENV_INIT_FILE"
-  fi
-  source "$ANYENV_INIT_FILE"
+if [ -n "${ANYENV_SHELL:-}" ] && command -v 'anyenv' > /dev/null 2>&1; then
+  if [ -z "${ANYENV_INIT_CACHE_DISABLED:-}" ]; then
+    # Cache init script
+    ANYENV_INIT_FILE="$HOME/.anyenv-init-$ANYENV_SHELL"
+    if [ ! -f "$ANYENV_INIT_FILE" ]; then
+      anyenv init - --no-rehash "$ANYENV_SHELL" > "$ANYENV_INIT_FILE"
+    fi
+    source "$ANYENV_INIT_FILE"
 
-  # Lazy rehashing
-  (anyenv rehash &) 2> /dev/null
+    # Lazy rehashing
+    (anyenv rehash &) 2> /dev/null
+  else
+    anyenv init - "$ANYENV_SHELL"
+  fi
 fi

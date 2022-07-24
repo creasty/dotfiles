@@ -69,7 +69,8 @@ clone_or_update_repo() {
 }
 
 load_envs() {
-  SKIP_ANYENV_INIT=1 source "$DOTFILES_PATH/shell/profile"
+  export ANYENV_INIT_CACHE_DISABLED=1
+  source "$DOTFILES_PATH/shell/profile"
 }
 
 check_xcode_license_approved() {
