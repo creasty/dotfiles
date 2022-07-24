@@ -25,7 +25,7 @@
 
 - name: install jenv
   command: |
-    bash -lc 'anyenv install jenv'
+    bash -lc 'anyenv install -s jenv'
   when: which_jenv.rc > 0
 
 - name: clear init script cache

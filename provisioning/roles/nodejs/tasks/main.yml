@@ -9,7 +9,7 @@
 
 - name: install nodenv
   command: |
-    bash -lc 'anyenv install nodenv'
+    bash -lc 'anyenv install -s nodenv'
   when: which_nodenv.rc > 0
 
 - name: install plugins
