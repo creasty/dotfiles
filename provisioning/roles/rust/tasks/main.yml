@@ -16,6 +16,6 @@
 
 - name: install components
   command: |
-    bash -lc 'rustup update component add {{ item }}'
+    bash -lc 'rustup component add {{ item }}'
   with_items: '{{ rust.components }}'
   when: rust.components

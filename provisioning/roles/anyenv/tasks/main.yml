@@ -6,10 +6,6 @@
     name:  anyenv
     state: latest
 
-#- name: initialize manifest
-#  command: |
-#    bash -lc 'anyenv install --force-init'
-
 - name: clear init script cache
   file:
     dest: '{{ item }}'
