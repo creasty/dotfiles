@@ -7,6 +7,7 @@
   homebrew_cask:
     name:  visual-studio-code
     state: latest
+    sudo_password: '{{ ansible_become_pass }}'
 
 - name: get stat of the binary
   stat:

@@ -10,6 +10,7 @@
     name:  '{{ item }}'
     state: latest
     accept_external_apps: yes
+    sudo_password: '{{ ansible_become_pass }}'
   with_items: '{{ homebrew.applications }}'
   when: homebrew.applications
   ignore_errors: yes

@@ -9,6 +9,7 @@
       #- virtualbox # https://www.virtualbox.org/
     state: latest
     accept_external_apps: yes
+    sudo_password: '{{ ansible_become_pass }}'
 
 - name: get stat of the binary
   stat:
