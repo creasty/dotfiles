@@ -69,7 +69,7 @@
 
   k  = checkout
   kb = checkout -b
-  km = checkout "$(git get-main-branch)"
+  km = ! git checkout "$(git get-main-branch)" "$@"
   kd = checkout develop
 
   fe  = fetch
@@ -77,7 +77,7 @@
   fok = checkout-origin
 
   pl  = pull origin
-  plm = pull origin "$(git get-main-branch)"
+  plm = ! git pull origin "$(git get-main-branch)" "$@"
   pld = pull origin develop
   plf = pull forkee
   pu  = push origin
@@ -86,7 +86,7 @@
   cmp = compare
 
   s  = status -s
-  ds = diff --stat "$(git get-main-branch)" HEAD
+  ds = ! git diff --stat "$(git get-main-branch)" HEAD
   d  = diff --irreversible-delete
   dc = diff --irreversible-delete --cached
 
@@ -110,7 +110,7 @@
   rb = rebase
 
   sm  = submodule
-  smu = submodule update --remote
+  smu = submodule update -i
 
   res  = reset --soft
   res0 = reset --soft HEAD
@@ -143,6 +143,7 @@
   udf = ! git rm `git ls-files --deleted | cut -f2 | sort -u`
   dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
 
+  # Utils
   get-main-branch = ! git branch --sort=-refname | grep -o -m1 -E '\\b(main|master)\\b' || echo master
 
 [issue]
