@@ -64,7 +64,7 @@ mouse:
   hide_when_typing: true
 
 shell:
-  program: /usr/local/bin/tmux
+  program: /opt/homebrew/bin/tmux
   args:
     - -l
     - -u # @see https://github.com/tmux/tmux/issues/328
