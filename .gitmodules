@@ -1,6 +1,6 @@
 [submodule "shell/zsh/plugins/zsh-autosuggestions"]
 	path = shell/zsh/plugins/zsh-autosuggestions
-	url = git://github.com/tarruda/zsh-autosuggestions.git
+	url = https://github.com/tarruda/zsh-autosuggestions.git
 [submodule "shell/zsh/plugins/fast-syntax-highlighting"]
 	path = shell/zsh/plugins/fast-syntax-highlighting
-	url = git@github.com:zdharma-continuum/fast-syntax-highlighting.git
+	url = https://github.com/zdharma-continuum/fast-syntax-highlighting.git
