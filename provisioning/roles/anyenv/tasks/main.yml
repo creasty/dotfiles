@@ -6,11 +6,11 @@
     name:  anyenv
     state: latest
 
-- name: initialize manifest
-  command: |
-    bash -lc 'anyenv install --force-init'
-  environment:
-    SKIP_ANYENV_INIT: true
+#- name: initialize manifest
+#  command: |
+#    bash -lc 'anyenv install --force-init'
+#  environment:
+#    SKIP_ANYENV_INIT: true
 
 - name: clear init script cache
   file:
