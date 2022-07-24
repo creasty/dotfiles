@@ -5,10 +5,3 @@
   homebrew:
     name:  anyenv
     state: latest
-
-- name: clear init script cache
-  file:
-    dest: '{{ item }}'
-    state: absent
-  with_fileglob:
-    - '{{ anyenv.init_file_glob }}'

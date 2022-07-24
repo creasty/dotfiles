@@ -28,13 +28,6 @@
     bash -lc 'anyenv install -s jenv'
   when: which_jenv.rc > 0
 
-- name: clear init script cache
-  file:
-    dest: '{{ item }}'
-    state: absent
-  with_fileglob:
-    - '{{ anyenv.init_file_glob }}'
-
 - name: enable export plugin
   command: |
     bash -lc 'jenv enable-plugin export'

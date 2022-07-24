@@ -26,13 +26,6 @@
     state: link
     force: yes
 
-- name: clear init script cache
-  file:
-    dest: '{{ item }}'
-    state: absent
-  with_fileglob:
-    - '{{ anyenv.init_file_glob }}'
-
 - name: install nodejs
   command: |
     bash -lc 'nodenv install -s {{ item | quote }}'
