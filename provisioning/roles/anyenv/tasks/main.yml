@@ -5,3 +5,8 @@
   homebrew:
     name:  anyenv
     state: latest
+
+- name: initialize
+  command: |
+    bash -lc 'anyenv install --force-init'
+  ignore_errors: yes
