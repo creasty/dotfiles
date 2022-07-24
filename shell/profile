@@ -74,7 +74,7 @@ if [ -z "${SKIP_ANYENV_INIT:-}" ] && [ -n "${ANYENV_SHELL:-}" ] && command -v 'a
   # Cache init script
   ANYENV_INIT_FILE="$HOME/.anyenv-init-$ANYENV_SHELL"
   if [ ! -f "$ANYENV_INIT_FILE" ]; then
-    anyenv init - --no-rehash > "$ANYENV_INIT_FILE"
+    anyenv init - --no-rehash "$ANYENV_SHELL" > "$ANYENV_INIT_FILE"
   fi
   source "$ANYENV_INIT_FILE"
 
