@@ -74,6 +74,8 @@ alias -s java='_run_java'
 
 #  Bin
 #-----------------------------------------------
+alias x86='arch -x86_64'
+
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='openssl sha1 | sed "s/^.* //"'
