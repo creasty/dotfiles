@@ -5,7 +5,7 @@ export LC_ALL=$LANG
 export LC_CTYPE=$LANG
 
 export EDITOR=nvim
-export LSCOLORS='Gxfxcxdxbxegedabagacad'
+export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 #  Named path
 #-----------------------------------------------
@@ -21,8 +21,7 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 #  Search path
 #-----------------------------------------------
 # Local
-export PATH=/usr/local/bin:$PATH
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Dotfiles
 export PATH=$DOTFILES_PATH/bin:$PATH
@@ -30,14 +29,8 @@ export PATH=$DOTFILES_PATH/bin:$PATH
 # Golang
 export PATH=$PATH:$GOPATH/bin
 
-# libxml2
-export PATH=/usr/local/opt/libxml2/bin:$PATH
-
 # Rust
 export PATH=$PATH:$HOME/.cargo/bin
-
-# google-clould-sdk
-export PATH=$HOME/google-cloud-sdk/bin:$PATH
 
 # llvm
 export PATH=/usr/local/opt/llvm/bin:$PATH
@@ -48,7 +41,7 @@ export PATH=/opt/homebrew/opt/libpq/bin:$PATH
 #  App config
 #-----------------------------------------------
 # Git
-export GIT_MERGE_AUTOEDIT='no'
+export GIT_MERGE_AUTOEDIT=no
 
 # Rails
 export DISABLE_SPRING=1
@@ -64,13 +57,14 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/.ripgreprc
 
 #  Homebrew
 #-----------------------------------------------
+# export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
+
 export HOMEBREW_PREFIX="/opt/homebrew"
 export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
 export HOMEBREW_REPOSITORY="/opt/homebrew"
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
 export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
 export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
-# export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 
 #  Anyenv
 #-----------------------------------------------
