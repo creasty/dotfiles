@@ -1,5 +1,5 @@
 if [ -f ~/.profile ]; then
-  source ~/.profile
+  ANYENV_SHELL=bash source ~/.profile
 fi
 
 if [ -f ~/.bashrc ]; then

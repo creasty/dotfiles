@@ -3,5 +3,5 @@ if [ -n "${ZSH_PROF_ENABLED:-}" ]; then
 fi
 
 if [ -f ~/.profile ]; then
-  source ~/.profile
+  ANYENV_SHELL=zsh source ~/.profile
 fi

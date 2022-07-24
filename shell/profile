@@ -70,9 +70,8 @@ export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
 #  Anyenv
 #-----------------------------------------------
-if [ -z "${SKIP_ANYENV_INIT:-}" ] && command -v 'anyenv' > /dev/null 2>&1; then
+if [ -z "${SKIP_ANYENV_INIT:-}" ] && [ -n "${ANYENV_SHELL:-}" ] && command -v 'anyenv' > /dev/null 2>&1; then
   # Cache init script
-  ANYENV_SHELL="$(basename "$SHELL")"
   ANYENV_INIT_FILE="$HOME/.anyenv-init-$ANYENV_SHELL"
   if [ ! -f "$ANYENV_INIT_FILE" ]; then
     anyenv init - --no-rehash > "$ANYENV_INIT_FILE"
