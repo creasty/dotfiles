@@ -84,7 +84,7 @@ install_homebrew() {
   command -v 'brew' > /dev/null 2>&1 && return
 
   echo 'Installing homebrew...'
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo 'done'
 }
 
