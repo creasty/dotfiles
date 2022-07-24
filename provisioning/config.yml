@@ -59,6 +59,7 @@ homebrew:
     - jq                  # Lightweight and flexible command-line JSON processor
     - ktr0731/evans/evans # Evans: more expressive universal gRPC client
     - libiconv            # Conversion library
+    - libpq               # Postgres C API library
     - massren             # Easily rename multiple files using your text editor
     - ngrep               # Network grep
     - nkf                 # Network Kanji code conversion Filter (NKF)

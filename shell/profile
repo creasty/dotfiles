@@ -41,6 +41,9 @@ export PATH=$HOME/google-cloud-sdk/bin:$PATH
 # llvm
 export PATH=/usr/local/opt/llvm/bin:$PATH
 
+# libpq
+export PATH=/opt/homebrew/opt/libpq/bin:$PATH
+
 #  App config
 #-----------------------------------------------
 # Git
