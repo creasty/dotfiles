@@ -22,6 +22,7 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 #-----------------------------------------------
 # Local
 export PATH=/usr/local/bin:$PATH
+export PATH=$HOME/bin:$PATH
 
 # Dotfiles
 export PATH=$DOTFILES_PATH/bin:$PATH
