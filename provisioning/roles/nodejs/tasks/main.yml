@@ -50,4 +50,4 @@
 - name: install yarn
   homebrew:
     name: yarn # JavaScript package manager
-    state: present
+    state: latest

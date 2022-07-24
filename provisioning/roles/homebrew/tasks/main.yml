@@ -8,7 +8,7 @@
 - name: install cask applications
   homebrew_cask:
     name:  '{{ item }}'
-    state: present
+    state: latest
     accept_external_apps: yes
   with_items: '{{ homebrew.applications }}'
   when: homebrew.applications
@@ -18,6 +18,6 @@
 - name: install homebrew packages
   homebrew:
     name:  '{{ homebrew.packages }}'
-    state: present
+    state: latest
   when: homebrew.packages
   tags: install.homebrew.formula

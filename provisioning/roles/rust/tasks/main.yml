@@ -5,7 +5,7 @@
 - name: install rustup-init
   homebrew:
     name:  rustup
-    state: present
+    state: latest
 
 - name: get stat of the binary
   stat:

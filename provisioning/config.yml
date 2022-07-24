@@ -140,7 +140,7 @@ nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
 
   versions:
-    - '16.10.0'
+    - '16.16.0'
 
   plugins:
     - nodenv/nodenv-default-packages
@@ -149,7 +149,7 @@ ruby:
   default_gems_path: '{{ dotfiles_path }}/ruby/rbenv/default-gems'
 
   versions:
-    - '3.0.2'
+    - '3.1.2'
 
   plugins:
     - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv

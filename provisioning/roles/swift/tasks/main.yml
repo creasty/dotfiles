@@ -6,4 +6,4 @@
     name:
       - carthage # Decentralized dependency manager for Cocoa
       #- xctool   # Drop-in replacement for xcodebuild with a few extra features
-    state: present
+    state: latest

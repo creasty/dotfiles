@@ -7,7 +7,7 @@
     name:
       - vagrant    # https://www.vagrantup.com/
       #- virtualbox # https://www.virtualbox.org/
-    state: present
+    state: latest
     accept_external_apps: yes
 
 - name: get stat of the binary

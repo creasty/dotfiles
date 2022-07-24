@@ -5,7 +5,7 @@
 - name: install mas
   homebrew:
     name:  mas # Mac App Store command line interface
-    state: present
+    state: latest
 
 - name: get stat of the binary
   stat:

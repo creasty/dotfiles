@@ -42,7 +42,7 @@
       - readline
       - ruby-build
       - zlib
-    state: present
+    state: latest
 
 - name: get openssl dir
   command: |

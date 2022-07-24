@@ -7,7 +7,7 @@
 - name: install python3
   homebrew:
     name:  python3
-    state: present
+    state: latest
 
 - name: install python libraries
   pip:
@@ -22,7 +22,7 @@
 - name: install deno
   homebrew:
     name:  deno
-    state: present
+    state: latest
 
 - name: install neovim
   homebrew:

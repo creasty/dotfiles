@@ -4,17 +4,17 @@
 - name: install openjdk
   homebrew:
     name: openjdk
-    state: present
+    state: latest
 
 - name: tap adoptopenjdk/openjdk
   homebrew_tap:
     tap:   adoptopenjdk/openjdk
-    state: present
+    state: latest
 
 - name: install old versions
   homebrew_cask:
     name: adoptopenjdk11
-    state: present
+    state: latest
 
 - name: check jenv
   command: |
@@ -50,12 +50,12 @@
 - name: install gradle
   homebrew:
     name:  gradle # Open-source build automation tool based on the Groovy and Kotlin DSL
-    state: present
+    state: latest
 
 # - name: install IDEs
 #   homebrew:
 #     name:  '{{ item }}'
-#     state: present
+#     state: latest
 #   with_items:
 #     - intellij-idea-ce
 #     - android-sdk

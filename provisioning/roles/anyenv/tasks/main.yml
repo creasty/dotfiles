@@ -4,7 +4,7 @@
 - name: install anyenv
   homebrew:
     name:  anyenv
-    state: present
+    state: latest
 
 - name: initialize manifest
   command: |

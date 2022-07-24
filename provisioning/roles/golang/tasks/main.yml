@@ -9,7 +9,7 @@
 - name: golangci-lint
   homebrew:
     name:  golangci/tap/golangci-lint
-    state: present
+    state: latest
 
 - name: install commands
   command: |

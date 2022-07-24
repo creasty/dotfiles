@@ -4,7 +4,7 @@
 - name: install zsh
   homebrew:
     name:  zsh
-    state: present
+    state: latest
 
 - name: add zsh to /etc/shells
   lineinfile:
