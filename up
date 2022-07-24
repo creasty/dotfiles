@@ -68,6 +68,10 @@ clone_or_update_repo() {
   fi
 }
 
+load_envs() {
+  SKIP_ANYENV_INIT=1 source "$DOTFILES_PATH/shell/profile"
+}
+
 check_xcode_license_approved() {
   echo 'Agreeing to Xcode license...'
 
@@ -116,16 +120,22 @@ run_provisioning() {
   echo 'done'
 }
 
+install_rosetta2() {
+  sudo softwareupdate --install-rosetta --agree-to-license
+}
+
 #=== Entrypoint
 #==============================================================================================
 main() {
   print_header
   check_os
   clone_or_update_repo
-  SKIP_ANYENV_INIT=1 source "$DOTFILES_PATH/shell/profile"
   check_xcode_license_approved
+
+  load_envs
   install_homebrew
   install_ansible
+  install_rosetta2
   run_provisioning "$@"
 }
 
