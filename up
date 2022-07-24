@@ -84,7 +84,7 @@ install_homebrew() {
   command -v 'brew' > /dev/null 2>&1 && return
 
   echo 'Installing homebrew...'
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo 'done'
 }
 
@@ -122,6 +122,7 @@ main() {
   print_header
   check_os
   clone_or_update_repo
+  SKIP_ANYENV_INIT=1 source "$DOTFILES_PATH/shell/profile"
   check_xcode_license_approved
   install_homebrew
   install_ansible
