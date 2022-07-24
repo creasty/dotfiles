@@ -9,7 +9,7 @@
 - name: tap adoptopenjdk/openjdk
   homebrew_tap:
     tap:   adoptopenjdk/openjdk
-    state: latest
+    state: present
 
 - name: install old versions
   homebrew_cask:
