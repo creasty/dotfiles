@@ -65,7 +65,6 @@ homebrew:
     - nkf                 # Network Kanji code conversion Filter (NKF)
     - parallel            # Shell command parallelization utility
     - peco                # Simplistic interactive filtering tool
-    - pre-commit          # Framework for managing multi-language pre-commit hooks
     - procs               # Modern replacement for ps written by Rust
     - protobuf            # Protocol buffers (Google's data interchange format)
     - ripgrep             # Search tool like grep and The Silver Searcher

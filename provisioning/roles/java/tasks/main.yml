@@ -41,16 +41,20 @@
   command: |
     bash -lc 'jenv add "$(/usr/libexec/java_home)"'
 
-- name: install gradle
+- name: install tools
   homebrew:
-    name:  gradle # Open-source build automation tool based on the Groovy and Kotlin DSL
+    name:  '{{ item }}'
     state: latest
+  with_items:
+    - gradle                     # Open-source build automation tool based on the Groovy and Kotlin DSL
+    - pre-commit                 # Framework for managing multi-language pre-commit hooks
+    - coursier/formulas/coursier # Launcher for Coursier (required by pre-commit)
 
 # - name: install IDEs
-#   homebrew:
+#   homebrew_cask:
 #     name:  '{{ item }}'
-#     state: latest
+#     state: present
 #   with_items:
 #     - intellij-idea-ce
-#     - android-sdk
-#     - android-studio
+#     #- android-sdk
+#     #- android-studio
