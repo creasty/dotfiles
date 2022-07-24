@@ -1,6 +1,5 @@
 - set_fact:
     vscode: {}
-    code_bin: '{{ brew_bin_path }}/code'
     vscode_path: '{{ home_path }}/Library/Application Support/Code/User'
 
 - name: install vscode
@@ -8,14 +7,6 @@
     name:  visual-studio-code
     state: latest
     sudo_password: '{{ ansible_become_pass }}'
-
-- name: get stat of the binary
-  stat:
-    path: '{{ code_bin }}'
-  register: code_bin_stat
-- fail:
-    msg: 'The binary does not exist'
-  when: code_bin_stat.stat.executable != True
 
 - block:
     - name: allocate parent directories
@@ -59,12 +50,12 @@
 
 - name: get installed extensions
   command: |
-    {{ code_bin }} --list-extensions
+    bash -lc 'code --list-extensions'
   register: installed_vscode_exts
 
 - name: install extensions
   command: |
-    {{ code_bin }} --install-extension {{ item | quote }}
+    bash -lc 'code --install-extension {{ item | quote }}'
   when: |
     vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
   with_items: '{{ vscode.extensions }}'

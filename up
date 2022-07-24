@@ -100,6 +100,15 @@ install_ansible() {
   echo 'done'
 }
 
+install_rosetta2() {
+  echo 'Installing Rosetta 2...'
+  if [ -d /usr/libexec/rosetta ]; then
+    echo 'skip (already installed)'
+    return
+  fi
+  sudo softwareupdate --install-rosetta --agree-to-license
+}
+
 run_provisioning() {
   echo 'Provisioning...'
 
@@ -118,10 +127,6 @@ run_provisioning() {
     playbook.yml
 
   echo 'done'
-}
-
-install_rosetta2() {
-  sudo softwareupdate --install-rosetta --agree-to-license
 }
 
 #=== Entrypoint
