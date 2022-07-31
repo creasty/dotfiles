@@ -12,6 +12,7 @@ let g:coc_global_extensions = [
   \ 'coc-deno',
   \ 'coc-diagnostic',
   \ 'coc-eslint',
+  \ 'coc-flutter',
   \ 'coc-git',
   \ 'coc-go',
   \ 'coc-json',

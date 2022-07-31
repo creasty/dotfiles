@@ -45,6 +45,8 @@
       tags: ['app', 'app.vim']
     - role: vscode
       tags: ['app', 'app.vscode']
+    - role: flutter
+      tags: ['app', 'app.flutter']
     #- role: vagrant
     #  tags: ['app', 'app.vagrant']
 

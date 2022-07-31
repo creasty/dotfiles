@@ -7,6 +7,7 @@ require('nvim-treesitter.configs').setup {
     'commonlisp',
     'cpp',
     'css',
+    'dart',
     'dockerfile',
     'go',
     'gomod',

@@ -1,0 +1,10 @@
+- name: install flutter
+  homebrew_cask:
+    name:  flutter
+    state: latest
+    sudo_password: '{{ ansible_become_pass }}'
+
+- name: install cocoapods
+  homebrew:
+    name:  cocoapods
+    state: latest
