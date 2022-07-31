@@ -227,7 +227,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':  'r',
   \ 'at':    '^e\%#',
-  \ 'input': "\<C-u>CocCommand workspace.renameCurrentFile\<CR>",
+  \ 'input': "\<C-u>Rename \<C-r>=expand('%:p')\<CR>",
   \ 'mode':  ':',
 \ })
 

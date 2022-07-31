@@ -356,23 +356,6 @@ function! s:clean_buffers() abort
   endfor
 endfunction
 
-" delete current file
-command! -nargs=0 Delete call <SID>delete_file(expand('%:p')) | enew!
-
-function! s:delete_file(file) abort
-  let l:file = fnameescape(a:file)
-  if empty(l:file)
-    return
-  endif
-
-  let l:trash_dir = $HOME . '/.Trash'
-  if isdirectory(l:trash_dir)
-    call jobstart(['mv', l:file, l:trash_dir])
-  else
-    call delete(l:file)
-  endif
-endfunction
-
 " back to the last line I edited
 augroup _restore_last_pos
   autocmd!
