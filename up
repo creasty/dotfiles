@@ -108,6 +108,7 @@ install_rosetta2() {
     return
   fi
   sudo softwareupdate --install-rosetta --agree-to-license
+  echo 'done'
 }
 
 run_provisioning() {
@@ -122,8 +123,11 @@ run_provisioning() {
 
   ansible-playbook \
     -i 'localhost,' \
-    --extra-vars='@config.yml' \
-    --extra-vars='@secrets.yml' \
+    --extra-vars "home_path=$HOME" \
+    --extra-vars "dotfiles_path=$DOTFILES_PATH" \
+    --extra-vars "homebrew_path=$HOMEBREW_PREFIX" \
+    --extra-vars '@config.yml' \
+    --extra-vars '@secrets.yml' \
     "$@" \
     playbook.yml
 
