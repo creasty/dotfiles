@@ -71,6 +71,7 @@ homebrew:
     - sd                  # Intuitive find & replace CLI
     - terraform           # Tool to build, change, and version infrastructure
     - tmux                # Terminal multiplexer
+    - trash               # CLI tool that moves files or folder to the trash
     - webp                # Image format providing lossless and lossy compression for web images
     - xh                  # Friendly and fast tool for sending HTTP requests
 
