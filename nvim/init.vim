@@ -519,7 +519,7 @@ if dein#is_available('coc.nvim') &&
 
   function! s:super_esc_i() abort
     if pumvisible()
-      return "\<Plug>(completion-undo)"
+      return "\<Plug>(completion-cancel)"
     elseif exists('*coc#pum#visible') && coc#pum#visible()
       return coc#pum#cancel()
     endif
@@ -539,15 +539,13 @@ if dein#is_available('coc.nvim') &&
       return coc#_select_confirm()
     endif
 
-    call lexima#expand('<CR>', 'i')
-
-    return "\<Plug>(coc-enter)"
+    " return "\<Plug>(coc-enter)"
+    return lexima#expand('<CR>', 'i')
   endfunction
 
-  inoremap <Plug>(completion-undo) <C-e>
+  inoremap <Plug>(completion-cancel) <C-e>
   inoremap <Plug>(completion-accept) <C-y>
   inoremap <Plug>(coc-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
-  inoremap <silent><expr> <Plug>(lexima-enter) lexima#expand('<CR>', 'i')
   inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
 
   function! s:setup_super_mappings() abort
