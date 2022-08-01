@@ -6,14 +6,20 @@ let g:loaded_emacs_cursor = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
+let g:EmacsCursorPumvisible = get(g:, 'EmacsCursorPumvisible', function('pumvisible'))
+
 inoremap <Plug>(emacs-enter) <Cmd>set eventignore+=InsertEnter,InsertLeave<CR>
 inoremap <Plug>(emacs-leave) <Cmd>set eventignore-=InsertEnter,InsertLeave<CR>
 
-inoremap <Plug>(emacs-down) <C-g>u<C-o>gj
-inoremap <Plug>(emacs-up) <C-g>u<C-o>gk
-inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
-inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
-inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
+imap <expr> <Plug>(emacs-down) g:EmacsCursorPumvisible() ?
+  \ "\<Down>"
+  \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gj\<Plug>(emacs-leave)"
+imap <expr> <Plug>(emacs-up) g:EmacsCursorPumvisible() ?
+  \ "\<Up>"
+  \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gk\<Plug>(emacs-leave)"
+imap <Plug>(emacs-eol) <C-g>u<C-o>g$
+imap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
+imap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
 
 nmap <C-c> <Esc>
 nmap <C-j> <CR>
@@ -24,8 +30,8 @@ imap <C-h> <BS>
 imap <C-b> <Left>
 imap <C-f> <Right>
 imap <C-d> <Del>
-imap <C-p> <Plug>(emacs-enter)<Plug>(emacs-up)<Plug>(emacs-leave)
-imap <C-n> <Plug>(emacs-enter)<Plug>(emacs-down)<Plug>(emacs-leave)
+imap <C-p> <Plug>(emacs-up)
+imap <C-n> <Plug>(emacs-down)
 imap <C-a> <Plug>(emacs-bol)
 imap <C-e> <Plug>(emacs-eol)
 imap <C-k> <Plug>(emacs-kill)

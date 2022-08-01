@@ -1,6 +1,7 @@
 {
   "coc.preferences.formatOnType": false,
   "coc.preferences.extensionUpdateCheck": "weekly",
+  "coc.preferences.enableMessageDialog": true,
 
   "diagnostic.errorSign": "✗",
   "diagnostic.warningSign": "∆",
@@ -8,7 +9,9 @@
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": false,
 
+  "suggest.selection": "recentlyUsedByPrefix",
   "suggest.preferCompleteThanJumpPlaceholder": true,
+  "suggest.virtualText": true,
 
   "dialog.confirmKey": "<C-j>",
 

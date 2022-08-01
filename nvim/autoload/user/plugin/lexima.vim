@@ -1,6 +1,9 @@
 let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
 
+let g:UserLeximaPumvisible = get(g:, 'UserLeximaPumvisible', function('pumvisible'))
+
 function! user#plugin#lexima#init() abort
+  doautocmd User PluginLeximaPostInit
 endfunction
 
 function! user#plugin#lexima#loop(...) abort
@@ -11,7 +14,7 @@ function! user#plugin#lexima#loop(...) abort
     let l:l2 = l:literals[l:i - 1]
 
     if search('\V' . escape(l:l2, '\') . '\%#', 'bcn')
-      return (pumvisible() ? "\<C-e>" : '')
+      return (g:UserLeximaPumvisible() ? "\<C-e>" : '')
         \ . repeat("\<BS>", strchars(l:l2))
         \ . l:l1
     endif
