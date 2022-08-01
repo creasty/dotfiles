@@ -23,7 +23,7 @@ Heavily customized and meticulously optimized for insane performance.
 
 - ~75ms to startup on M1 Max
   - ~150ms on 2.3 GHz 8-Core Intel Core i9
-- 560 loc of config
+- 570 loc of config
 - 2 third-party plugins and 5 hooks
   - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
@@ -51,7 +51,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 - ~65ms to startup on M1 Max
   - ~120ms on 2.3 GHz 8-Core Intel Core i9
 - 3,500 loc of config
-- 41 third-party plugins, including:
+- 43 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
   - [ddu.vim](https://github.com/Shougo/ddu.vim)
