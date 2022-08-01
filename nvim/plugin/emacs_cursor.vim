@@ -17,9 +17,9 @@ imap <expr> <Plug>(emacs-down) g:EmacsCursorPumvisible() ?
 imap <expr> <Plug>(emacs-up) g:EmacsCursorPumvisible() ?
   \ "\<Up>"
   \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gk\<Plug>(emacs-leave)"
-imap <Plug>(emacs-eol) <C-g>u<C-o>g$
-imap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
-imap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
+inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
+inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
+inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
 
 nmap <C-c> <Esc>
 nmap <C-j> <CR>
