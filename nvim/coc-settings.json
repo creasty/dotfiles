@@ -9,7 +9,7 @@
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": false,
 
-  "suggest.selection": "recentlyUsedByPrefix",
+  "suggest.selection": "none",
   "suggest.preferCompleteThanJumpPlaceholder": true,
   "suggest.virtualText": true,
 

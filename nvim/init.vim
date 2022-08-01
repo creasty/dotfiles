@@ -487,7 +487,9 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_tab_i() abort
-    if coc#pum#visible()
+    if pumvisible()
+      return coc#_select_confirm()
+    elseif exists('*coc#pum#visible') && coc#pum#visible()
       return coc#_select_confirm()
     endif
 
@@ -516,7 +518,9 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_esc_i() abort
-    if coc#pum#visible()
+    if pumvisible()
+      return "\<Plug>(completion-undo)"
+    elseif exists('*coc#pum#visible') && coc#pum#visible()
       return coc#pum#cancel()
     endif
 
@@ -529,7 +533,9 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_cr_i() abort
-    if coc#pum#visible()
+    if pumvisible()
+      return "\<Plug>(completion-accept)"
+    elseif exists('*coc#pum#visible') && coc#pum#visible()
       return coc#_select_confirm()
     endif
 
@@ -538,6 +544,8 @@ if dein#is_available('coc.nvim') &&
     return "\<Plug>(coc-enter)"
   endfunction
 
+  inoremap <Plug>(completion-undo) <C-e>
+  inoremap <Plug>(completion-accept) <C-y>
   inoremap <Plug>(coc-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
   inoremap <silent><expr> <Plug>(lexima-enter) lexima#expand('<CR>', 'i')
   inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
@@ -549,8 +557,10 @@ if dein#is_available('coc.nvim') &&
     imap <silent><expr> <CR>  <SID>super_cr_i()
   endfunction
 
-  let g:EmacsCursorPumvisible = function('coc#pum#visible')
-  let g:UserLeximaPumvisible = function('coc#pum#visible')
+  if exists('*coc#pum#visible')
+    let g:EmacsCursorPumvisible = function('coc#pum#visible')
+    let g:UserLeximaPumvisible = function('coc#pum#visible')
+  endif
 
   augroup _init_lexima
     autocmd User PluginLeximaPostInit call s:setup_super_mappings()
