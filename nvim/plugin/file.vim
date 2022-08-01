@@ -20,9 +20,13 @@ function! s:rename_current_file(new_path) abort
     let l:answer = input(l:new_path . ' already exists, overwrite? (y/n)')
     call inputrestore()
     if l:answer !~# '^[yY]$'
+      call s:delete(l:new_path)
       return
     endif
   endif
+
+  keepalt enew
+  exec l:bufnr . 'bwipeout!'
 
   " ensure directory
   call mkdir(fnamemodify(l:new_path, ':h'), 'p')
@@ -31,11 +35,16 @@ function! s:rename_current_file(new_path) abort
   " @see https://man7.org/linux/man-pages/man2/rename.2.html
   call v:lua.os.rename(l:old_path, l:new_path)
 
-  keepalt enew
-  exec l:bufnr . 'bwipeout!'
   exec 'keepalt' 'edit' fnameescape(l:new_path)
+endfunction
 
-  filetype detect
+function! s:delete(file)
+  " @see https://github.com/ali-rantakari/trash
+  if executable('trash')
+    call jobstart(['trash', a:file])
+  else
+    call delete(a:file)
+  endif
 endfunction
 
 function! s:delete_current_file() abort
@@ -51,15 +60,9 @@ function! s:delete_current_file() abort
   endif
 
   keepalt enew
-
-  " @see https://github.com/ali-rantakari/trash
-  if executable('trash')
-    call jobstart(['trash', l:file])
-  else
-    call delete(l:file)
-  endif
-
   exec l:bufnr . 'bwipeout!'
+
+  call s:delete(l:file)
 endfunction
 
 command! -nargs=1 -complete=file Rename call <SID>rename_current_file(<q-args>)
