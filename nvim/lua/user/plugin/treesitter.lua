@@ -31,6 +31,7 @@ require('nvim-treesitter.configs').setup {
     'rst',
     'ruby',
     'rust',
+    'sql',
     'swift',
     'tlaplus',
     'toml',
