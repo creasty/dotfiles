@@ -22,6 +22,13 @@ depends = ['vim-textobj-user']
 [[plugins]] # Text objects for numbers
 repo = 'tkhren/vim-textobj-numeral'
 depends = ['vim-textobj-user']
+hook_add = '''
+let g:textobj_numeral_no_default_key_mappings = 1
+xmap an <Plug>(textobj-numeral-a)
+omap an <Plug>(textobj-numeral-a)
+xmap in <Plug>(textobj-numeral-i)
+omap in <Plug>(textobj-numeral-i)
+'''
 
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'tpope/vim-surround'
