@@ -1,7 +1,7 @@
 function! s:rename_current_file(new_path) abort
   let l:bufnr = bufnr('%')
   let l:old_path = expand('%:p')
-  let l:new_path = fnamemodify(expand(a:new_path), ':p')
+  let l:new_path = fnamemodify(a:new_path, ':p')
 
   if l:new_path ==# l:old_path || l:new_path ==# ''
     return
@@ -20,9 +20,9 @@ function! s:rename_current_file(new_path) abort
     let l:answer = input(l:new_path . ' already exists, overwrite? (y/n)')
     call inputrestore()
     if l:answer !~# '^[yY]$'
-      call s:delete(l:new_path)
       return
     endif
+    call s:delete(l:new_path)
   endif
 
   keepalt enew

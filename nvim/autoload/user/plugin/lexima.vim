@@ -218,14 +218,6 @@ unlet s:directories
 unlet s:shortcut
 unlet s:directory
 
-" edit buffer :eb
-call lexima#add_rule({
-  \ 'char':  'b',
-  \ 'at':    '^e\%#',
-  \ 'input': ' #',
-  \ 'mode':  ':',
-\ })
-
 " rename :er
 call lexima#add_rule({
   \ 'char':  'r',
