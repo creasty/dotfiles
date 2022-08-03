@@ -64,7 +64,7 @@ function M.setup()
   hi.TabLineFill = { fg = s.comment, bg = s.window }
   hi.TabLineSel = { fg = s.foreground, bg = s.window }
   hi.Title = { fg = s.foreground, bold = 1 }
-  hi.WinSeparator = { fg = s.gray400 }
+  hi.WinSeparator = { fg = s.window }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }
   hi.WildMenu = { fg = s.yellow, bg = s.background }
