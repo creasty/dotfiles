@@ -11,11 +11,11 @@ let g:EmacsCursorPumvisible = get(g:, 'EmacsCursorPumvisible', function('pumvisi
 inoremap <Plug>(emacs-enter) <Cmd>set eventignore+=InsertEnter,InsertLeave<CR>
 inoremap <Plug>(emacs-leave) <Cmd>set eventignore-=InsertEnter,InsertLeave<CR>
 
-imap <expr> <Plug>(emacs-down) g:EmacsCursorPumvisible() ?
-  \ "\<Down>"
+imap <expr> <Plug>(emacs-down) g:EmacsCursorPumvisible()
+  \ ? "\<Down>"
   \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gj\<Plug>(emacs-leave)"
-imap <expr> <Plug>(emacs-up) g:EmacsCursorPumvisible() ?
-  \ "\<Up>"
+imap <expr> <Plug>(emacs-up) g:EmacsCursorPumvisible()
+  \ ? "\<Up>"
   \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gk\<Plug>(emacs-leave)"
 inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
 inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"

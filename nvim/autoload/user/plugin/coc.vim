@@ -109,7 +109,7 @@ endfunction
 "  Key mappings
 "-----------------------------------------------
 " Completion
-if exists('*coc#pum#visible')
+if g:_coc_custom_menu
   inoremap <silent><expr> <Down> coc#pum#visible() ? coc#pum#next(0) : "\<Down>"
   inoremap <silent><expr> <Up> coc#pum#visible() ? coc#pum#prev(0) : "\<Up>"
 endif
