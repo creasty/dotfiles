@@ -180,6 +180,8 @@ function M.setup()
   hi.CocSnippetVisual = { fg = s.blue, bg = s.dark_blue }
   hi.CocPumDeprecated = { fg = s.gray200, strikethrough = 1 }
   hi.CocPumVirtualText = { fg = s.gray400 }
+  hi.CocDialogFloat = { fg = s.foreground, bg = s.background }
+  hi.CocDialogFloatBorder = { fg = s.bright_blue, bg = s.background }
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }

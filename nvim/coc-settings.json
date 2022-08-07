@@ -8,13 +8,29 @@
   "diagnostic.infoSign": "▸",
   "diagnostic.hintSign": "▪︎",
   "diagnostic.virtualText": false,
+  "diagnostic.floatConfig": {
+    "winblend": 10
+  },
 
   "suggest.selection": "first",
   "suggest.preferCompleteThanJumpPlaceholder": true,
   "suggest.virtualText": true,
   "suggest.defaultSortMethod": "none",
+  "suggest.floatConfig": {
+    "winblend": 10
+  },
+
+  "signature.floatConfig": {
+    "winblend": 10
+  },
+  "hover.floatConfig": {
+    "winblend": 10
+  },
 
   "dialog.confirmKey": "<C-j>",
+  "dialog.rounded": false,
+  "dialog.floatHighlight": "CocDialogFloat",
+  "dialog.floatBorderHighlight": "CocDialogFloatBorder",
 
   "list.normalMappings": {
     "<C-j>": "do:defaultaction",
