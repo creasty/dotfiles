@@ -575,7 +575,8 @@ if dein#is_available('coc.nvim') &&
     let g:UserLeximaPumvisible = function('coc#pum#visible')
   endif
 
-  augroup _init_lexima
+  augroup _init_super_mappings
+    autocmd!
     autocmd User PluginLeximaPostInit call s:setup_super_mappings()
   augroup END
 endif
