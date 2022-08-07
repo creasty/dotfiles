@@ -140,7 +140,7 @@ endfunction
 function! user#plugin#ddu#init_ddu_filter() abort
   " Disable completion
   let b:coc_suggest_disable = 1
-  let b:copilot_enabled = v:false
+  let b:copilot_disabled = v:true
   let b:lexima_disabled = 1
 
   call s:init_ddu()

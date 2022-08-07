@@ -570,6 +570,15 @@ if dein#is_available('coc.nvim') &&
     imap <silent><expr> <C-s><C-j> <SID>super_ctrl_s_ctrl_j()
   endfunction
 
+  function! s:auto_hide_copilot(float) abort
+    let l:disabled = a:float || g:user_coc_pum_enabled && coc#pum#visible() || UltiSnips#CanExpandSnippet()
+
+    let b:copilot_enabled = !l:disabled
+    if !b:copilot_enabled && s:is_copilot_suggested()
+      call copilot#Dismiss()
+    endif
+  endfunction
+
   if g:user_coc_pum_enabled
     let g:EmacsCursorPumvisible = function('coc#pum#visible')
     let g:UserLeximaPumvisible = function('coc#pum#visible')
@@ -578,5 +587,8 @@ if dein#is_available('coc.nvim') &&
   augroup _init_super_mappings
     autocmd!
     autocmd User PluginLeximaPostInit call s:setup_super_mappings()
+    autocmd User CocOpenFloat call s:auto_hide_copilot(v:true)
+    autocmd TextChangedI,CursorMovedI * call s:auto_hide_copilot(v:false)
+    autocmd InsertEnter * unlet! b:copilot_enabled
   augroup END
 endif
