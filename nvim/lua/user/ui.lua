@@ -1,7 +1,6 @@
 local file_readable_key = 'user_ui_file_readable'
 local current_normal_winnr_key = 'user_ui_current_normal_winnr'
 
-local indicator = '▌'
 local separator = '∙'
 local no_name_file = 'Untitled'
 
@@ -92,16 +91,10 @@ local function render_statusline(winnr, active)
   local buftype = vim.bo[bufnr].buftype
   local is_file = (buftype == '')
 
-  local l0 = {}
+  local l0 = {'%#StatusLinePrimary#'}
   local l1 = {}
   local r1 = {}
   local r0 = {}
-
-  if active then
-    table.insert(l0, '%#StatusLineL0#'..indicator)
-  else
-    table.insert(l0, '%#StatusLine#')
-  end
 
   if active then
     local filetype = vim.bo[bufnr].filetype

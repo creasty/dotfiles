@@ -159,6 +159,7 @@ function M.setup()
   hi.TSVariableBuiltin = { fg = s.blue, italic = 1 }
 
   -- custom
+  hi.StatusLinePrimary = { fg = s.foreground, bg = s.window }
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
@@ -170,12 +171,15 @@ function M.setup()
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
   -- coc.nvim
+  hi.CocSearch = { fg = s.yellow }
   hi.CocHighlightText = { bg = s.selection }
   hi.CocDiffAdd = { fg = s.dark_green }
   hi.CocDiffChange = { fg = s.dark_blue }
   hi.CocDiffDelete = { fg = s.dark_red }
   hi.CocFadeOut = { fg = s.gray200 }
   hi.CocSnippetVisual = { fg = s.blue, bg = s.dark_blue }
+  hi.CocPumDeprecated = { fg = s.gray200, strikethrough = 1 }
+  hi.CocPumVirtualText = { fg = s.gray300 }
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
