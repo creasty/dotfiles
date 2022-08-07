@@ -12,6 +12,7 @@
   "suggest.selection": "first",
   "suggest.preferCompleteThanJumpPlaceholder": true,
   "suggest.virtualText": true,
+  "suggest.defaultSortMethod": "none",
 
   "dialog.confirmKey": "<C-j>",
 
@@ -94,7 +95,7 @@
   //=== coc-tabnine
   //==============================================================================================
   "tabnine.priority": 50,
-  "tabnine.disable_filetypes": ["typescript", "typescriptreact", "markdown"],
+  "tabnine.disable_filetypes": ["markdown"],
 
   //=== coc-diagnostic
   //==============================================================================================
