@@ -115,10 +115,12 @@ function! s:init_ddu() abort
   nnoremap <buffer><script> <Tab> <SID>(choose-action)
   inoremap <buffer><script> <Tab> <SID>(choose-action)
 
+  nnoremap <buffer> <SID>(reset-cursor) <Cmd>call ddu#ui#ff#execute("call cursor(1,0)")<CR>
+  inoremap <buffer> <SID>(reset-cursor) <Cmd>call ddu#ui#ff#execute("call cursor(1,0)")<CR>
   nnoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#ff#do_action('refreshItems')<CR>
   inoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#ff#do_action('refreshItems')<CR>
-  nnoremap <buffer><script> <C-l> <SID>(refresh)
-  inoremap <buffer><script> <C-l> <SID>(refresh)
+  nnoremap <buffer><script> <C-l> <SID>(reset-cursor)<SID>(refresh)
+  inoremap <buffer><script> <C-l> <SID>(reset-cursor)<SID>(refresh)
 
   nnoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
   inoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
@@ -139,6 +141,7 @@ function! user#plugin#ddu#init_ddu_filter() abort
   " Disable completion
   let b:coc_suggest_disable = 1
   let b:copilot_enabled = v:false
+  let b:lexima_disabled = 1
 
   call s:init_ddu()
   inoremap <buffer> <C-p> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
