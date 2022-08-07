@@ -1,11 +1,11 @@
-import type { ActionData } from "https://deno.land/x/ddu_kind_file@v0.2.0/file.ts";
+import type { ActionData } from "https://deno.land/x/ddu_kind_file@v0.3.0/file.ts";
 import type {
   GatherArguments,
   OnInitArguments,
-} from "https://deno.land/x/ddu_vim@v1.1.0/base/source.ts";
-import type { Item } from "https://deno.land/x/ddu_vim@v1.1.0/types.ts";
-import { BaseSource } from "https://deno.land/x/ddu_vim@v1.1.0/types.ts";
-import { join } from "https://deno.land/std@0.127.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v1.8.8/base/source.ts";
+import type { Item } from "https://deno.land/x/ddu_vim@v1.8.8/types.ts";
+import { BaseSource } from "https://deno.land/x/ddu_vim@v1.8.8/types.ts";
+import { join } from "https://deno.land/std@0.151.0/path/mod.ts";
 
 type Params = {
   bin: string;

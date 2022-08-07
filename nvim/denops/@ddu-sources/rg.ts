@@ -2,11 +2,11 @@ import {
   BaseSource,
   Item,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v1.2.0/types.ts";
-import { fn } from "https://deno.land/x/ddu_vim@v1.2.0/deps.ts";
-import { ActionData } from "https://deno.land/x/ddu_kind_file@v0.2.0/file.ts";
-import { join } from "https://deno.land/std@0.126.0/path/mod.ts";
-import { GatherArguments } from "https://deno.land/x/ddu_vim@v1.2.0/base/source.ts";
+} from "https://deno.land/x/ddu_vim@v1.8.8/types.ts";
+import { fn } from "https://deno.land/x/ddu_vim@v1.8.8/deps.ts";
+import { ActionData } from "https://deno.land/x/ddu_kind_file@v0.3.0/file.ts";
+import { join } from "https://deno.land/std@0.151.0/path/mod.ts";
+import { GatherArguments } from "https://deno.land/x/ddu_vim@v1.8.8/base/source.ts";
 
 type HighlightGroup = {
   path?: string;
