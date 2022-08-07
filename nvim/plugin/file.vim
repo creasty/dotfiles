@@ -38,7 +38,7 @@ function! s:rename_current_file(new_path) abort
   exec 'keepalt' 'edit' fnameescape(l:new_path)
 endfunction
 
-function! s:delete(file)
+function! s:delete(file) abort
   " @see https://github.com/ali-rantakari/trash
   if executable('trash')
     call jobstart(['trash', a:file])
