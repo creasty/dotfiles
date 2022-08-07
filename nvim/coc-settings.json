@@ -219,7 +219,14 @@
   //=== coc-spell-checker
   //==============================================================================================
   "cSpell.fixSpellingWithRenameProvider": true,
-  "cSpell.ignoreRegExpList": ["\\w+'s\\b"],
+  "cSpell.ignoreRegExpList": ["\\w+'\\w+"],
+  "cSpell.dictionaryDefinitions": [
+    {
+      "name": "user",
+      "path": "/Users/creasty/.config/nvim/dict/user.txt"
+    }
+  ],
+  "cSpell.dictionaries": ["user"],
   "cSpell.enabledLanguageIds": [
     "c",
     "cpp",
@@ -252,12 +259,10 @@
     "vim",
     "yaml"
   ],
-  "cSpell.dictionaryDefinitions": [
-    {
-      "name": "user",
-      "path": "/Users/creasty/.config/nvim/dict/user.txt"
-    }
+  "cSpell.languageSettings": [
+    { "languageId": "python", "allowCompoundWords": true },
+    { "languageId": "go", "allowCompoundWords": true },
+    { "languageId": "vim", "allowCompoundWords": true }
   ],
-  "cSpell.dictionaries": ["user"],
   "cSpell.userWords": []
 }
