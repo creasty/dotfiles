@@ -117,14 +117,16 @@ function M.setup()
 
   -- LSP
   -- hi.LspReferenceText = {  }
-  hi.LspDiagnosticsDefaultError = { fg = s.red }
-  hi.LspDiagnosticsDefaultWarning = { fg = s.yellow }
-  hi.LspDiagnosticsDefaultInformation = { fg = s.blue }
-  hi.LspDiagnosticsDefaultHint = { fg = s.green }
-  hi.LspDiagnosticsUnderlineError = { undercurl = 1, sp = s.bright_red }
-  hi.LspDiagnosticsUnderlineWarning = { undercurl = 1, sp = s.bright_yellow }
-  hi.LspDiagnosticsUnderlineInformation = { undercurl = 1, sp = s.bright_blue }
-  hi.LspDiagnosticsUnderlineHint = { undercurl = 1, sp = s.bright_green }
+
+  -- Diagnostic
+  hi.DiagnosticError = { fg = s.red }
+  hi.DiagnosticWarn = { fg = s.yellow }
+  hi.DiagnosticInfo = { fg = s.blue }
+  hi.DiagnosticHint = { fg = s.green }
+  hi.DiagnosticUnderlineError = { undercurl = 1, sp = s.bright_red }
+  hi.DiagnosticUnderlineWarn = { undercurl = 1, sp = s.bright_yellow }
+  hi.DiagnosticUnderlineInfo = { undercurl = 1, sp = s.bright_blue }
+  hi.DiagnosticUnderlineHint = { undercurl = 1, sp = s.bright_green }
 
   -- Treesitter
   -- hi.TSError = { bg = s.dark_red }
@@ -157,7 +159,6 @@ function M.setup()
   hi.TSVariableBuiltin = { fg = s.blue, italic = 1 }
 
   -- custom
-  hi.StatusLineL0 = { fg = s.foreground, bg = s.window }
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
@@ -170,14 +171,6 @@ function M.setup()
 
   -- coc.nvim
   hi.CocHighlightText = { bg = s.selection }
-  hi.CocErrorSign = { fg = s.red }
-  hi.CocWarningSign = { fg = s.yellow }
-  hi.CocInfoSign = { fg = s.blue }
-  hi.CocHintSign = { fg = s.green }
-  hi.CocErrorHighlight = { undercurl = 1, sp = s.bright_red }
-  hi.CocWarningHighlight = { undercurl = 1, sp = s.bright_yellow }
-  hi.CocInfoHighlight = { undercurl = 1, sp = s.bright_blue }
-  hi.CocHintHighlight = { undercurl = 1, sp = s.bright_green }
   hi.CocDiffAdd = { fg = s.dark_green }
   hi.CocDiffChange = { fg = s.dark_blue }
   hi.CocDiffDelete = { fg = s.dark_red }

@@ -39,6 +39,14 @@ let g:coc_snippet_prev = '<S-Tab>'
 
 function! user#plugin#coc#init() abort
   hi link CocMenuSel PMenuSel
+  hi link CocErrorSign DiagnosticError
+  hi link CocWarningSign DiagnosticWarn
+  hi link CocInfoSign DiagnosticInfo
+  hi link CocHintSign DiagnosticHint
+  hi link CocErrorHighlight DiagnosticUnderlineError
+  hi link CocWarningHighlight DiagnosticUnderlineWarn
+  hi link CocInfoHighlight DiagnosticUnderlineInfo
+  hi link CocHintHighlight DiagnosticUnderlineHint
 
   augroup user_plugin_coc
     autocmd!
