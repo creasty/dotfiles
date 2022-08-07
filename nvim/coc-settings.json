@@ -1,3 +1,4 @@
+// cspell: enableCompoundWords
 {
   "coc.preferences.formatOnType": false,
   "coc.preferences.extensionUpdateCheck": "weekly",
@@ -58,7 +59,7 @@
       "ignoredRootPaths": ["~"]
     },
     "kotlin": {
-      // github.com/fwcd/kotlin-language-server
+      // brew install kotlin-language-server
       "command": "kotlin-language-server",
       "filetypes": ["kotlin"],
       "rootPatterns": ["gradle.properties"],

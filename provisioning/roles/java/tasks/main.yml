@@ -49,6 +49,7 @@
     - gradle                     # Open-source build automation tool based on the Groovy and Kotlin DSL
     - pre-commit                 # Framework for managing multi-language pre-commit hooks
     - coursier/formulas/coursier # Launcher for Coursier (required by pre-commit)
+    - kotlin-language-server     # Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
 
 # - name: install IDEs
 #   homebrew_cask:
