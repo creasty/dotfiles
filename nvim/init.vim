@@ -574,7 +574,7 @@ if dein#is_available('coc.nvim') &&
     let l:disabled = a:float || g:user_coc_pum_enabled && coc#pum#visible() || UltiSnips#CanExpandSnippet()
 
     let b:copilot_enabled = !l:disabled
-    if !b:copilot_enabled && s:is_copilot_suggested()
+    if !b:copilot_enabled
       call copilot#Dismiss()
     endif
   endfunction
