@@ -18,7 +18,10 @@ function! s:on_enter() abort
     return
   endif
 
-  let l:info = getbufinfo(g:lcb_leaved)[0]
+  let l:info = get(getbufinfo(g:lcb_leaved), 0, {})
+  if empty(&info)
+    return
+  endif
   if l:info.hidden || !l:info.loaded
     let g:lcb_closed = ([g:lcb_leaved] + g:lcb_closed)[0 : g:lcb_max_restore_count - 1]
   endif
