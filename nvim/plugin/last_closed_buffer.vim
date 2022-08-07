@@ -19,7 +19,7 @@ function! s:on_enter() abort
   endif
 
   let l:info = get(getbufinfo(g:lcb_leaved), 0, {})
-  if empty(&info)
+  if empty(l:info)
     return
   endif
   if l:info.hidden || !l:info.loaded

@@ -67,7 +67,7 @@ rev = 'be514c7f61d61143e696878ab4c33c8337c15692'
 rev = 'release'
 merged = 0
 hook_add = '''
-let g:_coc_custom_menu = 1
+let g:user_coc_pum_enabled = 1
 call user#plugin#coc#init()
 '''
 

@@ -487,7 +487,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_tab_i() abort
-    if g:_coc_custom_menu && coc#pum#visible()
+    if g:user_coc_pum_enabled && coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
       return coc#_select_confirm()
@@ -510,7 +510,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_esc_i() abort
-    if g:_coc_custom_menu && coc#pum#visible()
+    if g:user_coc_pum_enabled && coc#pum#visible()
       return coc#pum#cancel()
     elseif pumvisible()
       return "\<Plug>(completion-cancel)"
@@ -525,7 +525,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_cr_i() abort
-    if g:_coc_custom_menu && coc#pum#visible()
+    if g:user_coc_pum_enabled && coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
       return "\<Plug>(completion-accept)"
@@ -536,7 +536,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_ctrl_l() abort
-    if g:_coc_custom_menu && coc#pum#visible()
+    if g:user_coc_pum_enabled && coc#pum#visible()
       return coc#refresh()
     endif
 
@@ -570,7 +570,7 @@ if dein#is_available('coc.nvim') &&
     imap <silent><expr> <C-x><C-j> <SID>super_ctrl_x_ctrl_j()
   endfunction
 
-  if g:_coc_custom_menu
+  if g:user_coc_pum_enabled
     let g:EmacsCursorPumvisible = function('coc#pum#visible')
     let g:UserLeximaPumvisible = function('coc#pum#visible')
   endif
