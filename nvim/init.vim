@@ -540,7 +540,7 @@ if dein#is_available('coc.nvim') &&
       return coc#refresh()
     endif
 
-    return lexima#expand('<C-l>', 'i')
+    return lexima#expand('<C-L>', 'i')
   endfunction
 
   function! s:super_ctrl_x_ctrl_j() abort
