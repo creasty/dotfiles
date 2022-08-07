@@ -38,10 +38,6 @@ let g:coc_snippet_next = '<Tab>'
 let g:coc_snippet_prev = '<S-Tab>'
 
 function! user#plugin#coc#init() abort
-  set completeopt+=noinsert " auto select
-  set completeopt-=preview " disable the preview window feature
-  set shortmess+=c " silence annoying messages
-
   hi link CocMenuSel PMenuSel
 
   augroup user_plugin_coc

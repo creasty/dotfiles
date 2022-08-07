@@ -64,10 +64,10 @@ let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
 [[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
 repo = 'neoclide/coc.nvim'
 rev = 'be514c7f61d61143e696878ab4c33c8337c15692'
-# rev = 'release'
+rev = 'release'
 merged = 0
 hook_add = '''
-let g:_coc_custom_menu = 0
+let g:_coc_custom_menu = 1
 call user#plugin#coc#init()
 '''
 
