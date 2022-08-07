@@ -142,8 +142,7 @@ nmap <silent> gR <Plug>(coc-references-used)
 
 " Hover
 nmap <silent> gh <Plug>(coc-hover)
-imap <silent> <C-x><C-p> <Plug>(coc-signature-help)
-imap <silent> <C-x>p <Plug>(coc-signature-help)
+imap <silent> <C-s><C-p> <Plug>(coc-signature-help)
 
 " Diagnostics
 nmap <silent> [d <Plug>(coc-diagnostic-prev)

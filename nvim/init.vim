@@ -543,7 +543,7 @@ if dein#is_available('coc.nvim') &&
     return lexima#expand('<C-L>', 'i')
   endfunction
 
-  function! s:super_ctrl_x_ctrl_j() abort
+  function! s:super_ctrl_s_ctrl_j() abort
     if s:is_copilot_suggested()
       return copilot#Accept('')
     endif
@@ -567,7 +567,7 @@ if dein#is_available('coc.nvim') &&
     imap <silent><expr> <CR>  <SID>super_cr_i()
 
     imap <silent><expr> <C-l> <SID>super_ctrl_l()
-    imap <silent><expr> <C-x><C-j> <SID>super_ctrl_x_ctrl_j()
+    imap <silent><expr> <C-s><C-j> <SID>super_ctrl_s_ctrl_j()
   endfunction
 
   if g:user_coc_pum_enabled
