@@ -33,6 +33,7 @@ homebrew:
 
   # brew leaves | xargs brew desc | sed -E 's/^([^:]*): /- \1 # /g'
   packages:
+    - awscli              # Official Amazon AWS command-line interface
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
     - circleci            # Enables you to reproduce the CircleCI environment locally
     - cloc                # Statistics utility to count lines of code
