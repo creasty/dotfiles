@@ -83,6 +83,9 @@ function! user#plugin#coc#configure_float(winid) abort
 
   " Make foldcolumn blank
   call setwinvar(a:winid, '&foldenable', 0)
+
+  " Remove color column
+  call setwinvar(a:winid, '&colorcolumn', '')
 endfunction
 
 "  Custom actions

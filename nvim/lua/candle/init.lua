@@ -179,13 +179,13 @@ function M.setup()
   hi.CocFadeOut = { fg = s.gray200 }
   hi.CocSnippetVisual = { fg = s.blue, bg = s.dark_blue }
   hi.CocPumDeprecated = { fg = s.gray200, strikethrough = 1 }
-  hi.CocPumVirtualText = { fg = s.gray300 }
+  hi.CocPumVirtualText = { fg = s.gray400 }
 
   -- vim-searchhi
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
 
   -- copilot.vim
-  hi.CopilotSuggestion = { fg = s.gray300, underdash = 1, sp = s.gray400 }
+  hi.CopilotSuggestion = { fg = s.gray400, underdash = 1 }
 end
 
 return M
