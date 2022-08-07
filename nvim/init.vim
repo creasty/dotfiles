@@ -487,23 +487,15 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_tab_i() abort
-    if exists('*coc#pum#visible') && coc#pum#visible()
+    if g:_coc_custom_menu && coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
       return coc#_select_confirm()
     endif
 
-    if coc#expandableOrJumpable()
-      return "\<Plug>(coc-snippets-expand-jump)"
-    endif
-
     let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
     if l:snip
       return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
-    endif
-
-    if s:is_copilot_suggested()
-      return copilot#Accept('')
     endif
 
     return lexima#expand('<TAB>', 'i')
@@ -518,7 +510,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_esc_i() abort
-    if exists('*coc#pum#visible') && coc#pum#visible()
+    if g:_coc_custom_menu && coc#pum#visible()
       return coc#pum#cancel()
     elseif pumvisible()
       return "\<Plug>(completion-cancel)"
@@ -533,7 +525,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_cr_i() abort
-    if exists('*coc#pum#visible') && coc#pum#visible()
+    if g:_coc_custom_menu && coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
       return "\<Plug>(completion-accept)"
@@ -541,6 +533,26 @@ if dein#is_available('coc.nvim') &&
 
     " return "\<Plug>(coc-enter)"
     return lexima#expand('<CR>', 'i')
+  endfunction
+
+  function! s:super_ctrl_l() abort
+    if g:_coc_custom_menu && coc#pum#visible()
+      return coc#refresh()
+    endif
+
+    return lexima#expand('<C-l>', 'i')
+  endfunction
+
+  function! s:super_ctrl_x_ctrl_j() abort
+    if s:is_copilot_suggested()
+      return copilot#Accept('')
+    endif
+
+    if coc#expandableOrJumpable()
+      return "\<Plug>(coc-snippets-expand-jump)"
+    endif
+
+    return "\<Ignore>"
   endfunction
 
   inoremap <Plug>(completion-cancel) <C-e>
@@ -553,6 +565,9 @@ if dein#is_available('coc.nvim') &&
     smap <silent><expr> <Tab> <SID>super_tab_s()
     imap <silent><expr> <Esc> <SID>super_esc_i()
     imap <silent><expr> <CR>  <SID>super_cr_i()
+
+    imap <silent><expr> <C-l> <SID>super_ctrl_l()
+    imap <silent><expr> <C-x><C-j> <SID>super_ctrl_x_ctrl_j()
   endfunction
 
   if g:_coc_custom_menu

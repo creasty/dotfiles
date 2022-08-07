@@ -93,8 +93,8 @@
 
   //=== coc-tabnine
   //==============================================================================================
-  "tabnine.priority": 90,
-  "tabnine.disable_filetypes": ["markdown"],
+  "tabnine.priority": 50,
+  "tabnine.disable_filetypes": ["typescript", "typescriptreact", "markdown"],
 
   //=== coc-diagnostic
   //==============================================================================================

@@ -48,6 +48,12 @@ function! user#plugin#coc#init() abort
   hi link CocInfoHighlight DiagnosticUnderlineInfo
   hi link CocHintHighlight DiagnosticUnderlineHint
 
+  if !g:_coc_custom_menu
+    set completeopt+=noinsert " auto select
+    set completeopt-=preview " disable the preview window feature
+    set shortmess+=c " silence annoying messages
+  endif
+
   augroup user_plugin_coc
     autocmd!
 
