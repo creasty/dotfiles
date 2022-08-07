@@ -307,7 +307,7 @@ command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
 
 " inspect syntax
-command! ScopeInfo lua require'user.treesitter-helper'.show_hl_captures()
+command! ScopeInfo lua require'user.plugin.treesitter.helper'.show_hl_captures()
 
 " profiler
 command! ProfStart
