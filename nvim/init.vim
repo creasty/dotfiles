@@ -468,17 +468,10 @@ if dein#is_available('coc.nvim') && dein#is_available('ddu.vim')
   augroup END
 endif
 
-if dein#is_available('coc.nvim') && dein#is_available('ultisnips')
-  augroup _init_coc_ultisnips
-    autocmd!
-    autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
-    autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
-  augroup END
-endif
-
 if dein#is_available('coc.nvim') &&
   \ dein#is_available('copilot.vim') &&
-  \ dein#is_available('lexima.vim')
+  \ dein#is_available('lexima.vim') &&
+  \ dein#is_available('ultisnips')
 
   function! s:is_copilot_suggested() abort
     let l:copilot = copilot#GetDisplayedSuggestion()
@@ -589,8 +582,12 @@ if dein#is_available('coc.nvim') &&
   augroup _init_super_mappings
     autocmd!
     autocmd User PluginLeximaPostInit call s:setup_super_mappings()
+
     autocmd User CocOpenFloat call s:auto_hide_copilot(v:true)
     autocmd TextChangedI,CursorMovedI * call s:auto_hide_copilot(v:false)
     autocmd InsertEnter * unlet! b:copilot_enabled
+
+    autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
+    autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
   augroup END
 endif
