@@ -300,8 +300,9 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 
 "=== Misc
 "==============================================================================================
-" change soft-indent size
+" change indent style
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
+command! -nargs=1 HardTab :setl noexpandtab tabstop=<args> shiftwidth=<args>
 
 " substitute with match case
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
@@ -389,26 +390,24 @@ endfunction
 
 "=== Plugins
 "==============================================================================================
-let s:config_path = stdpath('config')
-let s:dein_path = s:config_path . '/dein'
-let s:dein_repos_path = s:dein_path . '/repos'
-let s:dein_rtp = s:dein_repos_path . '/github.com/Shougo/dein.vim'
-let s:dein_toml_path = s:config_path . '/dein.toml'
-let s:dein_lazy_toml_path = s:config_path . '/dein_lazy.toml'
+let s:dein_path = stdpath('config') . '/dein'
 
 if has('vim_starting')
-  let &g:rtp .= ',' . s:dein_rtp
+  let &g:rtp .= ',' . s:dein_path . '/repos/github.com/Shougo/dein.vim'
 endif
 
 if dein#load_state(s:dein_path)
+  let s:dein_default_toml = s:dein_path . '/default.toml'
+  let s:dein_lazy_toml = s:dein_path . '/lazy.toml'
+
   call dein#begin(s:dein_path, [
     \ expand('<sfile>'),
-    \ s:dein_toml_path,
-    \ s:dein_lazy_toml_path,
+    \ s:dein_default_toml,
+    \ s:dein_lazy_toml,
   \ ])
 
-  call dein#load_toml(s:dein_toml_path,      { 'lazy': 0 })
-  call dein#load_toml(s:dein_lazy_toml_path, { 'lazy': 1 })
+  call dein#load_toml(s:dein_default_toml, { 'lazy': 0 })
+  call dein#load_toml(s:dein_lazy_toml,    { 'lazy': 1 })
 
   call dein#end()
   call dein#save_state()

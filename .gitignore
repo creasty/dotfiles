@@ -5,7 +5,8 @@ __pycache__
 tmp/
 
 nvim/.netrwhist
-nvim/dein
+nvim/dein/*
+!nvim/dein/*.toml
 
 provisioning/playbook.retry
 provisioning/secrets.yml

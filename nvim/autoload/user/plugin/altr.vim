@@ -21,7 +21,7 @@ function! user#plugin#altr#lazy_init() abort
   call altr#define('docker-compose.yml', 'Dockerfile')
 
   " Vim
-  call altr#define('dein.toml', 'dein_lazy.toml')
+  call altr#define('dein/default.toml', 'dein/lazy.toml')
 
   " Config
   call altr#define('.env', '.env.sample', '.env.local', '.env.development', '.env.test')
