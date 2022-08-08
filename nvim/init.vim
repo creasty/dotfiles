@@ -551,7 +551,7 @@ if dein#is_available('coc.nvim') &&
       return "\<Plug>(coc-snippets-expand-jump)"
     endif
 
-    return "\<Ignore>"
+    return "\<Nop>"
   endfunction
 
   inoremap <Plug>(completion-cancel) <C-e>
@@ -570,11 +570,15 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:auto_hide_copilot(float) abort
-    let l:disabled = a:float || g:user_coc_pum_enabled && coc#pum#visible() || UltiSnips#CanExpandSnippet()
+    let l:disabled = a:float
+      \ || g:user_coc_pum_enabled && coc#pum#visible()
+      \ || UltiSnips#CanExpandSnippet()
 
-    let b:copilot_enabled = !l:disabled
-    if !b:copilot_enabled
+    if l:disabled
+      let b:copilot_enabled = v:false
       call copilot#Dismiss()
+    else
+      unlet! b:copilot_enabled
     endif
   endfunction
 
