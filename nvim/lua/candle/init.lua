@@ -64,10 +64,10 @@ function M.setup()
   hi.TabLineFill = { fg = s.comment, bg = s.window }
   hi.TabLineSel = { fg = s.foreground, bg = s.window }
   hi.Title = { fg = s.foreground, bold = 1 }
-  hi.WinSeparator = { fg = s.window }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }
   hi.WildMenu = { fg = s.yellow, bg = s.background }
+  hi.WinSeparator = { fg = s.window }
 
   hi.BorderedFloat = { fg = s.foreground, bg = s.background }
   hi.FloatBorder = { fg = s.gray400, bg = s.background }
@@ -165,9 +165,7 @@ function M.setup()
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
   hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window }
 
-  hi.FullwidthSpace = { bg = s.dark_purple }
   hi.GitConflictMarker = { fg = s.red, bg = s.dark_red }
-  hi.ExtraWhitespace = { fg = s.gray500, sp = s.comment, underdot = 1 }
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
   -- coc.nvim
@@ -187,7 +185,7 @@ function M.setup()
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
 
   -- copilot.vim
-  hi.CopilotSuggestion = { fg = s.gray400, underdash = 1 }
+  hi.CopilotSuggestion = { fg = s.gray400, underdot = 1 }
 end
 
 return M

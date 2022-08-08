@@ -119,7 +119,7 @@ set display+=uhex
 
 " show hidden charactors
 set list
-set listchars=tab:▸\ ,nbsp:∘,extends:❯,precedes:❮
+set listchars=tab:→\ ,nbsp:∙,extends:❯,precedes:❮,trail:·
 
 " indent wrapped lines
 set breakindent

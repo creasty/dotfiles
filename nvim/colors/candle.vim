@@ -9,12 +9,10 @@ function! s:setup_matchadd() abort
 
   " cSpell:disable
   let w:candle_match_ids = [
-    \ matchadd('FullwidthSpace', '　'),
-    \ matchadd("SpellRare", '[０１２３４５６７８９]'),
+    \ matchadd("SpellRare", '[０１２３４５６７８９　]'),
     \ matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]'),
     \ matchadd("SpellRare", '[ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ]'),
     \ matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50),
-    \ matchadd('ExtraWhitespace', '\s\+$', 50),
     \ matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50),
     \ matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50),
     \ matchadd('Todo', '\v<(TODO|FIXME)>', 50),
