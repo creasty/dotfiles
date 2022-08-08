@@ -11,23 +11,23 @@ const [${1:state}, set${1/^(is|has)?(.+)/\u$2/}] = useAdaptiveState<${2:${1/^(is
 endsnippet
 
 snippet useRef "Variable for React.useRef" b
-const ${1:name} = useRef<${2:${1/^(is|has)?(.+)/\u$2/}}>($3);
+const ${1:name} = useRef<${2:${1/^(is|has)?(.+)/\u$2/}}>($0);
 endsnippet
 
 snippet useCallback "Variable for React.useCallback" b
-const ${1:name} = useCallback(() => $2, [$3]);
+const ${1:name} = useCallback(() => $0, []);
 endsnippet
 
 snippet useMemo "Variable for React.useMemo" b
-const ${1:name} = useMemo(() => $2, [$3]);
+const ${1:name} = useMemo(() => $0, []);
 endsnippet
 
 snippet useEffect "Variable for React.useEffect" b
-useEffect(() => $1, [$2]);
+useEffect(() => $0, []);
 endsnippet
 
 snippet useLayoutEffect "Variable for React.useLayoutEffect" b
-useLayoutEffect(() => $1, [$2]);
+useLayoutEffect(() => $0, []);
 endsnippet
 
 #=== Apollo Client
@@ -35,10 +35,4 @@ endsnippet
 snippet fetchPolicy "Useful pair of fetchPolicy and nextFetchPolicy" b
 fetchPolicy: "cache-and-network",
 nextFetchPolicy: "cache-first",
-endsnippet
-
-snippet refetchQueries "Define refetchQueries" b
-function refetchQueries(): (string | PureQueryOptions)[] {
-	return [$0];
-}
 endsnippet
