@@ -495,7 +495,7 @@ if dein#is_available('coc.nvim') &&
 
     let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
     if l:snip
-      return "\<C-r>=UltiSnips#ExpandSnippetOrJump()\<CR>"
+      return "\<Plug>(ultisnips-expand)"
     endif
 
     return lexima#expand('<TAB>', 'i')
@@ -506,7 +506,7 @@ if dein#is_available('coc.nvim') &&
       return coc#snippet#next()
     endif
 
-    return "\<Esc>\<Cmd>call UltiSnips#ExpandSnippetOrJump()\<CR>"
+    return "\<Plug>(ultisnips-expand)"
   endfunction
 
   function! s:super_esc_i() abort
