@@ -584,7 +584,6 @@ if dein#is_available('coc.nvim') &&
 
   if g:user_coc_pum_enabled
     let g:EmacsCursorPumvisible = function('coc#pum#visible')
-    let g:UserLeximaPumvisible = function('coc#pum#visible')
   endif
 
   augroup _init_super_mappings
