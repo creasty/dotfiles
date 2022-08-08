@@ -13,6 +13,7 @@
     "winblend": 10
   },
 
+  "suggest.enablePreselect": false,
   "suggest.selection": "first",
   "suggest.preferCompleteThanJumpPlaceholder": true,
   "suggest.virtualText": true,
@@ -112,7 +113,7 @@
   //=== coc-tabnine
   //==============================================================================================
   "tabnine.priority": 50,
-  "tabnine.disable_filetypes": ["typescript", "typescriptreact", "markdown"],
+  "tabnine.disable_filetypes": ["markdown"],
 
   //=== coc-diagnostic
   //==============================================================================================
