@@ -45,3 +45,16 @@ snippet /(?<!")""/ "Heading 2" br
 "  $0
 "`!v repeat('-', 47)`
 endsnippet
+
+snippet minimum_rtp "Build rtp for minimum init.vim" b
+if has('vim_starting')
+	let s:repos = [
+		\ '$0',
+	\ ]
+
+	let s:config_path = stdpath('config')
+	let s:paths = filter(split(&g:rtp, ','), { _, v -> v !=# s:config_path && v !=# s:config_path . '/after' })
+	let s:paths += map(s:repos, { _, v -> s:config_path . '/dein/repos/github.com/' . v })
+	let &g:rtp = join(s:paths, ',')
+endif
+endsnippet
