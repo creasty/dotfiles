@@ -30,7 +30,6 @@
   },
 
   "dialog.confirmKey": "<C-j>",
-  "dialog.rounded": false,
   "dialog.floatHighlight": "CocDialogFloat",
   "dialog.floatBorderHighlight": "CocDialogFloatBorder",
 

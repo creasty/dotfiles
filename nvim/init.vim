@@ -391,9 +391,10 @@ endfunction
 "=== Plugins
 "==============================================================================================
 let s:dein_path = stdpath('config') . '/dein'
+let s:dein_repos_path = s:dein_path . '/repos/github.com'
 
 if has('vim_starting')
-  let &g:rtp .= ',' . s:dein_path . '/repos/github.com/Shougo/dein.vim'
+  let &g:rtp .= ',' . s:dein_repos_path . '/Shougo/dein.vim'
 endif
 
 if dein#load_state(s:dein_path)
@@ -562,7 +563,7 @@ if dein#is_available('coc.nvim') &&
     imap <silent><expr> <C-s><C-j> <SID>super_ctrl_s_ctrl_j()
   endfunction
 
-  function! s:auto_hide_copilot(float) abort
+  function! s:auto_dismiss_copilot(float) abort
     let l:disabled = a:float
       \ || g:user_coc_pum_enabled && coc#pum#visible()
       \ || UltiSnips#CanExpandSnippet()
@@ -583,8 +584,8 @@ if dein#is_available('coc.nvim') &&
     autocmd!
     autocmd User PluginLeximaPostInit call s:setup_super_mappings()
 
-    autocmd User CocOpenFloat call s:auto_hide_copilot(v:true)
-    autocmd TextChangedI,CursorMovedI * call s:auto_hide_copilot(v:false)
+    autocmd User CocOpenFloat call s:auto_dismiss_copilot(v:true)
+    autocmd TextChangedI,CursorMovedI * call s:auto_dismiss_copilot(v:false)
     autocmd InsertEnter * unlet! b:copilot_enabled
 
     autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder

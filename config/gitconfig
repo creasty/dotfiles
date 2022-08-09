@@ -103,7 +103,7 @@
   pl  = pull origin
   plm = ! git pull origin "$(git get-main-branch)" "$@"
   pld = pull origin develop
-  plf = pull forkee
+  plf = pull fork
   pu  = push origin
 
   sm  = submodule
