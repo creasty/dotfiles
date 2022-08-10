@@ -422,8 +422,8 @@ call dein#call_hook('post_source')
 
 "  Dein commands
 "-----------------------------------------------
-command! DeinUpdate
-  \ call dein#update()
+command! -nargs=* DeinUpdate
+  \ call dein#update(<f-args>)
 command! DeinPurgeCache
   \ call dein#recache_runtimepath() |
   \ call dein#clear_state()
