@@ -63,9 +63,6 @@ function! user#plugin#coc#init() abort
     " Update signature help on jump placeholder.
     autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
 
-    " Customize floating windows
-    autocmd User CocOpenFloat call user#plugin#coc#configure_float(g:coc_last_float_win)
-
     " Auto format
     autocmd FocusLost,BufLeave *.go silent call CocActionAsync('format')
 
@@ -73,19 +70,6 @@ function! user#plugin#coc#init() abort
     autocmd User CocNvimInit delcommand CocRebuild
     autocmd User CocNvimInit command! -nargs=0 CocRestart :silent call coc#rpc#restart()
   augroup END
-endfunction
-
-function! user#plugin#coc#configure_float(winid) abort
-  " Remove search highlight
-  let l:value = getwinvar(a:winid, '&winhighlight')
-  let l:newValue = join(filter([l:value, 'Search:'], '!empty(v:val)'), ',')
-  call setwinvar(a:winid, '&winhighlight', l:newValue)
-
-  " Make foldcolumn blank
-  call setwinvar(a:winid, '&foldenable', 0)
-
-  " Remove color column
-  call setwinvar(a:winid, '&colorcolumn', '')
 endfunction
 
 "  Custom actions
