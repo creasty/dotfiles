@@ -3,13 +3,11 @@ Thumb.db
 
 *.log
 tmp/
+.fdignore
 
 # Tags
 .tags
 tags
-
-# Editor
-.vscode/
 
 # Ruby
 vendor/bundle/
