@@ -48,12 +48,6 @@ function! user#plugin#coc#init() abort
   hi link CocInfoHighlight DiagnosticUnderlineInfo
   hi link CocHintHighlight DiagnosticUnderlineHint
 
-  if !g:user_coc_pum_enabled
-    set completeopt+=noinsert " auto select
-    set completeopt-=preview " disable the preview window feature
-    set shortmess+=c " silence annoying messages
-  endif
-
   augroup user_plugin_coc
     autocmd!
 
@@ -106,10 +100,8 @@ endfunction
 "  Key mappings
 "-----------------------------------------------
 " Completion
-if g:user_coc_pum_enabled
-  inoremap <silent><expr> <Down> coc#pum#visible() ? coc#pum#next(0) : "\<Down>"
-  inoremap <silent><expr> <Up> coc#pum#visible() ? coc#pum#prev(0) : "\<Up>"
-endif
+inoremap <silent><expr> <Down> coc#pum#visible() ? coc#pum#next(0) : "\<Down>"
+inoremap <silent><expr> <Up> coc#pum#visible() ? coc#pum#prev(0) : "\<Up>"
 
 " Refactoring
 nmap <silent> gr <Plug>(coc-rename)

@@ -480,7 +480,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_tab_i() abort
-    if g:user_coc_pum_enabled && coc#pum#visible()
+    if coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
       return coc#_select_confirm()
@@ -503,7 +503,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_esc_i() abort
-    if g:user_coc_pum_enabled && coc#pum#visible()
+    if coc#pum#visible()
       return coc#pum#cancel()
     elseif pumvisible()
       return "\<Plug>(completion-cancel)"
@@ -518,7 +518,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_cr_i() abort
-    if g:user_coc_pum_enabled && coc#pum#visible()
+    if coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
       return "\<Plug>(completion-accept)"
@@ -529,7 +529,7 @@ if dein#is_available('coc.nvim') &&
   endfunction
 
   function! s:super_ctrl_l() abort
-    if g:user_coc_pum_enabled && coc#pum#visible()
+    if coc#pum#visible()
       return coc#refresh()
     endif
 
@@ -565,7 +565,7 @@ if dein#is_available('coc.nvim') &&
 
   function! s:auto_dismiss_copilot(float) abort
     let l:disabled = a:float
-      \ || g:user_coc_pum_enabled && coc#pum#visible()
+      \ || coc#pum#visible()
       \ || UltiSnips#CanExpandSnippet()
 
     if l:disabled
@@ -576,9 +576,7 @@ if dein#is_available('coc.nvim') &&
     endif
   endfunction
 
-  if g:user_coc_pum_enabled
-    let g:EmacsCursorPumvisible = function('coc#pum#visible')
-  endif
+  let g:EmacsCursorPumvisible = function('coc#pum#visible')
 
   augroup _init_super_mappings
     autocmd!
