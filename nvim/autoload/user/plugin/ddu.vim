@@ -95,7 +95,7 @@ function! user#plugin#ddu#init() abort
   \ })
 endfunction
 
-function! s:init_ddu() abort
+function! user#plugin#ddu#init_buffer() abort
   nnoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#ff#do_action('quit')<CR>
   inoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#ff#do_action('quit')<CR>
   nnoremap <buffer><script> <Esc> <SID>(quit)
@@ -126,24 +126,16 @@ function! s:init_ddu() abort
   inoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
   nnoremap <buffer><script> <C-r> <SID>(reload)
   inoremap <buffer><script> <C-r> <SID>(reload)
-endfunction
 
-function! user#plugin#ddu#init_ddu_list() abort
-  call s:init_ddu()
-  nnoremap <buffer> i <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer> p <Cmd>call ddu#ui#ff#do_action('preview')<CR>
-  nnoremap <buffer> o <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open' })<CR>
-  nnoremap <buffer> y <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'yank' })<CR>
-  nnoremap <buffer> - <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>j
-endfunction
-
-function! user#plugin#ddu#init_ddu_filter() abort
-  " Disable completion
-  let b:coc_suggest_disable = 1
-  let b:copilot_disabled = v:true
-  let b:lexima_disabled = 1
-
-  call s:init_ddu()
-  inoremap <buffer> <C-p> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
-  inoremap <buffer> <C-n> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')+1,0)")<CR>
+  if &ft ==# 'ddu-ff'
+    nnoremap <buffer> i <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+    nnoremap <buffer> p <Cmd>call ddu#ui#ff#do_action('preview')<CR>
+    nnoremap <buffer> o <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open' })<CR>
+    nnoremap <buffer> y <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'yank' })<CR>
+    nnoremap <buffer> - <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>j
+  endif
+  if &ft ==# 'ddu-ff-filter'
+    inoremap <buffer> <C-p> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
+    inoremap <buffer> <C-n> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')+1,0)")<CR>
+  endif
 endfunction

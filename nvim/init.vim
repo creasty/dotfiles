@@ -469,6 +469,30 @@ if dein#is_available('coc.nvim') && dein#is_available('ddu.vim')
   augroup END
 endif
 
+if dein#is_available('ddu.vim')
+  augroup _init_ddu_integration
+    autocmd!
+    autocmd FileType ddu-ff-filter
+      \ let b:coc_suggest_disable = 1 |
+      \ let b:copilot_disabled = v:true |
+      \ let b:lexima_disabled = 1
+  augroup END
+endif
+
+if dein#is_available('lexima.vim')
+  augroup _init_lexima
+    autocmd!
+    autocmd User BlockwiseVisualInsertPre
+      \ let b:coc_suggest_disable = 1 |
+      \ let b:copilot_disabled = v:true |
+      \ let b:lexima_disabled = 1
+    autocmd User BlockwiseVisualInsertPost
+      \ unlet! b:coc_suggest_disable |
+      \ unlet! b:copilot_disabled |
+      \ unlet! b:lexima_disabled
+  augroup END
+endif
+
 if dein#is_available('coc.nvim') &&
   \ dein#is_available('copilot.vim') &&
   \ dein#is_available('lexima.vim') &&

@@ -172,8 +172,8 @@ call user#plugin#ddu#init()
 
 augroup _init_ddu
   autocmd!
-  autocmd FileType ddu-ff call user#plugin#ddu#init_ddu_list()
-  autocmd FileType ddu-ff-filter call user#plugin#ddu#init_ddu_filter()
+  autocmd FileType ddu-ff call user#plugin#ddu#init_buffer()
+  autocmd FileType ddu-ff-filter call user#plugin#ddu#init_buffer()
 augroup END
 
 command! -nargs=0 Open :call user#plugin#ddu#open()
