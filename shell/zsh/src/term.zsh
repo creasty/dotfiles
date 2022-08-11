@@ -140,8 +140,9 @@ _peco_select() {
 #-----------------------------------------------
 peco_insert_path() {
   if [ "$(pwd)" = "$HOME" ]; then
-    ls -AF \
+    ls -aF \
       | sed -E 's/@$//g' \
+      | sed -E 's/ -> .+$//g' \
       | _peco_select \
       | _buffer_insert_files
   else
