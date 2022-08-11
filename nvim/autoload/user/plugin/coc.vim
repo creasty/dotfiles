@@ -79,17 +79,6 @@ command! -nargs=0 Import
 command! -nargs=0 -range=% Format call <SID>run_format(<range>, <line1>, <line2>)
 
 function! s:run_format(range, line1, line2) abort
-  if &ft ==# 'proto' && executable('clang-format')
-    normal mZ
-    if a:range == 0
-      exec '%!clang-format' '%'
-    else
-      exec '%!clang-format' '-lines='.a:line1.':'.a:line2 '%'
-    endif
-    normal 'Zzz
-    return
-  end
-
   if a:range == 0
     call CocActionAsync('format')
   else

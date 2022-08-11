@@ -36,9 +36,11 @@
     name:  '{{ item }}'
     state: latest
   with_items:
-    - watchman
-    - llvm # (clangd, clang-format)
+    - ansible-lint
+    - clang-format
+    - llvm # clangd
     - shellcheck
+    - watchman
 
 - name: coc.nvim | install deps via pip3
   pip:

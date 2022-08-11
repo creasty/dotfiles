@@ -120,7 +120,12 @@
     "bash": ["shellcheck"],
     "sh": ["shellcheck"],
     "vim": ["vint"],
-    "go": ["golangci-lint"]
+    "go": ["golangci-lint"],
+    "yaml": ["ansible-lint"]
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    "proto": ["clang-format"],
+    "terraform": ["terraform"]
   },
   "diagnostic-languageserver.linters": {
     "shellcheck": {
@@ -182,6 +187,37 @@
         "column": "Pos.Column",
         "message": "${Text} [${FromLinter}]"
       }
+    },
+    "ansible-lint": {
+      "command": "ansible-lint",
+      "args": ["--parseable-severity", "--nocolor", "-"],
+      "rootPatterns": ["playbook.yml"],
+      "sourceName": "ansible-lint",
+      "formatPattern": [
+        "^[^:]+:(\\d+):\\s\\[\\w+\\]\\s\\[(\\w+)\\]\\s(.*)$",
+        {
+          "line": 1,
+          "security": 2,
+          "message": 3
+        }
+      ],
+      "securities": {
+        "VERY_LOW": "hint",
+        "LOW": "info",
+        "HIGH": "warning",
+        "VERY_HIGH": "error"
+      }
+    }
+  },
+  "diagnostic-languageserver.formatters": {
+    "clang-format": {
+      "command": "clang-format",
+      "args": ["-i", "%filepath"],
+      "rootPatterns": [".clang-format"]
+    },
+    "terraform": {
+      "command": "terraform",
+      "args": ["fmt", "-"]
     }
   },
 
