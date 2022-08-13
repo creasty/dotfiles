@@ -50,8 +50,8 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~65ms to startup on M1 Max
   - ~120ms on 2.3 GHz 8-Core Intel Core i9
-- 3,500 loc of config
-- 43 third-party plugins, including:
+- 3,400 loc of config
+- 44 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
   - [ddu.vim](https://github.com/Shougo/ddu.vim)
@@ -64,7 +64,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 ```sh-session
 $ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
 $ cloc --exclude-dir=dein,template nvim
-$ rg '^\[\[plugins' nvim/dein.toml nvim/dein_lazy.toml | wc -l
+$ rg '^\[\[plugins' nvim/dein/*.toml | wc -l
 ```
 
 Profiling:
