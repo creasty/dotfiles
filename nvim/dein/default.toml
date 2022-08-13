@@ -162,6 +162,18 @@ let g:NERDTreeAutoDeleteBuffer = 1
 let g:loaded_nerdtree_fs_menu = 1
 '''
 
+[[plugins]] # Indent guides for Neovim
+repo = 'lukas-reineke/indent-blankline.nvim'
+hook_add = '''
+lua << EOF
+require("indent_blankline").setup {
+  show_first_indent_level = false,
+  show_trailing_blankline_indent = false,
+  show_current_context = false,
+}
+EOF
+'''
+
 #  ddu
 #-----------------------------------------------
 [[plugins]] # Dark deno-powered UI framework for neovim/Vim8
