@@ -38,6 +38,9 @@ export PATH=/usr/local/opt/llvm/bin:$PATH
 # libpq
 export PATH=/opt/homebrew/opt/libpq/bin:$PATH
 
+# Dart
+export PATH=$PATH:$HOME/.pub-cache/bin
+
 #  App config
 #-----------------------------------------------
 # Git
