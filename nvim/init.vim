@@ -533,6 +533,10 @@ if dein#is_available('coc.nvim') &&
       return "\<Plug>(completion-cancel)"
     endif
 
+    if coc#float#has_float()
+      return "\<C-o>\<Plug>(coc-float-hide)"
+    endif
+
     if s:is_copilot_suggested()
       call copilot#Dismiss()
       return ''
