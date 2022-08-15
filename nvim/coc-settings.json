@@ -225,10 +225,10 @@
   //==============================================================================================
   "Lua.diagnostics.globals": ["vim"],
   "Lua.workspace.library": {
-    "/usr/local/share/nvim/runtime/lua": true,
-    "/usr/local/share/nvim/runtime/lua/vim": true,
-    "/usr/local/share/nvim/runtime/lua/vim/lsp": true,
-    "/usr/local/share/nvim/runtime/lua/vim/treesitter": true
+    "/opt/homebrew/share/nvim/runtime/lua": true,
+    "/opt/homebrew/share/nvim/runtime/lua/vim": true,
+    "/opt/homebrew/share/nvim/runtime/lua/vim/lsp": true,
+    "/opt/homebrew/share/nvim/runtime/lua/vim/treesitter": true
   },
 
   //=== coc-tsserver
@@ -299,6 +299,7 @@
   "cSpell.languageSettings": [
     { "languageId": "python", "allowCompoundWords": true },
     { "languageId": "go", "allowCompoundWords": true },
+    { "languageId": "lua", "allowCompoundWords": true },
     { "languageId": "vim", "allowCompoundWords": true }
   ],
   "cSpell.userWords": []
