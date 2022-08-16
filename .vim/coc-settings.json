@@ -2,6 +2,10 @@
   "deno.enable": true,
   "tsserver.enable": false,
   "cSpell.words": [
-    "Denops"
+    "Denops",
+    "Menlo",
+    "Ulti",
+    "lexima",
+    "ultisnips"
   ]
 }

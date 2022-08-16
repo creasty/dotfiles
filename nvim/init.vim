@@ -450,29 +450,8 @@ if dein#is_available('vim-searchhi')
   augroup END
 endif
 
-if dein#is_available('coc.nvim') && dein#is_available('ddu.vim')
-  let g:coc_enable_locationlist = 0
-
-  nnoremap <silent> gll <Cmd>call user#plugin#ddu#coc_locations(v:true)<CR>
-
-  augroup _init_coc_ddu
-    autocmd!
-    autocmd User CocLocationsChange call user#plugin#ddu#coc_locations(v:false)
-  augroup END
-endif
-
-if dein#is_available('ddu.vim')
-  augroup _init_ddu_integration
-    autocmd!
-    autocmd FileType ddu-ff-filter
-      \ let b:coc_suggest_disable = 1 |
-      \ let b:copilot_disabled = v:true |
-      \ let b:lexima_disabled = 1
-  augroup END
-endif
-
-if dein#is_available('lexima.vim')
-  augroup _init_lexima
+if v:true " blockwise_visual_insert + coc, copilot, lexima
+  augroup _init_bvi_integration
     autocmd!
     autocmd User BlockwiseVisualInsertPre
       \ let b:coc_suggest_disable = 1 |
@@ -482,6 +461,26 @@ if dein#is_available('lexima.vim')
       \ unlet! b:coc_suggest_disable |
       \ unlet! b:copilot_disabled |
       \ unlet! b:lexima_disabled
+  augroup END
+endif
+
+if dein#is_available('ddu.vim') " + coc, copilot, lexima
+  augroup _init_ddu_integration
+    autocmd!
+    autocmd FileType ddu-ff-filter
+      \ let b:coc_suggest_disable = 1 |
+      \ let b:copilot_disabled = v:true |
+      \ let b:lexima_disabled = 1
+  augroup END
+endif
+
+if dein#is_available('ddu.vim') && dein#is_available('coc.nvim')
+  let g:coc_enable_locationlist = 0
+  nnoremap <silent> gll <Cmd>call user#plugin#ddu#coc_locations(v:true)<CR>
+
+  augroup _init_coc_ddu
+    autocmd!
+    autocmd User CocLocationsChange call user#plugin#ddu#coc_locations(v:false)
   augroup END
 endif
 
