@@ -15,8 +15,7 @@ jobs:
         include:
           #- tags: base,install.homebrew.formula
           #- tags: base,lang
-          - tags: install,app,system
-            skip_tags: install.mas,install.homebrew.formula
+          - tags: app,system
     steps:
       - uses: actions/checkout@v2
 
