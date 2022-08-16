@@ -38,4 +38,4 @@ jobs:
           ID_RSA_FILE_B64: ${{ secrets.ID_RSA_FILE_B64 }}
 
       - name: Run
-        run: ./up -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }} -f3
+        run: ./up -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }} -f1
