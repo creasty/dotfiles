@@ -8,6 +8,7 @@ jobs:
     env:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
+      ANSIBLE_DEBUG: 1
     strategy:
       fail-fast: false
       matrix:
