@@ -1,0 +1,3 @@
+coc-settings.json linguist-language=jsonc
+vscode/*.json linguist-language=jsonc
+*.code-snippets linguist-language=jsonc
