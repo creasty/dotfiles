@@ -1,35 +1,7 @@
 homebrew:
   # brew list --cask --full-name
   applications:
-    - 1password/tap/1password-cli # https://developer.1password.com/docs/cli
-    - adobe-creative-cloud        # https://creative.adobe.com/products/creative-cloud
-    - alacritty                   # https://github.com/jwilm/alacritty
-    - appcleaner                  # https://freemacsoft.net/appcleaner/
-    - chromedriver                # https://sites.google.com/a/chromium.org/chromedriver/home
     - creasty/tools/keyboard      # https://github.com/creasty/Keyboard
-    - docker                      # https://www.docker.com/community-edition
-    - figma                       # https://www.figma.com/
-    - google-chat                 # https://gsuite.google.com/products/chat/
-    - google-chrome               # https://www.google.com/chrome/
-    - google-cloud-sdk            # https://cloud.google.com/sdk/
-    - google-drive                # https://www.google.com/drive/
-    - google-japanese-ime         # https://www.google.co.jp/ime/
-    - imageoptim                  # https://imageoptim.com/mac
-    - istat-menus                 # https://bjango.com/mac/istatmenus/
-    - kitty                       # https://github.com/kovidgoyal/kitty
-    - ngrok                       # https://ngrok.com/
-    - notion                      # https://www.notion.so/
-    - pushplaylabs-sidekick       # https://www.meetsidekick.com/
-    - qlcolorcode                 # https://github.com/anthonygelibert/QLColorCode
-    - qlmarkdown                  # https://github.com/toland/qlmarkdown
-    - qlstephen                   # https://whomwah.github.io/qlstephen/
-    - quicklook-json              # http://www.sagtau.com/quicklookjson.html
-    - raycast                     # https://raycast.app/
-    - rightfont                   # https://rightfontapp.com/
-    - spotify                     # https://www.spotify.com/
-    - tableplus                   # https://tableplus.io/
-    - tunnelbear                  # https://www.tunnelbear.com/
-    - webpquicklook               # https://github.com/emin/WebPQuickLook
 
   # brew leaves | xargs brew desc | sed -E 's/^([^:]*): /- \1 # /g'
   packages:
