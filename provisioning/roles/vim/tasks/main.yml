@@ -1,12 +1,6 @@
-- name: install dein.vim
-  git:
-    repo:   https://github.com/Shougo/dein.vim
-    dest:   '{{ dotfiles_path }}/nvim/dein/repos/github.com/Shougo/dein.vim'
-    update: False
-
-- name: install python3
+- name: install neovim
   homebrew:
-    name:  python3
+    name:  neovim
     state: latest
 
 - name: install python libraries
@@ -16,36 +10,31 @@
     state:      latest
   with_items:
     - neovim
-    - vim-vint
-    - pynvim
 
-- name: install deno
-  homebrew:
-    name:  deno
-    state: latest
+- name: install dein.vim
+  git:
+    repo:   https://github.com/Shougo/dein.vim
+    dest:   '{{ dotfiles_path }}/nvim/dein/repos/github.com/Shougo/dein.vim'
+    update: False
 
-- name: install neovim
-  homebrew:
-    name:  neovim
-    state: latest
-
-#  coc.nvim
-#-----------------------------------------------
-- name: coc.nvim | install deps via brew
+- name: install deps via brew
   homebrew:
     name:  '{{ item }}'
     state: latest
   with_items:
     - ansible-lint
     - clang-format
+    - deno
     - llvm # clangd
     - shellcheck
     - watchman
 
-- name: coc.nvim | install deps via pip3
+- name: install deps via pip3
   pip:
     executable: pip3
     name:       '{{ item }}'
     state:      latest
   with_items:
+    - pynvim
     - python-language-server
+    - vim-vint
