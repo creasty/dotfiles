@@ -9,11 +9,16 @@
     name:  python3
     state: latest
 
+- name: install latest pip
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+
 - name: install python libraries
   pip:
-    executable: pip3
-    name:       '{{ item }}'
-    state:      latest
+    name:  '{{ item }}'
+    state: latest
   with_items:
     - neovim
     - vim-vint
@@ -44,8 +49,7 @@
 
 - name: coc.nvim | install deps via pip3
   pip:
-    executable: pip3
-    name:       '{{ item }}'
-    state:      latest
+    name:  '{{ item }}'
+    state: latest
   with_items:
     - python-language-server
