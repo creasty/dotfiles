@@ -435,14 +435,6 @@ command! DeinGotoRepos
 
 "  Cross-plugin integration
 "-----------------------------------------------
-if dein#is_available('switch.vim')
-  nnoremap <silent> - <Cmd>call <SID>my_switch()<CR>
-  function! s:my_switch() abort
-    if quote_toggler#toggle() | return | endif
-    :Switch
-  endfunction
-endif
-
 if dein#is_available('vim-searchhi')
   augroup _init_searchhi
     autocmd!

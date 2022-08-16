@@ -81,6 +81,8 @@ let g:switch_custom_definitions = [
   \ switch#NormalizedCaseWords(['on', 'off']),
   \ switch#NormalizedCaseWords(['yes', 'no']),
 \ ]
+
+nnoremap <silent> - <Cmd>Switch<CR>
 '''
 
 [[plugins]] # sequencial numbering with pattern
