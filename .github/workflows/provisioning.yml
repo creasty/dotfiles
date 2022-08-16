@@ -13,11 +13,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - tags: app.vim
           #- tags: base,install.homebrew.formula
           #- tags: base,lang
-          #- tags: install,app,system
-          #  skip_tags: install.homebrew.formula
+          - tags: install,app,system
+            skip_tags: install.homebrew.formula
     steps:
       - uses: actions/checkout@v2
 
