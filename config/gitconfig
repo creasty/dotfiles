@@ -162,3 +162,6 @@
 
 [ghq]
   root = ~/go/src
+
+[advice]
+  detachedHead = false
