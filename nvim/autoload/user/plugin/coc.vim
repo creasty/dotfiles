@@ -25,6 +25,7 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-solargraph',
   \ 'coc-spell-checker',
+  \ 'coc-sqlfluff',
   \ 'coc-styled-components',
   \ 'coc-syntax',
   \ 'coc-tabnine',
