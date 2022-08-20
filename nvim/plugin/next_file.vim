@@ -8,8 +8,8 @@ set cpoptions&vim
 
 command! -nargs=0 NextFile call <SID>next_file(1)
 command! -nargs=0 PrevFile call <SID>next_file(-1)
-nnoremap g0 <Cmd>NextFile<CR>
-nnoremap g9 <Cmd>PrevFile<CR>
+nnoremap g) <Cmd>NextFile<CR>
+nnoremap g( <Cmd>PrevFile<CR>
 
 " edit a next file in the same directory
 function! s:next_file(direction) abort

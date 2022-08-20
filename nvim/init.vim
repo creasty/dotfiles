@@ -564,7 +564,7 @@ if dein#is_available('coc.nvim') &&
       return "\<Plug>(coc-snippets-expand-jump)"
     endif
 
-    return "\<Nop>"
+    return "\<Ignore>"
   endfunction
 
   inoremap <Plug>(completion-cancel) <C-e>
