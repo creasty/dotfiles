@@ -81,8 +81,8 @@ lua require'hop'.setup()
 '''
 
 [[plugins]] # Neovim plugin for GitHub Copilot
-repo = 'creasty/copilot.vim' # Fork of github/copilot.vim
-rev = 'patch'
+repo = 'github/copilot.vim'
+rev = 'release'
 on_event = ['InsertEnter']
 on_cmd = ['Copilot']
 on_func = ['copilot#']
