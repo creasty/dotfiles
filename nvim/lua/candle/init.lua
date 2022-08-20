@@ -66,6 +66,7 @@ function M.setup()
   hi.Title = { fg = s.foreground, bold = 1 }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }
+  hi.Whitespace = { fg = s.gray500 }
   hi.WildMenu = { fg = s.yellow, bg = s.background }
   hi.WinSeparator = { fg = s.window }
 
