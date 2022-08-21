@@ -114,10 +114,10 @@ set colorcolumn=90
 " match pairs
 set showmatch
 
-" display nonprintable charactors as hex
+" display nonprintable characters as hex
 set display+=uhex
 
-" show hidden charactors
+" show hidden characters
 "
 " [tab]
 " U+2192 (Rightwards Arrow)
