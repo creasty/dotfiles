@@ -350,12 +350,15 @@ function! s:change_font_size(size) abort
   endif
 endfunction
 
-" redirect command messages to a buffer
-command! -nargs=* Put
-  \ redir => s:put_command_result |
+" capture Ex command output and print to a buffer
+command! -nargs=+ -complete=command Capture
+  \ try |
+    \ redir => s:put_command_result |
     \ silent <args> |
-  \ redir END |
-  \ call append('.', split(s:put_command_result, '\n'))
+  \ finally |
+    \ redir END |
+    \ call append('.', split(s:put_command_result, '\n')) |
+  \ endtry
 
 " clean up hidden buffers
 command! CleanBuffers call <SID>clean_buffers()
