@@ -1,3 +1,4 @@
+let s:opfmt_enabled = v:true
 let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
 
 function! user#plugin#lexima#init() abort
@@ -25,16 +26,31 @@ endfunction
 "-----------------------------------------------
 let s:all_ops = opfmt#all_operators_regexp()
 
-for s:op in opfmt#triggers()
-  let s:op_char = s:op
-  let s:op_char = substitute(s:op_char, '<', '<lt>', '')
-  let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
-  let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
+if s:opfmt_enabled
+  for s:op in opfmt#triggers()
+    let s:op_char = s:op
+    let s:op_char = substitute(s:op_char, '<', '<lt>', '')
+    let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
+    let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
+  
+    call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"\') . '")<CR>' })
+  endfor
+  unlet s:op
+  unlet s:op_char
 
-  call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"\') . '")<CR>' })
-endfor
-unlet s:op
-unlet s:op_char
+  " comma
+  call lexima#add_rule({ 'char': ',', 'input': "<C-r>=user#plugin#lexima#loop(', ', ',')<CR>" })
+  call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
+
+  " no merge: ?!, &!, |!
+  call lexima#add_rule({ 'char': '!', 'at': '? \%#' })
+  call lexima#add_rule({ 'char': '!', 'at': '& \%#' })
+  call lexima#add_rule({ 'char': '!', 'at': '| \%#' })
+
+  " Kotlin: elvis operator
+  call lexima#add_rule({ 'char': '<Space>', 'at': ' ? :\%#', 'input': '<BS><BS>:<Space>' })
+  call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Space>?:<Space>', 'filetype': ['kotlin'] })
+endif
 
 " angle brackets
 call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
@@ -47,19 +63,6 @@ call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
 call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
 call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
 call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': '><Space>' })
-
-" comma
-call lexima#add_rule({ 'char': ',', 'input': "<C-r>=user#plugin#lexima#loop(', ', ',')<CR>" })
-call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
-
-" no merge: ?!, &!, |!
-call lexima#add_rule({ 'char': '!', 'at': '? \%#' })
-call lexima#add_rule({ 'char': '!', 'at': '& \%#' })
-call lexima#add_rule({ 'char': '!', 'at': '| \%#' })
-
-" Kotlin: elvis operator
-call lexima#add_rule({ 'char': '<Space>', 'at': ' ? :\%#', 'input': '<BS><BS>:<Space>' })
-call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Space>?:<Space>', 'filetype': ['kotlin'] })
 
 " Rust: lifetime
 call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
