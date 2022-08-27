@@ -223,12 +223,9 @@
 
   //=== coc-lua
   //==============================================================================================
-  "Lua.diagnostics.globals": ["vim"],
   "Lua.workspace.library": {
     "/opt/homebrew/share/nvim/runtime/lua": true,
-    "/opt/homebrew/share/nvim/runtime/lua/vim": true,
-    "/opt/homebrew/share/nvim/runtime/lua/vim/lsp": true,
-    "/opt/homebrew/share/nvim/runtime/lua/vim/treesitter": true
+    "/Users/creasty/.config/nvim/dein/repos/github.com/folke/lua-dev.nvim/types": true
   },
 
   //=== coc-tsserver

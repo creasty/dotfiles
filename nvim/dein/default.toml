@@ -69,6 +69,9 @@ hook_add = '''
 call user#plugin#coc#init()
 '''
 
+[[plugins]]
+repo = 'folke/lua-dev.nvim'
+
 [[plugins]] # switch segments of text with predefined replacements
 repo = 'AndrewRadev/switch.vim'
 hook_add = '''
