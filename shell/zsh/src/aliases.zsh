@@ -42,36 +42,6 @@ alias -g X1='| xargs -n 1'
 alias -g XL='| tr "\n" "\0" | xargs -0'
 alias -g P='| peco'
 
-#  Suffix
-#-----------------------------------------------
-alias -s go='go run'
-alias -s hs='runhaskell'
-alias -s js='node'
-alias -s py='python'
-alias -s rb='ruby'
-alias -s swift='xcrun swift'
-
-alias -s {gif,jpg,jpeg,png,bmp}='display'
-
-_run_c() {
-  local file="$1"
-  local out="${1/\.c/}"
-  shift
-
-  gcc -o $out $file && $out $@
-  rm -f $out
-}
-alias -s c='_run_c'
-
-_run_java() {
-  local className=$1
-  className=${className%.java}
-  javac $1
-  shift
-  java $className $@
-}
-alias -s java='_run_java'
-
 #  Bin
 #-----------------------------------------------
 alias x86='arch -x86_64'
@@ -106,13 +76,6 @@ alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-
 ssh() {
   cat ~/.ssh/config.d/* > ~/.ssh/config
   [ $# -gt 0 ] && command ssh "$@"
-}
-
-termtosvg() {
-  local ts=$(date +'%Y%m%d%H%M%S')
-  local file="$HOME/Desktop/termtosvg_${ts}.svg"
-  local template="$HOME/.config/termtosvg/candle.svg"
-  command termtosvg --max-frame-duration=5000 --template="$template" "$file"
 }
 
 #  Networks

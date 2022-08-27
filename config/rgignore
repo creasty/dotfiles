@@ -12,6 +12,14 @@ cache/
 build/
 dist/
 
+# dotenv
+!.env
+!.env.*
+
+# properties
+!local.properties
+!*.local.properties
+
 # Swift
 Carthage/
 Pods/

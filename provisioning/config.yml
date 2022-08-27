@@ -110,7 +110,6 @@ link:
   config/pgclirc:          .pgclirc
   config/rgignore:         .rgignore
   config/ripgreprc:        .config/.ripgreprc
-  config/termtosvg:        .config/termtosvg
   ruby/bundle/config:      .bundle/config
   ruby/gemrc:              .gemrc
   ruby/irbrc:              .irbrc
