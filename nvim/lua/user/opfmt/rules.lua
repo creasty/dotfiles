@@ -7,7 +7,7 @@
 return {
   ['*'] = {
     {
-      tokens = {'[=]'},
+      tokens = {'='},
       paths = {'statement%w*$', 'declar%w+$', 'assignment_expression$'},
       space = 3,
     },
@@ -24,6 +24,17 @@ return {
   ['typescript'] = {},
   ['tsx'] = {},
   ['vim'] = {},
-  ['lua'] = {},
+  ['lua'] = {
+    {
+      tokens = {'='},
+      paths = {'field$', 'for_numeric_clause$'},
+      space = 3,
+    },
+    {
+      tokens = {','},
+      paths = {'for_numeric_clause$'},
+      space = 2,
+    },
+  },
   ['go'] = {},
 }

@@ -195,18 +195,23 @@ function M.debug()
   local line, row, col = M.get_current_line()
   local buf = vim.api.nvim_get_current_buf()
   local info_list = M.retrive_token_info_list(buf, line, row)
-  local formatted = M.format_line(line, col, info_list)
 
   for i = 1, #info_list do
     info_list[i] = M.apply_rules(info_list[i])
   end
 
-  local lines = {formatted, ''}
-  for l in vim.inspect(info_list):gmatch("([^\n]*)\n?") do
-    table.insert(lines, l)
+  local formatted = M.format_line(line, col, info_list)
+  local lines = {'--[[', formatted, '--]]'}
+  for _, info in ipairs(info_list) do
+    table.insert(lines, info.path .. (info.error and ' (ERROR)' or ''))
+    table.insert(lines, table.concat({
+      '{', vim.inspect(info.token) .. ', ' .. (info.space_old and info.space_old .. ' -> ' or '') .. info.space, '}',
+      '--',
+      info.col_start .. ', ' .. info.col_end,
+    }, ' '))
   end
 
-  vim.lsp.util.open_floating_preview(lines, "lua")
+  vim.lsp.util.open_floating_preview(lines, 'lua')
 end
 
 function M.format_current_line()
