@@ -5,16 +5,24 @@ local M = {
   max_path_level = 3,
 }
 
-function M.get_space_mode(left, right)
-  local mode = 0
-  if left and right then
-    mode = 3
-  elseif right then
-    mode = 2
-  elseif left then
-    mode = 1
+function M.get_space_count(mode)
+  if mode == 3 then
+    return 2
+  elseif mode > 0 then
+    return 1
   end
-  return mode
+  return 0
+end
+
+function M.get_space_mode(left, right)
+  if left and right then
+    return 3
+  elseif right then
+    return 2
+  elseif left then
+    return 1
+  end
+  return 0
 end
 
 function M.format_space(token, mode)
@@ -57,7 +65,8 @@ function M.apply_rules(info)
     local lang_rules = rules[lang] or {}
     for _, rule in ipairs(lang_rules) do
       if M.match_rule(info, rule) then
-        info.new_space = rule.space
+        info.space_old = info.space
+        info.space = rule.space
         return info
       end
     end
@@ -162,14 +171,18 @@ function M.get_node_path(node, max)
   return table.concat(paths, '/')
 end
 
-function M.format_line(line, info_list)
+function M.format_line(line, col, info_list)
   local formatted = line
   for i = #info_list, 1, -1 do
     local info = info_list[i]
-    local token = M.format_space(info.token, info.new_space or info.space)
+    local token = M.format_space(info.token, info.space)
+    if info.space_old and info.col_end <= col then
+      local shift = M.get_space_count(info.space) - M.get_space_count(info.space_old)
+      col = col + shift
+    end
     formatted = string.sub(formatted, 0, info.col_start) .. token .. string.sub(formatted, info.col_end + 1)
   end
-  return formatted
+  return formatted, col
 end
 
 function M.get_current_line()
@@ -197,7 +210,7 @@ function M.debug()
 end
 
 function M.format_current_line()
-  local line, row = M.get_current_line()
+  local line, row, col = M.get_current_line()
   local buf = vim.api.nvim_get_current_buf()
   local info_list = M.retrive_token_info_list(buf, line, row)
 
@@ -205,8 +218,9 @@ function M.format_current_line()
     info_list[i] = M.apply_rules(info_list[i])
   end
 
-  local formatted = M.format_line(line, info_list)
+  local formatted, new_col = M.format_line(line, col, info_list)
   vim.api.nvim_buf_set_lines(0, row, row + 1, true, {formatted})
+  vim.api.nvim_win_set_cursor(0, {row + 1, new_col})
 end
 
 return M
