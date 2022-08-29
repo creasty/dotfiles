@@ -53,7 +53,25 @@ local function get_buffer_flags(bufnr)
   return flags
 end
 
-local function tabline()
+local function retry_call(fn, args, times)
+  times = times or 3
+  for _ = 0, times - 1 do
+    local result = {pcall(fn, unpack(args))}
+    if result[1] == true then
+      return unpack(result, 2)
+    end
+  end
+  return fn(unpack(args))
+end
+
+-- @note Workaround for "Error executing lua Keyboard interrupt"
+local function retry_call_wrap(fn, times)
+  return function(...)
+    return retry_call(fn, {...}, times)
+  end
+end
+
+local tabline = retry_call_wrap(function ()
   local line = {}
 
   local tab_list = vim.api.nvim_list_tabpages()
@@ -83,9 +101,15 @@ local function tabline()
   table.insert(line, '%#TabLineFill#')
 
   return table.concat(line, '')
-end
+end)
 
-local function render_statusline(winnr, active)
+local statusline = retry_call_wrap(function ()
+  local winnr = vim.g.statusline_winid
+  if not winnr then
+    return
+  end
+
+  local active = winnr == vim.fn.win_getid()
   local bufnr = vim.api.nvim_win_get_buf(winnr)
   local path = vim.api.nvim_buf_get_name(bufnr)
   local buftype = vim.bo[bufnr].buftype
@@ -177,18 +201,7 @@ local function render_statusline(winnr, active)
     table.concat(r0, ' '),
     '%*',
   }, ' ')
-end
-
-local function statusline()
-  local winnr = vim.g.statusline_winid
-  local active = winnr == vim.fn.win_getid()
-
-  if not winnr then
-    return
-  end
-
-  return render_statusline(winnr, active)
-end
+end)
 
 local function setup()
   vim.o.tabline = [[%!v:lua.require'user.ui'.tabline()]]
