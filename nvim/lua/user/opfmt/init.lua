@@ -192,10 +192,10 @@ function M.get_current_line()
 end
 
 function M.debug()
-  local line, row = M.get_current_line()
+  local line, row, col = M.get_current_line()
   local buf = vim.api.nvim_get_current_buf()
   local info_list = M.retrive_token_info_list(buf, line, row)
-  local formatted = M.format_line(line, info_list)
+  local formatted = M.format_line(line, col, info_list)
 
   for i = 1, #info_list do
     info_list[i] = M.apply_rules(info_list[i])

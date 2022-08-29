@@ -8,12 +8,17 @@ return {
   ['*'] = {
     {
       tokens = {'[=]'},
-      paths = {'statement%w*$', 'declar%w+$'},
+      paths = {'statement%w*$', 'declar%w+$', 'assignment_expression$'},
       space = 3,
     },
     {
       paths = {'binary_operation$', 'binary_expression$'},
       space = 3,
+    },
+    {
+      tokens = {','},
+      paths = {'arguments$', 'array$'},
+      space = 2,
     },
   },
   ['typescript'] = {},

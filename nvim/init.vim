@@ -316,10 +316,6 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 
 "=== Misc
 "==============================================================================================
-" opfmt
-command! -nargs=0 Opfmt lua require('user.opfmt').format_current_line()
-command! -nargs=0 OpfmtDebug lua require('user.opfmt').debug()
-
 " change indent style
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 HardTab :setl noexpandtab tabstop=<args> shiftwidth=<args>
@@ -630,5 +626,19 @@ if dein#is_available('coc.nvim') &&
 
     autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
     autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
+  augroup END
+endif
+
+"=== Experimental: Opfmt
+"==============================================================================================
+let g:new_opfmt_enabled = v:false
+
+command! -nargs=0 Opfmt lua require('user.opfmt').format_current_line()
+command! -nargs=0 OpfmtDebug lua require('user.opfmt').debug()
+
+if g:new_opfmt_enabled
+  augroup _opfmt_init
+    autocmd!
+    autocmd TextChangedI * Opfmt
   augroup END
 endif

@@ -1,4 +1,3 @@
-let s:opfmt_enabled = v:true
 let s:js_filetypes = ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
 
 function! user#plugin#lexima#init() abort
@@ -26,7 +25,7 @@ endfunction
 "-----------------------------------------------
 let s:all_ops = opfmt#all_operators_regexp()
 
-if s:opfmt_enabled
+if !g:new_opfmt_enabled
   for s:op in opfmt#triggers()
     let s:op_char = s:op
     let s:op_char = substitute(s:op_char, '<', '<lt>', '')
