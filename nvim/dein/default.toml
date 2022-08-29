@@ -178,6 +178,7 @@ require("indent_blankline").setup {
 }
 EOF
 '''
+if = 0
 
 #  ddu
 #-----------------------------------------------
