@@ -1,5 +1,4 @@
-local rules = require 'user.opfmt.rules'
-local parsers = require 'nvim-treesitter.parsers'
+local rules = require 'opfmt.rules'
 
 local M = {
   max_path_level = 3,
@@ -74,10 +73,14 @@ function M.apply_rules(info)
   return info
 end
 
-function M.retrive_token_info_list(buf, line, row)
+function M.retrive_token_info_list(bufnr, line, row)
   local info_list = {}
 
-  local buf_hl = vim.treesitter.highlighter.active[buf]
+  if bufnr == 0 then
+    bufnr = vim.api.nvim_get_current_buf()
+  end
+
+  local buf_hl = vim.treesitter.highlighter.active[bufnr]
   if not buf_hl then
     return info_list
   end
@@ -101,7 +104,7 @@ function M.retrive_token_info_list(buf, line, row)
       return
     end
 
-    for id, node in query:iter_captures(root, buf, row, row + 1) do
+    for id, node in query:iter_captures(root, bufnr, row, row + 1) do
       local hl = hl_query.hl_cache[id]
       if not hl then
         goto continue
@@ -171,7 +174,7 @@ function M.get_node_path(node, max)
   return table.concat(paths, '/')
 end
 
-function M.format_line(line, col, info_list)
+function M.get_formatted_line(line, col, info_list)
   local formatted = line
   for i = #info_list, 1, -1 do
     local info = info_list[i]
@@ -185,89 +188,17 @@ function M.format_line(line, col, info_list)
   return formatted, col
 end
 
-function M.get_current_line()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
-  return line, row - 1, col
-end
-
-function M.debug()
-  local line, row, col = M.get_current_line()
-  local buf = vim.api.nvim_get_current_buf()
-  local info_list = M.retrive_token_info_list(buf, line, row)
+function M.get_rule_applied_info_list(bufnr, line, row)
+  local info_list = M.retrive_token_info_list(bufnr, line, row)
+  local changes = false
 
   for i = 1, #info_list do
-    info_list[i] = M.apply_rules(info_list[i])
+    local applied = M.apply_rules(info_list[i])
+    info_list[i] = applied
+    changes = changes or (applied.space_old and applied.space ~= applied.space_old)
   end
 
-  local formatted = M.format_line(line, col, info_list)
-  local lines = {'--[[', formatted, '--]]'}
-  for _, info in ipairs(info_list) do
-    table.insert(lines, info.path .. (info.error and ' (ERROR)' or ''))
-    table.insert(lines, table.concat({
-      '{ ',
-      vim.inspect(info.token),
-      ', ',
-      (info.space_old and info.space_old .. ' -> ' or ''),
-      info.space,
-      ' }',
-      ' -- ',
-      info.col_start, ', ', info.col_end,
-    }, ''))
-  end
-
-  vim.lsp.util.open_floating_preview(lines, 'lua')
+  return info_list, changes
 end
-
-function M.format_current_line()
-  local line, row, col = M.get_current_line()
-  local buf = vim.api.nvim_get_current_buf()
-  local info_list = M.retrive_token_info_list(buf, line, row)
-
-  for i = 1, #info_list do
-    info_list[i] = M.apply_rules(info_list[i])
-  end
-
-  local formatted, new_col = M.format_line(line, col, info_list)
-  -- vim.api.nvim_buf_set_text(1, 0, 1, 0, 1, {"a"})
-  vim.api.nvim_buf_set_lines(0, row, row + 1, true, {formatted})
-  vim.api.nvim_win_set_cursor(0, {row + 1, new_col})
-end
-
-function M.setup()
-  vim.api.nvim_command([[setf lua]])
-
-  local lang = parsers.get_buf_lang(0)
-  if not lang then
-      return
-  end
-  if not parsers.has_parser(lang) then
-      return
-  end
-
-  local parser = parsers.get_parser(0)
-
-  -- local parser = vim.treesitter.get_parser(0)
-  -- if not parser then
-  --   return
-  -- end
-
-  parser:register_cbs({
-    on_changedtree = function (tree_changes, tree)
-      vim.schedule_wrap(function ()
-        if vim.api.nvim_get_mode().mode ~= 'i' then return end
-        M.format_current_line()
-      end)()
-
-      print('on_changedtree: ' .. vim.inspect(tree_changes) .. '\n')
-
-      for _, ch in ipairs(tree_changes or {}) do
-        -- vim.api.nvim__buf_redraw_range(0, ch[1], ch[3] + 1)
-        -- tree:named_descendant_for_range(unpack(ch))
-      end
-    end,
-  })
-end
-
 
 return M

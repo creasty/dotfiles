@@ -631,8 +631,10 @@ endif
 
 "=== Experimental: Opfmt
 "==============================================================================================
-let g:new_opfmt_enabled = v:true
+command! -nargs=0 Opfmt lua require('opfmt.internal').format(0)
+command! -nargs=0 OpfmtDebug lua require('opfmt.internal').debug(0)
 
-command! -nargs=0 Opfmt lua require('user.opfmt').format_current_line()
-command! -nargs=0 OpfmtSetup lua require('user.opfmt').setup()
-command! -nargs=0 OpfmtDebug lua require('user.opfmt').debug()
+let g:new_opfmt_enabled = v:false
+if g:new_opfmt_enabled
+  lua require('opfmt').init()
+endif
