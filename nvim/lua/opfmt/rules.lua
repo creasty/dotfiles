@@ -23,7 +23,13 @@ return {
   },
   ['typescript'] = {},
   ['tsx'] = {},
-  ['vim'] = {},
+  ['vim'] = {
+    {
+      tokens = {','},
+      paths = {'call_expression$', 'list$'},
+      space = 2,
+    },
+  },
   ['lua'] = {
     {
       tokens = {'='},
