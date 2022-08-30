@@ -14,7 +14,7 @@ end
 function M.debug(bufnr)
   local line, row, col = M.get_current_line(bufnr)
   local info_list = core.get_rule_applied_info_list(bufnr, line, row)
-  local formatted = core.get_formatted_line(line, col, info_list)
+  local formatted = core.get_formatted_line(line, col, info_list, false)
 
   local lines = {'--[[', formatted, '--]]'}
   for _, info in ipairs(info_list) do
@@ -34,14 +34,14 @@ function M.debug(bufnr)
   vim.lsp.util.open_floating_preview(lines, 'lua')
 end
 
-function M.format(bufnr)
+function M.format(bufnr, only_around_cursor)
   local line, row, col = M.get_current_line(bufnr)
   local info_list, changes = core.get_rule_applied_info_list(bufnr, line, row)
   if not changes then
     return
   end
 
-  local formatted, new_col = core.get_formatted_line(line, col, info_list)
+  local formatted, new_col = core.get_formatted_line(line, col, info_list, only_around_cursor)
   -- vim.api.nvim_buf_set_text(1, 0, 1, 0, 1, {"a"})
   vim.api.nvim_buf_set_lines(bufnr, row, row + 1, true, {formatted})
   vim.api.nvim_win_set_cursor(0, {row + 1, new_col})
@@ -118,7 +118,7 @@ function M.attach(bufnr, lang)
         if vim.api.nvim_get_mode().mode ~= 'i' then return end
         if state.skip then return end
         if not M.verify_tick() then return end
-        M.format(bufnr)
+        M.format(bufnr, true)
       end)()
     end,
   }

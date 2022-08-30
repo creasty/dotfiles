@@ -142,10 +142,10 @@ function M.build_token_info(line, node)
   local token = string.sub(line, col1 + 1, col2)
 
   local sp_left = string.sub(line, col1, col1) == ' '
-  local sp_right = string.sub(line, col2 + 1, col2 + 1) == ' '
   if sp_left then
     col1 = col1 - 1
   end
+  local sp_right = string.sub(line, col2 + 1, col2 + 1) == ' '
   if sp_right then
     col2 = col2 + 1
   end
@@ -174,17 +174,26 @@ function M.get_node_path(node, max)
   return table.concat(paths, '/')
 end
 
-function M.get_formatted_line(line, col, info_list)
+function M.get_formatted_line(line, col, info_list, only_around_cursor)
   local formatted = line
+
   for i = #info_list, 1, -1 do
     local info = info_list[i]
+
+    if only_around_cursor and math.min(math.abs(info.col_start - col), math.abs(info.col_end - col)) > 1 then
+      goto continue
+    end
+
     local token = M.format_space(info.token, info.space)
     if info.space_old and info.col_end <= col then
       local shift = M.get_space_count(info.space) - M.get_space_count(info.space_old)
       col = col + shift
     end
     formatted = string.sub(formatted, 0, info.col_start) .. token .. string.sub(formatted, info.col_end + 1)
+
+    ::continue::
   end
+
   return formatted, col
 end
 
