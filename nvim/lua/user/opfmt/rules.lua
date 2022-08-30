@@ -32,7 +32,7 @@ return {
     },
     {
       tokens = {','},
-      paths = {'for_numeric_clause$'},
+      paths = {'for_numeric_clause$', 'table_constructor$'},
       space = 2,
     },
   },

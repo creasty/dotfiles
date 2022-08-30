@@ -19,6 +19,9 @@ M.highlight = setmetatable({}, {
     --   reverse / inverse
     --   italic
     --   standout
+    -- Link:
+    --   link
+    --   default (bool)
     vim.api.nvim_set_hl(0, hlgroup, opt)
   end
 })

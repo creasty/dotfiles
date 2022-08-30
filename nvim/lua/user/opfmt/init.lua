@@ -1,5 +1,5 @@
-local ts_highlighter = require 'vim.treesitter.highlighter'
 local rules = require 'user.opfmt.rules'
+local parsers = require 'nvim-treesitter.parsers'
 
 local M = {
   max_path_level = 3,
@@ -77,7 +77,7 @@ end
 function M.retrive_token_info_list(buf, line, row)
   local info_list = {}
 
-  local buf_hl = ts_highlighter.active[buf]
+  local buf_hl = vim.treesitter.highlighter.active[buf]
   if not buf_hl then
     return info_list
   end
@@ -205,10 +205,15 @@ function M.debug()
   for _, info in ipairs(info_list) do
     table.insert(lines, info.path .. (info.error and ' (ERROR)' or ''))
     table.insert(lines, table.concat({
-      '{', vim.inspect(info.token) .. ', ' .. (info.space_old and info.space_old .. ' -> ' or '') .. info.space, '}',
-      '--',
-      info.col_start .. ', ' .. info.col_end,
-    }, ' '))
+      '{ ',
+      vim.inspect(info.token),
+      ', ',
+      (info.space_old and info.space_old .. ' -> ' or ''),
+      info.space,
+      ' }',
+      ' -- ',
+      info.col_start, ', ', info.col_end,
+    }, ''))
   end
 
   vim.lsp.util.open_floating_preview(lines, 'lua')
@@ -224,8 +229,45 @@ function M.format_current_line()
   end
 
   local formatted, new_col = M.format_line(line, col, info_list)
+  -- vim.api.nvim_buf_set_text(1, 0, 1, 0, 1, {"a"})
   vim.api.nvim_buf_set_lines(0, row, row + 1, true, {formatted})
   vim.api.nvim_win_set_cursor(0, {row + 1, new_col})
 end
+
+function M.setup()
+  vim.api.nvim_command([[setf lua]])
+
+  local lang = parsers.get_buf_lang(0)
+  if not lang then
+      return
+  end
+  if not parsers.has_parser(lang) then
+      return
+  end
+
+  local parser = parsers.get_parser(0)
+
+  -- local parser = vim.treesitter.get_parser(0)
+  -- if not parser then
+  --   return
+  -- end
+
+  parser:register_cbs({
+    on_changedtree = function (tree_changes, tree)
+      vim.schedule_wrap(function ()
+        if vim.api.nvim_get_mode().mode ~= 'i' then return end
+        M.format_current_line()
+      end)()
+
+      print('on_changedtree: ' .. vim.inspect(tree_changes) .. '\n')
+
+      for _, ch in ipairs(tree_changes or {}) do
+        -- vim.api.nvim__buf_redraw_range(0, ch[1], ch[3] + 1)
+        -- tree:named_descendant_for_range(unpack(ch))
+      end
+    end,
+  })
+end
+
 
 return M

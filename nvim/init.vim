@@ -631,14 +631,8 @@ endif
 
 "=== Experimental: Opfmt
 "==============================================================================================
-let g:new_opfmt_enabled = v:false
+let g:new_opfmt_enabled = v:true
 
 command! -nargs=0 Opfmt lua require('user.opfmt').format_current_line()
+command! -nargs=0 OpfmtSetup lua require('user.opfmt').setup()
 command! -nargs=0 OpfmtDebug lua require('user.opfmt').debug()
-
-if g:new_opfmt_enabled
-  augroup _opfmt_init
-    autocmd!
-    autocmd TextChangedI * Opfmt
-  augroup END
-endif
