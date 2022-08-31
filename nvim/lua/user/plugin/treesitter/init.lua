@@ -64,6 +64,11 @@ require('nvim-treesitter.configs').setup {
     updatetime = 25,
     persist_queries = false,
   },
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = {'BufWrite', 'CursorHold'},
+  },
   -- nvim-treesitter/nvim-treesitter-textobjects
   textobjects = {
     select = {
@@ -108,6 +113,7 @@ require('nvim-treesitter.configs').setup {
   endwise = {
     enable = true,
   },
+  -- creasty/opfmt
   opfmt = {
     enable = true,
   },

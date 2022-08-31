@@ -129,13 +129,17 @@ depends = ['nvim-treesitter']
 repo = 'RRethy/nvim-treesitter-endwise'
 depends = ['nvim-treesitter']
 
-[[plugins]] # Format operators and delimiters as you type, using Treesitter
+[[plugins]] # Format operators and delimiters as you type, using tree-sitter
 repo = 'creasty/opfmt'
 depends = ['nvim-treesitter']
 path = '/Users/creasty/go/src/github.com/creasty/opfmt'
 hook_add = '''
 let g:new_opfmt_enabled = v:true
 '''
+
+[[plugins]] # Treesitter playground integrated into Neovim
+repo = 'nvim-treesitter/playground'
+depends = ['nvim-treesitter']
 
 #  UI
 #-----------------------------------------------
