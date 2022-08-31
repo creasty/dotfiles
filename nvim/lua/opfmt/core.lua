@@ -174,13 +174,23 @@ function M.get_node_path(node, max)
   return table.concat(paths, '/')
 end
 
-function M.get_formatted_line(line, col, info_list, only_around_cursor)
+function M.get_formatted_line(line, col, info_list, mode)
   local formatted = line
 
   for i = #info_list, 1, -1 do
     local info = info_list[i]
 
-    if only_around_cursor and math.min(math.abs(info.col_start - col), math.abs(info.col_end - col)) > 1 then
+    if mode == 'around' then
+      if math.min(math.abs(info.col_start - col), math.abs(info.col_end - col)) > 1 then
+        goto continue
+      end
+    elseif mode == 'before' then
+      if col <= info.col_start or col - info.col_end > 1 then
+        goto continue
+      end
+    elseif mode == 'line' then
+      -- noop
+    else
       goto continue
     end
 
