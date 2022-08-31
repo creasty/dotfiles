@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+#> Convert a range of commits to a range of release tags
+#>
+#> Synopsis:
+#>     git release-range RANGE
+#>
+#> Syntax of Range:
+#>     <from>..<to>   A simple commit range. <to> is inclusive.
+#>                    It supports <from>...<to> as a canonical form.
+#>                    The current directory needs to be a git repository otherwise fails.
+#>     http[s]://<hosting-domain>/<org-name>/<repo-name>/compare/<from>..<to>
+#>                    A URL for comparing commits in a repository.
+#>                    It attempts to locate a corresponding local git directory using ghq;
+#>                    If fails, the current directory will be used with a warning.
+#>     -              Read aforementioned syntax from stdin.
+#>
+#> Usage:
+#>     git release-range 6f1f142...1a8dcec
+#>
+#>     # With a url
+#>     git release-range https://github.com/example/example/compare/6f1f142...1a8dcec
+#>
+#>     # Reading from stdin
+#>     echo '6f1f142...1a8dcec' | git release-range -
+#>
+#>     # Clipboard to clipboard conversion (macOS only)
+#>     pbpaste | git release-range - | pbcopy
+
+set -euo pipefail
+
+NO_RELEASE='N/A'
+
+print_info() {
+  printf -- "\e[0;34m[Info]\e[0m $*\n" 1>&2
+}
+
+print_error() {
+  printf -- "\e[0;31m[Error]\e[0m $*\n" 1>&2
+}
+
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
+}
+
+get_repo_dir() {
+  local hosting_domain="$1"
+  local org_name="$2"
+  local repo_name="$3"
+
+  if command -v 'ghq' > /dev/null 2>&1; then
+    echo "$(ghq root)/$hosting_domain/$org_name/$repo_name"
+  else
+    : # Customize here
+  fi
+}
+
+sort_tags() {
+  local filter="$1"
+
+  sed -n -E '/^v[0-9]+.[0-9]+.[0-9]+$/s/^v//p' \
+    | sort -t '.' -n -k1 -k2 -k3 \
+    | {
+      case "$filter" in
+        oldest) head -n1 ;;
+        latest) tail -n1 ;;
+        *) cat ;;
+      esac
+    } \
+    | sed 's/^/v/'
+}
+
+find_release_for_commit() {
+  local sha1="$1"
+  local release="$(git tag --contains "$sha1" | sort_tags oldest)"
+
+  if [ -z "$release" ]; then
+    release="$NO_RELEASE"
+  fi
+
+  echo "$release"
+}
+
+find_latest_release() {
+  git tag -l | sort_tags latest
+}
+
+resolve() {
+  local start_sha1="$1"
+  local end_sha1="$2"
+
+  local start_release="$(find_release_for_commit "$start_sha1")"
+  local end_release="$(find_release_for_commit "$end_sha1")"
+  local latest_release="$(find_latest_release)"
+
+  echo "Start:  $start_sha1 -> $start_release" 1>&2
+  echo "End:    $end_sha1 -> $end_release" 1>&2
+  echo "Latest: $latest_release" 1>&2
+
+  if [ "$start_release" != "$NO_RELEASE" ]; then
+    echo 1>&2
+    if [ "$end_release" = "$NO_RELEASE" ]; then
+      echo "$start_release..$latest_release"
+    else
+      echo "$start_release..$end_release"
+    fi
+  fi
+}
+
+main() {
+  local range="$1"
+  local repo_dir=''
+
+  case "$range" in
+    # Show help
+    ''|-h) do_help ;;
+
+    # Read from stdin
+    -) range="$(cat)" ;;
+  esac
+
+  # Parse URL
+  if [[ "$range" =~ ^https?://([^/]+)/([^/]+)/([^/]+)/compare/([^/]+) ]]; then
+    range="${BASH_REMATCH[4]}"
+    repo_dir="$(get_repo_dir "${BASH_REMATCH[@]:1:3}")"
+  fi
+
+  # Parse range
+  local range_start=''
+  local range_end=''
+  if [[ "$range" =~ ^([0-9a-f]+)\.\.\.?([0-9a-f]+)$ ]]; then
+    range_start="${BASH_REMATCH[1]}"
+    range_end="${BASH_REMATCH[2]}"
+  else
+    print_error "Invalid syntax: $range"
+    exit 1
+  fi
+
+  # Find a local git directory
+  if [ -z "$repo_dir" ]; then
+    print_info 'Using the current directory'
+  elif [ -d "$repo_dir" ]; then
+    print_info "Repo found at $repo_dir"
+    cd "$repo_dir"
+  elif git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    print_info "Repo not found at $repo_dir (Using the current directory instead)"
+  else
+    print_error 'Not in git repository'
+    exit 1
+  fi
+
+  print_info "Fetching origin..."
+  git fetch origin 1>&2
+
+  resolve "$range_start" "$range_end"
+}
+
+main "${1:-}"
