@@ -416,6 +416,8 @@ if has('vim_starting')
   let &g:rtp .= ',' . s:dein_repos_path . '/Shougo/dein.vim'
 endif
 
+let g:dein#install_log_filename = s:dein_path . '/install.log'
+
 if dein#load_state(s:dein_path)
   let s:dein_default_toml = s:dein_path . '/default.toml'
   let s:dein_lazy_toml = s:dein_path . '/lazy.toml'
@@ -450,10 +452,10 @@ command! DeinPrunePlugins
   \ exec 'DeinPurgeCache'
 
 command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinUpdate
-  \ call dein#update(<f-args>)
+  \ call dein#update(fnamemodify(trim(<q-args>), ':t'))
 
 command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepos
-  \ exec 'lcd' s:dein_repos_path . '/' . <q-args>
+  \ exec 'lcd' s:dein_repos_path . '/' . trim(<q-args>)
 
 function! DeinPluginNameComplete(a, l, p)
   let l:l = strlen(s:dein_repos_path) + 1
