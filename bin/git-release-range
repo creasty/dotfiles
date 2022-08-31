@@ -2,12 +2,12 @@
 #> Convert a range of commits to a range of release tags
 #>
 #> Synopsis:
-#>     git release-range RANGE
+#>     git release-range [-h] RANGE
 #>
-#> Syntax of Range:
+#> Syntax of RANGE:
 #>     <from>..<to>   A simple commit range. <to> is inclusive.
 #>                    It supports <from>...<to> as a canonical form.
-#>                    The current directory needs to be a git repository otherwise fails.
+#>                    The current directory needs to be managed by git otherwise fails.
 #>     http[s]://<hosting-domain>/<org-name>/<repo-name>/compare/<from>..<to>
 #>                    A URL for comparing commits in a repository.
 #>                    It attempts to locate a corresponding local git directory using ghq;
