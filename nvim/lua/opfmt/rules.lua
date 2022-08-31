@@ -1,9 +1,39 @@
--- Record<Language, {
---   tokens?: string[];
---   paths?: string[];
---   ignore_paths?: string[];
---   space: 0 | 1 | 2 | 3;
--- }>
+--[[
+Record<Language, {
+  tokens?: string[];
+  paths?: string[];
+  ignore_paths?: string[];
+  space: 0 | 1 | 2 | 3;
+}>
+--]]
+
+local typescript = {
+  {
+    tokens = {','},
+    paths = {
+      'array_pattern$',
+      'binary_expression/object$',
+      'arguments/object$',
+    },
+    space = 2,
+  },
+  {
+    tokens = {':'},
+    paths = {'type_annotation$', 'object/pair$'},
+    space = 2,
+  },
+  {
+    tokens = {'=>'},
+    paths = {'arrow_function$', 'function_type$'},
+    space = 3,
+  },
+  {
+    tokens = {'[|&]'},
+    paths = {'type_annotation/%w+_type$', 'type_arguments/%w+_type$'},
+    space = 3,
+  },
+}
+
 return {
   ['*'] = {
     {
@@ -17,16 +47,26 @@ return {
     },
     {
       tokens = {','},
-      paths = {'arguments$', 'array$'},
+      paths = {'arguments$', 'array$', 'parameters$'},
       space = 2,
     },
+    {
+      tokens = {'[?:]'},
+      paths = {'ternary_expression$'},
+      space = 3,
+    },
   },
-  ['typescript'] = {},
-  ['tsx'] = {},
+  ['typescript'] = typescript,
+  ['tsx'] = typescript,
   ['vim'] = {
     {
       tokens = {','},
-      paths = {'call_expression$', 'list$'},
+      paths = {'call_expression$', 'list$', 'dictionary$', 'list_assignment$'},
+      space = 2,
+    },
+    {
+      tokens = {':'},
+      paths = {'dictionary_entry$'},
       space = 2,
     },
   },
