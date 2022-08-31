@@ -441,16 +441,24 @@ call dein#call_hook('post_source')
 
 "  Dein commands
 "-----------------------------------------------
-command! -nargs=* DeinUpdate
-  \ call dein#update(<f-args>)
 command! DeinPurgeCache
   \ call dein#recache_runtimepath() |
   \ call dein#clear_state()
+
 command! DeinPrunePlugins
   \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
   \ exec 'DeinPurgeCache'
-command! DeinGotoRepos
-  \ exec 'lcd' s:dein_repos_path
+
+command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinUpdate
+  \ call dein#update(<f-args>)
+
+command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepos
+  \ exec 'lcd' s:dein_repos_path . '/' . <q-args>
+
+function! DeinPluginNameComplete(a, l, p)
+  let l:l = strlen(s:dein_repos_path) + 1
+  return filter(map(split(globpath(s:dein_repos_path, '*/*')), { _, v -> v[l:l:] }), { _, v -> v =~# a:a })
+endfunction
 
 "  Cross-plugin integration
 "-----------------------------------------------
