@@ -457,7 +457,7 @@ command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinUpdate
 command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepos
   \ exec 'lcd' s:dein_repos_path . '/' . trim(<q-args>)
 
-function! DeinPluginNameComplete(a, l, p)
+function! DeinPluginNameComplete(a, l, p) abort
   let l:prefix_len = strlen(s:dein_repos_path) + 1
   let l:list = map(split(globpath(s:dein_repos_path, '*/*')), { _, v -> v[l:prefix_len:] })
   return filter(l:list, { _, v -> v =~# a:a })
