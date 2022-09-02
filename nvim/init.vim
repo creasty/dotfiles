@@ -418,7 +418,7 @@ endif
 
 let g:dein#install_log_filename = s:dein_path . '/install.log'
 
-if dein#load_state(s:dein_path)
+if dein#min#load_state(s:dein_path)
   let s:dein_default_toml = s:dein_path . '/default.toml'
   let s:dein_lazy_toml = s:dein_path . '/lazy.toml'
 
@@ -458,8 +458,9 @@ command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepos
   \ exec 'lcd' s:dein_repos_path . '/' . trim(<q-args>)
 
 function! DeinPluginNameComplete(a, l, p)
-  let l:l = strlen(s:dein_repos_path) + 1
-  return filter(map(split(globpath(s:dein_repos_path, '*/*')), { _, v -> v[l:l:] }), { _, v -> v =~# a:a })
+  let l:prefix_len = strlen(s:dein_repos_path) + 1
+  let l:list = map(split(globpath(s:dein_repos_path, '*/*')), { _, v -> v[l:prefix_len:] })
+  return filter(l:list, { _, v -> v =~# a:a })
 endfunction
 
 "  Cross-plugin integration
@@ -479,27 +480,34 @@ if dein#is_available('vim-searchhi')
   augroup END
 endif
 
-if v:true " blockwise_visual_insert + coc, copilot, lexima
-  augroup _init_bvi_integration
-    autocmd!
-    autocmd User BlockwiseVisualInsertPre
-      \ let b:coc_suggest_disable = 1 |
-      \ let b:copilot_disabled = v:true |
-      \ let b:lexima_disabled = 1
-    autocmd User BlockwiseVisualInsertPost
-      \ unlet! b:coc_suggest_disable |
-      \ unlet! b:copilot_disabled |
-      \ unlet! b:lexima_disabled
-  augroup END
-endif
+if v:true
+  function! s:stop_intelligence() abort
+    " coc.nvim
+    let b:coc_suggest_disable = 1
+    " copilot.nvim
+    let b:copilot_disabled = v:true
+    " lexima.vim
+    let b:lexima_disabled = 1
+  endfunction
 
-if dein#is_available('ddu.vim') " + coc, copilot, lexima
-  augroup _init_ddu_integration
+  function! s:resume_intelligence() abort
+    " coc.nvim
+    unlet! b:coc_suggest_disable
+    " copilot.nvim
+    unlet! b:copilot_disabled
+    " lexima.vim
+    unlet! b:lexima_disabled
+  endfunction
+
+  augroup _init_intelligence
     autocmd!
-    autocmd FileType ddu-ff-filter
-      \ let b:coc_suggest_disable = 1 |
-      \ let b:copilot_disabled = v:true |
-      \ let b:lexima_disabled = 1
+
+    " plugin/blockwise_visual_insert.vim
+    autocmd User BlockwiseVisualInsertPre call s:stop_intelligence()
+    autocmd User BlockwiseVisualInsertPost call s:resume_intelligence()
+
+    " ddu.vim
+    autocmd FileType ddu-ff-filter call s:stop_intelligence()
   augroup END
 endif
 
@@ -527,7 +535,7 @@ if dein#is_available('coc.nvim') &&
     if coc#pum#visible()
       return coc#_select_confirm()
     elseif pumvisible()
-      return coc#_select_confirm()
+      return "\<Plug>(completion-accept)"
     endif
 
     let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
@@ -624,6 +632,7 @@ if dein#is_available('coc.nvim') &&
     endif
   endfunction
 
+  " plugin/emacs_cursor.vim
   let g:EmacsCursorPumvisible = function('coc#pum#visible')
 
   augroup _init_super_mappings
