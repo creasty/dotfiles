@@ -14,13 +14,28 @@ if [ $# -eq 0 ]; then
   do_help
 fi
 
+preview() {
+  local hex="${1:1:6}"
+  local rx="${hex:0:2}"
+  local gx="${hex:2:2}"
+  local bx="${hex:4:2}"
+
+  local r=$(( 16#$rx ))
+  local g=$(( 16#$gx ))
+  local b=$(( 16#$bx ))
+
+  printf "\e[48;2;%d;%d;%dm  \e[0m" $r $g $b
+  echo "  $1"
+}
+
 convert "$1" \
-  -scale 50x50! \
+  -scale 64x64 \
   -depth 8 \
   +dither \
-  -colors 8 \
+  -colors 30 \
   -format '%c' \
   histogram:info: \
   | sort -r -n -k 1 -t ":" \
-  | sed -n 's/^[ ]*\(.*\):.*[#]\([0-9a-fA-F]*\) .*$/#\2  \1/p' \
-  | tr 'A-F' 'a-f'
+  | sed -n 's/^[ ]*\(.*\):.*[#]\([0-9a-fA-F]*\) .*$/#\2  (\1)/p' \
+  | tr 'A-F' 'a-f' \
+  | while IFS= read -r line; do preview "$line"; done
