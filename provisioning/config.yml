@@ -14,7 +14,6 @@ homebrew:
     - google-cloud-sdk            # https://cloud.google.com/sdk/
     - google-drive                # https://www.google.com/drive/
     - google-japanese-ime         # https://www.google.co.jp/ime/
-    - hammerspoon                 # https://www.hammerspoon.org/
     - imageoptim                  # https://imageoptim.com/mac
     - istat-menus                 # https://bjango.com/mac/istatmenus/
     - kitty                       # https://github.com/kovidgoyal/kitty

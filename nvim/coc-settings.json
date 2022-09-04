@@ -225,8 +225,7 @@
   //==============================================================================================
   "Lua.workspace.library": {
     "/opt/homebrew/share/nvim/runtime/lua": true,
-    "/Users/creasty/.config/nvim/dein/repos/github.com/folke/lua-dev.nvim/types": true,
-    "/Users/creasty/.hammerspoon/Spoons/EmmyLua.spoon/annotations": true
+    "/Users/creasty/.config/nvim/dein/repos/github.com/folke/lua-dev.nvim/types": true
   },
 
   //=== coc-tsserver
