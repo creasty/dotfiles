@@ -131,20 +131,16 @@
     "shellcheck": {
       "command": "shellcheck",
       "debounce": 100,
-      "args": ["--format=gcc", "-"],
-      "offsetLine": 0,
-      "offsetColumn": 0,
+      "args": ["--format=json", "-"],
       "sourceName": "shellcheck",
-      "formatLines": 1,
-      "formatPattern": [
-        "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
-        {
-          "line": 1,
-          "column": 2,
-          "message": 4,
-          "security": 3
-        }
-      ],
+      "parseJson": {
+        "line": "line",
+        "endLine": "endLine",
+        "column": "column",
+        "endColumn": "endColumn",
+        "security": "level",
+        "message": "${message} [${code}]"
+      },
       "securities": {
         "error": "error",
         "warning": "warning",
