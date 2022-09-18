@@ -141,7 +141,7 @@ alias rdbm='rake-db-migrate'
 alias rdba='rake-db-migrate-all'
 
 rbserver() {
-  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start'
+  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start' "$@"
 }
 
 #  Rust
