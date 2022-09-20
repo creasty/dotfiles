@@ -125,6 +125,7 @@
   },
   "diagnostic-languageserver.formatFiletypes": {
     "proto": ["clang-format"],
+    "glsl": ["clang-format"],
     "terraform": ["terraform"]
   },
   "diagnostic-languageserver.linters": {
@@ -208,8 +209,7 @@
   "diagnostic-languageserver.formatters": {
     "clang-format": {
       "command": "clang-format",
-      "args": ["-i", "%filepath"],
-      "rootPatterns": [".clang-format"]
+      "args": ["-i", "%filepath"]
     },
     "terraform": {
       "command": "terraform",
@@ -295,5 +295,7 @@
     { "languageId": "lua", "allowCompoundWords": true },
     { "languageId": "vim", "allowCompoundWords": true }
   ],
-  "cSpell.userWords": []
+  "cSpell.userWords": [
+    "raycaster"
+  ]
 }

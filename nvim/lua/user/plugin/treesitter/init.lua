@@ -9,6 +9,7 @@ require('nvim-treesitter.configs').setup {
     'css',
     'dart',
     'dockerfile',
+    'glsl',
     'go',
     'gomod',
     'graphql',
