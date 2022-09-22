@@ -21,23 +21,6 @@ function! user#plugin#lexima#loop(...) abort
   return l:literals[0]
 endfunction
 
-"  Operators
-"-----------------------------------------------
-" angle brackets
-call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
-call lexima#add_rule({ 'char': '<lt>', 'at': '\\\%#' })
-call lexima#add_rule({ 'char': '>', 'at': '[^>]\%#>', 'leave': 1 })
-call lexima#add_rule({ 'char': '<BS>', 'at': '<\%#>', 'delete': 1 })
-call lexima#add_rule({ 'char': '>', 'at': '< \%#', 'input': '<BS>', 'input_after': '>' })
-call lexima#add_rule({ 'char': '>', 'at': '< \%#\S', 'input': '<BS>', 'input_after': '><Space>' })
-call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
-call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
-call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
-call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': '><Space>' })
-
-" Rust: lifetime
-call lexima#add_rule({ 'char': "'", 'at': '<\%#>', 'filetype': ['rust'] })
-
 "  CR
 "-----------------------------------------------
 " indent on after =>
@@ -72,16 +55,23 @@ call lexima#add_rule({ 'char': '<C-l>', 'input': '' })
 
 " tag close
 call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '<[a-zA-Z0-9_.-]\+[^>]*>\%#',
-  \ 'input': '<Esc>F<<Right>"xyiwf>a</><Esc><Left>"xpF<i',
+  \ 'char':          '<C-l>',
+  \ 'at':            '<\([a-zA-Z0-9_.-]\+\)[^>/]*>\%#', 
+  \ 'input':         '',
+  \ 'input_after':   '</\1>',
+  \ 'with_submatch': 1,
 \ })
-
-" tag self-close
 call lexima#add_rule({
   \ 'char':  '<C-l>',
   \ 'at':    '<\([a-zA-Z0-9_.-]\+\)[^>]*>\%#</\1>',
   \ 'input': '<Esc>cf> />',
+\ })
+call lexima#add_rule({
+  \ 'char':          '<C-l>',
+  \ 'at':            '<\([a-zA-Z0-9_.-]\+\) />\%#', 
+  \ 'input':         '<BS><BS><BS>>', 
+  \ 'input_after':   '</\1>',
+  \ 'with_submatch': 1,
 \ })
 
 " Golang: channel
@@ -92,25 +82,21 @@ call lexima#add_rule({
   \ 'filetype': ['go'],
 \ })
 
-"  Lang: Ruby
+"  Angle brackets
 "-----------------------------------------------
-" lambda
-call lexima#add_rule({
-  \ 'char':        '(',
-  \ 'at':          '->\%#',
-  \ 'input':       '(',
-  \ 'input_after': ')',
-  \ 'filetype':    ['ruby', 'ruby.rspec'],
-\ })
-call lexima#add_rule({
-  \ 'char':        '(',
-  \ 'at':          '-> \%#',
-  \ 'input':       '<BS>(',
-  \ 'input_after': ')',
-  \ 'filetype':    ['ruby', 'ruby.rspec'],
-\ })
+call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'xml', 'markdown'] })
+call lexima#add_rule({ 'char': '<lt>', 'at': '\\\%#' })
+call lexima#add_rule({ 'char': '>', 'at': '[^>]\%#>', 'leave': 1 })
+call lexima#add_rule({ 'char': '<BS>', 'at': '<\%#>', 'delete': 1 })
+call lexima#add_rule({ 'char': '>', 'at': '< \%#', 'input': '<BS>', 'input_after': '>' })
+call lexima#add_rule({ 'char': '>', 'at': '< \%#\S', 'input': '<BS>', 'input_after': '><Space>' })
+call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#>', 'input_after': '<CR>' })
+call lexima#add_rule({ 'char': '<CR>', 'at': '<\%#$', 'input_after': '<CR>>', 'except': '\C\v^(\s*)\S.*%#\n%(%(\s*|\1\s.+)\n)*\1>' })
+call lexima#add_rule({ 'char': '<Space>', 'at': '<\%#>', 'leave': 1 })
+call lexima#add_rule({ 'char': '<Space>', 'at': ' <\%#>', 'delete': 1, 'input': '><Space>' })
 
-" block
+"  Ruby: block params
+"-----------------------------------------------
 call lexima#add_rule({
   \ 'char':        '<Bar>',
   \ 'at':          '\({\|do\)\s*\%#',
@@ -125,9 +111,9 @@ call lexima#add_rule({
   \ 'filetype': ['ruby', 'ruby.rspec'],
 \ })
 
-"  Mode: Command
+"  Commands
 "-----------------------------------------------
-" write a file as sudo :w!!
+" :w!! -- sudo write
 call lexima#add_rule({
   \ 'char':  '!',
   \ 'at':    '^w!\%#',
@@ -135,7 +121,7 @@ call lexima#add_rule({
   \ 'mode':  ':',
 \ })
 
-" edit relative :ee
+" :ee -- edit relative
 call lexima#add_rule({
   \ 'char':  'e',
   \ 'at':    '^e\%#',
@@ -143,7 +129,7 @@ call lexima#add_rule({
   \ 'mode':  ':',
 \ })
 
-" edit file :ef
+" :ef -- edit file
 call lexima#add_rule({
   \ 'char':  'f',
   \ 'at':    '^e\%#',
@@ -152,23 +138,20 @@ call lexima#add_rule({
 \ })
 
 " directory shortcuts
+" :eh -- home
+" :eg -- github
 let s:directories = {
   \ 'h': '~/',
   \ 'g': '~/go/src/github.com/',
 \ }
 for [s:shortcut, s:directory] in items(s:directories)
-  call lexima#add_rule({
-    \ 'char':  s:shortcut,
-    \ 'at':    '^e\%#',
-    \ 'input': ' ' . s:directory,
-    \ 'mode':  ':',
-  \ })
+  call lexima#add_rule({ 'char': s:shortcut, 'at': '^e\%#', 'input': ' ' . s:directory, 'mode': ':' })
 endfor
 unlet s:directories
 unlet s:shortcut
 unlet s:directory
 
-" rename :er
+" :er -- rename
 call lexima#add_rule({
   \ 'char':  'r',
   \ 'at':    '^e\%#',
@@ -176,16 +159,7 @@ call lexima#add_rule({
   \ 'mode':  ':',
 \ })
 
-" font
-call lexima#add_rule({
-  \ 'char':  '<Space>',
-  \ 'at':    '^font\%#',
-  \ 'input': "\<C-u>Font ",
-  \ 'mode':  ':',
-\ })
-
-"  Search and replace
-"-----------------------------------------------
+" substitute commands
 for s:del in ['/', '~', '!', '@', '#', '%', ':']
   " :s -- Standard substitute
   call lexima#add_rule({
@@ -225,18 +199,9 @@ for s:del in ['/', '~', '!', '@', '#', '%', ':']
 endfor
 unlet s:del
 
+" auto escape chars in search commands
 for s:del in ['/', '?']
-  call lexima#add_rule({
-    \ 'char':  s:del,
-    \ 'at':    '\\\%#',
-    \ 'input': s:del,
-    \ 'mode':  s:del,
-  \ })
-  call lexima#add_rule({
-    \ 'char':  s:del,
-    \ 'at':    '\%#',
-    \ 'input': '\' . s:del,
-    \ 'mode':  s:del,
-  \ })
+  call lexima#add_rule({ 'char': s:del, 'at': '\\\%#', 'input': s:del, 'mode': s:del })
+  call lexima#add_rule({ 'char': s:del, 'at': '\%#', 'input': '\' . s:del, 'mode': s:del })
 endfor
 unlet s:del

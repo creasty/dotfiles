@@ -316,6 +316,12 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 
 "=== Misc
 "==============================================================================================
+" remap command
+function s:remap_command(lhs, rhs)
+  execute 'cnoreabbrev' '<expr>'
+    \ a:lhs "(getcmdtype() ==# ':' && getcmdline() ==# '" . a:lhs . "') ? '" . a:rhs . "' : '" . a:lhs . "'" 
+endfunction
+
 " change indent style
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 HardTab :setl noexpandtab tabstop=<args> shiftwidth=<args>
@@ -339,8 +345,9 @@ command! ProfOpen
   \ vsplit /tmp/vim-vimscript.log |
   \ vsplit /tmp/vim-lua.log
 
-" font
+" change font size
 command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
+call s:remap_command('font', 'Font')
 
 function! s:change_font_size(size) abort
   exec 'set' 'guifont=Menlo:h' . a:size
