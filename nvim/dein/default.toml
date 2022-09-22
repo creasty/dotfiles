@@ -133,9 +133,6 @@ depends = ['nvim-treesitter']
 repo = 'creasty/opfmt'
 depends = ['nvim-treesitter']
 path = '/Users/creasty/go/src/github.com/creasty/opfmt'
-hook_add = '''
-let g:new_opfmt_enabled = v:true
-'''
 
 [[plugins]] # Treesitter playground integrated into Neovim
 repo = 'nvim-treesitter/playground'

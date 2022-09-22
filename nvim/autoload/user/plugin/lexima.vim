@@ -23,34 +23,6 @@ endfunction
 
 "  Operators
 "-----------------------------------------------
-let s:all_ops = opfmt#all_operators_regexp()
-
-if !g:new_opfmt_enabled
-  for s:op in opfmt#triggers()
-    let s:op_char = s:op
-    let s:op_char = substitute(s:op_char, '<', '<lt>', '')
-    let s:op_char = substitute(s:op_char, '|', '<Bar>', '')
-    let s:op_char = substitute(s:op_char, '\', '<Bslash>', '')
-  
-    call lexima#add_rule({ 'char': s:op_char, 'input': '<C-r>=opfmt#format("' . escape(s:op, '"\') . '")<CR>' })
-  endfor
-  unlet s:op
-  unlet s:op_char
-
-  " comma
-  call lexima#add_rule({ 'char': ',', 'input': "<C-r>=user#plugin#lexima#loop(', ', ',')<CR>" })
-  call lexima#add_rule({ 'char': '<CR>', 'at': ', \%#', 'input': '<BS><CR>' })
-
-  " no merge: ?!, &!, |!
-  call lexima#add_rule({ 'char': '!', 'at': '? \%#' })
-  call lexima#add_rule({ 'char': '!', 'at': '& \%#' })
-  call lexima#add_rule({ 'char': '!', 'at': '| \%#' })
-
-  " Kotlin: elvis operator
-  call lexima#add_rule({ 'char': '<Space>', 'at': ' ? :\%#', 'input': '<BS><BS>:<Space>' })
-  call lexima#add_rule({ 'char': '<Space>', 'at': '\S?:\%#', 'input': '<BS><BS><Space>?:<Space>', 'filetype': ['kotlin'] })
-endif
-
 " angle brackets
 call lexima#add_rule({ 'char': '<lt>', 'input_after': '>', 'filetype': ['html', 'eruby', 'slim', 'php', 'xml'] })
 call lexima#add_rule({ 'char': '<lt>', 'at': '\\\%#' })
@@ -97,28 +69,6 @@ call lexima#add_rule({
 "  C-l
 "-----------------------------------------------
 call lexima#add_rule({ 'char': '<C-l>', 'input': '' })
-
-" spaces around operators
-call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '\S ' . s:all_ops . '\+ \%#',
-  \ 'input': '<Esc>bh"_xf<Space>"_cl',
-\ })
-call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '\S ' . s:all_ops . '\+\%#',
-  \ 'input': '<Space><Esc>bh"_xf<Space>"_cl',
-\ })
-call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '\S' . s:all_ops . '\+ \%#',
-  \ 'input': '<BS>',
-\ })
-call lexima#add_rule({
-  \ 'char':  '<C-l>',
-  \ 'at':    '\S <\%#>',
-  \ 'input': '<BS><BS><lt>',
-\ })
 
 " tag close
 call lexima#add_rule({
