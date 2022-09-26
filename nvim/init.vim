@@ -450,13 +450,16 @@ call dein#call_hook('post_source')
 
 "  Dein commands
 "-----------------------------------------------
-command! DeinPurgeCache
+command! -nargs=0 DeinPurgeCache
   \ call dein#recache_runtimepath() |
   \ call dein#clear_state()
 
-command! DeinPrunePlugins
+command! -nargs=0 DeinPrunePlugins
   \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
   \ exec 'DeinPurgeCache'
+
+command! -nargs=0 DeinOpenLog
+  \ execute 'vsplit' g:dein#install_log_filename
 
 command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinUpdate
   \ call dein#update(fnamemodify(trim(<q-args>), ':t'))
