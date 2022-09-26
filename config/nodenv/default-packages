@@ -2,6 +2,7 @@ bash-language-server
 create-react-app
 eslint
 graphql-language-service-cli
+mazamachi/shuji#add-preserve-option
 tslint
 typescript
 typescript-language-server
