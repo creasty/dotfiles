@@ -296,6 +296,7 @@
     { "languageId": "vim", "allowCompoundWords": true }
   ],
   "cSpell.userWords": [
+    "envmap",
     "raycaster"
   ]
 }
