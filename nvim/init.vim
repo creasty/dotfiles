@@ -384,6 +384,15 @@ function! s:clean_buffers() abort
   endfor
 endfunction
 
+" strip trailing spaces
+augroup _strip_trailing_spaces
+  autocmd!
+  autocmd BufWritePre *
+    \ if empty(&buftype) && mode() ==# 'n' |
+      \ keeppatterns %s/\v\s+$//ge |
+    \ endif
+augroup END
+
 " back to the last line I edited
 augroup _restore_last_pos
   autocmd!
