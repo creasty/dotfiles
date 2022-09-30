@@ -2,12 +2,20 @@ if exists('did_load_filetypes')
   finish
 endif
 
-function! s:setf_delayed(ft) abort
-  if exists('s:timer_id')
-    call timer_stop(s:timer_id)
-  endif
-  let s:timer_id = timer_start(50, {-> execute('setf ' . a:ft) })
-endfunction
+let s:aliases = {
+  \ 'js': 'javascript',
+  \ 'jsx': 'javascriptreact',
+  \ 'ts': 'typescript',
+  \ 'tsx': 'typescriptreact',
+  \ 'md': 'markdown',
+  \ 'bq': 'sql.bq',
+  \ 'pg': 'sql.pg',
+\ }
+for [s:lhs, s:rhs] in items(s:aliases)
+  execute 'cnoreabbrev' '<expr>'
+    \ s:lhs "getcmdtype() ==# ':' && getcmdline() =~# '\\v^setf(iletype)?\\s+" . s:lhs . "'"
+    \ " ? '" . s:rhs . "' : '" . s:lhs . "'"
+endfor
 
 augroup filetypedetect
   autocmd! BufNewFile,BufRead *.er setlocal ft=conf
@@ -22,14 +30,4 @@ augroup filetypedetect
   autocmd! BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
   autocmd! BufNewFile,BufRead *.bq.sql setlocal ft=sql.bq
   autocmd! BufNewFile,BufRead *.pg.sql setlocal ft=sql.pg
-
-  "  Shortcuts
-  "-----------------------------------------------
-  autocmd! FileType js call s:setf_delayed('javascript')
-  autocmd! FileType jsx call s:setf_delayed('javascriptreact')
-  autocmd! FileType ts call s:setf_delayed('typescript')
-  autocmd! FileType tsx call s:setf_delayed('typescriptreact')
-  autocmd! FileType md call s:setf_delayed('markdown')
-  autocmd! FileType bq call s:setf_delayed('sql.bq')
-  autocmd! FileType pg call s:setf_delayed('sql.pg')
 augroup END

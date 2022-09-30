@@ -319,7 +319,8 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 " remap command
 function s:remap_command(lhs, rhs)
   execute 'cnoreabbrev' '<expr>'
-    \ a:lhs "(getcmdtype() ==# ':' && getcmdline() ==# '" . a:lhs . "') ? '" . a:rhs . "' : '" . a:lhs . "'"
+    \ a:lhs "getcmdtype() ==# ':' && getcmdline() ==# '" . a:lhs . "'"
+    \ " ? '" . a:rhs . "' : '" . a:lhs . "'"
 endfunction
 
 " change indent style
