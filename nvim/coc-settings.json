@@ -296,8 +296,11 @@
     { "languageId": "vim", "allowCompoundWords": true }
   ],
   "cSpell.userWords": [
+    "clearcoat",
     "envmap",
     "equirectangular",
-    "raycaster"
+    "metalness",
+    "raycaster",
+    "wireframe"
   ]
 }
