@@ -56,7 +56,7 @@ call lexima#add_rule({ 'char': '<C-l>', 'input': '' })
 " tag close
 call lexima#add_rule({
   \ 'char':          '<C-l>',
-  \ 'at':            '<\([a-zA-Z0-9_.-]\+\)[^>/]*>\%#', 
+  \ 'at':            '<\([a-zA-Z0-9_.-]\+\)[^>/]*>\%#',
   \ 'input':         '',
   \ 'input_after':   '</\1>',
   \ 'with_submatch': 1,
@@ -68,8 +68,8 @@ call lexima#add_rule({
 \ })
 call lexima#add_rule({
   \ 'char':          '<C-l>',
-  \ 'at':            '<\([a-zA-Z0-9_.-]\+\) />\%#', 
-  \ 'input':         '<BS><BS><BS>>', 
+  \ 'at':            '<\([a-zA-Z0-9_.-]\+\) />\%#',
+  \ 'input':         '<BS><BS><BS>>',
   \ 'input_after':   '</\1>',
   \ 'with_submatch': 1,
 \ })
@@ -125,7 +125,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':  'e',
   \ 'at':    '^e\%#',
-  \ 'input': " \<C-r>=fnameescape(expand('%:p:h')) . '/' \<CR>", 
+  \ 'input': " \<C-r>=fnameescape(expand('%:p:h')) . '/' \<CR>",
   \ 'mode':  ':',
 \ })
 
@@ -133,7 +133,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':  'f',
   \ 'at':    '^e\%#',
-  \ 'input': " \<C-r>=fnameescape(expand('%:p'))\<CR>", 
+  \ 'input': " \<C-r>=fnameescape(expand('%:p'))\<CR>",
   \ 'mode':  ':',
 \ })
 
@@ -155,7 +155,7 @@ unlet s:directory
 call lexima#add_rule({
   \ 'char':  'r',
   \ 'at':    '^e\%#',
-  \ 'input': "\<C-u>Rename \<C-r>=fnameescape(expand('%:p'))\<CR>", 
+  \ 'input': "\<C-u>Rename \<C-r>=fnameescape(expand('%:p'))\<CR>",
   \ 'mode':  ':',
 \ })
 
