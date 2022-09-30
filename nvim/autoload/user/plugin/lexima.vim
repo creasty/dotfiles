@@ -125,7 +125,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':  'e',
   \ 'at':    '^e\%#',
-  \ 'input': " \<C-r>=expand('%:p:h') . '/' \<CR>",
+  \ 'input': " \<C-r>=fnameescape(expand('%:p:h')) . '/' \<CR>", 
   \ 'mode':  ':',
 \ })
 
@@ -133,7 +133,7 @@ call lexima#add_rule({
 call lexima#add_rule({
   \ 'char':  'f',
   \ 'at':    '^e\%#',
-  \ 'input': " \<C-r>=expand('%:p')\<CR>",
+  \ 'input': " \<C-r>=fnameescape(expand('%:p'))\<CR>", 
   \ 'mode':  ':',
 \ })
 
@@ -155,7 +155,7 @@ unlet s:directory
 call lexima#add_rule({
   \ 'char':  'r',
   \ 'at':    '^e\%#',
-  \ 'input': "\<C-u>Rename \<C-r>=expand('%:p')\<CR>",
+  \ 'input': "\<C-u>Rename \<C-r>=fnameescape(expand('%:p'))\<CR>", 
   \ 'mode':  ':',
 \ })
 
