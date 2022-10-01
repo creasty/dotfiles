@@ -18,15 +18,14 @@ for [s:lhs, s:rhs] in items(s:aliases)
 endfor
 
 augroup filetypedetect
-  autocmd! BufNewFile,BufRead *.er setlocal ft=conf
-  autocmd! BufNewFile,BufRead *.graphql setlocal ft=graphql
+  autocmd! BufNewFile,BufRead .env,.env.* setlocal ft=sh
+  autocmd! BufNewFile,BufRead *.frag,*.vert setlocal ft=glsl
   autocmd! BufNewFile,BufRead gitconfig setlocal ft=gitconfig
   autocmd! BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
   autocmd! BufNewFile,BufRead LICENSE,LICENSE.txt set filetype=license
   autocmd! BufNewFile,BufRead coc-settings.json set filetype=jsonc
 
-  "  Compound filetypes
-  "-----------------------------------------------
+  " Compound filetypes
   autocmd! BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
   autocmd! BufNewFile,BufRead *.bq.sql setlocal ft=sql.bq
   autocmd! BufNewFile,BufRead *.pg.sql setlocal ft=sql.pg
