@@ -209,7 +209,7 @@
   "diagnostic-languageserver.formatters": {
     "clang-format": {
       "command": "clang-format",
-      "args": ["-i", "%filepath"]
+      "args": ["%filepath"]
     },
     "terraform": {
       "command": "terraform",
