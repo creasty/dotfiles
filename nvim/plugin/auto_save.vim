@@ -12,7 +12,7 @@ augroup auto_save
   autocmd!
   autocmd User AutoSavePre :
   autocmd User AutoSavePost call <SID>record_time()
-  autocmd CursorHold,InsertLeave,TextChanged * ++nested call <SID>auto_save()
+  autocmd CursorHold,InsertLeave * ++nested call <SID>auto_save()
   autocmd BufLeave,FocusLost * ++nested call <SID>auto_save()
   autocmd BufWritePost * call <SID>record_time()
 augroup END
