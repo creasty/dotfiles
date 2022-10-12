@@ -158,7 +158,6 @@ set updatetime=200
 
 " folding
 set foldmethod=indent
-set fillchars="fold:"
 set foldlevel=20
 set foldlevelstart=20
 
