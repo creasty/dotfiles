@@ -13,8 +13,8 @@ M.highlight = setmetatable({}, {
     --   underline
     --   underlineline
     --   undercurl
-    --   underdot
-    --   underdash
+    --   underdotted
+    --   underdashed
     --   strikethrough
     --   reverse / inverse
     --   italic
@@ -189,7 +189,7 @@ function M.setup()
   hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
 
   -- copilot.vim
-  hi.CopilotSuggestion = { fg = s.gray400, underdot = 1 }
+  hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }
 end
 
 return M
