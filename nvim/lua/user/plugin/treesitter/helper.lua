@@ -11,7 +11,7 @@ function M.get_treesitter_path()
     return paths
   end
 
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local row, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   row = row - 1
 
   local current_node = nts_ts_utils.get_node_at_cursor()
@@ -33,7 +33,7 @@ end
 
 function M.get_treesitter_hl()
   local buf = vim.api.nvim_get_current_buf()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local row, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   row = row - 1
 
   local buf_hl = ts_highlighter.active[buf]

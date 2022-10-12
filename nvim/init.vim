@@ -316,7 +316,7 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 "=== Misc
 "==============================================================================================
 " remap command
-function s:remap_command(lhs, rhs)
+function s:remap_command(lhs, rhs) abort
   execute 'cnoreabbrev' '<expr>'
     \ a:lhs "getcmdtype() ==# ':' && getcmdline() ==# '" . a:lhs . "'"
     \ " ? '" . a:rhs . "' : '" . a:lhs . "'"
