@@ -300,8 +300,10 @@
     "clearcoat",
     "envmap",
     "equirectangular",
+    "lerp",
     "metalness",
     "raycaster",
+    "tweens",
     "wireframe"
   ]
 }
