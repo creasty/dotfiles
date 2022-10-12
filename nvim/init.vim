@@ -327,17 +327,12 @@ command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args
 command! ScopeInfo lua require'user.plugin.treesitter.helper'.show_hl_captures()
 
 " profiler
-command! ProfStart
+command! -nargs=0 ProfStart
   \ profile start /tmp/vim-vimscript.log |
   \ profile func * |
-  \ profile! file * |
-  \ lua pcall(function() require('plenary.profile').start('/tmp/vim-lua.log') end)
-command! ProfStop
-  \ profile stop |
-  \ lua pcall(function() require('plenary.profile').stop() end)
-command! ProfOpen
-  \ vsplit /tmp/vim-vimscript.log |
-  \ vsplit /tmp/vim-lua.log
+  \ profile! file *
+command! -nargs=0 ProfStop profile stop
+command! -nargs=0 ProfOpen vsplit /tmp/vim-vimscript.log |
 
 " change font size
 command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
