@@ -266,17 +266,11 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " select all
 nnoremap <Space>a ggVG
 
-" search selection
-xnoremap * "xy/<C-r>=escape(@x, '\\/.*$^~')<CR>
-
 " replace selection
 xnoremap s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
 nnoremap <Space>* "xyiw:<C-u>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
-
-" dim match highlight
-nnoremap <silent> <Space><Space> <Cmd>nohlsearch<Bar>doautocmd User NoHlsearchPost<CR>
 
 " tags
 nnoremap tn <Cmd>tn<CR>
@@ -484,21 +478,6 @@ endfunction
 
 "  Cross-plugin integration
 "-----------------------------------------------
-if dein#is_available('vim-searchhi')
-  augroup _init_searchhi
-    autocmd!
-
-    autocmd User NoHlsearchPost
-      \ call searchhi#clear(0, 0) |
-      \ call searchhi#await(0, 0)
-
-    if dein#is_available('vim-anzu')
-      autocmd User SearchHiOn AnzuUpdateSearchStatusOutput
-      autocmd User SearchHiOff echo g:anzu_no_match_word
-    endif
-  augroup END
-endif
-
 if v:true
   function! s:stop_intelligence() abort
     " coc.nvim

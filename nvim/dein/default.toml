@@ -149,19 +149,11 @@ let g:SignatureMarkTextHL = 'Statement'
 
 [[plugins]] # search status
 repo = 'osyo-manga/vim-anzu'
-
-[[plugins]] # Highlight the current search result differently
-repo = 'qxxxb/vim-searchhi'
 hook_add = '''
-let g:searchhi_user_autocmds_enabled = 1
-let g:searchhi_redraw_before_on = 1
-
-nmap n <Plug>(searchhi-n)
-nmap N <Plug>(searchhi-N)
-nmap * <Plug>(searchhi-*)
-nmap g* <Plug>(searchhi-g*)
-nmap # <Plug>(searchhi-#)
-nmap g# <Plug>(searchhi-g#)
+nmap n <Plug>(anzu-n)
+nmap N <Plug>(anzu-N)
+nmap * <Plug>(anzu-star)
+nmap # <Plug>(anzu-sharp)
 '''
 
 [[plugins]] # a tree explorer

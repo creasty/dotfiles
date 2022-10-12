@@ -11,7 +11,7 @@ M.highlight = setmetatable({}, {
     -- Style:
     --   bold
     --   underline
-    --   underlineline
+    --   underdouble
     --   undercurl
     --   underdotted
     --   underdashed
@@ -34,6 +34,7 @@ function M.setup()
   hi.Bold = { bold = 1 }
   hi.ColorColumn = { bg = s.guide }
   hi.Conceal = { fg = s.aqua }
+  hi.CurSearch = { fg = s.background, bg = s.yellow, bold = 1 }
   hi.Cursor = { fg = s.background, bg = s.foreground, reverse = 1 }
   hi.CursorColumn = { bg = s.line }
   hi.CursorLine = { bg = s.line }
@@ -184,9 +185,6 @@ function M.setup()
   hi.CocPumVirtualText = { fg = s.gray400 }
   hi.CocDialogFloat = { fg = s.foreground, bg = s.background }
   hi.CocDialogFloatBorder = { fg = s.bright_blue, bg = s.background }
-
-  -- vim-searchhi
-  hi.CurrentSearch = { fg = s.background, bg = s.yellow, bold = 1 }
 
   -- copilot.vim
   hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }
