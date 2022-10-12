@@ -38,6 +38,13 @@ repo = 'tpope/vim-repeat'
 
 [[plugins]] # pasting with indentation adjusted to paste destination
 repo = 'sickill/vim-pasta'
+hook_add = '''
+let g:pasta_disabled_filetypes = [
+  \ "python", "coffee", "markdown",
+  \ "yaml", "slim", "nerdtree", "netrw", "startify", "ctrlp",
+  \ "dirvish",
+\ ]
+'''
 
 [[plugins]] # a genius template engine
 repo = 'creasty/mold.vim'
@@ -156,30 +163,44 @@ nmap * <Plug>(anzu-star)
 nmap # <Plug>(anzu-sharp)
 '''
 
-[[plugins]] # a tree explorer
-repo = 'scrooloose/nerdtree'
-hook_add = '''
-let g:NERDSpaceDelims = 1
-let g:NERDShutUp = 1
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeIgnore = ['\~$', '\.git$']
-let g:NERDTreeAutoDeleteBuffer = 1
+# [[plugins]] # a tree explorer
+# repo = 'scrooloose/nerdtree'
+# hook_add = '''
+# let g:NERDSpaceDelims = 1
+# let g:NERDShutUp = 1
+# let g:NERDTreeShowHidden = 1
+# let g:NERDTreeIgnore = ['\~$', '\.git$']
+# let g:NERDTreeAutoDeleteBuffer = 1
+#
+# let g:loaded_nerdtree_fs_menu = 1
+# '''
 
-let g:loaded_nerdtree_fs_menu = 1
+[[plugins]] # Path navigator designed to work with Vim's built-in mechanisms
+repo = 'justinmk/vim-dirvish'
+hook_add = '''
+let g:dirvish_mode = 2
+
+augroup _init_dirvish
+  autocmd!
+  autocmd FileType dirvish call s:init_dirvish_buffer()
+augroup END
+
+function! s:init_dirvish_buffer() abort
+  nmap <buffer> - <Plug>(dirvish_up)
+endfunction
 '''
 
-[[plugins]] # Indent guides for Neovim
-repo = 'lukas-reineke/indent-blankline.nvim'
-hook_add = '''
-lua << EOF
-require("indent_blankline").setup {
-  char = '▏',
-  show_first_indent_level = false,
-  use_treesitter = true,
-}
-EOF
-'''
-if = 0
+# [[plugins]] # Indent guides for Neovim
+# repo = 'lukas-reineke/indent-blankline.nvim'
+# hook_add = '''
+# lua << EOF
+# require("indent_blankline").setup {
+#   char = '▏',
+#   show_first_indent_level = false,
+#   use_treesitter = true,
+# }
+# EOF
+# '''
 
 #  ddu
 #-----------------------------------------------
