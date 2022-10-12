@@ -1,5 +1,5 @@
 if [ -n "${ZSH_PROF_ENABLED:-}" ]; then
-  zmodload zsh/zprof && zprof
+  zmodload zsh/zprof
 fi
 
 if [ -f ~/.profile ]; then
