@@ -13,14 +13,14 @@ language en_US
 scriptencoding utf-8
 
 " disable builtin plugins
+let g:loaded_2html_plugin = 1
+let g:loaded_netrwPlugin = 1
 let g:loaded_tar = 1
 let g:loaded_tarPlugin = 1
-let g:loaded_zip = 1
-let g:loaded_zipPlugin = 1
-let g:loaded_2html_plugin = 1
 let g:loaded_vimball = 1
 let g:loaded_vimballPlugin = 1
-let g:loaded_netrwPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
 
 " configure runtime features
 let g:omni_sql_no_default_maps = 1
