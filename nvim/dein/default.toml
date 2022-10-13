@@ -154,15 +154,6 @@ let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
 let g:SignatureMarkTextHL = 'Statement'
 '''
 
-[[plugins]] # search status
-repo = 'osyo-manga/vim-anzu'
-hook_add = '''
-nmap n <Plug>(anzu-n)
-nmap N <Plug>(anzu-N)
-nmap * <Plug>(anzu-star)
-nmap # <Plug>(anzu-sharp)
-'''
-
 # [[plugins]] # a tree explorer
 # repo = 'scrooloose/nerdtree'
 # hook_add = '''
@@ -179,15 +170,6 @@ nmap # <Plug>(anzu-sharp)
 repo = 'justinmk/vim-dirvish'
 hook_add = '''
 let g:dirvish_mode = 2
-
-augroup _init_dirvish
-  autocmd!
-  autocmd FileType dirvish call s:init_dirvish_buffer()
-augroup END
-
-function! s:init_dirvish_buffer() abort
-  nmap <buffer> - <Plug>(dirvish_up)
-endfunction
 '''
 
 # [[plugins]] # Indent guides for Neovim
