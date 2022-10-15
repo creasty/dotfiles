@@ -24,5 +24,5 @@ function! s:item_cmp(bufname, ft, item) abort
   if !a:item.static
     return -1
   endif
-  return 1
+  return 0
 endfunction
