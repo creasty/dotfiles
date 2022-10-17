@@ -70,6 +70,7 @@ homebrew:
     - protobuf            # Protocol buffers (Google's data interchange format)
     - ripgrep             # Search tool like grep and The Silver Searcher
     - sd                  # Intuitive find & replace CLI
+    - shortcat            # App that enables mouse-free UI interaction
     - terraform           # Tool to build, change, and version infrastructure
     - tmux                # Terminal multiplexer
     - trash               # CLI tool that moves files or folder to the trash
