@@ -20,6 +20,9 @@ augroup END
 command! AutoSaveToggle :call <SID>auto_save_toggle()
 
 function! s:is_enabled() abort
+  if !s:auto_save_enabled
+    return v:false
+  end
   if &readonly || !&modifiable
     return v:false
   endif
@@ -36,9 +39,6 @@ function! s:is_enabled() abort
 endfunction
 
 function! s:auto_save() abort
-  if s:auto_save_enabled == 0
-    return
-  end
   if !s:is_enabled()
     return
   endif
@@ -49,14 +49,14 @@ function! s:auto_save() abort
 
   " Preserve marks that are used to remember start and
   " end position of the last changed or yanked text (`:h '[`).
-  let first_char_pos = getpos("'[")
-  let last_char_pos = getpos("']")
+  let l:first_char_pos = getpos("'[")
+  let l:last_char_pos = getpos("']")
 
   doautocmd User AutoSavePre
   silent! w
 
-  call setpos("'[", first_char_pos)
-  call setpos("']", last_char_pos)
+  call setpos("'[", l:first_char_pos)
+  call setpos("']", l:last_char_pos)
 
   if &modified
     return
@@ -78,7 +78,7 @@ function! s:auto_save_debounced() abort
 endfunction
 
 function! s:auto_save_toggle() abort
-  if s:auto_save_enabled >= 1
+  if s:auto_save_enabled
     let s:auto_save_enabled = 0
     echo 'AutoSave is OFF'
   else

@@ -216,12 +216,12 @@ nnoremap C "_C
 xnoremap c "_c
 
 " submode for x
-nnoremap <SID>(x) <Nop>
+nnoremap <SID>(x) <Ignore>
 nnoremap <script> x "_x<SID>(x)
 nnoremap <script> <SID>(x)x <Cmd>undojoin<CR>x<SID>(x)
 
 " submode for C-a/C-x
-nnoremap <SID>(inc) <Nop>
+nnoremap <SID>(inc) <Ignore>
 nnoremap <script> <C-a> <C-a><SID>(inc)
 nnoremap <script> <C-x> <C-x><SID>(inc)
 nnoremap <script> <SID>(inc)<C-a> <Cmd>undojoin<CR><C-a><SID>(inc)
