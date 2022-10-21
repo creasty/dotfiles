@@ -377,7 +377,9 @@ augroup _strip_trailing_spaces
   autocmd!
   autocmd BufWritePre *
     \ if empty(&buftype) && mode() ==# 'n' |
+      \ let s:saved_cursor = getpos('.') |
       \ keeppatterns %s/\v\s+$//ge |
+      \ call setpos('.', s:saved_cursor) |
     \ endif
 augroup END
 

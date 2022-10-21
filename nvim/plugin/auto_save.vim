@@ -12,7 +12,7 @@ augroup auto_save
   autocmd!
   autocmd User AutoSavePre :
   autocmd User AutoSavePost call <SID>record_time()
-  autocmd TextChanged,InsertLeave * ++nested call <SID>auto_save()
+  autocmd TextChanged,InsertLeave * ++nested call s:auto_save_debounced()
   autocmd BufLeave,FocusLost * ++nested call <SID>auto_save()
   autocmd BufWritePost * call <SID>record_time()
 augroup END
@@ -27,6 +27,9 @@ function! s:is_enabled() abort
     return v:false
   endif
   if bufname() =~# '^__coc_'
+    return v:false
+  endif
+  if mode() !=# 'n'
     return v:false
   endif
   return v:true
@@ -65,6 +68,13 @@ function! s:auto_save() abort
   finally
     let s:auto_save_enabled = 1
   endtry
+endfunction
+
+function! s:auto_save_debounced() abort
+  if exists('b:auto_save_timer_id')
+    call timer_stop(b:auto_save_timer_id)
+  endif
+  let b:auto_save_timer_id = timer_start(50, {-> s:auto_save() })
 endfunction
 
 function! s:auto_save_toggle() abort
