@@ -373,15 +373,15 @@ function! s:clean_buffers() abort
 endfunction
 
 " strip trailing spaces
-augroup _strip_trailing_spaces
-  autocmd!
-  autocmd BufWritePre *
-    \ if empty(&buftype) && mode() ==# 'n' |
-      \ let s:saved_cursor = getpos('.') |
-      \ keeppatterns %s/\v\s+$//ge |
-      \ call setpos('.', s:saved_cursor) |
-    \ endif
-augroup END
+" augroup _strip_trailing_spaces
+"   autocmd!
+"   autocmd BufWritePre *
+"     \ if empty(&buftype) && mode() ==# 'n' |
+"       \ let s:saved_cursor = getpos('.') |
+"       \ keeppatterns %s/\v\s+$//ge |
+"       \ call setpos('.', s:saved_cursor) |
+"     \ endif
+" augroup END
 
 " back to the last line I edited
 augroup _restore_last_pos
