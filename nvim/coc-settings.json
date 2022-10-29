@@ -98,6 +98,7 @@
 
   //=== coc-git
   //==============================================================================================
+  "git.signPriority": 1,
   "git.addedSign.text": "┃",
   "git.addedSign.hlGroup": "CocDiffAdd",
   "git.changedSign.text": "┃",
@@ -246,8 +247,13 @@
   //==============================================================================================
   "metals.enable": false,
 
+  //=== coc-flutter
+  //==============================================================================================
+  "dart.showTodos": false,
+
   //=== coc-spell-checker
   //==============================================================================================
+  "cSpell.diagnosticLevel": "Hint",
   "cSpell.fixSpellingWithRenameProvider": true,
   "cSpell.ignoreRegExpList": ["\\w+'\\w+"],
   "cSpell.dictionaryDefinitions": [
@@ -297,6 +303,7 @@
   ],
   "cSpell.userWords": [
     "Fullsize",
+    "Unreads",
     "clearcoat",
     "envmap",
     "equirectangular",

@@ -127,11 +127,11 @@ function M.setup()
   hi.DiagnosticError = { fg = s.red }
   hi.DiagnosticWarn = { fg = s.yellow }
   hi.DiagnosticInfo = { fg = s.blue }
-  hi.DiagnosticHint = { fg = s.green }
+  hi.DiagnosticHint = { fg = s.brown }
   hi.DiagnosticUnderlineError = { undercurl = 1, sp = s.bright_red }
   hi.DiagnosticUnderlineWarn = { undercurl = 1, sp = s.bright_yellow }
   hi.DiagnosticUnderlineInfo = { undercurl = 1, sp = s.bright_blue }
-  hi.DiagnosticUnderlineHint = { undercurl = 1, sp = s.bright_green }
+  hi.DiagnosticUnderlineHint = { undercurl = 1, sp = s.bright_brown }
 
   -- Treesitter
   -- hi.TSError = { bg = s.dark_red }
@@ -168,7 +168,7 @@ function M.setup()
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
-  hi.StatusLineDiagnosticsHint = { fg = s.green, bg = s.window }
+  hi.StatusLineDiagnosticsHint = { fg = s.brown, bg = s.window }
 
   hi.GitConflictMarker = { fg = s.red, bg = s.dark_red }
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
