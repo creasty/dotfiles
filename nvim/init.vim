@@ -39,20 +39,14 @@ set autowrite
 " disable mode lines
 set modelines=0
 
-" command history
-set history=1000
-
 " yank use system clipboard
 set clipboard=unnamed
-
-" initial dir of explorer
-set browsedir=buffer
 
 " automatic formatting
 set formatoptions& formatoptions+=lm]
 
 " in/decrement
-set nrformats=alpha,hex
+set nrformats=alpha
 
 " wildcard settings
 set wildignore& wildignore+=*.so,*.swp
@@ -70,8 +64,8 @@ set wildignorecase
 " indent
 set smartindent
 set cindent
-set expandtab
 set shiftround
+set expandtab
 set tabstop=2 shiftwidth=2 softtabstop=0
 
 " move cursor over lines

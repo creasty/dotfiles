@@ -307,10 +307,12 @@
     "clearcoat",
     "envmap",
     "equirectangular",
+    "henryapp",
     "lerp",
     "metalness",
     "raycaster",
     "tweens",
+    "usecase",
     "wireframe"
   ]
 }
