@@ -44,7 +44,7 @@ alias -g P='| peco'
 
 #  Bin
 #-----------------------------------------------
-alias x86='arch -x86_64'
+alias x64='arch -x86_64'
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
