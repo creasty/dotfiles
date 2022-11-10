@@ -27,11 +27,12 @@ jobs:
         run: |
           set -euxo pipefail
 
-          brew link --overwrite python@3.11 || true
-
           brew list --cask | xargs brew uninstall --force
           brew list | xargs brew uninstall --force --ignore-dependencies
+
           NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+
+          rm -rf /usr/local/bin/*
 
       - name: Install SSH key
         run: |
