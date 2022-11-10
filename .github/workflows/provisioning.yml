@@ -7,7 +7,6 @@ jobs:
     runs-on: macos-12 # https://github.com/actions/virtual-environments
     env:
       HOMEBREW_VERBOSE: 1
-      HOMEBREW_NO_INSTALL_CLEANUP: 1
       DOTFILES_NOEDIT_SECRETS: 1
     strategy:
       fail-fast: false
@@ -23,6 +22,7 @@ jobs:
       - name: Link to home
         run: ln -sf "$PWD" "$HOME/dotfiles"
 
+      # Refer to https://github.com/actions/runner-images/tree/main/images/macos/provision
       - name: Uninstall homebrew
         run: |
           set -euxo pipefail
