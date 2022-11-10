@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euxo pipefail
 
-          brew link --overwrite python@3.10 || true
+          brew link --overwrite python@3.11 || true
 
           brew list --cask | xargs brew uninstall --force
           brew list | xargs brew uninstall --force --ignore-dependencies
