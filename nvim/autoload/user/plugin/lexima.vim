@@ -113,6 +113,14 @@ call lexima#add_rule({
 
 "  Commands
 "-----------------------------------------------
+" Visual selection range '<,'>
+call lexima#add_rule({
+  \ 'char':  "'",
+  \ 'at':    '^\%#',
+  \ 'input': "'<,'>",
+  \ 'mode':  ':',
+\ })
+
 " :w!! -- sudo write
 call lexima#add_rule({
   \ 'char':  '!',
