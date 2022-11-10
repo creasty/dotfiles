@@ -21,11 +21,14 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link to home
-        run: |
-          ln -sf "$PWD" "$HOME/dotfiles"
+        run: ln -sf "$PWD" "$HOME/dotfiles"
 
       - name: Uninstall homebrew
         run: |
+          set -euxo pipefail
+
+          brew link --overwrite python@3.10 || true
+
           brew list --cask | xargs brew uninstall --force
           brew list | xargs brew uninstall --force --ignore-dependencies
           NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
