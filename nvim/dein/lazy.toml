@@ -92,6 +92,21 @@ let g:copilot_assume_mapped = v:true
 let g:copilot_idle_delay = 200
 '''
 
+[[plugins]] # The easiest way to create previewable commands in Neovim.
+repo = 'smjonas/live-command.nvim'
+on_event = ['CmdlineEnter']
+hook_source = '''
+lua << EOF
+require("live-command").setup {
+  commands = {
+    Norm = { cmd = "norm" },
+    G = { cmd = "g" },
+    V = { cmd = "v" },
+  },
+}
+EOF
+'''
+
 #  Navigation
 #-----------------------------------------------
 [[plugins]] # switch to the missing file without interaction
