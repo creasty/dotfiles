@@ -23,10 +23,9 @@ jobs:
         run: |
           ln -sf "$PWD" "$HOME/dotfiles"
 
-      - name: Clean slate
+      - name: Uninstall homebrew
         run: |
-          brew list | xargs brew uninstall --force --ignore-dependencies
-          brew list --cask | xargs brew uninstall --force
+          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 
       - name: Install SSH key
         run: |
