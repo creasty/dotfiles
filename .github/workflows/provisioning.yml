@@ -20,13 +20,19 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link to home
-        run: |
-          ln -sf "$PWD" "$HOME/dotfiles"
+        run: ln -sf "$PWD" "$HOME/dotfiles"
 
-      - name: Clean slate
+      # Refer to https://github.com/actions/runner-images/tree/main/images/macos/provision
+      - name: Uninstall homebrew
         run: |
-          brew list | xargs brew uninstall --force --ignore-dependencies
+          set -euxo pipefail
+
           brew list --cask | xargs brew uninstall --force
+          brew list | xargs brew uninstall --force --ignore-dependencies
+
+          NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+
+          rm -rf /usr/local/bin/*
 
       - name: Install SSH key
         run: |
