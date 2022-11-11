@@ -535,7 +535,7 @@ if dein#is_available('coc.nvim') &&
 
   function! s:super_tab_i() abort
     if coc#pum#visible()
-      return coc#_select_confirm()
+      return coc#pum#confirm()
     elseif pumvisible()
       return "\<Plug>(completion-accept)"
     endif
@@ -577,7 +577,7 @@ if dein#is_available('coc.nvim') &&
 
   function! s:super_cr_i() abort
     if coc#pum#visible()
-      return coc#_select_confirm()
+      return coc#pum#confirm()
     elseif pumvisible()
       return "\<Plug>(completion-accept)"
     endif

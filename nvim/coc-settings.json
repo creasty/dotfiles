@@ -22,6 +22,8 @@
     "winblend": 10
   },
 
+  "snippet.highlight": true,
+
   "signature.floatConfig": {
     "winblend": 10
   },
