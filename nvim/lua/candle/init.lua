@@ -134,34 +134,44 @@ function M.setup()
   hi.DiagnosticUnderlineHint = { undercurl = 1, sp = s.gray200 }
 
   -- Treesitter
-  -- hi.TSError = { bg = s.dark_red }
-  hi.TSAnnotation = { fg = s.brown }
-  hi.TSAttribute = { fg = s.yellow }
-  hi.TSConstBuiltin = { fg = s.yellow, italic = 1 }
-  hi.TSConstMacro = { fg = s.yellow, bold = 1 }
-  hi.TSConstant = { fg = s.orange }
-  hi.TSConstructor = { fg = s.yellow }
-  hi.TSEmphasis = { italic = 1 }
-  hi.TSField = { fg = s.brown }
-  hi.TSFuncBuiltin = { fg = s.pink, italic = 1 }
-  hi.TSFuncMacro = { fg = s.pink, bold = 1 }
-  hi.TSKeywordOperator = { fg = s.aqua, italic = 1 }
-  hi.TSLiteral = { fg = s.orange }
-  hi.TSNamespace = { fg = s.brown }
-  hi.TSNone = { fg = s.foreground }
-  hi.TSProperty = { fg = s.brown }
-  hi.TSStrike = { strikethrough = 1 }
-  hi.TSStringEscape = { fg = s.dark_aqua }
-  hi.TSStringRegex = { fg = s.aqua }
-  hi.TSStrong = { bold = 1 }
-  hi.TSSymbol = { fg = s.red }
-  hi.TSTag = { fg = s.yellow }
-  hi.TSTagDelimiter = { fg = s.gray200 }
-  hi.TSTypeBuiltin = { fg = s.yellow, italic = 1 }
-  hi.TSURI = { underline = 1, sp = s.dark_blue }
-  hi.TSUnderline = { underline = 1 }
-  hi.TSVariable = { fg = s.blue }
-  hi.TSVariableBuiltin = { fg = s.blue, italic = 1 }
+  hi['@annotation'] = { fg = s.brown }
+  hi['@attribute'] = { fg = s.yellow }
+  hi['@constant'] = { fg = s.orange }
+  hi['@constant.builtin'] = { fg = s.yellow, italic = 1 }
+  hi['@constant.macro'] = { fg = s.yellow, bold = 1 }
+  hi['@constructor'] = { fg = s.yellow }
+  hi['@field'] = { fg = s.brown }
+  hi['@function.builtin'] = { fg = s.pink, italic = 1 }
+  hi['@function.macro'] = { fg = s.pink, bold = 1 }
+  hi['@keyword.operator'] = { fg = s.aqua, italic = 1 }
+  hi['@namespace'] = { fg = s.brown }
+  hi['@none'] = { fg = s.foreground }
+  hi['@property'] = { fg = s.brown }
+  hi['@string.escape'] = { fg = s.dark_aqua }
+  hi['@string.regex'] = { fg = s.aqua }
+  hi['@string.special'] = { link = 'SpecialChar' }
+  hi['@symbol'] = { fg = s.red }
+  hi['@tag'] = { fg = s.yellow }
+  hi['@tag.attribute'] = { fg = s.brown }
+  hi['@tag.delimiter'] = { fg = s.gray200 }
+  hi['@text.danger'] = { link = 'ErrorMsg' }
+  hi['@text.emphasis'] = { italic = 1 }
+  hi['@text.environment'] = { link = 'Macro' }
+  hi['@text.environment.name'] = { link = 'Type' }
+  hi['@text.literal'] = { fg = s.orange }
+  hi['@text.math'] = { link = 'Special' }
+  hi['@text.note'] = { link = 'SpecialComment' }
+  hi['@text.reference'] = { link = 'Constant' }
+  hi['@text.strike'] = { strikethrough = 1 }
+  hi['@text.strong'] = { bold = 1 }
+  hi['@text.title'] = { link = 'Title' }
+  hi['@text.todo'] = { link = 'Todo' }
+  hi['@text.underline'] = { underline = 1 }
+  hi['@text.uri'] = { underline = 1, sp = s.dark_blue }
+  hi['@text.warning'] = { link = 'WarningMsg' }
+  hi['@type.builtin'] = { fg = s.yellow, italic = 1 }
+  hi['@variable'] = { fg = s.blue }
+  hi['@variable.builtin'] = { fg = s.blue, italic = 1 }
 
   -- custom
   hi.StatusLinePrimary = { fg = s.foreground, bg = s.window }
