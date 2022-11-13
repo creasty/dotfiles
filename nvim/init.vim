@@ -317,9 +317,6 @@ command! -nargs=1 HardTab :setl noexpandtab tabstop=<args> shiftwidth=<args>
 " substitute with match case
 command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
 
-" inspect syntax
-command! ScopeInfo lua require'user.plugin.treesitter.helper'.show_hl_captures()
-
 " profiler
 command! -nargs=0 ProfStart
   \ profile start /tmp/vim-vimscript.log |
