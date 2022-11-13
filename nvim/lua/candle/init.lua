@@ -180,7 +180,7 @@ function M.setup()
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
   hi.StatusLineDiagnosticsHint = { fg = s.gray200, bg = s.window }
 
-  hi.GitConflictMarker = { fg = s.red, bg = s.dark_red }
+  hi.GitConflictMarker = { link = 'Todo' }
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
   -- coc.nvim

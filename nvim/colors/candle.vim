@@ -15,7 +15,7 @@ function! s:setup_matchadd() abort
     \ matchadd('GitConflictMarker', '^\(<<<<<<<.\{-}\|=======\|>>>>>>>.\{-}\)$', 50),
     \ matchadd('SnipPlaceholder', '{'.'{+\([^+]\|+[^}]\|+}[^}]\)*+}}', 50),
     \ matchadd('SnipPlaceholder', '{'.'{-\([^-]\|-[^}]\|-}[^}]\)*-}}', 50),
-    \ matchadd('Todo', '\v<(TODO|FIXME)>', 50),
+    \ matchadd('Todo', '\v<(TODO|FIXME)>', 0),
   \ ]
 endfunction
 
