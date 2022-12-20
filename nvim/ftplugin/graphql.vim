@@ -10,6 +10,7 @@ command! -buffer -nargs=0 -range=% ConvertQM
   \ silent keeppatterns <line1>,<line2>s/\v<(\w+)\(\_s*input: (\w+)!\_s*\): (\w+)!/query \u\1($input: \2!) {\r  \1(input: $input) {}\r}/ge
 
 command! -buffer -nargs=0 -range=% ConvertFragment
+  \ silent keeppatterns <line1>,<line2>s/\v<type (\w+)/fragment \1 on \1/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\>;/\1/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\>;/\1/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<((String|UInt32|Int32|Bool)Value|Frac10+)\>;/\1 { value }/ge |
