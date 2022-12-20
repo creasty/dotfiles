@@ -305,6 +305,8 @@
     { "languageId": "vim", "allowCompoundWords": true }
   ],
   "cSpell.userWords": [
+    "Callout",
+    "Deeplink",
     "Fullsize",
     "Respawn",
     "Unreads",
@@ -314,6 +316,7 @@
     "henryapp",
     "lerp",
     "metalness",
+    "mutex",
     "raycaster",
     "tweens",
     "usecase",
