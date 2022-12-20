@@ -46,6 +46,7 @@ require('nvim-treesitter.configs').setup {
   },
   indent = {
     enable = true,
+    disable = {'tsx'}, -- Use nvim-yati
   },
   incremental_selection = {
     enable = true,
