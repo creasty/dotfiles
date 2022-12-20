@@ -13,6 +13,7 @@
     "winblend": 10
   },
 
+  "suggest.insertMode": "insert",
   "suggest.enablePreselect": false,
   "suggest.selection": "first",
   "suggest.preferCompleteThanJumpPlaceholder": true,
