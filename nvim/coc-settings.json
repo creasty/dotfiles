@@ -308,6 +308,7 @@
     "Callout",
     "Deeplink",
     "Fullsize",
+    "LTRB",
     "Respawn",
     "Unreads",
     "clearcoat",
@@ -318,6 +319,7 @@
     "metalness",
     "mutex",
     "raycaster",
+    "riverpod",
     "tweens",
     "usecase",
     "wireframe"
