@@ -128,7 +128,7 @@ set display+=uhex
 " U+276F (Heavy Right-Pointing Angle Quotation Mark Ornament)
 " U+276E (Heavy Left-Pointing Angle Quotation Mark Ornament)
 set list
-set listchars=tab:→\ ,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮
+set listchars=tab:\ \ →,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮
 
 " indent wrapped lines
 " U+203A (Single Right-Pointing Angle Quotation Mark)
