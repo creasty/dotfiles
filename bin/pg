@@ -94,8 +94,8 @@ exec_dropdb() {
 }
 
 exec_recreatedb() {
-  exec_createdb "$1"
   exec_dropdb "$1"
+  exec_createdb "$1"
 }
 
 exec_logs() {
