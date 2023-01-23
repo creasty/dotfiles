@@ -46,10 +46,27 @@ require('nvim-treesitter.configs').setup {
   },
   indent = {
     enable = true,
+
+    -- Use nvim-yati
+    -- @see https://github.com/yioneko/nvim-yati/tree/main/lua/nvim-yati/configs
     disable = {
+      'c',
+      'cpp',
+      'css',
+      'graphql',
+      'html',
+      'javascript',
+      'jsdoc',
+      'json',
+      'json5',
+      'jsx',
+      'lua',
+      'python',
+      'rust',
+      'toml',
       'tsx',
       'typescript',
-    }, -- Use nvim-yati
+    },
   },
   incremental_selection = {
     enable = true,
@@ -113,6 +130,7 @@ require('nvim-treesitter.configs').setup {
   -- yioneko/nvim-yati
   yati = {
     enable = true,
+    suppress_conflict_warning = true,
   },
   -- RRethy/nvim-treesitter-endwise
   endwise = {
