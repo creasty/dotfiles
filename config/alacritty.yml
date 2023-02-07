@@ -60,7 +60,8 @@ colors:
     white:   '0x575757' # candle-theme: gray300
 
 mouse:
-  hide_when_typing: true
+  # @see https://github.com/alacritty/alacritty/issues/6452
+  # hide_when_typing: true
 
 shell:
   program: /opt/homebrew/bin/tmux
