@@ -61,7 +61,7 @@ colors:
 
 mouse:
   # @see https://github.com/alacritty/alacritty/issues/6452
-  # hide_when_typing: true
+  hide_when_typing: false
 
 shell:
   program: /opt/homebrew/bin/tmux
