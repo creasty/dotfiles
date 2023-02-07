@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+rg "\\b(todo|fixme)\\b.+\\b${1:-creasty}\\b"
