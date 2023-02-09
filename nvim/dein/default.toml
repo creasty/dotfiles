@@ -4,12 +4,6 @@ repo = 'Shougo/dein.vim'
 [[plugins]] # An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
 repo = 'vim-denops/denops.vim'
 
-[[plugins]] # Improve startup time for Neovim
-repo = 'lewis6991/impatient.nvim'
-hook_add = '''
-lua require('impatient')
-'''
-
 #  Editing
 #-----------------------------------------------
 [[plugins]] # create your own text objects
