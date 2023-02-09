@@ -78,7 +78,7 @@ function! user#plugin#ddu#init() abort
         \ 'floatingBorder': 'rounded',
         \ 'prompt': '>',
         \ 'highlights': {
-          \ 'floating': 'Normal:BorderedFloat,Search:',
+          \ 'floating': 'BorderedFloat,Search:',
         \ }
       \ },
     \ },
@@ -128,6 +128,7 @@ function! user#plugin#ddu#init_buffer() abort
   inoremap <buffer><script> <C-r> <SID>(reload)
 
   if &ft ==# 'ddu-ff'
+    setl cursorline
     nnoremap <buffer> i <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
     nnoremap <buffer> p <Cmd>call ddu#ui#ff#do_action('preview')<CR>
     nnoremap <buffer> o <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open' })<CR>
