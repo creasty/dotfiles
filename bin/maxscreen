@@ -10,7 +10,8 @@ fi
 
 get_layout() {
   local buitlin_id='37D8832A-2D66-02CA-B9F7-8F30A301B230' # Built-in LCD
-  local buitlin_res='2992x1870'
+  # local buitlin_res='2992x1870'
+  local buitlin_res='2624x1696'
 
   local lg5k_id='1DACF1F3-80BB-A070-A24B-0AB39EF0C537' # LG UltraFine Display 5K
   local lg5k_res='3008x1692'
