@@ -192,3 +192,8 @@ hen-proxy-db() {
   local repo="$(ghq root)/github.com/bw-company/henry-infra"
   "$repo/script/proxy-database" "$@"
 }
+
+hen-deploy-planner() {
+  local repo="$(ghq root)/github.com/bw-company/dev"
+  "$repo/bin/deploy-planner" "$@"
+}
