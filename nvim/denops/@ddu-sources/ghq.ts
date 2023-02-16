@@ -30,13 +30,14 @@ export class Source extends BaseSource<Params, ActionData> {
     }
   }
 
-  gather(args: GatherArguments<Params>): ReadableStream<Item<ActionData>[]> {
+  gather(_args: GatherArguments<Params>) : ReadableStream<Item<ActionData>[]> {
     const { rootPath } = this;
 
     return new ReadableStream({
       async start(controller) {
         const proc = Deno.run({
-          cmd: [args.sourceParams.bin, "list"],
+          // cmd: [args.sourceParams.bin, "list"],
+          cmd: ["ghq-list-monorepo"],
           stdin: "null",
           stdout: "piped",
         });
