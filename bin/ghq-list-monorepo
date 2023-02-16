@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+GHQ_ROOT="$(ghq root)"
+GHQ_MONOREPO_FILE='.ghq-monorepo'
+
+concat_prefix() {
+  local repo_path="$1"
+
+  while read -r monorepo_path; do
+    if [ -n "$monorepo_path" ] && [ -d "$GHQ_ROOT/$repo_path/$monorepo_path" ]; then
+      echo "$repo_path/$monorepo_path"
+    fi
+  done
+}
+
+merge_monorepo_list() {
+  while read -r repo_path; do
+    local monorepo_file_path="$GHQ_ROOT/$repo_path/$GHQ_MONOREPO_FILE"
+    if [ -f "$monorepo_file_path" ]; then
+      sort -u "$monorepo_file_path" \
+        | concat_prefix "$repo_path"
+    else
+      echo "$repo_path"
+    fi
+  done
+}
+
+ghq list \
+  | merge_monorepo_list

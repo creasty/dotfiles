@@ -4,6 +4,7 @@ Thumb.db
 *.log
 tmp/
 .fdignore
+.ghq-monorepo
 
 # Tags
 .tags

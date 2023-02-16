@@ -213,7 +213,7 @@ _register_keycommand '^r' peco_history
 #  GHQ
 #-----------------------------------------------
 peco_cd_repo() {
-  ghq list \
+  ghq-list-monorepo \
     | _peco_select \
     | {
       repo="$(cat)"
