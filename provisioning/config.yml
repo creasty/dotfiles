@@ -1,6 +1,7 @@
 homebrew:
   # brew list --cask --full-name
   applications:
+    - 1password                   # https://1password.com/
     - 1password/tap/1password-cli # https://developer.1password.com/docs/cli
     - adobe-creative-cloud        # https://creative.adobe.com/products/creative-cloud
     - alacritty                   # https://github.com/jwilm/alacritty
@@ -84,7 +85,6 @@ mas:
   applications:
     - '1066302071' # New File Menu Free
     - '1091189122' # Bear
-    - '1333542190' # 1Password
     - '425424353'  # The Unarchiver
     - '497799835'  # Xcode
     - '904280696'  # Things
