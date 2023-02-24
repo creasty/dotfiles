@@ -5,7 +5,7 @@ dotfiles [![Build Status](https://github.com/creasty/dotfiles/actions/workflows/
 
 Work it harder, make it better, do it faster, makes us stronger.
 
-<pre><code>$ curl -L <a href="http://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
+<pre><code>$ curl -L <a href="https://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
 
 Screenshots
 -----------
