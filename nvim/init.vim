@@ -310,6 +310,18 @@ function s:remap_command(lhs, rhs) abort
     \ " ? '" . a:rhs . "' : '" . a:lhs . "'"
 endfunction
 
+" reopen current buffer with specific encoding
+command! -bang -nargs=1 -complete=customlist,EncodingNameComplete Encoding
+  \ edit<bang> ++enc=<args>
+function! EncodingNameComplete(a, l, p) abort
+  " :help encoding-names
+  let l:list = 'utf-8,sjis,euc-jp'
+    \ . ',latin1,iso-8859-n,koi8-r,koi8-u,macroman,euc-kr,euc-cn,big5,euc-tw,ucs-2,ucs-2le,utf-16,utf-16le,ucs-4,ucs-4le'
+    \ . ',cp437,cp737,cp775,cp850,cp852,cp855,cp857,cp860,cp861,cp862,cp863,cp865,cp866,cp869'
+    \ . ',cp874,cp1250,cp1251,cp1253,cp1254,cp1255,cp1256,cp1257,cp1258,cp932,cp949,cp936,cp950'
+  return filter(split(l:list, ','), { _, v -> v =~# a:a })
+endfunction
+
 " change indent style
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 HardTab :setl noexpandtab tabstop=<args> shiftwidth=<args>
