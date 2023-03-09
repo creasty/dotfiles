@@ -218,6 +218,9 @@ repo = 'matsui54/ddu-filter-fzy'
 repo = 'thinca/vim-quickrun'
 hook_add = '''
 let g:quickrun_config = {}
+let g:quickrun_config['typescript'] = {
+  \ 'cmdopt': '-t es2015',
+\ }
 let g:quickrun_config['_'] = {
   \ 'runner': 'nvim_job',
   \ 'outputter/buffer/split': ':botright 15sp',
