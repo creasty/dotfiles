@@ -6,6 +6,7 @@
 " [coc-solargraph] gem install solargraph
 " [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin && brew install watchman
 let g:coc_global_extensions = [
+  \ '@yaegassy/coc-tailwindcss3',
   \ 'coc-calc',
   \ 'coc-clangd',
   \ 'coc-css',

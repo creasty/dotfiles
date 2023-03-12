@@ -53,6 +53,7 @@ homebrew:
     - gh                  # GitHub command-line tool
     - ghq                 # Remote repository management made easy
     - git                 # Distributed revision control system
+    - git-filter-repo     # Quickly rewrite git repository history
     - git-lfs             # Git extension for versioning large files
     - gnupg               # GNU Pretty Good Privacy (PGP) package
     - graphviz            # Graph visualization software from AT&T and Bell Labs
