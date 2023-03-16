@@ -103,13 +103,14 @@ link:
   config/ctags:            .ctags
   config/curlrc:           .curlrc
   config/fdignore:         .fdignore
-  config/gitconfig:        .gitconfig
-  config/gitignore:        .gitignore
+  config/git/config:       .config/git/config
+  config/git/ignore:       .config/git/ignore
   config/kitty.conf:       .config/kitty/kitty.conf
   config/peco:             .peco
   config/pgclirc:          .pgclirc
   config/rgignore:         .rgignore
   config/ripgreprc:        .config/.ripgreprc
+  nvim:                    .config/nvim
   ruby/bundle/config:      .bundle/config
   ruby/gemrc:              .gemrc
   ruby/irbrc:              .irbrc
@@ -125,7 +126,6 @@ link:
   shell/zsh:               .zsh
   tmux/tmux.conf:          .tmux.conf
   tmux:                    .tmux
-  nvim:                    .config/nvim
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'

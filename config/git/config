@@ -8,7 +8,6 @@
 
 [core]
   editor = nvim
-  excludesfile = ~/.gitignore
 
   # To turn off diff-so-fancy temporarily, you can do `g --no-pager d`.
   pager = diff-so-fancy | less --tabs=4 -RFX
