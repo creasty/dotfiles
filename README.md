@@ -3,7 +3,7 @@
 dotfiles [![Build Status](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg)](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml) ![macOS](./docs/images/badges/platform.svg) [![License](./docs/images/badges/license.svg)](./LICENSE.txt)
 ========
 
-Work it harder, make it better, do it faster, makes us stronger.
+Orbit the zenith of productivity - unlock the hidden potential within.
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
 
