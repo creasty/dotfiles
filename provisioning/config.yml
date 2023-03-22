@@ -68,6 +68,7 @@ homebrew:
     - ngrep               # Network grep
     - nkf                 # Network Kanji code conversion Filter (NKF)
     - parallel            # Shell command parallelization utility
+    - pastel              # Command-line tool to generate, analyze, convert and manipulate colors
     - peco                # Simplistic interactive filtering tool
     - procs               # Modern replacement for ps written by Rust
     - protobuf            # Protocol buffers (Google's data interchange format)
