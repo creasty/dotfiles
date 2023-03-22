@@ -14,8 +14,8 @@
     #-----------------------------------------------
     - role: homebrew
       tags: ['install', 'install.homebrew']
-    - role: mas
-      tags: ['install', 'install.mas']
+    #- role: mas
+    #  tags: ['install', 'install.mas']
 
     #  lang
     #-----------------------------------------------
