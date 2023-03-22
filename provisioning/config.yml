@@ -32,7 +32,7 @@ homebrew:
     - tunnelbear                  # https://www.tunnelbear.com/
     - webpquicklook               # https://github.com/emin/WebPQuickLook
 
-  # brew leaves | xargs brew desc | sed -E 's/^([^:]*): /- \1 # /g'
+  # brew leaves | xargs brew desc --eval-all | sed -E 's/^([^:]*): /- \1 # /g'
   packages:
     - awscli              # Official Amazon AWS command-line interface
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
@@ -143,8 +143,9 @@ golang:
 nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
 
+  # https://nodejs.org/en
   versions:
-    - '16.16.0'
+    - '18.15.0'
 
   plugins:
     - nodenv/nodenv-default-packages
@@ -152,8 +153,9 @@ nodejs:
 ruby:
   default_gems_path: '{{ dotfiles_path }}/ruby/rbenv/default-gems'
 
+  # https://www.ruby-lang.org/en/downloads/
   versions:
-    - '3.1.2'
+    - '3.2.1'
 
   plugins:
     - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
