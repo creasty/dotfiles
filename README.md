@@ -22,7 +22,7 @@ Heavily customized and meticulously optimized for insane performance.
 ### zsh
 
 - ~71ms to startup on M1 Max
-- 540 loc of config
+- 550 sloc of config
 - 2 third-party plugins and 5 hooks
   - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
@@ -48,7 +48,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 ### nvim
 
 - ~52ms to startup on M1 Max
-- 3,000 loc of config
+- 3,000 sloc of config
 - 44 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
@@ -76,4 +76,4 @@ $ nvim --headless --startuptime /dev/stdout -c quit
 Author
 ------
 
-Yuki Iwanaga ([@creasty](https://github.com/creasty))
+Yuki Iwanaga / [@creasty](https://github.com/creasty)
