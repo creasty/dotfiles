@@ -134,8 +134,9 @@ anyenv:
   libexec_dir: '{{ home_path }}/.anyenv/libexec'
 
 golang:
-  commands:
-    - golang.org/x/tools/gopls@latest # LSP server for Go
+  tools:
+    - golangci/tap/golangci-lint # Fast linters runner for Go
+    - gopls                      # Language server for the Go language
 
 nodejs:
   default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'

@@ -1,18 +1,14 @@
 - set_fact:
     golang: {}
 
-- name: install golang
+- name: install language
   homebrew:
     name:  go
     state: latest
 
-- name: golangci-lint
+- name: install tools
   homebrew:
-    name:  golangci/tap/golangci-lint
+    name:  '{{ item }}'
     state: latest
-
-- name: install commands
-  command: |
-     bash -lc 'go install {{ item | quote }}'
-  with_items: '{{ golang.commands }}'
-  when: golang.commands
+  with_items: '{{ golang.tools }}'
+  when: golang.tools
