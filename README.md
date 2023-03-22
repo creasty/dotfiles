@@ -32,7 +32,7 @@ Heavily customized and meticulously optimized for insane performance.
 <details>
 
 ```sh-session
-$ repeat 5 ( time zsh -i -c exit ; sleep 0.1 )
+$ hyperfine --warmup 3 --prepare 'sleep 0.1' 'zsh -i -c exit'
 $ cloc --exclude-dir=plugins shell/zsh
 $ ls shell/zsh/plugins | wc -l
 ```
@@ -60,7 +60,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 <details>
 
 ```sh-session
-$ repeat 5 ( time nvim --headless -c quit ; sleep 0.1 )
+$ hyperfine --warmup 3 --prepare 'sleep 0.1' 'nvim --headless -c quit'
 $ cloc --exclude-dir=dein,template nvim
 $ rg '^\[\[plugins' nvim/dein/*.toml | wc -l
 ```

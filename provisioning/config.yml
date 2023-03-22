@@ -57,6 +57,7 @@ homebrew:
     - git-lfs             # Git extension for versioning large files
     - gnupg               # GNU Pretty Good Privacy (PGP) package
     - graphviz            # Graph visualization software from AT&T and Bell Labs
+    - hyperfine           # Command-line benchmarking tool
     - imagemagick         # Tools and libraries to manipulate images in many formats
     - jo                  # JSON output from a shell
     - jq                  # Lightweight and flexible command-line JSON processor
