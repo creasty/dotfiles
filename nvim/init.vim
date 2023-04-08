@@ -381,7 +381,7 @@ augroup _strip_trailing_spaces
   autocmd!
   autocmd InsertLeave *
     \ call timer_stop(get(b:, 'strip_ts_timer_id', -1)) |
-    \ let b:strip_ts_timer_id = timer_start(50, {-> s:strip_ts() })
+    \ let b:strip_ts_timer_id = timer_start(100, {-> s:strip_ts() })
 augroup END
 
 function! s:strip_ts() abort
