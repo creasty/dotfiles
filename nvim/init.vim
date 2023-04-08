@@ -149,7 +149,7 @@ set guicursor=n-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,v-r-cr-o:hor20-Cursor
 set scrolloff=5
 
 " fast update
-set updatetime=500
+set updatetime=200
 
 " folding
 set foldmethod=indent
