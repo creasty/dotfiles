@@ -60,14 +60,18 @@ function! g:textmanip_hooks.finish(tm) abort
   endif
 endfunction
 
-xmap <C-j> <Plug>(textmanip-move-down)
-xmap <C-k> <Plug>(textmanip-move-up)
-xmap <C-h> <Plug>(textmanip-move-left)
-xmap <C-l> <Plug>(textmanip-move-right)
-xmap <Space><C-j> <Plug>(textmanip-duplicate-down)
-xmap <Space><C-k> <Plug>(textmanip-duplicate-up)
-xmap <Space><C-h> <Plug>(textmanip-duplicate-left)
-xmap <Space><C-l> <Plug>(textmanip-duplicate-right)
+xnoremap <SID>(tm) <Nop>
+xnoremap <script> m <SID>(tm)
+xnoremap <script> <SID>(tm)m <SID>(tm)
+
+xmap <SID>(tm)j <Plug>(textmanip-move-down)<SID>(tm)
+xmap <SID>(tm)k <Plug>(textmanip-move-up)<SID>(tm)
+xmap <SID>(tm)h <Plug>(textmanip-move-left)<SID>(tm)
+xmap <SID>(tm)l <Plug>(textmanip-move-right)<SID>(tm)
+xmap <SID>(tm)J <Plug>(textmanip-duplicate-down)<SID>(tm)
+xmap <SID>(tm)K <Plug>(textmanip-duplicate-up)<SID>(tm)
+xmap <SID>(tm)H <Plug>(textmanip-duplicate-left)<SID>(tm)
+xmap <SID>(tm)L <Plug>(textmanip-duplicate-right)<SID>(tm)
 '''
 
 [[plugins]] # Neovim motions on speed!

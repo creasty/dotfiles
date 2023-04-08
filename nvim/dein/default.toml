@@ -13,16 +13,16 @@ repo = 'kana/vim-textobj-user'
 repo = 'kana/vim-textobj-indent'
 depends = ['vim-textobj-user']
 
-[[plugins]] # Text objects for numbers
-repo = 'tkhren/vim-textobj-numeral'
-depends = ['vim-textobj-user']
-hook_add = '''
-let g:textobj_numeral_no_default_key_mappings = 1
-xmap an <Plug>(textobj-numeral-a)
-omap an <Plug>(textobj-numeral-a)
-xmap in <Plug>(textobj-numeral-i)
-omap in <Plug>(textobj-numeral-i)
-'''
+# [[plugins]] # Text objects for numbers
+# repo = 'tkhren/vim-textobj-numeral'
+# depends = ['vim-textobj-user']
+# hook_add = '''
+# let g:textobj_numeral_no_default_key_mappings = 1
+# xmap an <Plug>(textobj-numeral-a)
+# omap an <Plug>(textobj-numeral-a)
+# xmap in <Plug>(textobj-numeral-i)
+# omap in <Plug>(textobj-numeral-i)
+# '''
 
 [[plugins]] # deleting, changing, and adding surroundings
 repo = 'tpope/vim-surround'
@@ -34,10 +34,8 @@ repo = 'tpope/vim-repeat'
 repo = 'sickill/vim-pasta'
 hook_add = '''
 let g:pasta_disabled_filetypes = [
-  \ "python", "coffee", "markdown",
-  \ "yaml", "slim", "nerdtree", "netrw", "startify", "ctrlp",
-\ ] + [
-  \ "dirvish",
+  \ "python", "markdown", "yaml",
+  \ "nerdtree", "dirvish",
 \ ]
 '''
 
@@ -113,24 +111,23 @@ lua require('user.plugin.treesitter')
 repo = 'ziontee113/syntax-tree-surfer'
 depends = ['nvim-treesitter']
 hook_add = '''
-" STS modal
 xnoremap <SID>(sts) <Nop>
 xnoremap <script> s <SID>(sts)
 xnoremap <script> <SID>(sts)s <SID>(sts)
 
 " Visual Selection from Normal Mode
-nnoremap <script> <silent> vx <Cmd>STSSelectMasterNode<CR><SID>(sts)
-nnoremap <script> <silent> vn <Cmd>STSSelectCurrentNode<CR><SID>(sts)
+nnoremap <script><silent> vN <Cmd>STSSelectMasterNode<CR><SID>(sts)
+nnoremap <script><silent> vn <Cmd>STSSelectCurrentNode<CR><SID>(sts)
 
 " Select Nodes in Visual Mode
-xnoremap <script> <silent> <SID>(sts)j <Cmd>STSSelectNextSiblingNode<CR><SID>(sts)
-xnoremap <script> <silent> <SID>(sts)k <Cmd>STSSelectPrevSiblingNode<CR><SID>(sts)
-xnoremap <script> <silent> <SID>(sts)h <Cmd>STSSelectParentNode<CR><SID>(sts)
-xnoremap <script> <silent> <SID>(sts)l <Cmd>STSSelectChildNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)j <Cmd>STSSelectNextSiblingNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)k <Cmd>STSSelectPrevSiblingNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)h <Cmd>STSSelectParentNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)l <Cmd>STSSelectChildNode<CR><SID>(sts)
 
 " Swapping Nodes in Visual Mode
-xnoremap <script> <silent> <SID>(sts)J <Cmd>STSSwapNextVisual<CR><SID>(sts)
-xnoremap <script> <silent> <SID>(sts)K <Cmd>STSSwapPrevVisual<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)J <Cmd>STSSwapNextVisual<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)K <Cmd>STSSwapPrevVisual<CR><SID>(sts)
 '''
 
 [[plugins]] # Use treesitter to autoclose and autorename html tag
