@@ -74,9 +74,10 @@ set whichwrap=b,s,h,l,<,>,[,]
 " virtualedit with freedom
 set virtualedit& virtualedit+=block
 
-" split to right / bottom
+" split behavior
 set splitright
 set splitbelow
+set splitkeep=screen
 
 " customize tag searches
 set tagfunc=user#tagfunc#fn

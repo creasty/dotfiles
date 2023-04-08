@@ -97,12 +97,6 @@ let g:rengbang_default_usefirst = 1
 let g:rengbang_default_pattern = '\(\<\d\+\>\)'
 '''
 
-[[plugins]] # EditorConfig Vim Plugin
-repo = 'editorconfig/editorconfig-vim'
-hook_add = '''
-let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
-'''
-
 #  Treesitter
 #-----------------------------------------------
 [[plugins]] # Treesitter configurations and abstraction layer for Neovim
@@ -135,10 +129,6 @@ depends = ['nvim-treesitter']
 repo = 'creasty/opfmt'
 depends = ['nvim-treesitter']
 path = '/Users/creasty/go/src/github.com/creasty/opfmt'
-
-[[plugins]] # Treesitter playground integrated into Neovim
-repo = 'nvim-treesitter/playground'
-depends = ['nvim-treesitter']
 
 #  UI
 #-----------------------------------------------
