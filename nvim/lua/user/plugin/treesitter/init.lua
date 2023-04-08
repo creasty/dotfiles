@@ -83,54 +83,6 @@ require('nvim-treesitter.configs').setup {
   autotag = {
     enable = true,
   },
-  -- nvim-treesitter/playground
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25,
-    persist_queries = false,
-  },
-  query_linter = {
-    enable = true,
-    use_virtual_text = true,
-    lint_events = {'BufWrite', 'CursorHold'},
-  },
-  -- nvim-treesitter/nvim-treesitter-textobjects
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = '@function.outer',
-        ["if"] = '@function.inner',
-        ["ac"] = '@class.outer',
-        ["ic"] = '@class.inner',
-      },
-    },
-    swap = {
-      enable = true,
-      swap_next = {
-        ['>p'] = '@parameter.inner',
-        ['>f'] = '@function.outer',
-      },
-      swap_previous = {
-        ['<p'] = '@parameter.inner',
-        ['<f'] = '@function.outer',
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true,
-      goto_next_start = {
-        [']f'] = '@function.outer',
-        [']c'] = '@class.outer',
-      },
-      goto_previous_start = {
-        ['[f'] = '@function.outer',
-        ['[c'] = '@class.outer',
-      },
-    },
-  },
   -- yioneko/nvim-yati
   yati = {
     enable = true,
@@ -145,3 +97,5 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
 }
+
+require('syntax-tree-surfer')

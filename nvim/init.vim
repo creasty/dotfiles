@@ -149,7 +149,7 @@ set guicursor=n-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,v-r-cr-o:hor20-Cursor
 set scrolloff=5
 
 " fast update
-set updatetime=200
+set updatetime=500
 
 " folding
 set foldmethod=indent
@@ -262,7 +262,7 @@ nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 nnoremap <Space>a ggVG
 
 " replace selection
-xnoremap s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
+xnoremap <Space>s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 
 " replace word under cursor
 nnoremap <Space>* "xyiw:<C-u>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/

@@ -109,9 +109,29 @@ hook_post_source = '''
 lua require('user.plugin.treesitter')
 '''
 
-[[plugins]] # Create your own textobjects using tree-sitter queries!
-repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+[[plugins]] # A plugin for Neovim that helps you surf through your document and move elements around using the nvim-treesitter API.
+repo = 'ziontee113/syntax-tree-surfer'
 depends = ['nvim-treesitter']
+hook_add = '''
+" STS modal
+xnoremap <SID>(sts) <Nop>
+xnoremap <script> s <SID>(sts)
+xnoremap <script> <SID>(sts)s <SID>(sts)
+
+" Visual Selection from Normal Mode
+nnoremap <script> <silent> vx <Cmd>STSSelectMasterNode<CR><SID>(sts)
+nnoremap <script> <silent> vn <Cmd>STSSelectCurrentNode<CR><SID>(sts)
+
+" Select Nodes in Visual Mode
+xnoremap <script> <silent> <SID>(sts)j <Cmd>STSSelectNextSiblingNode<CR><SID>(sts)
+xnoremap <script> <silent> <SID>(sts)k <Cmd>STSSelectPrevSiblingNode<CR><SID>(sts)
+xnoremap <script> <silent> <SID>(sts)h <Cmd>STSSelectParentNode<CR><SID>(sts)
+xnoremap <script> <silent> <SID>(sts)l <Cmd>STSSelectChildNode<CR><SID>(sts)
+
+" Swapping Nodes in Visual Mode
+xnoremap <script> <silent> <SID>(sts)J <Cmd>STSSwapNextVisual<CR><SID>(sts)
+xnoremap <script> <silent> <SID>(sts)K <Cmd>STSSwapPrevVisual<CR><SID>(sts)
+'''
 
 [[plugins]] # Use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
