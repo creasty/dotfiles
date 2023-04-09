@@ -137,7 +137,7 @@ set breakindent
 let &showbreak = '   ›'
 
 " conceal
-set conceallevel=2 concealcursor=n
+set conceallevel=2 concealcursor=
 
 " transparent pmenu
 set pumblend=10

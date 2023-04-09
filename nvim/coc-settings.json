@@ -223,10 +223,10 @@
 
   //=== coc-lua
   //==============================================================================================
-  "Lua.workspace.library": {
-    "/opt/homebrew/share/nvim/runtime/lua": true,
-    "/Users/creasty/.config/nvim/dein/repos/github.com/folke/lua-dev.nvim/types": true
-  },
+  "Lua.workspace.library": [
+    "/opt/homebrew/share/nvim/runtime/lua",
+    "/Users/creasty/.config/nvim/dein/repos/github.com/folke/lua-dev.nvim/types"
+  ],
 
   //=== coc-tsserver
   //==============================================================================================
