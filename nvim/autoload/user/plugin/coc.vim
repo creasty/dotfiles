@@ -36,8 +36,8 @@ let g:coc_global_extensions = [
 \ ]
 
 let g:coc_selectmode_mapping = 0
-let g:coc_snippet_next = '<Tab>'
-let g:coc_snippet_prev = '<S-Tab>'
+let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
+let g:coc_snippet_prev = '<Plug>(coc-snippet-prev)'
 
 function! user#plugin#coc#init() abort
   augroup user_plugin_coc

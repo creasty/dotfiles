@@ -543,30 +543,28 @@ if dein#is_available('coc.nvim') &&
     return !empty(l:copilot.text)
   endfunction
 
-  function! s:super_tab_i() abort
+  function! s:super_s_tab() abort
+    if coc#pum#visible()
+      return coc#pum#cancel()
+    endif
+    return "\<Plug>(ultisnips-expand)"
+  endfunction
+
+  function! s:super_i_tab() abort
     if coc#pum#visible()
       return coc#pum#confirm()
     elseif pumvisible()
       return "\<Plug>(completion-accept)"
     endif
 
-    let l:snip = UltiSnips#CanExpandSnippet() || UltiSnips#CanJumpForwards()
-    if l:snip
+    if UltiSnips#CanExpandSnippet()
       return "\<Plug>(ultisnips-expand)"
     endif
 
     return lexima#expand('<TAB>', 'i')
   endfunction
 
-  function! s:super_tab_s() abort
-    if coc#jumpable()
-      return coc#snippet#next()
-    endif
-
-    return "\<Plug>(ultisnips-expand)"
-  endfunction
-
-  function! s:super_esc_i() abort
+  function! s:super_i_esc() abort
     if coc#pum#visible()
       return coc#pum#cancel()
     elseif pumvisible()
@@ -585,7 +583,7 @@ if dein#is_available('coc.nvim') &&
     return "\<Plug>(lexima-escape)"
   endfunction
 
-  function! s:super_cr_i() abort
+  function! s:super_i_cr() abort
     if coc#pum#visible()
       return coc#pum#confirm()
     elseif pumvisible()
@@ -596,24 +594,38 @@ if dein#is_available('coc.nvim') &&
     return lexima#expand('<CR>', 'i')
   endfunction
 
-  function! s:super_ctrl_l() abort
+  function! s:super_i_c_l() abort
     if coc#pum#visible()
       return coc#refresh()
     endif
-
     return lexima#expand('<C-L>', 'i')
   endfunction
 
-  function! s:super_ctrl_s_ctrl_j() abort
+  function! s:super_i_c_s_c_j() abort
     if s:is_copilot_suggested()
       return copilot#Accept('')
     endif
-
-    if coc#expandableOrJumpable()
-      return "\<Plug>(coc-snippets-expand-jump)"
-    endif
-
     return "\<Ignore>"
+  endfunction
+
+  function! s:super_iv_c_s_c_p() abort
+    if coc#jumpable()
+      return "\<Plug>(coc-snippet-prev)"
+    endif
+    if UltiSnips#CanJumpBackwards()
+      return "\<Plug>(ultisnips-jump-backward)"
+    endif
+    return ''
+  endfunction
+
+  function! s:super_iv_c_s_c_n() abort
+    if coc#jumpable()
+      return "\<Plug>(coc-snippet-next)"
+    endif
+    if UltiSnips#CanJumpForwards()
+      return "\<Plug>(ultisnips-jump-forward)"
+    endif
+    return ''
   endfunction
 
   inoremap <Plug>(completion-cancel) <C-e>
@@ -622,13 +634,16 @@ if dein#is_available('coc.nvim') &&
   inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
 
   function! s:setup_super_mappings() abort
-    imap <silent><expr> <Tab> <SID>super_tab_i()
-    smap <silent><expr> <Tab> <SID>super_tab_s()
-    imap <silent><expr> <Esc> <SID>super_esc_i()
-    imap <silent><expr> <CR>  <SID>super_cr_i()
-
-    imap <silent><expr> <C-l> <SID>super_ctrl_l()
-    imap <silent><expr> <C-s><C-j> <SID>super_ctrl_s_ctrl_j()
+    smap <silent><expr> <Tab> <SID>super_s_tab()
+    imap <silent><expr> <Tab> <SID>super_i_tab()
+    imap <silent><expr> <Esc> <SID>super_i_esc()
+    imap <silent><expr> <CR>  <SID>super_i_cr()
+    imap <silent><expr> <C-l> <SID>super_i_c_l()
+    imap <silent><expr> <C-s><C-j> <SID>super_i_c_s_c_j()
+    imap <silent><expr> <C-s><C-p> <SID>super_iv_c_s_c_p()
+    vmap <silent><expr> <C-s><C-p> <SID>super_iv_c_s_c_p()
+    imap <silent><expr> <C-s><C-n> <SID>super_iv_c_s_c_n()
+    vmap <silent><expr> <C-s><C-n> <SID>super_iv_c_s_c_n()
   endfunction
 
   function! s:auto_dismiss_copilot(float) abort
