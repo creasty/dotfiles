@@ -82,6 +82,8 @@ endfunction
 " Completion
 inoremap <silent><expr> <Down> coc#pum#visible() ? coc#pum#next(0) : "\<Down>"
 inoremap <silent><expr> <Up> coc#pum#visible() ? coc#pum#prev(0) : "\<Up>"
+inoremap <silent><expr> <Left> coc#pum#cancel() . "\<Left>"
+inoremap <silent><expr> <Right> coc#pum#cancel() . "\<Right>"
 
 " Refactoring
 nmap <silent> gr <Plug>(coc-rename)
