@@ -99,11 +99,12 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
-  # XDG directory
+  # XDG config directory
   config/alacritty: .config/alacritty
   config/bat:       .config/bat
   config/git:       .config/git
   config/kitty:     .config/kitty
+  config/peco:      .config/peco
   config/ripgreprc: .config/.ripgreprc
   config/tmux:      .config/tmux
 
@@ -117,7 +118,6 @@ link:
   home/fdignore:      .fdignore
   home/gemrc:         .gemrc
   home/irbrc:         .irbrc
-  home/peco:          .peco
   home/pgclirc:       .pgclirc
   home/pryrc:         .pryrc
   home/railsrc:       .railsrc
