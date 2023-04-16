@@ -99,21 +99,21 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
-  config/alacritty.yml:    .config/alacritty/alacritty.yml
+  config/alacritty:        .config/alacritty
   config/ansible.cfg:      .ansible.cfg
   config/aws/config:       .aws/config
-  config/bat:              .config/bat/config
+  config/bat:              .config/bat
   config/cargo/config:     .cargo/config
   config/ctags:            .ctags
   config/curlrc:           .curlrc
   config/fdignore:         .fdignore
-  config/git/config:       .config/git/config
-  config/git/ignore:       .config/git/ignore
-  config/kitty.conf:       .config/kitty/kitty.conf
+  config/git:              .config/git
+  config/kitty:            .config/kitty
   config/peco:             .peco
   config/pgclirc:          .pgclirc
   config/rgignore:         .rgignore
   config/ripgreprc:        .config/.ripgreprc
+  config/tmux:             .config/tmux
   nvim:                    .config/nvim
   ruby/bundle/config:      .bundle/config
   ruby/gemrc:              .gemrc
@@ -128,8 +128,6 @@ link:
   shell/zsh/zshenv:        .zshenv
   shell/zsh/zshrc:         .zshrc
   shell/zsh:               .zsh
-  tmux/tmux.conf:          .tmux.conf
-  tmux:                    .tmux
 
 anyenv:
   dir:         '{{ home_path }}/.anyenv'
