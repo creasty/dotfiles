@@ -99,29 +99,34 @@ launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
 link:
-  config/alacritty:        .config/alacritty
-  config/ansible.cfg:      .ansible.cfg
-  config/aws/config:       .aws/config
-  config/bat:              .config/bat
-  config/cargo/config:     .cargo/config
-  config/ctags:            .ctags
-  config/curlrc:           .curlrc
-  config/fdignore:         .fdignore
-  config/git:              .config/git
-  config/kitty:            .config/kitty
-  config/peco:             .peco
-  config/pgclirc:          .pgclirc
-  config/rgignore:         .rgignore
-  config/ripgreprc:        .config/.ripgreprc
-  config/tmux:             .config/tmux
+  # XDG directory
+  config/alacritty: .config/alacritty
+  config/bat:       .config/bat
+  config/git:       .config/git
+  config/kitty:     .config/kitty
+  config/ripgreprc: .config/.ripgreprc
+  config/tmux:      .config/tmux
+
+  # Home directory
+  home/ansible.cfg:   .ansible.cfg
+  home/aws/config:    .aws/config
+  home/bundle/config: .bundle/config
+  home/cargo/config:  .cargo/config
+  home/ctags:         .ctags
+  home/curlrc:        .curlrc
+  home/fdignore:      .fdignore
+  home/gemrc:         .gemrc
+  home/irbrc:         .irbrc
+  home/peco:          .peco
+  home/pgclirc:       .pgclirc
+  home/pryrc:         .pryrc
+  home/railsrc:       .railsrc
+  home/rgignore:      .rgignore
+  home/rspec:         .rspec
+  home/rubocop.yml:   .rubocop.yml
+
+  # Special
   nvim:                    .config/nvim
-  ruby/bundle/config:      .bundle/config
-  ruby/gemrc:              .gemrc
-  ruby/irbrc:              .irbrc
-  ruby/pryrc:              .pryrc
-  ruby/railsrc:            .railsrc
-  ruby/rspec:              .rspec
-  ruby/rubocop.yml:        .rubocop.yml
   shell/bash/bash_profile: .bash_profile
   shell/bash/bashrc:       .bashrc
   shell/profile:           .profile
@@ -151,7 +156,7 @@ nodejs:
     - nodenv/nodenv-default-packages
 
 ruby:
-  default_gems_path: '{{ dotfiles_path }}/ruby/rbenv/default-gems'
+  default_gems_path: '{{ dotfiles_path }}/config/rbenv/default-gems'
 
   # https://www.ruby-lang.org/en/downloads/
   versions:
