@@ -156,23 +156,23 @@ let g:SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
 let g:SignatureMarkTextHL = 'Statement'
 '''
 
-# [[plugins]] # a tree explorer
-# repo = 'scrooloose/nerdtree'
-# hook_add = '''
-# let g:NERDSpaceDelims = 1
-# let g:NERDShutUp = 1
-# let g:NERDTreeShowHidden = 1
-# let g:NERDTreeIgnore = ['\~$', '\.git$']
-# let g:NERDTreeAutoDeleteBuffer = 1
-#
-# let g:loaded_nerdtree_fs_menu = 1
-# '''
-
-[[plugins]] # Path navigator designed to work with Vim's built-in mechanisms
-repo = 'justinmk/vim-dirvish'
+[[plugins]] # a tree explorer
+repo = 'scrooloose/nerdtree'
 hook_add = '''
-let g:dirvish_mode = 2
+let g:NERDSpaceDelims = 1
+let g:NERDShutUp = 1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeIgnore = ['\~$', '\.git$']
+let g:NERDTreeAutoDeleteBuffer = 1
+
+let g:loaded_nerdtree_fs_menu = 1
 '''
+
+# [[plugins]] # Path navigator designed to work with Vim's built-in mechanisms
+# repo = 'justinmk/vim-dirvish'
+# hook_add = '''
+# let g:dirvish_mode = 2
+# '''
 
 # [[plugins]] # Indent guides for Neovim
 # repo = 'lukas-reineke/indent-blankline.nvim'

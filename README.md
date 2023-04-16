@@ -47,9 +47,9 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 ### nvim
 
-- ~58ms to startup on M1 Max
+- ~60ms to startup on M1 Max
 - 2,900 sloc of config
-- 42 third-party plugins, including:
+- 41 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
   - [ddu.vim](https://github.com/Shougo/ddu.vim)
