@@ -183,8 +183,8 @@ vagrant:
 
 vscode:
   link:
-    vscode/keybindings.json: keybindings.json
-    vscode/settings.json: settings.json
+    config/vscode/keybindings.json: keybindings.json
+    config/vscode/settings.json: settings.json
 
   # code --list-extensions | sed -e 's/^/- /g' | pbcopy
   extensions:
