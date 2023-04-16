@@ -80,21 +80,6 @@ homebrew:
     - webp                # Image format providing lossless and lossy compression for web images
     - xh                  # Friendly and fast tool for sending HTTP requests
 
-# [TO BE DELETED] No longer works on latest macOS.
-# https://github.com/mas-cli/mas#%EF%B8%8F-known-issues
-mas:
-  # List installed apps by
-  #
-  #   $ mas list
-  #
-  applications:
-    - '1066302071' # New File Menu Free
-    - '1091189122' # Bear
-    - '425424353'  # The Unarchiver
-    - '497799835'  # Xcode
-    - '904280696'  # Things
-    - '975937182'  # Fantastical
-
 launchagent:
   plist_dir: '{{ dotfiles_path }}/config/launchagent'
 
