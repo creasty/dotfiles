@@ -25,6 +25,7 @@
     - ansible-lint
     - clang-format
     - deno
+    - hashicorp/tap/terraform-ls
     - llvm # clangd
     - shellcheck
     - watchman
