@@ -1,29 +1,29 @@
-![creasty's dotfiles](https://user-images.githubusercontent.com/1695538/117818019-254abb00-b2a3-11eb-8676-5cd1415ce2b5.png)
+![creasty's dotfiles](./docs/images/cover.png)
 
-dotfiles [![Build Status](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg)](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml) ![macOS](./docs/images/badges/platform.svg) [![License](./docs/images/badges/license.svg)](./LICENSE.txt)
-========
+creasty's dotfiles [![Build Status](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg)](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml) ![Platform: macOS](https://img.shields.io/badge/Platform-macOS-lightgrey) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.txt)
+==================
 
 Orbit the zenith of productivity - unlock the hidden potential within.
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/up">dotfiles.creasty.com/up</a> | bash</code></pre>
 
-Screenshots
------------
+📸 Screenshots
+--------------
 
-| Tmux + ZSH (Alacritty) | Neovim (Kitty) |
+| 🚀 Tmux + ZSH (Alacritty) | 🌌 Neovim (Kitty) |
 |---|---|
 | ![](./docs/images/screenshots/tmux.png) | ![](./docs/images/screenshots/neovim.png) |
 
-Stats
------
+📊 Stats: Power-packed Performance
+----------------------------------
 
-Heavily customized and meticulously optimized for insane performance.
+Both of my zsh and nvim are thoroughly tailored yet carefully fine-tuned for outstanding performance, contributing to remarkable productivity and efficiency gains.
 
-### zsh
+### ⚡ zsh
 
-- ~72ms to startup on M1 Max
-- 550 sloc of config
-- 2 third-party plugins and 5 hooks
+- Blazing fast ~72ms startup time on M1 Max
+- 550 sloc of finely-tuned config
+- 2 third-party plugins and 5 hooks:
   - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
   - [anyenv](https://github.com/anyenv/anyenv) ([rbenv](https://github.com/rbenv/rbenv), [nodenv](https://github.com/nodenv/nodenv) & [jenv](https://github.com/jenv/jenv))
@@ -45,10 +45,10 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 </details>
 
-### nvim
+### 🌌 nvim
 
-- ~60ms to startup on M1 Max
-- 2,900 sloc of config
+- Lightning-fast ~60ms startup time on M1 Max
+- 2,900 sloc of expertly-crafted config
 - 41 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
@@ -73,7 +73,7 @@ $ nvim --headless --startuptime /dev/stdout -c quit
 
 </details>
 
-Author
-------
+💻 Author
+---------
 
 Yuki Iwanaga / [@creasty](https://github.com/creasty)
