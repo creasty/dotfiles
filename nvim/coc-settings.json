@@ -329,6 +329,7 @@
     "metalness",
     "mutex",
     "raycaster",
+    "retryable",
     "riverpod",
     "tweens",
     "typeparam",
