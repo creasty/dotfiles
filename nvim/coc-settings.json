@@ -324,6 +324,7 @@
     "clearcoat",
     "envmap",
     "equirectangular",
+    "graphviz",
     "henryapp",
     "lerp",
     "metalness",

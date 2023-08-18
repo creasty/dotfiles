@@ -31,7 +31,7 @@ repo = 'tpope/vim-surround'
 repo = 'tpope/vim-repeat'
 
 [[plugins]] # pasting with indentation adjusted to paste destination
-repo = 'sickill/vim-pasta'
+repo = 'ku1ik/vim-pasta'
 hook_add = '''
 let g:pasta_disabled_filetypes = [
   \ "python", "markdown", "yaml",
@@ -120,10 +120,10 @@ nnoremap <script><silent> vN <Cmd>STSSelectMasterNode<CR><SID>(sts)
 nnoremap <script><silent> vn <Cmd>STSSelectCurrentNode<CR><SID>(sts)
 
 " Select Nodes in Visual Mode
-xnoremap <script><silent> <SID>(sts)j <Cmd>STSSelectNextSiblingNode<CR><SID>(sts)
-xnoremap <script><silent> <SID>(sts)k <Cmd>STSSelectPrevSiblingNode<CR><SID>(sts)
-xnoremap <script><silent> <SID>(sts)h <Cmd>STSSelectParentNode<CR><SID>(sts)
-xnoremap <script><silent> <SID>(sts)l <Cmd>STSSelectChildNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)h <Cmd>STSSelectPrevSiblingNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)l <Cmd>STSSelectNextSiblingNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)j <Cmd>STSSelectChildNode<CR><SID>(sts)
+xnoremap <script><silent> <SID>(sts)k <Cmd>STSSelectParentNode<CR><SID>(sts)
 
 " Swapping Nodes in Visual Mode
 xnoremap <script><silent> <SID>(sts)J <Cmd>STSSwapNextVisual<CR><SID>(sts)
@@ -145,7 +145,7 @@ depends = ['nvim-treesitter']
 [[plugins]] # Format operators and delimiters as you type, using tree-sitter
 repo = 'creasty/opfmt'
 depends = ['nvim-treesitter']
-path = '/Users/creasty/go/src/github.com/creasty/opfmt'
+# path = '/Users/creasty/go/src/github.com/creasty/opfmt'
 
 #  UI
 #-----------------------------------------------
