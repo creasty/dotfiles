@@ -96,44 +96,38 @@ function! user#plugin#ddu#init() abort
 endfunction
 
 function! user#plugin#ddu#init_buffer() abort
-  nnoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  inoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  nnoremap <buffer> <SID>(quit) <Cmd>call ddu#ui#do_action('quit')<CR>
   nnoremap <buffer><script> <Esc> <SID>(quit)
   nnoremap <buffer><script> q <SID>(quit)
   nnoremap <buffer><script> <C-q> <SID>(quit)
-  inoremap <buffer><script> <C-q> <SID>(quit)
+  inoremap <buffer><script> <C-q> <Esc><SID>(quit)
 
-  nnoremap <buffer> <SID>(item-action) <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  inoremap <buffer> <SID>(item-action) <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer> <SID>(item-action) <Cmd>call ddu#ui#do_action('itemAction')<CR>
   nnoremap <buffer><script> <CR> <SID>(item-action)
-  inoremap <buffer><script> <CR> <SID>(item-action)
+  inoremap <buffer><script> <CR> <Esc><SID>(item-action)
   nnoremap <buffer><script> <C-j> <SID>(item-action)
-  inoremap <buffer><script> <C-j> <SID>(item-action)
+  inoremap <buffer><script> <C-j> <Esc><SID>(item-action)
 
-  nnoremap <buffer> <SID>(choose-action) <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
-  inoremap <buffer> <SID>(choose-action) <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+  nnoremap <buffer> <SID>(choose-action) <Cmd>call ddu#ui#do_action('chooseAction')<CR>
   nnoremap <buffer><script> <Tab> <SID>(choose-action)
-  inoremap <buffer><script> <Tab> <SID>(choose-action)
+  inoremap <buffer><script> <Tab> <Esc><SID>(choose-action)
 
   nnoremap <buffer> <SID>(reset-cursor) <Cmd>call ddu#ui#ff#execute("call cursor(1,0)")<CR>
-  inoremap <buffer> <SID>(reset-cursor) <Cmd>call ddu#ui#ff#execute("call cursor(1,0)")<CR>
-  nnoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#ff#do_action('refreshItems')<CR>
-  inoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#ff#do_action('refreshItems')<CR>
+  nnoremap <buffer> <SID>(refresh) <Cmd>call ddu#ui#do_action('refreshItems')<CR>
   nnoremap <buffer><script> <C-l> <SID>(reset-cursor)<SID>(refresh)
-  inoremap <buffer><script> <C-l> <SID>(reset-cursor)<SID>(refresh)
+  inoremap <buffer><script> <C-l> <Esc><SID>(reset-cursor)<SID>(refresh)i
 
   nnoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
-  inoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
   nnoremap <buffer><script> <C-r> <SID>(reload)
-  inoremap <buffer><script> <C-r> <SID>(reload)
+  inoremap <buffer><script> <C-r> <Esc><SID>(reload)i
 
   if &ft ==# 'ddu-ff'
     setl cursorline
-    nnoremap <buffer> i <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-    nnoremap <buffer> p <Cmd>call ddu#ui#ff#do_action('preview')<CR>
-    nnoremap <buffer> o <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open' })<CR>
-    nnoremap <buffer> y <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'yank' })<CR>
-    nnoremap <buffer> - <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>j
+    nnoremap <buffer> i <Cmd>call ddu#ui#do_action('openFilterWindow')<CR>
+    nnoremap <buffer> p <Cmd>call ddu#ui#do_action('preview')<CR>
+    nnoremap <buffer> o <Cmd>call ddu#ui#do_action('itemAction', { 'name': 'open' })<CR>
+    nnoremap <buffer> y <Cmd>call ddu#ui#do_action('itemAction', { 'name': 'yank' })<CR>
+    nnoremap <buffer> - <Cmd>call ddu#ui#do_action('toggleSelectItem')<CR>j
   endif
   if &ft ==# 'ddu-ff-filter'
     inoremap <buffer> <C-p> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)<Bar>redraw")<CR>
