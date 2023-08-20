@@ -33,6 +33,7 @@ let g:coc_global_extensions = [
   \ 'coc-tag',
   \ 'coc-tsserver',
   \ 'coc-vimlsp',
+  \ 'coc-yaml',
 \ ]
 
 let g:coc_selectmode_mapping = 0

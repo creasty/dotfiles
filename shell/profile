@@ -41,6 +41,10 @@ export PATH=/opt/homebrew/opt/libpq/bin:$PATH
 # Dart
 export PATH=$PATH:$HOME/.pub-cache/bin
 
+# pnpm
+export PNPM_HOME=$HOME/Library/pnpm
+export PATH=$PATH:$PNPM_HOME
+
 #  App config
 #-----------------------------------------------
 # Git
