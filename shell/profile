@@ -1,3 +1,5 @@
+# shellcheck shell=sh
+
 #  General
 #-----------------------------------------------
 export LANG=ja_JP.UTF-8
@@ -7,43 +9,43 @@ export LC_CTYPE=$LANG
 export EDITOR=nvim
 export LSCOLORS=Gxfxcxdxbxegedabagacad
 
-#  Named path
-#-----------------------------------------------
-# Dotfiles
-export DOTFILES_PATH="$HOME/dotfiles"
-
-# Golang
-export GOPATH=$HOME/go
-
-# Android
-export ANDROID_HOME=/usr/local/opt/android-sdk
-
 #  Search path
 #-----------------------------------------------
 # Local
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
 
 # Dotfiles
-export PATH=$DOTFILES_PATH/bin:$PATH
+export DOTFILES_PATH="$HOME/dotfiles"
+export PATH="$DOTFILES_PATH/bin:$PATH"
 
 # Golang
-export PATH=$PATH:$GOPATH/bin
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
 
 # Rust
-export PATH=$PATH:$HOME/.cargo/bin
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # llvm
-export PATH=/usr/local/opt/llvm/bin:$PATH
+export PATH="/usr/local/opt/llvm/bin:$PATH"
 
 # libpq
-export PATH=/opt/homebrew/opt/libpq/bin:$PATH
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Dart
-export PATH=$PATH:$HOME/.pub-cache/bin
+export PATH="$PATH:$HOME/.pub-cache/bin"
 
 # pnpm
-export PNPM_HOME=$HOME/Library/pnpm
-export PATH=$PATH:$PNPM_HOME
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PATH:$PNPM_HOME"
+
+#  Homebrew (no not edit)
+#-----------------------------------------------
+export HOMEBREW_PREFIX="/opt/homebrew"
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+export HOMEBREW_REPOSITORY="/opt/homebrew"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
 #  App config
 #-----------------------------------------------
@@ -60,18 +62,10 @@ export RUST_BACKTRACE=1
 export BROWSER=none
 
 # ripgrep
-export RIPGREP_CONFIG_PATH=$HOME/.config/.ripgreprc
+export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc"
 
-#  Homebrew
-#-----------------------------------------------
-# export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
-
-export HOMEBREW_PREFIX="/opt/homebrew"
-export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
-export HOMEBREW_REPOSITORY="/opt/homebrew"
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
-export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
-export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+# Android
+export ANDROID_HOME=/usr/local/opt/android-sdk
 
 #  Anyenv
 #-----------------------------------------------
@@ -81,7 +75,9 @@ if [ -n "${ANYENV_SHELL:-}" ] && command -v 'anyenv' > /dev/null 2>&1; then
   if [ -n "${ANYENV_INIT_CACHE_DISABLED:-}" ] || [ ! -f "$ANYENV_INIT_FILE" ]; then
     anyenv init - --no-rehash "$ANYENV_SHELL" > "$ANYENV_INIT_FILE"
   fi
-  source "$ANYENV_INIT_FILE"
+
+  # shellcheck source=/dev/null
+  . "$ANYENV_INIT_FILE"
 
   if [ -z "${ANYENV_INIT_CACHE_DISABLED:-}" ]; then
     # Lazy rehashing
