@@ -94,16 +94,16 @@ export class Source extends BaseSource<Params, ActionData> {
     const findBy = async (input: string) => {
       const cwd =
         args.sourceParams.path || ((await fn.getcwd(args.denops)) as string);
-      const proc = Deno.run({
-        cmd: ["rg", "--json", ...args.sourceParams.args, "--", input],
+      const proc = new Deno.Command("rg", {
+        args: ["--json", ...args.sourceParams.args, "--", input],
         stdout: "piped",
         stderr: "piped",
         stdin: "null",
-        cwd: cwd,
+        cwd,
       });
 
       const output = await proc.output();
-      const list = new TextDecoder().decode(output).split(/\r?\n/);
+      const list = new TextDecoder().decode(output.stdout).split(/\r?\n/);
 
       return parseJson(cwd, list, args.sourceParams.highlights);
     };
