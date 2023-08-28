@@ -84,7 +84,6 @@ function buildItems(
       action: {
         path: l.filename,
         col: l.col,
-        bufNr: l.bufnr,
         text: l.text,
         lineNr: l.lnum,
       },
