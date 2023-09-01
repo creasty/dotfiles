@@ -628,6 +628,18 @@ if dein#is_available('coc.nvim') &&
     return ''
   endfunction
 
+  function! s:super_iv_c_s_c_c() abort
+    if s:is_copilot_suggested()
+      call copilot#Dismiss()
+      return ''
+    endif
+    if get(b:, 'coc_snippet_active', v:false)
+      call CocAction('snippetCancel')
+      return ''
+    endif
+    return ''
+  endfunction
+
   inoremap <Plug>(completion-cancel) <C-e>
   inoremap <Plug>(completion-accept) <C-y>
   inoremap <Plug>(coc-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
@@ -644,6 +656,8 @@ if dein#is_available('coc.nvim') &&
     vmap <silent><expr> <C-s><C-p> <SID>super_iv_c_s_c_p()
     imap <silent><expr> <C-s><C-n> <SID>super_iv_c_s_c_n()
     vmap <silent><expr> <C-s><C-n> <SID>super_iv_c_s_c_n()
+    imap <silent><expr> <C-s><C-c> <SID>super_iv_c_s_c_c()
+    vmap <silent><expr> <C-s><C-c> <SID>super_iv_c_s_c_c()
   endfunction
 
   function! s:auto_dismiss_copilot(float) abort
