@@ -51,11 +51,21 @@ function! user#plugin#coc#init() abort
     autocmd User CocJumpPlaceholder silent call CocActionAsync('showSignatureHelp')
 
     " Auto format
-    autocmd FocusLost,BufLeave *.go silent call CocActionAsync('format')
+    autocmd FocusLost,BufLeave *.go call user#plugin#coc#auto_format()
 
     " Override plugin commands
     autocmd VimEnter * command! -nargs=0 CocRestart :silent call coc#rpc#restart()
   augroup END
+endfunction
+
+function! user#plugin#coc#auto_format() abort
+  if &readonly || !&modifiable
+    return
+  endif
+  if mode() !=# 'n'
+    return
+  endif
+  silent call CocActionAsync('format')
 endfunction
 
 "  Custom actions
