@@ -1,6 +1,4 @@
 let s:last_cwd = ''
-let s:preserved_inputs = {}
-
 function! s:can_resume() abort
   let l:cwd = getcwd()
   let l:is_same_dir = (l:cwd == s:last_cwd)
@@ -8,6 +6,7 @@ function! s:can_resume() abort
   return l:is_same_dir
 endfunction
 
+let s:preserved_inputs = {}
 function! s:get_preserved_input(name, reset) abort
   if a:reset || get(s:preserved_inputs, a:name, '') ==# ''
     let s:preserved_inputs[a:name] = input('Search: ')
@@ -15,12 +14,14 @@ function! s:get_preserved_input(name, reset) abort
   return s:preserved_inputs[a:name]
 endfunction
 
-function! user#plugin#ddu#get_preserved_input() abort
-  if has_key(s:preserved_inputs, b:ddu_ui_name)
-    return s:get_preserved_input(b:ddu_ui_name, v:true)
-  else
-    return ''
-  end
+function! user#plugin#ddu#update_input() abort
+  let l:input = has_key(s:preserved_inputs, b:ddu_ui_name)
+    \ ? s:get_preserved_input(b:ddu_ui_name, v:true)
+    \ : ''
+  call ddu#redraw(b:ddu_ui_name, {
+    \ 'refreshItems': v:true,
+    \ 'input': l:input,
+  \ })
 endfunction
 
 function! user#plugin#ddu#open() abort
@@ -117,7 +118,7 @@ function! user#plugin#ddu#init_buffer() abort
   nnoremap <buffer><script> <C-l> <SID>(reset-cursor)<SID>(refresh)
   inoremap <buffer><script> <C-l> <Esc><SID>(reset-cursor)<SID>(refresh)i
 
-  nnoremap <buffer> <SID>(reload) <Cmd>call ddu#redraw(b:ddu_ui_name, { 'refreshItems': v:true, 'input': user#plugin#ddu#get_preserved_input() })<CR>
+  nnoremap <buffer> <SID>(reload) <Cmd>call user#plugin#ddu#update_input()<CR>
   nnoremap <buffer><script> <C-r> <SID>(reload)
   inoremap <buffer><script> <C-r> <Esc><SID>(reload)i
 
