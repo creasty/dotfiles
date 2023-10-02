@@ -1,9 +1,13 @@
 name: provisioning
 
-on: [push]
+on:
+  push:
+  schedule:
+    # Every Monday, at 10:00 JST
+    - cron: "0 1 * * 1"
 
 jobs:
-  provisioning:
+  macos:
     runs-on: macos-12 # https://github.com/actions/virtual-environments
     env:
       HOMEBREW_VERBOSE: 1
@@ -44,4 +48,4 @@ jobs:
           ID_RSA_FILE_B64: ${{ secrets.ID_RSA_FILE_B64 }}
 
       - name: Run
-        run: ./up -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
+        run: ./provision -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
