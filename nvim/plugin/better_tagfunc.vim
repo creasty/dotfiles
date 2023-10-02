@@ -1,8 +1,8 @@
-if exists('g:loaded_better_tagfunc_vim')
+if exists('g:loaded_better_tagfunc')
   finish
 endif
 
-let g:loaded_better_tagfunc_vim = 1
+let g:loaded_better_tagfunc = 1
 
 function! BetterTagfunc(pattern, flags, info) abort
   let l:pattern = a:pattern
