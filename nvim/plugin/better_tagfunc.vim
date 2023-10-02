@@ -1,4 +1,10 @@
-function! user#tagfunc#fn(pattern, flags, info) abort
+if exists('g:loaded_better_tagfunc_vim')
+  finish
+endif
+
+let g:loaded_better_tagfunc_vim = 1
+
+function! BetterTagfunc(pattern, flags, info) abort
   let l:pattern = a:pattern
   let l:bufname = get(a:info, 'buf_ffname', expand('%:p'))
   let l:ft = getbufvar(l:bufname, '&filetype')
@@ -26,3 +32,5 @@ function! s:item_cmp(bufname, ft, item) abort
   endif
   return 0
 endfunction
+
+set tagfunc=BetterTagfunc

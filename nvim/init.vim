@@ -79,9 +79,6 @@ set splitright
 set splitbelow
 set splitkeep=screen
 
-" customize tag searches
-set tagfunc=user#tagfunc#fn
-
 "=== Appearance
 "==============================================================================================
 " enables 24-bit RGB color in the TUI
@@ -326,9 +323,6 @@ endfunction
 " change indent style
 command! -nargs=1 SoftTab :setl expandtab tabstop=<args> shiftwidth=<args>
 command! -nargs=1 HardTab :setl noexpandtab tabstop=<args> shiftwidth=<args>
-
-" substitute with match case
-command! -nargs=1 -range SubMC <line1>,<line2>call match_case#substitute(<f-args>)
 
 " profiler
 command! -nargs=0 ProfStart

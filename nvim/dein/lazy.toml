@@ -111,6 +111,10 @@ require("live-command").setup {
 EOF
 '''
 
+[[plugins]] # Functions for doing case-persistant substitutions
+repo = 'vim-scripts/keepcase.vim'
+on_cmd = ['SubstituteCase']
+
 #  Navigation
 #-----------------------------------------------
 [[plugins]] # switch to the missing file without interaction
