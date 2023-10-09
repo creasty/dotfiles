@@ -14,6 +14,7 @@ SCRIPT='
       if currentPath is not targetPath as alias then
         tell application "System Events" to keystroke "t" using command down
       end if
+      delay 0.3
 
       set target of the front Finder window to targetPath
     end tell
