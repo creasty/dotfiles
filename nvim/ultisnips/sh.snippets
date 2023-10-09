@@ -163,6 +163,10 @@ snippet teepipe "Debug output while piping"
 awk '{ print \$0; print \$0 > "/dev/stderr" }'
 endsnippet
 
+snippet join "Join lines to string"
+paste -sd '+' -
+endsnippet
+
 snippet trap "trap and at_exit" b
 at_exit() {
 	$0
