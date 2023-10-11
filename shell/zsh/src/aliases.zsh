@@ -103,22 +103,24 @@ digga() {
 alias dk='docker'
 
 docker() {
-  if command -v "docker-$1" > /dev/null 2>&1; then
-    "docker-$1" "${@:2}"
+  if command -v "${0}-$1" > /dev/null 2>&1; then
+    "${0}-$1" "${@:2}"
   else
-    command docker "${@:1}"
+    command "$@"
   fi
 }
 
 #  Google Cloud SDK
 #-----------------------------------------------
-# alias gcloud='google-cloud-sdk gcloud'
-# alias gsutil='google-cloud-sdk gsutil'
-# alias bq='google-cloud-sdk bq'
-# alias kubectl='google-cloud-sdk kubectl'
-
 alias ku='kubectl'
-alias ku-oneshot='kubectl-oneshot'
+
+gcloud() {
+  if command -v "${0}-$1" > /dev/null 2>&1; then
+    "${0}-$1" "${@:2}"
+  else
+    command "$@"
+  fi
+}
 
 #  Ruby / Rails
 #-----------------------------------------------
@@ -140,10 +142,11 @@ alias rk='bundle exec rake'
 alias rdbc='bundle exec rake db:create'
 alias rdbr='bundle exec rake db:reset'
 alias rdbs='bundle exec rake db:setup'
+
 alias rdbm='rake-db-migrate'
 alias rdba='rake-db-migrate-all'
 
-rbserver() {
+serve() {
   ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start' "$@"
 }
 
@@ -157,20 +160,9 @@ alias cac='cargo check'
 
 #  Make
 #-----------------------------------------------
-alias gmake='make'
-
 alias m='make'
 alias mi='make install'
 alias mc='make clean'
-
-#  tmux
-#-----------------------------------------------
-alias tm='tmux'
-alias tma='tmux attach'
-alias tma0='tmux attach -t 0'
-alias tma1='tmux attach -t 1'
-alias tma2='tmux attach -t 2'
-alias tml='tmux list-sessions'
 
 #  Xcode
 #-----------------------------------------------
