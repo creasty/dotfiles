@@ -1,7 +1,15 @@
 ![creasty's dotfiles](./docs/images/cover.png)
 
-creasty's dotfiles [![Build Status](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg)](https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml) ![Platform: macOS](https://img.shields.io/badge/Platform-macOS-lightgrey) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.txt)
+creasty's dotfiles
 ==================
+
+[ci]: https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml
+[ci-badge]: https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg
+[platform-badge]: https://img.shields.io/badge/Platform-macOS-lightgrey
+[license]: ./LICENSE.txt
+[license-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
+
+[![Provisioning][ci-badge]][ci] ![Platform: macOS][platform-badge] [![License: MIT][license-badge]][license]
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/provision">dotfiles.creasty.com/provision</a> | bash</code></pre>
 
@@ -21,7 +29,7 @@ Both of my zsh and nvim are thoroughly tailored yet carefully fine-tuned for out
 
 - ~72ms startup time on M1 Max
 - 700 sloc of config
-- 1,200 sloc of commands
+- 1,100 sloc of commands
 - 2 third-party plugins and 5 hooks:
   - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
   - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
@@ -49,7 +57,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~60ms startup time on M1 Max
 - 2,900 sloc of config
-- 39 third-party plugins, including:
+- 38 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
   - [ddu.vim](https://github.com/Shougo/ddu.vim)
