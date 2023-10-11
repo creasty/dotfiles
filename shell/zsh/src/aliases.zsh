@@ -18,26 +18,20 @@ alias sort='LC_ALL=C sort'
 alias path='echo -e ${PATH//:/\\n}'
 alias :q='exit'
 
-alias -g H='| head'
-alias -g J='| jq .'
-alias -g JL='| jq -C . | less'
-alias -g L='| less'
-
 alias x64='arch -x86_64'
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
-alias sha1='openssl sha1 | sed "s/^.* //"'
 alias ql='qlmanage -p "$@" >& /dev/null'
 
-# ssh-keygen [-q] [-b bits] [-t dsa | ecdsa | ed25519 | rsa] [-N new_passphrase] [-C comment] [-f output_keyfile]
+alias sha1='openssl sha1 | sed "s/^.* //"'
+alias uuidgen="uuidgen | tr 'A-F' 'a-f'"
+
 alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
 alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
 
-ssh() {
-  cat ~/.ssh/config.d/* > ~/.ssh/config
-  [ $# -gt 0 ] && command ssh "$@"
-}
+alias -g H='| head'
+alias -g L='| less'
 
 #  Generic: installed
 #-----------------------------------------------
@@ -55,6 +49,9 @@ alias vi='nvim'
 alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
 alias o='finder'
 alias gk='grep-kill'
+
+alias -g J='| jq .'
+alias -g JL='| jq -C . | less'
 
 #  Networks
 #-----------------------------------------------
@@ -113,23 +110,10 @@ alias ra='bundle exec rails'
 alias rkr='bundle exec rails routes'
 alias rc='bundle exec rails c'
 alias rs='bundle exec rails s -b 0.0.0.0'
-alias rs1='bundle exec rails s -b 0.0.0.0 -p 3001'
-alias rs2='bundle exec rails s -b 0.0.0.0 -p 3002'
-alias rs3='bundle exec rails s -b 0.0.0.0 -p 3003'
-alias rs4='bundle exec rails s -b 0.0.0.0 -p 3004'
-alias rs5='bundle exec rails s -b 0.0.0.0 -p 3005'
 
 alias rk='bundle exec rake'
-alias rdbc='bundle exec rake db:create'
-alias rdbr='bundle exec rake db:reset'
-alias rdbs='bundle exec rake db:setup'
-
 alias rdbm='rake-db-migrate'
 alias rdba='rake-db-migrate-all'
-
-serve() {
-  ruby -rwebrick -e 'WEBrick::HTTPServer.new(DocumentRoot: ".", BindAddress: "0.0.0.0", Port: (ARGV[0] || 5000).to_i).start' "$@"
-}
 
 #  Rust
 #-----------------------------------------------
@@ -152,7 +136,6 @@ alias mc='make clean'
 
 alias swift='xcrun swift'
 alias swiftc='SDKPATH=$(/usr/bin/env xcrun --show-sdk-path --sdk macosx) xcrun swiftc'
-
 alias xcb='xcodebuild'
 alias xct='xctool'
 
@@ -161,10 +144,3 @@ alias xct='xctool'
 alias gr='./gradlew'
 alias grb='./gradlew build'
 alias grr='./gradlew run'
-
-#  Henry
-#-----------------------------------------------
-hen-proxy-db() {
-  local repo="$(ghq root)/github.com/bw-company/henry-infra"
-  "$repo/script/proxy-database" "$@"
-}

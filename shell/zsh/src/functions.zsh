@@ -62,3 +62,9 @@ openx() {
     exit 1
   fi
 }
+
+# Concat ssh configs
+ssh() {
+  cat ~/.ssh/config.d/* > ~/.ssh/config
+  [ $# -gt 0 ] && command ssh "$@"
+}
