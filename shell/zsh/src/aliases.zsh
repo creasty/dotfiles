@@ -101,11 +101,14 @@ digga() {
 #  Docker
 #-----------------------------------------------
 alias dk='docker'
-alias dkc='docker-compose'
-alias dkm='docker-machine'
 
-alias dk-ips="docker ps -q | xargs -n 1 docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}} {{ .Name }}' | sed 's/ \//\t/'"
-alias dk-clean='docker-clean'
+docker() {
+  if command -v "docker-$1" > /dev/null 2>&1; then
+    "docker-$1" "${@:2}"
+  else
+    command docker "${@:1}"
+  fi
+}
 
 #  Google Cloud SDK
 #-----------------------------------------------
