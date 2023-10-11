@@ -1,4 +1,4 @@
-#  General
+#  Generic: builtin
 #-----------------------------------------------
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -7,7 +7,6 @@ alias 1='cd -'
 alias 2='cd -2'
 alias 3='cd -3'
 
-alias ls='eza'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
@@ -17,38 +16,18 @@ alias less='less -R'
 
 alias sort='LC_ALL=C sort'
 alias path='echo -e ${PATH//:/\\n}'
-alias vim='nvim'
-alias vi='nvim'
 alias :q='exit'
 
-#  Global
-#-----------------------------------------------
-alias -g A='| awk'
-alias -g C='| cat'
-alias -g D='| sed'
-alias -g G='| rg'
 alias -g H='| head'
 alias -g J='| jq .'
 alias -g JL='| jq -C . | less'
 alias -g L='| less'
-alias -g N='> /dev/null'
-alias -g NN='> /dev/null 2>&1'
-alias -g S='| sort'
-alias -g W='| wc'
-alias -g WL='| wc -l'
-alias -g X='| xargs'
-alias -g X1='| xargs -n 1'
-alias -g XL='| tr "\n" "\0" | xargs -0'
-alias -g P='| peco'
 
-#  Bin
-#-----------------------------------------------
 alias x64='arch -x86_64'
 
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='openssl sha1 | sed "s/^.* //"'
-alias uuidgen="uuidgen | tr 'A-F' 'a-f'"
 alias ql='qlmanage -p "$@" >& /dev/null'
 
 # ssh-keygen [-q] [-b bits] [-t dsa | ecdsa | ed25519 | rsa] [-N new_passphrase] [-C comment] [-f output_keyfile]
@@ -60,18 +39,18 @@ ssh() {
   [ $# -gt 0 ] && command ssh "$@"
 }
 
-alias g='git'
-alias ev='envchain'
-
+#  Generic: installed
+#-----------------------------------------------
 rg() {
   command rg -p -M 1000 "$@" | less -R
 }
 
+alias g='git'
+alias ev='envchain'
+alias ls='eza'
 alias tree='eza --tree'
-alias va='vagrant'
-alias an='ansible'
-alias anp='ansible-playbook'
-alias anv='ansible-vault'
+alias vim='nvim'
+alias vi='nvim'
 
 alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
 alias o='finder'
@@ -80,7 +59,11 @@ alias gk='grep-kill'
 #  Networks
 #-----------------------------------------------
 alias hosts='vi /etc/hosts'
-alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias flush-dns='sudo killall -HUP mDNSResponder'
+
+digga() {
+  dig +nocmd "$1" any +multiline +noall +answer
+}
 
 alias ip='ipconfig getifaddr en0 || ipconfig getifaddr en1'
 alias ipg='dig +short myip.opendns.com @resolver1.opendns.com'
@@ -89,15 +72,11 @@ ipf() {
   curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
 }
 
-alias flush-dns='sudo killall -HUP mDNSResponder'
-
-digga() {
-  dig +nocmd "$1" any +multiline +noall +answer
-}
-
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
   alias "$method"="curl -X '$method'"
 done
+
+alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 
 #  Docker
 #-----------------------------------------------
