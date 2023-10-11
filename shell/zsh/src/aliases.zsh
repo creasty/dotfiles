@@ -8,10 +8,9 @@ alias 2='cd -2'
 alias 3='cd -3'
 
 alias ls='eza'
-alias ll='eza -l'
-alias la='eza -a'
-alias lla='eza -la'
-alias tree='eza --tree'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
 alias df='df -h'
 alias tf='tail -f'
 alias less='less -R'
@@ -50,57 +49,60 @@ alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias sha1='openssl sha1 | sed "s/^.* //"'
 alias uuidgen="uuidgen | tr 'A-F' 'a-f'"
+alias ql='qlmanage -p "$@" >& /dev/null'
 
 # ssh-keygen [-q] [-b bits] [-t dsa | ecdsa | ed25519 | rsa] [-N new_passphrase] [-C comment] [-f output_keyfile]
 alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
 alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
-
-alias g='envchain crst git'
-
-rg() {
-  command rg -p -M 1000 "$@" | less -R
-}
-
-alias o='finder'
-alias ev='envchain'
-alias gk='grep-kill'
-
-alias va='vagrant'
-alias an='ansible'
-alias anp='ansible-playbook'
-alias anv='ansible-vault'
-alias ql='qlmanage -p "$@" >& /dev/null'
-
-alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
 
 ssh() {
   cat ~/.ssh/config.d/* > ~/.ssh/config
   [ $# -gt 0 ] && command ssh "$@"
 }
 
+alias g='git'
+alias ev='envchain'
+
+rg() {
+  command rg -p -M 1000 "$@" | less -R
+}
+
+alias tree='eza --tree'
+alias va='vagrant'
+alias an='ansible'
+alias anp='ansible-playbook'
+alias anv='ansible-vault'
+
+alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
+alias o='finder'
+alias gk='grep-kill'
+
 #  Networks
 #-----------------------------------------------
 alias hosts='vi /etc/hosts'
-alias ip='ipconfig getifaddr en0 || ipconfig getifaddr en1'
-alias ipg='dig +short myip.opendns.com @resolver1.opendns.com'
-alias flush-dns='sudo killall -HUP mDNSResponder'
 alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 
-for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-  alias "$method"="curl -X '$method'"
-done
+alias ip='ipconfig getifaddr en0 || ipconfig getifaddr en1'
+alias ipg='dig +short myip.opendns.com @resolver1.opendns.com'
 
 ipf() {
   curl -H 'Accept: application/json' "ipinfo.io/$1" | jq .
 }
 
+alias flush-dns='sudo killall -HUP mDNSResponder'
+
 digga() {
   dig +nocmd "$1" any +multiline +noall +answer
 }
 
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+  alias "$method"="curl -X '$method'"
+done
+
 #  Docker
 #-----------------------------------------------
 alias dk='docker'
+alias dkc='docker-compose'
 
 docker() {
   if command -v "${0}-$1" > /dev/null 2>&1; then
