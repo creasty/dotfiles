@@ -87,7 +87,7 @@ docker() {
   if command -v "${0}-$1" > /dev/null 2>&1; then
     "${0}-$1" "${@:2}"
   else
-    command "$@"
+    command "$0" "$@"
   fi
 }
 
@@ -99,7 +99,7 @@ gcloud() {
   if command -v "${0}-$1" > /dev/null 2>&1; then
     "${0}-$1" "${@:2}"
   else
-    command "$@"
+    command "$0" "$@"
   fi
 }
 
