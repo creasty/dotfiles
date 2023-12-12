@@ -112,12 +112,11 @@ set display+=uhex
 " show hidden characters
 "
 " [tab]
-" U+2192 (Rightwards Arrow)
-" @see https://github.com/microsoft/vscode/blob/6ef862703e3a2a477e0bde0e715a1cb0ef3959cc/src/vs/editor/common/viewLayout/viewLineRenderer.ts#L995-L999
+" U+2500 (Box Drawings Light Horizontal)
+" U+23F5 (Black Medium Right-Pointing Triangle)
 "
 " [lead,trail]
 " U+00B7 (Middle Dot)
-" @see https://github.com/microsoft/vscode/blob/6ef862703e3a2a477e0bde0e715a1cb0ef3959cc/src/vs/editor/common/viewLayout/viewLineRenderer.ts#L122-L128
 "
 " [nbsp]
 " U+2219 (Bullet Operator)
@@ -126,7 +125,7 @@ set display+=uhex
 " U+276F (Heavy Right-Pointing Angle Quotation Mark Ornament)
 " U+276E (Heavy Left-Pointing Angle Quotation Mark Ornament)
 set list
-set listchars=tab:\ \ →,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮
+set listchars=tab:──⏵,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮
 
 " indent wrapped lines
 " U+203A (Single Right-Pointing Angle Quotation Mark)

@@ -158,7 +158,7 @@ local statusline = retry_call_wrap(function ()
     end
 
     if diagnostics.E > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsError#%s %d%%*', '✗', diagnostics.E)
+      local text = string.format('%%#StatusLineDiagnosticsError#%s %d%%*', '✕', diagnostics.E)
       table.insert(l1, text)
     end
     if diagnostics.W > 0 then
@@ -166,11 +166,11 @@ local statusline = retry_call_wrap(function ()
       table.insert(l1, text)
     end
     if diagnostics.I > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsInfo#%s %d%%*', '▸', diagnostics.I)
+      local text = string.format('%%#StatusLineDiagnosticsInfo#%s %d%%*', '□', diagnostics.I)
       table.insert(l1, text)
     end
     if diagnostics.H > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsHint#%s %d%%*', '▪︎', diagnostics.H)
+      local text = string.format('%%#StatusLineDiagnosticsHint#%s %d%%*', '*', diagnostics.H)
       table.insert(l1, text)
     end
   end
