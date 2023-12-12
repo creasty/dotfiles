@@ -326,6 +326,7 @@
     "lerp",
     "metalness",
     "mutex",
+    "otel",
     "raycaster",
     "retryable",
     "riverpod",
