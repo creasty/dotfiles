@@ -297,13 +297,6 @@ nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 
 "=== Misc
 "==============================================================================================
-" remap command
-function s:remap_command(lhs, rhs) abort
-  execute 'cnoreabbrev' '<expr>'
-    \ a:lhs "getcmdtype() ==# ':' && getcmdline() ==# '" . a:lhs . "'"
-    \ " ? '" . a:rhs . "' : '" . a:lhs . "'"
-endfunction
-
 " reopen current buffer with specific encoding
 command! -bang -nargs=1 -complete=customlist,EncodingNameComplete Encoding
   \ edit<bang> ++enc=<args>
@@ -330,7 +323,7 @@ command! -nargs=0 ProfOpen vsplit /tmp/vim-vimscript.log |
 
 " change font size
 command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
-call s:remap_command('font', 'Font')
+cnoreabbrev <expr> font getcmdtype() ==# ':' && getcmdline() ==# 'font' ? 'Font' : 'font'
 
 function! s:change_font_size(size) abort
   exec 'set' 'guifont=Menlo:h' . a:size
@@ -471,7 +464,7 @@ command! -nargs=0 DeinOpenLog
 command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinUpdate
   \ call dein#update(fnamemodify(trim(<q-args>), ':t'))
 
-command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepos
+command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepo
   \ exec 'lcd' s:dein_repos_path . '/' . trim(<q-args>)
 
 function! DeinPluginNameComplete(a, l, p) abort
