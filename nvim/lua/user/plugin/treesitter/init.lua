@@ -34,6 +34,7 @@ require('nvim-treesitter.configs').setup {
     'ruby',
     'rust',
     'sql',
+    'styled',
     'swift',
     'terraform',
     'tlaplus',
