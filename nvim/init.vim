@@ -128,9 +128,9 @@ set list
 set listchars=tab:──⏵,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮
 
 " indent wrapped lines
-" U+203A (Single Right-Pointing Angle Quotation Mark)
+" U+21B3 (Downwards Arrow with Tip Rightwards)
 set breakindent
-let &showbreak = '   ›'
+set showbreak=↳
 
 " transparent pmenu
 set pumblend=10
