@@ -9,9 +9,6 @@
 [core]
   editor = nvim
 
-  # To turn off diff-so-fancy temporarily, you can do `git --no-pager`.
-  pager = diff-so-fancy | less --tabs=4 -RFX
-
 [color]
   ui = true
 
@@ -22,6 +19,9 @@
 
 [diff]
   indentHeuristic = true
+
+  # To turn off difftastic temporarily, use `--no-ext-diff`.
+  external = difft
 
 [remote]
   pushDefault = origin
@@ -117,11 +117,11 @@
   d  = diff --irreversible-delete
   dc = diff --irreversible-delete --cached
 
-  w  = show --irreversible-delete
-  w0 = show --irreversible-delete HEAD
-  w1 = show --irreversible-delete HEAD~
-  w2 = show --irreversible-delete HEAD~~
-  w3 = show --irreversible-delete HEAD~~~
+  w  = show --ext-diff --irreversible-delete
+  w0 = show --ext-diff --irreversible-delete HEAD
+  w1 = show --ext-diff --irreversible-delete HEAD~
+  w2 = show --ext-diff --irreversible-delete HEAD~~
+  w3 = show --ext-diff --irreversible-delete HEAD~~~
 
   l  = log --oneline
   lg = log --oneline --graph

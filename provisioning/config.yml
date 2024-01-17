@@ -43,7 +43,7 @@ homebrew:
     - ctags               # Reimplementation of ctags(1)
     - curl                # Get a file from an HTTP, HTTPS or FTP server
     - deno                # Secure runtime for JavaScript and TypeScript
-    - diff-so-fancy       # Good-lookin' diffs with diff-highlight and more
+    - difftastic          # Diff that understands syntax
     - direnv              # Load/unload environment variables based on $PWD
     - envchain            # Secure your credentials in environment variables
     - expect              # Program that can automate interactive applications
