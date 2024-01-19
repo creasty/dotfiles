@@ -125,7 +125,7 @@ run_provisioning() {
     -i 'localhost,' \
     --extra-vars "home_path=$HOME" \
     --extra-vars "dotfiles_path=$DOTFILES_PATH" \
-    --extra-vars "homebrew_path=$HOMEBREW_PREFIX" \
+    --extra-vars "homebrew_prefix=$HOMEBREW_PREFIX" \
     --extra-vars '@config.yml' \
     --extra-vars '@secrets.yml' \
     "$@" \

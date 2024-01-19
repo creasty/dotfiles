@@ -3,19 +3,8 @@
 
 - name: install openjdk
   homebrew:
-    name: openjdk
+    name:  openjdk@17
     state: latest
-
-- name: tap adoptopenjdk/openjdk
-  homebrew_tap:
-    tap:   adoptopenjdk/openjdk
-    state: present
-
-- name: install old versions
-  homebrew_cask:
-    name: adoptopenjdk11
-    state: latest
-    sudo_password: '{{ ansible_become_pass }}'
 
 - name: check jenv
   command: |
@@ -36,6 +25,14 @@
   patch:
     src: export_jenv_hook.zsh.patch
     dest: '{{ anyenv.envs_dir }}/jenv/plugins/export/etc/jenv.d/init/export_jenv_hook.zsh'
+
+- name: link
+  file:
+    src: '{{ homebrew_prefix }}/opt/openjdk@17/libexec/openjdk.jdk'
+    dest: /Library/Java/JavaVirtualMachines/openjdk.jdk
+    state: link
+    force: yes
+  become: yes
 
 - name: register java home
   command: |

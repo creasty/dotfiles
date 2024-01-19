@@ -1,5 +1,5 @@
 - set_fact:
-    zsh_bin: '{{ homebrew_path }}/bin/zsh'
+    zsh_bin: '{{ homebrew_prefix }}/bin/zsh'
 
 - name: install zsh
   homebrew:
