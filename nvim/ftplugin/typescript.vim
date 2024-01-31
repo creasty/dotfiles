@@ -2,23 +2,23 @@ source <sfile>:h/javascript.vim
 
 command! -buffer -nargs=0 -range=% ConvertProtoToType
   \ silent keeppatterns <line1>,<line2>s/\v__typename\?: '(\w+)';/__typename: "\1",/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\>;/\1: pb.get\u\1(),/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\>;/\1: pb.get\u\1List(),/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\['\w+'\]\>;/\1: pb.get\u\1(),/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\['\w+'\]\>;/\1: pb.get\u\1List(),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<(\w+)\>;/\1: pb.get\u\1List().map(\l\2ToType),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Array\<(\w+)\>\>;/\1: pb.get\u\1List().map(\l\2ToType),/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Scalars\['(\w+)'\];/\1: pb.get\u\1(),/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Scalars\['(\w+)'\]\['\w+'\];/\1: pb.get\u\1(),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): (\w+);/\1: \l\2ToType(requireNotNull(pb.get\u\1(), "\1")),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<(\w+)\>;/\1: fmap(pb.get\u\1(), \l\2ToType),/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+) \= '(\w+)',?/case PB.\2: return GQ.\1;/ge
 
 command! -buffer -nargs=0 -range=% ConvertInputToProto
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Scalars\['(\w+)'\]\>;/.set\u\1(input.\1)/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\>;/.set\u\1List(input.\1)/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: InputMaybe\<Scalars\['(\w+)'\]\['\w+'\]\>;/.set\u\1(input.\1)/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<Scalars\['(\w+)'\]\['\w+'\]\>;/.set\u\1List(input.\1)/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): Array\<(\w+)\>;/.set\u\1List(input.\1.map(\l\2ToPb))/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<Array\<(\w+)\>\>;/.set\u\1List(input.\1.map(\l\2ToPb))/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Scalars\['(\w+)'\];/.set\u\1(input.\1)/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: InputMaybe\<Array\<(\w+)\>\>;/.set\u\1List(input.\1.map(\l\2ToPb))/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+): Scalars\['(\w+)'\]\['\w+'\];/.set\u\1(input.\1)/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+): (\w+);/.set\u\1(\l\2ToPb(input.\1))/ge |
-  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: Maybe\<(\w+)\>;/.set\u\1(fmap(input.\1, \l\2ToPb))/ge |
+  \ silent keeppatterns <line1>,<line2>s/\v(\w+)\?: InputMaybe\<(\w+)\>;/.set\u\1(fmap(input.\1, \l\2ToPb))/ge |
   \ silent keeppatterns <line1>,<line2>s/\v(\w+) \= '(\w+)',?/case GQ.\1: return PB.\2;/ge
 
 command! -buffer -nargs=+ GenAdaptor
