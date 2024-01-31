@@ -140,6 +140,13 @@
     type:   int
     value:  2
 
+- name: general | disable UI sound effects
+  osx_defaults:
+    domain: NSGlobalDomain
+    key:    com.apple.sound.uiaudio.enabled
+    type:   bool
+    value:  false
+
 #=== Input device
 #==============================================================================================
 - name: input device | key repeat
