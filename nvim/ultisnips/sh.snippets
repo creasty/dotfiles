@@ -79,34 +79,37 @@ done
 shift \$((OPTIND - 1))
 endsnippet
 
-snippet parse_opt "Custome option parser" b
+snippet parse_opt "Advanced option parser" b
 parse_opt() {
 	case "\$1" in
 		${1:opt_name})
-			$0
-			return ${2:1}
+			FLAG_XXX="\$2"
+			PARSE_OPT_SHIFT=1$0
+			;;
+		*)
+			echo "Invalid option: \$1" 1>&2
+			exit 1
 			;;
 	esac
-
-	echo "Invalid option: \$1" 1>&2
-	exit 1
 }
 
 while (( \$# > 0 )); do
+	PARSE_OPT_SHIFT=0
 	case "\$1" in
-		--) shift; break ;;
+		--) shift && break ;;
 		--*)
-			parse_opt "\${1:2}" "\${@:2}" || shift \$?
+			parse_opt "\${1:2}" "\${@:2}"
+			shift \$((PARSE_OPT_SHIFT + 1))
+			;;
+		-[a-z0-9])
+			parse_opt "\${1:1}" "\${@:2}"
+			shift \$((PARSE_OPT_SHIFT + 1))
 			;;
 		-*)
-			if [[ "\$1" =~ ^-[a-z0-9]{2,}\$ ]]; then
-				while read -n1 c && [ -n "\$c" ]; do
-					parse_opt "\$c" '' || true
-				done <<< "\${1:1}"
-				shift
-			else
-				parse_opt "\${1:1}" "\${@:2}" || shift \$?
-			fi
+			while read -rn1 c && [ -n "\$c" ]; do
+				parse_opt "\$c" ''
+			done <<< "\${1:1}"
+			shift
 			;;
 		*) break ;;
 	esac
