@@ -158,6 +158,11 @@ rust:
     - rust-analysis # https://github.com/rust-lang/rls
     - rust-src      # https://github.com/rust-lang/rust
 
+java:
+  versions:
+    - openjdk@21
+    - openjdk@17
+
 vagrant:
   boxes: {}
 

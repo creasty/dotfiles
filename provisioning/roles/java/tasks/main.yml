@@ -3,8 +3,9 @@
 
 - name: install openjdk
   homebrew:
-    name:  openjdk@17
+    name:  '{{ item }}'
     state: latest
+  with_items: '{{ java.versions }}'
 
 - name: check jenv
   command: |
@@ -28,7 +29,7 @@
 
 - name: link
   file:
-    src: '{{ homebrew_prefix }}/opt/openjdk@17/libexec/openjdk.jdk'
+    src: '{{ homebrew_prefix }}/opt/{{ java.versions | first }}/libexec/openjdk.jdk'
     dest: /Library/Java/JavaVirtualMachines/openjdk.jdk
     state: link
     force: yes
@@ -36,7 +37,8 @@
 
 - name: register java home
   command: |
-    bash -lc 'jenv add "$(/usr/libexec/java_home)"'
+    bash -lc 'jenv add "{{ homebrew_prefix }}/opt/{{ item }}/libexec/openjdk.jdk/Contents/Home"'
+  with_items: '{{ java.versions }}'
 
 - name: install tools
   homebrew:
