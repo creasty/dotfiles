@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+git ls-tree -r --format '%(objectmode):%(objectname):%(path)' HEAD "${1:-.}" \
+  | awk '
+    { print $0; print $0 > "/dev/stderr" }
+    END { print "-----------------------------------------------" > "/dev/stderr" }
+    ' \
+  | openssl sha1
