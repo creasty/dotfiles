@@ -148,12 +148,14 @@ call lexima#add_rule({
 " directory shortcuts
 " :eh -- home
 " :eg -- github
+" :ev -- vim runtime
 let s:directories = {
-  \ 'h': '~/',
-  \ 'g': '~/go/src/github.com/',
+  \ 'h': '~',
+  \ 'g': '~/go/src/github.com',
+  \ 'v': $VIMRUNTIME,
 \ }
 for [s:shortcut, s:directory] in items(s:directories)
-  call lexima#add_rule({ 'char': s:shortcut, 'at': '^e\%#', 'input': ' ' . s:directory, 'mode': ':' })
+  call lexima#add_rule({ 'char': s:shortcut, 'at': '^e\%#', 'input': ' ' . s:directory . '/' , 'mode': ':' })
 endfor
 unlet s:directories
 unlet s:shortcut
