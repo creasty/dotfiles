@@ -136,20 +136,36 @@ function M.setup()
   -- Treesitter
   hi['@annotation'] = { fg = s.brown }
   hi['@attribute'] = { fg = s.yellow }
+  hi['@boolean'] = { fg = s.orange }
+  hi['@character'] = { fg = s.orange }
+  hi['@comment'] = { fg = s.comment }
+  hi['@comment.note'] = { fg = s.green }
+  hi['@comment.todo'] = { fg = s.background, bg = s.comment }
   hi['@constant'] = { fg = s.orange }
   hi['@constant.builtin'] = { fg = s.yellow, italic = 1 }
   hi['@constant.macro'] = { fg = s.yellow, bold = 1 }
   hi['@constructor'] = { fg = s.yellow }
   hi['@field'] = { fg = s.brown }
+  hi['@function'] = { fg = s.pink }
   hi['@function.builtin'] = { fg = s.pink, italic = 1 }
   hi['@function.macro'] = { fg = s.pink, bold = 1 }
+  hi['@keyword'] = { fg = s.purple, bold = 1 }
+  hi['@keyword.conditional'] = { fg = s.purple }
+  hi['@keyword.import'] = { fg = s.purple }
   hi['@keyword.operator'] = { fg = s.aqua, italic = 1 }
-  hi['@namespace'] = { fg = s.brown }
-  hi['@none'] = { fg = s.foreground }
+  hi['@keyword.repeat'] = { fg = s.purple }
+  hi['@label'] = { fg = s.purple }
+  hi['@module'] = { fg = s.brown }
+  hi['@none'] = { fg = s.foreground } -- ??
+  hi['@number'] = { fg = s.orange }
+  hi['@number.float'] = { fg = s.orange }
   hi['@property'] = { fg = s.brown }
+  hi['@punctuation.delimiter'] = { fg = s.gray200 }
+  hi['@punctuation.special'] = { fg = s.aqua }
+  hi['@string'] = { fg = s.green }
   hi['@string.escape'] = { fg = s.dark_aqua }
   hi['@string.regex'] = { fg = s.aqua }
-  hi['@string.special'] = { link = 'SpecialChar' }
+  hi['@string.special'] = { fg = s.bright_green }
   hi['@symbol'] = { fg = s.red }
   hi['@tag'] = { fg = s.yellow }
   hi['@tag.attribute'] = { fg = s.brown }
@@ -170,8 +186,10 @@ function M.setup()
   hi['@text.uri'] = { underline = 1, sp = s.dark_blue }
   hi['@text.warning'] = { link = 'WarningMsg' }
   hi['@type.builtin'] = { fg = s.yellow, italic = 1 }
+  hi['@type.definition'] = { fg = s.purple }
   hi['@variable'] = { fg = s.blue }
   hi['@variable.builtin'] = { fg = s.blue, italic = 1 }
+  hi['@variable.member'] = { fg = s.brown }
 
   -- custom
   hi.StatusLinePrimary = { fg = s.foreground, bg = s.window }
