@@ -17,5 +17,8 @@
 - name: install components
   command: |
     bash -lc 'rustup component add {{ item }}'
-  with_items: '{{ rust.components }}'
-  when: rust.components
+  with_items:
+    - clippy        # https://github.com/rust-lang/rust-clippy
+    - rls           # https://github.com/rust-lang/rls
+    - rust-analysis # https://github.com/rust-lang/rls
+    - rust-src      # https://github.com/rust-lang/rust
