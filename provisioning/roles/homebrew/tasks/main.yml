@@ -5,6 +5,12 @@
   homebrew:
     update_homebrew: yes
 
+- name: add registries
+  homebrew_tap:
+    name:  '{{ item }}'
+    state: present
+  with_items: '{{ homebrew.registries }}'
+
 - name: install cask applications
   homebrew_cask:
     name:  '{{ item }}'

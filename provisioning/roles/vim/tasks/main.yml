@@ -9,6 +9,13 @@
     dest:   '{{ dotfiles_path }}/nvim/dein/repos/github.com/Shougo/dein.vim'
     update: False
 
+- name: install deps via brew (tap)
+  homebrew:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - hashicorp/tap # for terraform-ls
+
 - name: install deps via brew
   homebrew:
     name:  '{{ item }}'
@@ -17,7 +24,7 @@
     - ansible-lint
     - clang-format
     - deno
-    - hashicorp/tap/terraform-ls
+    - terraform-ls
     - llvm # clangd
     - shellcheck
     - watchman
