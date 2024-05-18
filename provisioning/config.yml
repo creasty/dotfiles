@@ -6,143 +6,143 @@ homebrew:
 
   # brew list --cask --full-name
   applications:
-    - 1password             # https://1password.com/
-    - 1password-cli         # https://developer.1password.com/docs/cli
-    - adobe-creative-cloud  # https://creative.adobe.com/products/creative-cloud
-    - alacritty             # https://github.com/jwilm/alacritty
-    - appcleaner            # https://freemacsoft.net/appcleaner/
-    - chromedriver          # https://sites.google.com/a/chromium.org/chromedriver/home
-    - keyboard              # https://github.com/creasty/Keyboard
-    - docker                # https://www.docker.com/community-edition
-    - figma                 # https://www.figma.com/
-    - google-chat           # https://gsuite.google.com/products/chat/
-    - google-chrome         # https://www.google.com/chrome/
-    - google-cloud-sdk      # https://cloud.google.com/sdk/
-    - google-drive          # https://www.google.com/drive/
-    - google-japanese-ime   # https://www.google.co.jp/ime/
-    - imageoptim            # https://imageoptim.com/mac
-    - istat-menus           # https://bjango.com/mac/istatmenus/
-    - kitty                 # https://github.com/kovidgoyal/kitty
-    - ngrok                 # https://ngrok.com/
-    - notion                # https://www.notion.so/
-    - proxyman              # https://proxyman.io/
+    - 1password # https://1password.com/
+    - 1password/tap/1password-cli # https://developer.1password.com/docs/cli
+    - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
+    - alacritty # https://github.com/jwilm/alacritty
+    - appcleaner # https://freemacsoft.net/appcleaner/
+    - chromedriver # https://sites.google.com/a/chromium.org/chromedriver/home
+    - creasty/tools/keyboard # https://github.com/creasty/Keyboard
+    - docker # https://www.docker.com/community-edition
+    - figma # https://www.figma.com/
+    - google-chat # https://gsuite.google.com/products/chat/
+    - google-chrome # https://www.google.com/chrome/
+    - google-cloud-sdk # https://cloud.google.com/sdk/
+    - google-drive # https://www.google.com/drive/
+    - google-japanese-ime # https://www.google.co.jp/ime/
+    - imageoptim # https://imageoptim.com/mac
+    - istat-menus # https://bjango.com/mac/istatmenus/
+    - kitty # https://github.com/kovidgoyal/kitty
+    - ngrok # https://ngrok.com/
+    - notion # https://www.notion.so/
+    - proxyman # https://proxyman.io/
     - pushplaylabs-sidekick # https://www.meetsidekick.com/
-    - qlcolorcode           # https://github.com/anthonygelibert/QLColorCode
-    - qlmarkdown            # https://github.com/toland/qlmarkdown
-    - qlstephen             # https://whomwah.github.io/qlstephen/
-    - quicklook-json        # http://www.sagtau.com/quicklookjson.html
-    - raycast               # https://raycast.app/
-    - rightfont             # https://rightfontapp.com/
-    - spotify               # https://www.spotify.com/
-    - tableplus             # https://tableplus.io/
-    - tunnelbear            # https://www.tunnelbear.com/
-    - webpquicklook         # https://github.com/emin/WebPQuickLook
+    - qlcolorcode # https://github.com/anthonygelibert/QLColorCode
+    - qlmarkdown # https://github.com/toland/qlmarkdown
+    - qlstephen # https://whomwah.github.io/qlstephen/
+    - quicklook-json # http://www.sagtau.com/quicklookjson.html
+    - raycast # https://raycast.app/
+    - rightfont # https://rightfontapp.com/
+    - spotify # https://www.spotify.com/
+    - tableplus # https://tableplus.io/
+    - tunnelbear # https://www.tunnelbear.com/
+    - webpquicklook # https://github.com/emin/WebPQuickLook
 
   # brew leaves | xargs brew desc --eval-all | sed -E 's/^([^:]*): /- \1 # /g'
   packages:
-    - awscli          # Official Amazon AWS command-line interface
-    - bat             # Clone of cat(1) with syntax highlighting and Git integration
-    - circleci        # Enables you to reproduce the CircleCI environment locally
-    - cloc            # Statistics utility to count lines of code
-    - rid             # Run commands in container as if were native
-    - ctags           # Reimplementation of ctags(1)
-    - curl            # Get a file from an HTTP, HTTPS or FTP server
-    - deno            # Secure runtime for JavaScript and TypeScript
-    - difftastic      # Diff that understands syntax
-    - direnv          # Load/unload environment variables based on $PWD
-    - envchain        # Secure your credentials in environment variables
-    - expect          # Program that can automate interactive applications
-    - eza             # Modern, maintained replacement for ls
-    - fd              # Simple, fast and user-friendly alternative to find
-    - ffmpeg          # Play, record, convert, and stream audio and video
-    - gh              # GitHub command-line tool
-    - ghq             # Remote repository management made easy
-    - git             # Distributed revision control system
+    - awscli # Official Amazon AWS command-line interface
+    - bat # Clone of cat(1) with syntax highlighting and Git integration
+    - circleci # Enables you to reproduce the CircleCI environment locally
+    - cloc # Statistics utility to count lines of code
+    - creasty/tools/rid # Run commands in container as if were native
+    - ctags # Reimplementation of ctags(1)
+    - curl # Get a file from an HTTP, HTTPS or FTP server
+    - deno # Secure runtime for JavaScript and TypeScript
+    - difftastic # Diff that understands syntax
+    - direnv # Load/unload environment variables based on $PWD
+    - envchain # Secure your credentials in environment variables
+    - expect # Program that can automate interactive applications
+    - eza # Modern, maintained replacement for ls
+    - fd # Simple, fast and user-friendly alternative to find
+    - ffmpeg # Play, record, convert, and stream audio and video
+    - gh # GitHub command-line tool
+    - ghq # Remote repository management made easy
+    - git # Distributed revision control system
     - git-filter-repo # Quickly rewrite git repository history
-    - git-lfs         # Git extension for versioning large files
-    - gnupg           # GNU Pretty Good Privacy (PGP) package
-    - graphviz        # Graph visualization software from AT&T and Bell Labs
-    - hyperfine       # Command-line benchmarking tool
-    - imagemagick     # Tools and libraries to manipulate images in many formats
-    - jo              # JSON output from a shell
-    - jq              # Lightweight and flexible command-line JSON processor
-    - evans           # Evans: more expressive universal gRPC client
-    - libiconv        # Conversion library
-    - libpq           # Postgres C API library
-    - massren         # Easily rename multiple files using your text editor
-    - ngrep           # Network grep
-    - nkf             # Network Kanji code conversion Filter (NKF)
-    - parallel        # Shell command parallelization utility
-    - pastel          # Command-line tool to generate, analyze, convert and manipulate colors
-    - peco            # Simplistic interactive filtering tool
-    - procs           # Modern replacement for ps written by Rust
-    - protobuf        # Protocol buffers (Google's data interchange format)
-    - ripgrep         # Search tool like grep and The Silver Searcher
-    - sd              # Intuitive find & replace CLI
-    - terraform       # Tool to build, change, and version infrastructure
-    - tmux            # Terminal multiplexer
-    - trash           # CLI tool that moves files or folder to the trash
-    - webp            # Image format providing lossless and lossy compression for web images
-    - xh              # Friendly and fast tool for sending HTTP requests
+    - git-lfs # Git extension for versioning large files
+    - gnupg # GNU Pretty Good Privacy (PGP) package
+    - graphviz # Graph visualization software from AT&T and Bell Labs
+    - hyperfine # Command-line benchmarking tool
+    - imagemagick # Tools and libraries to manipulate images in many formats
+    - jo # JSON output from a shell
+    - jq # Lightweight and flexible command-line JSON processor
+    - ktr0731/evans/evans # Evans: more expressive universal gRPC client
+    - libiconv # Conversion library
+    - libpq # Postgres C API library
+    - massren # Easily rename multiple files using your text editor
+    - ngrep # Network grep
+    - nkf # Network Kanji code conversion Filter (NKF)
+    - parallel # Shell command parallelization utility
+    - pastel # Command-line tool to generate, analyze, convert and manipulate colors
+    - peco # Simplistic interactive filtering tool
+    - procs # Modern replacement for ps written by Rust
+    - protobuf # Protocol buffers (Google's data interchange format)
+    - ripgrep # Search tool like grep and The Silver Searcher
+    - sd # Intuitive find & replace CLI
+    - terraform # Tool to build, change, and version infrastructure
+    - tmux # Terminal multiplexer
+    - trash # CLI tool that moves files or folder to the trash
+    - webp # Image format providing lossless and lossy compression for web images
+    - xh # Friendly and fast tool for sending HTTP requests
 
 launchagent:
-  plist_dir: '{{ dotfiles_path }}/config/launchagent'
+  plist_dir: "{{ dotfiles_path }}/config/launchagent"
 
 link:
   # XDG config directory
   config/alacritty: .config/alacritty
-  config/bat:       .config/bat
-  config/git:       .config/git
-  config/kitty:     .config/kitty
-  config/peco:      .config/peco
+  config/bat: .config/bat
+  config/git: .config/git
+  config/kitty: .config/kitty
+  config/peco: .config/peco
   config/ripgreprc: .config/.ripgreprc
-  config/tmux:      .config/tmux
+  config/tmux: .config/tmux
 
   # Home directory
-  home/ansible.cfg:   .ansible.cfg
-  home/aws/config:    .aws/config
+  home/ansible.cfg: .ansible.cfg
+  home/aws/config: .aws/config
   home/bundle/config: .bundle/config
-  home/cargo/config:  .cargo/config
-  home/ctags:         .ctags
-  home/curlrc:        .curlrc
-  home/fdignore:      .fdignore
-  home/gemrc:         .gemrc
-  home/irbrc:         .irbrc
-  home/pgclirc:       .pgclirc
-  home/pryrc:         .pryrc
-  home/railsrc:       .railsrc
-  home/rgignore:      .rgignore
-  home/rspec:         .rspec
-  home/rubocop.yml:   .rubocop.yml
+  home/cargo/config: .cargo/config
+  home/ctags: .ctags
+  home/curlrc: .curlrc
+  home/fdignore: .fdignore
+  home/gemrc: .gemrc
+  home/irbrc: .irbrc
+  home/pgclirc: .pgclirc
+  home/pryrc: .pryrc
+  home/railsrc: .railsrc
+  home/rgignore: .rgignore
+  home/rspec: .rspec
+  home/rubocop.yml: .rubocop.yml
 
   # Special
-  nvim:                    .config/nvim
+  nvim: .config/nvim
   shell/bash/bash_profile: .bash_profile
-  shell/bash/bashrc:       .bashrc
-  shell/profile:           .profile
-  shell/zsh/zshenv:        .zshenv
-  shell/zsh/zshrc:         .zshrc
-  shell/zsh:               .zsh
+  shell/bash/bashrc: .bashrc
+  shell/profile: .profile
+  shell/zsh/zshenv: .zshenv
+  shell/zsh/zshrc: .zshrc
+  shell/zsh: .zsh
 
 anyenv:
-  dir:         '{{ home_path }}/.anyenv'
-  plugins_dir: '{{ home_path }}/.anyenv/plugins'
-  envs_dir:    '{{ home_path }}/.anyenv/envs'
-  libexec_dir: '{{ home_path }}/.anyenv/libexec'
+  dir: "{{ home_path }}/.anyenv"
+  plugins_dir: "{{ home_path }}/.anyenv/plugins"
+  envs_dir: "{{ home_path }}/.anyenv/envs"
+  libexec_dir: "{{ home_path }}/.anyenv/libexec"
 
 nodejs:
-  default_packages_path: '{{ dotfiles_path }}/config/nodenv/default-packages'
+  default_packages_path: "{{ dotfiles_path }}/config/nodenv/default-packages"
 
   # https://nodejs.org/en
   versions:
-    - '18.15.0'
+    - "18.15.0"
 
 ruby:
-  default_gems_path: '{{ dotfiles_path }}/config/rbenv/default-gems'
+  default_gems_path: "{{ dotfiles_path }}/config/rbenv/default-gems"
 
   # https://www.ruby-lang.org/en/downloads/
   versions:
-    - '3.2.1'
+    - "3.2.1"
 
 java:
   versions:

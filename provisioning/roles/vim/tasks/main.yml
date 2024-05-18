@@ -10,7 +10,7 @@
     update: False
 
 - name: install deps via brew (tap)
-  homebrew:
+  homebrew_tap:
     name:  '{{ item }}'
     state: present
   with_items:
