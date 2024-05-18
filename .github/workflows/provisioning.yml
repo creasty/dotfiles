@@ -2,6 +2,7 @@ name: provisioning
 
 on:
   push:
+  workflow_dispatch:
   schedule:
     # Every Monday, at 10:00 JST
     - cron: "0 1 * * 1"
