@@ -3,14 +3,6 @@
     name:  neovim
     state: latest
 
-- name: install python libraries
-  pip:
-    executable: pip3
-    name:       '{{ item }}'
-    state:      latest
-  with_items:
-    - neovim
-
 - name: install dein.vim
   git:
     repo:   https://github.com/Shougo/dein.vim
