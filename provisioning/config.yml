@@ -39,7 +39,6 @@ homebrew:
     - bat                 # Clone of cat(1) with syntax highlighting and Git integration
     - circleci            # Enables you to reproduce the CircleCI environment locally
     - cloc                # Statistics utility to count lines of code
-    - cmake               # Cross-platform make
     - creasty/tools/rid   # Run commands in container as if were native
     - ctags               # Reimplementation of ctags(1)
     - curl                # Get a file from an HTTP, HTTPS or FTP server
