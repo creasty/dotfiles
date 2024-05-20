@@ -5,26 +5,28 @@
   homebrew:
     update_homebrew: yes
 
-- name: add registries
+- name: add tap registries
   homebrew_tap:
     name:  '{{ item }}'
     state: present
-  with_items: '{{ homebrew.registries }}'
+  with_items: '{{ homebrew.taps }}'
+  when: homebrew.taps
+  tags: install.homebrew.tap
 
-- name: install cask applications
+- name: install casks
   homebrew_cask:
     name:  '{{ item }}'
     state: latest
     accept_external_apps: yes
     sudo_password: '{{ ansible_become_pass }}'
-  with_items: '{{ homebrew.applications }}'
-  when: homebrew.applications
+  with_items: '{{ homebrew.casks }}'
+  when: homebrew.casks
   ignore_errors: yes
   tags: install.homebrew.cask
 
-- name: install homebrew packages
+- name: install formulas
   homebrew:
-    name:  '{{ homebrew.packages }}'
+    name:  '{{ homebrew.formulas }}'
     state: latest
-  when: homebrew.packages
+  when: homebrew.formulas
   tags: install.homebrew.formula

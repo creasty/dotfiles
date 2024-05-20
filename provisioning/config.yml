@@ -1,11 +1,11 @@
 homebrew:
-  registries:
+  taps:
     - 1password/tap # for 1password-cli
     - creasty/tools # for keyboard, rid
     - ktr0731/evans # for evans
 
   # brew list --cask --full-name
-  applications:
+  casks:
     - 1password # https://1password.com/
     - 1password/tap/1password-cli # https://developer.1password.com/docs/cli
     - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
@@ -39,7 +39,7 @@ homebrew:
     - webpquicklook # https://github.com/emin/WebPQuickLook
 
   # brew leaves | xargs brew desc --eval-all | sed -E 's/^([^:]*): /- \1 # /g'
-  packages:
+  formulas:
     - awscli # Official Amazon AWS command-line interface
     - bat # Clone of cat(1) with syntax highlighting and Git integration
     - circleci # Enables you to reproduce the CircleCI environment locally
