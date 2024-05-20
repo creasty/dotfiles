@@ -68,12 +68,7 @@ clone_or_update_repo() {
   fi
 }
 
-load_envs() {
-  export ANYENV_INIT_CACHE_DISABLED=1
-  source "$DOTFILES_PATH/shell/profile"
-}
-
-check_xcode_license_approved() {
+accept_xcode_license() {
   echo 'Agreeing to Xcode license...'
 
   if ! [[ "$(/usr/bin/xcrun clang 2>&1 || true)" =~ 'license' ]]; then
@@ -83,6 +78,21 @@ check_xcode_license_approved() {
 
   sudo xcodebuild -license accept
   echo 'done'
+}
+
+install_rosetta2() {
+  echo 'Installing Rosetta 2...'
+  if [ -d /usr/libexec/rosetta ]; then
+    echo 'skip (already installed)'
+    return
+  fi
+  sudo softwareupdate --install-rosetta --agree-to-license
+  echo 'done'
+}
+
+load_envs() {
+  export ANYENV_INIT_CACHE_DISABLED=1
+  source "$DOTFILES_PATH/shell/profile"
 }
 
 install_homebrew() {
@@ -107,16 +117,6 @@ install_ansible() {
 
   echo 'Installing ansible...'
   brew install ansible
-  echo 'done'
-}
-
-install_rosetta2() {
-  echo 'Installing Rosetta 2...'
-  if [ -d /usr/libexec/rosetta ]; then
-    echo 'skip (already installed)'
-    return
-  fi
-  sudo softwareupdate --install-rosetta --agree-to-license
   echo 'done'
 }
 
@@ -149,13 +149,13 @@ main() {
   print_header
   check_os
   clone_or_update_repo
-  check_xcode_license_approved
+  accept_xcode_license
+  install_rosetta2
 
   load_envs
   install_homebrew
   install_python3
   install_ansible
-  install_rosetta2
   run_provisioning "$@"
 }
 

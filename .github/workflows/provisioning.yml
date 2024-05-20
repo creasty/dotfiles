@@ -17,10 +17,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - tags: base,install.homebrew.tap,install.homebrew.formula
-          - tags: base,lang
-          - tags: install,app,system
+          - name: fundamental
+            tags: base,install.homebrew.tap,install.homebrew.formula
+          - name: language support
+            tags: base,lang
+          - name: apps and system
+            tags: install,app,system
             skip_tags: install.homebrew.formula
+    name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v2
 
