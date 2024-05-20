@@ -29,11 +29,11 @@
     - shellcheck
     - watchman
 
-- name: install deps via pip
-  pip:
-    name:  '{{ item }}'
-    state: latest
-  with_items:
-    - pynvim
-    - python-language-server
-    - vim-vint
+#- name: install deps via pip
+#  pip:
+#    name:  '{{ item }}'
+#    state: latest
+#  with_items:
+#    - pynvim
+#    - python-language-server
+#    - vim-vint
