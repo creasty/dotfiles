@@ -35,6 +35,7 @@
     name:       '{{ item }}'
     state:      latest
   with_items:
+    - packaging # work around a bug: No module named 'packaging'
     - pynvim
     - python-language-server
     - vim-vint
