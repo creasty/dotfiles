@@ -93,6 +93,15 @@ install_homebrew() {
   echo 'done'
 }
 
+install_python3() {
+  command -v 'python3' > /dev/null 2>&1 && return
+  python3 --version > /dev/null 2>&1 && return
+
+  echo 'Installing python3...'
+  brew install python@3.12
+  echo 'done'
+}
+
 install_ansible() {
   command -v 'ansible' > /dev/null 2>&1 && return
 
@@ -144,6 +153,7 @@ main() {
 
   load_envs
   install_homebrew
+  install_python3
   install_ansible
   install_rosetta2
   run_provisioning "$@"
