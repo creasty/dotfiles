@@ -11,7 +11,7 @@ function! user#plugin#altr#lazy_init() abort
   " Frontend
   call altr#define('%.js', '%.test.js')
   call altr#define('%.ts', '%.test.ts')
-  call altr#define('%.tsx', '%.test.tsx')
+  call altr#define('%.tsx', '%.test.tsx', '%.stories.tsx')
 
   " Golang
   call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
