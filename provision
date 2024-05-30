@@ -92,7 +92,8 @@ install_rosetta2() {
 
 load_envs() {
   export ANYENV_INIT_CACHE_DISABLED=1
-  source "$DOTFILES_PATH/shell/profile"
+  # shellcheck source=/dev/null
+  . "$DOTFILES_PATH/shell/profile"
 }
 
 install_homebrew() {
