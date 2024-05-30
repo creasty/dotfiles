@@ -14,3 +14,8 @@ const ${1:Name} = React.forwardRef<${2:Handles}, ${3:Props}>(($4, ref) => {
 	$0
 });
 endsnippet
+
+# https://github.com/DefinitelyTyped/DefinitelyTyped/issues/37087
+snippet memo "Define memoized component" b
+const ${1:Name}: typeof _$1 = React.memo(_$1) as any;$0
+endsnippet
