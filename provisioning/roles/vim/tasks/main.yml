@@ -3,19 +3,18 @@
     name:  neovim
     state: latest
 
-- name: install python libraries
-  pip:
-    executable: pip3
-    name:       '{{ item }}'
-    state:      latest
-  with_items:
-    - neovim
-
 - name: install dein.vim
   git:
     repo:   https://github.com/Shougo/dein.vim
     dest:   '{{ dotfiles_path }}/nvim/dein/repos/github.com/Shougo/dein.vim'
     update: False
+
+- name: install deps via brew (tap)
+  homebrew_tap:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - hashicorp/tap # for terraform-ls
 
 - name: install deps via brew
   homebrew:
@@ -25,17 +24,16 @@
     - ansible-lint
     - clang-format
     - deno
-    - hashicorp/tap/terraform-ls
+    - terraform-ls
     - llvm # clangd
     - shellcheck
     - watchman
 
-- name: install deps via pip3
-  pip:
-    executable: pip3
-    name:       '{{ item }}'
-    state:      latest
-  with_items:
-    - pynvim
-    - python-language-server
-    - vim-vint
+#- name: install deps via pip
+#  pip:
+#    name:  '{{ item }}'
+#    state: latest
+#  with_items:
+#    - pynvim
+#    - python-language-server
+#    - vim-vint

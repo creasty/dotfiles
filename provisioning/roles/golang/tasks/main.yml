@@ -6,9 +6,17 @@
     name:  go
     state: latest
 
+- name: install tools (tap)
+  homebrew_tap:
+    name:  '{{ item }}'
+    state: present
+  with_items:
+    - golangci/tap # for golangci-lint
+
 - name: install tools
   homebrew:
     name:  '{{ item }}'
     state: latest
-  with_items: '{{ golang.tools }}'
-  when: golang.tools
+  with_items:
+    - golangci/tap/golangci-lint # Fast linters runner for Go
+    - gopls # Language server for the Go language

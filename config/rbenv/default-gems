@@ -5,5 +5,6 @@ rails
 solargraph
 
 # iOS development
+cocoapods
 synx
 xcode-install

@@ -2,13 +2,15 @@ name: provisioning
 
 on:
   push:
+  workflow_dispatch:
   schedule:
     # Every Monday, at 10:00 JST
     - cron: "0 1 * * 1"
 
 jobs:
   macos:
-    runs-on: macos-12 # https://github.com/actions/virtual-environments
+    # cf. https://github.com/actions/runner-images/tree/main/images/macos
+    runs-on: macos-14
     env:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
@@ -16,27 +18,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - tags: base,install.homebrew.formula
-          - tags: base,lang
-          - tags: install,app,system
+          - name: fundamental
+            tags: base,install.homebrew.tap,install.homebrew.formula
+          - name: language support
+            tags: base,lang
+          - name: apps and system
+            tags: install,app,system
             skip_tags: install.homebrew.formula
+    name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v2
 
       - name: Link to home
         run: ln -sf "$PWD" "$HOME/dotfiles"
 
-      # Refer to https://github.com/actions/runner-images/tree/main/images/macos/provision
       - name: Uninstall homebrew
         run: |
-          set -euxo pipefail
-
-          brew list --cask | xargs brew uninstall --force
-          brew list | xargs brew uninstall --force --ignore-dependencies
-
+          # cf. https://github.com/homebrew/install#uninstall-homebrew
           NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 
-          rm -rf /usr/local/bin/*
+          # Remove residual files
+          sudo rm -rf /opt/homebrew/
 
       - name: Install SSH key
         run: |
