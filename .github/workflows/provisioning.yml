@@ -38,7 +38,7 @@ jobs:
           NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 
           # Remove residual files
-          rm -rf /opt/homebrew/
+          sudo rm -rf /opt/homebrew/
 
       - name: Install SSH key
         run: |
