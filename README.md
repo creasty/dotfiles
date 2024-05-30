@@ -57,7 +57,18 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 
 - ~60ms startup time on M1 Max
 - 2,900 sloc of config
-- 38 third-party plugins, including:
+- 10 original plugins:
+  - [mold.vim](https://github.com/creasty/mold.vim)
+  - [opfmt](https://github.com/creasty/opfmt)
+  - [auto_save.vim](./nvim/plugin/auto_save.vim)
+  - [better_tagfunc.vim](./nvim/plugin/better_tagfunc.vim)
+  - [blockwise_visual_insert.vim](./nvim/plugin/blockwise_visual_insert.vim)
+  - [emacs_cursor.vim](./nvim/plugin/emacs_cursor.vim)
+  - [file.vim](./nvim/plugin/file.vim)
+  - [next_file.vim](./nvim/plugin/next_file.vim)
+  - [project_dir.vim](./nvim/plugin/project_dir.vim)
+  - [restore_buffer.vim](./nvim/plugin/restore_buffer.vim)
+- 36 third-party plugins, including:
   - [coc.nvim](https://github.com/neoclide/coc.nvim)
   - [copilot.vim](https://github.com/github/copilot.vim)
   - [ddu.vim](https://github.com/Shougo/ddu.vim)
@@ -70,6 +81,7 @@ $ ZSH_PROF_ENABLED=1 zsh -i -c exit
 ```sh-session
 $ hyperfine --warmup 3 --prepare 'sleep 0.1' 'nvim --headless -c quit'
 $ cloc --exclude-dir=dein,template nvim
+$ rg '^repo\b.+\bcreasty/' nvim/dein/*.toml
 $ rg --no-heading '^\[\[plugins' nvim/dein/*.toml | wc -l
 ```
 
