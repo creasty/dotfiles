@@ -16,8 +16,9 @@
   git:
     repo: 'https://github.com/{{ item }}.git'
     dest: '{{ anyenv.envs_dir }}/rbenv/plugins/{{ item | basename }}'
-  with_items: '{{ ruby.plugins }}'
-  when: ruby.plugins
+  with_items:
+    - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
+    - rbenv/rbenv-default-gems # Automatically install gems every time you install a new version of Ruby
 
 - name: copy default-gems
   file:
@@ -26,7 +27,7 @@
     state: link
     force: yes
 
-- name: install dependency
+- name: install dependencies
   homebrew:
     name:
       - libxslt

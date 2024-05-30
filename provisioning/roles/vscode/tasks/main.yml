@@ -53,9 +53,36 @@
     bash -lc 'code --list-extensions'
   register: installed_vscode_exts
 
+# code --list-extensions | sed -e 's/^/- /g' | pbcopy
 - name: install extensions
   command: |
     bash -lc 'code --install-extension {{ item | quote }}'
   when: |
-    vscode.extensions and installed_vscode_exts.stdout.find(item) == -1
-  with_items: '{{ vscode.extensions }}'
+    installed_vscode_exts.stdout.find(item) == -1
+  with_items:
+    - TabNine.tabnine-vscode
+    - Tyriar.sort-lines
+    - alygin.vscode-tlaplus
+    - apollographql.vscode-apollo
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - creasty.vscode-altr
+    - creasty.vscode-pattern-switch
+    - dbaeumer.vscode-eslint
+    - eamodio.gitlens
+    - eg2.vscode-npm-script
+    - esbenp.prettier-vscode
+    - formulahendry.auto-close-tag
+    - formulahendry.auto-rename-tag
+    - jock.svg
+    - ms-vsliveshare.vsliveshare
+    - pflannery.vscode-versionlens
+    - sleistner.vscode-fileutils
+    - steoates.autoimport
+    - streetsidesoftware.code-spell-checker
+    - styled-components.vscode-styled-components
+    - swindh.enumerator
+    - vincaslt.highlight-matching-tag
+    - wayou.vscode-todo-highlight
+    - wmaurer.change-case
+    - wwm.better-align

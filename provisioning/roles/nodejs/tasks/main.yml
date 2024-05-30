@@ -16,8 +16,8 @@
   git:
     repo: 'https://github.com/{{ item }}.git'
     dest: '{{ anyenv.envs_dir }}/nodenv/plugins/{{ item | basename }}'
-  with_items: '{{ nodejs.plugins }}'
-  when: nodejs.plugins
+  with_items:
+    - nodenv/nodenv-default-packages
 
 - name: copy default-packages
   file:

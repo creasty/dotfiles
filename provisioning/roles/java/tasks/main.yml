@@ -45,10 +45,10 @@
     name:  '{{ item }}'
     state: latest
   with_items:
-    - gradle                     # Open-source build automation tool based on the Groovy and Kotlin DSL
-    - pre-commit                 # Framework for managing multi-language pre-commit hooks
-    - coursier/formulas/coursier # Launcher for Coursier (required by pre-commit)
-    - kotlin-language-server     # Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
+    - gradle                 # Open-source build automation tool based on the Groovy and Kotlin DSL
+    - pre-commit             # Framework for managing multi-language pre-commit hooks
+    - coursier               # Launcher for Coursier (required by pre-commit)
+    - kotlin-language-server # Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
 
 # - name: install IDEs
 #   homebrew_cask:
@@ -56,5 +56,5 @@
 #     state: present
 #   with_items:
 #     - intellij-idea-ce
-#     #- android-sdk
-#     #- android-studio
+#     - android-sdk
+#     - android-studio

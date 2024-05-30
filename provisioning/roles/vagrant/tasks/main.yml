@@ -31,5 +31,8 @@
   command: |
     bash -lc 'vagrant plugin install {{ item }}'
   when: |
-    vagrant.plugins and installed_plugins.stdout.find(item) == -1
-  with_items: '{{ vagrant.plugins }}'
+    installed_plugins.stdout.find(item) == -1
+  with_items:
+    - dotenv        # https://github.com/johnbellone/vagrant-dotenv ?
+    - sahara        # https://github.com/jedi4ever/sahara
+    - vagrant-share # https://www.vagrantup.com/docs/share/
