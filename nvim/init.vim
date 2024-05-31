@@ -448,7 +448,7 @@ endif
 
 call dein#call_hook('post_source')
 
-"  Dein commands
+"  Dein utils
 "-----------------------------------------------
 command! -nargs=0 DeinPurgeCache
   \ call dein#recache_runtimepath() |
@@ -473,9 +473,18 @@ function! DeinPluginNameComplete(a, l, p) abort
   return filter(l:list, { _, v -> v =~# a:a })
 endfunction
 
+function! s:check_plugin(...) abort
+  for l:name in a:000
+    if !dein#is_available(l:name)
+      return v:false
+    endif
+  endfor
+  return v:true
+endfunction
+
 "  Cross-plugin integration
 "-----------------------------------------------
-if v:true
+if s:check_plugin('coc.nvim', 'copilot.nvim', 'lexima.vim', 'ddu.vim')
   function! s:stop_intelligence() abort
     " coc.nvim
     let b:coc_suggest_disable = 1
@@ -506,7 +515,12 @@ if v:true
   augroup END
 endif
 
-if dein#is_available('ddu.vim') && dein#is_available('coc.nvim')
+if s:check_plugin('coc.nvim')
+  " plugin/emacs_cursor.vim
+  let g:EmacsCursorPumvisible = function('coc#pum#visible')
+endif
+
+if s:check_plugin('ddu.vim', 'coc.nvim')
   let g:coc_enable_locationlist = 0
   nnoremap <silent> gll <Cmd>call user#plugin#ddu#coc_locations(v:true)<CR>
 
@@ -516,11 +530,33 @@ if dein#is_available('ddu.vim') && dein#is_available('coc.nvim')
   augroup END
 endif
 
-if dein#is_available('coc.nvim') &&
-  \ dein#is_available('copilot.vim') &&
-  \ dein#is_available('lexima.vim') &&
-  \ dein#is_available('ultisnips')
+if s:check_plugin('coc.nvim', 'copilot.vim', 'ultisnips')
+  function! s:dismiss_copilot(disabled) abort
+    if a:disabled
+      let b:copilot_enabled = v:false
+      call copilot#Dismiss()
+    else
+      unlet! b:copilot_enabled
+    endif
+  endfunction
 
+  augroup _init_auto_dismiss_copilot
+    autocmd!
+    autocmd User CocOpenFloat call s:dismiss_copilot(v:true)
+    autocmd TextChangedI,CursorMovedI * call s:dismiss_copilot(coc#pum#visible() || UltiSnips#CanExpandSnippet())
+    autocmd InsertEnter * call s:dismiss_copilot(v:false)
+  augroup END
+endif
+
+if s:check_plugin('coc.nvim', 'ultisnips')
+  augroup _init_jump_placeholder
+    autocmd!
+    autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
+    autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
+  augroup END
+endif
+
+if s:check_plugin('coc.nvim', 'copilot.vim', 'lexima.vim', 'ultisnips')
   function! s:is_copilot_suggested() abort
     let l:copilot = copilot#GetDisplayedSuggestion()
     return !empty(l:copilot.text)
@@ -643,31 +679,8 @@ if dein#is_available('coc.nvim') &&
     vmap <silent><expr> <C-s><C-c> <SID>super_iv_c_s_c_c()
   endfunction
 
-  function! s:auto_dismiss_copilot(float) abort
-    let l:disabled = a:float
-      \ || coc#pum#visible()
-      \ || UltiSnips#CanExpandSnippet()
-
-    if l:disabled
-      let b:copilot_enabled = v:false
-      call copilot#Dismiss()
-    else
-      unlet! b:copilot_enabled
-    endif
-  endfunction
-
-  " plugin/emacs_cursor.vim
-  let g:EmacsCursorPumvisible = function('coc#pum#visible')
-
   augroup _init_super_mappings
     autocmd!
     autocmd User PluginLeximaPostInit call s:setup_super_mappings()
-
-    autocmd User CocOpenFloat call s:auto_dismiss_copilot(v:true)
-    autocmd TextChangedI,CursorMovedI * call s:auto_dismiss_copilot(v:false)
-    autocmd InsertEnter * unlet! b:copilot_enabled
-
-    autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
-    autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
   augroup END
 endif
