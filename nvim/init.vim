@@ -484,11 +484,11 @@ endfunction
 
 "  Cross-plugin integration
 "-----------------------------------------------
-if s:check_plugin('coc.nvim', 'copilot.nvim', 'lexima.vim', 'ddu.vim')
+if s:check_plugin('coc.nvim', 'copilot.vim', 'lexima.vim', 'ddu.vim')
   function! s:stop_intelligence() abort
     " coc.nvim
     let b:coc_suggest_disable = 1
-    " copilot.nvim
+    " copilot.vim
     let b:copilot_disabled = v:true
     " lexima.vim
     let b:lexima_disabled = 1
@@ -497,7 +497,7 @@ if s:check_plugin('coc.nvim', 'copilot.nvim', 'lexima.vim', 'ddu.vim')
   function! s:resume_intelligence() abort
     " coc.nvim
     unlet! b:coc_suggest_disable
-    " copilot.nvim
+    " copilot.vim
     unlet! b:copilot_disabled
     " lexima.vim
     unlet! b:lexima_disabled
