@@ -27,6 +27,7 @@
   "workbench.editor.focusRecentEditorAfterClose": false,
   "editor.renderLineHighlight": "none",
   "editor.cursorSurroundingLines": 4,
+  "editor.unicodeHighlight.includeComments": false,
   // "editor.fontFamily": "Fira Code",
   // "editor.fontLigatures": true,
 
