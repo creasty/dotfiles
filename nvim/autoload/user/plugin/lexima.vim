@@ -111,6 +111,14 @@ call lexima#add_rule({
   \ 'filetype': ['ruby', 'ruby.rspec'],
 \ })
 
+"  Doc
+"-----------------------------------------------
+call lexima#add_rule({
+  \ 'char':  '/',
+  \ 'at':    '\*\s\%#',
+  \ 'input': '<BS>/',
+\ })
+
 "  Commands
 "-----------------------------------------------
 " Visual selection range '<,'>
