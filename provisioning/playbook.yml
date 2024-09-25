@@ -2,9 +2,6 @@
   hosts:      127.0.0.1
   connection: local
 
-  vars:
-    ansible_python_interpreter: /usr/bin/env python3
-
   roles:
     #  base
     #-----------------------------------------------
