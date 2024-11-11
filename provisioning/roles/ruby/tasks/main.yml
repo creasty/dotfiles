@@ -32,7 +32,7 @@
     name:
       - libxslt
       - libyaml
-      - openssl@1.1
+      - openssl@3
       - readline
       - ruby-build
       - zlib
@@ -40,7 +40,7 @@
 
 - name: get openssl dir
   command: |
-    bash -lc 'brew --prefix openssl@1.1'
+    bash -lc 'brew --prefix openssl@3'
   register: openssl_dir
 
 - name: get readline dir
