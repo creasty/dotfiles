@@ -79,7 +79,9 @@
         ".graphql.yaml",
         ".graphqlrc.json",
         "graphql.config.js",
-        ".graphqlrc.js"
+        "graphql.config.ts",
+        ".graphqlrc.js",
+        ".graphqlrc.ts"
       ],
       "filetypes": [
         "graphql",
