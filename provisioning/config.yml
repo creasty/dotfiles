@@ -2,7 +2,6 @@ homebrew:
   taps:
     - 1password/tap # for 1password-cli
     - creasty/tools # for keyboard, rid
-    - ktr0731/evans # for evans
 
   # brew list --cask --full-name
   casks:
@@ -15,7 +14,6 @@ homebrew:
     - creasty/tools/keyboard # https://github.com/creasty/Keyboard
     - docker # https://www.docker.com/community-edition
     - figma # https://www.figma.com/
-    - google-chat # https://gsuite.google.com/products/chat/
     - google-chrome # https://www.google.com/chrome/
     - google-cloud-sdk # https://cloud.google.com/sdk/
     - google-drive # https://www.google.com/drive/
@@ -24,7 +22,6 @@ homebrew:
     - istat-menus # https://bjango.com/mac/istatmenus/
     - kitty # https://github.com/kovidgoyal/kitty
     - ngrok # https://ngrok.com/
-    - notion # https://www.notion.so/
     - proxyman # https://proxyman.io/
     - pushplaylabs-sidekick # https://www.meetsidekick.com/
     - qlcolorcode # https://github.com/anthonygelibert/QLColorCode
@@ -42,7 +39,6 @@ homebrew:
   formulas:
     - awscli # Official Amazon AWS command-line interface
     - bat # Clone of cat(1) with syntax highlighting and Git integration
-    - circleci # Enables you to reproduce the CircleCI environment locally
     - cloc # Statistics utility to count lines of code
     - creasty/tools/rid # Run commands in container as if were native
     - ctags # Reimplementation of ctags(1)
@@ -66,7 +62,6 @@ homebrew:
     - imagemagick # Tools and libraries to manipulate images in many formats
     - jo # JSON output from a shell
     - jq # Lightweight and flexible command-line JSON processor
-    - ktr0731/evans/evans # Evans: more expressive universal gRPC client
     - libiconv # Conversion library
     - libpq # Postgres C API library
     - massren # Easily rename multiple files using your text editor
