@@ -9,9 +9,8 @@ function! user#plugin#altr#lazy_init() abort
   call altr#define('Gemfile', 'Gemfile.lock')
 
   " Frontend
-  call altr#define('%.js', '%.test.js')
-  call altr#define('%.ts', '%.test.ts')
-  call altr#define('%.tsx', '%.test.tsx', '%.stories.tsx')
+  call altr#define('%.js', '%.test.js', '%.jsx', '%.test.jsx', '%.stories.jsx')
+  call altr#define('%.ts', '%.test.ts', '%.tsx', '%.test.tsx', '%.stories.tsx')
 
   " Golang
   call altr#define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
