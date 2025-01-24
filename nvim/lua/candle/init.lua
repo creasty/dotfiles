@@ -216,6 +216,15 @@ function M.setup()
 
   -- copilot.vim
   hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }
+
+  -- markdown
+  hi['@markup.quote.markdown'] = { link = '@string' }
+  hi['@markup.link.markdown'] = { link = '@tag.delimiter' }
+  hi['@markup.link.url.markdown'] = { link = '@text.uri' }
+  hi['@markup.link.label.markdown'] = { link = '@constant' }
+  hi['@markup.link.markdown_inline'] = { link = '@tag.delimiter' }
+  hi['@markup.link.url.markdown_inline'] = { link = '@text.uri' }
+  hi['@markup.link.label.markdown_inline'] = { link = '@variable' }
 end
 
 return M
