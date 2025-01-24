@@ -90,20 +90,15 @@
   m  = merge
   mf = merge FETCH_HEAD
 
-  t = tag
-
   st = stash
   sp = stash pop
 
   # Sharing and Updating Projects
-  fe  = fetch
-  fo  = fetch origin
   fok = checkout-origin
 
   pl  = pull origin
   plm = ! git pull origin "$(git get-main-branch)" "$@"
   pld = pull origin develop
-  plf = pull fork
   pu  = push origin
 
   sm  = submodule
@@ -113,9 +108,9 @@
   cmp = compare
 
   # Inspection and Comparison
-  ds = ! git diff --stat "$(git get-main-branch)" HEAD
   d  = diff --irreversible-delete
   dc = diff --irreversible-delete --cached
+  ds = ! git diff --stat "$(git get-main-branch)"
 
   w  = show --ext-diff --irreversible-delete
   w0 = show --ext-diff --irreversible-delete HEAD
@@ -123,14 +118,12 @@
   w2 = show --ext-diff --irreversible-delete HEAD~~
   w3 = show --ext-diff --irreversible-delete HEAD~~~
 
-  l  = log --oneline
-  lg = log --oneline --graph
-  ll = ! git --no-pager log -1 HEAD
+  l  = log --oneline -n10
+  ll = log --oneline --graph
 
   # Patching
-  v  = revert --no-edit
-  p  = cherry-pick
-  rb = rebase
+  v = revert --no-edit
+  p = cherry-pick
 
   # Temporarily ignoring files
   #
