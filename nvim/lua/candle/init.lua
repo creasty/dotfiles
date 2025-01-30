@@ -190,6 +190,7 @@ function M.setup()
   hi['@variable'] = { fg = s.blue }
   hi['@variable.builtin'] = { fg = s.blue, italic = 1 }
   hi['@variable.member'] = { fg = s.brown }
+  hi['@variable.member.private'] = { fg = s.brown, italic = 1 }
 
   -- custom
   hi.StatusLinePrimary = { fg = s.foreground, bg = s.window }
