@@ -11,7 +11,7 @@ set -eu
 set -o pipefail
 
 NAME=the-redis
-IMAGE=redis:3.0.7-alpine
+IMAGE=redis:alpine
 DATA_DIR="$HOME/.docker-data"
 
 #  Utils
