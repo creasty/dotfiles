@@ -49,7 +49,7 @@ server_create() {
 }
 
 exec_cli() {
-  docker exec -it $NAME redis-cli
+  docker exec -it $NAME redis-cli "$@"
 }
 
 #  Entrypoint
@@ -61,6 +61,6 @@ case "$COMMAND" in
   start)   server_start ;;
   stop)    server_stop ;;
   destroy) server_destory ;;
-  cli)     exec_cli ;;
+  cli)     exec_cli "$@" ;;
   *)       do_help ;;
 esac
