@@ -207,12 +207,12 @@ for s:del in ['/', '~', '!', '@', '#', '%', ':']
   \ })
 
   " :sm -- Match-case substitute
-  " Depends on keepcase.vim
+  " Depends on text-case.nvim
   call lexima#add_rule({
     \ 'char':        s:del,
     \ 'at':          '^\(%\|' . "'<,'>" . '\)\?sm\%#',
-    \ 'input':       '<BS><BS>SubstituteCase' . s:del . '\v\c',
-    \ 'input_after': s:del . s:del . 'g',
+    \ 'input':       '<BS><BS>Subs' . s:del,
+    \ 'input_after': s:del,
     \ 'mode':        ':',
   \ })
 endfor

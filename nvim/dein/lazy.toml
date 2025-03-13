@@ -3,15 +3,6 @@
 [[plugins]] # define your own operator easily
 repo = 'kana/vim-operator-user'
 
-[[plugins]] # operator to camelize/decamelize a specified text
-repo = 'tyru/operator-camelize.vim'
-depends = ['vim-operator-user']
-on_map = ['<Plug>(operator-camelize-toggle)']
-hook_add = '''
-nmap gC <Plug>(operator-camelize-toggle)
-xmap C <Plug>(operator-camelize-toggle)
-'''
-
 [[plugins]] # operator to replace text with register content
 repo = 'kana/vim-operator-replace'
 depends = ['vim-operator-user']
@@ -111,9 +102,27 @@ require("live-command").setup {
 EOF
 '''
 
-[[plugins]] # Functions for doing case-persistant substitutions
-repo = 'vim-scripts/keepcase.vim'
-on_cmd = ['SubstituteCase']
+[[plugins]] # An all in one plugin for converting text case in Neovim
+repo = 'johmsalas/text-case.nvim'
+on_cmd = ['Subs']
+on_lua = ['textcase']
+hook_add = '''
+nnoremap <silent> ge_ <Cmd>lua require('textcase').operator('to_snake_case')<CR>
+nnoremap <silent> ge- <Cmd>lua require('textcase').operator('to_dash_case')<CR>
+nnoremap <silent> ge. <Cmd>lua require('textcase').operator('to_dot_case')<CR>
+nnoremap <silent> ge/ <Cmd>lua require('textcase').operator('to_path_case')<CR>
+nnoremap <silent> gec <Cmd>lua require('textcase').operator('to_camel_case')<CR>
+nnoremap <silent> gep <Cmd>lua require('textcase').operator('to_pascal_case')<CR>
+nnoremap <silent> gek <Cmd>lua require('textcase').operator('to_constant_case')<CR>
+
+xnoremap <silent> ge_ <Cmd>lua require('textcase').visual('to_snake_case')<CR>
+xnoremap <silent> ge- <Cmd>lua require('textcase').visual('to_dash_case')<CR>
+xnoremap <silent> ge. <Cmd>lua require('textcase').visual('to_dot_case')<CR>
+xnoremap <silent> ge/ <Cmd>lua require('textcase').visual('to_path_case')<CR>
+xnoremap <silent> gec <Cmd>lua require('textcase').visual('to_camel_case')<CR>
+xnoremap <silent> gep <Cmd>lua require('textcase').visual('to_pascal_case')<CR>
+xnoremap <silent> gek <Cmd>lua require('textcase').visual('to_constant_case')<CR>
+'''
 
 #  Navigation
 #-----------------------------------------------
