@@ -226,6 +226,10 @@ function M.setup()
   hi['@markup.link.markdown_inline'] = { link = '@tag.delimiter' }
   hi['@markup.link.url.markdown_inline'] = { link = '@text.uri' }
   hi['@markup.link.label.markdown_inline'] = { link = '@variable' }
+
+  -- json
+  hi['@property.json.2'] = { fg = s.purple }
+  hi['@property.json.3'] = { fg = s.blue }
 end
 
 return M
