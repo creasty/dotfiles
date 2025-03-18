@@ -93,6 +93,9 @@ hook_post_source = '''
 lua require('user.plugin.treesitter')
 '''
 
+[[plugins]] # Show code context
+repo = 'nvim-treesitter/nvim-treesitter-context'
+
 [[plugins]] # A plugin for Neovim that helps you surf through your document and move elements around using the nvim-treesitter API.
 repo = 'ziontee113/syntax-tree-surfer'
 depends = ['nvim-treesitter']
