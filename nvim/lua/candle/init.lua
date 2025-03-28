@@ -218,6 +218,12 @@ function M.setup()
   -- copilot.vim
   hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }
 
+  -- nvim-treesitter-context
+  hi.TreesitterContext = { link = 'Normal' }
+  hi.TreesitterContextLineNumber = { fg = s.gray300, bg = s.background }
+  hi.TreesitterContextBottom = { sp = s.window, underline = 1 }
+  hi.TreesitterContextLineNumberBottom = { sp = s.window, underline = 1 }
+
   -- markdown
   hi['@markup.quote.markdown'] = { link = '@string' }
   hi['@markup.link.markdown'] = { link = '@tag.delimiter' }
