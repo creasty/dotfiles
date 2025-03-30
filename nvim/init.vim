@@ -182,6 +182,19 @@ let g:mapleader = ','
 nnoremap ZQ <Nop>
 xnoremap K <Nop>
 
+augroup _lsp_default_mappings
+  autocmd!
+  autocmd LspAttach *
+    \ silent! nunmap grn   | " rename
+    \ silent! nunmap gra   | " code action
+    \ silent! xunmap gra   | " code action
+    \ silent! nunmap grr   | " references
+    \ silent! nunmap gri   | " implementation
+    \ silent! nunmap gO    | " document symbol
+    \ silent! iunmap <C-s> | " signature help
+    \ silent! sunmap <C-s>   " signature help
+augroup END
+
 " move cursor visually with long lines
 nmap j gj
 xmap j gj
