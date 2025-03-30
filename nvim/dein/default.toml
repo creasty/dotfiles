@@ -3,6 +3,7 @@ repo = 'Shougo/dein.vim'
 
 [[plugins]] # An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
 repo = 'vim-denops/denops.vim'
+rev = '68f607d93a9758d15c0d63d3268aa420ddd29edd'
 
 #  Editing
 #-----------------------------------------------
@@ -161,6 +162,7 @@ let g:loaded_nerdtree_fs_menu = 1
 #-----------------------------------------------
 [[plugins]] # Dark deno-powered UI framework for neovim/Vim8
 repo = 'Shougo/ddu.vim'
+rev = 'f2a7e90ed4e059ff60bf4603d92dafdeb4028dbf'
 depends = ['denops.vim']
 hook_add = '''
 call user#plugin#ddu#init()
@@ -180,12 +182,15 @@ nnoremap <silent> <Space>/ <Cmd>Search!<CR>
 
 [[plugins]] # Fuzzy finder ui for ddu.vim
 repo = 'Shougo/ddu-ui-ff'
+rev = '38331e92870fb6a87d6f4f39bf94927e80dd8aac'
 
 [[plugins]] # File kind for ddu.vim
 repo = 'Shougo/ddu-kind-file'
+rev = '35bd021a757f2521e778365151451c6fc7629a69'
 
 [[plugins]] # Action source for ddu.vim
 repo = 'Shougo/ddu-source-action'
+rev = '95efbdec70611420947313f450fee8a6b585245b'
 
 [[plugins]] # Fzy filter for ddu.vim
 repo = 'matsui54/ddu-filter-fzy'
