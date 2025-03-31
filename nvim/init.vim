@@ -175,25 +175,14 @@ lua require('user.ui').setup()
 
 "=== Keymaps
 "==============================================================================================
+" <Space> [nx] and <C-s> [nixs] are used as unofficial leader keys
+
 " leader key
 let g:mapleader = ','
 
 " remove default mappings
 nnoremap ZQ <Nop>
 xnoremap K <Nop>
-
-augroup _lsp_default_mappings
-  autocmd!
-  autocmd LspAttach *
-    \ silent! nunmap grn   | " rename
-    \ silent! nunmap gra   | " code action
-    \ silent! xunmap gra   | " code action
-    \ silent! nunmap grr   | " references
-    \ silent! nunmap gri   | " implementation
-    \ silent! nunmap gO    | " document symbol
-    \ silent! iunmap <C-s> | " signature help
-    \ silent! sunmap <C-s>   " signature help
-augroup END
 
 " move cursor visually with long lines
 nmap j gj
@@ -232,7 +221,7 @@ nnoremap <script> <SID>(inc)<C-x> <Cmd>undojoin<CR><C-x><SID>(inc)
 nnoremap J mZJ`ZmZ
 
 " split lines: inverse of J
-nnoremap K ylpr<CR>
+nnoremap <Space>J ylpr<CR>
 
 " reselect visual block after indent/outdent
 xnoremap < <gv

@@ -97,11 +97,13 @@ inoremap <silent><expr> <Left> coc#pum#cancel() . "\<Left>"
 inoremap <silent><expr> <Right> coc#pum#cancel() . "\<Right>"
 
 " Refactoring
-nmap <silent> gr <Plug>(coc-rename)
+" TODO: gr -> grn, gq -> gra
+nmap <nowait> <silent> gr <Plug>(coc-rename)
 nmap <silent> gq <Plug>(coc-codeaction-cursor)
 xmap <silent> gq <Plug>(coc-codeaction-selected)
 
 " Cross references
+" TODO: gR -> grr, gi -> gri
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gt <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -111,7 +113,7 @@ nmap <silent> gR <Plug>(coc-references-used)
 
 " Hover
 nmap <silent> gh <Plug>(coc-hover)
-imap <silent> <C-s><C-p> <Plug>(coc-signature-help)
+imap <silent> <C-s><C-s> <Plug>(coc-signature-help)
 
 " Diagnostics
 nmap <silent> [d <Plug>(coc-diagnostic-prev)

@@ -1,8 +1,9 @@
 // cspell: enableCompoundWords
 {
   "coc.preferences.formatOnType": false,
-  "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.enableMessageDialog": true,
+
+  "extensions.updateCheck": "weekly",
 
   "diagnostic.errorSign": "✕",
   "diagnostic.warningSign": "∆",
@@ -110,7 +111,7 @@
 
   //=== coc-git
   //==============================================================================================
-  "git.signPriority": 1,
+  "git.signPriority": 100,
   "git.addedSign.text": "┃",
   "git.addedSign.hlGroup": "CocDiffAdd",
   "git.changedSign.text": "┃",
