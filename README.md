@@ -13,6 +13,24 @@ creasty's dotfiles
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/provision">dotfiles.creasty.com/provision</a> | bash</code></pre>
 
+Project structure
+-----------------
+
+Config files/directories are organized as follows:
+
+- **`bin/`** : Executables directory (Added to `PATH`)
+- **`config/*`** : XDG config directories (→ `~/.config/*`)
+- **`home/*`** : Home directory files (→ `~/*`)
+- **`nvim/`** : Neovim config directory (→ `~/.config/nvim/`)
+- **`shell/`** : Shell configs
+  - **`bash/*`** : Bash config files (→ `~/*`)
+  - **`zsh/*`** : Zsh config files (→ `~/*`)
+
+Administrative directories:
+
+- **`docs/`** : Documentation for manual setup
+- **`provisioning/`** : Provisioning manifests and tasks (ansible)
+
 Screenshots
 -----------
 
