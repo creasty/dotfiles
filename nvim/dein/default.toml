@@ -135,7 +135,7 @@ depends = ['nvim-treesitter']
 [[plugins]] # Format operators and delimiters as you type, using tree-sitter
 repo = 'creasty/opfmt'
 depends = ['nvim-treesitter']
-# path = '/Users/creasty/go/src/github.com/creasty/opfmt'
+path = '/Users/creasty/go/src/github.com/creasty/opfmt'
 
 #  UI
 #-----------------------------------------------
