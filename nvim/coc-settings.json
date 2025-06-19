@@ -3,6 +3,8 @@
   "coc.preferences.formatOnType": false,
   "coc.preferences.enableMessageDialog": true,
 
+  "workspace.ignoredFolders": ["$HOME", "$HOME/.cargo/**", "$HOME/.rustup/**"],
+
   "extensions.updateCheck": "weekly",
 
   "diagnostic.errorSign": "✕",
@@ -269,7 +271,7 @@
   "cSpell.dictionaryDefinitions": [
     {
       "name": "user",
-      "path": "/Users/creasty/.config/nvim/dict/user.txt"
+      "path": "$HOME/.config/nvim/dict/user.txt"
     }
   ],
   "cSpell.dictionaries": ["user"],
