@@ -1,4 +1,5 @@
 @antfu/ni
+@styled/typescript-styled-plugin
 bash-language-server
 create-react-app
 eslint
@@ -8,6 +9,5 @@ pnpm
 tslint
 typescript
 typescript-language-server
-typescript-styled-plugin
 vscode-css-languageserver-bin
 yarn

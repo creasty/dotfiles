@@ -4,7 +4,7 @@
 " [coc-pyright] npm install -g pyright
 " [coc-rust-analyzer] rustup update && rustup component add rls rust-analysis rust-src
 " [coc-solargraph] gem install solargraph
-" [coc-tsserver] npm install -g typescript typescript-language-server typescript-styled-plugin && brew install watchman
+" [coc-tsserver, coc-styled-components] npm install -g typescript typescript-language-server @styled/typescript-styled-plugin && brew install watchman
 let g:coc_global_extensions = [
   \ '@yaegassy/coc-tailwindcss3',
   \ 'coc-calc',
