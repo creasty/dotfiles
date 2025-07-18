@@ -271,7 +271,7 @@
   "cSpell.dictionaryDefinitions": [
     {
       "name": "user",
-      "path": "$HOME/.config/nvim/dict/user.txt"
+      "path": "/Users/creasty/.config/nvim/dict/user.txt"
     }
   ],
   "cSpell.dictionaries": ["user"],
