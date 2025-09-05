@@ -27,7 +27,6 @@ let g:coc_global_extensions = [
   \ 'coc-solargraph',
   \ 'coc-spell-checker',
   \ 'coc-sqlfluff',
-  \ 'coc-styled-components',
   \ 'coc-syntax',
   \ 'coc-tabnine',
   \ 'coc-tag',
@@ -35,6 +34,7 @@ let g:coc_global_extensions = [
   \ 'coc-vimlsp',
   \ 'coc-yaml',
 \ ]
+"\ 'coc-styled-components',
 
 let g:coc_selectmode_mapping = 0
 let g:coc_snippet_next = '<Plug>(coc-snippet-next)'
