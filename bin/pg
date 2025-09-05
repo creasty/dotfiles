@@ -18,7 +18,7 @@
 set -euo pipefail
 
 NAME=the-postgres
-IMAGE=postgres:12-alpine
+IMAGE=postgres:16-alpine
 DATA_DIR="$HOME/.docker-data"
 
 DB_USER=postgres
