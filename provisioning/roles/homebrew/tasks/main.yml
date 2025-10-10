@@ -10,7 +10,7 @@
     name:  '{{ item }}'
     state: present
   with_items: '{{ homebrew.taps }}'
-  when: homebrew.taps
+  when: homebrew.taps is defined
   tags: install.homebrew.tap
 
 - name: install casks
@@ -20,7 +20,7 @@
     accept_external_apps: yes
     sudo_password: '{{ ansible_become_pass }}'
   with_items: '{{ homebrew.casks }}'
-  when: homebrew.casks
+  when: homebrew.casks is defined
   ignore_errors: yes
   tags: install.homebrew.cask
 
@@ -28,5 +28,5 @@
   homebrew:
     name:  '{{ homebrew.formulas }}'
     state: latest
-  when: homebrew.formulas
+  when: homebrew.formulas is defined
   tags: install.homebrew.formula

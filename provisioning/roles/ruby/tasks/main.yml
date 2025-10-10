@@ -70,7 +70,7 @@
 - name: set global ruby
   command: |
     bash -lc 'rbenv global {{ ruby.versions[0] | quote }}'
-  when: ruby.versions
+  when: ruby.versions is defined
 
 - name: install solargraph
   command: |
