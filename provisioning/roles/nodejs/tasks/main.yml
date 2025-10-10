@@ -34,7 +34,7 @@
 - name: set global nodejs
   command: |
     bash -lc 'nodenv global {{ nodejs.versions[0] | quote }}'
-  when: nodejs.versions
+  when: nodejs.versions is defined
 
 - name: install default packages
   command: |

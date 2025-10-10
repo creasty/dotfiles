@@ -46,7 +46,7 @@
         label: '{{ item.value }}'
       with_dict: '{{ vscode.link }}'
 
-  when: vscode.link
+  when: vscode.link is defined
 
 - name: get installed extensions
   command: |

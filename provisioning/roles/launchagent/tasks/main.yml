@@ -14,7 +14,7 @@
     label: '{{ item | basename }}'
   with_fileglob:
     - '{{ launchagent.plist_dir }}/*.plist'
-  when: launchagent.plist_dir
+  when: launchagent.plist_dir is defined
 
 - name: load launch agents
   command: |
@@ -27,4 +27,4 @@
   until: launchctl_load.stderr == "" or launchctl_load.stderr.find("already loaded") != -1
   retries: 1
   delay: 0
-  when: launchagent.plist_dir
+  when: launchagent.plist_dir is defined
