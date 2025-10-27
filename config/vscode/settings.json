@@ -3,8 +3,6 @@
   //==============================================================================================
   "breadcrumbs.enabled": true,
 
-  "debug.inlineValues": true,
-
   "diffEditor.ignoreTrimWhitespace": false,
 
   "editor.cursorBlinking": "smooth",
@@ -31,8 +29,10 @@
   // "editor.fontFamily": "Fira Code",
   // "editor.fontLigatures": true,
 
+  "extensions.ignoreRecommendations": true,
+
   "explorer.autoReveal": false,
-  "explorer.openEditors.visible": 0,
+  "explorer.openEditors.visible": 1,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
 
@@ -54,7 +54,6 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tips.enabled": false,
-  "workbench.activityBar.location": "hidden",
   "workbench.editor.showTabs": "multiple",
   "workbench.editor.enablePreview": true,
   "workbench.editor.enablePreviewFromQuickOpen": true,
@@ -67,11 +66,6 @@
   //=== Tabnine
   //==============================================================================================
   "tabnine.experimentalAutoImports": true,
-
-  //=== Emmet
-  //==============================================================================================
-  "emmet.triggerExpansionOnTab": true,
-  "emmet.showAbbreviationSuggestions": false,
 
   //=== Liveshare
   //==============================================================================================
@@ -96,43 +90,14 @@
 
   //=== Code Spell Checker
   //==============================================================================================
-  "cSpell.userWords": [
-    "CSRF",
-    "Fullscreen",
-    "Hookable",
-    "Overridable",
-    "Readonly",
-    "Typeahead",
-    "Unmount",
-    "Webview",
-    "antialiased",
-    "autosave",
-    "bitflag",
-    "commentable",
-    "creasty",
-    "debouncing",
-    "deserialize",
-    "deserialized",
-    "focusable",
-    "grpc",
-    "iframe",
-    "outdent",
-    "paleblue",
-    "pluggable",
-    "preload",
-    "proto",
-    "protobuf",
-    "rgba",
-    "serializer",
-    "serializers",
-    "struct",
-    "strval",
-    "uint",
-    "unprocessable",
-    "unstyled",
-    "upcase",
-    "uploader",
-    "uuid"
+  "cSpell.diagnosticLevel": "Hint",
+  "cSpell.fixSpellingWithRenameProvider": true,
+  "cSpell.ignoreRegExpList": ["\\w+'\\w+"],
+  "cSpell.dictionaryDefinitions": [
+    {
+      "name": "user",
+      "path": "/Users/creasty/.config/nvim/dict/user.txt"
+    }
   ],
   "cSpell.enableFiletypes": [
     "asciidoc",
@@ -182,15 +147,6 @@
     "yml"
   ],
 
-  //=== Better align
-  //==============================================================================================
-  "alignment.surroundSpace": {
-    "colon": [0, 1],
-    "assignment": [1, 1],
-    "arrow": [1, 1],
-    "comment": 1
-  },
-
   //=== Prettier
   //==============================================================================================
   "prettier.trailingComma": "es5",
@@ -210,109 +166,6 @@
     }
   },
 
-  //=== Todo Highlight
-  //==============================================================================================
-  "todohighlight.keywords": [
-    {
-      "text": "NOTE",
-      "color": "#0F0F0F",
-      "backgroundColor": "#575757",
-      "overviewRulerColor": "#575757"
-    },
-    {
-      "text": "TODO",
-      "color": "#0F0F0F",
-      "backgroundColor": "#A6B083",
-      "overviewRulerColor": "rgba(166, 176, 131, 0.5)"
-    },
-    {
-      "text": "FIXME",
-      "color": "#0F0F0F",
-      "backgroundColor": "#A57572",
-      "overviewRulerColor": "rgba(165, 117, 114, 0.5)"
-    }
-  ],
-  "todohighlight.defaultStyle": {
-    "color": "#0F0F0F",
-    "backgroundColor": "#D0B888",
-    "overviewRulerColor": "#D0B888",
-    "borderRadius": "2px"
-  },
-
-  //=== Altr
-  //==============================================================================================
-  "altr.rules": [
-    ["%.c", "%.h", "%.m"],
-    ["package.json", "package-lock.json", "yarn.lock"],
-    ["src/%.js", "src/%.test.js", "test/%.js", "test/%.test.js"],
-    ["src/%.jsx", "src/%.test.jsx", "test/%.jsx", "test/%.test.jsx"],
-    ["src/%.ts", "src/%.test.ts", "test/%.ts", "test/%.test.ts"],
-    ["src/%.tsx", "src/%.test.tsx", "test/%.tsx", "test/%.test.tsx"],
-    ["Gemfile", "Gemfile.lock"],
-    [
-      "app/models/%.rb",
-      "spec/models/%_spec.rb",
-      "app/serializers/%_serializer.rb",
-      "app/policies/%_policy.rb"
-    ],
-    ["app/%/%.rb", "spec/%/%_spec.rb"],
-    ["lib/%.rb", "spec/lib/%_spec.rb"],
-    ["glide.yaml", "glide.lock"],
-    ["Gopkg.toml", "Gopkg.lock"],
-    ["%.go", "%_test.go", "%_mock.go", "%_ex_test.go"],
-    ["docker-compose.yml", "Dockerfile"],
-    [".env", ".env.sample"],
-    ["keybindings.json", "settings.json"],
-    [
-      ".vscode/extensions.json",
-      ".vscode/launch.json",
-      ".vscode/settings.json",
-      ".vscode/tasks.json"
-    ],
-
-    ["locales/en.yml", "locales/ja.yml", "locales/zh-HK.yml", "locales/de.yml"],
-    [
-      "locales/%.en.yml",
-      "locales/%.ja.yml",
-      "locales/%.zh-HK.yml",
-      "locales/%.de.yml"
-    ],
-    [
-      "locales/%/en.yml",
-      "locales/%/ja.yml",
-      "locales/%/zh-HK.yml",
-      "locales/%/de.yml"
-    ],
-    [
-      "locales/en.json",
-      "locales/ja.json",
-      "locales/zh-HK.json",
-      "locales/de.json"
-    ],
-    [
-      "locales/%.en.json",
-      "locales/%.ja.json",
-      "locales/%.zh-HK.json",
-      "locales/%.de.json"
-    ],
-    [
-      "locales/%/en.json",
-      "locales/%/ja.json",
-      "locales/%/zh-HK.json",
-      "locales/%/de.json"
-    ]
-  ],
-
-  //=== TLA+
-  //==============================================================================================
-  "tlaplus.tlc.statisticsSharing": "share",
-  "tlaplus.java.home": "/Users/creasty/.anyenv/envs/jenv/versions/11.0",
-
-  //=== Lang: Go
-  //==============================================================================================
-  // "go.formatTool": "goimports",
-  // "go.useLanguageServer": true,
-
   //=== Lang: Javascript
   //==============================================================================================
   "[javascript]": {
@@ -330,20 +183,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  //=== Lang: Ruby
-  //==============================================================================================
-  // "ruby.useLanguageServer": true,
-  // "ruby.codeCompletion": true,
-  // "ruby.intellisense": true,
-  // "ruby.useBundler": true,
-  // "ruby.lint": {
-  //   "ruby": true,
-  //   "rubocop": {
-  //     "useBundler": true
-  //   }
-  // },
-  // "ruby.format": "rubocop",
 
   "[ruby]": {
     "editor.tabSize": 2,
