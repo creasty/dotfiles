@@ -2,10 +2,8 @@
 @openai/codex
 @styled/typescript-styled-plugin
 bash-language-server
-create-react-app
 eslint
 graphql-language-service-cli
-mazamachi/shuji#add-preserve-option
 pnpm
 tslint
 typescript
