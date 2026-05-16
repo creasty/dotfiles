@@ -11,8 +11,9 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 #  Search path
 #-----------------------------------------------
-# Local
+# Locals
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # Dotfiles
 export DOTFILES_PATH="$HOME/dotfiles"
