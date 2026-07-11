@@ -20,7 +20,7 @@
   "editor.quickSuggestions": {
     "other": true,
     "comments": false,
-    "strings": true
+    "strings": true,
   },
   "workbench.editor.focusRecentEditorAfterClose": false,
   "editor.renderLineHighlight": "none",
@@ -96,8 +96,8 @@
   "cSpell.dictionaryDefinitions": [
     {
       "name": "user",
-      "path": "/Users/creasty/.config/nvim/dict/user.txt"
-    }
+      "path": "/Users/creasty/.config/nvim/dict/user.txt",
+    },
   ],
   "cSpell.enableFiletypes": [
     "asciidoc",
@@ -144,7 +144,7 @@
     "typescriptreact",
     "xml",
     "yaml",
-    "yml"
+    "yml",
   ],
 
   //=== Prettier
@@ -156,21 +156,21 @@
   "highlight-matching-tag.styles": {
     "opening": {
       "name": {
-        "underline": "#D8B775"
-      }
+        "underline": "#D8B775",
+      },
     },
     "closing": {
       "name": {
-        "underline": "#D8B775"
-      }
-    }
+        "underline": "#D8B775",
+      },
+    },
   },
 
   //=== Lang: Javascript
   //==============================================================================================
   "[javascript]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
   //=== Lang: Typescript
@@ -178,30 +178,31 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
   "[ruby]": {
     "editor.tabSize": 2,
-    "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/" // ! and ? are omitted
+    "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/", // ! and ? are omitted
   },
 
   //=== Lang: JSON
   //==============================================================================================
   "[json]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
   //=== Lang: Markdown
   //==============================================================================================
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "claudeCode.preferredLocation": "panel",
 }
