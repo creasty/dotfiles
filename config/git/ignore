@@ -34,3 +34,5 @@ project/metals.sbt
 # Python
 __pycache__
 *.pyc
+
+**/.claude/settings.local.json
