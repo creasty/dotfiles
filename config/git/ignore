@@ -5,6 +5,7 @@ Thumb.db
 tmp/
 .fdignore
 .ghq-monorepo
+,*
 
 # Tags
 .tags
@@ -35,4 +36,5 @@ project/metals.sbt
 __pycache__
 *.pyc
 
+# Claude
 **/.claude/settings.local.json
