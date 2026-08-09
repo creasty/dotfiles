@@ -26,6 +26,7 @@
   "editor.renderLineHighlight": "none",
   "editor.cursorSurroundingLines": 4,
   "editor.unicodeHighlight.includeComments": false,
+  "editor.unicodeHighlight.nonBasicASCII": false,
   // "editor.fontFamily": "Fira Code",
   // "editor.fontLigatures": true,
 
@@ -63,9 +64,9 @@
 
   "workbench.colorTheme": "Visual Studio Dark",
 
-  //=== Tabnine
-  //==============================================================================================
-  "tabnine.experimentalAutoImports": true,
+  "claudeCode.preferredLocation": "panel",
+
+  "go.useLanguageServer": true,
 
   //=== Liveshare
   //==============================================================================================
@@ -99,53 +100,6 @@
       "path": "/Users/creasty/.config/nvim/dict/user.txt",
     },
   ],
-  "cSpell.enableFiletypes": [
-    "asciidoc",
-    "c",
-    "coffeescript",
-    "cpp",
-    "csharp",
-    "css",
-    "diagram",
-    "dockerfile",
-    "dotenv",
-    "erb",
-    "gemfile",
-    "git-commit",
-    "go",
-    "handlebars",
-    "haskell",
-    "html",
-    "jade",
-    "java",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "jsonc",
-    "latex",
-    "less",
-    "makefile",
-    "markdown",
-    "php",
-    "plaintext",
-    "pug",
-    "python",
-    "restructuredtext",
-    "ruby",
-    "rust",
-    "scala",
-    "scss",
-    "shellscript",
-    "source.css.styled",
-    "sql",
-    "swift",
-    "text",
-    "typescript",
-    "typescriptreact",
-    "xml",
-    "yaml",
-    "yml",
-  ],
 
   //=== Prettier
   //==============================================================================================
@@ -166,16 +120,13 @@
     },
   },
 
-  //=== Lang: Javascript
+  //=== Lang: JS/TS
   //==============================================================================================
+  "js/ts.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
-
-  //=== Lang: Typescript
-  //==============================================================================================
-  "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -184,6 +135,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
+  //=== Lang: Ruby
+  //==============================================================================================
   "[ruby]": {
     "editor.tabSize": 2,
     "editor.wordSeparators": "`~@#$%^&*()-=+[{]}\\|;:'\",.<>/", // ! and ? are omitted
@@ -202,10 +155,7 @@
   //=== Lang: Markdown
   //==============================================================================================
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": null,
+    "editor.formatOnSave": false,
   },
-  "claudeCode.preferredLocation": "panel",
-
-  "go.useLanguageServer": true,
-  "editor.unicodeHighlight.nonBasicASCII": false,
 }
