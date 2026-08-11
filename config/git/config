@@ -43,10 +43,6 @@
 [branch "develop"]
   mergeOptions = --ff-only
 
-[url "git@github.com:"]
-  insteadOf = https://github.com/
-  insteadOf = git://github.com/
-
 [browse-remote "github.com"]
   top = https://{host}/{path}
   ref = https://{host}/{path}/tree/{short_ref}
