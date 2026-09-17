@@ -312,5 +312,9 @@
     { "languageId": "go", "allowCompoundWords": true },
     { "languageId": "lua", "allowCompoundWords": true },
     { "languageId": "vim", "allowCompoundWords": true }
-  ]
+  ],
+  "json.schemaDownload.trustedDomains": {
+    "https://www.schemastore.org": true,
+    "https://json.schemastore.org": true
+  }
 }

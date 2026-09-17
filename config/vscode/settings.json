@@ -158,4 +158,7 @@
     "editor.defaultFormatter": null,
     "editor.formatOnSave": false,
   },
+  "cSpell.userWords": [
+    "evals"
+  ],
 }
