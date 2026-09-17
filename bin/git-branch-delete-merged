@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# git-branch-delete-merged: delete merged branches
+#
+# Deletes local branches whose changes are already in <base> (default: HEAD),
+# including branches that were squash-merged or rebase-merged.
+# Skips master, main, develop, <base> itself, and branches checked out in any
+# worktree.
+#
+# usage: git branch-delete-merged [<base>]   (alias: git dmb)
+#        e.g. `git fetch && git dmb origin/main`
+
+base=${1:-HEAD}
+base_commit=$(git rev-parse --verify --quiet "$base^{commit}") || {
+  echo "git-branch-delete-merged: not a valid commit: $base" >&2
+  exit 1
+}
+base_tree=$(git rev-parse "$base_commit^{tree}") || exit
+base_ref=$(git rev-parse --symbolic-full-name "$base" 2>/dev/null)
+
+is_merged() {
+  ref=$1
+
+  # Regular merge or fast-forward: the branch tip is an ancestor of <base>.
+  git merge-base --is-ancestor "$ref" "$base_commit" && return 0
+
+  fork=$(git merge-base "$base_commit" "$ref") || return 1
+
+  # Squash merge: squash the branch into one temporary commit and ask
+  # `git cherry` whether <base> has a commit with the same patch.
+  squashed=$(git commit-tree "$ref^{tree}" -p "$fork" -m squashed) || return 1
+  case $(git cherry "$base_commit" "$squashed") in
+    -*) return 0 ;;
+  esac
+
+  # Rebase merge, or a squash merge whose patch differs because nearby lines
+  # changed: merging the branch into <base> would change nothing.
+  # Needs git 2.38+; on older git this check just fails.
+  tree=$(git merge-tree --write-tree "$base_commit" "$ref" 2>/dev/null) &&
+    [ "$tree" = "$base_tree" ]
+}
+
+git for-each-ref --format='%(if)%(worktreepath)%(then)%(else)%(refname:lstrip=2)%(end)' refs/heads/ |
+grep -vxE 'master|main|develop' |
+{
+  status=0
+  while read -r branch; do
+    [ -n "$branch" ] || continue
+    [ "refs/heads/$branch" = "$base_ref" ] && continue
+    if is_merged "refs/heads/$branch"; then
+      git branch -D "$branch" || status=1
+    fi
+  done
+  exit "$status"
+}

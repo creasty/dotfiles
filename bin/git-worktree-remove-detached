@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# git-worktree-remove-detached: remove detached worktrees
+#
+# Removes linked worktrees that are in detached HEAD state. Skips:
+#   - the main worktree and the worktree you're running from
+#   - worktrees whose HEAD commit isn't on any local or remote-tracking
+#     branch, since removing them would orphan those commits (unless -f)
+#
+# usage: git worktree-remove-detached [-f]   (alias: git wtrd)
+#
+# -f, --force  Also remove worktrees whose HEAD isn't on any branch, and
+#              worktrees with uncommitted or untracked changes. Passed to
+#              `git worktree remove`; give it twice to remove locked ones.
+#              Other arguments are passed to `git worktree remove` too.
+
+force=
+for arg in "$@"; do
+  case $arg in
+    -f | -ff | --force) force=1 ;;
+  esac
+done
+
+top=$(git rev-parse --show-toplevel) || exit
+top=$(cd "$top" && pwd -P) || exit
+
+git worktree list --porcelain |
+awk '
+  /^worktree /          { n++; path = substr($0, 10) }
+  /^HEAD /              { head = $2 }
+  /^detached$/ && n > 1 { print head, path }
+' |
+{
+  status=0
+  while read -r sha wt; do
+    if [ "$(cd "$wt" 2>/dev/null && pwd -P)" = "$top" ]; then
+      continue
+    fi
+    if [ -z "$(git for-each-ref --contains "$sha" refs/heads/ refs/remotes/)" ]; then
+      if [ -z "$force" ]; then
+        echo "skipped, HEAD not on any branch: $wt" >&2
+        continue
+      fi
+      echo "removing, HEAD not on any branch: $wt (was $sha)" >&2
+    fi
+    git worktree remove "$@" "$wt" || status=1
+  done
+  exit "$status"
+}
