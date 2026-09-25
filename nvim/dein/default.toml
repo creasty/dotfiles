@@ -86,6 +86,7 @@ let g:rengbang_default_pattern = '\(\<\d\+\>\)'
 #-----------------------------------------------
 [[plugins]] # Treesitter configurations and abstraction layer for Neovim
 repo = 'nvim-treesitter/nvim-treesitter'
+rev = 'master' # `main` is an incompatible rewrite (no nvim-treesitter.configs, which opfmt also relies on)
 merged = 0
 hook_post_update = '''
 :TSUpdate
@@ -147,7 +148,7 @@ let g:SignatureMarkTextHL = 'Statement'
 '''
 
 [[plugins]] # a tree explorer
-repo = 'scrooloose/nerdtree'
+repo = 'preservim/nerdtree'
 hook_add = '''
 let g:NERDSpaceDelims = 1
 let g:NERDShutUp = 1
