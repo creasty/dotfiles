@@ -114,8 +114,7 @@ install_python3() {
 }
 
 install_ansible() {
-  command -v 'ansible' > /dev/null 2>&1 && return
-
+  # Also upgrades an outdated installation: the playbook requires community.general >= 13.3
   echo 'Installing ansible...'
   brew install ansible
   echo 'done'

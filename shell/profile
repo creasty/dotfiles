@@ -24,6 +24,7 @@ export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
 # Rust
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 export PATH="$PATH:$HOME/.cargo/bin"
 
 # llvm

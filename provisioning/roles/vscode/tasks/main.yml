@@ -57,6 +57,10 @@
 - name: install extensions
   command: |
     bash -lc 'code --install-extension {{ item | quote }}'
+  register: install_vscode_ext
+  until: install_vscode_ext.rc == 0 # the marketplace occasionally returns 5xx
+  retries: 3
+  delay: 10
   when: |
     installed_vscode_exts.stdout.find(item) == -1
   with_items:

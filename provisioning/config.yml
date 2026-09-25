@@ -2,6 +2,7 @@ homebrew:
   taps:
     - 1password/tap # for 1password-cli
     - creasty/tools # for keyboard, rid
+    - hashicorp/tap # for terraform
 
   # brew list --cask --full-name
   casks:
@@ -74,7 +75,7 @@ homebrew:
     - protobuf # Protocol buffers (Google's data interchange format)
     - ripgrep # Search tool like grep and The Silver Searcher
     - sd # Intuitive find & replace CLI
-    - terraform # Tool to build, change, and version infrastructure
+    - hashicorp/tap/terraform # Tool to build, change, and version infrastructure
     - tmux # Terminal multiplexer
     - trash # CLI tool that moves files or folder to the trash
     - uv # Extremely fast Python package installer and resolver, written in Rust

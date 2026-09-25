@@ -9,6 +9,7 @@
   homebrew_tap:
     name:  '{{ item }}'
     state: present
+    trust: yes # Homebrew ignores formulae and casks of untrusted third-party taps
   with_items: '{{ homebrew.taps }}'
   when: homebrew.taps is defined
   tags: install.homebrew.tap

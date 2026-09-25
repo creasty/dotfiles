@@ -6,9 +6,9 @@
     name:  rustup
     state: latest
 
-- name: run rust-init
+- name: install toolchain
   command: |
-    bash -lc 'rustup-init  -v -y --no-modify-path'
+    bash -lc 'rustup default stable'
 
 - name: rustup update
   command: |
