@@ -1,23 +1,23 @@
-- set_fact:
+- ansible.builtin.set_fact:
     rust: {}
 
 - name: install rustup
-  homebrew:
+  community.general.homebrew:
     name:  rustup
     state: latest
 
 - name: install toolchain
-  command: |
+  ansible.builtin.command: |
     bash -lc 'rustup default stable'
 
 - name: rustup update
-  command: |
+  ansible.builtin.command: |
     bash -lc 'rustup update'
 
 - name: install components
-  command: |
+  ansible.builtin.command: |
     bash -lc 'rustup component add {{ item }}'
-  with_items:
+  loop:
     - clippy        # https://github.com/rust-lang/rust-clippy
     - rust-src      # https://github.com/rust-lang/rust
     - rust-analyzer # https://github.com/rust-lang/rust-analyzer

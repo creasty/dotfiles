@@ -1,30 +1,38 @@
-- set_fact:
+- ansible.builtin.set_fact:
     zsh_bin: '{{ homebrew_prefix }}/bin/zsh'
 
 - name: install zsh
-  homebrew:
+  community.general.homebrew:
     name:  zsh
     state: latest
 
+- name: install plugins
+  ansible.builtin.command: |
+    git -C {{ dotfiles_path | quote }} submodule update --init --recursive
+  register: zsh_plugins
+  changed_when: zsh_plugins.stdout != ""
+
 - name: add zsh to /etc/shells
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/shells
     line: '{{ zsh_bin }}'
-  become: yes
+  become: true
 
 - name: check presence of /etc/zshenv
-  stat: path=/etc/zshenv
+  ansible.builtin.stat:
+    path: /etc/zshenv
   register: zshenv_stat
 
 - name: Rename /etc/zshenv
-  command: |
-    sudo mv /etc/zshenv /etc/_zshenv
+  ansible.builtin.command: |
+    mv /etc/zshenv /etc/_zshenv
+  become: true
   when: zshenv_stat.stat.exists
 
 - name: change login shell to zsh
-  command: |
+  ansible.builtin.command: |
     chpass -s '{{ zsh_bin }}'
-  become: yes
+  become: true
   register: chpass_result
   until: chpass_result.rc == 0
   retries: 3

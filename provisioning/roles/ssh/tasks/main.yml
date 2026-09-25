@@ -1,25 +1,24 @@
 - name: create directories
-  file:
+  ansible.builtin.file:
     dest:  '{{ home_path }}/{{ item }}'
-    mode:  0700
+    mode:  '0700'
     state: directory
-  with_items:
+  loop:
     - '.ssh'
     - '.ssh/config.d'
     - '.ssh/keys'
 
 - name: copy common config
-  copy:
+  ansible.builtin.copy:
     src:  '{{ item }}'
     dest: '{{ home_path }}/.ssh/config.d/'
-    mode: 0600
-  with_fileglob:
-    - '_*'
+    mode: '0600'
+  loop: '{{ query("fileglob", "_*") }}'
 
 - name: assemble config.d
-  assemble:
+  ansible.builtin.assemble:
     src:           '{{ home_path }}/.ssh/config.d'
     dest:          '{{ home_path }}/.ssh/config'
-    mode:          0600
-    ignore_hidden: yes
+    mode:          '0600'
+    ignore_hidden: true
     delimiter:     "\n"

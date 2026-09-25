@@ -1,32 +1,32 @@
-- set_fact:
+- ansible.builtin.set_fact:
     homebrew: {}
 
 - name: update homebrew
-  homebrew:
-    update_homebrew: yes
+  community.general.homebrew:
+    update_homebrew: true
 
 - name: add tap registries
-  homebrew_tap:
+  community.general.homebrew_tap:
     name:  '{{ item }}'
     state: present
-    trust: yes # Homebrew ignores formulae and casks of untrusted third-party taps
-  with_items: '{{ homebrew.taps }}'
+    trust: true # Homebrew ignores formulae and casks of untrusted third-party taps
+  loop: '{{ homebrew.taps }}'
   when: homebrew.taps is defined
   tags: install.homebrew.tap
 
 - name: install casks
-  homebrew_cask:
+  community.general.homebrew_cask:
     name:  '{{ item }}'
     state: latest
-    accept_external_apps: yes
+    accept_external_apps: true
     sudo_password: '{{ ansible_become_pass }}'
-  with_items: '{{ homebrew.casks }}'
+  loop: '{{ homebrew.casks }}'
   when: homebrew.casks is defined
-  ignore_errors: yes
+  ignore_errors: true
   tags: install.homebrew.cask
 
 - name: install formulas
-  homebrew:
+  community.general.homebrew:
     name:  '{{ homebrew.formulas }}'
     state: latest
   when: homebrew.formulas is defined

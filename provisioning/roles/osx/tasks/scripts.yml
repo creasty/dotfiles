@@ -1,19 +1,19 @@
 - name: reload quicklook
-  command: |
+  ansible.builtin.command: |
     qlmanage -r
 
 - name: disable the sound effects on boot
-  command: |
+  ansible.builtin.command: |
     nvram SystemAudioVolume='%00'
-  become: yes
+  become: true
 
 - name: show the ~/Library folder
-  command: |
+  ansible.builtin.command: |
     chflags nohidden ~/Library
 
 - name: restart affected app
-  command: |
+  ansible.builtin.command: |
     killall '{{ item }}'
-  with_items:
+  loop:
     - Dock
     - Finder

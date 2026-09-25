@@ -1,29 +1,27 @@
-- set_fact:
+- ansible.builtin.set_fact:
     launchagent: {}
 
 - name: create directory
-  file:
+  ansible.builtin.file:
     dest:  '{{ home_path }}/Library/LaunchAgents'
     state: directory
 
 - name: copy launch agents
-  copy:
+  ansible.builtin.copy:
     src:  '{{ item }}'
     dest: '{{ home_path }}/Library/LaunchAgents/'
   loop_control:
     label: '{{ item | basename }}'
-  with_fileglob:
-    - '{{ launchagent.plist_dir }}/*.plist'
+  loop: '{{ query("fileglob", launchagent.plist_dir ~ "/*.plist") }}'
   when: launchagent.plist_dir is defined
 
 - name: load launch agents
-  command: |
+  ansible.builtin.command: |
     launchctl load -F -w "{{ home_path }}/Library/LaunchAgents/{{ item | basename }}"
   register: launchctl_load
   loop_control:
     label: '{{ item | basename }}'
-  with_fileglob:
-    - '{{ launchagent.plist_dir }}/*.plist'
+  loop: '{{ query("fileglob", launchagent.plist_dir ~ "/*.plist") }}'
   until: launchctl_load.stderr == "" or launchctl_load.stderr.find("already loaded") != -1
   retries: 1
   delay: 0
