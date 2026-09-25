@@ -5,7 +5,6 @@ bash-language-server
 eslint
 graphql-language-service-cli
 pnpm
-tslint
 typescript
 typescript-language-server
 vscode-css-languageserver-bin

@@ -1,54 +1,33 @@
-- set_fact:
+- ansible.builtin.set_fact:
     java: {}
 
 - name: install openjdk
-  homebrew:
-    name:  '{{ item }}'
+  community.general.homebrew:
+    name:  '{{ java.versions }}'
     state: latest
-  with_items: '{{ java.versions }}'
-
-- name: check jenv
-  command: |
-    bash -lc 'which jenv'
-  register: which_jenv
-  ignore_errors: yes
-
-- name: install jenv
-  command: |
-    bash -lc 'anyenv install -s jenv'
-  when: which_jenv.rc > 0
-
-- name: enable export plugin
-  command: |
-    bash -lc 'jenv enable-plugin export'
-
-- name: apply patch to export plugin
-  patch:
-    src: export_jenv_hook.zsh.patch
-    dest: '{{ anyenv.envs_dir }}/jenv/plugins/export/etc/jenv.d/init/export_jenv_hook.zsh'
 
 - name: link
-  file:
+  ansible.builtin.file:
     src: '{{ homebrew_prefix }}/opt/{{ java.versions | first }}/libexec/openjdk.jdk'
     dest: /Library/Java/JavaVirtualMachines/openjdk.jdk
     state: link
-    force: yes
-  become: yes
+    force: true
+  become: true
 
-- name: register java home
-  command: |
-    bash -lc 'jenv add "{{ homebrew_prefix }}/opt/{{ item }}/libexec/openjdk.jdk/Contents/Home"'
-  with_items: '{{ java.versions }}'
+# As `N` and `N.0`, the forms .java-version files written by jenv usually contain
+- name: register java versions
+  ansible.builtin.command: |
+    bash -lc 'for v in {{ item | regex_replace("^openjdk@", "") }}{,.0}; do mise link --force "java@$v" "{{ homebrew_prefix }}/opt/{{ item }}/libexec/openjdk.jdk/Contents/Home"; done'
+  loop: '{{ java.versions }}'
 
 - name: install tools
-  homebrew:
-    name:  '{{ item }}'
+  community.general.homebrew:
+    name:
+      - gradle                 # Open-source build automation tool based on the Groovy and Kotlin DSL
+      - pre-commit             # Framework for managing multi-language pre-commit hooks
+      - coursier               # Launcher for Coursier (required by pre-commit)
+      - kotlin-language-server # Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
     state: latest
-  with_items:
-    - gradle                 # Open-source build automation tool based on the Groovy and Kotlin DSL
-    - pre-commit             # Framework for managing multi-language pre-commit hooks
-    - coursier               # Launcher for Coursier (required by pre-commit)
-    - kotlin-language-server # Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
 
 # - name: install IDEs
 #   homebrew_cask:

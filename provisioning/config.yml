@@ -53,6 +53,7 @@ homebrew:
     - git-lfs # Git extension for versioning large files
     - gnupg # GNU Pretty Good Privacy (PGP) package
     - graphviz # Graph visualization software from AT&T and Bell Labs
+    - hashicorp/tap/terraform # Tool to build, change, and version infrastructure
     - hyperfine # Command-line benchmarking tool
     - imagemagick # Tools and libraries to manipulate images in many formats
     - jo # JSON output from a shell
@@ -69,9 +70,7 @@ homebrew:
     - protobuf # Protocol buffers (Google's data interchange format)
     - ripgrep # Search tool like grep and The Silver Searcher
     - sd # Intuitive find & replace CLI
-    - hashicorp/tap/terraform # Tool to build, change, and version infrastructure
     - tmux # Terminal multiplexer
-    - trash # CLI tool that moves files or folder to the trash
     - uv # Extremely fast Python package installer and resolver, written in Rust
     - webp # Image format providing lossless and lossy compression for web images
     - xh # Friendly and fast tool for sending HTTP requests
@@ -85,6 +84,7 @@ link:
   config/bat: .config/bat
   config/git: .config/git
   config/kitty: .config/kitty
+  config/mise: .config/mise
   config/peco: .config/peco
   config/ripgreprc: .config/.ripgreprc
   config/tmux: .config/tmux
@@ -114,26 +114,6 @@ link:
   shell/zsh/zshenv: .zshenv
   shell/zsh/zshrc: .zshrc
   shell/zsh: .zsh
-
-anyenv:
-  dir: "{{ home_path }}/.anyenv"
-  plugins_dir: "{{ home_path }}/.anyenv/plugins"
-  envs_dir: "{{ home_path }}/.anyenv/envs"
-  libexec_dir: "{{ home_path }}/.anyenv/libexec"
-
-nodejs:
-  default_packages_path: "{{ dotfiles_path }}/config/nodenv/default-packages"
-
-  # https://nodejs.org/en
-  versions:
-    - "18.15.0"
-
-ruby:
-  default_gems_path: "{{ dotfiles_path }}/config/rbenv/default-gems"
-
-  # https://www.ruby-lang.org/en/downloads/
-  versions:
-    - "3.2.1"
 
 java:
   versions:

@@ -44,7 +44,7 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 | Startup time | ~60ms | ~72ms |
 | Config size | 2,900 sloc | 700 sloc |
 | Original plugins | 10 plugins | 1,100 sloc of bin |
-| Third-party plugins | 36 plugins | 2 plugins + 5 hooks |
+| Third-party plugins | 36 plugins | 2 plugins + 2 hooks |
 
 ### nvim
 
@@ -91,10 +91,7 @@ Third-party plugins/hooks:
 
 - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-- [anyenv](https://github.com/anyenv/anyenv)
-    - [rbenv](https://github.com/rbenv/rbenv)
-    - [nodenv](https://github.com/nodenv/nodenv)
-    - [jenv](https://github.com/jenv/jenv)
+- [mise](https://github.com/jdx/mise)
 - [direnv](https://github.com/direnv/direnv)
 
 <details>

@@ -1,0 +1,13 @@
+# https://mise.jdx.dev/configuration.html
+[tools]
+java = "21" # Homebrew's openjdk, registered with `mise link` by provisioning
+node = { version = "24.21.0", postinstall = "sed 's/#.*//' ~/.config/mise/default-npm-packages | xargs -n 1 npm install -g || true" }
+ruby = { version = "4.0.7", postinstall = "sed 's/#.*//' ~/.config/mise/default-gems | xargs -n 1 gem install || true" }
+
+[settings]
+# Read .java-version, .node-version, .nvmrc and .ruby-version like jenv, nodenv and rbenv did
+idiomatic_version_file_enable_tools = ["java", "node", "ruby"]
+# Don't download runtimes on a "command not found" (e.g. a JDK before Homebrew's is linked)
+not_found_auto_install = false
+# Build with Homebrew's OpenSSL like rbenv did, instead of downloading prebuilt binaries
+ruby.compile = true

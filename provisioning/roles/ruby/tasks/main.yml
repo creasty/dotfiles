@@ -1,77 +1,35 @@
-- set_fact:
-    ruby: {}
-
-- name: check rbenv
-  command: |
-    bash -lc 'which rbenv'
-  register: which_rbenv
-  ignore_errors: yes
-
-- name: install rbenv
-  command: |
-    bash -lc 'anyenv install -s rbenv'
-  when: which_rbenv.rc > 0
-
-- name: install plugins
-  git:
-    repo: 'https://github.com/{{ item }}.git'
-    dest: '{{ anyenv.envs_dir }}/rbenv/plugins/{{ item | basename }}'
-  with_items:
-    - ianheggie/rbenv-binstubs # A Bundler binstubs Plugin for rbenv
-    - rbenv/rbenv-default-gems # Automatically install gems every time you install a new version of Ruby
-
-- name: copy default-gems
-  file:
-    src:  '{{ ruby.default_gems_path }}'
-    dest: '{{ anyenv.envs_dir }}/rbenv/default-gems'
-    state: link
-    force: yes
-
 - name: install dependencies
-  homebrew:
+  community.general.homebrew:
     name:
-      - libxslt
       - libyaml
       - openssl@3
-      - readline
-      - ruby-build
       - zlib
     state: latest
 
 - name: get openssl dir
-  command: |
+  ansible.builtin.command: |
     bash -lc 'brew --prefix openssl@3'
   register: openssl_dir
 
-- name: get readline dir
-  command: |
-    bash -lc 'brew --prefix readline'
-  register: readline_dir
-
 - name: get libyaml dir
-  command: |
+  ansible.builtin.command: |
     bash -lc 'brew --prefix libyaml'
   register: libyaml_dir
 
 - name: get zlib dir
-  command: |
+  ansible.builtin.command: |
     bash -lc 'brew --prefix zlib'
   register: zlib_dir
 
+# Versions are in config/mise/config.toml, which also installs config/mise/default-gems
 # @see https://gist.github.com/Neutrollized/37841827940b28b27ec2e54abbbcc408
 - name: install ruby
-  command: |
-    bash -lc 'rbenv install -s {{ item | quote }}'
+  ansible.builtin.command: |
+    bash -lc 'mise install ruby'
   environment:
     CFLAGS: '-Wno-error=implicit-function-declaration'
-    RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-readline-dir={{ readline_dir.stdout | quote }} --with-libyaml-dir={{ libyaml_dir.stdout | quote }} --with-zlib-dir={{ zlib_dir.stdout | quote }}'
-  with_items: '{{ ruby.versions }}'
-
-- name: set global ruby
-  command: |
-    bash -lc 'rbenv global {{ ruby.versions[0] | quote }}'
-  when: ruby.versions is defined
+    RUBY_CONFIGURE_OPTS: '--with-openssl-dir={{ openssl_dir.stdout | quote }} --with-libyaml-dir={{ libyaml_dir.stdout | quote }} --with-zlib-dir={{ zlib_dir.stdout | quote }}'
 
 - name: install solargraph
-  command: |
+  ansible.builtin.command: |
     bash -lc 'gem install solargraph'

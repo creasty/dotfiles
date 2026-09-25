@@ -17,14 +17,14 @@
 
     #  lang
     #-----------------------------------------------
-    - role: anyenv
-      tags: ['lang', 'lang.anyenv', 'lang.anyenv.anyenv']
+    - role: mise
+      tags: ['lang', 'lang.mise', 'lang.mise.mise']
     - role: ruby
-      tags: ['lang', 'lang.anyenv', 'lang.anyenv.ruby']
+      tags: ['lang', 'lang.mise', 'lang.mise.ruby']
     - role: nodejs
-      tags: ['lang', 'lang.anyenv', 'lang.anyenv.nodejs']
+      tags: ['lang', 'lang.mise', 'lang.mise.nodejs']
     - role: java
-      tags: ['lang', 'lang.anyenv', 'lang.anyenv.java']
+      tags: ['lang', 'lang.mise', 'lang.mise.java']
     - role: golang
       tags: ['lang', 'lang.golang']
     - role: rust

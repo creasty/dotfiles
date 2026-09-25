@@ -195,6 +195,12 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
 #-----------------------------------------------
 source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
+#  mise
+#-----------------------------------------------
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+fi
+
 #  Direnv
 #-----------------------------------------------
 if command -v direnv > /dev/null 2>&1; then
