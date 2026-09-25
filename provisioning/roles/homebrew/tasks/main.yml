@@ -9,9 +9,8 @@
   community.general.homebrew_tap:
     name:  '{{ item }}'
     state: present
-    trust: true # Homebrew ignores formulae and casks of untrusted third-party taps
-  loop: '{{ homebrew.taps }}'
-  when: homebrew.taps is defined
+    trust: true # otherwise Homebrew ignores the tap unless a formula/cask is named explicitly
+  loop: '{{ homebrew.taps | default([]) }}'
   tags: install.homebrew.tap
 
 - name: install casks
@@ -20,8 +19,7 @@
     state: latest
     accept_external_apps: true
     sudo_password: '{{ ansible_become_pass }}'
-  loop: '{{ homebrew.casks }}'
-  when: homebrew.casks is defined
+  loop: '{{ homebrew.casks | default([]) }}'
   ignore_errors: true
   tags: install.homebrew.cask
 

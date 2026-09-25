@@ -4,7 +4,7 @@
 
 - name: disable the sound effects on boot
   ansible.builtin.command: |
-    nvram SystemAudioVolume='%00'
+    nvram StartupMute=%01
   become: true
 
 - name: show the ~/Library folder
