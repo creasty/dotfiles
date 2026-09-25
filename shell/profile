@@ -27,9 +27,6 @@ export PATH="$PATH:$GOPATH/bin"
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 export PATH="$PATH:$HOME/.cargo/bin"
 
-# llvm
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-
 # libpq
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
@@ -67,7 +64,7 @@ export BROWSER=none
 export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc"
 
 # Android
-export ANDROID_HOME=/usr/local/opt/android-sdk
+export ANDROID_HOME="$HOME/Library/Android/sdk"
 
 #  Anyenv
 #-----------------------------------------------
