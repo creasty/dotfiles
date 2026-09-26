@@ -1,16 +1,14 @@
 #!/usr/bin/env bats
 #
-# base.link: the dotfiles are linked into the home directory, and the tools pick them up
+# The dotfiles are linked into the home directory (nix/modules/links.nix), and the tools pick them up
 
 load helper
 
-# bats file_tags=base:link
-
-@test "configured links point into the dotfiles" {
-  local src dest problems=''
-  while read -r src dest; do
-    [[ -L $HOME/$dest && $HOME/$dest -ef $DOTFILES_PATH/$src ]] || problems+="$dest -> $src"$'\n'
-  done < <(config '.link | to_entries | .[] | .key + " " + .value')
+@test "the home directory links into the dotfiles" {
+  local target source problems=''
+  while IFS=$'\t' read -r target source; do
+    [[ -L $HOME/$target && $HOME/$target -ef $DOTFILES_PATH/$source ]] || problems+="$target -> $source"$'\n'
+  done < <(manifest '.links | to_entries | .[] | [.key, .value] | @tsv')
   assert_none "$problems" 'not linked'
 }
 
@@ -35,7 +33,6 @@ load helper
 }
 
 @test "ripgrep reads its config from the dotfiles" {
-  require_commands rg
   cd "$BATS_TEST_TMPDIR"
   echo needle > .hidden
   # `command`: skip the interactive wrapper function; hidden files are searched due to `--hidden`
@@ -44,7 +41,6 @@ load helper
 }
 
 @test "tmux accepts the config" {
-  require_commands tmux
   run -0 login_zsh 'tmux -L verify -f /dev/null start-server \; source-file -n ~/.config/tmux/tmux.conf'
   assert_equal "$output" ''
 }

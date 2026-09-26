@@ -8,9 +8,16 @@ bats_require_minimum_version 1.8.0
 : "${DOTFILES_PATH:="$HOME/dotfiles"}"
 : "${HOMEBREW_PREFIX:=/opt/homebrew}"
 
+# What the activated configuration provisioned (nix/modules/verify.nix)
+MANIFEST=/etc/dotfiles/manifest.json
+
+# Where the commands of the packages installed with Nix are
+# shellcheck disable=SC2034 # used by the tests
+PROFILE_BIN="/etc/profiles/per-user/$(id -un)/bin"
+
 #  Shells
 #-----------------------------------------------
-# The zsh new terminals start: the login shell (Homebrew's once system.zsh has run)
+# The zsh new terminals start: the login shell
 if [ -z "${VERIFY_ZSH:-}" ]; then
   VERIFY_ZSH="$(dscl . -read "/Users/$(id -un)" UserShell 2> /dev/null | awk '{ print $2 }' || true)"
   [[ $VERIFY_ZSH == */zsh ]] || VERIFY_ZSH="$(command -v zsh)"
@@ -50,42 +57,14 @@ q() {
 
 #  Configuration
 #-----------------------------------------------
-# Queries provisioning/config.yml with yq
-config() {
-  yq "$1" "$DOTFILES_PATH/provisioning/config.yml"
+# Queries the manifest with yq
+manifest() {
+  yq -p json "$1" "$MANIFEST"
 }
 
 # Queries config/mise/config.toml with yq
 mise_config() {
   yq -p toml -o yaml "$1" "$DOTFILES_PATH/config/mise/config.toml"
-}
-
-# Queries a task file of a role with yq: role_tasks <role> <query> [file]
-role_tasks() {
-  yq "$2" "$DOTFILES_PATH/provisioning/roles/$1/tasks/${3:-main}.yml"
-}
-
-# Prints the Homebrew formulae a role installs by name
-role_formulae() {
-  role_tasks "$1" '.[] | .["community.general.homebrew"].name | .. | select(tag == "!!str") | select(contains("{{") | not)'
-}
-
-#  Prerequisites
-#-----------------------------------------------
-# Skips the test unless the files it relies on are linked (base.link)
-require_linked() {
-  local dest
-  for dest in "$@"; do
-    [ -L "$HOME/$dest" ] || skip "$dest is not linked into the home directory (base.link)"
-  done
-}
-
-# Skips the test unless the commands it relies on are installed with Homebrew
-require_commands() {
-  local cmd
-  for cmd in "$@"; do
-    [ -x "$HOMEBREW_PREFIX/bin/$cmd" ] || skip "$cmd is not installed"
-  done
 }
 
 #  Assertions
@@ -140,12 +119,11 @@ assert_before() {
   return 1
 }
 
-# Asserts that the given Homebrew formulae are installed
+# Asserts that the given Homebrew formulae are installed, by name or alias
 assert_formulae() {
-  local installed name missing=''
-  installed="$(brew list --formula --full-name)"
+  local name missing=''
   for name in "$@"; do
-    grep -qxF -- "$name" <<< "$installed" || missing+="$name"$'\n'
+    brew list --formula --versions "$name" > /dev/null 2>&1 || missing+="$name"$'\n'
   done
   assert_none "$missing" 'not installed'
 }
