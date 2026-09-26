@@ -9,5 +9,5 @@ nvim/dein/*
 !nvim/dein/*.toml
 !nvim/dein/lock.json
 
-provisioning/playbook.retry
-provisioning/secrets.yml
+# nix build
+/result

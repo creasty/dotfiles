@@ -1,6 +1,2 @@
-# macOS's /etc/zprofile runs path_helper, which moves the system directories in front of the ones
-# ~/.profile added. Put them back for login shells, i.e. new terminal tabs and tmux panes.
-if [ -f ~/.profile ]; then
-  source ~/.profile
-fi
+# nix-darwin's /etc/zshenv and ~/.profile both put Nix's directories on PATH: keep the first of each
 typeset -U path manpath

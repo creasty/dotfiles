@@ -24,7 +24,6 @@ export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
 # Rust
-export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 export PATH="$PATH:$HOME/.cargo/bin"
 
 # libpq
@@ -46,6 +45,11 @@ export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
 export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
 export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
+#  Nix
+#-----------------------------------------------
+# In front of Homebrew, so that formulae left from before Nix don't shadow its packages
+export PATH="/etc/profiles/per-user/${USER:-$(id -un)}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
+
 #  App config
 #-----------------------------------------------
 # Git
@@ -63,7 +67,7 @@ export RUST_LIB_BACKTRACE=0
 export BROWSER=none
 
 # ripgrep
-export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc"
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 
 # Android
 export ANDROID_HOME="$HOME/Library/Android/sdk"

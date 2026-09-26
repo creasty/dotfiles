@@ -1,10 +1,10 @@
-" [coc-clangd] brew install llvm
+" [coc-clangd] clang-tools (nix/modules/neovim.nix)
 " [coc-css] npm install -g vscode-css-languageserver-bin
 " [coc-eslint] npm install -g eslint
 " [coc-pyright] npm install -g pyright
 " [coc-rust-analyzer] rustup update && rustup component add rust-analyzer rust-src
 " [coc-solargraph] gem install solargraph
-" [coc-tsserver, coc-styled-components] npm install -g typescript typescript-language-server @styled/typescript-styled-plugin && brew install watchman
+" [coc-tsserver, coc-styled-components] npm install -g typescript typescript-language-server @styled/typescript-styled-plugin, and watchman (nix/modules/neovim.nix)
 let g:coc_global_extensions = [
   \ '@yaegassy/coc-tailwindcss3',
   \ 'coc-calc',
