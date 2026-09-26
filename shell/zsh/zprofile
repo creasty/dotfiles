@@ -1,0 +1,6 @@
+# macOS's /etc/zprofile runs path_helper, which moves the system directories in front of the ones
+# ~/.profile added. Put them back for login shells, i.e. new terminal tabs and tmux panes.
+if [ -f ~/.profile ]; then
+  source ~/.profile
+fi
+typeset -U path manpath

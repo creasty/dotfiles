@@ -111,6 +111,7 @@ link:
   shell/bash/bash_profile: .bash_profile
   shell/bash/bashrc: .bashrc
   shell/profile: .profile
+  shell/zsh/zprofile: .zprofile
   shell/zsh/zshenv: .zshenv
   shell/zsh/zshrc: .zshrc
   shell/zsh: .zsh
