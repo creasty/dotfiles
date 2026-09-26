@@ -65,6 +65,3 @@ jobs:
 
       - name: Verify
         run: ./verify --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
-        env:
-          # Its cask still uses the `appcast` stanza Homebrew removed (fix in creasty/homebrew-tools)
-          DOTFILES_VERIFY_SKIP_CASKS: creasty/tools/keyboard
