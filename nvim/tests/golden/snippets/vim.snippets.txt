@@ -1,0 +1,60 @@
+=== augroup
+augroup nam‸e
+  autocmd!
+  autocmd 
+augroup END
+-- mode: s, selected: "name"
+
+=== cpo
+let s:save_cpo = &cpo
+set cpo&vim
+
+‸
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
+-- mode: i
+
+=== func
+function! nam‸e() abort
+  
+endfunction
+-- mode: s, selected: "name"
+
+=== guard
+if exists('g:loaded_example_vi‸m')
+  finish
+endif
+
+let g:loaded_example_vim = 1
+
+-- mode: s, selected: "example_vim"
+
+=== redir
+redir => var_nam‸e
+  
+redir END
+-- mode: s, selected: "var_name"
+
+=== /(?<!")"/ "
+"=== ‸
+"==============================================================================================
+-- mode: i
+
+=== /(?<!")""/ ""
+"  ‸
+"-----------------------------------------------
+-- mode: i
+
+=== minimum_rtp
+if has('vim_starting')
+  let s:repos = [
+    \ '‸',
+  \ ]
+
+  let s:config_path = stdpath('config')
+  let s:paths = filter(split(&g:rtp, ','), { _, v -> v !=# s:config_path && v !=# s:config_path . '/after' })
+  let s:paths += map(s:repos, { _, v -> s:config_path . '/dein/repos/github.com/' . v })
+  let &g:rtp = join(s:paths, ',')
+endif
+-- mode: i

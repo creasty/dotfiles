@@ -1,0 +1,15 @@
+=== snip
+snippet Trigge‸r "Description" b
+
+endsnippet
+-- mode: s, selected: "Trigger"
+
+=== global
+global !p
+‸
+endglobal
+-- mode: i
+
+=== vis
+${VISUALdefault/transform‸/}
+-- mode: s, selected: "default/transform/"

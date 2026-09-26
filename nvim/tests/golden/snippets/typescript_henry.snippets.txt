@@ -1,0 +1,15 @@
+=== api-client-general
+export class Nam‸eAPI extends BaseClient<INameServiceClient> {
+  constructor(clientAuth?: ClientAuth, forwardedIps?: string[]) {
+    super(generalApiHost, NameServiceClient, clientAuth, forwardedIps);
+  }
+}
+-- mode: s, selected: "Name"
+
+=== api-client-receipt
+export class Nam‸eAPI extends BaseClient<INameServiceClient> {
+  constructor(clientAuth?: ClientAuth, forwardedIps?: string[]) {
+    super(receiptApiHost, NameServiceClient, clientAuth, forwardedIps);
+  }
+}
+-- mode: s, selected: "Name"

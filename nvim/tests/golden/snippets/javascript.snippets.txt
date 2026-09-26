@@ -1,0 +1,25 @@
+=== cdebug
+console.debug(‸);
+-- mode: i
+
+=== clog
+console.log(‸);
+-- mode: i
+
+=== cerror
+console.error(‸);
+-- mode: i
+
+=== cwarn
+console.warn(‸);
+-- mode: i
+
+=== times
+Array.from({ length: ‸ }, (_, i) => i)
+-- mode: i
+
+=== iife
+(() => {
+  ‸
+})();
+-- mode: i

@@ -1,0 +1,32 @@
+=== useState
+const [stat‸e, setState] = useState<State>();
+-- mode: s, selected: "state"
+
+=== useAdaptiveState
+const [stat‸e, setState] = useAdaptiveState<State>();
+-- mode: s, selected: "state"
+
+=== useRef
+const nam‸e = useRef<Name>();
+-- mode: s, selected: "name"
+
+=== useCallback
+const nam‸e = useCallback(() => , []);
+-- mode: s, selected: "name"
+
+=== useMemo
+const nam‸e = useMemo(() => , []);
+-- mode: s, selected: "name"
+
+=== useEffect
+useEffect(() => ‸, []);
+-- mode: i
+
+=== useLayoutEffect
+useLayoutEffect(() => ‸, []);
+-- mode: i
+
+=== fetchPolicy
+fetchPolicy: "cache-and-network",
+nextFetchPolicy: "cache-first",‸
+-- mode: i

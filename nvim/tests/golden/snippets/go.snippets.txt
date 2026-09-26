@@ -1,0 +1,45 @@
+=== func
+func nam‸e(params) type {
+	
+}
+-- mode: s, selected: "name"
+
+=== holder
+nam‸e struct {
+	result Type
+	err    error
+	once   sync.Once
+}
+-- mode: s, selected: "name"
+
+=== holderdo
+holder := &c.nam‸e
+holder.once.Do(func() {
+	holder.result, holder.err = 
+})
+return holder.result, holder.err
+-- mode: s, selected: "name"
+
+=== if
+if ‸ {
+	
+}
+-- mode: i
+
+=== for
+for ‸ {
+	
+}
+-- mode: i
+
+=== package
+package example‸
+-- mode: i
+
+=== mockgen
+//go:generate mockgen -source=example.go -package example -destination=example_mock.go‸
+-- mode: i
+
+=== stringer
+//go:generate stringer -type=Typ‸e
+-- mode: s, selected: "Type"

@@ -1,0 +1,152 @@
+=== beginning_of_month
+date_sub(date(timestamp_trunc(current_timestamp(), month), '+9'), interval mont‸h} month)
+-- mode: s, selected: "month"
+
+=== end_of_month
+date_sub(date_sub(date_trunc(current_date(), month), interval mont‸h month), interval 1 day)
+-- mode: s, selected: "month"
+
+=== date_in_window
+create temp function d_window() returns int64 as ((
+  2‸8
+));
+
+create temp function date_in_window(d date, wd date) returns bool as ((
+  d between date_sub(wd, interval d_window() - 1 day) and wd
+));
+-- mode: s, selected: "28"
+
+=== day_ago
+date_sub(current_date('+9'), interval da‸y day)
+-- mode: s, selected: "day"
+
+=== format_date
+format_date('%Y%m%‸d', date)
+-- mode: s, selected: "%Y%m%d"
+
+=== format_timestamp
+format_timestamp('%F %T UTC', timestam‸p)
+-- mode: s, selected: "timestamp"
+
+=== limit_suffix
+create temp function limit_suffix(suffix string, start_date date, end_date date) returns bool as ((
+  suffix between format_date('%Y%m%d', start_date) and format_date('%Y%m%d', end_date)
+));‸
+-- mode: i
+
+=== period
+create temp function d_start() returns date as ((
+  date_sub(current_date('+9'), interval 28 * 3 day)
+));
+create temp function d_end() returns date as ((
+  date_sub(current_date('+9'), interval 1 day)
+));‸
+-- mode: i
+
+=== period_array
+create temp function period_array() returns array<date> as ((
+  generate_date_array(
+    d_start(),
+    d_end(),
+    interval 1 day
+  )
+));‸
+-- mode: i
+
+=== period_selector
+create temp function ts_in_period(ts timestamp, s int64, e int64) returns bool as ((
+  date(ts, '+9') between date_add(d_start(), interval s day) and date_add(d_end(), interval e day)
+));
+
+create temp function suffix_in_period(suffix string, s int64, e int64) returns bool as ((
+  suffix between format_date('%Y%m%d', date_add(d_start(), interval s day)) and format_date('%Y%m%d', date_add(d_end(), interval e day))
+));‸
+-- mode: i
+
+=== ts_to_month
+create temp function ts_to_month(ts timestamp) returns string as ((
+  format_date('%Y-%m', date(ts, '+9'))
+));‸
+-- mode: i
+
+=== extract_id_from_path
+create temp function extract_id_from_path(path string, pattern string) returns int64 as ((
+  cast(regexp_extract_all(path, pattern)[safe_offset(0)] as int64)
+));‸
+-- mode: i
+
+=== extract_json_int
+create temp function extract_json_int(json string, path string) returns int64 as ((
+  cast(regexp_extract(json_extract_scalar(json, path), r'\d+') as int64)
+));‸
+-- mode: i
+
+=== func
+create temp function nam‸e(args) returns type as ((
+  
+));
+-- mode: s, selected: "name"
+
+=== median
+-- median_float6‸4(array_agg(t.value))
+create temp function median_float64(arr array<float64>) returns struct<
+  value float64,
+  min float64,
+  average float64,
+  max float64,
+  rank int64,
+  max_rank int64,
+  cumulative_total float64,
+  total float64,
+  rank_percent float64,
+  total_percent float64
+> as ((
+  with
+    series as (
+      select
+        value,
+        (row_number() over (order by value)) as rank
+      from
+        unnest(arr) as value
+    ),
+    cumulative_series as (
+      select
+        any_value(s.value) as value,
+        s.rank,
+        (max(s.rank) over ()) as max_rank,
+        (sum(ss.value)) as cumulative_total,
+        (sum(any_value(s.value)) over ()) as total,
+        (min(any_value(s.value)) over ()) as min,
+        (avg(any_value(s.value)) over ()) as average,
+        (max(any_value(s.value)) over ()) as max
+      from
+        series as s
+        cross join series as ss
+      where
+        ss.rank <= s.rank
+      group by
+        s.rank
+    )
+
+  select
+    struct(
+      s.value,
+      s.min,
+      s.average,
+      s.max,
+      s.rank,
+      s.max_rank,
+      s.cumulative_total,
+      s.total,
+      (s.rank / s.max_rank) as rank_percent,
+      (s.cumulative_total / s.total) as total_percent
+    )
+  from
+    cumulative_series as s
+  where
+    s.cumulative_total >= s.total * 0.5
+  order by
+    s.rank
+  limit 1
+));
+-- mode: s, selected: "float64"

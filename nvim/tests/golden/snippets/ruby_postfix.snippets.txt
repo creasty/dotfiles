@@ -1,0 +1,23 @@
+=== /(\S+)\.var/ compute(1).var
+nam‸e = compute(1)
+-- mode: s, selected: "name"
+
+=== /(\S+)\.par/ a+b.par
+(a+b)‸
+-- mode: i
+
+=== /(\S+)\.if/ ok.if
+if ok
+  ‸
+end
+-- mode: i
+
+=== /(\S+)\.else/ ok.else
+if !ok
+  ‸
+end
+-- mode: i
+
+=== /(\S+)\.format/ value.format
+format(value, ‸)
+-- mode: i
