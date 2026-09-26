@@ -31,7 +31,8 @@ Needs what the config itself needs: Neovim 0.11, the installed dein plugins
 (`E2E_COC_EXTENSIONS`), Node, Deno, Python 3 with pynvim, Ruby's `erb`, git,
 fd, rg and ghq. The first run downloads and compiles the denops plugins into a
 test-owned Deno cache (about 20s); later runs reuse it. Temporary files go to
-`$E2E_TMPDIR` (default `$TMPDIR`).
+`$E2E_TMPDIR` (default `$TMPDIR`), which must not be inside a project such as
+a git repository: the config finds project roots by walking up from a file.
 
 ## Plugin versions
 
@@ -49,10 +50,10 @@ nvim/tests/plugins install    # install exactly the pinned versions (what CI run
 parsers, and installs the coc extensions into `$E2E_COC_EXTENSIONS` when set.
 It never changes a plugin that is already installed at another commit.
 
-A plugin whose repository is gone gets a `"mirror"` to fetch the same commit
-from; `lock` warns about unreachable ones and keeps mirrors. `phaazon/hop.nvim`
-was deleted from GitHub: its commit comes from the author's SourceHut mirror
-(a fresh install of the config itself cannot clone it anymore).
+`lock` warns about plugins whose repository it cannot reach (a fresh install
+could not clone them either). To keep one pinned anyway, give its entry a
+`"mirror"` that has the same commit; `install` fetches from it and `lock`
+keeps it.
 
 ## CI
 

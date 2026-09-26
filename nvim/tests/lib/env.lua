@@ -205,6 +205,14 @@ end
 --- Returns the context table that workers and children read back.
 function M.prepare()
   local base = realpath(os.getenv('E2E_TMPDIR') or os.getenv('TMPDIR') or '/tmp')
+  -- Sandboxes must not live inside a project: plugin/project_dir.vim takes the
+  -- outermost-priority marker it finds walking up (an enclosing .git wins),
+  -- and coc then reads that project's .vim/coc-settings.json.
+  local markers = { '.git', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot', 'build.sbt' }
+  local project = vim.fs.find(markers, { upward = true, path = base, limit = 1 })[1]
+  if project then
+    error(('the temporary directory %s is inside the project %s; set E2E_TMPDIR elsewhere'):format(base, vim.fs.dirname(project)))
+  end
   local run_dir = mkdir(vim.fs.joinpath(base, ('nvim-e2e-%d-%d'):format(os.time(), uv.os_getpid())))
   local tree, lock = acquire_plugin_tree(base, run_dir)
 

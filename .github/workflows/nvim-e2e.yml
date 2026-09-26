@@ -29,11 +29,15 @@ jobs:
       TREE_SITTER_CLI_VERSION: 0.25.3
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
-      E2E_DEIN_REPOS: ${{ github.workspace }}/.e2e/repos
-      E2E_COC_EXTENSIONS: ${{ github.workspace }}/.e2e/coc/node_modules
-      E2E_TMPDIR: ${{ github.workspace }}/.e2e/tmp
     steps:
       - uses: actions/checkout@v4
+
+      # Outside the checkout: the tests' sandboxes must not be inside a project.
+      - name: Set up directories
+        run: |
+          echo "E2E_DEIN_REPOS=$RUNNER_TEMP/e2e/repos" >> "$GITHUB_ENV"
+          echo "E2E_COC_EXTENSIONS=$RUNNER_TEMP/e2e/coc/node_modules" >> "$GITHUB_ENV"
+          echo "E2E_TMPDIR=$RUNNER_TEMP/e2e/tmp" >> "$GITHUB_ENV"
 
       - name: Install Neovim
         run: |
@@ -76,8 +80,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            .e2e/repos
-            .e2e/coc
+            ${{ runner.temp }}/e2e/repos
+            ${{ runner.temp }}/e2e/coc
           key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
 
       - name: Install the locked plugins
@@ -88,8 +92,8 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: |
-            .e2e/repos
-            .e2e/coc
+            ${{ runner.temp }}/e2e/repos
+            ${{ runner.temp }}/e2e/coc
           key: ${{ steps.plugins.outputs.cache-primary-key }}
 
       # The suite's own cache: denops plugins compiled by Deno.
@@ -97,7 +101,7 @@ jobs:
         id: e2e-cache
         uses: actions/cache/restore@v4
         with:
-          path: .e2e/tmp/nvim-e2e-cache
+          path: ${{ runner.temp }}/e2e/tmp/nvim-e2e-cache
           key: nvim-e2e-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
 
       - name: Run the workflow tests
@@ -107,5 +111,5 @@ jobs:
         if: always() && steps.e2e-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
-          path: .e2e/tmp/nvim-e2e-cache
+          path: ${{ runner.temp }}/e2e/tmp/nvim-e2e-cache
           key: ${{ steps.e2e-cache.outputs.cache-primary-key }}

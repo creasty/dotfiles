@@ -72,9 +72,24 @@ end
 
 local opts = parse_args(arg)
 
+--- Writes all of `data` to stdout. Neovim leaves stdout non-blocking, so on
+--- a pipe that fills up (CI logs) plain writes lose output.
+local function write_stdout(data)
+  local offset = 0
+  while offset < #data do
+    local written, _, name = vim.uv.fs_write(1, offset == 0 and data or data:sub(offset + 1))
+    if written then
+      offset = offset + written
+    elseif name == 'EAGAIN' then
+      vim.uv.sleep(5)
+    else
+      return
+    end
+  end
+end
+
 local function emit(event)
-  io.stdout:write(vim.json.encode(event), '\n')
-  io.stdout:flush()
+  write_stdout(vim.json.encode(event) .. '\n')
 end
 
 local function selected(name)
@@ -148,8 +163,7 @@ local function color(code, s)
   return use_color and ('\27[' .. code .. 'm' .. s .. '\27[0m') or s
 end
 local out = function(...)
-  io.stdout:write(...)
-  io.stdout:flush()
+  write_stdout(table.concat({ ... }))
 end
 
 local ctx
