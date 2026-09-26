@@ -132,6 +132,25 @@ describe('Snippets', function()
     end)
   end)
 
+  describe('with operator formatting (opfmt)', function()
+    t.quirk(
+      'a trigger with hyphens, typed at a human pace in TypeScript, is spaced out and <Tab> no longer expands it',
+      "opfmt formats `-` as the minus operator once the typed keys run out, so typescript_henry's api-client-* snippets cannot be triggered by typing them",
+      function()
+        local nvim = buffer_with('typescript', 'app.ts')
+        nvim:type('A')
+        for key in ('api-client-general'):gmatch('.') do
+          nvim:type(key)
+        end
+        nvim:wait_for(function()
+          return nvim:line(1) == 'api - client - general'
+        end, { message = 'opfmt to space out the trigger' })
+        nvim:type('<Tab>')
+        t.no(nvim:line(1):find('BaseClient', 1, true), 'expanded anyway: ' .. nvim:line(1))
+      end
+    )
+  end)
+
   describe('filetype inheritance', function()
     it('javascript gets the C-like statements', function()
       local nvim = buffer_with('javascript', 'app.js')

@@ -168,10 +168,10 @@ local function run_case(name, filetype, case)
   nvim:cmd('set filetype=' .. filetype)
   probe.disable_completion(nvim)
   nvim:type(case.before and 'Go' or 'A')
-  nvim:type(escape_keys(case.keys))
-  if not case.auto then
-    nvim:type('<Tab>')
-  end
+  -- Trigger and <Tab> in one burst: given a moment in between, opfmt
+  -- reformats triggers such as `api-client-general` (see the quirk in
+  -- snippets_spec), and this file pins what each snippet expands to.
+  nvim:type(escape_keys(case.keys) .. (case.auto and '' or '<Tab>'))
   local choice = resolve_choice(nvim)
   local result = capture(nvim)
   return choice and (choice .. '\n' .. result) or result
