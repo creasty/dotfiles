@@ -450,12 +450,12 @@ describe('LSP', function()
         return probe.diagnostics(nvim).error > 0
       end)
       nvim:cmd('CocList diagnostics')
-      nvim:wait_for(function()
-        return nvim:filetype() == 'list'
-      end)
+      -- The list window opens first and is filled a moment later.
+      local text = nvim:wait_for(function()
+        local lines = table.concat(nvim:lines(), '\n')
+        return nvim:filetype() == 'list' and lines:find('e2e error', 1, true) and lines
+      end, { message = 'the diagnostics list to show its entries' })
       t.eq('n', nvim:mode(), '--normal')
-      local text = table.concat(nvim:lines(), '\n')
-      t.contains(text, 'e2e error')
       t.contains(text, 'e2e warning')
       nvim:type('<C-j>')
       nvim:wait_for(function()
