@@ -3,6 +3,7 @@
 { username, ... }:
 {
   imports = [
+    ./1password.nix
     ./links.nix
     ./homebrew.nix
     ./packages.nix

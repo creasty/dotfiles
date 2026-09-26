@@ -25,8 +25,6 @@
 
     # brew list --cask --full-name
     casks = [
-      "1password" # https://1password.com/
-      "1password-cli" # https://developer.1password.com/docs/cli
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
       "appcleaner" # https://freemacsoft.net/appcleaner/
       "creasty/tools/keyboard" # https://github.com/creasty/Keyboard

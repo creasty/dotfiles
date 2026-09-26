@@ -20,6 +20,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
     - libpq (psql)
     - icu4c, for the charlock_holmes gem
 - **Runtimes stay with mise** (`config/mise/config.toml`). home-manager runs `mise install` on every switch, after registering the JDKs.
+- **1Password's CLI** comes from nixpkgs through nix-darwin, which copies `op` to `/usr/local/bin`, the path the app's integration requires.
 - **1Password manages the SSH keys:**
   - `~/.ssh/config` is generated and makes ssh use 1Password's SSH agent.
   - Private keys move into 1Password; public keys stay in `~/.ssh/keys` to pick a key per host (`IdentitiesOnly`).
@@ -71,6 +72,8 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
        procs protobuf ripgrep sd tmux uv webp xh mise go gopls golangci-lint rustup gradle pre-commit coursier \
        kotlin-language-server neovim ansible-lint clang-format llvm shellcheck terraform-ls watchman yarn ansible
    $ brew untap golangci/tap
+   $ brew uninstall --cask 1password-cli  # if still installed, from either tap
+   $ brew untap 1password/tap             # if still tapped
    ```
 
 4. Move the SSH keys into 1Password.
@@ -93,4 +96,5 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 | `yarn` formula | Also in `config/mise/default-npm-packages` | mise's Node.js |
 | `llvm`, `clang-format` formulae | Only clangd and clang-format were used | nixpkgs' `clang-tools`, with no `clangd.path` setting |
 | `golangci/tap` | golangci-lint is in nixpkgs | |
+| Homebrew's `1password-cli` cask | The CLI comes from nixpkgs, like the other command-line tools | nix-darwin's `programs._1password`, `op` at `/usr/local/bin` |
 | `./verify --tags`, `DOTFILES_NOEDIT_SECRETS` | No Ansible tags or secrets file | `./verify [bats options]` |
