@@ -1,0 +1,17 @@
+=== if
+if (‸) {
+    
+}
+-- mode: i
+
+=== for
+for (‸) {
+    
+}
+-- mode: i
+
+=== while
+while (‸) {
+    
+}
+-- mode: i

@@ -42,6 +42,7 @@ Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 - **`config/*`** : XDG-compliant configuration files
 - **`home/*`** : Home directory dotfiles
 - **`nvim/`** : Neovim configurations
+  - **`tests/`** : End-to-end workflow tests ([README](./nvim/tests/README.md))
 - **`shell/`** : Shell environment configurations
   - **`bash/*`** : Bash-specific configurations
   - **`zsh/*`** : Zsh-specific configurations

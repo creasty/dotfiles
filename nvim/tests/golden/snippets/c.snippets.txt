@@ -1,0 +1,49 @@
+=== def
+#ifndef SYMBO‸L
+#define SYMBOL value
+#endif
+-- mode: s, selected: "SYMBOL"
+
+=== do
+do {
+    
+} while (‸);
+-- mode: i
+
+=== enum
+typedef enum {
+    
+} nam‸e;
+-- mode: s, selected: "name"
+
+=== struct
+typedef struct tag_nam‸e {
+    
+} name;
+-- mode: s, selected: "tag_name"
+
+=== main
+int
+main(int argc, const char *argv[])
+{
+    ‸
+    return 0;
+}
+-- mode: i
+
+=== guard
+#ifndef __EXAMPLE_C_LOADE‸D
+#define __EXAMPLE_C_LOADED
+
+
+
+#endif /* end of include guard: __EXAMPLE_C_LOADED */
+-- mode: s, selected: "EXAMPLE_C_LOADED"
+
+=== /#include / #include 
+#include <‸>
+-- mode: i
+
+=== /(\w+)\.\.(\w)/ ptr..x
+ptr->x‸
+-- mode: i

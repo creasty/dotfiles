@@ -1,0 +1,3 @@
+#!/bin/sh
+# Runs the Neovim end-to-end workflow suite. See README.md, or: run --help
+exec "${NVIM_BIN:-nvim}" --clean -l "$(cd "$(dirname "$0")" && pwd)/runner.lua" "$@"

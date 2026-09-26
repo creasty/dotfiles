@@ -1,0 +1,179 @@
+=== set
+set -euo pipefail‸
+-- mode: i
+
+=== if
+if [ ‸ ]; then
+  
+fi
+-- mode: i
+
+=== elif
+elif [ ‸ ]; then
+  
+-- mode: i
+
+=== case
+case exp‸r in
+  
+esac
+-- mode: s, selected: "expr"
+
+=== warn
+echo '‸' 1>&2
+-- mode: i
+
+=== fatal
+echo '‸' 1>&2
+exit 1
+-- mode: i
+
+=== ask
+ask() {
+  echo -n "$1"
+  read REPLY
+}‸
+-- mode: i
+
+=== cdrt
+cd "$(dirname "$0")" || exit 1‸
+-- mode: i
+
+=== command
+command -v '‸' > /dev/null 2>&1
+-- mode: i
+
+=== dotenv
+if [ -f .env ]; then
+  set -o allexport
+  eval "$(cat .env | grep -v '^#')"
+  set +o allexport
+fi‸
+-- mode: i
+
+=== envchain
+set -o allexport
+eval "$(envchain -l -v namespac‸e)"
+set +o allexport
+-- mode: s, selected: "namespace"
+
+=== do_help
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
+}‸
+-- mode: i
+
+=== errifout
+awk '{ e = 1; print $0 } END { if (e) exit(1) }'‸
+-- mode: i
+
+=== getopts
+while getopts option‸s OPT;; do
+  # Refer $OPTARG to retrieve a value
+  case "$OPT" in
+    
+  esac
+done
+
+shift $((OPTIND - 1))
+-- mode: s, selected: "options"
+
+=== parse_opt
+parse_opt() {
+  case "$1" in
+    opt_nam‸e)
+      FLAG_XXX="$2"
+      PARSE_OPT_SHIFT=1
+      ;;
+    *)
+      echo "Invalid option: $1" 1>&2
+      exit 1
+      ;;
+  esac
+}
+
+while (( $# > 0 )); do
+  PARSE_OPT_SHIFT=0
+  case "$1" in
+    --) shift && break ;;
+    --*)
+      parse_opt "${1:2}" "${@:2}"
+      shift $((PARSE_OPT_SHIFT + 1))
+      ;;
+    -[a-z0-9])
+      parse_opt "${1:1}" "${@:2}"
+      shift $((PARSE_OPT_SHIFT + 1))
+      ;;
+    -*)
+      while read -rn1 c && [ -n "$c" ]; do
+        parse_opt "$c" ''
+      done <<< "${1:1}"
+      shift
+      ;;
+    *) break ;;
+  esac
+done
+-- mode: s, selected: "opt_name"
+
+=== line
+while IFS= read -r line; do
+  ‸
+done
+-- mode: i
+
+=== print_info
+print_info() {
+  printf "\e[0;34m[Info]\e[0m %s\n" "$*" 1>&2
+}‸
+-- mode: i
+
+=== print_success
+print_success() {
+  printf "\e[0;32m[Success]\e[0m %s\n" "$*" 1>&2
+}‸
+-- mode: i
+
+=== print_error
+print_error() {
+  printf "\e[0;31m[Error]\e[0m %s\n" "$*" 1>&2
+}‸
+-- mode: i
+
+=== print_status
+print_status() {
+  if [ $1 -eq 0 ]; then
+    print_success "OK"
+  else
+    print_info "$2"
+  fi
+}‸
+-- mode: i
+
+=== section
+section() {
+  printf "\e[33m==> %s\e[0m\n" "$*"
+}‸
+-- mode: i
+
+=== subsection
+subsection() {
+  printf "\e[34m--> %s\e[0m\n" "$*"
+}‸
+-- mode: i
+
+=== teepipe
+awk '{ print $0; print $0 > "/dev/stderr" }'‸
+-- mode: i
+
+=== join
+paste -sd '+' -‸
+-- mode: i
+
+=== trap
+at_exit() {
+  ‸
+}
+trap at_exit EXIT
+trap 'trap - EXIT; at_exit; exit -1' SIGHUP SIGINT SIGTERM
+-- mode: i

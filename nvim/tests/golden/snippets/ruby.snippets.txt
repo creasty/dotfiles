@@ -1,0 +1,51 @@
+=== init
+def initialize‸
+  
+end
+-- mode: i
+
+=== ###
+=begin
+‸
+=end
+-- mode: i
+
+=== defs
+def self.‸
+-- mode: i
+
+=== pry
+binding.pry‸
+-- mode: i
+
+=== r
+attr_reader :‸
+-- mode: i
+
+=== w
+attr_writer :‸
+-- mode: i
+
+=== rw
+attr_accessor :‸
+-- mode: i
+
+=== /(\w+)\.each/ items.each
+items.each { |‸|  }
+-- mode: i
+
+=== /(\w+)\.eachdo/ items.eachdo
+items.each do |‸|
+  
+end
+-- mode: i
+
+=== /(\w+)\.map/ items.map
+items.each { |‸|  }
+-- mode: i
+
+=== /(\w+)\.mapdo/ items.mapdo
+items.map do |‸|
+  
+end
+-- mode: i

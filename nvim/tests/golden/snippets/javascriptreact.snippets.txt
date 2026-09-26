@@ -1,0 +1,3 @@
+=== keyi
+key={‸i /* eslint-disable-line react/no-array-index-key */}
+-- mode: s, selected: "i"

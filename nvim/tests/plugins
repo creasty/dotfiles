@@ -1,0 +1,8 @@
+#!/bin/sh
+# Pins the plugins the suite runs against (nvim/dein/lock.json). See: plugins --help
+# nvim-treesitter builds parsers under stdpath('data'): keep that out of yours.
+tmp=$(mktemp -d "${TMPDIR:-/tmp}/nvim-plugins.XXXXXX") || exit 1
+trap 'rm -rf "$tmp"' EXIT
+mkdir -p "$tmp/data/nvim"
+XDG_DATA_HOME="$tmp/data" XDG_STATE_HOME="$tmp/state" XDG_CACHE_HOME="$tmp/cache" \
+  "${NVIM_BIN:-nvim}" --clean -l "$(cd "$(dirname "$0")" && pwd)/plugins.lua" "$@"

@@ -1,0 +1,24 @@
+=== begin
+begin;
+  ‸
+end;
+-- mode: i
+
+=== declare
+declare var_nam‸e type = ;
+-- mode: s, selected: "var_name"
+
+=== do
+do $$
+  variable‸s
+begin
+  
+end $$;
+-- mode: s, selected: "variables"
+
+=== temptable
+create temp table nam‸e on commit drop as
+select
+  
+;
+-- mode: s, selected: "name"

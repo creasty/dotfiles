@@ -1,0 +1,73 @@
+=== /(\S+)\.var/ f(x).var
+nam‸e := f(x)
+-- mode: s, selected: "name"
+
+=== /(\S+)\.varr/ f(x).varr
+var nam‸e Type = f(x)
+-- mode: s, selected: "name"
+
+=== /(\S+)\.const/ 42.const
+const nam‸e = 42
+-- mode: s, selected: "name"
+
+=== /(\S+)\.par/ a+b.par
+(a+b)‸
+-- mode: i
+
+=== /(\S+)\.if/ ok.if
+if ok {
+	‸
+}
+-- mode: i
+
+=== /(\S+)\.else/ ok.else
+if !ok {
+	‸
+}
+-- mode: i
+
+=== /(\S+)\.(null|nil)/ err.nil
+if err == nil {
+	‸
+}
+-- mode: i
+
+=== /(\S+)\.(notnull|notnil|nn)/ err.nn
+if err != nil {
+	‸
+}
+-- mode: i
+
+=== /(\S+)\.for/ items.for
+for ite‸m := range items {
+	
+}
+-- mode: s, selected: "item"
+
+=== /(\S+)\.fori/ items.fori
+for ‸k, v := range items {
+	
+}
+-- mode: s, selected: "k"
+
+=== /(\S+)\.forv/ items.forv
+for _, ‸v := range items {
+	
+}
+-- mode: s, selected: "v"
+
+=== /(\S+)\.while/ running.while
+for running {
+	‸
+}
+-- mode: i
+
+=== /(\S+)\.switch/ kind.switch
+switch kind {
+	‸
+}
+-- mode: i
+
+=== /(\S+)\.append/ items.append
+items = append(items, ‸)
+-- mode: i
