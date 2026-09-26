@@ -143,11 +143,42 @@ local PROMPT_FILETYPES = {
   snacks_picker_input = true,
 }
 
---- { open, floating, focused, items, current, query }
---- items: non-empty lines of the result list; current: the line under the
---- list cursor (the item <CR> acts on); query: the prompt text.
+-- Highlight groups pickers use for marked (multi-selected) items.
+local MARKED_HIGHLIGHTS = {
+  Statement = true, -- ddu-ui-ff's default `highlights.selected`
+  TelescopeMultiSelection = true,
+  SnacksPickerSelected = true,
+}
+
+--- ddu fills its list asynchronously, and a reopened list briefly shows the
+--- previous session's lines (the buffer is reused): it is loading until ddu
+--- reports the items gathered and drawn.
+local function ddu_loading(buf)
+  local name = vim.fn.bufname(buf):match('^ddu%-ff%-(.+)$')
+  if not name then
+    return false
+  end
+  local ok, context = pcall(vim.fn['ddu#get_context'], name)
+  return ok and type(context) == 'table' and not (context.done and context.doneUi) or false
+end
+
+local function marked_lines(buf)
+  local lines = {}
+  for _, mark in ipairs(vim.api.nvim_buf_get_extmarks(buf, -1, 0, -1, { details = true })) do
+    if MARKED_HIGHLIGHTS[mark[4].hl_group] then
+      lines[#lines + 1] = vim.api.nvim_buf_get_lines(buf, mark[2], mark[2] + 1, false)[1]
+    end
+  end
+  return lines
+end
+
+--- { open, floating, focused, loading, items, visible, current, marked, query }
+--- loading: the picker is still filling the list; items: non-empty lines of
+--- the result list; visible: those on screen in the list window; current:
+--- the line under the list cursor (the item <CR> acts on); marked: lines
+--- marked for a multi-item action; query: the prompt text.
 function M.picker()
-  local result = { open = false, floating = false, focused = false, items = {}, query = nil, current = nil }
+  local result = { open = false, floating = false, focused = false, loading = false, items = {}, visible = {}, marked = {}, query = nil, current = nil }
   local cur = vim.api.nvim_get_current_win()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(win)
@@ -166,6 +197,14 @@ function M.picker()
       end
       local row = vim.api.nvim_win_get_cursor(win)[1]
       result.current = lines[row] ~= '' and lines[row] or nil
+      result.marked = marked_lines(buf)
+      result.loading = result.loading or (ft == 'ddu-ff' and ddu_loading(buf))
+      local info = vim.fn.getwininfo(win)[1]
+      for i = info.topline, info.botline do
+        if lines[i] and lines[i] ~= '' then
+          result.visible[#result.visible + 1] = lines[i]
+        end
+      end
     elseif PROMPT_FILETYPES[ft] then
       result.open = true
       result.floating = result.floating or floating

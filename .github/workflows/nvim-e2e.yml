@@ -1,0 +1,111 @@
+name: nvim-e2e
+
+# Runs the Neovim end-to-end workflow tests (nvim/tests) against the plugin
+# versions pinned in nvim/dein/lock.json, so a pull request shows which
+# workflows it changes. The job summary lists every changed workflow.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "nvim/**"
+      - "bin/**"
+      - ".github/workflows/nvim-e2e.yml"
+  pull_request:
+    paths:
+      - "nvim/**"
+      - "bin/**"
+      - ".github/workflows/nvim-e2e.yml"
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    # Same OS as the machine the behavior was pinned on.
+    runs-on: macos-14
+    timeout-minutes: 45
+    env:
+      # Toolchain versions of the machine the lockfile was written on.
+      NVIM_VERSION: v0.11.0
+      TREE_SITTER_CLI_VERSION: 0.25.3
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+      E2E_DEIN_REPOS: ${{ github.workspace }}/.e2e/repos
+      E2E_COC_EXTENSIONS: ${{ github.workspace }}/.e2e/coc/node_modules
+      E2E_TMPDIR: ${{ github.workspace }}/.e2e/tmp
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Neovim
+        run: |
+          curl -fsSL "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-macos-arm64.tar.gz" | tar -xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/nvim-macos-arm64/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.2
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: 2.2.6
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install tools
+        run: |
+          # UltiSnips' Python host
+          python -m pip install pynvim==0.4.3 msgpack==1.0.4 greenlet==1.1.2
+          # nvim-treesitter generates a few parsers from their grammars
+          npm install -g "tree-sitter-cli@$TREE_SITTER_CLI_VERSION"
+          # the pickers' sources
+          brew install fd ripgrep ghq
+          nvim --version | head -1
+
+      - name: Make room for plugins at an absolute path
+        run: |
+          jq -r '.dein | keys[] | select(startswith("/"))' nvim/dein/lock.json | while read -r dir; do
+            sudo mkdir -p "$(dirname "$dir")"
+            sudo chown "$(id -un)" "$(dirname "$dir")"
+          done
+
+      # Plugins and compiled parsers, saved right away so that a run whose
+      # tests fail still caches them.
+      - name: Restore the locked plugins
+        id: plugins
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .e2e/repos
+            .e2e/coc
+          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
+
+      - name: Install the locked plugins
+        run: nvim/tests/plugins install
+
+      - name: Save the locked plugins
+        if: steps.plugins.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .e2e/repos
+            .e2e/coc
+          key: ${{ steps.plugins.outputs.cache-primary-key }}
+
+      # The suite's own cache: denops plugins compiled by Deno.
+      - name: Restore the test cache
+        id: e2e-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .e2e/tmp/nvim-e2e-cache
+          key: nvim-e2e-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
+
+      - name: Run the workflow tests
+        run: nvim/tests/run --jobs 3 --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Save the test cache
+        if: always() && steps.e2e-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .e2e/tmp/nvim-e2e-cache
+          key: ${{ steps.e2e-cache.outputs.cache-primary-key }}

@@ -74,7 +74,7 @@ local function first_existing(candidates)
   end
 end
 
-local function find_dein_repos()
+function M.find_dein_repos()
   local found = first_existing(vim.F.pack_len(
     os.getenv('E2E_DEIN_REPOS'),
     M.config_dir .. '/dein/repos',
@@ -86,7 +86,7 @@ local function find_dein_repos()
   error('Cannot find installed dein plugins. Set E2E_DEIN_REPOS to the dein repos directory.')
 end
 
-local function find_coc_extensions()
+function M.find_coc_extensions()
   return first_existing(vim.F.pack_len(
     os.getenv('E2E_COC_EXTENSIONS'),
     vim.fs.normalize('~/.config/coc/extensions/node_modules')
@@ -179,10 +179,29 @@ local function link_config(config_home)
       symlink(M.config_dir .. '/dein/' .. name, dein_dir .. '/' .. name)
     end
   end
-  symlink(find_dein_repos(), dein_dir .. '/repos')
+  symlink(M.find_dein_repos(), dein_dir .. '/repos')
 end
 
 --- Creates the run directory and warms the plugin manager cache.
+--- Per-child XDG state/cache and coc data directories, so children never
+--- share plugin state. (XDG_DATA_HOME stays per run: its site directory is
+--- on the runtimepath, which dein's state cache must see unchanged.)
+function M.child_dirs(ctx, id)
+  local root = mkdir(vim.fs.joinpath(ctx.run_dir, 'children', id))
+  local coc = mkdir(root .. '/coc')
+  local ext_dir = mkdir(coc .. '/extensions/node_modules')
+  local shared = ctx.coc_data_home .. '/extensions'
+  for _, name in ipairs(ctx.coc_extensions) do
+    symlink(shared .. '/node_modules/' .. name, ext_dir .. '/' .. name)
+  end
+  write_file(coc .. '/extensions/package.json', read_file(shared .. '/package.json') or '{}')
+  return {
+    XDG_STATE_HOME = mkdir(root .. '/state'),
+    XDG_CACHE_HOME = mkdir(root .. '/cache'),
+    E2E_COC_DATA_HOME = coc,
+  }
+end
+
 --- Returns the context table that workers and children read back.
 function M.prepare()
   local base = realpath(os.getenv('E2E_TMPDIR') or os.getenv('TMPDIR') or '/tmp')
@@ -219,7 +238,7 @@ function M.prepare()
   link_config(ctx.xdg.config)
 
   -- coc data home (per run) with a curated, deterministic set of extensions.
-  local coc_src = find_coc_extensions()
+  local coc_src = M.find_coc_extensions()
   local ext_dir = mkdir(ctx.coc_data_home .. '/extensions/node_modules')
   local deps = {}
   if coc_src then

@@ -262,6 +262,13 @@ describe('LSP', function()
         return nvim:line(7) == 'func read() Config {'
       end)
       t.eq('\tvar cfg Config = read()', nvim:line(12))
+      -- The other file is loaded into a hidden buffer and edited a moment later.
+      nvim:wait_for(function()
+        return nvim:lua([[
+          local buf = vim.fn.bufnr('util.go')
+          return buf > 0 and vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_lines(buf, 3, 4, false)[1] or nil
+        ]]) == '\treturn read().Name'
+      end, { message = 'the rename to reach util.go' })
       nvim:cmd('wall')
       t.eq('\treturn read().Name', nvim:read_file('util.go')[4])
     end)
@@ -499,23 +506,5 @@ describe('LSP', function()
       end)
       t.eq('i', nvim:mode())
     end)
-
-    it('jumping to a snippet placeholder shows the signature help', function()
-      local nvim = project(GO, 'main.go')
-      nvim:type('Go')
-      nvim:type('e2eSn')
-      probe.wait_completion(nvim, { item = 'e2eSnippet' })
-      nvim:type('<Tab>')
-      nvim:wait_mode('s')
-      nvim:type('X', { wait = 1000 })
-      nvim:type('<C-s><C-n>')
-      nvim:wait_for(function()
-        for _, f in ipairs(nvim:floats()) do
-          if table.concat(f.lines, '\n'):find('e2eSnippet(first, second)', 1, true) then
-            return true
-          end
-        end
-      end)
-    end, { retry = 4 })
   end)
 end)

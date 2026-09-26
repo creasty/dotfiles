@@ -10,6 +10,7 @@ local Child = {}
 Child.__index = Child
 
 local DEFAULT_TIMEOUT = 8000
+local spawned = 0
 
 --- Spawns a child.
 --- opts.cwd        working directory (default: a fresh sandbox directory)
@@ -40,8 +41,9 @@ function Child.new(opts)
   vim.fn.mkdir(state_dir, 'p')
   self.lsp_state = state_dir .. '/lsp.json'
   self.copilot_state = state_dir .. '/copilot.json'
+  spawned = spawned + 1
   local extra_env = type(opts.env) == 'function' and opts.env(self.dir) or opts.env or {}
-  local child_env = vim.tbl_extend('force', {
+  local child_env = vim.tbl_extend('force', env.child_dirs(ctx, ('%d-%d'):format(vim.uv.os_getpid(), spawned)), {
     E2E_FAKE_LSP_STATE = self.lsp_state,
     E2E_FAKE_COPILOT_STATE = self.copilot_state,
   }, extra_env)
@@ -95,14 +97,24 @@ end
 --- as if you had paused and moved on. Prompts such as input() or getchar()
 --- are left alone: they are not "blocking" and wait for more keys.
 function Child:settle()
-  for _ = 1, 20 do
+  -- One <Ignore> resolves a pending sequence, but keys a plugin feeds while
+  -- it starts up can keep one pending a little longer: back off, then give up.
+  local deadline = vim.uv.now() + 2000
+  local pause = 0
+  while true do
     local mode = self:request('nvim_get_mode')
     if not mode.blocking then
       return mode
     end
+    if vim.uv.now() > deadline then
+      error('child stays blocked on a pending key sequence')
+    end
     self:request('nvim_input', '<Ignore>')
+    if pause > 0 then
+      vim.wait(pause)
+    end
+    pause = math.min(pause * 2 + 1, 50)
   end
-  error('child stays blocked on a pending key sequence')
 end
 
 --- Types keys (Neovim key notation; a literal "<" is "<lt>").

@@ -169,7 +169,8 @@ function probe.wait_picker_ready(nvim, opts)
   end, { timeout = (opts or {}).timeout or 20000, message = 'the picker backend' })
 end
 
---- Waits until the picker is open and `pred(state)` holds (default: has items).
+--- Waits until the picker is open, done loading, and `pred(state)` holds
+--- (default: has items).
 function probe.wait_picker(nvim, pred, opts)
   opts = opts or {}
   pred = pred or function(state)
@@ -178,7 +179,7 @@ function probe.wait_picker(nvim, pred, opts)
   local last
   local ok = pcall(nvim.wait_for, nvim, function()
     last = probe.picker(nvim)
-    return last.open and pred(last)
+    return last.open and not last.loading and pred(last)
   end, { timeout = opts.timeout or 15000 })
   if not ok then
     error('picker did not reach the expected state; last: ' .. vim.inspect(last), 2)

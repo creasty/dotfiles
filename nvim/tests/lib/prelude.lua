@@ -64,7 +64,7 @@ if vim.fn.filereadable(settings_path) == 1 then
   end
 end
 vim.g.coc_user_config = { languageserver = languageservers }
-vim.g.coc_data_home = ctx.coc_data_home
+vim.g.coc_data_home = os.getenv('E2E_COC_DATA_HOME') or ctx.coc_data_home
 vim.api.nvim_create_autocmd('VimEnter', {
   once = true,
   callback = function()

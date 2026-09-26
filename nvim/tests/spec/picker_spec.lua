@@ -1,4 +1,5 @@
 -- Fuzzy finder workflows (ddu.vim today): <C-q> file finder, <Space>/ grep.
+-- What every source does on reopen, scroll, <C-l> and <C-r>: picker_checklist_spec.lua.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -123,37 +124,6 @@ describe('Picker', function()
       nvim:type('<C-q>')
       probe.wait_picker_closed(nvim)
     end)
-
-    it('reopening in the same directory restores the previous query', function()
-      local nvim = in_project()
-      open_finder(nvim)
-      nvim:type('ustr')
-      probe.wait_picker(nvim, function(p)
-        return #p.items == 1
-      end)
-      nvim:type('<C-q>')
-      probe.wait_picker_closed(nvim)
-      nvim:type('<C-q>')
-      probe.wait_picker(nvim, function(p)
-        return #p.items == 1 and p.query == 'ustr'
-      end)
-    end)
-
-    it('<C-l> refreshes the list (e.g. picks up new files)', function()
-      local nvim = in_project()
-      open_finder(nvim)
-      nvim:write_file('src/new_file.ts', { '' })
-      nvim:type('new_file')
-      nvim:sleep(300)
-      t.eq({}, probe.picker(nvim).items)
-      nvim:type('<C-l>')
-      local picker = probe.wait_picker(nvim, function(p)
-        return #p.items == 1
-      end)
-      t.eq({ 'src/new_file.ts' }, picker.items)
-      t.eq('i', nvim:mode(), 'back in the prompt')
-    end)
-
   end)
 
   describe('repositories (<C-q> in $HOME)', function()
@@ -217,38 +187,6 @@ describe('Picker', function()
       t.eq({ 1, 13 }, nvim:cursor())
     end)
 
-    it('<Space>/ again in the same directory reopens the last search without asking', function()
-      local nvim = in_project()
-      nvim:type('<Space>/')
-      nvim:type('upper<CR>')
-      probe.wait_picker(nvim, function(p)
-        return #p.items == 1
-      end)
-      nvim:type('<Esc>')
-      probe.wait_picker_closed(nvim)
-      nvim:type('<Space>/')
-      local picker = probe.wait_picker(nvim, function(p)
-        return #p.items == 1
-      end)
-      t.match('upper', picker.items[1])
-    end)
-
-    it('<C-r> asks for a new pattern and searches again', function()
-      local nvim = in_project()
-      nvim:type('<Space>/')
-      nvim:type('upper<CR>')
-      probe.wait_picker(nvim, function(p)
-        return #p.items == 1
-      end)
-      nvim:type('<C-r>')
-      t.eq('Search: ', nvim:call('getcmdprompt'))
-      nvim:type('<C-u>readme<CR>')
-      local picker = probe.wait_picker(nvim, function(p)
-        return #p.items == 2 and p.items[1]:find('README', 1, true)
-      end)
-      t.eq({ 'README.md 1:2 |# readme', 'README.md 2:14 |needle in the readme' }, picker.items)
-    end)
-
     it(':Search {dir} searches below that directory', function()
       local nvim = in_project()
       nvim:type(':Search src/util<CR>')
@@ -257,6 +195,7 @@ describe('Picker', function()
       t.eq({ 'strings.ts 2:6 |const needle = 1;' }, picker.items)
     end)
   end)
+
   describe('result list keys (grep and location lists open with the list focused)', function()
     local function grep(nvim, pattern)
       nvim:type('<Space>/')

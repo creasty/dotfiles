@@ -12,6 +12,8 @@ local active_children = {}
 
 local SKIP = {}
 
+math.randomseed(vim.uv.hrtime() + vim.uv.os_getpid())
+
 function t.describe(name, fn)
   local group = { name = name, parent = current, children = {}, before = {}, after = {} }
   table.insert(current.children, group)
@@ -252,6 +254,11 @@ function t.run_case(case, default_timeout)
   local attempts = 1 + (case.opts.retry or 0)
   local result
   for attempt = 1, attempts do
+    if attempt > 1 then
+      -- Back off a random moment, so that tests retrying in parallel
+      -- workers do not keep colliding in lockstep.
+      vim.wait(math.random(200, 1500))
+    end
     result = t.run_attempt(case, default_timeout)
     result.attempts = attempt
     if result.status ~= 'fail' then

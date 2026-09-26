@@ -165,6 +165,9 @@ describe('Completion', function()
       probe.wait_completion(nvim, { item = 'e2eSnippet' })
       nvim:type('<Tab>')
       nvim:wait_mode('s')
+      -- A person reads the placeholder first: typing into it within coc's
+      -- first few hundred milliseconds can end the snippet session.
+      nvim:sleep(500)
       nvim:type('X', { wait = 1000 })
       nvim:type('<C-s><C-n>')
       nvim:wait_mode('s')
@@ -174,6 +177,29 @@ describe('Completion', function()
       nvim:wait_mode('s')
       nvim:type('Z')
       t.eq('\te2eSnippet(Z, Y)', nvim:line(4))
+    end, { retry = 4 })
+
+    -- coc's snippet sessions trip over each other when two run at the same
+    -- moment, even in separate Neovims: keep the tests that jump between
+    -- placeholders in this file, so they never run in parallel.
+    it('jumping to the next placeholder shows the signature help', function()
+      local nvim = go_buffer()
+      nvim:type('ae2eSn')
+      probe.wait_completion(nvim, { item = 'e2eSnippet' })
+      nvim:type('<Tab>')
+      nvim:wait_mode('s')
+      -- A person reads the placeholder first: typing into it within coc's
+      -- first few hundred milliseconds can end the snippet session.
+      nvim:sleep(500)
+      nvim:type('X', { wait = 1000 })
+      nvim:type('<C-s><C-n>')
+      nvim:wait_for(function()
+        for _, f in ipairs(nvim:floats()) do
+          if table.concat(f.lines, '\n'):find('e2eSnippet(first, second)', 1, true) then
+            return true
+          end
+        end
+      end)
     end, { retry = 4 })
 
     it('<C-s><C-c> ends the snippet session', function()

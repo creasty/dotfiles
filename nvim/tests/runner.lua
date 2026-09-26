@@ -16,6 +16,7 @@ Runs the end-to-end workflow suite against this repository's nvim config.
 
 Options:
   -f, --filter PATTERN   only run tests whose full name matches the Lua pattern
+                         (repeat to run the tests matching any of them)
   -j, --jobs N           number of spec files run in parallel (default: 4)
   -l, --list             list the workflow requirements (test names) and exit
   -q, --quirks           with --list: also show why each quirk is pinned
@@ -23,25 +24,26 @@ Options:
   -v, --verbose          print every test, not only failures
       --timeout MS       per-test timeout (default: 30000)
       --update-golden    rewrite golden files from the current behavior
+      --summary FILE     also append a Markdown report to FILE (for CI)
   -h, --help             show this help
 
 spec: a file under spec/ or a substring of its name (e.g. `completion`).
 Environment: E2E_DEIN_REPOS, E2E_COC_EXTENSIONS, E2E_TMPDIR (see README).]]
 
 local function parse_args(argv)
-  local opts = { jobs = 4, timeout = 30000, specs = {} }
+  local opts = { jobs = 4, timeout = 30000, specs = {}, filters = {} }
   local i = 1
   while i <= #argv do
     local a = argv[i]
     if a == '-f' or a == '--filter' then
       i = i + 1
-      opts.filter = argv[i]
+      table.insert(opts.filters, argv[i])
     elseif a == '-j' or a == '--jobs' then
       i = i + 1
       opts.jobs = tonumber(argv[i])
     elseif a == '-q' or a == '--quirks' then
-    opts.quirks = true
-  elseif a == '-l' or a == '--list' then
+      opts.quirks = true
+    elseif a == '-l' or a == '--list' then
       opts.list = true
     elseif a == '-k' or a == '--keep' then
       opts.keep = true
@@ -52,6 +54,9 @@ local function parse_args(argv)
       opts.timeout = tonumber(argv[i])
     elseif a == '--update-golden' then
       opts.update_golden = true
+    elseif a == '--summary' then
+      i = i + 1
+      opts.summary = argv[i]
     elseif a == '--worker' then
       i = i + 1
       opts.worker = argv[i]
@@ -72,6 +77,18 @@ local function emit(event)
   io.stdout:flush()
 end
 
+local function selected(name)
+  if #opts.filters == 0 then
+    return true
+  end
+  for _, filter in ipairs(opts.filters) do
+    if name:find(filter) then
+      return true
+    end
+  end
+  return false
+end
+
 ---------------------------------------------------------------------------
 -- Worker: run one spec file
 ---------------------------------------------------------------------------
@@ -83,7 +100,7 @@ if opts.worker then
     os.exit(1)
   end
   for _, case in ipairs(cases) do
-    if not opts.filter or case.name:find(opts.filter) then
+    if selected(case.name) then
       if opts.list then
         emit({ event = 'case', name = case.name, quirk = case.opts.quirk })
       else
@@ -196,8 +213,8 @@ end
 local function start_worker(spec)
   running = running + 1
   local cmd = { vim.v.progpath, '--clean', '-l', tests_dir .. '/runner.lua', '--worker', spec, '--timeout', tostring(opts.timeout) }
-  if opts.filter then
-    vim.list_extend(cmd, { '--filter', opts.filter })
+  for _, filter in ipairs(opts.filters) do
+    vim.list_extend(cmd, { '--filter', filter })
   end
   if opts.list then
     table.insert(cmd, '--list')
@@ -321,6 +338,66 @@ out(('\n%s, %s, %s  %s\n'):format(
   color('33', counts.skip .. ' skipped'),
   color('2', ('(%.1fs)'):format((vim.uv.hrtime() - started_at) / 1e9))
 ))
+
+--- Markdown for CI (e.g. $GITHUB_STEP_SUMMARY): what changed, and why.
+local function write_summary(file)
+  local function html(s)
+    return (s:gsub('&', '&amp;'):gsub('<', '&lt;'):gsub('>', '&gt;'))
+  end
+  local lines = {
+    '## Neovim workflow tests',
+    '',
+    ('**%d passed**, **%d failed**, %d skipped (%.0fs)'):format(counts.pass, counts.fail, counts.skip, (vim.uv.hrtime() - started_at) / 1e9),
+    '',
+  }
+  if #failures > 0 then
+    lines[#lines + 1] = ('### Changed workflows (%d)'):format(#failures)
+    lines[#lines + 1] = ''
+    lines[#lines + 1] = 'A failing requirement is a workflow that behaves differently now. A failing **quirk** pinned an oddity of the old setup: if the new behavior is better, update or delete the test.'
+    lines[#lines + 1] = ''
+    for _, r in ipairs(failures) do
+      local error_text = tostring(r.error):gsub('\n%s*stack traceback:.*$', '')
+      vim.list_extend(lines, {
+        ('<details><summary>%s%s</summary>'):format(r.quirk and '<b>[quirk]</b> ' or '', html(r.name)),
+        '',
+        ('`%s`%s'):format(rel(r.spec), r.quirk and (' — pinned because ' .. html(r.quirk)) or ''),
+        '',
+        '```text',
+        error_text,
+      })
+      if r.dump then
+        vim.list_extend(lines, { '', r.dump })
+      end
+      vim.list_extend(lines, { '```', '', '</details>', '' })
+    end
+  end
+  local flaky = vim.tbl_filter(function(r)
+    return r.status == 'pass' and (r.attempts or 1) > 1
+  end, results)
+  if #flaky > 0 then
+    lines[#lines + 1] = ('### Passed on a retry (%d)'):format(#flaky)
+    lines[#lines + 1] = ''
+    for _, r in ipairs(flaky) do
+      lines[#lines + 1] = ('- %s (attempt %d)'):format(html(r.name), r.attempts)
+    end
+    lines[#lines + 1] = ''
+  end
+  if #skips > 0 then
+    lines[#lines + 1] = ('### Skipped (%d)'):format(#skips)
+    lines[#lines + 1] = ''
+    for _, r in ipairs(skips) do
+      lines[#lines + 1] = ('- %s: %s'):format(html(r.name), html(r.error or ''))
+    end
+    lines[#lines + 1] = ''
+  end
+  local f = assert(io.open(file, 'a'))
+  f:write(table.concat(lines, '\n'), '\n')
+  f:close()
+end
+
+if opts.summary then
+  write_summary(opts.summary)
+end
 
 env.cleanup(ctx, opts.keep)
 os.exit(counts.fail > 0 and 1 or 0)
