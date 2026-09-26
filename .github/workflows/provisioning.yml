@@ -31,7 +31,7 @@ jobs:
           - name: language support
             tags: base,lang
           - name: apps and system
-            tags: install,app,system
+            tags: base,install,app,system
             skip_tags: install.homebrew.formula
     name: ${{ matrix.name }}
     steps:
@@ -59,26 +59,13 @@ jobs:
       - name: Run
         run: ./provision -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
         env:
+          DOTFILES_NOVERIFY: 1 # in the next step
           MISE_GITHUB_TOKEN: ${{ github.token }} # avoid GitHub API rate limits
           MISE_YES: 1
 
-      # The image also ships node, ruby and java, so make sure ours are the ones in use
       - name: Verify
-        if: matrix.name == 'language support'
-        run: |
-          zsh -i -c '
-            set -ex
-            [[ $commands[node] == ~/.local/share/mise/installs/node/* ]]
-            [[ $(node --version) == v24.* ]]
-            [[ $(ruby -e "print RUBY_VERSION") == 4.0.* ]]
-            [[ $JAVA_HOME -ef /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ]]
-            [[ $commands[rustup] -ef /opt/homebrew/opt/rustup/bin/rustup ]]
-            [[ $commands[cargo] == /opt/homebrew/opt/rustup/bin/cargo ]]
-            cargo --version
-            rustc --version
-          '
-          bash -lc '
-            set -ex
-            [[ $(command -v node) == ~/.local/share/mise/shims/node ]]
-            [[ $(command -v gem) == ~/.local/share/mise/shims/gem ]]
-          '
+        run: ./verify --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
+        env:
+          # Its cask still uses the `appcast` stanza Homebrew removed (fix in creasty/homebrew-tools)
+          DOTFILES_VERIFY_SKIP_CASKS: creasty/tools/keyboard
+          DOTFILES_VERIFY_STARTUP_MS: 500

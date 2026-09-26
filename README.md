@@ -20,6 +20,20 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/provision">dotfiles.creasty.com/provision</a> | bash</code></pre>
 
+## Verification
+
+Provisioning ends by verifying its result with behavioral tests: shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
+To verify a machine again, or only what certain tags provision:
+
+```sh-session
+$ ./verify
+$ ./verify --tags=lang
+$ ./verify -- --filter java  # options after `--` go to bats
+```
+
+The tests in `test/` are tagged with the Ansible tag of the tasks they verify (`base.link` as `base:link`).
+Set `DOTFILES_NOVERIFY=1` to provision without verifying.
+
 ## Project structure
 
 ### Main configuration directories
@@ -36,6 +50,7 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 - **`docs/`** : Setup documentation and resources
 - **`provisioning/`** : Ansible playbooks and tasks
+- **`test/`** : Behavioral tests of the provisioning
 
 ## Stats
 

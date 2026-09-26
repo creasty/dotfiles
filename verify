@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+#
+# Verifies that the provisioning is reflected on this machine by running the behavioral tests in test/.
+#
+#   ./verify [ansible-playbook options] [-- bats options]
+#
+# Each test is tagged with the Ansible tag of the tasks it verifies, so the --tags/--skip-tags given to
+# ./provision select the tests of what was provisioned (all of them by default).
+
+set -eu
+set -o pipefail
+
+: "${DOTFILES_PATH:="$HOME/dotfiles"}"
+
+load_envs() {
+  # shellcheck source=/dev/null
+  . "$DOTFILES_PATH/shell/profile"
+}
+
+install_test_tools() {
+  if command -v bats > /dev/null 2>&1 && yq --version 2>&1 | grep -q mikefarah; then
+    return
+  fi
+
+  echo 'Installing test tools...'
+  brew install bats-core yq
+  echo 'done'
+}
+
+# Prints the tags of the tasks that ansible-playbook selects with the given options, one per line
+list_task_tags() {
+  ansible-playbook -i 'localhost,' --list-tasks "$@" "$DOTFILES_PATH/provisioning/playbook.yml" < /dev/null \
+    | sed -n 's/.*TAGS: \[\(.*\)\]$/\1/p' \
+    | tr ',' '\n' \
+    | sed 's/^ *//; /^$/d' \
+    | LC_ALL=C sort -u
+}
+
+# Prints a bats tag filter that leaves out the tests of the tasks the given options don't select.
+# Bats tags can't contain dots, so tests write `base.link` as `base:link`.
+tag_filter() {
+  LC_ALL=C comm -23 <(list_task_tags) <(list_task_tags "$@") | tr . : | sed 's/^/!/' | paste -s -d , -
+}
+
+run_tests() {
+  local bats_options=(--timing --print-output-on-failure)
+  local filter
+
+  filter="$(tag_filter "$@")"
+  if [ -n "$filter" ]; then
+    bats_options+=(--filter-tags "$filter")
+  fi
+
+  echo 'Verifying...'
+  cd "$DOTFILES_PATH"
+  bats "${bats_options[@]}" ${extra_bats_options[@]+"${extra_bats_options[@]}"} test
+}
+
+#=== Entrypoint
+#==============================================================================================
+main() {
+  local ansible_options=()
+  extra_bats_options=()
+
+  while [ $# -gt 0 ]; do
+    if [ "$1" = -- ]; then
+      shift
+      extra_bats_options=("$@")
+      break
+    fi
+    ansible_options+=("$1")
+    shift
+  done
+
+  load_envs
+  install_test_tools
+  run_tests ${ansible_options[@]+"${ansible_options[@]}"}
+}
+
+main "$@"

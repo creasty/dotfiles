@@ -6,6 +6,7 @@ set -o pipefail
 : "${DOTFILES_PATH:="$HOME/dotfiles"}"
 : "${DOTFILES_BRANCH:=master}"
 : "${DOTFILES_NOEDIT_SECRETS:=0}"
+: "${DOTFILES_NOVERIFY:=0}"
 
 #=== Steps
 #==============================================================================================
@@ -142,6 +143,12 @@ run_provisioning() {
   echo 'done'
 }
 
+# Runs the behavioral tests of what was just provisioned
+verify_provisioning() {
+  [ "$DOTFILES_NOVERIFY" -eq 0 ] || return 0
+  "$DOTFILES_PATH/verify" "$@"
+}
+
 #=== Entrypoint
 #==============================================================================================
 main() {
@@ -156,6 +163,7 @@ main() {
   install_python3
   install_ansible
   run_provisioning "$@"
+  verify_provisioning "$@"
 }
 
 main "$@"
