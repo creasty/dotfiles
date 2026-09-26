@@ -42,7 +42,8 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Verification gaps
 
-- **Neovim's config**: the tests run Neovim without it (`-u NONE`), so nothing checks that it starts and installs its plugins.
+- **Neovim's config**: `./verify` runs Neovim without it (`-u NONE`).
+  The e2e suite ([creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106)) runs it with the plugins pinned in `nvim/dein/lock.json`, but nothing installs the toml files' plugins the way a fresh Mac does, at their latest commits.
   That's how the vanished `phaazon/hop.nvim` repository broke fresh installs unnoticed.
   coc.nvim's extensions need Node, from the `lang` tag, and no CI job provisions both `lang` and `app`.
 - **Idempotency**: nothing checks that a second provisioning run changes nothing.
@@ -74,5 +75,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 - The rustup guard never installed a toolchain: `rustup default` reports an implicit stable even when none is installed.
 - The zsh completion cache never refreshed: `ZSH_COMPDUMP` was unset.
 - Zsh plugin updates never reached existing Macs: `provision` only synced the submodules.
-- Fresh Neovim installs broke: `phaazon/hop.nvim` is gone, and nvim-treesitter's default branch became the incompatible `main`.
+- Fresh Neovim installs broke: nvim-treesitter's default branch became the incompatible `main`.
+  `phaazon/hop.nvim`, gone as well, moved to `smoka7/hop.nvim` in [creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106).
 - `creasty/tools/keyboard` stopped loading when Homebrew removed `appcast` ([creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)), and Google Chrome's cask failed on CI runners, which ship Chrome.
