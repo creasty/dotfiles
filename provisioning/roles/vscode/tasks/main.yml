@@ -1,65 +1,69 @@
-- set_fact:
+- ansible.builtin.set_fact:
     vscode: {}
     vscode_path: '{{ home_path }}/Library/Application Support/Code/User'
 
 - name: install vscode
-  homebrew_cask:
+  community.general.homebrew_cask:
     name:  visual-studio-code
     state: latest
     sudo_password: '{{ ansible_become_pass }}'
 
 - block:
     - name: allocate parent directories
-      file:
+      ansible.builtin.file:
         dest:    '{{ vscode_path }}/{{ item }}'
         state:   directory
-        recurse: yes
+        recurse: true
       loop_control:
         label: '{{ vscode_path }}/{{ item }}'
-      with_items: '{{ vscode.link.values() | map("dirname") | unique | list }}'
+      loop: '{{ vscode.link.values() | map("dirname") | unique | list }}'
 
     - name: check destinations
-      stat:
+      ansible.builtin.stat:
         path: '{{ vscode_path }}/{{ item.value }}'
       loop_control:
         label: '{{ item.value }}'
-      with_dict: '{{ vscode.link }}'
+      loop: '{{ vscode.link | dict2items }}'
       register: dest_stat
 
     - name: create backup files
-      command: |
+      ansible.builtin.command: |
         mv -f \
           {{ vscode_path | quote }}/{{ item.item.value | quote }} \
           {{ vscode_path | quote }}/{{ item.item.value | quote }}.bak
       when: item.stat.exists and not item.stat.islnk
       loop_control:
         label: '{{ item.item.value }}'
-      with_items: '{{ dest_stat.results }}'
+      loop: '{{ dest_stat.results }}'
 
     - name: create symlinks
-      file:
+      ansible.builtin.file:
         src:   '{{ dotfiles_path }}/{{ item.key }}'
         dest:  '{{ vscode_path }}/{{ item.value }}'
         state: link
-        force: yes
+        force: true
       loop_control:
         label: '{{ item.value }}'
-      with_dict: '{{ vscode.link }}'
+      loop: '{{ vscode.link | dict2items }}'
 
   when: vscode.link is defined
 
 - name: get installed extensions
-  command: |
+  ansible.builtin.command: |
     bash -lc 'code --list-extensions'
   register: installed_vscode_exts
 
 # code --list-extensions | sed -e 's/^/- /g' | pbcopy
 - name: install extensions
-  command: |
+  ansible.builtin.command: |
     bash -lc 'code --install-extension {{ item | quote }}'
+  register: install_vscode_ext
+  until: install_vscode_ext.rc == 0 # the marketplace occasionally returns 5xx
+  retries: 3
+  delay: 10
   when: |
     installed_vscode_exts.stdout.find(item) == -1
-  with_items:
+  loop:
     - TabNine.tabnine-vscode
     - Tyriar.sort-lines
     - alygin.vscode-tlaplus

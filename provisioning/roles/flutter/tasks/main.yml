@@ -1,5 +1,5 @@
 - name: install flutter
-  homebrew_cask:
+  community.general.homebrew_cask:
     name:  flutter
     state: latest
     sudo_password: '{{ ansible_become_pass }}'

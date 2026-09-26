@@ -1,23 +1,24 @@
-- set_fact:
+- ansible.builtin.set_fact:
     rust: {}
 
 - name: install rustup
-  homebrew:
+  community.general.homebrew:
     name:  rustup
     state: latest
 
-- name: run rust-init
-  command: |
-    bash -lc 'rustup-init  -v -y --no-modify-path'
+# `rustup default` reports an implicit stable even when nothing is installed
+- name: install toolchain
+  ansible.builtin.command: |
+    bash -lc 'rustup toolchain list | grep -q default || rustup default stable'
 
 - name: rustup update
-  command: |
+  ansible.builtin.command: |
     bash -lc 'rustup update'
 
 - name: install components
-  command: |
+  ansible.builtin.command: |
     bash -lc 'rustup component add {{ item }}'
-  with_items:
+  loop:
     - clippy        # https://github.com/rust-lang/rust-clippy
     - rust-src      # https://github.com/rust-lang/rust
     - rust-analyzer # https://github.com/rust-lang/rust-analyzer

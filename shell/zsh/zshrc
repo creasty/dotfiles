@@ -15,6 +15,7 @@ unset file
 # @see https://gist.github.com/ctechols/ca1035271ad134841284
 autoload -Uz compinit
 setopt extendedglob
+ZSH_COMPDUMP="${ZDOTDIR:-$HOME}/.zcompdump"
 if [[ -n "$ZSH_COMPDUMP"(#qN.mh+24) ]]; then
   compinit -i -d "$ZSH_COMPDUMP"
   compdump
@@ -157,7 +158,7 @@ hash -d q=~/go/src
 hash -d g=~/go/src/github.com
 
 # nvim
-hash -d nvim=/usr/local/share/nvim/runtime
+hash -d nvim=/opt/homebrew/share/nvim/runtime
 
 #  Type ahead auto suggestion
 #-----------------------------------------------
@@ -193,6 +194,12 @@ ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=(
 #  Syntax highlighting
 #-----------------------------------------------
 source ~/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+#  mise
+#-----------------------------------------------
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+fi
 
 #  Direnv
 #-----------------------------------------------

@@ -1,22 +1,22 @@
-- set_fact:
+- ansible.builtin.set_fact:
     golang: {}
 
 - name: install language
-  homebrew:
+  community.general.homebrew:
     name:  go
     state: latest
 
 - name: install tools (tap)
-  homebrew_tap:
+  community.general.homebrew_tap:
     name:  '{{ item }}'
     state: present
-  with_items:
+    trust: true
+  loop:
     - golangci/tap # for golangci-lint
 
 - name: install tools
-  homebrew:
-    name:  '{{ item }}'
+  community.general.homebrew:
+    name:
+      - golangci/tap/golangci-lint # Fast linters runner for Go
+      - gopls # Language server for the Go language
     state: latest
-  with_items:
-    - golangci/tap/golangci-lint # Fast linters runner for Go
-    - gopls # Language server for the Go language

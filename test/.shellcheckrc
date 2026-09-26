@@ -1,0 +1,2 @@
+# The tests pass commands in single quotes for the shells they start to expand
+disable=SC2016

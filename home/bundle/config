@@ -1,7 +1,6 @@
 ---
-BUNDLE_BUILD__NOKOGIRI: "--with-xml2-lib=/usr/local/opt/libxml2/lib --with-xml2-include=/usr/local/opt/libxml2/include"
 BUNDLE_GEM__TEST: "rspec"
 BUNDLE_GEM__MIT: "false"
 BUNDLE_GEM__COC: "false"
 BUNDLE_GIT__ALLOW_INSECURE: "true"
-BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-icu-dir=/usr/local/opt/icu4c"
+BUNDLE_BUILD__CHARLOCK_HOLMES: "--with-icu-dir=/opt/homebrew/opt/icu4c"

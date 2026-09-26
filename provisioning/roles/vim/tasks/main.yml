@@ -1,33 +1,25 @@
 - name: install neovim
-  homebrew:
+  community.general.homebrew:
     name:  neovim
     state: latest
 
 - name: install dein.vim
-  git:
+  ansible.builtin.git:
     repo:   https://github.com/Shougo/dein.vim
     dest:   '{{ dotfiles_path }}/nvim/dein/repos/github.com/Shougo/dein.vim'
-    update: False
-
-- name: install deps via brew (tap)
-  homebrew_tap:
-    name:  '{{ item }}'
-    state: present
-  with_items:
-    - hashicorp/tap # for terraform-ls
+    update: false
 
 - name: install deps via brew
-  homebrew:
-    name:  '{{ item }}'
+  community.general.homebrew:
+    name:
+      - ansible-lint
+      - clang-format
+      - deno
+      - terraform-ls
+      - llvm # clangd
+      - shellcheck
+      - watchman
     state: latest
-  with_items:
-    - ansible-lint
-    - clang-format
-    - deno
-    - terraform-ls
-    - llvm # clangd
-    - shellcheck
-    - watchman
 
 #- name: install deps via pip
 #  pip:

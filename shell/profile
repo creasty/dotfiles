@@ -24,10 +24,8 @@ export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
 # Rust
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 export PATH="$PATH:$HOME/.cargo/bin"
-
-# llvm
-export PATH="/usr/local/opt/llvm/bin:$PATH"
 
 # libpq
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
@@ -58,6 +56,8 @@ export DISABLE_SPRING=1
 
 # Rust
 export RUST_BACKTRACE=1
+# ...for panics only: capturing a backtrace for every error makes Rust CLIs (e.g. mise) ~80ms slower
+export RUST_LIB_BACKTRACE=0
 
 # Create React App
 export BROWSER=none
@@ -66,24 +66,9 @@ export BROWSER=none
 export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc"
 
 # Android
-export ANDROID_HOME=/usr/local/opt/android-sdk
+export ANDROID_HOME="$HOME/Library/Android/sdk"
 
-#  Anyenv
+#  mise
 #-----------------------------------------------
-if [ -n "${ANYENV_SHELL:-}" ] && command -v 'anyenv' > /dev/null 2>&1; then
-  # Cache init script
-  ANYENV_INIT_FILE="$HOME/.anyenv-init-$ANYENV_SHELL"
-  if [ -n "${ANYENV_INIT_CACHE_DISABLED:-}" ] || [ ! -f "$ANYENV_INIT_FILE" ]; then
-    anyenv init - --no-rehash "$ANYENV_SHELL" > "$ANYENV_INIT_FILE"
-  fi
-
-  # shellcheck source=/dev/null
-  . "$ANYENV_INIT_FILE"
-
-  if [ -z "${ANYENV_INIT_CACHE_DISABLED:-}" ]; then
-    # Lazy rehashing
-    (anyenv rehash &) 2> /dev/null
-  else
-    anyenv rehash
-  fi
-fi
+# Shims for non-interactive shells; interactive zsh activates mise in .zshrc
+export PATH="$HOME/.local/share/mise/shims:$PATH"

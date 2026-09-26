@@ -1,21 +1,19 @@
 homebrew:
   taps:
-    - 1password/tap # for 1password-cli
     - creasty/tools # for keyboard, rid
+    - hashicorp/tap # for terraform
 
   # brew list --cask --full-name
   casks:
     - 1password # https://1password.com/
-    - 1password/tap/1password-cli # https://developer.1password.com/docs/cli
+    - 1password-cli # https://developer.1password.com/docs/cli
     - adobe-creative-cloud # https://creative.adobe.com/products/creative-cloud
-    - alacritty # https://github.com/jwilm/alacritty
     - appcleaner # https://freemacsoft.net/appcleaner/
-    - chromedriver # https://sites.google.com/a/chromium.org/chromedriver/home
     - creasty/tools/keyboard # https://github.com/creasty/Keyboard
-    - docker # https://www.docker.com/community-edition
+    - docker-desktop # https://www.docker.com/products/docker-desktop
     - figma # https://www.figma.com/
+    - gcloud-cli # https://cloud.google.com/cli/
     - google-chrome # https://www.google.com/chrome/
-    - google-cloud-sdk # https://cloud.google.com/sdk/
     - google-drive # https://www.google.com/drive/
     - google-japanese-ime # https://www.google.co.jp/ime/
     - imageoptim # https://imageoptim.com/mac
@@ -23,17 +21,13 @@ homebrew:
     - kitty # https://github.com/kovidgoyal/kitty
     - ngrok # https://ngrok.com/
     - proxyman # https://proxyman.io/
-    - pushplaylabs-sidekick # https://www.meetsidekick.com/
-    - qlcolorcode # https://github.com/anthonygelibert/QLColorCode
-    - qlmarkdown # https://github.com/toland/qlmarkdown
-    - qlstephen # https://whomwah.github.io/qlstephen/
-    - quicklook-json # http://www.sagtau.com/quicklookjson.html
+    - qlmarkdown # https://github.com/sbarex/QLMarkdown
     - raycast # https://raycast.app/
     - rightfont # https://rightfontapp.com/
     - spotify # https://www.spotify.com/
+    - syntax-highlight # https://github.com/sbarex/SourceCodeSyntaxHighlight
     - tableplus # https://tableplus.io/
     - tunnelbear # https://www.tunnelbear.com/
-    - webpquicklook # https://github.com/emin/WebPQuickLook
 
   # brew leaves | xargs brew desc --eval-all | sed -E 's/^([^:]*): /- \1 # /g'
   formulas:
@@ -58,6 +52,7 @@ homebrew:
     - git-lfs # Git extension for versioning large files
     - gnupg # GNU Pretty Good Privacy (PGP) package
     - graphviz # Graph visualization software from AT&T and Bell Labs
+    - hashicorp/tap/terraform # Tool to build, change, and version infrastructure
     - hyperfine # Command-line benchmarking tool
     - imagemagick # Tools and libraries to manipulate images in many formats
     - jo # JSON output from a shell
@@ -74,9 +69,7 @@ homebrew:
     - protobuf # Protocol buffers (Google's data interchange format)
     - ripgrep # Search tool like grep and The Silver Searcher
     - sd # Intuitive find & replace CLI
-    - terraform # Tool to build, change, and version infrastructure
     - tmux # Terminal multiplexer
-    - trash # CLI tool that moves files or folder to the trash
     - uv # Extremely fast Python package installer and resolver, written in Rust
     - webp # Image format providing lossless and lossy compression for web images
     - xh # Friendly and fast tool for sending HTTP requests
@@ -90,6 +83,7 @@ link:
   config/bat: .config/bat
   config/git: .config/git
   config/kitty: .config/kitty
+  config/mise: .config/mise
   config/peco: .config/peco
   config/ripgreprc: .config/.ripgreprc
   config/tmux: .config/tmux
@@ -98,7 +92,7 @@ link:
   home/ansible.cfg: .ansible.cfg
   home/aws/config: .aws/config
   home/bundle/config: .bundle/config
-  home/cargo/config: .cargo/config
+  home/cargo/config.toml: .cargo/config.toml
   home/ctags: .ctags
   home/curlrc: .curlrc
   home/fdignore: .fdignore
@@ -116,29 +110,10 @@ link:
   shell/bash/bash_profile: .bash_profile
   shell/bash/bashrc: .bashrc
   shell/profile: .profile
+  shell/zsh/zprofile: .zprofile
   shell/zsh/zshenv: .zshenv
   shell/zsh/zshrc: .zshrc
   shell/zsh: .zsh
-
-anyenv:
-  dir: "{{ home_path }}/.anyenv"
-  plugins_dir: "{{ home_path }}/.anyenv/plugins"
-  envs_dir: "{{ home_path }}/.anyenv/envs"
-  libexec_dir: "{{ home_path }}/.anyenv/libexec"
-
-nodejs:
-  default_packages_path: "{{ dotfiles_path }}/config/nodenv/default-packages"
-
-  # https://nodejs.org/en
-  versions:
-    - "18.15.0"
-
-ruby:
-  default_gems_path: "{{ dotfiles_path }}/config/rbenv/default-gems"
-
-  # https://www.ruby-lang.org/en/downloads/
-  versions:
-    - "3.2.1"
 
 java:
   versions:

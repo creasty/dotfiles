@@ -20,6 +20,20 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/provision">dotfiles.creasty.com/provision</a> | bash</code></pre>
 
+## Verification
+
+Provisioning ends by verifying its result with behavioral tests: shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
+To verify a machine again, or only what certain tags provision:
+
+```sh-session
+$ ./verify
+$ ./verify --tags=lang
+$ ./verify -- --filter java  # options after `--` go to bats
+```
+
+The tests in `test/` are tagged with the Ansible tag of the tasks they verify (`base.link` as `base:link`).
+Set `DOTFILES_NOVERIFY=1` to provision without verifying.
+
 ## Project structure
 
 ### Main configuration directories
@@ -37,6 +51,7 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 - **`docs/`** : Setup documentation and resources
 - **`provisioning/`** : Ansible playbooks and tasks
+- **`test/`** : Behavioral tests of the provisioning
 
 ## Stats
 
@@ -45,7 +60,7 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 | Startup time | ~60ms | ~72ms |
 | Config size | 2,900 sloc | 700 sloc |
 | Original plugins | 10 plugins | 1,100 sloc of bin |
-| Third-party plugins | 36 plugins | 2 plugins + 5 hooks |
+| Third-party plugins | 36 plugins | 2 plugins + 2 hooks |
 
 ### nvim
 
@@ -92,10 +107,7 @@ Third-party plugins/hooks:
 
 - [fast-syntax-highlighting](https://github.com/zdharma-continuum/fast-syntax-highlighting)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-- [anyenv](https://github.com/anyenv/anyenv)
-    - [rbenv](https://github.com/rbenv/rbenv)
-    - [nodenv](https://github.com/nodenv/nodenv)
-    - [jenv](https://github.com/jenv/jenv)
+- [mise](https://github.com/jdx/mise)
 - [direnv](https://github.com/direnv/direnv)
 
 <details>

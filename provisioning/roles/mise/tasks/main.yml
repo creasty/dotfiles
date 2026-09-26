@@ -1,0 +1,4 @@
+- name: install mise
+  community.general.homebrew:
+    name:  mise
+    state: latest

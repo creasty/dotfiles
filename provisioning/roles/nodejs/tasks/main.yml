@@ -1,46 +1,13 @@
-- set_fact:
-    nodejs: {}
-
-- name: check nodenv
-  command: |
-    bash -lc 'which nodenv'
-  register: which_nodenv
-  ignore_errors: yes
-
-- name: install nodenv
-  command: |
-    bash -lc 'anyenv install -s nodenv'
-  when: which_nodenv.rc > 0
-
-- name: install plugins
-  git:
-    repo: 'https://github.com/{{ item }}.git'
-    dest: '{{ anyenv.envs_dir }}/nodenv/plugins/{{ item | basename }}'
-  with_items:
-    - nodenv/nodenv-default-packages
-
-- name: copy default-packages
-  file:
-    src:  '{{ nodejs.default_packages_path }}'
-    dest: '{{ anyenv.envs_dir }}/nodenv/default-packages'
-    state: link
-    force: yes
-
+# Versions are in config/mise/config.toml
 - name: install nodejs
-  command: |
-    bash -lc 'nodenv install -s {{ item | quote }}'
-  with_items: '{{ nodejs.versions }}'
-
-- name: set global nodejs
-  command: |
-    bash -lc 'nodenv global {{ nodejs.versions[0] | quote }}'
-  when: nodejs.versions is defined
+  ansible.builtin.command: |
+    bash -lc 'mise install node'
 
 - name: install default packages
-  command: |
-    bash -lc 'nodenv default-packages install'
+  ansible.builtin.command: |
+    bash -lc 'sed "s/#.*//" ~/.config/mise/default-npm-packages | xargs npm install -g'
 
 - name: install yarn
-  homebrew:
+  community.general.homebrew:
     name: yarn # JavaScript package manager
     state: latest

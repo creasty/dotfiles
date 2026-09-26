@@ -104,7 +104,7 @@ gcloud() {
 #-----------------------------------------------
 alias b='bundle'
 alias be='bundle exec'
-alias bi='bundle install --path=vendor/bundle --binstubs=vendor/bundle/bin'
+alias bi='bundle config set --local path vendor/bundle && bundle config set --local bin vendor/bundle/bin && bundle install'
 
 alias ra='bundle exec rails'
 alias rkr='bundle exec rails routes'

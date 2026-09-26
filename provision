@@ -6,6 +6,7 @@ set -o pipefail
 : "${DOTFILES_PATH:="$HOME/dotfiles"}"
 : "${DOTFILES_BRANCH:=master}"
 : "${DOTFILES_NOEDIT_SECRETS:=0}"
+: "${DOTFILES_NOVERIFY:=0}"
 
 #=== Steps
 #==============================================================================================
@@ -91,7 +92,6 @@ install_rosetta2() {
 }
 
 load_envs() {
-  export ANYENV_INIT_CACHE_DISABLED=1
   # shellcheck source=/dev/null
   . "$DOTFILES_PATH/shell/profile"
 }
@@ -109,13 +109,12 @@ install_python3() {
   python3 --version > /dev/null 2>&1 && return
 
   echo 'Installing python3...'
-  brew install python@3.12
+  brew install python@3.14
   echo 'done'
 }
 
 install_ansible() {
-  command -v 'ansible' > /dev/null 2>&1 && return
-
+  # Also upgrades an outdated installation: the playbook requires community.general >= 13.3
   echo 'Installing ansible...'
   brew install ansible
   echo 'done'
@@ -144,6 +143,12 @@ run_provisioning() {
   echo 'done'
 }
 
+# Runs the behavioral tests of what was just provisioned
+verify_provisioning() {
+  [ "$DOTFILES_NOVERIFY" -eq 0 ] || return 0
+  "$DOTFILES_PATH/verify" "$@"
+}
+
 #=== Entrypoint
 #==============================================================================================
 main() {
@@ -158,6 +163,7 @@ main() {
   install_python3
   install_ansible
   run_provisioning "$@"
+  verify_provisioning "$@"
 }
 
 main "$@"

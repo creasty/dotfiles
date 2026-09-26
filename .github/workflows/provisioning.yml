@@ -7,10 +7,18 @@ on:
     # Every Monday, at 10:00 JST
     - cron: "0 1 * * 1"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   macos:
     # cf. https://github.com/actions/runner-images/tree/main/images/macos
-    runs-on: macos-14
+    runs-on: macos-26
+    timeout-minutes: 90
     env:
       HOMEBREW_VERBOSE: 1
       DOTFILES_NOEDIT_SECRETS: 1
@@ -23,11 +31,13 @@ jobs:
           - name: language support
             tags: base,lang
           - name: apps and system
-            tags: install,app,system
+            tags: base,install,app,system
             skip_tags: install.homebrew.formula
     name: ${{ matrix.name }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
 
       - name: Link to home
         run: ln -sf "$PWD" "$HOME/dotfiles"
@@ -40,14 +50,18 @@ jobs:
           # Remove residual files
           sudo rm -rf /opt/homebrew/
 
-      - name: Install SSH key
-        run: |
-          base64 -D <<< "$ID_RSA_FILE_B64" > ~/.ssh/id_rsa
-          chmod 0600 ~/.ssh/id_rsa
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
-        env:
-          ID_RSA_FILE_B64: ${{ secrets.ID_RSA_FILE_B64 }}
+          # The image ships its own Rust toolchain, which would hide a broken rustup setup
+          rm -rf ~/.cargo ~/.rustup
+
+          # ...and Google Chrome, which would keep the cask from installing
+          sudo rm -rf '/Applications/Google Chrome.app'
 
       - name: Run
         run: ./provision -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
+        env:
+          DOTFILES_NOVERIFY: 1 # in the next step
+          MISE_GITHUB_TOKEN: ${{ github.token }} # avoid GitHub API rate limits
+          MISE_YES: 1
+
+      - name: Verify
+        run: ./verify --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}

@@ -25,7 +25,8 @@ Usage: nvim/tests/plugins lock | check | install
 
 local LOCK_FILE = env.config_dir .. '/dein/lock.json'
 local TOML_FILES = { env.config_dir .. '/dein/default.toml', env.config_dir .. '/dein/lazy.toml' }
-local TREESITTER = 'github.com/nvim-treesitter/nvim-treesitter'
+-- dein appends the plugin's `rev` (default.toml pins nvim-treesitter to master)
+local TREESITTER = 'github.com/nvim-treesitter/nvim-treesitter_master'
 
 local function fail(msg)
   io.stderr:write(msg, '\n')
