@@ -53,6 +53,9 @@ jobs:
           # The image ships its own Rust toolchain, which would hide a broken rustup setup
           rm -rf ~/.cargo ~/.rustup
 
+          # ...and Google Chrome, which would keep the cask from installing
+          sudo rm -rf '/Applications/Google Chrome.app'
+
       - name: Run
         run: ./provision -vvvv --tags=${{ matrix.tags }} --skip-tags=${{ matrix.skip_tags }}
         env:
