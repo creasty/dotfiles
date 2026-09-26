@@ -6,9 +6,10 @@
     name:  rustup
     state: latest
 
+# `rustup default` reports an implicit stable even when nothing is installed
 - name: install toolchain
   ansible.builtin.command: |
-    bash -lc 'rustup default > /dev/null 2>&1 || rustup default stable'
+    bash -lc 'rustup toolchain list | grep -q default || rustup default stable'
 
 - name: rustup update
   ansible.builtin.command: |

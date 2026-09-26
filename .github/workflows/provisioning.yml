@@ -69,8 +69,10 @@ jobs:
             [[ $(node --version) == v24.* ]]
             [[ $(ruby -e "print RUBY_VERSION") == 4.0.* ]]
             [[ $JAVA_HOME -ef /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ]]
-            [[ $commands[rustup] == /opt/homebrew/opt/rustup/bin/rustup ]]
+            [[ $commands[rustup] -ef /opt/homebrew/opt/rustup/bin/rustup ]]
+            [[ $commands[cargo] == /opt/homebrew/opt/rustup/bin/cargo ]]
             cargo --version
+            rustc --version
           '
           bash -lc '
             set -ex
