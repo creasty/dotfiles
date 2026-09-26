@@ -4,6 +4,7 @@
 {
   imports = [
     ./1password.nix
+    ./appstore.nix
     ./links.nix
     ./homebrew.nix
     ./packages.nix
