@@ -148,11 +148,9 @@ describe('Navigation', function()
       t.eq({ 2, 4 }, nvim:cursor())
     end)
 
-    it('s{char} labels several matches; typing a label jumps there', function()
-      local nvim = t.nvim()
-      nvim:set_buffer({ '|x1 x2', 'x3' })
-      nvim:type('sx')
-      local labels = nvim:wait_for(function()
+    --- Waits for `count` hop labels: { { line, col, label }, ... }
+    local function hop_labels(nvim, count)
+      return nvim:wait_for(function()
         local marks = nvim:lua([[
           local out = {}
           for _, m in ipairs(vim.api.nvim_buf_get_extmarks(0, -1, 0, -1, { details = true })) do
@@ -162,16 +160,34 @@ describe('Navigation', function()
           end
           return out
         ]])
-        return #marks >= 3 and marks
-      end)
+        return #marks >= count and marks
+      end, { message = count .. ' hop labels' })
+    end
+
+    it('s{char} labels several matches; typing a label jumps there', function()
+      local nvim = t.nvim()
+      nvim:set_buffer({ '|a x1 x2', 'x3' })
+      nvim:type('sx')
       local target
-      for _, l in ipairs(labels) do
+      for _, l in ipairs(hop_labels(nvim, 3)) do
         if l[1] == 2 then
           target = l
         end
       end
       nvim:type(target[3])
       t.eq({ 2, 0 }, nvim:cursor())
+    end)
+
+    it('s{char} does not label the match under the cursor', function()
+      local nvim = t.nvim()
+      nvim:set_buffer({ '|x1 x2', 'x3' })
+      nvim:type('sx')
+      hop_labels(nvim, 2)
+      nvim:sleep(200)
+      local labels = hop_labels(nvim, 2)
+      t.eq({ { 1, 3 }, { 2, 0 } }, vim.tbl_map(function(l)
+        return { l[1], l[2] }
+      end, labels))
     end)
   end)
 
