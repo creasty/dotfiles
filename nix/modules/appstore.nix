@@ -6,7 +6,6 @@ let
   apps = {
     "Bear" = 1091189122;
     "Fantastical" = 975937182;
-    "Kindle" = 405399194;
     "The Unarchiver" = 425424353;
     "Things" = 904280696;
     "Toggl Track" = 1291898086;

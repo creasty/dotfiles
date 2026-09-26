@@ -47,6 +47,7 @@ Links point into the checkout, so edits apply without a rebuild.
 Homebrew Bundle installs the App Store apps of `nix/modules/appstore.nix` with [mas](https://github.com/mas-cli/mas), which asks for your password (sudo) to install them.
 mas can't sign in to the App Store, so sign in before provisioning.
 `mas list` shows the IDs of installed apps, and `mas search <name>` those of others.
+mas can't install iPhone and iPad apps, such as Kindle's, so get those from the App Store app.
 
 ### SSH keys
 
