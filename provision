@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
+#
+# Provisions this Mac: installs Homebrew and Nix, applies the configuration of flake.nix, and verifies the result.
+#
+#   ./provision [darwin-rebuild options]
 
 set -eu
 set -o pipefail
 
 : "${DOTFILES_PATH:="$HOME/dotfiles"}"
 : "${DOTFILES_BRANCH:=master}"
-: "${DOTFILES_NOEDIT_SECRETS:=0}"
 : "${DOTFILES_NOVERIFY:=0}"
+
+NIX=/nix/var/nix/profiles/default/bin/nix
 
 #=== Steps
 #==============================================================================================
@@ -39,32 +44,29 @@ check_os() {
 }
 
 clone_or_update_repo() {
-  local git_dir="$DOTFILES_PATH/.git"
-
-  if [ -d "$git_dir" ]; then
+  if [ -d "$DOTFILES_PATH/.git" ]; then
     echo 'Updating repo...'
 
-    if [ "$(git --git-dir="$git_dir" symbolic-ref --short HEAD 2> /dev/null)" != "master" ]; then
+    if [ "$(git -C "$DOTFILES_PATH" symbolic-ref --short HEAD 2> /dev/null)" != "master" ]; then
       echo 'skip (working on a non-master branch)'
       return
     fi
 
-    if ! git --git-dir="$git_dir" diff --no-ext-diff --quiet --exit-code > /dev/null 2>&1; then
+    if ! git -C "$DOTFILES_PATH" diff --no-ext-diff --quiet --exit-code > /dev/null 2>&1; then
       echo 'skip (unstaged changes present)'
       return
     fi
 
-    if ! git --git-dir="$git_dir" diff-index --cached --quiet HEAD -- > /dev/null 2>&1; then
+    if ! git -C "$DOTFILES_PATH" diff-index --cached --quiet HEAD -- > /dev/null 2>&1; then
       echo 'skip (uncommitted changes present)'
       return
     fi
 
-    git --git-dir="$git_dir" pull origin master
-    git --git-dir="$git_dir" submodule sync
+    git -C "$DOTFILES_PATH" pull origin master
     echo 'done'
   elif ! [ -d "$DOTFILES_PATH" ]; then
     echo 'Cloning repo...'
-    git clone --recursive https://github.com/creasty/dotfiles.git --branch "$DOTFILES_BRANCH" "$DOTFILES_PATH"
+    git clone https://github.com/creasty/dotfiles.git --branch "$DOTFILES_BRANCH" "$DOTFILES_PATH"
     echo 'done'
   fi
 }
@@ -96,6 +98,7 @@ load_envs() {
   . "$DOTFILES_PATH/shell/profile"
 }
 
+# nix-darwin installs what Homebrew provides, but not Homebrew itself
 install_homebrew() {
   command -v 'brew' > /dev/null 2>&1 && return
 
@@ -104,49 +107,25 @@ install_homebrew() {
   echo 'done'
 }
 
-install_python3() {
-  command -v 'python3' > /dev/null 2>&1 && return
-  python3 --version > /dev/null 2>&1 && return
+install_nix() {
+  [ -x "$NIX" ] && return
 
-  echo 'Installing python3...'
-  brew install python@3.14
+  echo 'Installing Nix...'
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
   echo 'done'
 }
 
-install_ansible() {
-  # Also upgrades an outdated installation: the playbook requires community.general >= 13.3
-  echo 'Installing ansible...'
-  brew install ansible
-  echo 'done'
-}
-
-run_provisioning() {
-  echo 'Provisioning...'
-
-  cd "$DOTFILES_PATH/provisioning"
-
-  if ! [ -f ./secrets.yml ]; then
-    cp ./secrets{.sample,}.yml
-    [ "$DOTFILES_NOEDIT_SECRETS" -eq 0 ] && vim ./secrets.yml
-  fi
-
-  ansible-playbook \
-    -i 'localhost,' \
-    --extra-vars "home_path=$HOME" \
-    --extra-vars "dotfiles_path=$DOTFILES_PATH" \
-    --extra-vars "homebrew_prefix=$HOMEBREW_PREFIX" \
-    --extra-vars '@config.yml' \
-    --extra-vars '@secrets.yml' \
-    "$@" \
-    playbook.yml
-
+# Applies the configuration of flake.nix for this user (nix-darwin and home-manager)
+switch_configuration() {
+  echo 'Switching to the configuration...'
+  sudo -H "$NIX" run "$DOTFILES_PATH#darwin-rebuild" -- switch --flake "$DOTFILES_PATH#$(id -un)" "$@"
   echo 'done'
 }
 
 # Runs the behavioral tests of what was just provisioned
 verify_provisioning() {
   [ "$DOTFILES_NOVERIFY" -eq 0 ] || return 0
-  "$DOTFILES_PATH/verify" "$@"
+  "$DOTFILES_PATH/verify"
 }
 
 #=== Entrypoint
@@ -160,10 +139,9 @@ main() {
 
   load_envs
   install_homebrew
-  install_python3
-  install_ansible
-  run_provisioning "$@"
-  verify_provisioning "$@"
+  install_nix
+  switch_configuration "$@"
+  verify_provisioning
 }
 
 main "$@"

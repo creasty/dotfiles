@@ -20,18 +20,44 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 <pre><code>$ curl -L <a href="https://dotfiles.creasty.com/provision">dotfiles.creasty.com/provision</a> | bash</code></pre>
 
+It clones this repository to `~/dotfiles`, installs Homebrew and [Nix](https://determinate.systems/nix/), and applies the [nix-darwin](https://github.com/nix-darwin/nix-darwin) configuration of `flake.nix` for the current user, [home-manager](https://github.com/nix-community/home-manager) included.
+
+To apply changes later:
+
+```sh-session
+$ sudo darwin-rebuild switch --flake ~/dotfiles#$(id -un)
+```
+
+Flakes only see files tracked by git, so `git add` a new file first.
+
+### Links
+
+Files are linked into the home directory by where they are in the repository, with no list to maintain:
+
+| Repository | Home directory |
+|---|---|
+| `home/<path>` | `~/.<path>` (`home/aws/config` → `~/.aws/config`) |
+| `config/<path>` | `~/.config/<path>` (`config/git/config` → `~/.config/git/config`) |
+
+The Nix modules link the rest: `nvim/`, the shell files and VS Code's settings.
+Links point into the checkout, so edits apply without a rebuild.
+
+### SSH keys
+
+ssh signs in through [1Password's SSH agent](https://developer.1password.com/docs/ssh/), so private keys live in 1Password instead of `~/.ssh`.
+Keep a host's public key in `~/.ssh/keys` and point its `IdentityFile` at it (in `~/.ssh/config.d/`) to pick the key.
+
 ## Verification
 
 Provisioning ends by verifying its result with behavioral tests: shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
-To verify a machine again, or only what certain tags provision:
+To verify a machine again:
 
 ```sh-session
 $ ./verify
-$ ./verify --tags=lang
-$ ./verify -- --filter java  # options after `--` go to bats
+$ ./verify --filter java  # options go to bats
 ```
 
-The tests in `test/` are tagged with the Ansible tag of the tasks they verify (`base.link` as `base:link`).
+The tests compare the machine with what the activated configuration lists in `/etc/dotfiles/manifest.json`.
 Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 
 ## Project structure
@@ -39,18 +65,19 @@ Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 ### Main configuration directories
 
 - **`bin/`** : Custom executable scripts and commands (Added to system `PATH`)
-- **`config/*`** : XDG-compliant configuration files
-- **`home/*`** : Home directory dotfiles
+- **`config/*`** : XDG-compliant configuration files (linked into `~/.config`)
+- **`home/*`** : Home directory dotfiles (linked into `~` with a leading dot)
 - **`nvim/`** : Neovim configurations
   - **`tests/`** : End-to-end workflow tests ([README](./nvim/tests/README.md))
 - **`shell/`** : Shell environment configurations
   - **`bash/*`** : Bash-specific configurations
   - **`zsh/*`** : Zsh-specific configurations
+- **`vscode/`** : VS Code settings and keybindings
 
 ### Administrative directories
 
 - **`docs/`** : Setup documentation and resources
-- **`provisioning/`** : Ansible playbooks and tasks
+- **`flake.nix`**, **`nix/modules/`** : The nix-darwin configuration, a module per topic
 - **`test/`** : Behavioral tests of the provisioning
 
 ## Stats

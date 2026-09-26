@@ -1,13 +1,10 @@
 #!/usr/bin/env bats
 #
-# lang.mise.nodejs: Node.js at the version of config/mise/config.toml, for terminals and scripts alike
+# Node.js at the version of config/mise/config.toml, for terminals and scripts alike
 
 load helper
 
-# bats file_tags=lang:mise:nodejs
-
 setup() {
-  require_linked .profile .zshenv .zshrc .config/mise
   node_version="$(mise_config '.tools.node.version')"
 }
 
@@ -36,8 +33,6 @@ setup() {
   assert_none "$problems" 'not installed'
 }
 
-@test "yarn is installed" {
-  # shellcheck disable=SC2046
-  assert_formulae $(role_formulae nodejs)
+@test "yarn runs" {
   run -0 login_zsh 'yarn --version'
 }

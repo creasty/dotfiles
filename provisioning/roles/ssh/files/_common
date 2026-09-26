@@ -1,7 +1,0 @@
-Host *
-  IdentitiesOnly yes
-  ServerAliveInterval 30
-  TCPKeepAlive yes
-  StrictHostKeyChecking no
-  UserKnownHostsFile /dev/null
-  LogLevel ERROR

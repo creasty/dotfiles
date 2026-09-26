@@ -1,25 +1,23 @@
 #!/usr/bin/env bats
 #
-# system.zsh: Homebrew's zsh is the login shell, with the plugins checked out
+# zsh is the login shell, set up by nix-darwin and the dotfiles (nix/modules/shell.nix)
 
 load helper
 
-# bats file_tags=system:zsh
-
-@test "Homebrew's zsh is the login shell" {
-  # shellcheck disable=SC2046
-  assert_formulae $(role_formulae zsh)
+@test "the login shell is zsh" {
   run -0 dscl . -read "/Users/$(id -un)" UserShell
-  assert_equal "$output" "UserShell: $HOMEBREW_PREFIX/bin/zsh"
-  grep -qxF -- "$HOMEBREW_PREFIX/bin/zsh" /etc/shells
+  assert_like "$output" 'UserShell: */zsh'
 }
 
-@test "/etc/zshenv doesn't get in the way of the dotfiles" {
-  [ ! -e /etc/zshenv ]
+@test "zsh gets nix-darwin's environment" {
+  run -0 login_zsh 'print -r -- ${__NIX_DARWIN_SET_ENVIRONMENT_DONE:-}'
+  assert_equal "$output" 1
 }
 
-@test "zsh plugins are checked out at the pinned commits" {
-  run -0 git -C "$DOTFILES_PATH" submodule status
-  # a prefix of `-`, `+` or `U` means not checked out, at another commit, or conflicted
-  assert_none "$(grep -v '^ ' <<< "$output" || true)" 'not at the pinned commit'
+@test "zsh plugins come from Nix" {
+  local plugin problems=''
+  for plugin in zsh-autosuggestions fast-syntax-highlighting; do
+    [[ "$(cd "$HOME/.local/share/zsh/plugins/$plugin" && pwd -P)" == /nix/store/* ]] || problems+="$plugin"$'\n'
+  done
+  assert_none "$problems" 'not from the Nix store'
 }

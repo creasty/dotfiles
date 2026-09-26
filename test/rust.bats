@@ -1,26 +1,20 @@
 #!/usr/bin/env bats
 #
-# lang.rust: Homebrew's rustup with a default toolchain and the configured components
+# rustup with a default toolchain and the configured components (nix/modules/rust.nix)
 
 load helper
 
-# bats file_tags=lang:rust
-
-setup() {
-  require_linked .profile .zshenv .zshrc
-}
-
-@test "terminals get rustup and its proxies from Homebrew's rustup" {
+@test "terminals get rustup and its proxies from Nix" {
   run -0 login_zsh 'print -rl -- $commands[rustup] $commands[cargo] $commands[rustc]'
-  assert_same_file "${lines[0]}" "$HOMEBREW_PREFIX/opt/rustup/bin/rustup"
-  assert_equal "${lines[1]}" "$HOMEBREW_PREFIX/opt/rustup/bin/cargo"
-  assert_equal "${lines[2]}" "$HOMEBREW_PREFIX/opt/rustup/bin/rustc"
+  assert_equal "${lines[0]}" "$PROFILE_BIN/rustup"
+  assert_equal "${lines[1]}" "$PROFILE_BIN/cargo"
+  assert_equal "${lines[2]}" "$PROFILE_BIN/rustc"
 }
 
 @test "the default toolchain has the configured components" {
   local component problems=''
   run -0 login_bash 'rustup component list --installed'
-  for component in $(role_tasks rust '.[] | select(.name == "install components") | .loop[]'); do
+  for component in $(manifest '.rust.components[]'); do
     grep -q "^$component" <<< "$output" || problems+="$component"$'\n'
   done
   assert_none "$problems" 'not installed'

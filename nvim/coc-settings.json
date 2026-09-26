@@ -233,13 +233,9 @@
     }
   },
 
-  //=== coc-clangd
-  //==============================================================================================
-  "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
-
   //=== coc-lua
   //==============================================================================================
-  "Lua.workspace.library": ["/opt/homebrew/share/nvim/runtime/lua"],
+  "Lua.workspace.library": ["/etc/profiles/per-user/creasty/share/nvim/runtime/lua"],
 
   //=== coc-tsserver
   //==============================================================================================

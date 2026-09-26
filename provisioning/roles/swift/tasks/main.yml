@@ -1,8 +1,0 @@
-- ansible.builtin.set_fact:
-    swift: {}
-
-- name: install dependency
-  community.general.homebrew:
-    name:
-      - carthage # Decentralized dependency manager for Cocoa
-    state: latest

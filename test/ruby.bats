@@ -1,13 +1,10 @@
 #!/usr/bin/env bats
 #
-# lang.mise.ruby: Ruby at the version of config/mise/config.toml, built against Homebrew's libraries
+# Ruby at the version of config/mise/config.toml, built against Homebrew's libraries
 
 load helper
 
-# bats file_tags=lang:mise:ruby
-
 setup() {
-  require_linked .profile .zshenv .zshrc .config/mise
   ruby_version="$(mise_config '.tools.ruby.version')"
 }
 
@@ -32,7 +29,7 @@ setup() {
   local gem problems=''
   run -0 login_bash 'gem list --no-versions'
   # shellcheck disable=SC2013
-  for gem in $(sed 's/#.*//' "$DOTFILES_PATH/config/mise/default-gems") solargraph; do
+  for gem in $(sed 's/#.*//' "$DOTFILES_PATH/config/mise/default-gems"); do
     grep -qxF -- "$gem" <<< "$output" || problems+="$gem"$'\n'
   done
   assert_none "$problems" 'not installed'

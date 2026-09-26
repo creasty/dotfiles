@@ -1,17 +1,11 @@
 #!/usr/bin/env bats
 #
-# base.link: shells get the dotfiles' environment, however they're started
+# Shells get the dotfiles' environment, however they're started (nix/modules/shell.nix)
 
 # `run` sets $output and $stderr for the helpers below
 # shellcheck disable=SC2030,SC2031,SC2154
 
 load helper
-
-# bats file_tags=base:link
-
-setup() {
-  require_linked .profile .zshenv .zshrc .zsh .bash_profile .bashrc
-}
 
 starts_cleanly() {
   run --separate-stderr -0 "$1" exit
@@ -39,25 +33,27 @@ starts_cleanly() {
   assert_equal "$output" '1 1 1'
 }
 
-prefers_homebrew() {
+# Nix's packages come first, even over formulae left from before, then Homebrew's, then macOS's commands
+prefers_nix() {
   run -0 "$1" 'echo "$PATH"'
+  assert_before "$output" "$PROFILE_BIN" "$HOMEBREW_PREFIX/bin"
   assert_before "$output" "$HOMEBREW_PREFIX/bin" /usr/bin
 }
 
-@test "new terminals prefer Homebrew's commands to macOS's" {
-  prefers_homebrew login_zsh
+@test "new terminals prefer Nix's commands to Homebrew's and macOS's" {
+  prefers_nix login_zsh
 }
 
-@test "Neovim's terminal prefers Homebrew's commands to macOS's" {
-  prefers_homebrew interactive_zsh
+@test "Neovim's terminal prefers Nix's commands to Homebrew's and macOS's" {
+  prefers_nix interactive_zsh
 }
 
-@test "zsh scripts prefer Homebrew's commands to macOS's" {
-  prefers_homebrew script_zsh
+@test "zsh scripts prefer Nix's commands to Homebrew's and macOS's" {
+  prefers_nix script_zsh
 }
 
-@test "login bash prefers Homebrew's commands to macOS's" {
-  prefers_homebrew login_bash
+@test "login bash prefers Nix's commands to Homebrew's and macOS's" {
+  prefers_nix login_bash
 }
 
 @test "terminals find the dotfiles' commands" {
