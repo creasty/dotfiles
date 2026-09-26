@@ -27,6 +27,7 @@ Provisioning never uninstalls anything, so a Mac provisioned before keeps all of
 | Dropped | Why | Instead |
 |---|---|---|
 | `docker`, `google-cloud-sdk` | Renamed | `docker-desktop`, `gcloud-cli`, to which Homebrew migrates installed ones |
+| `1password/tap/1password-cli`, and its tap | Since 2026-09-26, Homebrew refuses to tap `1password/tap`: its cask lacks Linux stanzas (or `depends_on :macos`) | `1password-cli`, Homebrew's own cask |
 | `alacritty` | Disabled in Homebrew on 2026-09-01: fails Gatekeeper | Its config (`config/alacritty`) stays; install it by hand to use it |
 | `chromedriver` | Disabled in Homebrew on 2026-09-01: fails Gatekeeper | |
 | `pushplaylabs-sidekick` | Discontinued; disabled in Homebrew on 2025-10-05 | |
@@ -56,6 +57,7 @@ Provisioning never uninstalls anything, so a Mac provisioned before keeps all of
 ```sh-session
 $ brew uninstall anyenv
 $ brew uninstall trash
+$ brew uninstall --cask 1password/tap/1password-cli && brew untap 1password/tap  # provisioning then installs Homebrew's 1password-cli
 $ rm -rf ~/.anyenv ~/.anyenv-init-zsh ~/.anyenv-init-bash ~/.cargo/config
 $ mise install  # in a project pinned to versions mise doesn't have yet
 ```
