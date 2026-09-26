@@ -13,10 +13,15 @@ in
     {
       home.packages = [ pkgs.rustup ];
 
-      # `rustup default` reports an implicit stable even when nothing is installed
+      # `rustup default` reports an implicit stable even when nothing is installed. The list is matched
+      # as a whole: `grep -q` could end the pipe early and fail it (pipefail) even with a default.
       home.activation.installRustToolchain = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         rustup=${pkgs.rustup}/bin/rustup
-        "$rustup" toolchain list | grep -q default || run "$rustup" default stable
+        # e.g. `stable-aarch64-apple-darwin (active, default)`, or `no installed toolchains`
+        case "$("$rustup" toolchain list)" in
+          *default*) ;;
+          *) run "$rustup" default stable ;;
+        esac
         run "$rustup" component add ${lib.escapeShellArgs components}
       '';
     };
