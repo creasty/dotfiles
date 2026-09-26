@@ -16,7 +16,9 @@ load helper
 
 @test "git reads its config from the dotfiles" {
   local tab=$'\t'
-  run -0 login_zsh 'git config --global --show-origin --get core.editor'
+  # Not `--global`, which reads ~/.config/git/config only when there's no ~/.gitconfig
+  cd "$BATS_TEST_TMPDIR"
+  run -0 login_zsh 'git config --show-origin --get core.editor'
   # file:/Users/me/.config/git/config	nvim
   local origin="${output%%"$tab"*}"
   assert_same_file "${origin#file:}" "$DOTFILES_PATH/config/git/config"
