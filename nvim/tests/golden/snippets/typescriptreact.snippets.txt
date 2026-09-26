@@ -1,0 +1,15 @@
+=== FC
+const Nam‸e: React.FC = () => {
+  
+};
+-- mode: s, selected: "Name"
+
+=== FREC
+const Nam‸e = React.forwardRef<Handles, Props>((, ref) => {
+  
+});
+-- mode: s, selected: "Name"
+
+=== memo
+const Nam‸e: typeof _Name = React.memo(_Name) as any;
+-- mode: s, selected: "Name"

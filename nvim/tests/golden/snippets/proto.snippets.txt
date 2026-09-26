@@ -1,0 +1,257 @@
+=== syntax
+syntax = "proto3";‸
+-- mode: i
+
+=== package
+package ‸;
+-- mode: i
+
+=== import
+import "‸";
+-- mode: i
+
+=== option-java
+option java_package = "‸";
+option java_multiple_files = true;
+-- mode: i
+
+=== rpc
+rpc Nam‸e (NameRequest) returns (NameResponse);
+-- mode: s, selected: "Name"
+
+=== /rpc (\w+)/ rpc GetUser
+rpc GetUser (GetUserRequest) returns (User);‸
+-- mode: i
+
+=== /rpc (\w+)/ rpc ListUsers
+rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);‸
+-- mode: i
+
+=== /rpc (\w+)/ rpc CreateUser
+rpc CreateUser (User) returns (User);‸
+-- mode: i
+
+=== /rpc (\w+)/ rpc DeleteUser
+rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);‸
+-- mode: i
+
+=== /rpc (\w+)/ rpc Ping
+rpc Ping (PingRequest) returns (PingResponse);‸
+-- mode: i
+
+=== service
+service Nam‸eService {
+  
+}
+-- mode: s, selected: "Name"
+
+=== enum
+enum ‸ {
+  
+}
+-- mode: i
+
+=== message
+message ‸ {
+  
+}
+-- mode: i
+
+=== /(msg|message) (\w+)/ message GetUserRequest
+message GetUserRequest {
+    string uuid = 1 [ (google.api.field_behavior) = REQUIRED ];‸
+}
+-- mode: i
+
+=== /(msg|message) (\w+)/ msg ListUsersResponse
+message ListUsersResponse {
+    repeated Users users = 1 [ (google.api.field_behavior) = REQUIRED ];‸
+}
+-- mode: i
+
+=== /(msg|message) (\w+)/ message UpdateUserRequest
+message UpdateUserRequest {
+    User user = 1 [ (google.api.field_behavior) = REQUIRED ];
+    // マスク
+    google.protobuf.FieldMask update_mask = 2 [ (google.api.field_behavior) = REQUIRED ];‸
+}
+-- mode: i
+
+=== /(msg|message) (\w+)/ message UpdateMultiUsersRequest
+message UpdateMultiUsersRequest {
+    // 更新用レコード
+    repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
+
+    message Record {
+        Users users = 1 [ (google.api.field_behavior) = REQUIRED ];
+        // レコード操作
+        RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
+        // マスク
+        google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
+    }‸
+}
+-- mode: i
+
+=== /(msg|message) (\w+)/ message Plain
+message Plain {
+‸
+}
+-- mode: i
+
+=== single
+Typ‸e type = ;
+-- mode: s, selected: "Type"
+
+=== repeated
+repeated Typ‸e type = ;
+-- mode: s, selected: "Type"
+
+=== import timestamp
+import "google/protobuf/timestamp.proto";‸
+-- mode: i
+
+=== Timestamp
+google.protobuf.Timestamp‸
+-- mode: i
+
+=== import wrappers
+import "google/protobuf/wrappers.proto";‸
+-- mode: i
+
+=== DoubleValue
+google.protobuf.DoubleValue‸
+-- mode: i
+
+=== FloatValue
+google.protobuf.FloatValue‸
+-- mode: i
+
+=== Int64Value
+google.protobuf.Int64Value‸
+-- mode: i
+
+=== UInt64Value
+google.protobuf.UInt64Value‸
+-- mode: i
+
+=== Int32Value
+google.protobuf.Int32Value‸
+-- mode: i
+
+=== UInt32Value
+google.protobuf.UInt32Value‸
+-- mode: i
+
+=== BoolValue
+google.protobuf.BoolValue‸
+-- mode: i
+
+=== StringValue
+google.protobuf.StringValue‸
+-- mode: i
+
+=== BytesValue
+google.protobuf.BytesValue‸
+-- mode: i
+
+=== import field_behavior
+import "google/api/field_behavior.proto";‸
+-- mode: i
+
+=== OPTIONAL
+(google.api.field_behavior) = OPTIONAL‸
+-- mode: i
+
+=== REQUIRED
+(google.api.field_behavior) = REQUIRED‸
+-- mode: i
+
+=== OUTPUT_ONLY
+(google.api.field_behavior) = OUTPUT_ONLY‸
+-- mode: i
+
+=== INPUT_ONLY
+(google.api.field_behavior) = INPUT_ONLY‸
+-- mode: i
+
+=== IMMUTABLE
+(google.api.field_behavior) = IMMUTABLE‸
+-- mode: i
+
+=== import empty
+import "google/protobuf/empty.proto";‸
+-- mode: i
+
+=== Empty
+google.protobuf.Empty‸
+-- mode: i
+
+=== import field_mask
+import "google/protobuf/field_mask.proto";‸
+-- mode: i
+
+=== FieldMask
+google.protobuf.FieldMask‸
+-- mode: i
+
+=== update_mask
+// マスク
+google.protobuf.FieldMask update_mask = ‸ [ (google.api.field_behavior) = REQUIRED ];
+-- mode: i
+
+=== import any
+import "google/protobuf/any.proto";‸
+-- mode: i
+
+=== Any
+google.protobuf.Any‸
+-- mode: i
+
+=== import date
+import "google/type/date.proto";‸
+-- mode: i
+
+=== Date
+google.type.Date‸
+-- mode: i
+
+=== pagination
+// ページサイズ
+int32 page_size = ‸ [ (google.api.field_behavior) = REQUIRED ];
+// ページトークン
+string page_token =  [ (google.api.field_behavior) = REQUIRED ];
+-- mode: i
+
+=== next_page_token
+// 次のページトークン
+string next_page_token = ‸ [ (google.api.field_behavior) = REQUIRED ];
+-- mode: i
+
+=== import proto2graphql.option
+import "proto2graphql/option.proto";‸
+-- mode: i
+
+=== skip_on_type
+(proto2graphql.option).skip_on_type = true‸
+-- mode: i
+
+=== skip_on_input
+(proto2graphql.option).skip_on_input = true‸
+-- mode: i
+
+=== import string_map_option
+import "henryapp/util/string_map.proto";‸
+-- mode: i
+
+=== display_name
+(henryapp.util.string_map_option) = {display_name : "‸"}
+-- mode: i
+
+=== resource
+(henryapp.util.resource) = {type : "‸"}
+-- mode: i
+
+=== import resource
+CHOICES: 1: (import resource) "import from henryapp/util" | 2: (resource) "henryapp.util.resource" -> picked 1
+import "henryapp/util/resource.proto";‸
+-- mode: i

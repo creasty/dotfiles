@@ -1,0 +1,274 @@
+=== c/main.c @ main.c
+/**
+ * main.c
+ *
+ * @created <DATE>
+ */
+
+#include <stdio.h>
+
+int main(int argc, char **argv)
+{
+ ‸ 
+  return 0;
+}
+
+=== c/template.h @ util.h
+#ifndef __UTIL_H_LOADED__
+#define __UTIL_H_LOADED__
+
+‸
+
+#endif // __UTIL_H_LOADED__
+
+=== cpp/main.cpp @ main.cpp
+/**
+ * main.cpp
+ *
+ * @created <DATE>
+ */
+
+#include <iostream>
+#include <string>
+
+int main(int argc, char **argv)
+{
+ ‸ 
+  return 0;
+}
+
+=== cpp/template.h @ util.h
+#ifndef __UTIL_H_LOADED__
+#define __UTIL_H_LOADED__
+
+‸
+
+#endif // __UTIL_H_LOADED__
+
+=== go/template.go @ pkg/user_repo.go
+package pkg
+
+type UserRepo struct{
+‸	
+}
+
+=== go/api/template.go @ api/users_handler.go
+package api
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+type UsersHandler struct{}
+
+func (UsersHandler) ‸(c *gin.Context) {
+
+}
+
+=== graphql/fragments/template.graphql @ graphql/fragments/user.graphql
+fragment user on user {
+ ‸ 
+}
+
+=== graphql/mutations/template.graphql @ graphql/mutations/create_user.graphql
+mutation create_user {
+ ‸ 
+}
+
+=== graphql/queries/template.graphql @ graphql/queries/get_user.graphql
+query get_user {
+ ‸ 
+}
+
+=== html/base.html @ base.html
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>base.html</title>
+</head>
+<body>
+ ‸ 
+</body>
+</html>
+
+=== license/mit @ LICENSE
+‸Copyright (c) <YEAR> Yuki Iwanaga
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+=== license/apache2 @ LICENSE
+‸Copyright <YEAR> Yuki Iwanaga
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+=== license/gpl3 @ LICENSE
+‸Copyright (C) <YEAR> Yuki Iwanaga
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+=== make/Makefile @ Makefile
+CC = gcc
+CFLAGS = -Wall
+
+PROG = mai‸n
+
+SRCS = main.c
+LIBS =
+
+$(PROG): $(SRCS) $(LIBS)
+	$(CC) $(CFLAGS) -o $(PROG) $<
+
+clean:
+	rm -rf *.o $(PROG)
+
+=== markdown/README.md @ README.md
+Nam‸e
+====
+
+Description
+
+License
+-------
+
+This project is copyright by [Creasty](http://creasty.com), released under the MIT license.  
+See `LICENSE.txt` file for details.
+
+=== ruby/app/controllers/template_controller.rb @ app/controllers/admin/users_controller.rb
+class Admin::UsersController < ApplicationController
+ ‸ 
+end
+
+=== ruby/app/jobs/template_job.rb @ app/jobs/sync_job.rb
+class SyncJob
+  include Sidekiq::Worker
+
+  def perform
+   ‸ 
+  end
+end
+
+=== ruby/app/models/template.rb @ app/models/admin/user_profile.rb
+class Admin::UserProfile < ApplicationRecord
+ ‸ 
+end
+
+=== ruby/app/services/template_service.rb @ app/services/billing_service.rb
+class BillingService
+  def perform!
+   ‸ 
+  end
+end
+
+=== ruby/app/template_concern.rb @ app/models/concerns/taggable_concern.rb
+module TaggableConcern
+  extend ActiveSupport::Concern
+ ‸ 
+end
+
+=== ruby/lib/template.rb @ lib/acme/client.rb
+class Acme::Client
+ ‸ 
+end
+
+=== ruby/lib/template/version.rb @ lib/acme/version.rb
+‸module Acme
+  MAJOR    = 0
+  MINOR    = 0
+  REVISION = 1
+
+  VERSION = [MAJOR, MINOR, REVISION].compact.join(".")
+end
+
+=== sh/template @ bin/script.sh
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+ ‸ 
+}
+
+main
+
+=== tla/template.tla @ Spec.tla
+-------------------------------- MODULE Spec --------------------------------
+‸
+=============================================================================
+
+=== typescript/resolvers/mutations/template.ts @ resolvers/mutations/createUser.ts
+import { Resolver } from "resolvers/type";
+
+export const createUser: Resolver<"createUser"> = async (_parent, args, context, _info) => {
+  return context.api.‸().createUser(createUserRequestInputToPb(args.input)).then(createUserResponseToType);
+};
+
+=== typescript/resolvers/queries/template.ts @ resolvers/queries/getUser.ts
+import { Resolver } from "resolvers/type";
+
+export const getUser: Resolver<"getUser"> = async (_parent, args, context, _info) => {
+  return context.api.‸().getUser(getUserRequestInputToPb(args.input)).then(getUserResponseToType);
+};
+
+=== vim/template.vim @ plugin/my_plugin.vim
+if exists('g:loaded_my_plugin') || v:version < 702
+  finish
+endif
+let g:loaded_my_plugin = 1
+
+let s:save_cpo = &cpoptions
+set cpoptions&vim
+
+‸
+
+let &cpoptions = s:save_cpo
+unlet s:save_cpo
+
+=== _/template.ssh/config.d/template @ .ssh/config.d/work
+Host work
+  HostName 127.0.0.‸1
+  User webapp
+  Port 22
+  IdentityFile ~/.ssh/keys/work_webapp

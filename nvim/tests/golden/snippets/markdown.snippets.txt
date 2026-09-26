@@ -1,0 +1,39 @@
+=== /tb(\d+x\d+)/ tb2x3
+| ‸ |  |  |
+|---|---|---|
+|  |  |  |
+|  |  |  |
+
+-- mode: i
+
+=== details
+<details><summary>See detail‸s</summary>
+
+</details><br>
+-- mode: s, selected: "See details"
+
+=== /^-{3,}/ ---
+--------------------------------------------------------------------------------‸
+-- mode: i
+
+=== /^[\-=]/ - (after Title)
+Title
+-----
+‸
+-- mode: i
+
+=== /^[\-=]/ = (after Title)
+Title
+=====
+‸
+-- mode: i
+
+=== /^[\-=]/ - (after 見出し)
+見出し
+------
+‸
+-- mode: i
+
+=== /(\b|\s+)br/ line br
+line<br>‸
+-- mode: i

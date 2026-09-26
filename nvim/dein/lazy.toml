@@ -66,7 +66,7 @@ xmap <SID>(tm)L <Plug>(textmanip-duplicate-right)<SID>(tm)
 '''
 
 [[plugins]] # Neovim motions on speed!
-repo = 'phaazon/hop.nvim'
+repo = 'smoka7/hop.nvim'
 on_cmd = ['HopChar1']
 hook_add = '''
 nnoremap s <Cmd>HopChar1<CR>

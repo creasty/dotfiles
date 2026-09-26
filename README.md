@@ -28,6 +28,7 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 - **`config/*`** : XDG-compliant configuration files
 - **`home/*`** : Home directory dotfiles
 - **`nvim/`** : Neovim configurations
+  - **`tests/`** : End-to-end workflow tests ([README](./nvim/tests/README.md))
 - **`shell/`** : Shell environment configurations
   - **`bash/*`** : Bash-specific configurations
   - **`zsh/*`** : Zsh-specific configurations

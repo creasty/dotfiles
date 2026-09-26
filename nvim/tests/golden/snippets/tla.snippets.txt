@@ -1,0 +1,24 @@
+=== /^-{3,}/ ---
+-----------------------------------------------------------------------------‸
+-- mode: i
+
+=== /^={3,}/ ===
+=============================================================================‸
+-- mode: i
+
+=== Spec
+Somethin‸gSpec == SomethingInit /\ [][SomethingNext]_vars
+-- mode: s, selected: "Something"
+
+=== Symmetry
+Somethin‸gSymmetry == Permutations(var)
+-- mode: s, selected: "Something"
+
+=== algorithm
+(*--algorithm nam‸e
+
+begin
+  skip;
+
+end algorithm;*)
+-- mode: s, selected: "name"
