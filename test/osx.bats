@@ -34,7 +34,7 @@ configured_defaults() {
   assert_none "$problems" 'unexpected defaults'
 }
 
-@test "~/Library is visible in Finder" {
+@test "the Library folder is visible in Finder" {
   run -0 ls -ldO "$HOME/Library"
   [[ $output != *hidden* ]]
 }

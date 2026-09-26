@@ -16,10 +16,12 @@ jdk_home() {
 }
 
 @test "macOS finds the default JDK" {
-  assert_same_file /Library/Java/JavaVirtualMachines/openjdk.jdk \
-    "$HOMEBREW_PREFIX/opt/$(config '.java.versions[0]')/libexec/openjdk.jdk"
+  local jdk
+  jdk="$HOMEBREW_PREFIX/opt/$(config '.java.versions[0]')/libexec/openjdk.jdk"
+  assert_same_file /Library/Java/JavaVirtualMachines/openjdk.jdk "$jdk"
+  # java_home lists the JDKs by their resolved path
   run -0 /usr/libexec/java_home -V
-  assert_like "$output" '*/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home*'
+  assert_like "$output" "* $(cd "$jdk/Contents/Home" && pwd -P)*"
 }
 
 @test "terminals use the configured JDK" {

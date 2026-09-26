@@ -68,4 +68,3 @@ jobs:
         env:
           # Its cask still uses the `appcast` stanza Homebrew removed (fix in creasty/homebrew-tools)
           DOTFILES_VERIFY_SKIP_CASKS: creasty/tools/keyboard
-          DOTFILES_VERIFY_STARTUP_MS: 500
