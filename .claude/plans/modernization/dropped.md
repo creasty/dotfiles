@@ -47,7 +47,7 @@ Provisioning never uninstalls anything, so a Mac provisioned before keeps all of
 
 | Dropped | Why | Instead |
 |---|---|---|
-| `/usr/local/opt/llvm/bin` in `PATH` | Intel-only path | coc.nvim runs `/opt/homebrew/opt/llvm/bin/clangd` (`clangd.path`) |
+| `/usr/local/opt/llvm/bin` in `PATH` | Intel-only path | clangd from nixpkgs' `clang-tools`, on `PATH` |
 | nokogiri's build flags in `home/bundle/config` | Intel-only paths; nokogiri ships precompiled | |
 | `~/.cargo/config` link | Cargo warns about the extension-less name | `~/.cargo/config.toml` |
 | CI's SSH key step | Nothing clones over SSH any more | Delete the `ID_RSA_FILE_B64` repository secret |
