@@ -1,15 +1,11 @@
 #!/usr/bin/env bats
 #
-# Neovim, dein.vim and the tools the config relies on (nix/modules/neovim.nix)
+# Neovim and the tools the config relies on (nix/modules/neovim.nix)
 
 load helper
 
 @test "Neovim runs" {
   run -0 login_zsh "nvim --headless -u NONE -i NONE -c 'if has(\"nvim-0.11.3\") | qall | else | cquit | endif'"
-}
-
-@test "dein.vim is installed" {
-  [ -f "$DOTFILES_PATH/nvim/dein/repos/github.com/Shougo/dein.vim/autoload/dein.vim" ]
 }
 
 @test "clangd runs" {

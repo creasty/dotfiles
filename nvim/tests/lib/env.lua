@@ -1,14 +1,13 @@
 -- Builds the isolated environment every child Neovim boots in.
 --
 -- The children run the real config (this repo's nvim/ directory) exactly the
--- way `nvim` does, with XDG_CONFIG_HOME pointing at a tree of symlinks to it
--- (cached per working tree, see acquire_plugin_tree) and every other XDG
--- directory and the sandboxes in a throwaway run directory. Tests
--- never touch your real state, shada, clipboard, Trash or caches. Installed
--- plugins are *linked*, never installed or updated.
+-- way `nvim` does, with XDG_CONFIG_HOME pointing at a tree of symlinks to it,
+-- and every XDG directory and the sandboxes in a throwaway run directory.
+-- Tests never touch your real state, shada, clipboard, Trash or caches.
+-- Installed plugins are *linked*, never installed or updated.
 --
--- This is the only file that knows about the plugin manager (dein) and the
--- plugins' on-disk layout. If you switch plugin managers, adapt prepare().
+-- This is the only file that knows about the plugin manager (lazy.nvim) and
+-- the plugins' on-disk layout. If you switch plugin managers, adapt prepare().
 
 local M = {}
 
@@ -61,25 +60,22 @@ end
 M.read_file = read_file
 M.write_file = write_file
 
-local function first_existing(candidates)
-  for i = 1, candidates.n do
-    local dir = candidates[i]
-    if dir and dir ~= '' and uv.fs_stat(dir) then
-      return realpath(dir)
-    end
+--- Where the plugins are installed: $E2E_PLUGINS, or lazy.nvim's root.
+function M.plugins_root()
+  local root = os.getenv('E2E_PLUGINS')
+  if root and root ~= '' then
+    return root
   end
+  local data = os.getenv('XDG_DATA_HOME')
+  return (data and data ~= '' and data or vim.fs.normalize('~/.local/share')) .. '/nvim/lazy'
 end
 
-function M.find_dein_repos()
-  local found = first_existing(vim.F.pack_len(
-    os.getenv('E2E_DEIN_REPOS'),
-    M.config_dir .. '/dein/repos',
-    vim.fs.normalize('~/.config/nvim/dein/repos')
-  ))
-  if found then
-    return found
+function M.find_plugins()
+  local root = M.plugins_root()
+  if uv.fs_stat(root) then
+    return realpath(root)
   end
-  error('Cannot find installed dein plugins. Set E2E_DEIN_REPOS to the dein repos directory.')
+  error(('Cannot find the installed plugins in %s. Set E2E_PLUGINS to where they are installed.'):format(root))
 end
 
 --- Environment variables for a child process.
@@ -113,64 +109,25 @@ local function run(ctx, args, timeout_ms)
   return res
 end
 
--- The plugin tree (XDG_CONFIG_HOME/nvim with dein's merged runtimepath)
--- lives at a stable, per-working-tree path so dein's state cache stays warm
--- across runs. A lock keeps concurrent runs apart; a run that cannot take it
--- builds a throwaway tree instead.
-local function acquire_plugin_tree(base, run_dir)
-  local key = vim.fn.sha256(M.config_dir):sub(1, 12)
-  local dir = vim.fs.joinpath(base, 'nvim-e2e-cache', key)
-  vim.fn.mkdir(vim.fs.dirname(dir), 'p')
-  local lock = dir .. '.lock'
-  for _ = 1, 2 do
-    if uv.fs_mkdir(lock, 448) then
-      write_file(lock .. '/pid', tostring(uv.os_getpid()))
-      return mkdir(dir), lock
-    end
-    local pid = tonumber(read_file(lock .. '/pid') or '')
-    if pid and pid ~= uv.os_getpid() and uv.kill(pid, 0) == nil then
-      -- Stale lock left by a run that died.
-      vim.fn.delete(lock, 'rf')
-    else
-      break
-    end
-  end
-  return mkdir(run_dir .. '/plugin-tree'), nil
-end
-
---- Rebuilds the links in the plugin tree (keeping dein's caches).
+--- $XDG_CONFIG_HOME/nvim mirrors this repo's nvim/ (not ~/.config/nvim, so
+--- the working tree under test is what boots).
 local function link_config(config_home)
   local nvim_dir = mkdir(config_home .. '/nvim')
-  for name in vim.fs.dir(nvim_dir) do
-    if name ~= 'dein' then
-      vim.fn.delete(nvim_dir .. '/' .. name)
-    end
-  end
-  -- $XDG_CONFIG_HOME/nvim mirrors this repo's nvim/ (not ~/.config/nvim, so
-  -- the working tree under test is what boots).
   for name in vim.fs.dir(M.config_dir) do
-    if name ~= 'dein' and name ~= 'tests' and name ~= '.DS_Store' then
+    if name ~= 'tests' and name ~= '.DS_Store' then
       symlink(M.config_dir .. '/' .. name, nvim_dir .. '/' .. name)
     end
   end
-  -- dein: config from the repo, plugins from the real installation.
-  local dein_dir = mkdir(nvim_dir .. '/dein')
-  for name in vim.fs.dir(dein_dir) do
-    if name ~= '.cache' then
-      vim.fn.delete(dein_dir .. '/' .. name)
-    end
-  end
-  for name in vim.fs.dir(M.config_dir .. '/dein') do
-    if name:match('%.toml$') then
-      symlink(M.config_dir .. '/dein/' .. name, dein_dir .. '/' .. name)
-    end
-  end
-  symlink(M.find_dein_repos(), dein_dir .. '/repos')
+end
+
+--- lazy.nvim's root in $XDG_DATA_HOME is a link to the installed plugins (as
+--- a whole: it takes only directories for installed plugins, not links).
+local function link_plugins(data_home)
+  symlink(M.find_plugins(), mkdir(data_home .. '/nvim') .. '/lazy')
 end
 
 --- Per-child XDG state/cache directories, so children never share plugin
---- state. (XDG_DATA_HOME stays per run: its site directory is on the
---- runtimepath, which dein's state cache must see unchanged.)
+--- state. (XDG_DATA_HOME stays per run: lazy.nvim's root is there.)
 function M.child_dirs(ctx, id)
   local root = mkdir(vim.fs.joinpath(ctx.run_dir, 'children', id))
   return {
@@ -191,18 +148,15 @@ function M.prepare()
     error(('the temporary directory %s is inside the project %s; set E2E_TMPDIR elsewhere'):format(base, vim.fs.dirname(project)))
   end
   local run_dir = mkdir(vim.fs.joinpath(base, ('nvim-e2e-%d-%d'):format(os.time(), uv.os_getpid())))
-  local tree, lock = acquire_plugin_tree(base, run_dir)
 
   local ctx = {
     run_dir = run_dir,
-    plugin_tree = tree,
-    lock = lock,
     nvim = vim.v.progpath,
     tests_dir = M.tests_dir,
     config_dir = M.config_dir,
     repo_dir = M.repo_dir,
     xdg = {
-      config = mkdir(tree .. '/config'),
+      config = mkdir(run_dir .. '/xdg/config'),
       data = mkdir(run_dir .. '/xdg/data'),
       state = mkdir(run_dir .. '/xdg/state'),
       cache = mkdir(run_dir .. '/xdg/cache'),
@@ -222,6 +176,7 @@ function M.prepare()
   mkdir(run_dir .. '/children')
   mkdir(run_dir .. '/servers')
   link_config(ctx.xdg.config)
+  link_plugins(ctx.xdg.data)
 
   -- Fake executables shadowing real ones.
   write_file(ctx.bin_dir .. '/trash', '#!/bin/sh\nfor f in "$@"; do mv -- "$f" "$E2E_TRASH/"; done\n', 493)
@@ -233,18 +188,14 @@ function M.prepare()
 
   write_file(ctx.context_file, vim.json.encode(ctx))
 
-  -- Warm up: build dein's merged runtimepath, then generate its state cache.
-  local res = run(ctx, { '-c', 'call dein#recache_runtimepath() | call dein#clear_state()', '-c', 'qa!' })
-  if res.code ~= 0 then
-    error('warm-up failed (recache): ' .. (res.stderr or ''))
-  end
+  -- Boot once for the messages of a startup (the runner shows them).
   local messages_file = run_dir .. '/startup-messages.txt'
-  res = run(ctx, {
+  local res = run(ctx, {
     '-c', ('call writefile(split(execute("messages"), "\\n"), %s)'):format(vim.fn.string(messages_file)),
     '-c', 'qa!',
   })
   if res.code ~= 0 then
-    error('warm-up failed (boot): ' .. (res.stderr or ''))
+    error('the config failed to boot: ' .. (res.stderr or ''))
   end
   ctx.startup_messages = read_file(messages_file) or ''
 
@@ -270,13 +221,10 @@ function M.sandbox(ctx, name)
   return mkdir(dir)
 end
 
---- Releases the plugin tree lock; with `keep` the run directory stays.
+--- Deletes the run directory, unless `keep`.
 function M.cleanup(ctx, keep)
   if not ctx then
     return
-  end
-  if ctx.lock then
-    vim.fn.delete(ctx.lock, 'rf')
   end
   if not keep and ctx.run_dir and ctx.run_dir:match('nvim%-e2e%-%d') then
     vim.fn.delete(ctx.run_dir, 'rf')

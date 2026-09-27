@@ -421,65 +421,15 @@ endfunction
 
 "=== Plugins
 "==============================================================================================
-let s:dein_path = stdpath('config') . '/dein'
-let s:dein_repos_path = s:dein_path . '/repos/github.com'
-
-if has('vim_starting')
-  let &g:rtp .= ',' . s:dein_repos_path . '/Shougo/dein.vim'
-endif
-
-let g:dein#install_log_filename = s:dein_path . '/install.log'
-
 " (before the tree-sitter plugins load)
 lua require('user.plugin.treesitter.compat')
 
-if dein#min#load_state(s:dein_path)
-  let s:dein_default_toml = s:dein_path . '/default.toml'
-  let s:dein_lazy_toml = s:dein_path . '/lazy.toml'
+" filetype.vim before $VIMRUNTIME/filetype.lua, as Neovim sources them after init.vim
+" (lazy.nvim would source filetype.lua first)
+filetype on
 
-  call dein#begin(s:dein_path, [
-    \ expand('<sfile>'),
-    \ s:dein_default_toml,
-    \ s:dein_lazy_toml,
-  \ ])
-
-  call dein#load_toml(s:dein_default_toml, { 'lazy': 0 })
-  call dein#load_toml(s:dein_lazy_toml,    { 'lazy': 1 })
-
-  call dein#end()
-  call dein#save_state()
-endif
-
-if dein#check_install()
-  call dein#install()
-endif
-
-call dein#call_hook('post_source')
-
-"  Dein utils
-"-----------------------------------------------
-command! -nargs=0 DeinPurgeCache
-  \ call dein#recache_runtimepath() |
-  \ call dein#clear_state()
-
-command! -nargs=0 DeinPrunePlugins
-  \ call map(dein#check_clean(), "delete(v:val, 'rf')") |
-  \ exec 'DeinPurgeCache'
-
-command! -nargs=0 DeinOpenLog
-  \ execute 'vsplit' g:dein#install_log_filename
-
-command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinUpdate
-  \ call dein#update(fnamemodify(trim(<q-args>), ':t'))
-
-command! -nargs=? -complete=customlist,DeinPluginNameComplete DeinGotoRepo
-  \ exec 'lcd' s:dein_repos_path . '/' . trim(<q-args>)
-
-function! DeinPluginNameComplete(a, l, p) abort
-  let l:prefix_len = strlen(s:dein_repos_path) + 1
-  let l:list = map(split(globpath(s:dein_repos_path, '*/*')), { _, v -> v[l:prefix_len:] })
-  return filter(l:list, { _, v -> v =~# a:a })
-endfunction
+" installed and loaded by lazy.nvim
+lua require('user.plugins').setup()
 
 "  Cross-plugin integration
 "-----------------------------------------------

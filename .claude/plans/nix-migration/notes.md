@@ -8,7 +8,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 - **A module per topic** (`nix/modules/*.nix`), in place of an Ansible role. Each configures both the system and the home directory, so everything about a tool is in one file.
 - **Links follow the tree**, instead of the central `link:` list of `provisioning/config.yml`:
   - `home/<path>` → `~/.<path>`, `config/<path>` → `~/.config/<path>`, file by file (`nix/modules/links.nix`).
-  - The modules add only the links that live elsewhere: `nvim/` (as a directory, since dein.vim writes into it), the shell files, and VS Code's settings.
+  - The modules add only the links that live elsewhere: `nvim/` (as a directory, so that new files apply without a switch), the shell files, and VS Code's settings.
   - Links point into the checkout (`mkOutOfStoreSymlink`), so edits apply without a rebuild. A new file needs `git add` and a switch.
 - **Packages:**
   - Command-line tools come from nixpkgs, pinned by `flake.lock`.
@@ -21,6 +21,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
     - icu4c, for the charlock_holmes gem
 - **Runtimes stay with mise** (`config/mise/config.toml`). home-manager runs `mise install` on every switch, after registering the JDKs.
 - **1Password's CLI** comes from nixpkgs through nix-darwin, which copies `op` to `/usr/local/bin`, the path the app's integration requires.
+- **Keyboard** comes from its GitHub release through Nix instead of a cask, and home-manager copies the app into `~/Applications/Home Manager Apps`.
 - **1Password manages the SSH keys:**
   - `~/.ssh/config` is generated and makes ssh use 1Password's SSH agent.
   - Private keys move into 1Password; public keys stay in `~/.ssh/keys` to pick a key per host (`IdentitiesOnly`).
@@ -38,7 +39,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 |---|---|
 | link | `links.nix` (the tree), plus the modules below for their own files |
 | ssh | `ssh.nix` |
-| homebrew | `homebrew.nix` (taps, casks, formulae), `packages.nix` (command-line tools) |
+| homebrew | `homebrew.nix` (taps, casks, formulae), `packages.nix` (command-line tools), `keyboard.nix` (Keyboard) |
 | mise, ruby, nodejs | `mise.nix` |
 | java | `java.nix` |
 | golang, rust, swift | `go.nix`, `rust.nix`, `swift.nix` |
@@ -83,7 +84,12 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    $ brew untap golangci/tap hashicorp/tap
    $ brew uninstall --cask 1password-cli  # if still installed, from either tap
    $ brew untap 1password/tap             # if still tapped
+   $ brew uninstall --cask creasty/tools/keyboard
+   $ brew uninstall creasty/tools/rid     # dropped
+   $ brew untap creasty/tools
    ```
+
+   - Uninstalling Keyboard's cask removes `/Applications/Keyboard.app`: a login item that started it needs `~/Applications/Home Manager Apps/Keyboard.app` instead (System Settings > General > Login Items).
 
 4. Move the SSH keys into 1Password.
    - Import each private key, and turn on the SSH agent in 1Password's settings (Developer).
@@ -106,4 +112,6 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 | `llvm`, `clang-format` formulae | Only clangd and clang-format were used | nixpkgs' `clang-tools`, with no `clangd.path` setting |
 | `golangci/tap` | golangci-lint is in nixpkgs | |
 | Homebrew's `1password-cli` cask | The CLI comes from nixpkgs, like the other command-line tools | nix-darwin's `programs._1password`, `op` at `/usr/local/bin` |
+| The `creasty/tools/keyboard` cask | Homebrew quarantines the apps of casks, and Gatekeeper won't open Keyboard, which isn't notarized, until it's allowed in System Settings > Privacy & Security | Its GitHub release through Nix (`keyboard.nix`), in `~/Applications/Home Manager Apps` |
+| `creasty/tools/rid`, and the `creasty/tools` tap | Not used any more; rid's last release, an Intel build, is from 2018 | |
 | `./verify --tags`, `DOTFILES_NOEDIT_SECRETS` | No Ansible tags or secrets file | `./verify [bats options]` |

@@ -1,0 +1,678 @@
+{
+  "nodes": {
+    "LuaSnip": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779224266,
+        "narHash": "sha256-5Dm5maKjGcduew/cUZTWeyyVEgpZ0OpoVdMRYEw8Li0=",
+        "ref": "refs/heads/master",
+        "rev": "0abc8f390b278c3b4aabc4c004ac8a088b65cf24",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/L3MON4D3/LuaSnip"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/L3MON4D3/LuaSnip"
+      }
+    },
+    "blink-cmp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775330305,
+        "narHash": "sha256-C1FpyGw0f35NdHvDUGPXxmKdOgw3SpIteK1gAjVy6Ns=",
+        "ref": "v1",
+        "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/saghen/blink.cmp"
+      },
+      "original": {
+        "ref": "v1",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/saghen/blink.cmp"
+      }
+    },
+    "conform-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786458409,
+        "narHash": "sha256-7VkQLpkDak/O5tphT/EWX/rE9r0Dd2UCF5CFbl4rK+A=",
+        "ref": "refs/heads/master",
+        "rev": "016802de402556da54c36bd7359b441266b01cdd",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/stevearc/conform.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/stevearc/conform.nvim"
+      }
+    },
+    "copilot-lua": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790214455,
+        "narHash": "sha256-zL2yBu52mnMEj52tutE1aa++O75CAYGr9uHafDH8Qv0=",
+        "ref": "refs/heads/master",
+        "rev": "f76a0a281de089e27b605ec8017093f1aab73b07",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/zbirenbaum/copilot.lua"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/zbirenbaum/copilot.lua"
+      }
+    },
+    "gitsigns-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790071345,
+        "narHash": "sha256-ys58YqtdxdotyGxBHa90qwQv8lIXMuAitF8yf2p83M8=",
+        "ref": "refs/heads/main",
+        "rev": "070a5d7b985546cc57e1fc61e5bc507fecac6045",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/lewis6991/gitsigns.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/lewis6991/gitsigns.nvim"
+      }
+    },
+    "hop-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786727969,
+        "narHash": "sha256-KZY2DbLuM3M8P2Rp6ngbSesmd5uRQBa5nNpWxawOed8=",
+        "ref": "refs/heads/master",
+        "rev": "6e83486f351066e38c3ae9daad2a4f01dfb262ad",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/smoka7/hop.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/smoka7/hop.nvim"
+      }
+    },
+    "lazy-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762421181,
+        "narHash": "sha256-h5404njTAfqMJFQ3MAr2PWSbV81eS4aIs0cxAXkT0EM=",
+        "ref": "refs/heads/main",
+        "rev": "85c7ff3711b730b4030d03144f6db6375044ae82",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/folke/lazy.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/folke/lazy.nvim"
+      }
+    },
+    "live-command-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1726858589,
+        "narHash": "sha256-01sljUxJu1x8QpNNgnXK2H3Sr3moavxMXADRkItk1SE=",
+        "ref": "refs/heads/main",
+        "rev": "b0723697bf60d89ede953c4a5fedce3157784c15",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/smjonas/live-command.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/smjonas/live-command.nvim"
+      }
+    },
+    "mold-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1627726199,
+        "narHash": "sha256-6C1vY9YVw+GPw4cYiVd2s/FXUc+bI4ZVuNNPSEcYREA=",
+        "ref": "refs/heads/master",
+        "rev": "61cecb14524218b1cfed6929b7276ca2eb55866b",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/creasty/mold.vim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/creasty/mold.vim"
+      }
+    },
+    "nerdtree": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721451676,
+        "narHash": "sha256-xZvCKPzv0LwzgV3QoZkPn+TItrOVLPDPFqvdsII7K8k=",
+        "ref": "refs/heads/master",
+        "rev": "9b465acb2745beb988eff3c1e4aa75f349738230",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/preservim/nerdtree"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/preservim/nerdtree"
+      }
+    },
+    "nvim-autopairs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787454047,
+        "narHash": "sha256-WSSuk2lmBefKTseLDa/AwBUPEsjYsG41SYepPZw/rpM=",
+        "ref": "refs/heads/master",
+        "rev": "430522f95fe4fb7c511ec64f8c1a90cc6a66c05c",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/windwp/nvim-autopairs"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/windwp/nvim-autopairs"
+      }
+    },
+    "nvim-lint": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787681959,
+        "narHash": "sha256-IcV2QgxhGpTs7xTzLMOrqGuFdAaSuC96HQ3cu8+fTFY=",
+        "ref": "refs/heads/master",
+        "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/mfussenegger/nvim-lint"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/mfussenegger/nvim-lint"
+      }
+    },
+    "nvim-lspconfig": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790428870,
+        "narHash": "sha256-9XFik7vpA6ETPQM7KhJR2WZPlBa++Aw2NRr5GUnEmgM=",
+        "ref": "refs/heads/master",
+        "rev": "a9bb4d5f4276aa5cddc015faa3ecc5a7b5a26b14",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/neovim/nvim-lspconfig"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/neovim/nvim-lspconfig"
+      }
+    },
+    "nvim-treesitter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1743323476,
+        "narHash": "sha256-Els51yuMpB2AAdgNZ17eFwZhqmM8ki+HJ6RSHNmRNDk=",
+        "ref": "master",
+        "rev": "86768fdd002c75833414010052a1e95a4760ee32",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nvim-treesitter/nvim-treesitter"
+      },
+      "original": {
+        "ref": "master",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nvim-treesitter/nvim-treesitter"
+      }
+    },
+    "nvim-treesitter-context": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1742401063,
+        "narHash": "sha256-D4i4ChXK9yWCd/uBIkZaWq5hoYcBRfznHPbIRRaOPYo=",
+        "ref": "refs/heads/master",
+        "rev": "93b29a32d5f4be10e39226c6b796f28d68a8b483",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nvim-treesitter/nvim-treesitter-context"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nvim-treesitter/nvim-treesitter-context"
+      }
+    },
+    "nvim-treesitter-endwise": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1741813270,
+        "narHash": "sha256-n11MN1wMJ1t6GLfjD0dHqlsKC0FmgkmSbizxW+1VV0U=",
+        "ref": "refs/heads/master",
+        "rev": "57d52841a966be6ff9a998a6d3dc1ac9cc9d95fc",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/RRethy/nvim-treesitter-endwise"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/RRethy/nvim-treesitter-endwise"
+      }
+    },
+    "nvim-ts-autotag": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1739910276,
+        "narHash": "sha256-a3Bcql68mp3y5bH9XMiDTQB0e75T+qFB593objIGg/I=",
+        "ref": "refs/heads/main",
+        "rev": "a1d526af391f6aebb25a8795cbc05351ed3620b5",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/windwp/nvim-ts-autotag"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/windwp/nvim-ts-autotag"
+      }
+    },
+    "nvim-yati": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1718009720,
+        "narHash": "sha256-hsSGj/bKY0FxZi1BlJxa/U2zvJzOwrFSz1W/MUtPunU=",
+        "ref": "refs/heads/main",
+        "rev": "df3dc06076c6fe20a1dcd8643e712af5c252d042",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/yioneko/nvim-yati"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/yioneko/nvim-yati"
+      }
+    },
+    "opfmt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1743584074,
+        "narHash": "sha256-SILnOubkk3p617QbmhOEu7qRUrGGzT8RghjCzxk8gHY=",
+        "ref": "refs/heads/master",
+        "rev": "dbffa3e28cc0584669129d6a123f40266ddba7c7",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/creasty/opfmt"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/creasty/opfmt"
+      }
+    },
+    "root": {
+      "inputs": {
+        "LuaSnip": "LuaSnip",
+        "blink-cmp": "blink-cmp",
+        "conform-nvim": "conform-nvim",
+        "copilot-lua": "copilot-lua",
+        "gitsigns-nvim": "gitsigns-nvim",
+        "hop-nvim": "hop-nvim",
+        "lazy-nvim": "lazy-nvim",
+        "live-command-nvim": "live-command-nvim",
+        "mold-vim": "mold-vim",
+        "nerdtree": "nerdtree",
+        "nvim-autopairs": "nvim-autopairs",
+        "nvim-lint": "nvim-lint",
+        "nvim-lspconfig": "nvim-lspconfig",
+        "nvim-treesitter": "nvim-treesitter",
+        "nvim-treesitter-context": "nvim-treesitter-context",
+        "nvim-treesitter-endwise": "nvim-treesitter-endwise",
+        "nvim-ts-autotag": "nvim-ts-autotag",
+        "nvim-yati": "nvim-yati",
+        "opfmt": "opfmt",
+        "snacks-nvim": "snacks-nvim",
+        "switch-vim": "switch-vim",
+        "syntax-tree-surfer": "syntax-tree-surfer",
+        "text-case-nvim": "text-case-nvim",
+        "vim-altr": "vim-altr",
+        "vim-easy-align": "vim-easy-align",
+        "vim-fugitive": "vim-fugitive",
+        "vim-operator-replace": "vim-operator-replace",
+        "vim-operator-user": "vim-operator-user",
+        "vim-pasta": "vim-pasta",
+        "vim-quickrun": "vim-quickrun",
+        "vim-rengbang": "vim-rengbang",
+        "vim-repeat": "vim-repeat",
+        "vim-signature": "vim-signature",
+        "vim-surround": "vim-surround",
+        "vim-textmanip": "vim-textmanip",
+        "vim-textobj-indent": "vim-textobj-indent",
+        "vim-textobj-user": "vim-textobj-user"
+      }
+    },
+    "snacks-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779727538,
+        "narHash": "sha256-gU0XjCcnmZNwZ/erukA8miBiMKaSsSiInLtiv+OyEJI=",
+        "ref": "refs/heads/main",
+        "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/folke/snacks.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/folke/snacks.nvim"
+      }
+    },
+    "switch-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1739475392,
+        "narHash": "sha256-tev5ZqUQNpkBlYaFk1gwoi9K3O/q97wnMmF/Mo0PT10=",
+        "ref": "refs/heads/main",
+        "rev": "b6bab56113312ebaa53038461c1a61bcb1e4a9d9",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/AndrewRadev/switch.vim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/AndrewRadev/switch.vim"
+      }
+    },
+    "syntax-tree-surfer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696602452,
+        "narHash": "sha256-jYVNw+2ZlJl5EaGZ0EfjInHOtQHlL6FYGAXZgXu983Q=",
+        "ref": "refs/heads/master",
+        "rev": "732ea6d0f868bcccd2f526be73afa46997d5a2fb",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ziontee113/syntax-tree-surfer"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ziontee113/syntax-tree-surfer"
+      }
+    },
+    "text-case-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722628320,
+        "narHash": "sha256-2IMufSMy9JW50VzZ3SgOtp8kYs81ANwV0eP0ZH3rTFo=",
+        "ref": "refs/heads/main",
+        "rev": "e898cfd46fa6cde0e83abb624a16e67d2ffc6457",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/johmsalas/text-case.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/johmsalas/text-case.nvim"
+      }
+    },
+    "vim-altr": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1558693142,
+        "narHash": "sha256-vGSdRTiCqtkQNbR7R1BWR12B1gX9KuGioyYH/Kv7P2A=",
+        "ref": "refs/heads/master",
+        "rev": "fba055cf3b83a1ada5b05d694fbefd024aa93289",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-altr"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-altr"
+      }
+    },
+    "vim-easy-align": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1712978502,
+        "narHash": "sha256-EARuJTE5VQVF9KbX6TOtxaoHiem49R468h9IfUj32Kg=",
+        "ref": "refs/heads/master",
+        "rev": "9815a55dbcd817784458df7a18acacc6f82b1241",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/junegunn/vim-easy-align"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/junegunn/vim-easy-align"
+      }
+    },
+    "vim-fugitive": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1740005044,
+        "narHash": "sha256-Pl2t8eCfwX43AyY/2S7UaDWyXnvq9QhQnHRhTDc0qqY=",
+        "ref": "refs/heads/master",
+        "rev": "4a745ea72fa93bb15dd077109afbb3d1809383f2",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/tpope/vim-fugitive"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/tpope/vim-fugitive"
+      }
+    },
+    "vim-operator-replace": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1424793379,
+        "narHash": "sha256-2Gyr95P5bQqy9BC2WiOU6NuXvzuHNdydvH/xH8xdkR0=",
+        "ref": "refs/heads/master",
+        "rev": "1345a556a321a092716e149d4765a5e17c0e9f0f",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-operator-replace"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-operator-replace"
+      }
+    },
+    "vim-operator-user": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1424176932,
+        "narHash": "sha256-yykX2bTr77HMqDjFt6VQLI1qNHodxYIom5s8XrN3wps=",
+        "ref": "refs/heads/master",
+        "rev": "c3dfd41c1ed516b4b901c97562e644de62c367aa",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-operator-user"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-operator-user"
+      }
+    },
+    "vim-pasta": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1691834732,
+        "narHash": "sha256-nfJmV+PNJy1upgz52uWIf9YkLqY6ELK04uoUnEUojeA=",
+        "ref": "refs/heads/master",
+        "rev": "2b786703eef9f82ae7a56f3de4ee43e1e5efaaa5",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ku1ik/vim-pasta"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/ku1ik/vim-pasta"
+      }
+    },
+    "vim-quickrun": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1720759488,
+        "narHash": "sha256-EoE1oc0uOopxjZ0XrfpQm4xK+acmvr6mD2I/9d2e17U=",
+        "ref": "refs/heads/master",
+        "rev": "77b4d6ea9972a206f02c736882c2398c36d2983c",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/thinca/vim-quickrun"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/thinca/vim-quickrun"
+      }
+    },
+    "vim-rengbang": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1560773971,
+        "narHash": "sha256-kCiPQw2R3AbytiT3ZR71HddEMCffv6UjTcXGYlLC+sA=",
+        "ref": "refs/heads/master",
+        "rev": "e8c58cade2208b90dca989abfa9bcf1d79c4e931",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/deris/vim-rengbang"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/deris/vim-rengbang"
+      }
+    },
+    "vim-repeat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1720473942,
+        "narHash": "sha256-G/dmkq1KtSHIl+I5p3LfO6mGPS3eyLRbEEsuLbTpGlk=",
+        "ref": "refs/heads/master",
+        "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/tpope/vim-repeat"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/tpope/vim-repeat"
+      }
+    },
+    "vim-signature": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1530910672,
+        "narHash": "sha256-9eZ7IZV5PSEHAACZYQ4iiCs8iZxSxWOPinkrf85rpSI=",
+        "ref": "refs/heads/master",
+        "rev": "6bc3dd1294a22e897f0dcf8dd72b85f350e306bc",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kshenoy/vim-signature"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kshenoy/vim-signature"
+      }
+    },
+    "vim-surround": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666730476,
+        "narHash": "sha256-DZE5tkmnT+lAvx/RQHaDEgEJXRKsy56KJY919xiH1lE=",
+        "ref": "refs/heads/master",
+        "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/tpope/vim-surround"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/tpope/vim-surround"
+      }
+    },
+    "vim-textmanip": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1568965495,
+        "narHash": "sha256-0MpIo9TfifONvG1LSSIzRMwRQvfAdel0uPw9g6GcnXM=",
+        "ref": "refs/heads/master",
+        "rev": "1948542d12e37f286ef4edd87db4f29e4c7fd771",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/t9md/vim-textmanip"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/t9md/vim-textmanip"
+      }
+    },
+    "vim-textobj-indent": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1358509589,
+        "narHash": "sha256-oFzUPG+IOkbKZ2gU/kduQ3G/LsLDlEjFhRP0BHBE+1Q=",
+        "ref": "refs/heads/master",
+        "rev": "deb76867c302f933c8f21753806cbf2d8461b548",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-textobj-indent"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-textobj-indent"
+      }
+    },
+    "vim-textobj-user": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1582277364,
+        "narHash": "sha256-4+9SlywaEKpJL6MM2jcBjFoy2dpLqviil9idVNkeL/g=",
+        "ref": "refs/heads/master",
+        "rev": "41a675ddbeefd6a93664a4dc52f302fe3086a933",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-textobj-user"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/kana/vim-textobj-user"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

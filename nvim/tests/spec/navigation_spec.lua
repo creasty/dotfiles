@@ -87,17 +87,15 @@ describe('Navigation', function()
       t.eq({ 'ui/Button.test.ts', 'ui/Button.tsx', 'ui/Button.stories.tsx', 'ui/Button.ts' }, seen)
     end)
 
-    it('config pairs: default.toml <-> lazy.toml, .env variants, locales, go.mod <-> go.sum', function()
+    it('config pairs: .env variants, locales, go.mod <-> go.sum', function()
       local nvim = t.nvim()
       nvim:files({
-        ['dein/default.toml'] = 'x', ['dein/lazy.toml'] = 'x',
         ['.env'] = 'x', ['.env.sample'] = 'x',
         ['locales/en.yml'] = 'x', ['locales/ja.yml'] = 'x',
         ['go.mod'] = 'x', ['go.sum'] = 'x',
         ['c/x.c'] = 'x', ['c/x.h'] = 'x',
       })
       for from, to in pairs({
-        ['dein/default.toml'] = 'dein/lazy.toml',
         ['.env'] = '.env.sample',
         ['locales/en.yml'] = 'locales/ja.yml',
         ['go.mod'] = 'go.sum',

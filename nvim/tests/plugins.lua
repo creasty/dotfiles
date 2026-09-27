@@ -1,10 +1,7 @@
--- Pins the plugins the suite runs against. nvim/dein/lock.json records, as
--- installed on your machine: the commit of every dein plugin and the revision
--- of every tree-sitter parser nvim-treesitter compiled. CI installs exactly
--- those.
---
--- A plugin whose repository is gone can get a "mirror" in lock.json to fetch
--- the same commit from; `lock` keeps it.
+-- Installs and checks the plugins the suite runs against: the commits
+-- nvim/flake.lock pins (which Dependabot bumps), and the tree-sitter parsers
+-- of user/plugin/treesitter/parsers.lua at the revisions the pinned
+-- nvim-treesitter's lockfile pins. CI installs exactly those.
 --
 -- Run through nvim/tests/plugins (see usage below).
 
@@ -12,20 +9,21 @@ local lib_dir = vim.fs.joinpath(vim.fs.dirname(vim.fs.normalize(debug.getinfo(1,
 package.path = lib_dir .. '/?.lua;' .. package.path
 local env = require('env')
 
+vim.opt.rtp:prepend(env.config_dir)
+local config = require('user.plugins')
+local PARSERS = require('user.plugin.treesitter.parsers')
+
 local USAGE = [[
-Usage: nvim/tests/plugins lock | check | install
+Usage: nvim/tests/plugins check | install
 
-  lock      write nvim/dein/lock.json from the installed plugins
-  check     compare the installed plugins with lock.json (exit 1 if they differ)
-  install   install what lock.json pins that is missing: dein plugins into
-            $E2E_DEIN_REPOS (default: nvim/dein/repos) and their tree-sitter
-            parsers. An installed plugin at another commit is reported, never
-            changed.]]
+  check     compare the installed plugins and parsers with what nvim/flake.lock
+            pins (exit 1 if they differ)
+  install   install what it pins that is missing: plugins into $E2E_PLUGINS
+            (default: lazy.nvim's, ~/.local/share/nvim/lazy) and their
+            tree-sitter parsers. An installed plugin at another commit is
+            reported, never changed.]]
 
-local LOCK_FILE = env.config_dir .. '/dein/lock.json'
-local TOML_FILES = { env.config_dir .. '/dein/default.toml', env.config_dir .. '/dein/lazy.toml' }
--- dein appends the plugin's `rev` (default.toml pins nvim-treesitter to master)
-local TREESITTER = 'github.com/nvim-treesitter/nvim-treesitter_master'
+local FLAKE_LOCK = env.config_dir .. '/flake.lock'
 
 local function fail(msg)
   io.stderr:write(msg, '\n')
@@ -45,41 +43,28 @@ local function git(dir, ...)
   return result.code == 0 and vim.trim(result.stdout) or nil
 end
 
---- Where a locked plugin lives: `key` is relative to the repos directory, or
---- absolute for plugins with an explicit `path`.
-local function locate(repos, key)
-  return key:sub(1, 1) == '/' and key or (repos .. '/' .. key)
+local function read_pins()
+  local ok, pins = pcall(config.pins, FLAKE_LOCK)
+  if not ok then
+    fail(('Cannot read %s: %s'):format(FLAKE_LOCK, pins))
+  end
+  return pins
 end
 
---- The plugins of the toml files, as dein names their directories (see
---- dein#parse#_dict() and the git type's init()).
-local function declared(repos)
-  vim.opt.rtp:append(repos .. '/github.com/Shougo/dein.vim')
-  local keys = {}
-  for _, file in ipairs(TOML_FILES) do
-    for _, plugin in ipairs(vim.fn['dein#toml#parse_file'](file).plugins or {}) do
-      local key
-      if plugin.path then
-        key = vim.fs.normalize(plugin.path)
-      elseif plugin.repo:match('^[%w_.-]+/[%w_.-]+$') then
-        key = 'github.com/' .. plugin.repo
-      else
-        key = plugin.repo:gsub('%.git$', ''):gsub('^https:/+', ''):gsub('^git@', ''):gsub(':', '/')
-      end
-      if plugin.rev and plugin.rev ~= '' then
-        key = key .. '_' .. plugin.rev:gsub('[^%w.-]', '_')
-      end
-      keys[#keys + 1] = key
-    end
-  end
-  table.sort(keys)
-  return keys
+--- The plugins of nvim/lua/user/plugins.lua as lazy.nvim resolves them, by
+--- name: `url`, `dir` (in `root`, or your working copy when `_.is_local`).
+local function declared(root)
+  vim.opt.rtp:prepend(root .. '/lazy.nvim')
+  local opts = vim.deepcopy(config.opts)
+  opts.root = root
+  require('lazy.core.config').setup(opts)
+  require('lazy.core.plugin').load()
+  return require('lazy.core.config').plugins
 end
 
 --- Parsers nvim-treesitter compiled into its own directory, with the revision
 --- each was built from (only those it still knows how to build).
-local function installed_parsers(repos)
-  local ts = repos .. '/' .. TREESITTER
+local function installed_parsers(ts)
   local parsers = {}
   for name, type in vim.fs.dir(ts .. '/parser-info') do
     local lang = name:match('^(.*)%.revision$')
@@ -90,140 +75,77 @@ local function installed_parsers(repos)
   return parsers
 end
 
-local function buildable(repos, langs)
-  vim.opt.rtp:prepend(repos .. '/' .. TREESITTER)
+--- The revision of each parser that nvim-treesitter's lockfile pins.
+local function pinned_parsers(ts)
+  local lockfile = vim.json.decode(env.read_file(ts .. '/lockfile.json') or '{}')
+  local parsers = {}
+  for _, lang in ipairs(PARSERS) do
+    parsers[lang] = lockfile[lang] and lockfile[lang].revision
+  end
+  return parsers
+end
+
+local function buildable(ts, langs)
+  vim.opt.rtp:prepend(ts)
   local configs = require('nvim-treesitter.parsers').get_parser_configs()
   return vim.tbl_filter(function(lang)
     return configs[lang] ~= nil
   end, langs)
 end
 
-local function read_lock()
-  local text = env.read_file(LOCK_FILE)
-  if not text then
-    fail(('%s does not exist; run: nvim/tests/plugins lock'):format(LOCK_FILE))
+local function same_repository(a, b)
+  local function normalize(url)
+    return (url:lower():gsub('%.git$', ''):gsub('/$', ''))
   end
-  return vim.json.decode(text)
+  return normalize(a) == normalize(b)
 end
 
-local function encode(lock)
-  local function str(s)
-    return (vim.json.encode(s):gsub('\\/', '/'))
-  end
-  local function section(name, map, last, value)
-    local keys = vim.tbl_keys(map)
-    table.sort(keys)
-    local out = { ('  %s: {'):format(str(name)) }
-    for i, key in ipairs(keys) do
-      out[#out + 1] = ('    %s: %s%s'):format(str(key), value(map[key]), i < #keys and ',' or '')
-    end
-    out[#out + 1] = last and '  }' or '  },'
-    return table.concat(out, '\n')
-  end
-  return table.concat({
-    '{',
-    section('dein', lock.dein, false, function(plugin)
-      local mirror = plugin.mirror and (', "mirror": ' .. str(plugin.mirror)) or ''
-      return ('{ "url": %s, "commit": %s%s }'):format(str(plugin.url), str(plugin.commit), mirror)
-    end),
-    section('treesitter', lock.treesitter, true, str),
-    '}',
-    '',
-  }, '\n')
-end
-
-local commands = {}
-local run_all
-
-function commands.lock()
-  local repos = env.find_dein_repos()
-  local previous = env.read_file(LOCK_FILE) and vim.json.decode(env.read_file(LOCK_FILE)) or { dein = {} }
-  local lock = { dein = {}, treesitter = {} }
-  local errors = {}
-  for _, key in ipairs(declared(repos)) do
-    local dir = locate(repos, key)
-    local commit, url = git(dir, 'rev-parse', 'HEAD'), git(dir, 'remote', 'get-url', 'origin')
-    if not commit or not url then
-      errors[#errors + 1] = key .. ': not installed (or not a git clone)'
-    else
-      local mirror = previous.dein[key] and previous.dein[key].mirror
-      lock.dein[key] = { url = url, commit = commit, mirror = mirror }
-      if git(dir, 'status', '--porcelain', '--untracked-files=no') ~= '' then
-        say(('warning: %s has local changes; locking its HEAD'):format(key))
-      end
-      if git(dir, 'branch', '--remotes', '--contains', commit) == '' then
-        say(('warning: %s is at %s, which no remote branch contains; CI may not be able to fetch it'):format(key, commit:sub(1, 12)))
-      end
-    end
-  end
-  local reachable = {}
-  for key, plugin in pairs(lock.dein) do
-    if not plugin.mirror then
-      reachable[#reachable + 1] = { name = key, cmd = { 'git', 'ls-remote', '--exit-code', plugin.url, 'HEAD' } }
-    end
-  end
-  for _, failure in ipairs(run_all(reachable, 8)) do
-    say(('warning: cannot reach %s\n  add a "mirror" that has its commit to lock.json'):format(failure))
-  end
-  local parsers = installed_parsers(repos)
-  for _, lang in ipairs(buildable(repos, vim.tbl_keys(parsers))) do
-    lock.treesitter[lang] = parsers[lang]
-  end
-  if #errors > 0 then
-    fail(table.concat(errors, '\n'))
-  end
-  env.write_file(LOCK_FILE, encode(lock))
-  say(('wrote %s: %d plugins, %d parsers'):format(LOCK_FILE, vim.tbl_count(lock.dein), vim.tbl_count(lock.treesitter)))
-end
-
---- Differences between lock.json and what is installed.
-local function differences(lock, repos)
+--- Differences between nvim/flake.lock and what is installed. Your working
+--- copies (lazy.nvim's `dev`) are yours to keep at any commit.
+local function differences(pins, plugins)
   local problems = {}
-  local keys = declared(repos)
-  for _, key in ipairs(keys) do
-    local locked = lock.dein[key]
-    local commit = git(locate(repos, key), 'rev-parse', 'HEAD')
-    if not locked then
-      problems[#problems + 1] = key .. ': not in lock.json (run: nvim/tests/plugins lock)'
-    elseif not commit then
-      problems[#problems + 1] = key .. ': not installed'
-    elseif commit ~= locked.commit then
-      problems[#problems + 1] = ('%s: at %s, locked at %s'):format(key, commit:sub(1, 12), locked.commit:sub(1, 12))
+  for name, plugin in pairs(plugins) do
+    local pinned = pins[name]
+    if not pinned then
+      problems[#problems + 1] = name .. ': not pinned (add an input to nvim/flake.nix, then: nix flake lock ./nvim)'
+    elseif not same_repository(plugin.url, pinned.url) then
+      problems[#problems + 1] = ('%s: installed from %s, pinned from %s'):format(name, plugin.url, pinned.url)
+    elseif not plugin._.is_local then
+      local commit = git(plugin.dir, 'rev-parse', 'HEAD')
+      if not commit then
+        problems[#problems + 1] = name .. ': not installed'
+      elseif commit ~= pinned.commit then
+        problems[#problems + 1] = ('%s: at %s, pinned at %s'):format(name, commit:sub(1, 12), pinned.commit:sub(1, 12))
+      end
     end
   end
-  for key in pairs(lock.dein) do
-    if not vim.tbl_contains(keys, key) then
-      problems[#problems + 1] = key .. ': locked, but no longer in the toml files'
+  for name in pairs(pins) do
+    if not plugins[name] then
+      problems[#problems + 1] = name .. ': pinned, but no longer in nvim/lua/user/plugins.lua'
     end
   end
-  local parsers = installed_parsers(repos)
-  for lang, revision in pairs(lock.treesitter) do
-    if not parsers[lang] then
+  local ts = plugins['nvim-treesitter'].dir
+  local installed = installed_parsers(ts)
+  for lang, revision in pairs(pinned_parsers(ts)) do
+    if not installed[lang] then
       problems[#problems + 1] = ('parser %s: not installed'):format(lang)
-    elseif parsers[lang] ~= revision then
-      problems[#problems + 1] = ('parser %s: at %s, locked at %s'):format(lang, parsers[lang]:sub(1, 12), revision:sub(1, 12))
+    elseif installed[lang] ~= revision then
+      problems[#problems + 1] = ('parser %s: at %s, nvim-treesitter pins %s (run: :TSUpdate)'):format(
+        lang, installed[lang]:sub(1, 12), (revision or '?'):sub(1, 12))
     end
   end
-  for lang in pairs(parsers) do
-    if not lock.treesitter[lang] and #buildable(repos, { lang }) > 0 then
-      problems[#problems + 1] = ('parser %s: installed, but not in lock.json'):format(lang)
+  for lang in pairs(installed) do
+    if not vim.tbl_contains(PARSERS, lang) and #buildable(ts, { lang }) > 0 then
+      problems[#problems + 1] = ('parser %s: installed, but not in user/plugin/treesitter/parsers.lua'):format(lang)
     end
   end
   table.sort(problems)
   return problems
 end
 
-function commands.check()
-  local problems = differences(read_lock(), env.find_dein_repos())
-  if #problems > 0 then
-    fail('The installed plugins differ from nvim/dein/lock.json:\n  ' .. table.concat(problems, '\n  '))
-  end
-  say('The installed plugins match nvim/dein/lock.json.')
-end
-
 --- Runs commands, `limit` at a time; returns "name: first error line" for
 --- each that failed.
-function run_all(jobs, limit)
+local function run_all(jobs, limit)
   local failed, running, next_job = {}, 0, 1
   local function start()
     while running < limit and next_job <= #jobs do
@@ -246,57 +168,86 @@ function run_all(jobs, limit)
   return failed
 end
 
+-- Clones a commit, with the branch lazy.nvim takes a plugin to follow (as in
+-- a clone of its own) when the lock tells it.
 local CLONE = [[
 set -e
 mkdir -p "$1"
 cd "$1"
 git init -q
 git remote add origin "$2"
-git fetch -q --depth 1 "$4" "$3"
+git fetch -q --depth 1 origin "$3"
 git -c advice.detachedHead=false checkout -q FETCH_HEAD
+if [ -n "$4" ]; then
+  git update-ref "refs/remotes/origin/$4" FETCH_HEAD
+  git symbolic-ref refs/remotes/origin/HEAD "refs/remotes/origin/$4"
+fi
 ]]
 
-function commands.install()
-  local lock = read_lock()
-  local repos = os.getenv('E2E_DEIN_REPOS') or (env.config_dir .. '/dein/repos')
-  vim.fn.mkdir(repos, 'p')
+local function clone_job(name, dir, pinned)
+  return { name = name, cmd = { 'sh', '-c', CLONE, 'clone', dir, pinned.url, pinned.commit, pinned.branch or '' } }
+end
 
-  local clones = {}
-  for key, plugin in pairs(lock.dein) do
-    local dir = locate(repos, key)
-    if not vim.uv.fs_stat(dir) then
-      clones[#clones + 1] = { name = key, cmd = { 'sh', '-c', CLONE, 'clone', dir, plugin.url, plugin.commit, plugin.mirror or plugin.url } }
+local commands = {}
+
+function commands.check()
+  local problems = differences(read_pins(), declared(env.find_plugins()))
+  if #problems > 0 then
+    fail('The installed plugins differ from nvim/flake.lock:\n  ' .. table.concat(problems, '\n  '))
+  end
+  say('The installed plugins match nvim/flake.lock.')
+end
+
+function commands.install()
+  local pins = read_pins()
+  local root = env.plugins_root()
+  vim.fn.mkdir(root, 'p')
+
+  -- lazy.nvim first, which tells where the others go
+  if not vim.uv.fs_stat(root .. '/lazy.nvim') then
+    local failed = run_all({ clone_job('lazy.nvim', root .. '/lazy.nvim', pins['lazy.nvim']) }, 1)
+    if #failed > 0 then
+      fail('Failed to clone:\n  ' .. failed[1])
     end
+  end
+  local plugins = declared(root)
+
+  local clones, unpinned = {}, {}
+  for name, plugin in pairs(plugins) do
+    if not vim.uv.fs_stat(plugin.dir) then
+      if pins[name] then
+        clones[#clones + 1] = clone_job(name, plugin.dir, pins[name])
+      else
+        unpinned[#unpinned + 1] = name
+      end
+    end
+  end
+  if #unpinned > 0 then
+    table.sort(unpinned)
+    fail('Not pinned in nvim/flake.lock: ' .. table.concat(unpinned, ' '))
   end
   table.sort(clones, function(a, b)
     return a.name < b.name
   end)
-  say(('Cloning %d plugins into %s'):format(#clones, repos))
+  say(('Cloning %d plugins into %s'):format(#clones, root))
   local failed = run_all(clones, 8)
   if #failed > 0 then
     fail('Failed to clone:\n  ' .. table.concat(failed, '\n  '))
   end
 
-  local installed = installed_parsers(repos)
-  local missing = {}
-  for lang, revision in pairs(lock.treesitter) do
-    if not installed[lang] then
-      missing[#missing + 1] = lang
-    end
-  end
-  table.sort(missing)
+  local ts = plugins['nvim-treesitter'].dir
+  local installed = installed_parsers(ts)
+  local missing = vim.tbl_filter(function(lang)
+    return not installed[lang]
+  end, PARSERS)
   if #missing > 0 then
     say(('Compiling %d tree-sitter parsers'):format(#missing))
-    vim.opt.rtp:prepend(repos .. '/' .. TREESITTER)
-    local configs = require('nvim-treesitter.parsers').get_parser_configs()
-    for _, lang in ipairs(missing) do
-      configs[lang].install_info.revision = lock.treesitter[lang]
-    end
+    vim.opt.rtp:prepend(ts)
     local ts_install = require('nvim-treesitter.install')
     ts_install.ensure_installed_sync(missing)
     -- Some hosts answer a tarball download with a bot check; git gets through.
     local retry = vim.tbl_filter(function(lang)
-      return not installed_parsers(repos)[lang]
+      return not installed_parsers(ts)[lang]
     end, missing)
     if #retry > 0 then
       say('Retrying with git: ' .. table.concat(retry, ' '))
@@ -305,11 +256,11 @@ function commands.install()
     end
   end
 
-  local problems = differences(lock, repos)
+  local problems = differences(pins, plugins)
   if #problems > 0 then
-    fail('Installed, but these differ from nvim/dein/lock.json:\n  ' .. table.concat(problems, '\n  '))
+    fail('Installed, but these differ from nvim/flake.lock:\n  ' .. table.concat(problems, '\n  '))
   end
-  say('Installed exactly what nvim/dein/lock.json pins.')
+  say('Installed exactly what nvim/flake.lock pins.')
 end
 
 local command = commands[arg[1] or '']

@@ -54,7 +54,7 @@ local function load_luasnip()
     return
   end
   loaded = true
-  vim.opt.rtp:prepend(env.find_dein_repos() .. '/github.com/L3MON4D3/LuaSnip')
+  vim.opt.rtp:prepend(env.find_plugins() .. '/LuaSnip')
   vim.opt.rtp:prepend(env.config_dir)
 end
 

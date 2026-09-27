@@ -1,8 +1,9 @@
 name: nvim-e2e
 
 # Runs the Neovim end-to-end workflow tests (nvim/tests) against the plugin
-# versions pinned in nvim/dein/lock.json, so a pull request shows which
-# workflows it changes. The job summary lists every changed workflow.
+# versions pinned in nvim/flake.lock, so a pull request (Dependabot's bumps
+# included) shows which workflows it changes. The job summary lists every
+# changed workflow.
 
 on:
   push:
@@ -19,19 +20,19 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 45
     env:
-      # Toolchain versions the lockfile was written with. (nvim-lspconfig needs
+      # Toolchain versions the plugins were pinned with. (nvim-lspconfig needs
       # Neovim 0.11.3+; blink.cmp is pinned to v1, which supports 0.11.)
       NVIM_VERSION: v0.11.7
       TREE_SITTER_CLI_VERSION: 0.25.3
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       # Outside the checkout: the tests' sandboxes must not be inside a project.
       - name: Set up directories
         run: |
-          echo "E2E_DEIN_REPOS=$RUNNER_TEMP/e2e/repos" >> "$GITHUB_ENV"
+          echo "E2E_PLUGINS=$RUNNER_TEMP/e2e/plugins" >> "$GITHUB_ENV"
           echo "E2E_TMPDIR=$RUNNER_TEMP/e2e/tmp" >> "$GITHUB_ENV"
 
       - name: Install Neovim
@@ -39,7 +40,7 @@ jobs:
           curl -fsSL "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-macos-arm64.tar.gz" | tar -xz -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/nvim-macos-arm64/bin" >> "$GITHUB_PATH"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 20.18.2
 
@@ -51,46 +52,24 @@ jobs:
           brew install fd ripgrep ghq
           nvim --version | head -1
 
-      - name: Make room for plugins at an absolute path
-        run: |
-          jq -r '.dein | keys[] | select(startswith("/"))' nvim/dein/lock.json | while read -r dir; do
-            sudo mkdir -p "$(dirname "$dir")"
-            sudo chown "$(id -un)" "$(dirname "$dir")"
-          done
-
       # Plugins and compiled parsers, saved right away so that a run whose
       # tests fail still caches them.
       - name: Restore the locked plugins
         id: plugins
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ${{ runner.temp }}/e2e/repos
-          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
+          path: ${{ runner.temp }}/e2e/plugins
+          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/flake.lock', 'nvim/lua/user/plugin/treesitter/parsers.lua') }}
 
       - name: Install the locked plugins
         run: nvim/tests/plugins install
 
       - name: Save the locked plugins
         if: steps.plugins.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ${{ runner.temp }}/e2e/repos
+          path: ${{ runner.temp }}/e2e/plugins
           key: ${{ steps.plugins.outputs.cache-primary-key }}
-
-      # The suite's own cache: the plugin tree with dein's state cache.
-      - name: Restore the test cache
-        id: e2e-cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ runner.temp }}/e2e/tmp/nvim-e2e-cache
-          key: nvim-e2e-cache-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
 
       - name: Run the workflow tests
         run: nvim/tests/run --jobs 3 --summary "$GITHUB_STEP_SUMMARY"
-
-      - name: Save the test cache
-        if: always() && steps.e2e-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ runner.temp }}/e2e/tmp/nvim-e2e-cache
-          key: ${{ steps.e2e-cache.outputs.cache-primary-key }}

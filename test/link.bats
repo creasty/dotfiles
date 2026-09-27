@@ -40,6 +40,20 @@ load helper
   assert_equal "$output" ./.hidden
 }
 
+@test "ctags reads its config from the dotfiles" {
+  local tab=$'\t'
+  cd "$BATS_TEST_TMPDIR"
+  mkdir node_modules
+  echo 'type Query { me: User }' > schema.graphql
+  echo 'type Hidden { me: User }' > node_modules/schema.graphql
+  echo '{ "name": "app" }' > package.json
+  # Recursing into the directory, GraphQL, and skipping node_modules and JSON are the config's, which Universal Ctags
+  # reads from ~/.config/ctags (Exuberant Ctags read ~/.ctags). Warnings about it would be extra lines.
+  run -0 login_zsh 'ctags -f -'
+  assert_equal "${#lines[@]}" 1
+  assert_like "${lines[0]}" "Query${tab}schema.graphql${tab}*${tab}language:graphql"
+}
+
 @test "tmux accepts the config" {
   run -0 login_zsh 'tmux -L verify -f /dev/null start-server \; source-file -n ~/.config/tmux/tmux.conf'
   assert_equal "$output" ''
@@ -77,6 +91,6 @@ load helper
     if grep -qxF -- "${path##*/}" <<< "$commands"; then
       problems+="${file#"$DOTFILES_PATH/"}: $path"$'\n'
     fi
-  done < <(grep -rEo --exclude-dir=dein '/opt/homebrew/bin/[A-Za-z0-9._+-]+' "$DOTFILES_PATH"/{config,home,nvim,shell,vscode})
+  done < <(grep -rEo '/opt/homebrew/bin/[A-Za-z0-9._+-]+' "$DOTFILES_PATH"/{config,home,nvim,shell,vscode})
   assert_none "$problems" 'Homebrew paths of commands from Nix'
 }
