@@ -46,7 +46,11 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
 - **Plugin manager**: dein.vim's author now develops dpp.vim, and Neovim 0.12 has a built-in `vim.pack`.
 - **Kotlin**: JetBrains now develops an official language server, `kotlin-lsp` (nvim-lspconfig's `kotlin_lsp`), besides the community `kotlin-language-server` the config enables.
-- **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7. On 0.12 the tree-sitter stack pinned to nvim-treesitter's `master` breaks opfmt and nvim-treesitter-endwise (see nvim-treesitter above); blink.cmp's v2 and Neovim's built-in inline completion (`vim.lsp.inline_completion`, for Copilot) need 0.12 too.
+- **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7.
+  0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter's `master` and nvim-treesitter-endwise rely on (markdown code blocks, as in hover docs, broke with them): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until the move to `main` (see nvim-treesitter above).
+  opfmt relies on 0.11's default for directives and is switched off until it handles 0.12; its tests skip meanwhile.
+  Two pinned quirks behave differently on 0.12 (xml/eruby `>`, `vs` without a parser).
+  blink.cmp's v2 and Neovim's built-in inline completion (`vim.lsp.inline_completion`, for Copilot) need 0.12 too.
 
 ## Found and fixed in #105
 
@@ -63,6 +67,10 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 - ddu's `:Open` and its `ghq` / `fd` sources called `Deno.run`, which Deno 2 removed: snacks.nvim's picker runs fd, rg and `ghq-list-monorepo` itself.
 - coc-diagnostic's linters gave Go, YAML and Vim script files no diagnostics (golangci-lint v2 and ansible-lint changed their flags; vint wasn't installed): nvim-lint's maintained definitions run them, and nixpkgs installs vint.
 - coc-metals, disabled and unmaintained, is gone with the other coc extensions.
+- The tree-sitter CLI came with Homebrew's `neovim`, so the Nix migration dropped it, and nvim-treesitter couldn't build the latex and swift parsers: every startup reported the error.
+  nixpkgs installs it now (0.26, which dropped the `--no-bindings` flag nvim-treesitter's `master` passes, so the config passes its own arguments), and without it those two parsers wait.
+- GitLab can answer curl's tarball download with a bot check, which kept the jsonc parser from installing: parsers are fetched with git.
+- TypeScript 7 no longer ships the `tsserver.js` typescript-language-server runs, so it failed to start in every project without an older TypeScript (mise installs 7): those get TypeScript's own server, `tsc --lsp`.
 
 ## Fixed by the Nix migration
 
