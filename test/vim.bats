@@ -16,6 +16,11 @@ load helper
   run -0 login_zsh 'clangd --version'
 }
 
+@test "the tree-sitter CLI runs" {
+  # nvim-treesitter generates the latex and swift parsers with it
+  run -0 login_zsh 'tree-sitter --version'
+}
+
 @test "the language servers are on PATH" {
   # (nvim/lua/user/plugin/lsp.lua starts only the ones it finds)
   for cmd in codebook-lsp lua-language-server pyright-langserver tailwindcss-language-server \

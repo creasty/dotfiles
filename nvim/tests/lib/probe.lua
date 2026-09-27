@@ -256,4 +256,12 @@ function probe.choose(nvim, label, opts)
   end
 end
 
+---------------------------------------------------------------------------
+-- Operator formatting
+---------------------------------------------------------------------------
+
+function probe.opfmt_enabled(nvim)
+  return call(nvim, 'opfmt_enabled')
+end
+
 return probe

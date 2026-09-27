@@ -23,6 +23,7 @@
         sqlfluff
         tailwindcss-language-server
         terraform-ls
+        tree-sitter # CLI for the parsers nvim-treesitter generates from their grammar (latex, swift)
         vim-language-server
         vim-vint
         vscode-langservers-extracted # CSS, ESLint, HTML and JSON language servers

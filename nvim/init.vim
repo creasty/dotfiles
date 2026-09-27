@@ -430,6 +430,9 @@ endif
 
 let g:dein#install_log_filename = s:dein_path . '/install.log'
 
+" (before the tree-sitter plugins load)
+lua require('user.plugin.treesitter.compat')
+
 if dein#min#load_state(s:dein_path)
   let s:dein_default_toml = s:dein_path . '/default.toml'
   let s:dein_lazy_toml = s:dein_path . '/lazy.toml'

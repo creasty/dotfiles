@@ -323,4 +323,15 @@ function M.diagnostics()
   return counts
 end
 
+---------------------------------------------------------------------------
+-- Operator formatting
+---------------------------------------------------------------------------
+
+--- Whether operator formatting (creasty/opfmt) is switched on.
+function M.opfmt_enabled()
+  local ok, configs = pcall(require, 'nvim-treesitter.configs')
+  local opfmt = ok and configs.get_module('opfmt')
+  return type(opfmt) == 'table' and opfmt.enable == true
+end
+
 return M

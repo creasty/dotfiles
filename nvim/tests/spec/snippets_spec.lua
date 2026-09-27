@@ -131,6 +131,9 @@ describe('Snippets', function()
       "opfmt formats `-` as the minus operator once the typed keys run out, so typescript_henry's api-client-* snippets cannot be triggered by typing them",
       function()
         local nvim = buffer_with('typescript', 'app.ts')
+        if not probe.opfmt_enabled(nvim) then
+          t.skip('opfmt is switched off in the tree-sitter config')
+        end
         nvim:type('A')
         for key in ('api-client-general'):gmatch('.') do
           nvim:type(key)

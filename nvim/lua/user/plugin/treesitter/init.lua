@@ -1,5 +1,26 @@
+local install = require('nvim-treesitter.install')
+-- Some hosts answer curl's tarball download with a bot check, which tar
+-- cannot extract (GitLab, for jsonc); git gets through.
+install.prefer_git = true
+-- nvim-treesitter's master branch passes `--no-bindings` to `tree-sitter
+-- generate`, which the tree-sitter CLI dropped in 0.26.
+install.ts_generate_args = { 'generate', '--abi', vim.treesitter.language_version }
+
+--- Parsers generated from their grammar (latex, swift) need the tree-sitter CLI
+--- (nix/modules/neovim.nix). Without it, installing one fails with an error at
+--- every startup, so they wait until the CLI is there.
+local function installable(langs)
+  if vim.fn.executable('tree-sitter') == 1 then
+    return langs
+  end
+  local parsers = require('nvim-treesitter.parsers').get_parser_configs()
+  return vim.tbl_filter(function(lang)
+    return not parsers[lang].install_info.requires_generate_from_grammar
+  end, langs)
+end
+
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {
+  ensure_installed = installable {
     'bash',
     'c',
     'cmake',
@@ -87,9 +108,9 @@ require('nvim-treesitter.configs').setup {
   endwise = {
     enable = true,
   },
-  -- creasty/opfmt
+  -- creasty/opfmt (off for now: it breaks on Neovim 0.12)
   opfmt = {
-    enable = true,
+    enable = false,
   },
 }
 
