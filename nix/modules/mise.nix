@@ -17,8 +17,11 @@ in
   };
 
   config = {
-    # Ruby is built against Homebrew's libraries (ruby.compile), like rbenv did
+    # Ruby is built against Homebrew's libraries (ruby.compile), like rbenv did. Each is installed on its own: Homebrew
+    # removes a library that was installed as another formula's dependency along with that formula, and Ruby then fails
+    # to start (as with gmp, which ruby-build builds against whenever it finds it).
     homebrew.brews = [
+      "gmp"
       "libyaml"
       "openssl@3"
       "zlib"
@@ -36,6 +39,7 @@ in
         }:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin";
 
         rubyConfigureOpts = lib.concatStringsSep " " [
+          "--with-gmp-dir=/opt/homebrew/opt/gmp"
           "--with-openssl-dir=/opt/homebrew/opt/openssl@3"
           "--with-libyaml-dir=/opt/homebrew/opt/libyaml"
           "--with-zlib-dir=/opt/homebrew/opt/zlib"
