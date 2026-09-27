@@ -5,7 +5,6 @@
     awscli2 # Unified tool to manage your AWS services
     bat # Clone of cat(1) with syntax highlighting and Git integration
     cloc # Statistics utility to count lines of code
-    ctags # Reimplementation of ctags(1)
     curl # Get a file from an HTTP, HTTPS or FTP server
     deno # Secure runtime for JavaScript and TypeScript
     difftastic # Diff that understands syntax
@@ -38,6 +37,7 @@
     ripgrep # Search tool like grep and The Silver Searcher
     sd # Intuitive find & replace CLI
     tmux # Terminal multiplexer
+    universal-ctags # Maintained ctags implementation
     uv # Extremely fast Python package installer and resolver, written in Rust
     xh # Friendly and fast tool for sending HTTP requests
   ];
