@@ -2,8 +2,8 @@
 { username, ... }:
 let
   extensions = [
-    "Tyriar.sort-lines"
     "alygin.vscode-tlaplus"
+    "anthropic.claude-code"
     "apollographql.vscode-apollo"
     "christian-kohler.npm-intellisense"
     "christian-kohler.path-intellisense"
@@ -15,7 +15,13 @@ let
     "esbenp.prettier-vscode"
     "formulahendry.auto-close-tag"
     "formulahendry.auto-rename-tag"
+    "github.vscode-github-actions"
+    "golang.go"
     "jock.svg"
+    "ms-python.debugpy"
+    "ms-python.python"
+    "ms-python.vscode-pylance"
+    "ms-python.vscode-python-envs"
     "ms-vsliveshare.vsliveshare"
     "pflannery.vscode-versionlens"
     "sleistner.vscode-fileutils"
@@ -23,10 +29,13 @@ let
     "streetsidesoftware.code-spell-checker"
     "styled-components.vscode-styled-components"
     "swindh.enumerator"
+    "tamasfe.even-better-toml"
+    "tyriar.sort-lines"
     "vincaslt.highlight-matching-tag"
     "wayou.vscode-todo-highlight"
     "wmaurer.change-case"
     "wwm.better-align"
+    "yahyabatulu.vscode-markdown-alert"
   ];
 
   userDir = "Library/Application Support/Code/User";
