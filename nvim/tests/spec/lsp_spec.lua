@@ -58,6 +58,12 @@ local function project(files, open, opts)
   return nvim
 end
 
+--- The character of one side of a float's border (as nvim_win_get_config
+--- gives it: a string, or a character with its highlight).
+local function border_char(side)
+  return type(side) == 'table' and side[1] or side
+end
+
 local function picker_project(files, open)
   local nvim = project(files, open)
   probe.wait_picker_ready(nvim)
@@ -200,6 +206,25 @@ describe('LSP', function()
         end
       end)
       t.eq('cfg: e2e hover', text)
+    end)
+
+    it('gh renders the documentation as markdown, with a column of padding on each side', function()
+      local nvim = project(GO, 'main.go')
+      nvim:set_cursor(12, 6)
+      nvim:type('gh')
+      local float = nvim:wait_for(function()
+        for _, f in ipairs(nvim:floats()) do
+          if vim.tbl_contains(f.lines, 'cfg: e2e hover') then
+            return f
+          end
+        end
+      end)
+      local screen = nvim:wait_for(function()
+        local s = table.concat(nvim:screen(), '\n')
+        return s:find('cfg: e2e hover', 1, true) and s
+      end)
+      t.no_match('```', screen, 'the code fence is hidden')
+      t.eq({ ' ', ' ' }, { border_char(float.border[8]), border_char(float.border[4]) })
     end)
 
     it('<C-f> / <C-b> scroll a long hover, and page the buffer otherwise', function()
@@ -455,20 +480,21 @@ describe('LSP', function()
       t.ok(vim.tbl_contains({ 8, 11, 13 }, nvim:cursor()[1]))
     end)
 
-    it('resting on a diagnostic shows its message in a float', function()
+    it('resting on a diagnostic shows its message in a float, with a column of padding on each side', function()
       local nvim = project(TS, 'app.ts')
       nvim:wait_for(function()
         return probe.diagnostics(nvim).error > 0
       end)
       nvim:set_cursor(1, 0)
       nvim:type(']e')
-      nvim:wait_for(function()
+      local float = nvim:wait_for(function()
         for _, f in ipairs(nvim:floats()) do
           if table.concat(f.lines, '\n'):find('e2e error', 1, true) then
-            return true
+            return f
           end
         end
       end)
+      t.eq({ ' ', ' ' }, { border_char(float.border[8]), border_char(float.border[4]) })
     end)
   end)
 
@@ -496,6 +522,65 @@ describe('LSP', function()
         end
       end)
       t.eq('i', nvim:mode())
+    end)
+  end)
+
+  describe('TypeScript', function()
+    -- TypeScript 7 is its own language server (`tsc --lsp`), and no longer
+    -- ships the tsserver.js typescript-language-server (ts_ls) runs.
+    local function ts_project(files)
+      local nvim = t.nvim()
+      nvim:files(vim.tbl_extend('force', { ['package-lock.json'] = { '{}' } }, files))
+      return nvim
+    end
+
+    --- Whether the server would start for the current buffer.
+    local function starts(nvim, name)
+      return nvim:lua(
+        [[
+          local started = false
+          vim.lsp.config[...].root_dir(0, function()
+            started = true
+          end)
+          return started
+        ]],
+        name
+      )
+    end
+
+    it('a project on TypeScript 7 gets its tsc, not ts_ls', function()
+      local nvim = ts_project({ ['node_modules/.bin/tsc'] = { '#!/bin/sh', 'echo "Version 7.0.2"' } })
+      vim.uv.fs_chmod(nvim:path('node_modules/.bin/tsc'), tonumber('755', 8))
+      nvim:edit('app.ts', { '' })
+      t.ok(starts(nvim, 'tsc'), 'tsc starts')
+      t.no(starts(nvim, 'ts_ls'), 'ts_ls does not')
+    end)
+
+    it('a project on an older TypeScript gets ts_ls, not tsc', function()
+      local nvim = ts_project({ ['node_modules/typescript/lib/tsserver.js'] = { '' } })
+      nvim:edit('app.ts', { '' })
+      t.ok(starts(nvim, 'ts_ls'), 'ts_ls starts')
+      t.no(starts(nvim, 'tsc'), 'tsc does not')
+    end)
+  end)
+
+  describe('spell checking', function()
+    it("skips words under 4 letters and possessives (creasty's), knows your words, and reports hints", function()
+      local nvim = t.nvim()
+      local init = nvim:lua([[
+        local params = {}
+        vim.lsp.config.codebook.before_init(params, {})
+        local options = params.initializationOptions
+        return {
+          severity = options.diagnosticSeverity,
+          config = vim.fn.readfile(options.globalConfigPath),
+          word = vim.fn.readfile(vim.fn.stdpath('config') .. '/dict/user.txt')[1],
+        }
+      ]])
+      t.eq('hint', init.severity)
+      t.contains(init.config, 'min_word_length = 4')
+      t.contains(init.config, [=[ignore_patterns = ["\\w+['’]\\w+"]]=])
+      t.contains(init.config, ('  %q,'):format(init.word), 'the words in nvim/dict/user.txt')
     end)
   end)
 end)
