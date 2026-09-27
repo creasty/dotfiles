@@ -24,7 +24,7 @@ M.config_dir = vim.fs.dirname(M.tests_dir)
 M.repo_dir = vim.fs.dirname(M.config_dir)
 
 -- coc extensions linked into the test coc data home. Only deterministic ones:
--- no AI (tabnine), no network-backed language servers.
+-- no AI completion, no network-backed language servers.
 M.coc_extensions = { 'coc-snippets', 'coc-git' }
 
 local function realpath(path)

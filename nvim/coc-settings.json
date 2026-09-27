@@ -125,11 +125,6 @@
   "git.topRemovedSign.text": "▔",
   "git.topRemovedSign.hlGroup": "CocDiffDelete",
 
-  //=== coc-tabnine
-  //==============================================================================================
-  "tabnine.priority": 50,
-  "tabnine.disable_filetypes": ["markdown"],
-
   //=== coc-diagnostic
   //==============================================================================================
   "diagnostic-languageserver.filetypes": {

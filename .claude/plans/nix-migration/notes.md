@@ -66,6 +66,8 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 
    - Docker Desktop can come back from its upgrade in "User" mode, which adds a PATH section to the top of the shell files on every start (`./verify` fails then).
      Set Settings > Advanced > CLI tools to "System", then remove the sections: `git -C ~/dotfiles checkout shell/profile shell/bash/bash_profile`, and `rm ~/.zprofile.before-nix` if it only holds Docker Desktop's.
+   - Tabnine is no longer installed, but stays until uninstalled, and its VS Code extension adds `tabnine.experimentalAutoImports` to `vscode/settings.json` whenever it activates.
+     `code --uninstall-extension tabnine.tabnine-vscode`, and `:CocUninstall coc-tabnine` in Neovim. With VS Code quit, its data can go too: `~/Library/Application Support/TabNine`, `~/Library/Preferences/TabNine` and `~/Library/Application Support/Code/User/globalStorage/tabnine.tabnine-vscode`.
 
 3. Uninstall the formulae that Nix provides now, when convenient.
    - Until then, Nix's come first on `PATH`.

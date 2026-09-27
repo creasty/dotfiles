@@ -2,7 +2,6 @@
 { username, ... }:
 let
   extensions = [
-    "TabNine.tabnine-vscode"
     "Tyriar.sort-lines"
     "alygin.vscode-tlaplus"
     "apollographql.vscode-apollo"
