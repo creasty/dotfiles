@@ -6,7 +6,7 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 ## Verification gaps
 
 - **Neovim's config**: `./verify` runs Neovim without it (`-u NONE`).
-  The e2e suite ([creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106)) runs it with the plugins pinned in `nvim/lazy-lock.json`, which a fresh Mac installs too, but CI restores them from its cache: a pinned repository that vanishes goes unnoticed until the pins change.
+  The e2e suite ([creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106)) runs it with the plugins pinned in `nvim/flake.lock`, which a fresh Mac installs too, but CI restores them from its cache: a pinned repository that vanishes goes unnoticed until Dependabot fails to bump it or the pins change.
   That's how the vanished `phaazon/hop.nvim` repository broke fresh installs unnoticed.
   CI provisions everything in one job now, so a test can start it.
 - **Idempotency**: nothing checks that a second switch changes nothing.
@@ -55,7 +55,8 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Fixed by replacing dein.vim with lazy.nvim
 
-- A fresh Mac got every plugin's latest commit (the toml files pinned none), not the ones CI tests: lazy.nvim installs the commits `nvim/lazy-lock.json` pins.
+- A fresh Mac got every plugin's latest commit (the toml files pinned none), not the ones CI tests: lazy.nvim installs the commits `nvim/flake.lock` pins.
+- Plugin updates were manual (`:DeinUpdate`) and reached CI only once pinned: Dependabot bumps `nvim/flake.lock` weekly, in pull requests the e2e suite tests, and the Nix inputs and the workflows' actions (now pinned by SHA) as well.
 - opfmt's working copy was a hard-coded `/Users/creasty/...` path, which CI created with sudo: lazy.nvim's `dev` option looks under ghq's root, and installs opfmt as usual without a working copy.
 
 ## Fixed by the Nix migration

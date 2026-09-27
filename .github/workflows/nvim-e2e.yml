@@ -27,7 +27,7 @@ jobs:
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       # Outside the checkout: the tests' sandboxes must not be inside a project.
       - name: Set up directories
@@ -40,7 +40,7 @@ jobs:
           curl -fsSL "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-macos-arm64.tar.gz" | tar -xz -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/nvim-macos-arm64/bin" >> "$GITHUB_PATH"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 20.18.2
 
@@ -56,7 +56,7 @@ jobs:
       # tests fail still caches them.
       - name: Restore the locked plugins
         id: plugins
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/e2e/plugins
           key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/flake.lock', 'nvim/lua/user/plugin/treesitter/parsers.lua') }}
@@ -66,7 +66,7 @@ jobs:
 
       - name: Save the locked plugins
         if: steps.plugins.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/e2e/plugins
           key: ${{ steps.plugins.outputs.cache-primary-key }}

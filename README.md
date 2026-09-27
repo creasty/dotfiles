@@ -69,6 +69,18 @@ $ ./verify --filter java  # options go to bats
 The tests compare the machine with what the activated configuration lists in `/etc/dotfiles/manifest.json`.
 Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 
+## Updates
+
+Versions are pinned, and [Dependabot](./.github/dependabot.yml) bumps them every Monday, in a pull request per kind:
+
+| Pinned in | What | Tested by |
+|---|---|---|
+| `nvim/flake.lock` | Neovim plugins, at the commits lazy.nvim installs | [Neovim's workflow tests](./nvim/tests/README.md) |
+| `flake.lock` | nixpkgs, nix-darwin and home-manager | Provisioning |
+| `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
+
+After merging, provision again, and run `:Lazy update` in Neovim to check out the new plugin commits.
+
 ## Project structure
 
 ### Main configuration directories
@@ -96,7 +108,7 @@ Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 | Startup time | ~60ms | ~72ms |
 | Config size | 2,900 sloc | 700 sloc |
 | Original plugins | 10 plugins | 1,100 sloc of bin |
-| Third-party plugins | 36 plugins | 2 plugins + 2 hooks |
+| Third-party plugins | 37 plugins | 2 plugins + 2 hooks |
 
 ### nvim
 
@@ -128,8 +140,8 @@ Third-party plugins (excerpt):
 ```sh-session
 $ hyperfine --warmup 3 --prepare 'sleep 0.1' 'nvim --headless -c quit'
 $ cloc --exclude-dir=template nvim
-$ rg -o "'creasty/[\w.-]+'" nvim/lua/user/plugins.lua | sort -u
-$ rg -o "'[\w.-]+/[\w.-]+'" nvim/lua/user/plugins.lua | sort -u | wc -l
+$ rg -o 'github.com/creasty/[\w.-]+' nvim/flake.nix
+$ jq '.nodes.root.inputs | length' nvim/flake.lock
 ```
 
 Profiling:
