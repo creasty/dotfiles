@@ -20,9 +20,6 @@
 [diff]
   indentHeuristic = true
 
-  # To turn off difftastic temporarily, use `--no-ext-diff`.
-  external = difft
-
 [remote]
   pushDefault = origin
 
@@ -108,15 +105,15 @@
   cmp = compare
 
   # Inspection and Comparison
-  d  = diff --irreversible-delete
-  dc = diff --irreversible-delete --cached
-  ds = ! git diff --stat "$(git get-main-branch)"
+  d  = -c diff.external=difft diff --ext-diff
+  dc = d --cached
+  ds = ! git d --stat "$(git get-main-branch)"
 
-  w  = show --ext-diff --irreversible-delete
-  w0 = show --ext-diff --irreversible-delete HEAD
-  w1 = show --ext-diff --irreversible-delete HEAD~
-  w2 = show --ext-diff --irreversible-delete HEAD~~
-  w3 = show --ext-diff --irreversible-delete HEAD~~~
+  w  = -c diff.external=difft show --ext-diff
+  w0 = w HEAD
+  w1 = w HEAD~
+  w2 = w HEAD~~
+  w3 = w HEAD~~~
 
   l  = log --oneline -n10
   ll = log --oneline --graph
