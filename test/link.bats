@@ -44,3 +44,15 @@ load helper
   run -0 login_zsh 'tmux -L verify -f /dev/null start-server \; source-file -n ~/.config/tmux/tmux.conf'
   assert_equal "$output" ''
 }
+
+# Such a path breaks once the formula is uninstalled, as the migration does
+@test "configs don't run Homebrew's copies of the commands Nix provides" {
+  local commands file path problems=''
+  commands="$(manifest '.commands[]')"
+  while IFS=: read -r file path; do
+    if grep -qxF -- "${path##*/}" <<< "$commands"; then
+      problems+="${file#"$DOTFILES_PATH/"}: $path"$'\n'
+    fi
+  done < <(grep -rEo --exclude-dir=dein '/opt/homebrew/bin/[A-Za-z0-9._+-]+' "$DOTFILES_PATH"/{config,home,nvim,shell,vscode})
+  assert_none "$problems" 'Homebrew paths of commands from Nix'
+}
