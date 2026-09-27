@@ -55,6 +55,8 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    - home-manager removes the links Ansible made into the checkout, and keeps other files in the way with a `.before-nix` suffix (e.g. the `~/.ssh/config` Ansible assembled).
    - nix-darwin takes over `/etc/zshenv`, `/etc/zprofile`, `/etc/zshrc` and `/etc/bashrc`. It keeps known versions with a `.before-nix-darwin` suffix.
      - If it aborts with "Unexpected files in /etc", check those files and rename them that way.
+   - If it fails with "toolchain 'stable-…' does not contain component 'rust-analyzer'", the stable toolchain predates Rust 1.64, and `rustup update` fails too on its `rls`, which Rust no longer ships.
+     `rustup toolchain uninstall stable`, then run it again: rustup installs the current stable.
 2. Clean up what the switch leaves behind:
 
    ```sh-session
