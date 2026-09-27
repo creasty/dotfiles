@@ -3,15 +3,6 @@
 What fixing CI and modernizing the provisioning in [#105](https://github.com/creasty/dotfiles/pull/105) turned up but left alone, most urgent first.
 What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.md](dropped.md).
 
-## Likely broken
-
-- **RuboCop**: `home/rubocop.yml`, linked to `~/.rubocop.yml`, configures cops RuboCop 1.x removed or renamed (`Style/BracesAroundHashParameters`, `Metrics/LineLength`, `Layout/IndentFirst*`).
-  RuboCop refuses an obsolete configuration, so it fails in every project without its own `.rubocop.yml`.
-- **`bin/serve`** requires `webrick`, which Ruby 3.0 stopped bundling and `config/mise/default-gems` doesn't install.
-  Add it there, or serve with `python3 -m http.server`.
-- **`home/irbrc`** requires `hirb`, `interactive_editor`, `fancy_irb` and `awesome_print`, none of them installed, so irb and Rails consoles warn with a `LoadError` and skip the rest of the file.
-  `amazing_print` succeeds the unmaintained `awesome_print`.
-
 ## Verification gaps
 
 - **Neovim's config**: `./verify` runs Neovim without it (`-u NONE`).
