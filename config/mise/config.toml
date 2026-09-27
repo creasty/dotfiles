@@ -3,6 +3,7 @@
 bun = "1.4.2"
 java = "21" # Homebrew's openjdk, registered with `mise link` by provisioning
 node = { version = "24.21.0", postinstall = "sed 's/#.*//' ~/.config/mise/default-npm-packages | xargs -n 1 npm install -g || true" }
+python = "3.14.7"
 ruby = { version = "4.0.7", postinstall = "sed 's/#.*//' ~/.config/mise/default-gems | xargs -n 1 gem install || true" }
 
 [settings]
