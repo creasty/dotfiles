@@ -514,6 +514,24 @@ function M.resume(source)
   end
 end
 
+--- Where a list of `count` code actions opens: next to the cursor, as
+--- coc.nvim's did, just below the line, or just above it when there is no
+--- room below. (Placed on the screen, not at the cursor, which is the
+--- prompt's by the time the picker lays itself out again.)
+local function next_to_cursor(count)
+  -- as tall as the select layout makes it: the list (as many rows as items,
+  -- at least 2), the prompt and its rule, the border
+  local height = math.max(math.min(count, math.floor(vim.o.lines * 0.8) - 10), 2) + 4
+  local cursor = vim.fn.screenpos(0, vim.fn.line('.'), vim.fn.col('.'))
+  local above = cursor.row - 1
+  local below = vim.o.lines - vim.o.cmdheight - 1 - cursor.row -- (above the statusline)
+  local row = cursor.row -- (0-based: the row below the cursor)
+  if below < height and above > below then
+    row = math.max(above - height, 0)
+  end
+  return { relative = 'editor', row = row, col = cursor.col - 1, width = 0.4, min_width = 50, max_width = 80 }
+end
+
 function M.setup()
   require('snacks').setup({
     picker = {
@@ -532,8 +550,11 @@ function M.setup()
     },
   })
   -- (snacks sets it on UIEnter, which a headless Neovim never gets)
-  vim.ui.select = function(...)
-    return Snacks.picker.select(...)
+  vim.ui.select = function(items, opts, on_choice)
+    if opts and opts.kind == 'codeaction' then
+      opts = vim.tbl_extend('force', opts, { snacks = { layout = { layout = next_to_cursor(#items) } } })
+    end
+    return Snacks.picker.select(items, opts, on_choice)
   end
 
   vim.api.nvim_create_user_command('Open', M.open, { nargs = 0 })

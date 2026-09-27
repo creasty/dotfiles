@@ -194,6 +194,17 @@ function probe.wait_picker_closed(nvim, opts)
   end, { timeout = (opts or {}).timeout or 8000, message = 'the picker to close' })
 end
 
+--- Where the open picker is on the screen: `{ row, col, last_row }` of its
+--- outer window, border included.
+function probe.picker_box(nvim)
+  return call(nvim, 'picker_box')
+end
+
+--- The background colors of the open picker's input, list and border.
+function probe.picker_colors(nvim)
+  return call(nvim, 'picker_colors')
+end
+
 ---------------------------------------------------------------------------
 -- Prompts
 ---------------------------------------------------------------------------

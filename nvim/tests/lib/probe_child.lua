@@ -271,6 +271,55 @@ function M.choice_menu_ready()
   return mode == 'c' or mode:sub(1, 1) == 'r'
 end
 
+--- The open picker (snacks.nvim's), or nil.
+local function open_picker()
+  local ok, pickers = pcall(function()
+    return Snacks.picker.get()
+  end)
+  return ok and pickers[#pickers] or nil
+end
+
+--- Where the open picker is on the screen: the first row and column of its
+--- outer window, border included, and its last row (1-based).
+function M.picker_box()
+  local picker = open_picker()
+  local win = picker and picker.layout.root.win
+  if not (win and vim.api.nvim_win_is_valid(win)) then
+    return nil
+  end
+  local pos = vim.api.nvim_win_get_position(win)
+  local border = vim.api.nvim_win_get_config(win).border or {}
+  local function edge(i)
+    local char = border[i] or ''
+    return (type(char) == 'table' and char[1] or char) ~= '' and 1 or 0
+  end
+  -- (a side takes a row when its middle character is set)
+  local height = edge(2) + vim.api.nvim_win_get_height(win) + edge(6)
+  return { row = pos[1] + 1, col = pos[2] + 1, last_row = pos[1] + height }
+end
+
+--- The background colors of the open picker's input, list and border.
+function M.picker_colors()
+  local picker = open_picker()
+  if not picker then
+    return nil
+  end
+  --- The color `group` has in `win`, through its 'winhighlight'.
+  local function background(win, group)
+    for from, to in vim.wo[win].winhighlight:gmatch('([^:,]+):([^,]+)') do
+      if from == group then
+        group = to
+      end
+    end
+    return vim.api.nvim_get_hl(0, { name = group, link = false }).bg
+  end
+  return {
+    input = background(picker.input.win.win, 'NormalFloat'),
+    list = background(picker.list.win.win, 'NormalFloat'),
+    border = background(picker.layout.root.win, 'FloatBorder'),
+  }
+end
+
 ---------------------------------------------------------------------------
 -- Signs & highlights
 ---------------------------------------------------------------------------

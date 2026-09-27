@@ -64,6 +64,14 @@ local function border_char(side)
   return type(side) == 'table' and side[1] or side
 end
 
+--- Where the cursor is on the screen.
+local function cursor_on_screen(nvim)
+  return nvim:lua([[
+    local pos = vim.fn.screenpos(0, vim.fn.line('.'), vim.fn.col('.'))
+    return { row = pos.row, col = pos.col }
+  ]])
+end
+
 local function picker_project(files, open)
   local nvim = project(files, open)
   probe.wait_picker_ready(nvim)
@@ -300,6 +308,42 @@ describe('LSP', function()
         return nvim:line(7):find('HELPER', 1, true)
       end)
       t.eq('function HELPER(first: number, second: number) {', nvim:line(7))
+    end)
+
+    it('gq lists the code actions just below the cursor', function()
+      local nvim = project(TS, 'app.ts')
+      nvim:set_cursor(7, 10)
+      local cursor = cursor_on_screen(nvim)
+      nvim:type('gq')
+      probe.wait_choice_menu(nvim)
+      local box = probe.picker_box(nvim)
+      t.eq({ row = cursor.row + 1, col = cursor.col }, { row = box.row, col = box.col })
+    end)
+
+    it('gq lists them just above the cursor when there is no room below', function()
+      local lines = {}
+      for i = 1, 100 do
+        lines[i] = ('const value%d = helper(%d);'):format(i, i)
+      end
+      local nvim = project({ ['.git/'] = true, ['long.ts'] = lines }, 'long.ts')
+      nvim:type('Gw')
+      local cursor = cursor_on_screen(nvim)
+      nvim:type('gq')
+      probe.wait_choice_menu(nvim)
+      local box = probe.picker_box(nvim)
+      t.eq({ last_row = cursor.row - 1, col = cursor.col }, { last_row = box.last_row, col = box.col })
+    end)
+
+    it('the list of code actions stays by the line when the screen is resized', function()
+      local nvim = project(TS, 'app.ts')
+      nvim:set_cursor(7, 10)
+      nvim:type('gq')
+      probe.wait_choice_menu(nvim)
+      local box = probe.picker_box(nvim)
+      nvim:type('upper')
+      nvim:cmd('set columns=100')
+      nvim:sleep(100)
+      t.eq(box, probe.picker_box(nvim))
     end)
 
     it('<C-j> confirms the highlighted entry of a choice menu', function()

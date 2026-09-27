@@ -215,6 +215,7 @@ function M.setup()
   hi.BlinkCmpGhostText = { fg = s.gray400 }
 
   -- snacks.nvim (picker)
+  hi.SnacksPicker = { link = 'BorderedFloat' } -- its windows, as its border
   hi.SnacksPickerMatch = { link = 'Constant' }
   hi.SnacksPickerDir = { fg = s.gray300 }
   hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
