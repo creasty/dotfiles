@@ -1,8 +1,9 @@
 -- Sourced by every child with `--cmd`, i.e. *before* init.vim.
 --
--- It only redirects side effects and external services to test doubles; it
--- never changes editing behavior. Plugin-specific wiring lives here, so when a
--- plugin is replaced, point its replacement at the same fakes:
+-- It only redirects side effects and external services to test doubles, and
+-- stands in for the terminal UI (UIEnter); it never changes editing behavior.
+-- Plugin-specific wiring lives here, so when a plugin is replaced, point its
+-- replacement at the same fakes:
 --   * LSP      -> fakes/lsp.lua (registered for LSP_FILETYPES); the config's
 --                 own servers are never enabled
 --   * Copilot  -> fakes/copilot.lua, as `copilot-language-server` on PATH
@@ -66,6 +67,19 @@ end)
 patch('lint', function(lint)
   lint.try_lint = function() end
 end)
+
+-- A terminal UI is attached by the end of startup, and Neovim fires UIEnter
+-- after VimEnter; plugins finish setting up then (snacks.nvim installs its
+-- vim.ui.select). A headless child has no UI, so fire it the same way.
+vim.api.nvim_create_autocmd('VimEnter', {
+  once = true,
+  callback = function()
+    -- (after the config's own VimEnter autocommands)
+    vim.schedule(function()
+      vim.api.nvim_exec_autocmds('UIEnter', { modeline = false })
+    end)
+  end,
+})
 
 -- Probes the specs use to observe plugin UI (see probe_child.lua).
 _G.__e2e = dofile(ctx.tests_dir .. '/lib/probe_child.lua')

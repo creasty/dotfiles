@@ -535,7 +535,7 @@ end
 function M.setup()
   require('snacks').setup({
     picker = {
-      ui_select = true,
+      ui_select = false, -- (set below, placing code actions)
       layout = {
         preset = 'vertical',
         hidden = { 'preview' },
@@ -549,7 +549,6 @@ function M.setup()
       icons = { files = { enabled = false } },
     },
   })
-  -- (snacks sets it on UIEnter, which a headless Neovim never gets)
   vim.ui.select = function(items, opts, on_choice)
     if opts and opts.kind == 'codeaction' then
       opts = vim.tbl_extend('force', opts, { snacks = { layout = { layout = next_to_cursor(#items) } } })

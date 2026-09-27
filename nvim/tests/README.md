@@ -149,6 +149,10 @@ engine leaves the cursor at.
   documents what "definition", "references", etc. mean), the only one the
   children start. `fakes/copilot.lua` suggests only after a few fixed
   phrases, so no other test sees ghost text.
+- **UI.** Children run headless, so no UI attaches. When one does, Neovim
+  fires `UIEnter` after `VimEnter`, and some plugins finish setting up then
+  (snacks.nvim takes over `vim.ui.select`), so `lib/prelude.lua` fires it the
+  same way.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so
