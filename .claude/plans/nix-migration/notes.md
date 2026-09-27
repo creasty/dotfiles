@@ -72,6 +72,8 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 3. Uninstall the formulae that Nix provides now, when convenient.
    - Until then, Nix's come first on `PATH`.
    - The switch never uninstalls anything (`cleanup = "none"`).
+   - A tmux server started before keeps running Homebrew's tmux, which Nix's can't attach to: new Alacritty windows close at once ("open terminal failed: not a terminal").
+     End its sessions, then `tmux kill-server`.
 
    ```sh-session
    $ brew uninstall awscli bat cloc ctags curl deno difftastic direnv envchain expect eza fd ffmpeg gh ghq git \
