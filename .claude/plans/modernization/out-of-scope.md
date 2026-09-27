@@ -11,9 +11,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   Add it there, or serve with `python3 -m http.server`.
 - **`home/irbrc`** requires `hirb`, `interactive_editor`, `fancy_irb` and `awesome_print`, none of them installed, so irb and Rails consoles warn with a `LoadError` and skip the rest of the file.
   `amazing_print` succeeds the unmaintained `awesome_print`.
-- **tmux's `default-terminal 'alacritty'`** gives every pane `TERM=alacritty`, but macOS's terminfo has no `alacritty` entry, and provisioning doesn't install one (`tic` on Alacritty's `extra/alacritty.info`).
-  On a fresh Mac, macOS's own programs in panes (`less`, `clear`, ...) don't know the terminal.
-  tmux's man page asks for `screen`, `tmux` or a derivative: `screen-256color` ships with macOS, `tmux-256color` needs `tic` too.
 
 ## Verification gaps
 
