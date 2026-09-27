@@ -155,7 +155,9 @@ engine leaves the cursor at.
 - **Timing.** Asynchronous results are awaited with `nvim:wait_for()` and the
   `probe.wait_*()` helpers (`wait_picker` also waits for the picker to finish
   loading). Where a person would pause (between closing and reopening a
-  picker, before typing into a fresh placeholder), the tests pause too. An
+  picker, before typing into a fresh placeholder), the tests pause too.
+  Typed while Neovim is still busy (a menu just opened), `<C-c>` interrupts
+  instead of running its mapping (`:help map_CTRL-C`), so pause before it. An
   accepted completion item lands a moment after the key (blink.cmp may
   resolve it with the server first), so wait for the text. Tests that race a
   plugin's own internals can be marked `retry`, with a random back-off; a

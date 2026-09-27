@@ -103,6 +103,10 @@ describe('Completion', function()
     local nvim = go_buffer()
     nvim:type('ae2e')
     probe.wait_completion(nvim)
+    -- Typed while Neovim is busy, <C-c> interrupts instead of running its
+    -- mapping (:help map_CTRL-C), and blink.cmp resolves the selected item
+    -- right after opening the menu: pause like a person reading it.
+    nvim:sleep(100)
     nvim:type('<C-c>')
     t.eq('i', nvim:mode())
     t.no(probe.completion_visible(nvim))
