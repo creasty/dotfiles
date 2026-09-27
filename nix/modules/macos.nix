@@ -1,5 +1,5 @@
 # macOS preferences. What can't be scripted is set by hand: docs/system_preference.md
-{ username, ... }:
+{ config, username, ... }:
 {
   # Written with `defaults write <domain> <key>` for the user
   system.defaults.CustomUserPreferences = {
@@ -77,10 +77,17 @@
 
   system.startup.chime = false;
 
+  # The preferences above, for the next switch to tell whether they changed
+  environment.etc."dotfiles/preferences.json".text = builtins.toJSON config.system.defaults.CustomUserPreferences;
+
   system.activationScripts.postActivation.text = ''
     chflags nohidden /Users/${username}/Library
-    # Picks up the Quick Look extensions of casks, and restarts what reads the preferences above
+    # Picks up the Quick Look extensions of casks
     launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- qlmanage -r > /dev/null 2>&1 || true
-    killall -u ${username} Dock Finder 2> /dev/null || true
+    # Restarts what reads the preferences above once they changed, not on every switch: a restarted Finder opens its
+    # windows. (/run/current-system is still the previous system here.)
+    if ! cmp -s /run/current-system/etc/dotfiles/preferences.json "$systemConfig/etc/dotfiles/preferences.json"; then
+      killall -u ${username} Dock Finder 2> /dev/null || true
+    fi
   '';
 }
