@@ -6,11 +6,11 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 ## Verification gaps
 
 - **Neovim's config**: `./verify` runs Neovim without it (`-u NONE`).
-  The e2e suite ([creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106)) runs it with the plugins pinned in `nvim/dein/lock.json`, but nothing installs the toml files' plugins the way a fresh Mac does, at their latest commits.
+  The e2e suite ([creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106)) runs it with the plugins pinned in `nvim/lazy-lock.json`, which a fresh Mac installs too, but CI restores them from its cache: a pinned repository that vanishes goes unnoticed until the pins change.
   That's how the vanished `phaazon/hop.nvim` repository broke fresh installs unnoticed.
-  CI provisions everything in one job now, so a test can start it; coc.nvim's extensions need mise's Node.
+  CI provisions everything in one job now, so a test can start it.
 - **Idempotency**: nothing checks that a second switch changes nothing.
-  The activation steps (mise, rustup, VS Code's extensions, dein.vim) skip what's done, but no test runs them twice.
+  The activation steps (mise, rustup, VS Code's extensions) skip what's done, but no test runs them twice.
 - **Startup budget on CI**: `zsh -i -c exit` measured 39–101 ms across runs, against the 150 ms budget.
   If it ever flakes, give CI its own `DOTFILES_VERIFY_STARTUP_MS` rather than loosening the local default.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
@@ -26,7 +26,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   `universal-ctags` replaces it, but the two conflict, and Universal Ctags reads `~/.ctags.d/*.ctags` instead of `~/.ctags`.
 - **nvim-treesitter** is pinned to `master`; development moved to `main`, an incompatible rewrite.
   Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
-- **Plugin manager**: dein.vim's author now develops dpp.vim, and Neovim 0.12 has a built-in `vim.pack`.
 - **Kotlin**: JetBrains now develops an official language server, `kotlin-lsp` (nvim-lspconfig's `kotlin_lsp`), besides the community `kotlin-language-server` the config enables.
 - **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7.
   0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter's `master` and nvim-treesitter-endwise rely on (markdown code blocks, as in hover docs, broke with them): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until the move to `main` (see nvim-treesitter above).
@@ -53,6 +52,11 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   nixpkgs installs it now (0.26, which dropped the `--no-bindings` flag nvim-treesitter's `master` passes, so the config passes its own arguments), and without it those two parsers wait.
 - GitLab can answer curl's tarball download with a bot check, which kept the jsonc parser from installing: parsers are fetched with git.
 - TypeScript 7 no longer ships the `tsserver.js` typescript-language-server runs, so it failed to start in every project without an older TypeScript (mise installs 7): those get TypeScript's own server, `tsc --lsp`.
+
+## Fixed by replacing dein.vim with lazy.nvim
+
+- A fresh Mac got every plugin's latest commit (the toml files pinned none), not the ones CI tests: lazy.nvim installs the commits `nvim/lazy-lock.json` pins.
+- opfmt's working copy was a hard-coded `/Users/creasty/...` path, which CI created with sudo: lazy.nvim's `dev` option looks under ghq's root, and installs opfmt as usual without a working copy.
 
 ## Fixed by the Nix migration
 
