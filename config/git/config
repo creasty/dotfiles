@@ -74,7 +74,6 @@
   b  = branch
   bd = branch -D
   bm = branch -m
-  bw = branch --format='%(if)%(HEAD)%(then)%(color:green)* %(else)%(if)%(worktreepath)%(then)%(color:cyan)+ %(else)  %(end)%(end)%(align:20)%(refname:short)%(end)%(color:reset)\t%(worktreepath)'
 
   k  = checkout
   kb = checkout -b

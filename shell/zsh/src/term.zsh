@@ -171,16 +171,25 @@ _register_keycommand '^o^m' peco_modified_file
 #  Insert branch
 #-----------------------------------------------
 peco_insert_branch() {
-  git branch --color=never \
-    | cut -c 3- \
+  git for-each-ref --format=$'%(if)%(HEAD)%(then)*%(else)%(if)%(worktreepath)%(then)+%(else) %(end)%(end) %(refname:short)\t%(worktreepath)' refs/heads/ \
+    | column -t -s $'\t' \
     | _peco_select \
+    | cut -c 3- \
     | {
-      branch="$(cat)"
+      local selected="$(cat)"
+      [ -z "$selected" ] && return
 
-      if [[ -z "$LBUFFER" && `echo "$branch" | wc -l` -eq 1 ]]; then
-        _buffer_insert <<< "g k $branch"
+      if [[ -z "$LBUFFER" && `echo "$selected" | wc -l` -eq 1 ]]; then
+        local branch worktree
+        read -r branch worktree <<< "$selected"
+
+        if [ -n "$worktree" ]; then
+          _buffer_insert <<< "cd ${(q)worktree}"
+        else
+          _buffer_insert <<< "g k ${(q)branch}"
+        fi
       else
-        _buffer_insert_lines <<< "$branch"
+        awk '{ print $1 }' <<< "$selected" | _buffer_insert_lines
       fi
     }
 }
