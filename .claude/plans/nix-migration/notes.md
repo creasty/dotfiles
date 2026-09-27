@@ -14,7 +14,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
   - Command-line tools come from nixpkgs, pinned by `flake.lock`.
   - Homebrew keeps:
     - the casks
-    - what nixpkgs lacks (carthage) or has only as unfree (terraform)
+    - what nixpkgs lacks (carthage)
     - the JDKs, which `/usr/libexec/java_home` and mise use at stable paths
     - Ruby's build libraries (openssl@3, libyaml, zlib)
     - libpq (psql)
@@ -71,7 +71,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
        git-filter-repo git-lfs gnupg graphviz hyperfine imagemagick jo jq massren ngrep nkf parallel pastel peco \
        procs protobuf ripgrep sd tmux uv webp xh mise go gopls golangci-lint rustup gradle pre-commit coursier \
        kotlin-language-server neovim ansible-lint clang-format llvm shellcheck terraform-ls watchman yarn ansible
-   $ brew untap golangci/tap
+   $ brew untap golangci/tap hashicorp/tap
    $ brew uninstall --cask 1password-cli  # if still installed, from either tap
    $ brew untap 1password/tap             # if still tapped
    ```

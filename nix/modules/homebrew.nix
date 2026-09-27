@@ -20,7 +20,6 @@
         })
         [
           "creasty/tools" # for keyboard, rid
-          "hashicorp/tap" # for terraform
         ];
 
     # brew list --cask --full-name
@@ -50,7 +49,6 @@
 
     brews = [
       "creasty/tools/rid" # Run commands in container as if were native
-      "hashicorp/tap/terraform" # nixpkgs has it as unfree (BUSL), outside the binary cache
       "icu4c" # for the charlock_holmes gem (home/bundle/config)
       "libiconv" # Conversion library
       "libpq" # psql and pg_dump of the latest PostgreSQL (on PATH through shell/profile)

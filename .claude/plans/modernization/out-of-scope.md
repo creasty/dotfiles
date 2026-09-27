@@ -28,11 +28,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   ssh takes the first value it finds, so this covers every host that doesn't set them earlier, github.com included: a changed or spoofed host key goes unnoticed.
   Limit it to the Vagrant hosts, and use `StrictHostKeyChecking accept-new` with a real `known_hosts` elsewhere.
 
-## Existing Macs
-
-- **terraform**: a Mac provisioned before may still have homebrew-core's `terraform`, frozen at 1.5.7 (the last MPL release) until core removed it.
-  Homebrew can't install formulae of the same name from different taps side by side, so `brew uninstall terraform` before provisioning installs `hashicorp/tap/terraform`, the current, BUSL-licensed release.
-
 ## Verification gaps
 
 - **Neovim's config**: `./verify` runs Neovim without it (`-u NONE`).
