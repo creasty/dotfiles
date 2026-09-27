@@ -15,11 +15,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   If it ever flakes, give CI its own `DOTFILES_VERIFY_STARTUP_MS` rather than loosening the local default.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
 
-## Upstream
-
-- **creasty/homebrew-tools has no CI**, only a `.travis.yml` from the travis-ci.org days, so nothing noticed when Homebrew removed `appcast` (fixed in [creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)).
-  A workflow like the one `brew tap-new` generates (`brew test-bot --only-tap-syntax`) would catch the next one.
-
 ## Worth modernizing later
 
 - **ctags**: nixpkgs' `ctags` is Exuberant Ctags, unmaintained since 2009.

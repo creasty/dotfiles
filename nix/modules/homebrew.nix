@@ -11,17 +11,6 @@
       cleanup = "none";
     };
 
-    # Homebrew 6+ ignores third-party taps unless they are trusted
-    taps =
-      map
-        (name: {
-          inherit name;
-          trusted = true;
-        })
-        [
-          "creasty/tools" # for rid
-        ];
-
     # brew list --cask --full-name
     casks = [
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
@@ -46,7 +35,6 @@
     ];
 
     brews = [
-      "creasty/tools/rid" # Run commands in container as if were native
       "icu4c" # for the charlock_holmes gem (home/bundle/config)
       "libiconv" # Conversion library
       "libpq" # psql and pg_dump of the latest PostgreSQL (on PATH through shell/profile)

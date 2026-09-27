@@ -85,6 +85,8 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    $ brew uninstall --cask 1password-cli  # if still installed, from either tap
    $ brew untap 1password/tap             # if still tapped
    $ brew uninstall --cask creasty/tools/keyboard
+   $ brew uninstall creasty/tools/rid     # dropped
+   $ brew untap creasty/tools
    ```
 
    - Uninstalling Keyboard's cask removes `/Applications/Keyboard.app`: a login item that started it needs `~/Applications/Home Manager Apps/Keyboard.app` instead (System Settings > General > Login Items).
@@ -111,4 +113,5 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 | `golangci/tap` | golangci-lint is in nixpkgs | |
 | Homebrew's `1password-cli` cask | The CLI comes from nixpkgs, like the other command-line tools | nix-darwin's `programs._1password`, `op` at `/usr/local/bin` |
 | The `creasty/tools/keyboard` cask | Homebrew quarantines the apps of casks, and Gatekeeper won't open Keyboard, which isn't notarized, until it's allowed in System Settings > Privacy & Security | Its GitHub release through Nix (`keyboard.nix`), in `~/Applications/Home Manager Apps` |
+| `creasty/tools/rid`, and the `creasty/tools` tap | Not used any more; rid's last release, an Intel build, is from 2018 | |
 | `./verify --tags`, `DOTFILES_NOEDIT_SECRETS` | No Ansible tags or secrets file | `./verify [bats options]` |
