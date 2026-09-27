@@ -25,7 +25,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 - **nvim-treesitter** is pinned to `master`; development moved to `main`, an incompatible rewrite.
   Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
 - **Plugin manager**: dein.vim's author now develops dpp.vim, and Neovim 0.12 has a built-in `vim.pack`.
-- **Kotlin**: JetBrains now develops an official language server, `kotlin-lsp` (nvim-lspconfig's `kotlin_lsp`), besides the community `kotlin-language-server` the config enables.
 - **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7.
   0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter's `master` and nvim-treesitter-endwise rely on (markdown code blocks, as in hover docs, broke with them): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until the move to `main` (see nvim-treesitter above).
   opfmt relies on 0.11's default for directives and is switched off until it handles 0.12; its tests skip meanwhile.

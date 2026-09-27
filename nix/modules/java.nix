@@ -10,7 +10,16 @@ let
   jdk = version: "/opt/homebrew/opt/openjdk@${version}/libexec/openjdk.jdk";
 in
 {
-  homebrew.brews = map (version: "openjdk@${version}") versions;
+  homebrew.taps = [
+    {
+      name = "jetbrains/utils"; # for kotlin-lsp
+      trusted = true;
+    }
+  ];
+
+  homebrew.brews = map (version: "openjdk@${version}") versions ++ [
+    "jetbrains/utils/kotlin-lsp" # JetBrains' Kotlin language server, which nixpkgs doesn't have
+  ];
 
   # For /usr/libexec/java_home, and the apps that use it
   system.activationScripts.postActivation.text = ''
@@ -25,7 +34,6 @@ in
         gradle # Open-source build automation tool based on the Groovy and Kotlin DSL
         pre-commit # Framework for managing multi-language pre-commit hooks
         coursier # Launcher for Coursier (required by pre-commit)
-        kotlin-language-server # Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
       ];
 
       # As `N` and `N.0`, the forms .java-version files written by jenv usually contain

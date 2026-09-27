@@ -15,7 +15,7 @@ M.servers = {
   'gopls',
   'graphql', -- graphql-language-service-cli
   'jsonls', -- vscode-langservers-extracted
-  'kotlin_language_server',
+  'kotlin_lsp', -- JetBrains' kotlin-lsp (nix/modules/java.nix)
   'lua_ls',
   'pyright',
   'rust_analyzer',
@@ -78,8 +78,10 @@ local settings = {
     workspace_required = true,
     filetypes = { 'graphql', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
   },
-  kotlin_language_server = {
-    root_markers = { 'gradle.properties' },
+  kotlin_lsp = {
+    -- the name JetBrains' formula links it by (nvim-lspconfig runs intellij-server)
+    cmd = { 'kotlin-lsp', '--stdio' },
+    -- only in a project it imports (Gradle, Maven or workspace.json)
     workspace_required = true,
   },
   lua_ls = {
