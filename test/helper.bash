@@ -30,14 +30,16 @@ pristine() {
     TMPDIR="${TMPDIR:-/tmp}" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$@"
 }
 
-# A new terminal tab or tmux pane: an interactive login shell
+# A new terminal tab or tmux pane: an interactive login shell. Without job control (+m), as on CI, where there's no
+# terminal: an interactive zsh with job control takes over the terminal, and C-c would interrupt its command instead
+# of ./verify.
 login_zsh() {
-  pristine "$VERIFY_ZSH" -il -c "$1"
+  pristine "$VERIFY_ZSH" -il +m -c "$1"
 }
 
-# Neovim's :terminal: an interactive shell that isn't a login shell
+# Neovim's :terminal: an interactive shell that isn't a login shell (without job control, as above)
 interactive_zsh() {
-  pristine "$VERIFY_ZSH" -i -c "$1"
+  pristine "$VERIFY_ZSH" -i +m -c "$1"
 }
 
 # Scripts, and programs that run commands (e.g. kitty starting nvim): a non-interactive shell
