@@ -132,7 +132,7 @@ describe('Snippets', function()
       function()
         local nvim = buffer_with('typescript', 'app.ts')
         if not probe.opfmt_enabled(nvim) then
-          t.skip('opfmt is switched off in the tree-sitter config')
+          t.skip("opfmt is off until it moves to nvim-treesitter's main branch")
         end
         nvim:type('A')
         for key in ('api-client-general'):gmatch('.') do

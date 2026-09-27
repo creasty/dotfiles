@@ -42,10 +42,11 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 45
     env:
-      # Toolchain versions the plugins were pinned with. (nvim-lspconfig needs
-      # Neovim 0.11.3+; blink.cmp is pinned to v1, which supports 0.11.)
-      NVIM_VERSION: v0.11.7
-      TREE_SITTER_CLI_VERSION: 0.25.3
+      # Toolchain versions the plugins were pinned with: those nixpkgs
+      # installs. (nvim-treesitter's main branch needs Neovim 0.12 and the
+      # tree-sitter CLI 0.26.1+.)
+      NVIM_VERSION: v0.12.4
+      TREE_SITTER_CLI_VERSION: 0.26.8
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
     steps:
@@ -62,14 +63,15 @@ jobs:
           curl -fsSL "https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim-macos-arm64.tar.gz" | tar -xz -C "$RUNNER_TEMP"
           echo "$RUNNER_TEMP/nvim-macos-arm64/bin" >> "$GITHUB_PATH"
 
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: 20.18.2
-
       - name: Install tools
         run: |
-          # nvim-treesitter generates a few parsers from their grammars
-          npm install -g "tree-sitter-cli@$TREE_SITTER_CLI_VERSION"
+          # nvim-treesitter builds the parsers with the tree-sitter CLI (a
+          # release's own build: it asks not to use npm's)
+          mkdir -p "$RUNNER_TEMP/tree-sitter"
+          curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/download/v$TREE_SITTER_CLI_VERSION/tree-sitter-macos-arm64.gz" | gunzip > "$RUNNER_TEMP/tree-sitter/tree-sitter"
+          chmod +x "$RUNNER_TEMP/tree-sitter/tree-sitter"
+          echo "$RUNNER_TEMP/tree-sitter" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/tree-sitter/tree-sitter" --version
           # the pickers' sources
           brew install fd ripgrep ghq
           nvim --version | head -1

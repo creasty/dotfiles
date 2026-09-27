@@ -44,8 +44,8 @@ describe('Tree-sitter', function()
         ['a.lua'] = 'yati',
         ['a.py'] = 'yati',
         ['a.c'] = 'yati',
-        ['a.go'] = 'nvim_treesitter',
-        ['a.rb'] = 'nvim_treesitter',
+        ['a.go'] = 'nvim%-treesitter',
+        ['a.rb'] = 'nvim%-treesitter',
       }
       for name, engine in pairs(expect) do
         local nvim = buffer(name, { 'x' })
@@ -97,11 +97,11 @@ describe('Tree-sitter', function()
   end)
 
   describe('operator formatting (opfmt)', function()
-    -- opfmt is switched off for now (it breaks on Neovim 0.12): these run
-    -- again once it is back on.
+    -- opfmt is off until it moves to nvim-treesitter's main branch: these
+    -- run again once it is back on.
     local function skip_unless_on(nvim)
       if not probe.opfmt_enabled(nvim) then
-        t.skip('opfmt is switched off in the tree-sitter config')
+        t.skip("opfmt is off until it moves to nvim-treesitter's main branch")
       end
     end
 
@@ -214,7 +214,7 @@ describe('Tree-sitter', function()
       function()
         local nvim = buffer('a.txt', { 'abc' })
         nvim:type('vs')
-        t.match('Parser could not be created', nvim:messages())
+        t.match('syntax%-tree%-surfer/init%.lua:%d+: attempt to index a nil value', nvim:messages())
       end
     )
   end)

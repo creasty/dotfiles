@@ -83,7 +83,7 @@
 
     # Treesitter
     nvim-treesitter = {
-      url = "git+https://github.com/nvim-treesitter/nvim-treesitter?ref=master&shallow=1";
+      url = "git+https://github.com/nvim-treesitter/nvim-treesitter?ref=main&shallow=1";
       flake = false;
     };
     nvim-treesitter-context = {

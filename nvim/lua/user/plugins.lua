@@ -192,7 +192,7 @@ M.spec = {
   -----------------------------------------------
   { -- Treesitter configurations and abstraction layer for Neovim
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master', -- `main` is an incompatible rewrite (no nvim-treesitter.configs, which opfmt also relies on)
+    branch = 'main',
     build = ':TSUpdate',
     config = function()
       require('user.plugin.treesitter')
@@ -230,6 +230,7 @@ M.spec = {
     'creasty/opfmt',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     dev = true,
+    cond = false, -- it needs nvim-treesitter's master branch (nvim-treesitter.configs): off until it moves to main
   },
 
   --  UI

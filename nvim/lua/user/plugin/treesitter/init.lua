@@ -1,76 +1,99 @@
-local install = require('nvim-treesitter.install')
--- Some hosts answer curl's tarball download with a bot check, which tar
--- cannot extract (GitLab, for jsonc); git gets through.
-install.prefer_git = true
--- nvim-treesitter's master branch passes `--no-bindings` to `tree-sitter
--- generate`, which the tree-sitter CLI dropped in 0.26.
-install.ts_generate_args = { 'generate', '--abi', vim.treesitter.language_version }
+local ts = require('nvim-treesitter')
+local master = require('user.plugin.treesitter.master')
 
---- Parsers generated from their grammar (latex, swift) need the tree-sitter CLI
---- (nix/modules/neovim.nix). Without it, installing one fails with an error at
---- every startup, so they wait until the CLI is there.
-local function installable(langs)
-  if vim.fn.executable('tree-sitter') == 1 then
-    return langs
-  end
-  local parsers = require('nvim-treesitter.parsers').get_parser_configs()
-  return vim.tbl_filter(function(lang)
-    return not parsers[lang].install_info.requires_generate_from_grammar
-  end, langs)
+-- Parsers and their queries go into nvim-treesitter's own directory, as they
+-- did with its master branch: with the plugins lazy.nvim keeps, where the e2e
+-- tests find them (nvim/tests/plugins.lua).
+local install_dir = vim.fs.joinpath(require('lazy.core.config').plugins['nvim-treesitter'].dir, 'site')
+ts.setup { install_dir = install_dir }
+
+local languages = require('user.plugin.treesitter.parsers')
+
+-- nvim-treesitter builds the parsers with the tree-sitter CLI
+-- (nix/modules/neovim.nix). Without it, installing them fails with an error at
+-- every startup, so they wait until the CLI is there. (What is missing is
+-- checked here: nvim-treesitter takes milliseconds to find nothing is.)
+local missing = vim.tbl_filter(function(lang)
+  return not vim.uv.fs_stat(vim.fs.joinpath(install_dir, 'parser', lang .. '.so'))
+end, languages)
+if #missing > 0 and vim.fn.executable('tree-sitter') == 1 then
+  ts.install(missing)
 end
 
-require('nvim-treesitter.configs').setup {
-  ensure_installed = installable(require('user.plugin.treesitter.parsers')),
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = true,
-
-    -- Use nvim-yati
-    -- @see https://github.com/yioneko/nvim-yati/tree/main/lua/nvim-yati/configs
-    disable = {
-      'c',
-      'cpp',
-      'css',
-      'graphql',
-      'html',
-      'javascript',
-      'jsdoc',
-      'json',
-      'json5',
-      'jsx',
-      'lua',
-      'python',
-      'rust',
-      'toml',
-      'tsx',
-      'typescript',
-    },
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = 'gs',
-      node_incremental = 'gs',
-    },
-  },
-  -- yioneko/nvim-yati
-  yati = {
-    enable = true,
-    suppress_conflict_warning = true,
-  },
-  -- RRethy/nvim-treesitter-endwise
-  endwise = {
-    enable = true,
-  },
-  -- creasty/opfmt (off for now: it breaks on Neovim 0.12)
-  opfmt = {
-    enable = false,
-  },
+-- These indent with nvim-yati, which still does better than nvim-treesitter's
+-- queries in TypeScript, TSX and Rust
+-- @see https://github.com/yioneko/nvim-yati/tree/main/lua/nvim-yati/configs
+master.load_yati()
+local yati = {
+  c = true,
+  cpp = true,
+  css = true,
+  graphql = true,
+  html = true,
+  javascript = true,
+  jsdoc = true,
+  json = true,
+  json5 = true,
+  jsx = true,
+  lua = true,
+  python = true,
+  rust = true,
+  toml = true,
+  tsx = true,
+  typescript = true,
 }
 
-require('syntax-tree-surfer')
+--- Selects the syntax node under the cursor.
+local function select_node()
+  vim.treesitter.get_parser():parse({ vim.fn.line('w0') - 1, vim.fn.line('w$') })
+  local node = vim.treesitter.get_node({ ignore_injections = false })
+  if not node then
+    return
+  end
+  local srow, scol, erow, ecol = node:range()
+  if ecol == 0 then
+    -- (it ends with a line break: up to the end of the line before)
+    erow = erow - 1
+    ecol = #vim.api.nvim_buf_get_lines(0, erow, erow + 1, true)[1]
+  end
+  vim.api.nvim_win_set_cursor(0, { srow + 1, scol })
+  vim.cmd('normal! v')
+  vim.api.nvim_win_set_cursor(0, { erow + 1, math.max(ecol - 1, 0) })
+end
+
+-- Highlighting and indentation, where there are a parser and queries for them
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('user_treesitter', {}),
+  callback = function(ev)
+    local lang = vim.treesitter.language.get_lang(ev.match)
+    if not lang or not vim.treesitter.language.add(lang) then
+      -- (the buffer's filetype had one before)
+      if vim.b[ev.buf].user_treesitter then
+        vim.b[ev.buf].user_treesitter = nil
+        vim.treesitter.stop(ev.buf)
+        vim.keymap.del({ 'n', 'x' }, 'gs', { buffer = ev.buf })
+      end
+      return
+    end
+    vim.b[ev.buf].user_treesitter = true
+    local function has(query)
+      return #vim.treesitter.query.get_files(lang, query) > 0
+    end
+    if has('highlights') then
+      vim.treesitter.start(ev.buf, lang)
+    end
+    if yati[lang] then
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-yati.indent'.indentexpr()"
+    elseif has('indents') then
+      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+    -- gs selects the node under the cursor, then the one around the selection
+    vim.keymap.set('n', 'gs', select_node, { buffer = ev.buf })
+    vim.keymap.set('x', 'gs', 'an', { buffer = ev.buf, remap = true })
+  end,
+})
+
+master.load_syntax_tree_surfer()
 
 require('treesitter-context').setup {
   enable = true,           -- Enable this plugin (Can be enabled/disabled later via commands)
