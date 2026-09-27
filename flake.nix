@@ -26,7 +26,7 @@
       system = "aarch64-darwin";
 
       mkDarwin =
-        username:
+        username: modules:
         nix-darwin.lib.darwinSystem {
           specialArgs = {
             inherit username;
@@ -36,13 +36,17 @@
           modules = [
             home-manager.darwinModules.home-manager
             ./nix/modules
-          ];
+          ]
+          ++ modules;
         };
     in
     {
-      # One configuration per user, which ./provision and ./verify pick with `#$(id -un)`.
-      # `runner` is the user of GitHub Actions' macOS runners.
-      darwinConfigurations = nixpkgs.lib.genAttrs [ "creasty" "runner" ] mkDarwin;
+      # One configuration per user, which ./provision and ./verify pick with `#$(id -un)`
+      darwinConfigurations = {
+        creasty = mkDarwin "creasty" [ ];
+        # The user of GitHub Actions' macOS runners, which have no Apple Account to install App Store apps with
+        runner = mkDarwin "runner" [ { dotfiles.appStore = false; } ];
+      };
 
       # Pinned tools for ./provision and ./verify
       packages.${system} = {

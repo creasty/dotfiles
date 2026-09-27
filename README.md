@@ -44,6 +44,13 @@ Files are linked into the home directory by where they are in the repository, wi
 The Nix modules link the rest: `nvim/`, the shell files and VS Code's settings.
 Links point into the checkout, so edits apply without a rebuild.
 
+### App Store apps
+
+Homebrew Bundle installs the App Store apps of `nix/modules/appstore.nix` with [mas](https://github.com/mas-cli/mas), which asks for your password (sudo) to install them.
+mas can't sign in to the App Store, so sign in before provisioning.
+`mas list` shows the IDs of installed apps, and `mas search <name>` those of others.
+mas can't install iPhone and iPad apps, such as Kindle's, so get those from the App Store app.
+
 ### SSH keys
 
 ssh signs in through [1Password's SSH agent](https://developer.1password.com/docs/ssh/), so private keys live in 1Password instead of `~/.ssh`.
