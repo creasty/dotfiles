@@ -7,15 +7,7 @@ name: nvim-e2e
 on:
   push:
     branches: [master]
-    paths:
-      - "nvim/**"
-      - "bin/**"
-      - ".github/workflows/nvim-e2e.yml"
   pull_request:
-    paths:
-      - "nvim/**"
-      - "bin/**"
-      - ".github/workflows/nvim-e2e.yml"
   workflow_dispatch:
 
 jobs:
