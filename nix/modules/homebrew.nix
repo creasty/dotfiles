@@ -19,14 +19,13 @@
           trusted = true;
         })
         [
-          "creasty/tools" # for keyboard, rid
+          "creasty/tools" # for rid
         ];
 
     # brew list --cask --full-name
     casks = [
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
       "appcleaner" # https://freemacsoft.net/appcleaner/
-      "creasty/tools/keyboard" # https://github.com/creasty/Keyboard
       "figma" # https://www.figma.com/
       "gcloud-cli" # https://cloud.google.com/cli/
       "google-chrome" # https://www.google.com/chrome/
