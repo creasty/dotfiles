@@ -55,7 +55,7 @@ describe('Integration', function()
       probe.wait_picker_ready(nvim)
       nvim:type('<C-q>')
       probe.wait_picker(nvim)
-      t.eq('ddu-ff-filter', nvim:filetype())
+      t.eq('prompt', probe.picker(nvim).focus)
     end
 
     it('does not auto-close brackets', function()

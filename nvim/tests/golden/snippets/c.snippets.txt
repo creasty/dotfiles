@@ -44,6 +44,6 @@ main(int argc, const char *argv[])
 #include <‸>
 -- mode: i
 
-=== /(\w+)\.\.(\w)/ ptr..x
+=== /\v(\w+)\.\.(\w)/ ptr..x
 ptr->x‸
 -- mode: i

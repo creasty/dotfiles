@@ -23,17 +23,12 @@ hook_add = '''
 xmap <silent> L <Plug>(EasyAlign)
 '''
 
-[[plugins]] # auto close parentheses and repeat by dot
-repo = 'cohama/lexima.vim'
-on_func = ['lexima#']
-on_event = ['InsertEnter', 'CmdlineEnter']
-hook_add = '''
-let g:lexima_map_escape = ''
-let g:lexima_enable_endwise_rules = 0
-let g:lexima_disable_on_nofile = 1
-'''
+[[plugins]] # autopairs for neovim written in lua
+repo = 'windwp/nvim-autopairs'
+on_event = ['InsertEnter']
+on_lua = ['nvim-autopairs']
 hook_source = '''
-call user#plugin#lexima#init()
+lua require('user.plugin.autopairs').setup()
 '''
 
 [[plugins]] # maniplate selected text easily
@@ -75,16 +70,13 @@ hook_source = '''
 lua require'hop'.setup()
 '''
 
-[[plugins]] # Neovim plugin for GitHub Copilot
-repo = 'github/copilot.vim'
-rev = 'release'
+[[plugins]] # Fully featured & enhanced replacement for copilot.vim complete with API for interacting with Github Copilot
+repo = 'zbirenbaum/copilot.lua'
 on_event = ['InsertEnter']
 on_cmd = ['Copilot']
-on_func = ['copilot#']
-hook_add = '''
-let g:copilot_no_tab_map = v:true
-let g:copilot_assume_mapped = v:true
-let g:copilot_idle_delay = 200
+on_lua = ['copilot']
+hook_source = '''
+lua require('user.plugin.copilot').setup()
 '''
 
 [[plugins]] # The easiest way to create previewable commands in Neovim.

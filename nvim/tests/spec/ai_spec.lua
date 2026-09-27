@@ -1,4 +1,4 @@
--- AI inline suggestions (copilot.vim today) against fakes/copilot.lua, which
+-- AI inline suggestions (copilot.lua today) against fakes/copilot.lua, which
 -- only suggests after specific text (see SUGGESTIONS there).
 local t = require('t')
 local probe = require('probe')
@@ -123,7 +123,7 @@ describe('AI suggestions', function()
 
     t.quirk(
       'are suppressed right after " = " (the fat-arrow snippet could expand there)',
-      'the all-filetype snippet /(\\S?)(?<![<=])(={1,2})\\s?/ matches "= ", and AI suggestions are disabled whenever a snippet can expand',
+      'the all-filetype fat-arrow snippet (nvim/snippets/all.lua) matches "= ", and AI suggestions are hidden whenever a snippet can expand',
       function()
         local nvim = insert_in('app.ts')
         nvim:type('const answer = ')

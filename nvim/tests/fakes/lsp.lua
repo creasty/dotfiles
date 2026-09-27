@@ -4,7 +4,7 @@
 --
 -- It lets the suite exercise every LSP-driven workflow (completion, jumps,
 -- hover, rename, code actions, formatting, diagnostics...) through whatever
--- client the config uses (coc.nvim today, maybe native LSP tomorrow) without
+-- client the config uses (Neovim's own LSP client today) without
 -- depending on real language servers.
 --
 -- Semantics, applied to open buffers and to files under the workspace root:

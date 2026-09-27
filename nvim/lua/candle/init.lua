@@ -202,20 +202,32 @@ function M.setup()
   hi.GitConflictMarker = { link = 'Todo' }
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
 
-  -- coc.nvim
-  hi.CocSearch = { fg = s.yellow }
-  hi.CocHighlightText = { bg = s.selection }
-  hi.CocDiffAdd = { fg = s.dark_green }
-  hi.CocDiffChange = { fg = s.dark_blue }
-  hi.CocDiffDelete = { fg = s.dark_red }
-  hi.CocFadeOut = { fg = s.gray200 }
-  hi.CocSnippetVisual = { fg = s.blue, bg = s.dark_blue }
-  hi.CocPumDeprecated = { fg = s.gray200, strikethrough = 1 }
-  hi.CocPumVirtualText = { fg = s.gray400 }
-  hi.CocDialogFloat = { fg = s.foreground, bg = s.background }
-  hi.CocDialogFloatBorder = { fg = s.bright_blue, bg = s.background }
+  -- LSP
+  hi.LspReferenceText = { bg = s.selection }
+  hi.LspReferenceRead = { bg = s.selection }
+  hi.LspReferenceWrite = { bg = s.selection }
+  hi.DiagnosticUnnecessary = { fg = s.gray200 }
+  hi.DiagnosticDeprecated = { fg = s.gray200, strikethrough = 1 }
 
-  -- copilot.vim
+  -- blink.cmp
+  hi.BlinkCmpLabelMatch = { fg = s.yellow }
+  hi.BlinkCmpLabelDeprecated = { fg = s.gray200, strikethrough = 1 }
+  hi.BlinkCmpGhostText = { fg = s.gray400 }
+
+  -- snacks.nvim (picker)
+  hi.SnacksPickerMatch = { link = 'Constant' }
+  hi.SnacksPickerDir = { fg = s.gray300 }
+  hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
+  hi.SnacksPickerTitle = { fg = s.bright_blue, bg = s.background }
+
+  -- gitsigns.nvim
+  hi.GitSignsAdd = { fg = s.dark_green }
+  hi.GitSignsChange = { fg = s.dark_blue }
+  hi.GitSignsChangedelete = { fg = s.dark_blue }
+  hi.GitSignsDelete = { fg = s.dark_red }
+  hi.GitSignsTopdelete = { fg = s.dark_red }
+
+  -- copilot.lua
   hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }
 
   -- nvim-treesitter-context

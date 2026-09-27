@@ -29,9 +29,6 @@ function! s:is_enabled() abort
   if !empty(&buftype)
     return v:false
   endif
-  if bufname() =~# '^__coc_'
-    return v:false
-  endif
   if mode() !=# 'n'
     return v:false
   endif

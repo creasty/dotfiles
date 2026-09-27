@@ -19,23 +19,23 @@ option java_multiple_files = true;
 rpc Nam‸e (NameRequest) returns (NameResponse);
 -- mode: s, selected: "Name"
 
-=== /rpc (\w+)/ rpc GetUser
+=== /\vrpc (\w+)/ rpc GetUser
 rpc GetUser (GetUserRequest) returns (User);‸
 -- mode: i
 
-=== /rpc (\w+)/ rpc ListUsers
+=== /\vrpc (\w+)/ rpc ListUsers
 rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);‸
 -- mode: i
 
-=== /rpc (\w+)/ rpc CreateUser
+=== /\vrpc (\w+)/ rpc CreateUser
 rpc CreateUser (User) returns (User);‸
 -- mode: i
 
-=== /rpc (\w+)/ rpc DeleteUser
+=== /\vrpc (\w+)/ rpc DeleteUser
 rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);‸
 -- mode: i
 
-=== /rpc (\w+)/ rpc Ping
+=== /\vrpc (\w+)/ rpc Ping
 rpc Ping (PingRequest) returns (PingResponse);‸
 -- mode: i
 
@@ -57,19 +57,19 @@ message ‸ {
 }
 -- mode: i
 
-=== /(msg|message) (\w+)/ message GetUserRequest
+=== /\v(msg|message) (\w+)/ message GetUserRequest
 message GetUserRequest {
     string uuid = 1 [ (google.api.field_behavior) = REQUIRED ];‸
 }
 -- mode: i
 
-=== /(msg|message) (\w+)/ msg ListUsersResponse
+=== /\v(msg|message) (\w+)/ msg ListUsersResponse
 message ListUsersResponse {
     repeated Users users = 1 [ (google.api.field_behavior) = REQUIRED ];‸
 }
 -- mode: i
 
-=== /(msg|message) (\w+)/ message UpdateUserRequest
+=== /\v(msg|message) (\w+)/ message UpdateUserRequest
 message UpdateUserRequest {
     User user = 1 [ (google.api.field_behavior) = REQUIRED ];
     // マスク
@@ -77,7 +77,7 @@ message UpdateUserRequest {
 }
 -- mode: i
 
-=== /(msg|message) (\w+)/ message UpdateMultiUsersRequest
+=== /\v(msg|message) (\w+)/ message UpdateMultiUsersRequest
 message UpdateMultiUsersRequest {
     // 更新用レコード
     repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
@@ -92,7 +92,7 @@ message UpdateMultiUsersRequest {
 }
 -- mode: i
 
-=== /(msg|message) (\w+)/ message Plain
+=== /\v(msg|message) (\w+)/ message Plain
 message Plain {
 ‸
 }
@@ -252,6 +252,5 @@ import "henryapp/util/string_map.proto";‸
 -- mode: i
 
 === import resource
-CHOICES: 1: (import resource) "import from henryapp/util" | 2: (resource) "henryapp.util.resource" -> picked 1
 import "henryapp/util/resource.proto";‸
 -- mode: i

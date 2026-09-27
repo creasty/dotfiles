@@ -1,5 +1,5 @@
--- Language server workflows (coc.nvim today) against fakes/lsp.lua. See the
--- header of that file for the fake's (deterministic) semantics.
+-- Language server workflows (Neovim's LSP client today) against fakes/lsp.lua.
+-- See the header of that file for the fake's (deterministic) semantics.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -149,29 +149,22 @@ describe('LSP', function()
       -- The cursor is restored right after the items are drawn.
       step('main.go 13:20 |\tprintln(cfg.Name, load())', 'util.go 4:9 |\treturn load().Name')
       t.eq('util.go', nvim:call('expand', '%:t'))
-    end, { timeout = 40000, retry = 2 })
+    end, { timeout = 40000 })
 
-    t.quirk(
-      'the first gll after startup opens at the top, not at the item you opened',
-      'user#plugin#ddu#coc_locations() only records the cwd for resuming when it is asked to resume, so gR does not and the first gll starts fresh',
-      function()
-        local nvim = picker_project(GO, 'main.go')
-        nvim:set_cursor(7, 6)
-        nvim:type('gR')
-        probe.wait_picker(nvim, function(p)
-          return #p.items == 3
-        end)
-        nvim:type('jj<CR>')
-        probe.wait_picker_closed(nvim)
-        nvim:type('gll')
-        probe.wait_picker(nvim, function(p)
-          return #p.items == 3
-        end)
-        nvim:sleep(500)
-        t.eq('main.go 12:19 |\tvar cfg Config = load()', probe.picker(nvim).current)
-      end,
-      { timeout = 40000 }
-    )
+    it('the first gll reopens at the item you opened', function()
+      local nvim = picker_project(GO, 'main.go')
+      nvim:set_cursor(7, 6)
+      nvim:type('gR')
+      probe.wait_picker(nvim, function(p)
+        return #p.items == 3
+      end)
+      nvim:type('jj<CR>')
+      probe.wait_picker_closed(nvim)
+      nvim:type('gll')
+      probe.wait_picker(nvim, function(p)
+        return #p.items == 3 and p.current == 'util.go 4:9 |\treturn load().Name'
+      end)
+    end, { timeout = 40000 })
 
     it('gD / gT show the definition / type definition in the picker without jumping', function()
       local nvim = picker_project(GO, 'main.go')
@@ -352,25 +345,23 @@ describe('LSP', function()
       t.eq('var x  =  1', nvim:line(3))
     end)
 
-    t.quirk(
-      'leaving a Go buffer formats the buffer you switch to, not the one you leave',
-      'the BufLeave autocmd calls CocActionAsync("format"), which runs after the switch against the then-current buffer',
-      function()
-        local nvim = project({
-          ['.git/'] = true,
-          ['a.go'] = { 'package main', '', 'var a  =  1' },
-          ['b.go'] = { 'package main', '', 'var b  =  2' },
-        }, 'b.go')
-        nvim:cmd('edit a.go')
-        probe.wait_lsp(nvim)
-        nvim:cmd('edit b.go')
-        nvim:wait_for(function()
-          return nvim:line(3) == 'var b = 2'
-        end)
-        nvim:sleep(300)
-        t.eq('var a  =  1', nvim:call('getbufline', 'a.go', 3)[1], 'the buffer you left is not formatted')
-      end
-    )
+    it('leaving a Go buffer formats it', function()
+      local nvim = project({
+        ['.git/'] = true,
+        ['a.go'] = { 'package main', '', 'var a  =  1' },
+        ['b.go'] = { 'package main', '', 'var b  =  2' },
+      }, 'b.go')
+      nvim:cmd('edit a.go')
+      probe.wait_lsp(nvim)
+      nvim:wait_for(function()
+        return nvim:call('getbufline', 'b.go', 3)[1] == 'var b = 2'
+      end, { message = 'b.go to be formatted when left' })
+      t.eq('var a  =  1', nvim:line(3), 'the buffer you switch to is not formatted')
+      nvim:cmd('edit b.go')
+      nvim:wait_for(function()
+        return nvim:call('getbufline', 'a.go', 3)[1] == 'var a = 1'
+      end, { message = 'a.go to be formatted when left' })
+    end)
 
     it('other filetypes are not formatted on focus loss', function()
       local nvim = project(TS, 'app.ts')
@@ -449,15 +440,15 @@ describe('LSP', function()
       nvim:wait_for(function()
         return probe.diagnostics(nvim).error > 0
       end)
-      nvim:cmd('CocList diagnostics')
-      -- The list window opens first and is filled a moment later.
-      local text = nvim:wait_for(function()
-        local lines = table.concat(nvim:lines(), '\n')
-        return nvim:filetype() == 'list' and lines:find('e2e error', 1, true) and lines
-      end, { message = 'the diagnostics list to show its entries' })
-      t.eq('n', nvim:mode(), '--normal')
-      t.contains(text, 'e2e warning')
+      nvim:cmd('Diagnostics')
+      local picker = probe.wait_picker(nvim, function(p)
+        return table.concat(p.items, '\n'):find('e2e error', 1, true)
+      end)
+      t.eq('list', picker.focus)
+      t.eq('n', nvim:mode())
+      t.contains(table.concat(picker.items, '\n'), 'e2e warning')
       nvim:type('<C-j>')
+      probe.wait_picker_closed(nvim)
       nvim:wait_for(function()
         return nvim:filetype() == 'typescript'
       end)

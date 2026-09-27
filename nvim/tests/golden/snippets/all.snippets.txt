@@ -2,58 +2,58 @@
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.‸
 -- mode: i
 
-=== /(\S?)(?<![<-])(-{1,2})\s?/ x-
+=== /\v(\S?)[<-]@<!(-{1,2})\s?/ x-
 x -> ‸
 -- mode: i
 
-=== /(\S?)(?<![<-])(-{1,2})\s?/ x--
+=== /\v(\S?)[<-]@<!(-{1,2})\s?/ x--
 x <- ‸
 -- mode: i
 
-=== /(\S?)(?<![<-])(-{1,2})\s?/ -
+=== /\v(\S?)[<-]@<!(-{1,2})\s?/ -
 -> ‸
 -- mode: i
 
-=== /(\S?)(?<![<=])(={1,2})\s?/ x=
+=== /\v(\S?)[<=]@<!(\={1,2})\s?/ x=
 x => ‸
 -- mode: i
 
-=== /(\S?)(?<![<=])(={1,2})\s?/ x==
+=== /\v(\S?)[<=]@<!(\={1,2})\s?/ x==
 x <= ‸
 -- mode: i
 
-=== /([=-]>|<[=-])\s?/ ->
+=== /\v([=-]\>|\<[=-])\s?/ ->
 <- ‸
 -- mode: i
 
-=== /([=-]>|<[=-])\s?/ =>
+=== /\v([=-]\>|\<[=-])\s?/ =>
 <= ‸
 -- mode: i
 
-=== /([=-]>|<[=-])\s?/ <-
+=== /\v([=-]\>|\<[=-])\s?/ <-
 -> ‸
 -- mode: i
 
-=== /([=-]>|<[=-])\s?/ <=
+=== /\v([=-]\>|\<[=-])\s?/ <=
 => ‸
 -- mode: i
 
-=== /(?<!/)// /
+=== //\@<!// /
 //=== ‸
 //==============================================================================================
 -- mode: i
 
-=== /(?<!/)/// //
+=== //\@<!/// //
 //  ‸
 //-----------------------------------------------
 -- mode: i
 
-=== /(?<!#)#/ #
+=== /#\@<!#/ #
 #=== ‸
 #==============================================================================================
 -- mode: i
 
-=== /(?<!#)##/ ##
+=== /#\@<!##/ ##
 #  ‸
 #-----------------------------------------------
 -- mode: i

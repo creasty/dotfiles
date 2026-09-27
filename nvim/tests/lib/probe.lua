@@ -18,7 +18,7 @@ local function read_json(path)
   return ok and value or nil
 end
 
---- Waits for the services the config starts in the background (coc today),
+--- Waits for the services the config starts in the background (none today),
 --- like a person who opens a file and starts typing a moment later.
 function probe.wait_services(nvim, opts)
   nvim:wait_for(function()
@@ -212,11 +212,24 @@ function probe.wait_choice_menu(nvim, opts)
   end, { timeout = (opts or {}).timeout or 8000, message = 'a choice menu' })
 end
 
---- Waits for a numbered choice list (code actions etc.) and picks the entry
---- whose text contains `label`.
+--- Waits for a choice list (code actions etc.) and picks the entry whose
+--- text contains `label`: in a picker by moving the selection to it, in a
+--- numbered list by typing its number.
 function probe.choose(nvim, label, opts)
   opts = opts or {}
   probe.wait_choice_menu(nvim, opts)
+  if probe.picker(nvim).open then
+    nvim:wait_for(function()
+      local state = probe.picker(nvim)
+      if state.current and state.current:find(label, 1, true) then
+        return true
+      end
+      nvim:type(state.focus == 'list' and 'j' or '<C-n>')
+      return false
+    end, { timeout = opts.timeout or 8000, message = 'a choice containing ' .. label })
+    nvim:type('<CR>')
+    return
+  end
   local index
   nvim:wait_for(function()
     for _, float in ipairs(nvim:floats()) do

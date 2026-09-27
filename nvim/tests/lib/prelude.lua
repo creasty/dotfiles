@@ -3,8 +3,12 @@
 -- It only redirects side effects and external services to test doubles; it
 -- never changes editing behavior. Plugin-specific wiring lives here, so when a
 -- plugin is replaced, point its replacement at the same fakes:
---   * Copilot  -> fakes/copilot.lua (a copilot-language-server stand-in)
---   * LSP      -> fakes/lsp.lua (registered for LSP_FILETYPES)
+--   * LSP      -> fakes/lsp.lua (registered for LSP_FILETYPES); the config's
+--                 own servers are never enabled
+--   * Copilot  -> fakes/copilot.lua, as `copilot-language-server` on PATH
+--                 (env.lua writes it)
+--   * formatters and linters (conform.nvim, nvim-lint) -> none, so the
+--     language server formats, like the fake one does
 
 local ctx = vim.json.decode(table.concat(vim.fn.readfile(vim.env.E2E_CONTEXT), '\n'))
 
@@ -30,47 +34,38 @@ vim.g.clipboard = {
   cache_enabled = 0,
 }
 
--- Same Python host Neovim would detect, resolved once per run (speed only).
-if ctx.python3_host_prog and ctx.python3_host_prog ~= '' then
-  vim.g.python3_host_prog = ctx.python3_host_prog
-end
+-- Native LSP: the fake server instead of the configured ones.
+vim.lsp.config('e2e', {
+  cmd = { ctx.nvim, '--clean', '-l', ctx.fakes.lsp },
+  filetypes = LSP_FILETYPES,
+  root_markers = { '.git', '.e2e-root' },
+})
+local enable = vim.lsp.enable
+enable('e2e')
+vim.lsp.enable = function() end
 
--- copilot.vim: runs `g:copilot_command + ['--stdio']`.
-vim.g.copilot_command = { ctx.nvim, '--clean', '-l', ctx.fakes.copilot }
-
--- coc.nvim: register the fake server and disable the real ones configured in
--- coc-settings.json; keep extensions to the linked set so coc never tries to
--- install the ones listed in g:coc_global_extensions.
-local languageservers = {
-  e2e = {
-    command = ctx.nvim,
-    args = { '--clean', '-l', ctx.fakes.lsp },
-    filetypes = LSP_FILETYPES,
-    rootPatterns = { '.git', '.e2e-root' },
-    requireRootPattern = false,
-  },
-}
-local settings_path = ctx.config_dir .. '/coc-settings.json'
-if vim.fn.filereadable(settings_path) == 1 then
-  -- JSONC: drop full-line comments (the file has no trailing ones).
-  local lines = vim.tbl_filter(function(line)
-    return not line:match('^%s*//')
-  end, vim.fn.readfile(settings_path))
-  local ok, settings = pcall(vim.json.decode, table.concat(lines, '\n'))
-  if ok and type(settings.languageserver) == 'table' then
-    for name in pairs(settings.languageserver) do
-      languageservers[name] = languageservers[name] or { enable = false }
-    end
+--- Patches a Lua module when it is first required.
+local function patch(name, fn)
+  package.preload[name] = function()
+    package.preload[name] = nil
+    local path = vim.api.nvim_get_runtime_file('lua/' .. name:gsub('%.', '/') .. '.lua', false)[1]
+      or vim.api.nvim_get_runtime_file('lua/' .. name:gsub('%.', '/') .. '/init.lua', false)[1]
+    local mod = dofile(path)
+    fn(mod)
+    return mod
   end
 end
-vim.g.coc_user_config = { languageserver = languageservers }
-vim.g.coc_data_home = os.getenv('E2E_COC_DATA_HOME') or ctx.coc_data_home
-vim.api.nvim_create_autocmd('VimEnter', {
-  once = true,
-  callback = function()
-    vim.g.coc_global_extensions = ctx.coc_extensions
-  end,
-})
+
+-- conform.nvim / nvim-lint: no external formatters or linters.
+patch('conform', function(conform)
+  local setup = conform.setup
+  conform.setup = function(opts)
+    setup(vim.tbl_extend('force', opts or {}, { formatters_by_ft = {} }))
+  end
+end)
+patch('lint', function(lint)
+  lint.try_lint = function() end
+end)
 
 -- Probes the specs use to observe plugin UI (see probe_child.lua).
 _G.__e2e = dofile(ctx.tests_dir .. '/lib/probe_child.lua')

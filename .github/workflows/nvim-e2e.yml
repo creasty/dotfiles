@@ -24,8 +24,9 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 45
     env:
-      # Toolchain versions of the machine the lockfile was written on.
-      NVIM_VERSION: v0.11.0
+      # Toolchain versions the lockfile was written with. (nvim-lspconfig needs
+      # Neovim 0.11.3+; blink.cmp is pinned to v1, which supports 0.11.)
+      NVIM_VERSION: v0.11.7
       TREE_SITTER_CLI_VERSION: 0.25.3
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -36,7 +37,6 @@ jobs:
       - name: Set up directories
         run: |
           echo "E2E_DEIN_REPOS=$RUNNER_TEMP/e2e/repos" >> "$GITHUB_ENV"
-          echo "E2E_COC_EXTENSIONS=$RUNNER_TEMP/e2e/coc/node_modules" >> "$GITHUB_ENV"
           echo "E2E_TMPDIR=$RUNNER_TEMP/e2e/tmp" >> "$GITHUB_ENV"
 
       - name: Install Neovim
@@ -48,18 +48,8 @@ jobs:
         with:
           node-version: 20.18.2
 
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: 2.2.6
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.9"
-
       - name: Install tools
         run: |
-          # UltiSnips' Python host
-          python -m pip install pynvim==0.4.3 msgpack==1.0.4 greenlet==1.1.2
           # nvim-treesitter generates a few parsers from their grammars
           npm install -g "tree-sitter-cli@$TREE_SITTER_CLI_VERSION"
           # the pickers' sources
@@ -79,9 +69,7 @@ jobs:
         id: plugins
         uses: actions/cache/restore@v4
         with:
-          path: |
-            ${{ runner.temp }}/e2e/repos
-            ${{ runner.temp }}/e2e/coc
+          path: ${{ runner.temp }}/e2e/repos
           key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/dein/lock.json') }}
 
       - name: Install the locked plugins
@@ -91,12 +79,10 @@ jobs:
         if: steps.plugins.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
-          path: |
-            ${{ runner.temp }}/e2e/repos
-            ${{ runner.temp }}/e2e/coc
+          path: ${{ runner.temp }}/e2e/repos
           key: ${{ steps.plugins.outputs.cache-primary-key }}
 
-      # The suite's own cache: denops plugins compiled by Deno.
+      # The suite's own cache: the plugin tree with dein's state cache.
       - name: Restore the test cache
         id: e2e-cache
         uses: actions/cache/restore@v4

@@ -1,10 +1,6 @@
 [[plugins]] # dark powered vim/neovim plugin manager
 repo = 'Shougo/dein.vim'
 
-[[plugins]] # An ecosystem of Vim/Neovim which allows developers to write cross-platform plugins in Deno
-repo = 'vim-denops/denops.vim'
-rev = '68f607d93a9758d15c0d63d3268aa420ddd29edd'
-
 #  Editing
 #-----------------------------------------------
 [[plugins]] # create your own text objects
@@ -26,6 +22,7 @@ hook_add = '''
 let g:pasta_disabled_filetypes = [
   \ "python", "markdown", "yaml",
   \ "nerdtree", "dirvish",
+  \ "snacks_picker_list", "snacks_picker_input",
 \ ]
 '''
 
@@ -37,26 +34,6 @@ augroup _init_mold
   autocmd User MoldTemplateLoadPre  call user#plugin#mold#before_load()
   autocmd User MoldTemplateLoadPost call user#plugin#mold#after_load()
 augroup END
-'''
-
-[[plugins]] # The ultimate snippet solution for Vim
-repo = 'SirVer/ultisnips'
-hook_add = '''
-let g:UltiSnipsSnippetDirectories = ['ultisnips']
-let g:UltiSnipsRemoveSelectModeMappings = 0
-let g:UltiSnipsEnableSnipMate = 0
-let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips-expand)'
-let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips-jump-forward)'
-let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips-jump-backward)'
-let g:UltiSnipsListSnippets = '<Plug>(ultisnips-list)'
-'''
-
-[[plugins]] # Intellisense engine for Vim8 & Neovim, full language server protocol support as VSCode
-repo = 'neoclide/coc.nvim'
-rev = 'release'
-merged = 0
-hook_add = '''
-call user#plugin#coc#init()
 '''
 
 [[plugins]] # switch segments of text with predefined replacements
@@ -159,42 +136,52 @@ let g:NERDTreeAutoDeleteBuffer = 1
 let g:loaded_nerdtree_fs_menu = 1
 '''
 
-#  ddu
+#  LSP, completion and snippets
 #-----------------------------------------------
-[[plugins]] # Dark deno-powered UI framework for neovim/Vim8
-repo = 'Shougo/ddu.vim'
-rev = 'f2a7e90ed4e059ff60bf4603d92dafdeb4028dbf'
-depends = ['denops.vim']
-hook_add = '''
-call user#plugin#ddu#init()
-
-augroup _init_ddu
-  autocmd!
-  autocmd FileType ddu-ff call user#plugin#ddu#init_buffer()
-  autocmd FileType ddu-ff-filter call user#plugin#ddu#init_buffer()
-augroup END
-
-command! -nargs=0 Open :call user#plugin#ddu#open()
-command! -nargs=? -bang -complete=dir Search :call user#plugin#ddu#search(<q-args>, <bang>0)
-
-nnoremap <silent> <C-q> <Cmd>Open<CR>
-nnoremap <silent> <Space>/ <Cmd>Search!<CR>
+[[plugins]] # Quickstart configs for Nvim LSP
+repo = 'neovim/nvim-lspconfig'
+hook_post_source = '''
+lua require('user.plugin.lsp').setup()
 '''
 
-[[plugins]] # Fuzzy finder ui for ddu.vim
-repo = 'Shougo/ddu-ui-ff'
-rev = '38331e92870fb6a87d6f4f39bf94927e80dd8aac'
+[[plugins]] # Performant, batteries-included completion plugin for Neovim
+repo = 'saghen/blink.cmp'
+rev = 'v1' # v2 requires Neovim 0.12
+hook_post_source = '''
+lua require('user.plugin.blink').setup()
+'''
 
-[[plugins]] # File kind for ddu.vim
-repo = 'Shougo/ddu-kind-file'
-rev = '35bd021a757f2521e778365151451c6fc7629a69'
+[[plugins]] # Snippet Engine for Neovim written in Lua
+repo = 'L3MON4D3/LuaSnip'
+hook_post_source = '''
+lua require('user.plugin.luasnip').setup()
+'''
 
-[[plugins]] # Action source for ddu.vim
-repo = 'Shougo/ddu-source-action'
-rev = '95efbdec70611420947313f450fee8a6b585245b'
+[[plugins]] # Lightweight yet powerful formatter plugin for Neovim
+repo = 'stevearc/conform.nvim'
+hook_post_source = '''
+lua require('user.plugin.format').setup()
+'''
 
-[[plugins]] # Fzy filter for ddu.vim
-repo = 'matsui54/ddu-filter-fzy'
+[[plugins]] # An asynchronous linter plugin for Neovim
+repo = 'mfussenegger/nvim-lint'
+hook_post_source = '''
+lua require('user.plugin.lint').setup()
+'''
+
+[[plugins]] # Git integration for buffers
+repo = 'lewis6991/gitsigns.nvim'
+hook_post_source = '''
+lua require('user.plugin.gitsigns').setup()
+'''
+
+#  Picker
+#-----------------------------------------------
+[[plugins]] # A collection of QoL plugins for Neovim (its picker)
+repo = 'folke/snacks.nvim'
+hook_post_source = '''
+lua require('user.plugin.picker').setup()
+'''
 
 #  Runner
 #-----------------------------------------------
