@@ -2,17 +2,12 @@
   "dein": {
     "/Users/creasty/go/src/github.com/creasty/opfmt": { "url": "https://github.com/creasty/opfmt.git", "commit": "dbffa3e28cc0584669129d6a123f40266ddba7c7" },
     "github.com/AndrewRadev/switch.vim": { "url": "https://github.com/AndrewRadev/switch.vim", "commit": "b6bab56113312ebaa53038461c1a61bcb1e4a9d9" },
+    "github.com/L3MON4D3/LuaSnip": { "url": "https://github.com/L3MON4D3/LuaSnip", "commit": "0abc8f390b278c3b4aabc4c004ac8a088b65cf24" },
     "github.com/RRethy/nvim-treesitter-endwise": { "url": "https://github.com/RRethy/nvim-treesitter-endwise", "commit": "57d52841a966be6ff9a998a6d3dc1ac9cc9d95fc" },
-    "github.com/Shougo/ddu-kind-file_35bd021a757f2521e778365151451c6fc7629a69": { "url": "https://github.com/Shougo/ddu-kind-file", "commit": "35bd021a757f2521e778365151451c6fc7629a69" },
-    "github.com/Shougo/ddu-source-action_95efbdec70611420947313f450fee8a6b585245b": { "url": "https://github.com/Shougo/ddu-source-action", "commit": "95efbdec70611420947313f450fee8a6b585245b" },
-    "github.com/Shougo/ddu-ui-ff_38331e92870fb6a87d6f4f39bf94927e80dd8aac": { "url": "https://github.com/Shougo/ddu-ui-ff", "commit": "38331e92870fb6a87d6f4f39bf94927e80dd8aac" },
-    "github.com/Shougo/ddu.vim_f2a7e90ed4e059ff60bf4603d92dafdeb4028dbf": { "url": "https://github.com/Shougo/ddu.vim", "commit": "f2a7e90ed4e059ff60bf4603d92dafdeb4028dbf" },
     "github.com/Shougo/dein.vim": { "url": "https://github.com/Shougo/dein.vim", "commit": "dd5e1cc6ce869253b9c68284d6d885f75bfcfd6a" },
-    "github.com/SirVer/ultisnips": { "url": "https://github.com/SirVer/ultisnips", "commit": "dbc458e110bb49299da76ec53f8b09b4f6dce28a" },
-    "github.com/cohama/lexima.vim": { "url": "https://github.com/cohama/lexima.vim", "commit": "ad09d786d69493a37bd4cd2c383a91b46a42078d" },
     "github.com/creasty/mold.vim": { "url": "https://github.com/creasty/mold.vim", "commit": "61cecb14524218b1cfed6929b7276ca2eb55866b" },
     "github.com/deris/vim-rengbang": { "url": "https://github.com/deris/vim-rengbang", "commit": "e8c58cade2208b90dca989abfa9bcf1d79c4e931" },
-    "github.com/github/copilot.vim_release": { "url": "https://github.com/github/copilot.vim", "commit": "a9228e015528c9307890c48083c925eb98a64a79" },
+    "github.com/folke/snacks.nvim": { "url": "https://github.com/folke/snacks.nvim", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
     "github.com/johmsalas/text-case.nvim": { "url": "https://github.com/johmsalas/text-case.nvim", "commit": "e898cfd46fa6cde0e83abb624a16e67d2ffc6457" },
     "github.com/junegunn/vim-easy-align": { "url": "https://github.com/junegunn/vim-easy-align", "commit": "9815a55dbcd817784458df7a18acacc6f82b1241" },
     "github.com/kana/vim-altr": { "url": "https://github.com/kana/vim-altr", "commit": "fba055cf3b83a1ada5b05d694fbefd024aa93289" },
@@ -22,21 +17,25 @@
     "github.com/kana/vim-textobj-user": { "url": "https://github.com/kana/vim-textobj-user", "commit": "41a675ddbeefd6a93664a4dc52f302fe3086a933" },
     "github.com/kshenoy/vim-signature": { "url": "https://github.com/kshenoy/vim-signature", "commit": "6bc3dd1294a22e897f0dcf8dd72b85f350e306bc" },
     "github.com/ku1ik/vim-pasta": { "url": "https://github.com/ku1ik/vim-pasta", "commit": "2b786703eef9f82ae7a56f3de4ee43e1e5efaaa5" },
-    "github.com/matsui54/ddu-filter-fzy": { "url": "https://github.com/matsui54/ddu-filter-fzy", "commit": "c620478087642c7f7df16f6e5dee0f5300d589a0" },
-    "github.com/neoclide/coc.nvim_release": { "url": "https://github.com/neoclide/coc.nvim", "commit": "7350645e1233d79aeed0c60a76f50c74ab9645ef" },
+    "github.com/lewis6991/gitsigns.nvim": { "url": "https://github.com/lewis6991/gitsigns.nvim", "commit": "070a5d7b985546cc57e1fc61e5bc507fecac6045" },
+    "github.com/mfussenegger/nvim-lint": { "url": "https://github.com/mfussenegger/nvim-lint", "commit": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e" },
+    "github.com/neovim/nvim-lspconfig": { "url": "https://github.com/neovim/nvim-lspconfig", "commit": "a9bb4d5f4276aa5cddc015faa3ecc5a7b5a26b14" },
     "github.com/nvim-treesitter/nvim-treesitter-context": { "url": "https://github.com/nvim-treesitter/nvim-treesitter-context", "commit": "93b29a32d5f4be10e39226c6b796f28d68a8b483" },
     "github.com/nvim-treesitter/nvim-treesitter_master": { "url": "https://github.com/nvim-treesitter/nvim-treesitter", "commit": "86768fdd002c75833414010052a1e95a4760ee32" },
     "github.com/preservim/nerdtree": { "url": "https://github.com/preservim/nerdtree", "commit": "9b465acb2745beb988eff3c1e4aa75f349738230" },
+    "github.com/saghen/blink.cmp_v1": { "url": "https://github.com/saghen/blink.cmp", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
     "github.com/smjonas/live-command.nvim": { "url": "https://github.com/smjonas/live-command.nvim", "commit": "b0723697bf60d89ede953c4a5fedce3157784c15" },
     "github.com/smoka7/hop.nvim": { "url": "https://github.com/smoka7/hop.nvim", "commit": "6e83486f351066e38c3ae9daad2a4f01dfb262ad" },
+    "github.com/stevearc/conform.nvim": { "url": "https://github.com/stevearc/conform.nvim", "commit": "016802de402556da54c36bd7359b441266b01cdd" },
     "github.com/t9md/vim-textmanip": { "url": "https://github.com/t9md/vim-textmanip", "commit": "1948542d12e37f286ef4edd87db4f29e4c7fd771" },
     "github.com/thinca/vim-quickrun": { "url": "https://github.com/thinca/vim-quickrun", "commit": "77b4d6ea9972a206f02c736882c2398c36d2983c" },
     "github.com/tpope/vim-fugitive": { "url": "https://github.com/tpope/vim-fugitive", "commit": "4a745ea72fa93bb15dd077109afbb3d1809383f2" },
     "github.com/tpope/vim-repeat": { "url": "https://github.com/tpope/vim-repeat", "commit": "65846025c15494983dafe5e3b46c8f88ab2e9635" },
     "github.com/tpope/vim-surround": { "url": "https://github.com/tpope/vim-surround", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" },
-    "github.com/vim-denops/denops.vim_68f607d93a9758d15c0d63d3268aa420ddd29edd": { "url": "https://github.com/vim-denops/denops.vim", "commit": "68f607d93a9758d15c0d63d3268aa420ddd29edd" },
+    "github.com/windwp/nvim-autopairs": { "url": "https://github.com/windwp/nvim-autopairs", "commit": "430522f95fe4fb7c511ec64f8c1a90cc6a66c05c" },
     "github.com/windwp/nvim-ts-autotag": { "url": "https://github.com/windwp/nvim-ts-autotag", "commit": "a1d526af391f6aebb25a8795cbc05351ed3620b5" },
     "github.com/yioneko/nvim-yati": { "url": "https://github.com/yioneko/nvim-yati", "commit": "df3dc06076c6fe20a1dcd8643e712af5c252d042" },
+    "github.com/zbirenbaum/copilot.lua": { "url": "https://github.com/zbirenbaum/copilot.lua", "commit": "f76a0a281de089e27b605ec8017093f1aab73b07" },
     "github.com/ziontee113/syntax-tree-surfer": { "url": "https://github.com/ziontee113/syntax-tree-surfer", "commit": "732ea6d0f868bcccd2f526be73afa46997d5a2fb" }
   },
   "treesitter": {
@@ -83,9 +82,5 @@
     "typescript": "75b3874edb2dc714fb1fd77a32013d0f8699989f",
     "vim": "11b688a1f0e97c0c4e3dbabf4a38016335f4d237",
     "yaml": "1805917414a9a8ba2473717fd69447277a175fae"
-  },
-  "coc": {
-    "coc-git": "2.7.14",
-    "coc-snippets": "3.4.10"
   }
 }

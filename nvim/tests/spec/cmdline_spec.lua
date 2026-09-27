@@ -1,4 +1,4 @@
--- Command-line helpers (lexima.vim command-line rules today, plus abbreviations).
+-- Command-line helpers (user/cmdline.lua today, plus abbreviations).
 local t = require('t')
 local describe, it = t.describe, t.it
 

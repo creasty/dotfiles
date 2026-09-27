@@ -1,6 +1,7 @@
 -- Tree-sitter powered editing: highlighting, indentation, endwise, tags,
 -- operator formatting, structural selection, context, custom queries.
 local t = require('t')
+local probe = require('probe')
 local describe, it = t.describe, t.it
 
 local function buffer(name, lines)
@@ -96,25 +97,54 @@ describe('Tree-sitter', function()
   end)
 
   describe('operator formatting (opfmt)', function()
+    -- opfmt is switched off for now (it breaks on Neovim 0.12): these run
+    -- again once it is back on.
+    local function skip_unless_on(nvim)
+      if not probe.opfmt_enabled(nvim) then
+        t.skip('opfmt is switched off in the tree-sitter config')
+      end
+    end
+
+    -- Typed key by key, pausing like a person until the editor has parsed
+    -- the syntax tree again: opfmt formats from it, so within one burst of
+    -- keys it would format from a tree that lags behind the text.
+    local function type_keys(nvim, keys)
+      for key in keys:gmatch('.') do
+        nvim:type(key == '<' and '<lt>' or key)
+        nvim:wait_for(function()
+          return nvim:lua('return vim.treesitter.get_parser():is_valid(true)')
+        end, { message = 'the syntax tree to be parsed' })
+        -- (opfmt formats in a callback scheduled by the parse)
+        nvim:lua('return true')
+      end
+    end
+
     it('spaces operators and delimiters as you type', function()
       local nvim = buffer('a.ts')
-      nvim:type("ifoo+=123*fn('abc',{ bar:[4,5]});")
+      skip_unless_on(nvim)
+      nvim:type('i')
+      type_keys(nvim, "foo+=123*fn('abc',{ bar:[4,5]});")
       t.eq({ "foo += 123 * fn('abc', { bar: [4, 5] });" }, nvim:lines())
     end)
 
     it('typescript: conditions and arrow functions', function()
       local nvim = buffer('a.ts')
-      nvim:type('iif(a&&b||c){')
+      skip_unless_on(nvim)
+      nvim:type('i')
+      type_keys(nvim, 'if(a&&b||c){')
       t.eq({ 'if (a && b || c) {}' }, nvim:lines())
       nvim:type('<Esc>')
       nvim:set_buffer('|')
-      nvim:type('iconst f=(a,b)=>a*b')
+      nvim:type('i')
+      type_keys(nvim, 'const f=(a,b)=>a*b')
       t.eq({ 'const f = (a, b) => a * b' }, nvim:lines())
     end)
 
     it('lua: spaces operators as you type', function()
       local nvim = buffer('a.lua')
-      nvim:type('ilocal x=a+b')
+      skip_unless_on(nvim)
+      nvim:type('i')
+      type_keys(nvim, 'local x=a+b')
       t.eq({ 'local x = a + b' }, nvim:lines())
     end)
   end)

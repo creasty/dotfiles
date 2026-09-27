@@ -1,0 +1,128 @@
+-- Converted from UltiSnips' bq.snippets
+local S = require('user.snippets')
+
+return {
+  S.snip('beginning_of_month', 'Beginning of month', 'w', [[
+date_sub(date(timestamp_trunc(current_timestamp(), month), '+9'), interval ${1:month}} month)$0]]),
+  S.snip('end_of_month', 'End of month', 'w', [[
+date_sub(date_sub(date_trunc(current_date(), month), interval ${1:month} month), interval 1 day)$0]]),
+  S.snip('date_in_window', 'Date helpers for a moving window', 'b', [[
+create temp function d_window() returns int64 as ((
+	${1:28}
+));
+
+create temp function date_in_window(d date, wd date) returns bool as ((
+	d between date_sub(wd, interval d_window() - 1 day) and wd
+));$0]]),
+  S.snip('day_ago', 'N day ago', 'w', [[
+date_sub(current_date('+9'), interval ${1:day} day)$0]]),
+  S.snip('format_date', 'format_date(string, date)', 'w', [[
+format_date('${1:%Y%m%d}', ${2:date})]]),
+  S.snip('format_timestamp', 'format_timestamp(string, timestamp)', 'w', [[
+format_timestamp('%F %T UTC', ${1:timestamp})]]),
+  S.snip('limit_suffix', 'limit_suffix(string, date, date)', 'b', [[
+create temp function limit_suffix(suffix string, start_date date, end_date date) returns bool as ((
+	suffix between format_date('%Y%m%d', start_date) and format_date('%Y%m%d', end_date)
+));$0]]),
+  S.snip('period', 'Period helpers', 'b', [[
+create temp function d_start() returns date as ((
+	date_sub(current_date('+9'), interval 28 * 3 day)
+));
+create temp function d_end() returns date as ((
+	date_sub(current_date('+9'), interval 1 day)
+));$0]]),
+  S.snip('period_array', 'period_array()', 'b', [[
+create temp function period_array() returns array<date> as ((
+	generate_date_array(
+		d_start(),
+		d_end(),
+		interval 1 day
+	)
+));$0]]),
+  S.snip('period_selector', 'Period selector helpers', 'b', [[
+create temp function ts_in_period(ts timestamp, s int64, e int64) returns bool as ((
+	date(ts, '+9') between date_add(d_start(), interval s day) and date_add(d_end(), interval e day)
+));
+
+create temp function suffix_in_period(suffix string, s int64, e int64) returns bool as ((
+	suffix between format_date('%Y%m%d', date_add(d_start(), interval s day)) and format_date('%Y%m%d', date_add(d_end(), interval e day))
+));$0]]),
+  S.snip('ts_to_month', 'ts_to_month(timestamp)', 'b', [[
+create temp function ts_to_month(ts timestamp) returns string as ((
+	format_date('%Y-%m', date(ts, '+9'))
+));$0]]),
+  S.snip('extract_id_from_path', 'Extract ID from path', 'b', [[
+create temp function extract_id_from_path(path string, pattern string) returns int64 as ((
+	cast(regexp_extract_all(path, pattern)[safe_offset(0)] as int64)
+));$0]]),
+  S.snip('extract_json_int', 'Extract int from JSON', 'b', [[
+create temp function extract_json_int(json string, path string) returns int64 as ((
+	cast(regexp_extract(json_extract_scalar(json, path), r'\d+') as int64)
+));$0]]),
+  S.snip('func', 'Create temp function', 'b', [[
+create temp function ${1:name}(${2:args}) returns ${3:type} as ((
+	$0
+));]]),
+  S.snip('median', 'Create median_* function', 'b', [[
+-- median_${1:float64}(array_agg(t.value))
+create temp function median_$1(arr array<$1>) returns struct<
+	value $1,
+	min $1,
+	average float64,
+	max $1,
+	rank int64,
+	max_rank int64,
+	cumulative_total $1,
+	total $1,
+	rank_percent float64,
+	total_percent float64
+> as ((
+	with
+		series as (
+			select
+				value,
+				(row_number() over (order by value)) as rank
+			from
+				unnest(arr) as value
+		),
+		cumulative_series as (
+			select
+				any_value(s.value) as value,
+				s.rank,
+				(max(s.rank) over ()) as max_rank,
+				(sum(ss.value)) as cumulative_total,
+				(sum(any_value(s.value)) over ()) as total,
+				(min(any_value(s.value)) over ()) as min,
+				(avg(any_value(s.value)) over ()) as average,
+				(max(any_value(s.value)) over ()) as max
+			from
+				series as s
+				cross join series as ss
+			where
+				ss.rank <= s.rank
+			group by
+				s.rank
+		)
+
+	select
+		struct(
+			s.value,
+			s.min,
+			s.average,
+			s.max,
+			s.rank,
+			s.max_rank,
+			s.cumulative_total,
+			s.total,
+			(s.rank / s.max_rank) as rank_percent,
+			(s.cumulative_total / s.total) as total_percent
+		)
+	from
+		cumulative_series as s
+	where
+		s.cumulative_total >= s.total * 0.5
+	order by
+		s.rank
+	limit 1
+));$0]]),
+}

@@ -1,5 +1,6 @@
--- Auto-pairing while typing (lexima.vim today). Each case types one burst of
--- keys, like a person typing without pausing for popups.
+-- Auto-pairing while typing (nvim-autopairs and user.plugin.autopairs today).
+-- Each case types one burst of keys, like a person typing without pausing for
+-- popups.
 local t = require('t')
 local describe, it = t.describe, t.it
 
@@ -99,19 +100,15 @@ describe('Auto-pairs', function()
     end)
 
     for _, ft in ipairs({ 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' }) do
-      t.quirk(
-        ('%s: <CR> after => adds braces for a function body'):format(ft),
-        'the rule inserts `{}` + a raw <CR>, so the cursor lands before `}` instead of on an indented blank line',
-        function()
-          local nvim = nvim_with(ft)
-          nvim:type('iconst f = () =><CR>')
-          t.buffer(nvim, { 'const f = () => {', '|}' })
-          nvim:type('<Esc>')
-          nvim:set_buffer('|')
-          nvim:type('iconst g = () => <CR>')
-          t.buffer(nvim, { 'const g = () => {', '|}' })
-        end
-      )
+      it(('%s: <CR> after => adds braces for a function body, with the cursor inside'):format(ft), function()
+        local nvim = nvim_with(ft)
+        nvim:type('iconst f = () =><CR>')
+        t.buffer(nvim, { 'const f = () => {', '  |', '}' })
+        nvim:type('<Esc>')
+        nvim:set_buffer('|')
+        nvim:type('iconst g = () => <CR>')
+        t.buffer(nvim, { 'const g = () => {', '  |', '}' })
+      end)
     end
   end)
 
@@ -214,7 +211,7 @@ describe('Auto-pairs', function()
       t.buffer(nvim, { 'type A = B<', '|', '>' })
     end)
 
-    t.quirk('html/markdown: typing a tag leaves a stray >', 'lexima pairs < with >, then nvim-ts-autotag closes the tag without consuming it', function()
+    t.quirk('html/markdown: typing a tag leaves a stray >', 'the auto-pairs rules pair < with >, then nvim-ts-autotag (its own buffer-local > mapping) closes the tag without consuming the auto-inserted >', function()
       for _, ft in ipairs({ 'html', 'markdown' }) do
         local nvim = nvim_with(ft)
         nvim:type('i<lt>b>')
@@ -223,7 +220,7 @@ describe('Auto-pairs', function()
       end
     end)
 
-    t.quirk('xml/eruby: > does not step over the auto-inserted >', 'the step-over rule does not fire after the filetype-specific < pair', function()
+    t.quirk('xml/eruby: > does not step over the auto-inserted >', 'nvim-ts-autotag maps > for the buffer: it inserts a > instead of stepping over the auto-inserted one, and closes no tag in these filetypes', function()
       for _, ft in ipairs({ 'xml', 'eruby' }) do
         local nvim = nvim_with(ft)
         nvim:type('i<lt>b>')
@@ -232,10 +229,10 @@ describe('Auto-pairs', function()
       end
     end)
 
-    t.quirk('html: an escaped \\< is still paired', 'the generic `\\<` rule is shadowed by the filetype-specific `<` rule', function()
+    it('html: an escaped \\< is not paired', function()
       local nvim = nvim_with('html')
       nvim:type('i\\<lt>')
-      t.buffer(nvim, '\\<|>')
+      t.buffer(nvim, '\\<|')
     end)
   end)
 

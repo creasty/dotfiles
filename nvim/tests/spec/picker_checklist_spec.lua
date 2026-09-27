@@ -1,5 +1,5 @@
--- The picker checklist, source by source (ddu.vim today). The keys of each
--- picker are in picker_spec.lua.
+-- The picker checklist, source by source (snacks.nvim's picker today). The
+-- keys of each picker are in picker_spec.lua.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -21,7 +21,7 @@ describe('Picker', function()
   -- or list focus), each source keeps its own state, a long list scrolls
   -- with the up/down keys, and while it is open <C-l> refreshes and <C-r>
   -- reloads. Reopening resumes only when the previous picker call happened
-  -- in the same directory (user#plugin#ddu's s:can_resume()).
+  -- in the same directory (can_resume() in user.plugin.picker).
   describe('every source', function()
     local FILES = {
       ['.git/'] = true,
@@ -34,7 +34,6 @@ describe('Picker', function()
     }
     local GO = { 'package main', '', 'func load() int { return 1 }', '', 'func main() {', '\tprintln(load())', '\tprintln(load())', '\tprintln(load())', '}' }
     local REFS = { 'main.go 6:10 |\tprintln(load())', 'main.go 7:10 |\tprintln(load())', 'main.go 8:10 |\tprintln(load())' }
-    local STALE_PROMPT = "user#plugin#ddu#update_input() redraws every source but grep with an empty input: the filter is cleared, the prompt's text is not, and typing filters by that text again"
 
     local function sandbox(files)
       local nvim = t.nvim()
@@ -104,8 +103,7 @@ describe('Picker', function()
       end)
     end
 
-    --- Grep results for "needle" with the second one selected. rg returns
-    --- matches in no particular order, so states are compared as seen.
+    --- Grep results for "needle" with the second one selected.
     local function grep_state(nvim)
       nvim:type('<Space>/')
       nvim:type('needle<CR>')
@@ -205,22 +203,22 @@ describe('Picker', function()
       t.eq(items[1], picker.visible[1], 'back at the top')
     end
 
-    --- Closes the picker, then pauses like a person before the next picker:
-    --- reopening within a few milliseconds can race ddu's own cleanup of the
-    --- window it just closed ("Invalid window id") and show an empty list.
+    --- Closes the picker, then pauses like a person before the next picker
+    --- (the picker saves its state for reopening while it closes).
     local function close(nvim, key)
       nvim:type(key)
       probe.wait_picker_closed(nvim)
       nvim:sleep(300)
     end
 
+    -- (the picker enters Insert mode a moment after it shows)
     local function in_prompt(nvim)
-      t.eq('ddu-ff-filter', nvim:filetype(), 'the prompt has the focus')
-      t.eq('i', nvim:mode())
+      t.eq('prompt', probe.picker(nvim).focus, 'the prompt has the focus')
+      nvim:wait_mode('i')
     end
 
     local function in_list(nvim)
-      t.eq('ddu-ff', nvim:filetype(), 'the list has the focus')
+      t.eq('list', probe.picker(nvim).focus, 'the list has the focus')
       t.eq('n', nvim:mode())
     end
 
@@ -278,7 +276,7 @@ describe('Picker', function()
         in_prompt(nvim)
       end)
 
-      it('<C-r> lists every file again, new ones included, in the prompt', function()
+      it('<C-r> clears the query and lists every file again, new ones included, in the prompt', function()
         local nvim = project()
         finder_state(nvim)
         nvim:write_file('d.txt', 'x')
@@ -287,17 +285,8 @@ describe('Picker', function()
           return #p.items == 7
         end)
         t.eq({ 'a.txt', 'b.txt', 'c.txt', 'd.txt', 'src/a1.ts', 'src/a2.ts', 'src/a3.ts' }, sorted(picker.items))
+        t.eq('', picker.query)
         in_prompt(nvim)
-      end)
-
-      t.quirk('<C-r> leaves the old query in the prompt, though it no longer filters', STALE_PROMPT, function()
-        local nvim = project()
-        finder_state(nvim)
-        nvim:type('<C-r>')
-        local picker = probe.wait_picker(nvim, function(p)
-          return #p.items == 6
-        end)
-        t.eq('src/a', picker.query)
       end)
     end)
 
@@ -327,21 +316,18 @@ describe('Picker', function()
         in_prompt(nvim)
       end)
 
-      t.quirk(
-        'the list ends with an empty entry, which down can select',
-        "the ghq source splits ghq-list-monorepo's output on newlines and keeps the empty string after the last one",
-        function()
-          local nvim = home()
-          nvim:type('<C-q>')
-          probe.wait_picker(nvim, function(p)
-            return #p.items == 4
-          end)
-          local picker = select_with(nvim, '<C-n>', function(p)
-            return p.current == nil
-          end)
-          t.eq('github.com/other/x', picker.visible[#picker.visible])
-        end
-      )
+      it('down stops at the last repository', function()
+        local nvim = home()
+        nvim:type('<C-q>')
+        local items = probe.wait_picker(nvim, function(p)
+          return #p.items == 4
+        end).items
+        select_with(nvim, '<C-n>', function(p)
+          return p.current == items[4]
+        end)
+        nvim:type('<C-n><C-n>')
+        t.eq(items[4], probe.picker(nvim).current)
+      end)
 
       it('<C-l> picks up new repositories, keeps the query and selects the first line', function()
         local nvim = home()
@@ -356,7 +342,7 @@ describe('Picker', function()
         in_prompt(nvim)
       end)
 
-      it('<C-r> lists every repository again, in the prompt', function()
+      it('<C-r> clears the query and lists every repository again, in the prompt', function()
         local nvim = home()
         repos_state(nvim)
         nvim:type('<C-r>')
@@ -364,17 +350,8 @@ describe('Picker', function()
           return #p.items == 4
         end)
         t.contains(picker.items, 'github.com/other/x')
+        t.eq('', picker.query)
         in_prompt(nvim)
-      end)
-
-      t.quirk('<C-r> leaves the old query in the prompt, though it no longer filters', STALE_PROMPT, function()
-        local nvim = home()
-        repos_state(nvim)
-        nvim:type('<C-r>')
-        local picker = probe.wait_picker(nvim, function(p)
-          return #p.items == 4
-        end)
-        t.eq('acme', picker.query)
       end)
     end)
 
@@ -431,56 +408,37 @@ describe('Picker', function()
         in_list(nvim)
       end, { timeout = 60000 })
 
-      t.quirk(
-        'a scrolled list reopens with the selected line in the middle of the window, not where it was',
-        'ddu-ui-ff restores the cursor line; the window is then scrolled to center it',
-        function()
-          local nvim = sandbox({ ['.git/'] = true, ['notes.txt'] = NEEDLES })
-          nvim:type('<Space>/')
-          nvim:type('needle<CR>')
-          local items = probe.wait_picker(nvim, function(p)
-            return #p.items == 50
-          end).items
-          local picker = select_with(nvim, 'j', function(p)
-            return p.current == items[30]
-          end)
-          local height = #picker.visible
-          t.neq(height / 2, index_of(picker.visible, items[30]), 'while moving down: not in the middle')
-          close(nvim, 'q')
-          nvim:type('<Space>/')
-          probe.wait_picker(nvim, function(p)
-            return p.current == items[30]
-          end)
-          nvim:sleep(300)
-          t.eq(height / 2, index_of(probe.picker(nvim).visible, items[30]), 'reopened: in the middle')
-        end
-      )
+      it('a scrolled list reopens with the selected line where it was in the window', function()
+        local nvim = sandbox({ ['.git/'] = true, ['notes.txt'] = NEEDLES })
+        nvim:type('<Space>/')
+        nvim:type('needle<CR>')
+        local items = probe.wait_picker(nvim, function(p)
+          return #p.items == 50
+        end).items
+        local picker = select_with(nvim, 'j', function(p)
+          return p.current == items[30]
+        end)
+        local row = index_of(picker.visible, items[30])
+        close(nvim, 'q')
+        nvim:type('<Space>/')
+        probe.wait_picker(nvim, function(p)
+          return p.current == items[30]
+        end)
+        nvim:sleep(300)
+        t.eq(row, index_of(probe.picker(nvim).visible, items[30]))
+      end)
 
-      it('<C-l> searches again: new matches show up, in the list', function()
+      it('<C-l> searches again: new matches show up, the first line selected, in the list', function()
         local nvim = project()
         grep_state(nvim)
         nvim:write_file('d.txt', { 'needle 4' })
         nvim:type('<C-l>')
         local picker = probe.wait_picker(nvim, function(p)
-          return #p.items == 4
+          return #p.items == 4 and p.current == p.items[1]
         end)
         t.contains(picker.items, 'd.txt 1:0 |needle 4')
         in_list(nvim)
       end)
-
-      t.quirk(
-        '<C-l> keeps the selection on the same match',
-        'the mapping moves the cursor to the first line before refreshing, but from the list ddu-ui-ff puts it back on the item it saved when the cursor last moved (from the prompt, the reset sticks)',
-        function()
-          local nvim = project()
-          local before = grep_state(nvim)
-          nvim:write_file('d.txt', { 'needle 4' })
-          nvim:type('<C-l>')
-          probe.wait_picker(nvim, function(p)
-            return #p.items == 4 and p.current == before.current
-          end)
-        end
-      )
 
       it('<C-r> asks for a new pattern and searches again; reopening shows the new search', function()
         local nvim = project()
@@ -500,23 +458,22 @@ describe('Picker', function()
         in_list(nvim)
       end)
 
-      t.quirk(
-        'after <Esc> at the <C-r> prompt, the next <Space>/ asks for a pattern again',
-        'the cancelled prompt stores an empty pattern, and user#plugin#ddu#search() asks whenever the stored one is empty',
-        function()
-          local nvim = project()
-          grep_state(nvim)
-          nvim:type('<C-r>')
-          t.eq('Search: ', nvim:call('getcmdprompt'))
-          nvim:type('<Esc>')
-          probe.wait_picker(nvim, function(p)
-            return #p.items == 3
-          end)
-          close(nvim, 'q')
-          nvim:type('<Space>/')
-          t.eq('Search: ', nvim:call('getcmdprompt'))
-        end
-      )
+      it('<Esc> at the <C-r> prompt keeps the search: the list stays, and reopens as left', function()
+        local nvim = project()
+        local before = grep_state(nvim)
+        nvim:type('<C-r>')
+        t.eq('Search: ', nvim:call('getcmdprompt'))
+        nvim:type('<Esc>')
+        probe.wait_picker(nvim, function(p)
+          return #p.items == 3 and p.current == before.current
+        end)
+        close(nvim, 'q')
+        nvim:type('<Space>/')
+        t.eq('', nvim:call('getcmdprompt'), 'no new pattern is asked for')
+        probe.wait_picker(nvim, function(p)
+          return vim.deep_equal(p.items, before.items) and p.current == before.current
+        end)
+      end)
     end)
 
     describe('locations (gR / gD / gT, then gll)', function()
@@ -524,22 +481,12 @@ describe('Picker', function()
         local nvim = go_project()
         refs_state(nvim)
         close(nvim, 'q')
-        -- The first gll after startup starts at the top (a quirk pinned in
-        -- the LSP spec); from then on gll resumes.
-        nvim:type('gll')
-        probe.wait_picker(nvim, function(p)
-          return vim.deep_equal(p.items, REFS)
-        end)
-        select_with(nvim, 'j', function(p)
-          return p.current == REFS[3]
-        end)
-        close(nvim, 'q')
         nvim:type('gll')
         probe.wait_picker(nvim, function(p)
           return vim.deep_equal(p.items, REFS) and p.current == REFS[3]
         end)
         in_list(nvim)
-      end, { timeout = 40000, retry = 2 })
+      end, { timeout = 40000 })
 
       it('j / k scroll a long list; gll reopens it at the selected line', function()
         local nvim = project({ ['main.go'] = GO_LONG })
@@ -563,47 +510,24 @@ describe('Picker', function()
         in_list(nvim)
       end, { timeout = 40000 })
 
-      t.quirk(
-        '<C-l> shows the same locations and selection: the language server is not asked again',
-        'the coc-locations source re-reads g:coc_jump_locations, the result of the last request',
-        function()
-          local nvim = go_project()
-          refs_state(nvim)
-          nvim:lua([[vim.api.nvim_buf_set_lines(vim.fn.bufnr('main.go'), 8, 8, false, { '\tprintln(load())' })]])
-          nvim:type('<C-l>')
-          nvim:sleep(1000)
-          local picker = probe.picker(nvim)
-          t.eq(REFS, picker.items)
-          t.eq(REFS[3], picker.current)
-          in_list(nvim)
-        end,
-        { timeout = 40000 }
-      )
-
-      it('<C-r> clears the narrowing: every location is listed again, in the prompt', function()
+      it('<C-l> asks the language server again: new locations show up, the first line selected, in the list', function()
         local nvim = go_project()
         refs_state(nvim)
-        nvim:type('i')
-        nvim:wait_for(function()
-          return nvim:filetype() == 'ddu-ff-filter'
+        nvim:lua([[vim.api.nvim_buf_set_lines(vim.fn.bufnr('main.go'), 8, 8, false, { '\tprintln(load())' })]])
+        nvim:type('<C-l>')
+        local picker = probe.wait_picker(nvim, function(p)
+          return #p.items == 4 and p.current == p.items[1]
         end)
-        nvim:type('7')
-        probe.wait_picker(nvim, function(p)
-          return #p.items == 1
-        end)
-        nvim:type('<C-r>')
-        probe.wait_picker(nvim, function(p)
-          return vim.deep_equal(p.items, REFS)
-        end)
-        in_prompt(nvim)
+        t.eq('main.go 9:10 |\tprintln(load())', picker.items[4])
+        in_list(nvim)
       end, { timeout = 40000 })
 
-      t.quirk('<C-r> leaves the old query in the prompt, though it no longer filters', STALE_PROMPT, function()
+      it('<C-r> clears the narrowing and the query: every location is listed again, in the prompt', function()
         local nvim = go_project()
         refs_state(nvim)
         nvim:type('i')
         nvim:wait_for(function()
-          return nvim:filetype() == 'ddu-ff-filter'
+          return probe.picker(nvim).focus == 'prompt'
         end)
         nvim:type('7')
         probe.wait_picker(nvim, function(p)
@@ -613,7 +537,8 @@ describe('Picker', function()
         local picker = probe.wait_picker(nvim, function(p)
           return vim.deep_equal(p.items, REFS)
         end)
-        t.eq('7', picker.query)
+        t.eq('', picker.query)
+        in_prompt(nvim)
       end, { timeout = 40000 })
     end)
 
@@ -679,26 +604,19 @@ describe('Picker', function()
       end)
     end, { timeout = 60000 })
 
-    t.quirk(
-      'after <Tab> and q, the list comes back with the first line selected',
-      "ddu-ui-ff's chooseAction returns to the list without its saved cursor",
-      function()
-        local nvim = go_project()
-        refs_state(nvim)
-        nvim:type('<Tab>')
-        probe.wait_picker(nvim, function(p)
-          return vim.tbl_contains(p.items, 'open')
-        end)
-        nvim:type('q')
-        local picker = probe.wait_picker(nvim, function(p)
-          return vim.deep_equal(p.items, REFS)
-        end)
-        nvim:sleep(500)
-        t.eq(REFS[1], probe.picker(nvim).current)
-        in_list(nvim)
-      end,
-      { timeout = 40000 }
-    )
+    it('after <Tab> and q, the list comes back as left', function()
+      local nvim = go_project()
+      refs_state(nvim)
+      nvim:type('<Tab>')
+      probe.wait_picker(nvim, function(p)
+        return vim.tbl_contains(p.items, 'open')
+      end)
+      nvim:type('q')
+      probe.wait_picker(nvim, function(p)
+        return vim.deep_equal(p.items, REFS) and p.current == REFS[3]
+      end)
+      in_list(nvim)
+    end, { timeout = 40000 })
 
     it('a picker opened after changing directory starts fresh', function()
       local nvim = project()
@@ -710,23 +628,19 @@ describe('Picker', function()
       t.eq({ 'a1.ts', 'a2.ts', 'a3.ts' }, sorted(picker.items))
     end)
 
-    t.quirk(
-      'back in the first directory, the finder shows the old query over an unfiltered list',
-      'the fresh session keeps the prompt text from the last time the finder ran there but lists every file; typing re-filters',
-      function()
-        local nvim = project()
-        finder_state(nvim)
-        close(nvim, '<C-q>')
-        nvim:cmd('cd src')
-        open_finder(nvim)
-        close(nvim, '<C-q>')
-        nvim:cmd('cd ..')
-        open_finder(nvim)
-        nvim:sleep(1000)
-        local picker = probe.picker(nvim)
-        t.eq('src/a', picker.query)
-        t.eq(6, #picker.items)
-      end
-    )
+    it('back in the first directory, the finder starts fresh again', function()
+      local nvim = project()
+      finder_state(nvim)
+      close(nvim, '<C-q>')
+      nvim:cmd('cd src')
+      open_finder(nvim)
+      close(nvim, '<C-q>')
+      nvim:cmd('cd ..')
+      local picker = open_finder(nvim)
+      nvim:sleep(300)
+      picker = probe.picker(nvim)
+      t.eq('', picker.query)
+      t.eq(6, #picker.items)
+    end)
   end)
 end)

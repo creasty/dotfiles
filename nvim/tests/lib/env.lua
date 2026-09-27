@@ -3,7 +3,7 @@
 -- The children run the real config (this repo's nvim/ directory) exactly the
 -- way `nvim` does, with XDG_CONFIG_HOME pointing at a tree of symlinks to it
 -- (cached per working tree, see acquire_plugin_tree) and every other XDG
--- directory, coc's data and the sandboxes in a throwaway run directory. Tests
+-- directory and the sandboxes in a throwaway run directory. Tests
 -- never touch your real state, shada, clipboard, Trash or caches. Installed
 -- plugins are *linked*, never installed or updated.
 --
@@ -22,10 +22,6 @@ M.lib_dir = script_dir()
 M.tests_dir = vim.fs.dirname(M.lib_dir)
 M.config_dir = vim.fs.dirname(M.tests_dir)
 M.repo_dir = vim.fs.dirname(M.config_dir)
-
--- coc extensions linked into the test coc data home. Only deterministic ones:
--- no AI completion, no network-backed language servers.
-M.coc_extensions = { 'coc-snippets', 'coc-git' }
 
 local function realpath(path)
   return uv.fs_realpath(path) or path
@@ -86,13 +82,6 @@ function M.find_dein_repos()
   error('Cannot find installed dein plugins. Set E2E_DEIN_REPOS to the dein repos directory.')
 end
 
-function M.find_coc_extensions()
-  return first_existing(vim.F.pack_len(
-    os.getenv('E2E_COC_EXTENSIONS'),
-    vim.fs.normalize('~/.config/coc/extensions/node_modules')
-  ))
-end
-
 --- Environment variables for a child process.
 function M.child_env(ctx, extra)
   local env = {
@@ -104,9 +93,6 @@ function M.child_env(ctx, extra)
     E2E_CONTEXT = ctx.context_file,
     E2E_TRASH = ctx.trash_dir,
     GHQ_ROOT = ctx.run_dir .. '/ghq',
-    -- Deno would otherwise follow XDG_CACHE_HOME into the per-run directory
-    -- and re-download/compile the denops plugins on every run.
-    DENO_DIR = ctx.deno_dir,
     NVIM_GUI = '',
     NVIM_APPNAME = '',
     NVIM = '',
@@ -128,9 +114,9 @@ local function run(ctx, args, timeout_ms)
 end
 
 -- The plugin tree (XDG_CONFIG_HOME/nvim with dein's merged runtimepath)
--- lives at a stable, per-working-tree path so Deno's compile cache (keyed by
--- path) stays warm across runs. A lock keeps concurrent runs apart; a run
--- that cannot take it builds a throwaway tree instead.
+-- lives at a stable, per-working-tree path so dein's state cache stays warm
+-- across runs. A lock keeps concurrent runs apart; a run that cannot take it
+-- builds a throwaway tree instead.
 local function acquire_plugin_tree(base, run_dir)
   local key = vim.fn.sha256(M.config_dir):sub(1, 12)
   local dir = vim.fs.joinpath(base, 'nvim-e2e-cache', key)
@@ -182,23 +168,14 @@ local function link_config(config_home)
   symlink(M.find_dein_repos(), dein_dir .. '/repos')
 end
 
---- Creates the run directory and warms the plugin manager cache.
---- Per-child XDG state/cache and coc data directories, so children never
---- share plugin state. (XDG_DATA_HOME stays per run: its site directory is
---- on the runtimepath, which dein's state cache must see unchanged.)
+--- Per-child XDG state/cache directories, so children never share plugin
+--- state. (XDG_DATA_HOME stays per run: its site directory is on the
+--- runtimepath, which dein's state cache must see unchanged.)
 function M.child_dirs(ctx, id)
   local root = mkdir(vim.fs.joinpath(ctx.run_dir, 'children', id))
-  local coc = mkdir(root .. '/coc')
-  local ext_dir = mkdir(coc .. '/extensions/node_modules')
-  local shared = ctx.coc_data_home .. '/extensions'
-  for _, name in ipairs(ctx.coc_extensions) do
-    symlink(shared .. '/node_modules/' .. name, ext_dir .. '/' .. name)
-  end
-  write_file(coc .. '/extensions/package.json', read_file(shared .. '/package.json') or '{}')
   return {
     XDG_STATE_HOME = mkdir(root .. '/state'),
     XDG_CACHE_HOME = mkdir(root .. '/cache'),
-    E2E_COC_DATA_HOME = coc,
   }
 end
 
@@ -207,7 +184,7 @@ function M.prepare()
   local base = realpath(os.getenv('E2E_TMPDIR') or os.getenv('TMPDIR') or '/tmp')
   -- Sandboxes must not live inside a project: plugin/project_dir.vim takes the
   -- outermost-priority marker it finds walking up (an enclosing .git wins),
-  -- and coc then reads that project's .vim/coc-settings.json.
+  -- and language servers would take that project as their root.
   local markers = { '.git', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot', 'build.sbt' }
   local project = vim.fs.find(markers, { upward = true, path = base, limit = 1 })[1]
   if project then
@@ -230,8 +207,6 @@ function M.prepare()
       state = mkdir(run_dir .. '/xdg/state'),
       cache = mkdir(run_dir .. '/xdg/cache'),
     },
-    coc_data_home = mkdir(run_dir .. '/coc'),
-    deno_dir = mkdir(tree .. '/deno'),
     bin_dir = mkdir(run_dir .. '/bin'),
     trash_dir = mkdir(run_dir .. '/trash'),
     sandbox_dir = mkdir(run_dir .. '/sandbox'),
@@ -240,42 +215,31 @@ function M.prepare()
       lsp = M.tests_dir .. '/fakes/lsp.lua',
       copilot = M.tests_dir .. '/fakes/copilot.lua',
     },
-    coc_extensions = {},
   }
   mkdir(run_dir .. '/ghq')
+  -- Shared by the workers, which create their children's directories in them
+  -- at the same time (mkdir -p fails when it loses that race).
+  mkdir(run_dir .. '/children')
+  mkdir(run_dir .. '/servers')
   link_config(ctx.xdg.config)
-
-  -- coc data home (per run) with a curated, deterministic set of extensions.
-  local coc_src = M.find_coc_extensions()
-  local ext_dir = mkdir(ctx.coc_data_home .. '/extensions/node_modules')
-  local deps = {}
-  if coc_src then
-    for _, name in ipairs(M.coc_extensions) do
-      if uv.fs_stat(coc_src .. '/' .. name) then
-        symlink(coc_src .. '/' .. name, ext_dir .. '/' .. name)
-        deps[name] = '*'
-        table.insert(ctx.coc_extensions, name)
-      end
-    end
-  end
-  write_file(
-    ctx.coc_data_home .. '/extensions/package.json',
-    vim.json.encode({ dependencies = next(deps) and deps or vim.empty_dict(), disabled = {}, locked = {}, lastUpdate = os.time() * 1000 })
-  )
 
   -- Fake executables shadowing real ones.
   write_file(ctx.bin_dir .. '/trash', '#!/bin/sh\nfor f in "$@"; do mv -- "$f" "$E2E_TRASH/"; done\n', 493)
+  write_file(
+    ctx.bin_dir .. '/copilot-language-server',
+    ('#!/bin/sh\nexec %s --clean -l %s "$@"\n'):format(vim.fn.shellescape(ctx.nvim), vim.fn.shellescape(ctx.fakes.copilot)),
+    493
+  )
 
   write_file(ctx.context_file, vim.json.encode(ctx))
 
   -- Warm up: build dein's merged runtimepath, then generate its state cache.
-  local res = run(ctx, { '--cmd', 'let g:coc_start_at_startup = 0', '-c', 'call dein#recache_runtimepath() | call dein#clear_state()', '-c', 'qa!' })
+  local res = run(ctx, { '-c', 'call dein#recache_runtimepath() | call dein#clear_state()', '-c', 'qa!' })
   if res.code ~= 0 then
     error('warm-up failed (recache): ' .. (res.stderr or ''))
   end
   local messages_file = run_dir .. '/startup-messages.txt'
   res = run(ctx, {
-    '--cmd', 'let g:coc_start_at_startup = 0',
     '-c', ('call writefile(split(execute("messages"), "\\n"), %s)'):format(vim.fn.string(messages_file)),
     '-c', 'qa!',
   })
@@ -283,16 +247,6 @@ function M.prepare()
     error('warm-up failed (boot): ' .. (res.stderr or ''))
   end
   ctx.startup_messages = read_file(messages_file) or ''
-
-  -- Resolve the Python host once (the same interpreter Neovim would detect);
-  -- detection on every child's first insert-mode keystroke costs ~300ms.
-  local python_file = run_dir .. '/python3-host.txt'
-  run(ctx, {
-    '--cmd', 'let g:coc_start_at_startup = 0',
-    '-c', ('lua vim.fn.writefile({ vim.g.python3_host_prog or require("vim.provider.python").detect_by_module("neovim") or "" }, %q)'):format(python_file),
-    '-c', 'qa!',
-  })
-  ctx.python3_host_prog = vim.trim(read_file(python_file) or '')
 
   write_file(ctx.context_file, vim.json.encode(ctx))
   return ctx

@@ -1,9 +1,17 @@
--- Completion menu workflow (coc.nvim today). Items come from the fake
+-- Completion menu workflow (blink.cmp today). Items come from the fake
 -- language server (e2eAlpha, e2eBeta, e2eGamma, e2eSnippet), buffer words,
--- file paths and the UltiSnips library.
+-- file paths and the snippet library. An accepted item is inserted a moment
+-- after the key (the engine may resolve it with the server first).
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
+
+--- Waits until line `lnum` reads `text`.
+local function wait_line(nvim, lnum, text)
+  nvim:wait_for(function()
+    return nvim:line(lnum) == text
+  end, { message = ('line %d to read %q (it reads %q)'):format(lnum, text, tostring(nvim:line(lnum))) })
+end
 
 local function go_buffer(extra_lines)
   local nvim = t.nvim()
@@ -48,6 +56,7 @@ describe('Completion', function()
     local menu = probe.wait_completion(nvim, { item = 'e2eBeta' })
     t.eq('e2eBeta', menu.selected)
     nvim:type('<Tab>')
+    wait_line(nvim, 4, '\te2eBeta')
     t.buffer(nvim, { 'package main', '', 'func main() {', '\te2eBeta|', '}' })
     t.eq('i', nvim:mode())
     t.no(probe.completion_visible(nvim))
@@ -58,6 +67,7 @@ describe('Completion', function()
     nvim:type('ae2eG')
     probe.wait_completion(nvim, { item = 'e2eGamma' })
     nvim:type('<CR>')
+    wait_line(nvim, 4, '\te2eGamma')
     t.buffer(nvim, { 'package main', '', 'func main() {', '\te2eGamma|', '}' })
   end)
 
@@ -74,7 +84,7 @@ describe('Completion', function()
     nvim:type('<Up>')
     t.eq('e2eAlpha', probe.completion(nvim).selected)
     nvim:type('<C-n><C-n><Tab>')
-    t.eq('\te2eGamma', nvim:line(4))
+    wait_line(nvim, 4, '\te2eGamma')
   end)
 
   it('<Esc> closes the menu but stays in insert mode; the next <Esc> leaves', function()
@@ -93,6 +103,10 @@ describe('Completion', function()
     local nvim = go_buffer()
     nvim:type('ae2e')
     probe.wait_completion(nvim)
+    -- Typed while Neovim is busy, <C-c> interrupts instead of running its
+    -- mapping (:help map_CTRL-C), and blink.cmp resolves the selected item
+    -- right after opening the menu: pause like a person reading it.
+    nvim:sleep(100)
     nvim:type('<C-c>')
     t.eq('i', nvim:mode())
     t.no(probe.completion_visible(nvim))
@@ -165,33 +179,24 @@ describe('Completion', function()
       probe.wait_completion(nvim, { item = 'e2eSnippet' })
       nvim:type('<Tab>')
       nvim:wait_mode('s')
-      -- A person reads the placeholder first: typing into it within coc's
-      -- first few hundred milliseconds can end the snippet session.
-      nvim:sleep(500)
-      nvim:type('X', { wait = 1000 })
+      nvim:type('X')
       nvim:type('<C-s><C-n>')
       nvim:wait_mode('s')
-      nvim:type('Y', { wait = 1000 })
+      nvim:type('Y')
       t.eq('\te2eSnippet(X, Y)', nvim:line(4))
       nvim:type('<C-s><C-p>')
       nvim:wait_mode('s')
       nvim:type('Z')
       t.eq('\te2eSnippet(Z, Y)', nvim:line(4))
-    end, { retry = 4 })
+    end)
 
-    -- coc's snippet sessions trip over each other when two run at the same
-    -- moment, even in separate Neovims: keep the tests that jump between
-    -- placeholders in this file, so they never run in parallel.
     it('jumping to the next placeholder shows the signature help', function()
       local nvim = go_buffer()
       nvim:type('ae2eSn')
       probe.wait_completion(nvim, { item = 'e2eSnippet' })
       nvim:type('<Tab>')
       nvim:wait_mode('s')
-      -- A person reads the placeholder first: typing into it within coc's
-      -- first few hundred milliseconds can end the snippet session.
-      nvim:sleep(500)
-      nvim:type('X', { wait = 1000 })
+      nvim:type('X')
       nvim:type('<C-s><C-n>')
       nvim:wait_for(function()
         for _, f in ipairs(nvim:floats()) do
@@ -200,7 +205,7 @@ describe('Completion', function()
           end
         end
       end)
-    end, { retry = 4 })
+    end)
 
     it('<C-s><C-c> ends the snippet session', function()
       local nvim = go_buffer()

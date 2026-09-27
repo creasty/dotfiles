@@ -1,4 +1,4 @@
--- Fuzzy finder workflows (ddu.vim today): <C-q> file finder, <Space>/ grep.
+-- Fuzzy finder workflows (snacks.nvim's picker today): <C-q> file finder, <Space>/ grep.
 -- What every source does on reopen, scroll, <C-l> and <C-r>: picker_checklist_spec.lua.
 local t = require('t')
 local probe = require('probe')
@@ -39,8 +39,19 @@ describe('Picker', function()
       local nvim = in_project()
       local picker = open_finder(nvim)
       t.ok(picker.floating, 'floating')
-      t.eq('ddu-ff-filter', nvim:filetype(), 'the prompt has focus')
-      t.eq('i', nvim:mode())
+      t.eq('prompt', probe.picker(nvim).focus, 'the prompt has focus')
+      nvim:wait_mode('i')
+    end)
+
+    it("has its border's background, the editor's, not the darker one of other floats", function()
+      local nvim = in_project()
+      -- (read outside the picker: its windows map NormalFloat to their own)
+      local float = nvim:lua([[return vim.api.nvim_get_hl(0, { name = 'NormalFloat', link = false }).bg]])
+      open_finder(nvim)
+      local colors = probe.picker_colors(nvim)
+      t.ok(colors.border, 'the border has a background')
+      t.eq({ input = colors.border, list = colors.border }, { input = colors.input, list = colors.list })
+      t.neq(float, colors.list, 'not the background of other floats')
     end)
 
     it('lists project files, including dotfiles, excluding ignored ones', function()
@@ -206,7 +217,7 @@ describe('Picker', function()
     it('the list has the focus, in normal mode', function()
       local nvim = in_project()
       grep(nvim, 'needle')
-      t.eq('ddu-ff', nvim:filetype())
+      t.eq('list', probe.picker(nvim).focus)
       t.eq('n', nvim:mode())
     end)
 
@@ -240,7 +251,7 @@ describe('Picker', function()
       grep(nvim, 'needle')
       nvim:type('i')
       nvim:wait_for(function()
-        return nvim:filetype() == 'ddu-ff-filter'
+        return probe.picker(nvim).focus == 'prompt'
       end)
       nvim:type('strings')
       local picker = probe.wait_picker(nvim, function(p)
@@ -279,19 +290,25 @@ describe('Picker', function()
       t.contains(picker.items, 'yank')
     end)
 
-    t.quirk(
-      'p pastes (and fails) instead of previewing the item',
-      'vim-pasta maps a buffer-local p on every FileType after the ddu buffer setup; ddu-ff is not in g:pasta_disabled_filetypes',
-      function()
-        local nvim = in_project()
-        grep(nvim, 'upper')
-        nvim:type('p')
-        nvim:sleep(500)
-        t.match('E21', nvim:messages())
-        t.eq(1, #vim.tbl_filter(function(f)
-          return f.filetype == 'ddu-ff'
-        end, nvim:floats()), 'only the list, no preview window')
+    it('p shows a preview of the item; p again hides it', function()
+      local nvim = in_project()
+      grep(nvim, 'upper')
+      local function previewed()
+        for _, float in ipairs(nvim:floats()) do
+          -- (the list shows only the first line of the file)
+          if table.concat(float.lines, '\n'):find('const needle = 1;', 1, true) then
+            return true
+          end
+        end
+        return false
       end
-    )
+      nvim:type('p')
+      nvim:wait_for(previewed, { message = 'a preview of strings.ts' })
+      t.eq('list', probe.picker(nvim).focus)
+      nvim:type('p')
+      nvim:wait_for(function()
+        return not previewed()
+      end, { message = 'the preview to close' })
+    end)
   end)
 end)

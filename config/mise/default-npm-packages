@@ -7,5 +7,4 @@ graphql-language-service-cli
 pnpm
 typescript
 typescript-language-server
-vscode-css-languageserver-bin
 yarn

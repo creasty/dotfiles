@@ -1,4 +1,6 @@
-# Neovim, with the language servers and linters its config relies on. dein.vim installs the plugins.
+# Neovim, with the language servers, linters and formatters its config relies on
+# (nvim/lua/user/plugin/{lsp,lint,format}.lua). dein.vim installs the plugins; copilot.lua
+# downloads GitHub's copilot-language-server (unfree in nixpkgs).
 {
   pkgs,
   username,
@@ -6,20 +8,27 @@
   ...
 }:
 {
-  # nvim/coc-settings.json finds Neovim's runtime through the user's profile
-  environment.pathsToLink = [ "/share/nvim" ];
-
   home-manager.users.${username} =
     { lib, ... }:
     {
       home.packages = with pkgs; [
-        # With the Python 3 provider (pynvim), which UltiSnips needs
-        (neovim.override { withPython3 = true; })
+        neovim
         ansible-lint
         clang-tools # clangd, clang-format
-        shellcheck
+        codebook # spell checking (codebook-lsp)
+        lua-language-server
+        prettier
+        pyright
+        shellcheck # through bash-language-server
+        sqlfluff
+        tailwindcss-language-server
         terraform-ls
-        watchman
+        tree-sitter # CLI for the parsers nvim-treesitter generates from their grammar (latex, swift)
+        vim-language-server
+        vim-vint
+        vscode-langservers-extracted # CSS, ESLint, HTML and JSON language servers
+        watchman # file watching (nvim/plugin/file.vim renames the way it needs)
+        yaml-language-server
       ];
 
       # dein.vim writes the plugins into nvim/dein/repos, so the directory is linked as a whole

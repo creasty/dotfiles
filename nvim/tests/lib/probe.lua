@@ -18,7 +18,7 @@ local function read_json(path)
   return ok and value or nil
 end
 
---- Waits for the services the config starts in the background (coc today),
+--- Waits for the services the config starts in the background (none today),
 --- like a person who opens a file and starts typing a moment later.
 function probe.wait_services(nvim, opts)
   nvim:wait_for(function()
@@ -129,13 +129,14 @@ end
 -- AI suggestions (fakes/copilot.lua)
 ---------------------------------------------------------------------------
 
---- Waits until the AI client attached the current buffer. Clients start
---- lazily on the first InsertEnter, so call this from insert mode.
+--- Waits until the AI client attached the current buffer and is ready to
+--- suggest. Clients start lazily on the first InsertEnter, so call this from
+--- insert mode.
 function probe.wait_ai(nvim, opts)
   opts = opts or {}
   local path = vim.uv.fs_realpath(nvim:bufname()) or nvim:bufname()
   nvim:wait_for(function()
-    return server_has_open(nvim.copilot_state, path)
+    return server_has_open(nvim.copilot_state, path) and call(nvim, 'ai_ready')
   end, { timeout = opts.timeout or 15000, message = 'the AI client to attach ' .. path })
 end
 
@@ -193,6 +194,17 @@ function probe.wait_picker_closed(nvim, opts)
   end, { timeout = (opts or {}).timeout or 8000, message = 'the picker to close' })
 end
 
+--- Where the open picker is on the screen: `{ row, col, last_row }` of its
+--- outer window, border included.
+function probe.picker_box(nvim)
+  return call(nvim, 'picker_box')
+end
+
+--- The background colors of the open picker's input, list and border.
+function probe.picker_colors(nvim)
+  return call(nvim, 'picker_colors')
+end
+
 ---------------------------------------------------------------------------
 -- Prompts
 ---------------------------------------------------------------------------
@@ -212,11 +224,24 @@ function probe.wait_choice_menu(nvim, opts)
   end, { timeout = (opts or {}).timeout or 8000, message = 'a choice menu' })
 end
 
---- Waits for a numbered choice list (code actions etc.) and picks the entry
---- whose text contains `label`.
+--- Waits for a choice list (code actions etc.) and picks the entry whose
+--- text contains `label`: in a picker by moving the selection to it, in a
+--- numbered list by typing its number.
 function probe.choose(nvim, label, opts)
   opts = opts or {}
   probe.wait_choice_menu(nvim, opts)
+  if probe.picker(nvim).open then
+    nvim:wait_for(function()
+      local state = probe.picker(nvim)
+      if state.current and state.current:find(label, 1, true) then
+        return true
+      end
+      nvim:type(state.focus == 'list' and 'j' or '<C-n>')
+      return false
+    end, { timeout = opts.timeout or 8000, message = 'a choice containing ' .. label })
+    nvim:type('<CR>')
+    return
+  end
   local index
   nvim:wait_for(function()
     for _, float in ipairs(nvim:floats()) do
@@ -240,6 +265,14 @@ function probe.choose(nvim, label, opts)
   if nvim:mode() == 'c' or nvim:mode() == 'r' then
     nvim:type('<CR>')
   end
+end
+
+---------------------------------------------------------------------------
+-- Operator formatting
+---------------------------------------------------------------------------
+
+function probe.opfmt_enabled(nvim)
+  return call(nvim, 'opfmt_enabled')
 end
 
 return probe

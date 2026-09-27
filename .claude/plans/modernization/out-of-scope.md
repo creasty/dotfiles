@@ -5,13 +5,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Likely broken
 
-- **ddu's `:Open`**: it lists repositories with the `ghq` source in `$HOME`, and files with the `fd` source elsewhere (`nvim/autoload/user/plugin/ddu.vim`).
-  Both sources (`nvim/denops/@ddu-sources/ghq.ts`, `fd.ts`) call `Deno.run`, which Deno 2 removed, and the provisioning installs Deno 2.
-  Port them to `Deno.Command`. The denops and ddu plugins are pinned to 2023 commits, from before Deno 2, so they may need updating too.
-- **coc-diagnostic's linters** (`nvim/coc-settings.json`) give Go, YAML and Vim script files no diagnostics:
-  - golangci-lint v2 replaced `--out-format` with `--output.json.path` and removed the `deadcode` linter, both still passed to it.
-  - ansible-lint, run on every YAML file, no longer has `--parseable-severity`.
-  - `vint` isn't installed: the vim role only had it in a commented-out pip task.
 - **RuboCop**: `home/rubocop.yml`, linked to `~/.rubocop.yml`, configures cops RuboCop 1.x removed or renamed (`Style/BracesAroundHashParameters`, `Metrics/LineLength`, `Layout/IndentFirst*`).
   RuboCop refuses an obsolete configuration, so it fails in every project without its own `.rubocop.yml`.
 - **`bin/serve`** requires `webrick`, which Ruby 3.0 stopped bundling and `config/mise/default-gems` doesn't install.
@@ -51,10 +44,13 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   `universal-ctags` replaces it, but the two conflict, and Universal Ctags reads `~/.ctags.d/*.ctags` instead of `~/.ctags`.
 - **nvim-treesitter** is pinned to `master`; development moved to `main`, an incompatible rewrite.
   Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
-- **Plugin manager and LSP**: dein.vim's author now develops dpp.vim, and Neovim 0.12 has a built-in `vim.pack`.
-  Neovim's built-in LSP client (`vim.lsp.config`, `vim.lsp.enable`) could replace coc.nvim.
-- **Kotlin**: JetBrains now develops an official language server, `kotlin-lsp`, besides the community `kotlin-language-server` that coc.nvim runs.
-- **coc-metals** is installed with the other coc extensions but disabled (`metals.enable: false`), and was last published in 2022.
+- **Plugin manager**: dein.vim's author now develops dpp.vim, and Neovim 0.12 has a built-in `vim.pack`.
+- **Kotlin**: JetBrains now develops an official language server, `kotlin-lsp` (nvim-lspconfig's `kotlin_lsp`), besides the community `kotlin-language-server` the config enables.
+- **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7.
+  0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter's `master` and nvim-treesitter-endwise rely on (markdown code blocks, as in hover docs, broke with them): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until the move to `main` (see nvim-treesitter above).
+  opfmt relies on 0.11's default for directives and is switched off until it handles 0.12; its tests skip meanwhile.
+  Two pinned quirks behave differently on 0.12 (xml/eruby `>`, `vs` without a parser).
+  blink.cmp's v2 and Neovim's built-in inline completion (`vim.lsp.inline_completion`, for Copilot) need 0.12 too.
 
 ## Found and fixed in #105
 
@@ -66,8 +62,17 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   `phaazon/hop.nvim`, gone as well, moved to `smoka7/hop.nvim` in [creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106).
 - `creasty/tools/keyboard` stopped loading when Homebrew removed `appcast` ([creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)), and Google Chrome's cask failed on CI runners, which ship Chrome.
 
+## Fixed by replacing coc.nvim, ddu, UltiSnips, lexima and copilot.vim
+
+- ddu's `:Open` and its `ghq` / `fd` sources called `Deno.run`, which Deno 2 removed: snacks.nvim's picker runs fd, rg and `ghq-list-monorepo` itself.
+- coc-diagnostic's linters gave Go, YAML and Vim script files no diagnostics (golangci-lint v2 and ansible-lint changed their flags; vint wasn't installed): nvim-lint's maintained definitions run them, and nixpkgs installs vint.
+- coc-metals, disabled and unmaintained, is gone with the other coc extensions.
+- The tree-sitter CLI came with Homebrew's `neovim`, so the Nix migration dropped it, and nvim-treesitter couldn't build the latex and swift parsers: every startup reported the error.
+  nixpkgs installs it now (0.26, which dropped the `--no-bindings` flag nvim-treesitter's `master` passes, so the config passes its own arguments), and without it those two parsers wait.
+- GitLab can answer curl's tarball download with a bot check, which kept the jsonc parser from installing: parsers are fetched with git.
+- TypeScript 7 no longer ships the `tsserver.js` typescript-language-server runs, so it failed to start in every project without an older TypeScript (mise installs 7): those get TypeScript's own server, `tsc --lsp`.
+
 ## Fixed by the Nix migration
 
-- UltiSnips gets Neovim's Python 3 provider: Neovim comes from nixpkgs with `withPython3`, which bundles pynvim.
 - `provision` updates the checkout wherever it runs from (`git -C "$DOTFILES_PATH"`).
 - The launchagent role and its always-skipped test are gone; nix-darwin's `launchd.user.agents` can add agents when needed.

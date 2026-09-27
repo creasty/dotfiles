@@ -6,7 +6,8 @@ from
 -- mode: s, selected: "table"
 
 === date
-ERROR: NameError: name 'strftime' is not defined
+date('<DATE>')‸
+-- mode: i
 
 === --
 -- ‸

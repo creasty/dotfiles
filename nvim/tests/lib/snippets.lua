@@ -1,11 +1,11 @@
--- Reads the snippet library (nvim/ultisnips/*.snippets) the way UltiSnips
--- parses snippet headers, so the library spec can pin every snippet.
+-- Reads the snippet library (nvim/snippets/*.lua, LuaSnip snippets written
+-- with user.snippets), so the library spec can pin every snippet.
 
 local env = require('env')
 
 local M = {}
 
-M.dir = env.config_dir .. '/ultisnips'
+M.dir = env.config_dir .. '/snippets'
 
 --- Filetype that loads each snippet file (default: the file's base name).
 M.filetype = {
@@ -34,7 +34,6 @@ M.extension = {
   proto = 'proto',
   ruby = 'rb',
   sh = 'sh',
-  snippets = 'snippets',
   sql = 'sql',
   ['sql.bq'] = 'bq.sql',
   ['sql.pg'] = 'pg.sql',
@@ -47,51 +46,43 @@ M.extension = {
   ['gitattributes.toml'] = 'gitattributes',
 }
 
--- Mirrors UltiSnips' _handle_snippet_or_global header parsing.
-local function parse_header(head)
-  head = vim.trim(head)
-  local opts = ''
-  local words = vim.split(head, '%s+')
-  if #words > 2 and not words[#words]:find('"', 1, true) and words[#words - 1]:sub(-1) == '"' then
-    opts = words[#words]
-    head = vim.trim(head:sub(1, #head - #opts))
+local loaded = false
+
+--- Puts LuaSnip and the config's Lua modules on the runtimepath.
+local function load_luasnip()
+  if loaded then
+    return
   end
-  local descr = ''
-  if head:sub(-1) == '"' then
-    local left = head:sub(1, -2):match('.*()"')
-    if left and left ~= 1 then
-      descr = head:sub(left)
-      head = head:sub(1, left - 1)
-    end
-  end
-  local trigger = vim.trim(head)
-  if #vim.split(trigger, '%s+') > 1 or opts:find('r', 1, true) then
-    trigger = trigger:sub(2, -2)
-  end
-  return trigger, descr:sub(2, -2), opts
+  loaded = true
+  vim.opt.rtp:prepend(env.find_dein_repos() .. '/github.com/L3MON4D3/LuaSnip')
+  vim.opt.rtp:prepend(env.config_dir)
 end
 
---- Snippets of one file: { trigger, description, options, line, regex, auto, context }.
+--- Snippets of one file, in order: { trigger, description, options, line,
+--- regex, auto }. `line` is where the snippet's definition starts.
 function M.read(name)
-  local path = ('%s/%s.snippets'):format(M.dir, name)
-  local result = {}
-  local pending_context = false
+  load_luasnip()
+  local path = ('%s/%s.lua'):format(M.dir, name)
+  local snippets, autosnippets = dofile(path)
+  local all = vim.list_extend(vim.list_extend({}, snippets or {}), autosnippets or {})
+  -- Line numbers of the definitions, in order of appearance.
+  local lines = {}
   for lnum, line in ipairs(vim.fn.readfile(path)) do
-    if line:match('^context ') or line:match('^pre_expand ') or line:match('^post_jump ') or line:match('^post_expand ') then
-      pending_context = line:match('^(%S+)')
-    elseif line:match('^snippet ') then
-      local trigger, descr, opts = parse_header(line:sub(#'snippet ' + 1))
-      table.insert(result, {
-        trigger = trigger,
-        description = descr,
-        options = opts,
-        line = lnum,
-        regex = opts:find('r', 1, true) ~= nil,
-        auto = opts:find('A', 1, true) ~= nil,
-        hook = pending_context or nil,
-      })
-      pending_context = false
+    if line:match('S%.snip%(') then
+      lines[#lines + 1] = lnum
     end
+  end
+  local result = {}
+  for i, snippet in ipairs(all) do
+    local def = snippet.definition or { trigger = snippet.trigger, description = snippet.name, options = '' }
+    result[#result + 1] = {
+      trigger = def.trigger,
+      description = def.description,
+      options = def.options,
+      line = lines[i],
+      regex = def.options:find('r', 1, true) ~= nil,
+      auto = def.options:find('A', 1, true) ~= nil,
+    }
   end
   return result
 end
@@ -100,8 +91,8 @@ end
 function M.files()
   local names = {}
   for name, type in vim.fs.dir(M.dir) do
-    if type == 'file' and name:match('%.snippets$') then
-      names[#names + 1] = name:gsub('%.snippets$', '')
+    if type == 'file' and name:match('%.lua$') then
+      names[#names + 1] = name:gsub('%.lua$', '')
     end
   end
   table.sort(names)

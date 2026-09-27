@@ -1,4 +1,4 @@
--- Snippet workflow (UltiSnips today). The library itself is pinned by the
+-- Snippet workflow (LuaSnip today). The library itself is pinned by the
 -- snippet_library_* specs; this covers how you drive snippets.
 local t = require('t')
 local probe = require('probe')
@@ -61,18 +61,15 @@ describe('Snippets', function()
     t.eq('i', nvim:mode())
   end)
 
-  t.quirk(
-    '<C-s><C-n> on a still-selected placeholder switches to Visual mode instead of jumping',
-    'the jump keys are `vmap`s, which switch Select mode to Visual mode (:h Select-mode-mapping), while the engines map their jump <Plug>s for Select mode only; type into the placeholder first, then jump',
-    function()
-      local nvim = buffer_with('go', 'main.go')
-      nvim:type('Afunc<Tab>')
-      t.eq('s', nvim:mode())
-      nvim:type('<C-s><C-n>')
-      t.eq('v', nvim:mode())
-      t.eq({ 'func name(params) type {', '\t', '}' }, nvim:lines())
-    end
-  )
+  it('<C-s><C-n> on a still-selected placeholder keeps it and jumps to the next one', function()
+    local nvim = buffer_with('go', 'main.go')
+    nvim:type('Afunc<Tab>')
+    t.eq('s', nvim:mode())
+    nvim:type('<C-s><C-n>')
+    t.eq('s', nvim:mode(), 'the next placeholder is selected')
+    nvim:type('x')
+    t.eq({ 'func name(x) type {', '\t', '}' }, nvim:lines())
+  end)
 
   it('mirrors update while typing', function()
     local nvim = buffer_with('c', 'main.c')
@@ -81,18 +78,14 @@ describe('Snippets', function()
     t.eq({ '#ifndef DEBUG', '#define DEBUG value', '#endif' }, nvim:lines())
   end)
 
-  t.quirk(
-    '<Tab> on a selection does not capture it for ${VISUAL}; it just leaves Select mode',
-    "UltiSnips' Select-mode expand key calls ExpandSnippet(); ${VISUAL} is captured only by its Visual-mode key, which is not mapped",
-    function()
-      local nvim = buffer_with('go', 'main.go', { 'return 1' })
-      -- The select-mode <Tab> mapping is installed on the first InsertEnter.
-      nvim:type('i<Esc>')
-      nvim:type('V<C-g><Tab>')
-      t.eq('n', nvim:mode())
-      t.eq({ 'return 1' }, nvim:lines())
-    end
-  )
+  it('<Tab> on a selection cuts it for the next snippet ($TM_SELECTED_TEXT)', function()
+    local nvim = buffer_with('go', 'main.go', { 'return 1' })
+    nvim:type('V<C-g><Tab>')
+    t.eq('i', nvim:mode())
+    t.eq({ '' }, nvim:lines())
+    nvim:type('func<Tab>')
+    t.eq({ 'func name(params) type {', '\treturn 1', '}' }, nvim:lines())
+  end)
 
   describe('arrows and headings (all filetypes)', function()
     it('typescript: x=<Tab> becomes a fat arrow, x-<Tab> a thin arrow', function()
@@ -138,6 +131,9 @@ describe('Snippets', function()
       "opfmt formats `-` as the minus operator once the typed keys run out, so typescript_henry's api-client-* snippets cannot be triggered by typing them",
       function()
         local nvim = buffer_with('typescript', 'app.ts')
+        if not probe.opfmt_enabled(nvim) then
+          t.skip('opfmt is switched off in the tree-sitter config')
+        end
         nvim:type('A')
         for key in ('api-client-general'):gmatch('.') do
           nvim:type(key)

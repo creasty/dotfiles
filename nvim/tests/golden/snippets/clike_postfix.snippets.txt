@@ -1,50 +1,50 @@
-=== /(\S+)\.par/ a+b.par
+=== /\v(\S+)\.par/ a+b.par
 (a+b)‸
 -- mode: i
 
-=== /(\S+)\.if/ ok.if
+=== /\v(\S+)\.if/ ok.if
 if (ok) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.else/ ok.else
+=== /\v(\S+)\.else/ ok.else
 if (!ok) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.(null|nil)/ p.null
+=== /\v(\S+)\.(null|nil)/ p.null
 if (p == null) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.(null|nil)/ p.nil
+=== /\v(\S+)\.(null|nil)/ p.nil
 if (p == null) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.(notnull|notnil|nn)/ p.notnull
+=== /\v(\S+)\.(notnull|notnil|nn)/ p.notnull
 if (p != null) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.(notnull|notnil|nn)/ p.nn
+=== /\v(\S+)\.(notnull|notnil|nn)/ p.nn
 if (p != null) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.while/ running.while
+=== /\v(\S+)\.while/ running.while
 while (running) {
     ‸
 }
 -- mode: i
 
-=== /(\S+)\.switch/ kind.switch
+=== /\v(\S+)\.switch/ kind.switch
 switch (kind) {
     ‸
 }

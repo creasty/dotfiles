@@ -1,5 +1,5 @@
--- Language server workflows (coc.nvim today) against fakes/lsp.lua. See the
--- header of that file for the fake's (deterministic) semantics.
+-- Language server workflows (Neovim's LSP client today) against fakes/lsp.lua.
+-- See the header of that file for the fake's (deterministic) semantics.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -56,6 +56,20 @@ local function project(files, open, opts)
   nvim:edit(open)
   probe.wait_lsp(nvim)
   return nvim
+end
+
+--- The character of one side of a float's border (as nvim_win_get_config
+--- gives it: a string, or a character with its highlight).
+local function border_char(side)
+  return type(side) == 'table' and side[1] or side
+end
+
+--- Where the cursor is on the screen.
+local function cursor_on_screen(nvim)
+  return nvim:lua([[
+    local pos = vim.fn.screenpos(0, vim.fn.line('.'), vim.fn.col('.'))
+    return { row = pos.row, col = pos.col }
+  ]])
 end
 
 local function picker_project(files, open)
@@ -149,29 +163,22 @@ describe('LSP', function()
       -- The cursor is restored right after the items are drawn.
       step('main.go 13:20 |\tprintln(cfg.Name, load())', 'util.go 4:9 |\treturn load().Name')
       t.eq('util.go', nvim:call('expand', '%:t'))
-    end, { timeout = 40000, retry = 2 })
+    end, { timeout = 40000 })
 
-    t.quirk(
-      'the first gll after startup opens at the top, not at the item you opened',
-      'user#plugin#ddu#coc_locations() only records the cwd for resuming when it is asked to resume, so gR does not and the first gll starts fresh',
-      function()
-        local nvim = picker_project(GO, 'main.go')
-        nvim:set_cursor(7, 6)
-        nvim:type('gR')
-        probe.wait_picker(nvim, function(p)
-          return #p.items == 3
-        end)
-        nvim:type('jj<CR>')
-        probe.wait_picker_closed(nvim)
-        nvim:type('gll')
-        probe.wait_picker(nvim, function(p)
-          return #p.items == 3
-        end)
-        nvim:sleep(500)
-        t.eq('main.go 12:19 |\tvar cfg Config = load()', probe.picker(nvim).current)
-      end,
-      { timeout = 40000 }
-    )
+    it('the first gll reopens at the item you opened', function()
+      local nvim = picker_project(GO, 'main.go')
+      nvim:set_cursor(7, 6)
+      nvim:type('gR')
+      probe.wait_picker(nvim, function(p)
+        return #p.items == 3
+      end)
+      nvim:type('jj<CR>')
+      probe.wait_picker_closed(nvim)
+      nvim:type('gll')
+      probe.wait_picker(nvim, function(p)
+        return #p.items == 3 and p.current == 'util.go 4:9 |\treturn load().Name'
+      end)
+    end, { timeout = 40000 })
 
     it('gD / gT show the definition / type definition in the picker without jumping', function()
       local nvim = picker_project(GO, 'main.go')
@@ -207,6 +214,25 @@ describe('LSP', function()
         end
       end)
       t.eq('cfg: e2e hover', text)
+    end)
+
+    it('gh renders the documentation as markdown, with a column of padding on each side', function()
+      local nvim = project(GO, 'main.go')
+      nvim:set_cursor(12, 6)
+      nvim:type('gh')
+      local float = nvim:wait_for(function()
+        for _, f in ipairs(nvim:floats()) do
+          if vim.tbl_contains(f.lines, 'cfg: e2e hover') then
+            return f
+          end
+        end
+      end)
+      local screen = nvim:wait_for(function()
+        local s = table.concat(nvim:screen(), '\n')
+        return s:find('cfg: e2e hover', 1, true) and s
+      end)
+      t.no_match('```', screen, 'the code fence is hidden')
+      t.eq({ ' ', ' ' }, { border_char(float.border[8]), border_char(float.border[4]) })
     end)
 
     it('<C-f> / <C-b> scroll a long hover, and page the buffer otherwise', function()
@@ -284,6 +310,42 @@ describe('LSP', function()
       t.eq('function HELPER(first: number, second: number) {', nvim:line(7))
     end)
 
+    it('gq lists the code actions just below the cursor', function()
+      local nvim = project(TS, 'app.ts')
+      nvim:set_cursor(7, 10)
+      local cursor = cursor_on_screen(nvim)
+      nvim:type('gq')
+      probe.wait_choice_menu(nvim)
+      local box = probe.picker_box(nvim)
+      t.eq({ row = cursor.row + 1, col = cursor.col }, { row = box.row, col = box.col })
+    end)
+
+    it('gq lists them just above the cursor when there is no room below', function()
+      local lines = {}
+      for i = 1, 100 do
+        lines[i] = ('const value%d = helper(%d);'):format(i, i)
+      end
+      local nvim = project({ ['.git/'] = true, ['long.ts'] = lines }, 'long.ts')
+      nvim:type('Gw')
+      local cursor = cursor_on_screen(nvim)
+      nvim:type('gq')
+      probe.wait_choice_menu(nvim)
+      local box = probe.picker_box(nvim)
+      t.eq({ last_row = cursor.row - 1, col = cursor.col }, { last_row = box.last_row, col = box.col })
+    end)
+
+    it('the list of code actions stays by the line when the screen is resized', function()
+      local nvim = project(TS, 'app.ts')
+      nvim:set_cursor(7, 10)
+      nvim:type('gq')
+      probe.wait_choice_menu(nvim)
+      local box = probe.picker_box(nvim)
+      nvim:type('upper')
+      nvim:cmd('set columns=100')
+      nvim:sleep(100)
+      t.eq(box, probe.picker_box(nvim))
+    end)
+
     it('<C-j> confirms the highlighted entry of a choice menu', function()
       local nvim = project(TS, 'app.ts')
       nvim:set_cursor(7, 10)
@@ -352,25 +414,23 @@ describe('LSP', function()
       t.eq('var x  =  1', nvim:line(3))
     end)
 
-    t.quirk(
-      'leaving a Go buffer formats the buffer you switch to, not the one you leave',
-      'the BufLeave autocmd calls CocActionAsync("format"), which runs after the switch against the then-current buffer',
-      function()
-        local nvim = project({
-          ['.git/'] = true,
-          ['a.go'] = { 'package main', '', 'var a  =  1' },
-          ['b.go'] = { 'package main', '', 'var b  =  2' },
-        }, 'b.go')
-        nvim:cmd('edit a.go')
-        probe.wait_lsp(nvim)
-        nvim:cmd('edit b.go')
-        nvim:wait_for(function()
-          return nvim:line(3) == 'var b = 2'
-        end)
-        nvim:sleep(300)
-        t.eq('var a  =  1', nvim:call('getbufline', 'a.go', 3)[1], 'the buffer you left is not formatted')
-      end
-    )
+    it('leaving a Go buffer formats it', function()
+      local nvim = project({
+        ['.git/'] = true,
+        ['a.go'] = { 'package main', '', 'var a  =  1' },
+        ['b.go'] = { 'package main', '', 'var b  =  2' },
+      }, 'b.go')
+      nvim:cmd('edit a.go')
+      probe.wait_lsp(nvim)
+      nvim:wait_for(function()
+        return nvim:call('getbufline', 'b.go', 3)[1] == 'var b = 2'
+      end, { message = 'b.go to be formatted when left' })
+      t.eq('var a  =  1', nvim:line(3), 'the buffer you switch to is not formatted')
+      nvim:cmd('edit b.go')
+      nvim:wait_for(function()
+        return nvim:call('getbufline', 'a.go', 3)[1] == 'var a = 1'
+      end, { message = 'a.go to be formatted when left' })
+    end)
 
     it('other filetypes are not formatted on focus loss', function()
       local nvim = project(TS, 'app.ts')
@@ -449,35 +509,36 @@ describe('LSP', function()
       nvim:wait_for(function()
         return probe.diagnostics(nvim).error > 0
       end)
-      nvim:cmd('CocList diagnostics')
-      -- The list window opens first and is filled a moment later.
-      local text = nvim:wait_for(function()
-        local lines = table.concat(nvim:lines(), '\n')
-        return nvim:filetype() == 'list' and lines:find('e2e error', 1, true) and lines
-      end, { message = 'the diagnostics list to show its entries' })
-      t.eq('n', nvim:mode(), '--normal')
-      t.contains(text, 'e2e warning')
+      nvim:cmd('Diagnostics')
+      local picker = probe.wait_picker(nvim, function(p)
+        return table.concat(p.items, '\n'):find('e2e error', 1, true)
+      end)
+      t.eq('list', picker.focus)
+      t.eq('n', nvim:mode())
+      t.contains(table.concat(picker.items, '\n'), 'e2e warning')
       nvim:type('<C-j>')
+      probe.wait_picker_closed(nvim)
       nvim:wait_for(function()
         return nvim:filetype() == 'typescript'
       end)
       t.ok(vim.tbl_contains({ 8, 11, 13 }, nvim:cursor()[1]))
     end)
 
-    it('resting on a diagnostic shows its message in a float', function()
+    it('resting on a diagnostic shows its message in a float, with a column of padding on each side', function()
       local nvim = project(TS, 'app.ts')
       nvim:wait_for(function()
         return probe.diagnostics(nvim).error > 0
       end)
       nvim:set_cursor(1, 0)
       nvim:type(']e')
-      nvim:wait_for(function()
+      local float = nvim:wait_for(function()
         for _, f in ipairs(nvim:floats()) do
           if table.concat(f.lines, '\n'):find('e2e error', 1, true) then
-            return true
+            return f
           end
         end
       end)
+      t.eq({ ' ', ' ' }, { border_char(float.border[8]), border_char(float.border[4]) })
     end)
   end)
 
@@ -505,6 +566,65 @@ describe('LSP', function()
         end
       end)
       t.eq('i', nvim:mode())
+    end)
+  end)
+
+  describe('TypeScript', function()
+    -- TypeScript 7 is its own language server (`tsc --lsp`), and no longer
+    -- ships the tsserver.js typescript-language-server (ts_ls) runs.
+    local function ts_project(files)
+      local nvim = t.nvim()
+      nvim:files(vim.tbl_extend('force', { ['package-lock.json'] = { '{}' } }, files))
+      return nvim
+    end
+
+    --- Whether the server would start for the current buffer.
+    local function starts(nvim, name)
+      return nvim:lua(
+        [[
+          local started = false
+          vim.lsp.config[...].root_dir(0, function()
+            started = true
+          end)
+          return started
+        ]],
+        name
+      )
+    end
+
+    it('a project on TypeScript 7 gets its tsc, not ts_ls', function()
+      local nvim = ts_project({ ['node_modules/.bin/tsc'] = { '#!/bin/sh', 'echo "Version 7.0.2"' } })
+      vim.uv.fs_chmod(nvim:path('node_modules/.bin/tsc'), tonumber('755', 8))
+      nvim:edit('app.ts', { '' })
+      t.ok(starts(nvim, 'tsc'), 'tsc starts')
+      t.no(starts(nvim, 'ts_ls'), 'ts_ls does not')
+    end)
+
+    it('a project on an older TypeScript gets ts_ls, not tsc', function()
+      local nvim = ts_project({ ['node_modules/typescript/lib/tsserver.js'] = { '' } })
+      nvim:edit('app.ts', { '' })
+      t.ok(starts(nvim, 'ts_ls'), 'ts_ls starts')
+      t.no(starts(nvim, 'tsc'), 'tsc does not')
+    end)
+  end)
+
+  describe('spell checking', function()
+    it("skips words under 4 letters and possessives (creasty's), knows your words, and reports hints", function()
+      local nvim = t.nvim()
+      local init = nvim:lua([[
+        local params = {}
+        vim.lsp.config.codebook.before_init(params, {})
+        local options = params.initializationOptions
+        return {
+          severity = options.diagnosticSeverity,
+          config = vim.fn.readfile(options.globalConfigPath),
+          word = vim.fn.readfile(vim.fn.stdpath('config') .. '/dict/user.txt')[1],
+        }
+      ]])
+      t.eq('hint', init.severity)
+      t.contains(init.config, 'min_word_length = 4')
+      t.contains(init.config, [=[ignore_patterns = ["\\w+['’]\\w+"]]=])
+      t.contains(init.config, ('  %q,'):format(init.word), 'the words in nvim/dict/user.txt')
     end)
   end)
 end)

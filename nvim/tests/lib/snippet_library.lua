@@ -1,4 +1,4 @@
--- Pins the expansion of every snippet in nvim/ultisnips as golden text
+-- Pins the expansion of every snippet in nvim/snippets as golden text
 -- (golden/snippets/<file>.snippets.txt), so a new snippet engine or a
 -- converted library can be checked trigger by trigger.
 --
@@ -13,64 +13,64 @@ local snippets = require('snippets')
 
 local SAMPLES = {
   all = {
-    ['(\\S?)(?<![<-])(-{1,2})\\s?'] = { 'x-', 'x--', '-' },
-    ['(\\S?)(?<![<=])(={1,2})\\s?'] = { 'x=', 'x==' },
-    ['([=-]>|<[=-])\\s?'] = { '->', '=>', '<-', '<=' },
-    ['(?<!/)/'] = { '/' },
-    ['(?<!/)//'] = { '//' },
-    ['(?<!#)#'] = { '#' },
-    ['(?<!#)##'] = { '##' },
+    ['\\v(\\S?)[<-]@<!(-{1,2})\\s?'] = { 'x-', 'x--', '-' },
+    ['\\v(\\S?)[<=]@<!(\\={1,2})\\s?'] = { 'x=', 'x==' },
+    ['\\v([=-]\\>|\\<[=-])\\s?'] = { '->', '=>', '<-', '<=' },
+    ['/\\@<!/'] = { '/' },
+    ['/\\@<!//'] = { '//' },
+    ['#\\@<!#'] = { '#' },
+    ['#\\@<!##'] = { '##' },
   },
   c = {
     ['#include '] = { { keys = '#include ', auto = true } },
-    ['(\\w+)\\.\\.(\\w)'] = { { keys = 'ptr..x', auto = true } },
+    ['\\v(\\w+)\\.\\.(\\w)'] = { { keys = 'ptr..x', auto = true } },
   },
   clike_postfix = {
-    ['(\\S+)\\.par'] = { 'a+b.par' },
-    ['(\\S+)\\.if'] = { 'ok.if' },
-    ['(\\S+)\\.else'] = { 'ok.else' },
-    ['(\\S+)\\.(null|nil)'] = { 'p.null', 'p.nil' },
-    ['(\\S+)\\.(notnull|notnil|nn)'] = { 'p.notnull', 'p.nn' },
-    ['(\\S+)\\.while'] = { 'running.while' },
-    ['(\\S+)\\.switch'] = { 'kind.switch' },
+    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
+    ['\\v(\\S+)\\.if'] = { 'ok.if' },
+    ['\\v(\\S+)\\.else'] = { 'ok.else' },
+    ['\\v(\\S+)\\.(null|nil)'] = { 'p.null', 'p.nil' },
+    ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'p.notnull', 'p.nn' },
+    ['\\v(\\S+)\\.while'] = { 'running.while' },
+    ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
   },
   css = {
-    ['(?<!/)/'] = { '/' },
-    ['(?<!/)//'] = { '//' },
+    ['/\\@<!/'] = { '/' },
+    ['/\\@<!//'] = { '//' },
   },
   go_postfix = {
-    ['(\\S+)\\.var'] = { 'f(x).var' },
-    ['(\\S+)\\.varr'] = { 'f(x).varr' },
-    ['(\\S+)\\.const'] = { '42.const' },
-    ['(\\S+)\\.par'] = { 'a+b.par' },
-    ['(\\S+)\\.if'] = { 'ok.if' },
-    ['(\\S+)\\.else'] = { 'ok.else' },
-    ['(\\S+)\\.(null|nil)'] = { 'err.nil' },
-    ['(\\S+)\\.(notnull|notnil|nn)'] = { 'err.nn' },
-    ['(\\S+)\\.for'] = { 'items.for' },
-    ['(\\S+)\\.fori'] = { 'items.fori' },
-    ['(\\S+)\\.forv'] = { 'items.forv' },
-    ['(\\S+)\\.while'] = { 'running.while' },
-    ['(\\S+)\\.switch'] = { 'kind.switch' },
-    ['(\\S+)\\.append'] = { 'items.append' },
+    ['\\v(\\S+)\\.var'] = { 'f(x).var' },
+    ['\\v(\\S+)\\.varr'] = { 'f(x).varr' },
+    ['\\v(\\S+)\\.const'] = { '42.const' },
+    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
+    ['\\v(\\S+)\\.if'] = { 'ok.if' },
+    ['\\v(\\S+)\\.else'] = { 'ok.else' },
+    ['\\v(\\S+)\\.(null|nil)'] = { 'err.nil' },
+    ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'err.nn' },
+    ['\\v(\\S+)\\.for'] = { 'items.for' },
+    ['\\v(\\S+)\\.fori'] = { 'items.fori' },
+    ['\\v(\\S+)\\.forv'] = { 'items.forv' },
+    ['\\v(\\S+)\\.while'] = { 'running.while' },
+    ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
+    ['\\v(\\S+)\\.append'] = { 'items.append' },
   },
   haml = {
-    ['(?<!/)/'] = { '/' },
-    ['(?<!/)//'] = { '//' },
+    ['/\\@<!/'] = { '/' },
+    ['/\\@<!//'] = { '//' },
   },
   markdown = {
-    ['tb(\\d+x\\d+)'] = { 'tb2x3' },
-    ['^-{3,}'] = { '---' },
+    ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
+    ['^-\\{3,}'] = { '---' },
     ['^[\\-=]'] = {
       { before = { 'Title' }, keys = '-', auto = true },
       { before = { 'Title' }, keys = '=', auto = true },
       { before = { '見出し' }, keys = '-', auto = true },
     },
-    ['(\\b|\\s+)br'] = { 'line br' },
+    ['\\v(<|\\s+)br'] = { 'line br' },
   },
   proto = {
-    ['rpc (\\w+)'] = { 'rpc GetUser', 'rpc ListUsers', 'rpc CreateUser', 'rpc DeleteUser', 'rpc Ping' },
-    ['(msg|message) (\\w+)'] = {
+    ['\\vrpc (\\w+)'] = { 'rpc GetUser', 'rpc ListUsers', 'rpc CreateUser', 'rpc DeleteUser', 'rpc Ping' },
+    ['\\v(msg|message) (\\w+)'] = {
       'message GetUserRequest',
       'msg ListUsersResponse',
       'message UpdateUserRequest',
@@ -79,30 +79,30 @@ local SAMPLES = {
     },
   },
   ruby = {
-    ['(\\w+)\\.each'] = { 'items.each' },
-    ['(\\w+)\\.eachdo'] = { 'items.eachdo' },
-    ['(\\w+)\\.map'] = { 'items.map' },
-    ['(\\w+)\\.mapdo'] = { 'items.mapdo' },
+    ['\\v(\\w+)\\.each'] = { 'items.each' },
+    ['\\v(\\w+)\\.eachdo'] = { 'items.eachdo' },
+    ['\\v(\\w+)\\.map'] = { 'items.map' },
+    ['\\v(\\w+)\\.mapdo'] = { 'items.mapdo' },
   },
   ruby_postfix = {
-    ['(\\S+)\\.var'] = { 'compute(1).var' },
-    ['(\\S+)\\.par'] = { 'a+b.par' },
-    ['(\\S+)\\.if'] = { 'ok.if' },
-    ['(\\S+)\\.else'] = { 'ok.else' },
-    ['(\\S+)\\.format'] = { 'value.format' },
+    ['\\v(\\S+)\\.var'] = { 'compute(1).var' },
+    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
+    ['\\v(\\S+)\\.if'] = { 'ok.if' },
+    ['\\v(\\S+)\\.else'] = { 'ok.else' },
+    ['\\v(\\S+)\\.format'] = { 'value.format' },
   },
   tex = {
-    ['tr(\\d+)'] = { 'tr3' },
-    ['(?<!%)%'] = { '%' },
-    ['(?<!%)%%'] = { '%%' },
+    ['\\vtr(\\d+)'] = { 'tr3' },
+    ['%\\@<!%'] = { '%' },
+    ['%\\@<!%%'] = { '%%' },
   },
   tla = {
-    ['^-{3,}'] = { { keys = '---', auto = true } },
-    ['^={3,}'] = { { keys = '===', auto = true } },
+    ['^-\\{3,}'] = { { keys = '---', auto = true } },
+    ['^=\\{3,}'] = { { keys = '===', auto = true } },
   },
   vim = {
-    ['(?<!")"'] = { '"' },
-    ['(?<!")""'] = { '""' },
+    ['"\\@<!"'] = { '"' },
+    ['"\\@<!""'] = { '""' },
   },
 }
 
@@ -117,24 +117,27 @@ local function normalize(text, nvim)
 end
 
 --- Buffer text (‸ = cursor), mode and selected text after an expansion.
---- A failing snippet (UltiSnips shows its stack trace in a scratch buffer)
---- is recorded as `ERROR: <last line of the trace>`.
+--- With a placeholder selected, ‸ marks its last character, whichever end
+--- of the selection the engine leaves the cursor at.
 local function capture(nvim)
-  local all = table.concat(nvim:lines(), '\n')
-  if all:find('An error occured. This is either a bug in UltiSnips', 1, true) then
-    local reason = all:match('\n(%w*Error:[^\n]*)') or 'unknown error'
-    return 'ERROR: ' .. reason
-  end
   local state = nvim:lua([[
     local mode = vim.api.nvim_get_mode().mode
-    local selection
+    local selection, marker
     if mode == 's' or mode == 'v' or mode == 'S' or mode == 'V' then
-      local ok, region = pcall(vim.fn.getregion, vim.fn.getpos('v'), vim.fn.getpos('.'), { type = mode:lower() == 's' and 'v' or mode })
+      local from, to = vim.fn.getpos('v'), vim.fn.getpos('.')
+      local ok, region = pcall(vim.fn.getregion, from, to, { type = mode:lower() == 's' and 'v' or mode })
       selection = ok and table.concat(region, '\n') or nil
+      if from[2] > to[2] or (from[2] == to[2] and from[3] > to[3]) then
+        to = from
+      end
+      marker = { to[2], to[3] - 1 }
     end
-    return { mode = mode, selection = selection }
+    return { mode = mode, selection = selection, marker = marker }
   ]])
-  local lines = nvim:buffer({ marker = '‸' })
+  local lines = nvim:lines()
+  local row, col = unpack(state.marker or nvim:cursor())
+  local line = lines[row] or ''
+  lines[row] = line:sub(1, col) .. '‸' .. line:sub(col + 1)
   local footer = '-- mode: ' .. state.mode
   if state.selection then
     footer = footer .. ', selected: ' .. vim.inspect(state.selection)
@@ -143,8 +146,9 @@ local function capture(nvim)
   return normalize(table.concat(lines, '\n'), nvim)
 end
 
---- When several snippets match, UltiSnips asks which one to expand
---- (inputlist). Record the offered choices and pick the first.
+--- When several snippets match, an engine may ask which one to expand
+--- (UltiSnips did, with inputlist; LuaSnip takes the first by priority).
+--- Record the offered choices and pick the first.
 local function resolve_choice(nvim)
   if nvim:mode() ~= 'c' then
     return nil
@@ -184,7 +188,7 @@ local M = {}
 M.shards = {
   { 'all', 'c', 'clike_postfix', 'clike_stmt', 'css', 'gitattributes', 'go', 'go_postfix', 'haml' },
   { 'proto' },
-  { 'javascript', 'javascriptreact', 'lua', 'markdown', 'pg', 'ruby', 'ruby_postfix', 'snippets', 'tex' },
+  { 'javascript', 'javascriptreact', 'lua', 'markdown', 'pg', 'ruby', 'ruby_postfix', 'tex' },
   { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescript_henry', 'typescriptreact', 'vim' },
 }
 

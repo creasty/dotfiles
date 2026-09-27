@@ -1,7 +1,7 @@
 -- Pins the plugins the suite runs against. nvim/dein/lock.json records, as
--- installed on your machine: the commit of every dein plugin, the revision of
--- every tree-sitter parser nvim-treesitter compiled, and the version of the
--- coc extensions the specs use. CI installs exactly those.
+-- installed on your machine: the commit of every dein plugin and the revision
+-- of every tree-sitter parser nvim-treesitter compiled. CI installs exactly
+-- those.
 --
 -- A plugin whose repository is gone can get a "mirror" in lock.json to fetch
 -- the same commit from; `lock` keeps it.
@@ -18,10 +18,9 @@ Usage: nvim/tests/plugins lock | check | install
   lock      write nvim/dein/lock.json from the installed plugins
   check     compare the installed plugins with lock.json (exit 1 if they differ)
   install   install what lock.json pins that is missing: dein plugins into
-            $E2E_DEIN_REPOS (default: nvim/dein/repos), their tree-sitter
-            parsers, and, if $E2E_COC_EXTENSIONS is set, the coc extensions
-            into it (a node_modules directory). An installed plugin at another
-            commit is reported, never changed.]]
+            $E2E_DEIN_REPOS (default: nvim/dein/repos) and their tree-sitter
+            parsers. An installed plugin at another commit is reported, never
+            changed.]]
 
 local LOCK_FILE = env.config_dir .. '/dein/lock.json'
 local TOML_FILES = { env.config_dir .. '/dein/default.toml', env.config_dir .. '/dein/lazy.toml' }
@@ -99,11 +98,6 @@ local function buildable(repos, langs)
   end, langs)
 end
 
-local function coc_version(dir, name)
-  local package_json = dir and env.read_file(('%s/%s/package.json'):format(dir, name))
-  return package_json and vim.json.decode(package_json).version
-end
-
 local function read_lock()
   local text = env.read_file(LOCK_FILE)
   if not text then
@@ -132,8 +126,7 @@ local function encode(lock)
       local mirror = plugin.mirror and (', "mirror": ' .. str(plugin.mirror)) or ''
       return ('{ "url": %s, "commit": %s%s }'):format(str(plugin.url), str(plugin.commit), mirror)
     end),
-    section('treesitter', lock.treesitter, false, str),
-    section('coc', lock.coc, true, str),
+    section('treesitter', lock.treesitter, true, str),
     '}',
     '',
   }, '\n')
@@ -145,7 +138,7 @@ local run_all
 function commands.lock()
   local repos = env.find_dein_repos()
   local previous = env.read_file(LOCK_FILE) and vim.json.decode(env.read_file(LOCK_FILE)) or { dein = {} }
-  local lock = { dein = {}, treesitter = {}, coc = {} }
+  local lock = { dein = {}, treesitter = {} }
   local errors = {}
   for _, key in ipairs(declared(repos)) do
     local dir = locate(repos, key)
@@ -176,27 +169,15 @@ function commands.lock()
   for _, lang in ipairs(buildable(repos, vim.tbl_keys(parsers))) do
     lock.treesitter[lang] = parsers[lang]
   end
-  local coc = env.find_coc_extensions()
-  for _, name in ipairs(env.coc_extensions) do
-    lock.coc[name] = coc_version(coc, name)
-    if not lock.coc[name] then
-      errors[#errors + 1] = name .. ': not installed in ' .. tostring(coc)
-    end
-  end
   if #errors > 0 then
     fail(table.concat(errors, '\n'))
   end
   env.write_file(LOCK_FILE, encode(lock))
-  say(('wrote %s: %d plugins, %d parsers, %d coc extensions'):format(
-    LOCK_FILE,
-    vim.tbl_count(lock.dein),
-    vim.tbl_count(lock.treesitter),
-    vim.tbl_count(lock.coc)
-  ))
+  say(('wrote %s: %d plugins, %d parsers'):format(LOCK_FILE, vim.tbl_count(lock.dein), vim.tbl_count(lock.treesitter)))
 end
 
 --- Differences between lock.json and what is installed.
-local function differences(lock, repos, coc)
+local function differences(lock, repos)
   local problems = {}
   local keys = declared(repos)
   for _, key in ipairs(keys) do
@@ -228,20 +209,12 @@ local function differences(lock, repos, coc)
       problems[#problems + 1] = ('parser %s: installed, but not in lock.json'):format(lang)
     end
   end
-  if coc then
-    for name, version in pairs(lock.coc) do
-      local installed = coc_version(coc, name)
-      if installed ~= version then
-        problems[#problems + 1] = ('%s: %s, locked at %s'):format(name, installed or 'not installed', version)
-      end
-    end
-  end
   table.sort(problems)
   return problems
 end
 
 function commands.check()
-  local problems = differences(read_lock(), env.find_dein_repos(), env.find_coc_extensions())
+  local problems = differences(read_lock(), env.find_dein_repos())
   if #problems > 0 then
     fail('The installed plugins differ from nvim/dein/lock.json:\n  ' .. table.concat(problems, '\n  '))
   end
@@ -332,27 +305,7 @@ function commands.install()
     end
   end
 
-  local coc = os.getenv('E2E_COC_EXTENSIONS')
-  if coc then
-    local specs = {}
-    for name, version in pairs(lock.coc) do
-      if coc_version(coc, name) ~= version then
-        specs[#specs + 1] = name .. '@' .. version
-      end
-    end
-    if #specs > 0 then
-      table.sort(specs)
-      say('Installing ' .. table.concat(specs, ' '))
-      local result = vim.system(vim.list_extend({ 'npm', 'install', '--no-save', '--no-audit', '--no-fund', '--ignore-scripts', '--prefix', vim.fs.dirname(coc) }, specs), { text = true }):wait()
-      if result.code ~= 0 then
-        fail(result.stderr)
-      end
-    end
-  else
-    say('Skipping coc extensions: set E2E_COC_EXTENSIONS to install them')
-  end
-
-  local problems = differences(lock, repos, coc)
+  local problems = differences(lock, repos)
   if #problems > 0 then
     fail('Installed, but these differ from nvim/dein/lock.json:\n  ' .. table.concat(problems, '\n  '))
   end

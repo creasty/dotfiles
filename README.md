@@ -113,12 +113,14 @@ Original plugins:
 - [restore_buffer.vim](./nvim/plugin/restore_buffer.vim)
 
 Third-party plugins (excerpt):
-- [coc.nvim](https://github.com/neoclide/coc.nvim)
-- [copilot.vim](https://github.com/github/copilot.vim)
-- [ddu.vim](https://github.com/Shougo/ddu.vim)
-- [lexima.vim](https://github.com/cohama/lexima.vim)
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig), for Neovim's built-in LSP client
+- [blink.cmp](https://github.com/saghen/blink.cmp)
+- [LuaSnip](https://github.com/L3MON4D3/LuaSnip)
+- [snacks.nvim](https://github.com/folke/snacks.nvim) (its picker)
+- [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
+- [copilot.lua](https://github.com/zbirenbaum/copilot.lua)
+- [conform.nvim](https://github.com/stevearc/conform.nvim), [nvim-lint](https://github.com/mfussenegger/nvim-lint), [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- [ultisnips](https://github.com/SirVer/ultisnips)
 
 <details>
 

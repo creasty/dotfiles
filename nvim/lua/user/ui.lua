@@ -147,15 +147,14 @@ local statusline = retry_call_wrap(function ()
   end
 
   if active then
-    local diagnostics = { E = 0, W = 0, I = 0, H = 0 }
-
-    local status = safe_buf_get_var(bufnr, 'coc_diagnostic_info', nil)
-    if status then
-      diagnostics.E = diagnostics.E + (status.error or 0)
-      diagnostics.W = diagnostics.W + (status.warning or 0)
-      diagnostics.I = diagnostics.I + (status.information or 0)
-      diagnostics.H = diagnostics.H + (status.hint or 0)
-    end
+    local count = vim.diagnostic.count(bufnr)
+    local severity = vim.diagnostic.severity
+    local diagnostics = {
+      E = count[severity.ERROR] or 0,
+      W = count[severity.WARN] or 0,
+      I = count[severity.INFO] or 0,
+      H = count[severity.HINT] or 0,
+    }
 
     if diagnostics.E > 0 then
       local text = string.format('%%#StatusLineDiagnosticsError#%s %d%%*', '✕', diagnostics.E)
@@ -175,9 +174,15 @@ local statusline = retry_call_wrap(function ()
     end
   end
 
-  local coc_status = vim.g.coc_status or ''
-  if active and coc_status ~= '' then
-    table.insert(r1, string.sub(coc_status, 0, 60))
+  if active then
+    local luasnip = package.loaded.luasnip
+    if luasnip and luasnip.get_active_snip() then
+      table.insert(r1, 'SNIP')
+    end
+    local lsp_status = vim.lsp.status()
+    if lsp_status ~= '' then
+      table.insert(r1, string.sub(lsp_status, 0, 60))
+    end
   end
 
   if active then

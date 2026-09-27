@@ -1,0 +1,15 @@
+-- Converted from UltiSnips' typescriptreact.snippets
+local S = require('user.snippets')
+
+return {
+  S.snip('FC', 'Define FC', 'b', [[
+const ${1:Name}: React.FC$2 = ($3) => {
+	$0
+};]]),
+  S.snip('FREC', 'Define FREC', 'b', [[
+const ${1:Name} = React.forwardRef<${2:Handles}, ${3:Props}>(($4, ref) => {
+	$0
+});]]),
+  S.snip('memo', 'Define memoized component', 'b', [[
+const ${1:Name}: typeof _$1 = React.memo(_$1) as any;$0]]),
+}

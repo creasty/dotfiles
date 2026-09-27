@@ -7,10 +7,6 @@
 
 local M = {}
 
-local function has_fn(name)
-  return vim.fn.exists('*' .. name) == 1
-end
-
 local function try_require(name)
   if not package.loaded[name] and not vim.api.nvim_get_runtime_file('lua/' .. name:gsub('%.', '/') .. '*', false)[1] then
     return nil
@@ -25,14 +21,6 @@ end
 
 --- { visible, items = { word... }, selected = word|nil, engine }
 function M.completion()
-  -- coc.nvim (custom floating pum)
-  if has_fn('coc#pum#visible') and vim.fn['coc#pum#visible']() == 1 then
-    local win = vim.fn['coc#pum#winid']()
-    local info = vim.fn['coc#pum#info']()
-    local words = vim.fn.getwinvar(win, 'words', {})
-    local selected = info.index and info.index >= 0 and words[info.index + 1] or nil
-    return { visible = true, items = words, selected = selected, engine = 'coc' }
-  end
   -- blink.cmp
   local blink = try_require('blink.cmp')
   if blink and blink.is_menu_visible and blink.is_menu_visible() then
@@ -66,7 +54,6 @@ end
 --- Turns the completion menu off for the current buffer, for tests about
 --- something else (e.g. pinning snippet expansions) that must not race it.
 function M.disable_completion()
-  vim.b.coc_suggest_disable = 1 -- coc.nvim
   vim.b.completion = false -- blink.cmp
   local cmp = try_require('cmp')
   if cmp and cmp.setup and cmp.setup.buffer then
@@ -79,17 +66,8 @@ end
 ---------------------------------------------------------------------------
 
 function M.snippet_active()
-  local coc = vim.b.coc_snippet_active
-  if coc == 1 or coc == true then
-    return true
-  end
-  if vim.g.did_plugin_ultisnips == 1 and has_fn('UltiSnips#CanJumpForwards') then
-    if vim.fn['UltiSnips#CanJumpForwards']() == 1 or vim.fn['UltiSnips#CanJumpBackwards']() == 1 then
-      return true
-    end
-  end
   local luasnip = try_require('luasnip')
-  if luasnip and luasnip.in_snippet and luasnip.in_snippet() then
+  if luasnip and luasnip.get_active_snip and luasnip.get_active_snip() then
     return true
   end
   if vim.snippet and vim.snippet.active() then
@@ -102,13 +80,28 @@ end
 -- Ghost text (AI inline suggestions)
 ---------------------------------------------------------------------------
 
---- All virtual text anchored on the cursor line (virt_text + virt_lines).
+--- Whether the AI plugin would ask for a suggestion now. copilot.lua marks
+--- its client initialized a moment after the server has the buffer open, and
+--- drops what you type before that until the cursor moves again.
+function M.ai_ready()
+  local copilot = package.loaded['copilot.client']
+  if copilot then
+    return copilot.initialized == true and copilot.buf_is_attached(0) == true
+  end
+  return true
+end
+
+--- All virtual text anchored on the cursor line (virt_text + virt_lines),
+--- except right-aligned status text (such as a picker's result counter).
 function M.ghost_text()
   local row = vim.api.nvim_win_get_cursor(0)[1] - 1
   local texts = {}
   local marks = vim.api.nvim_buf_get_extmarks(0, -1, { row, 0 }, { row, -1 }, { details = true })
   for _, mark in ipairs(marks) do
     local d = mark[4]
+    if d.virt_text_pos == 'right_align' then
+      d = { virt_lines = d.virt_lines }
+    end
     local parts = {}
     for _, chunk in ipairs(d.virt_text or {}) do
       parts[#parts + 1] = chunk[1]
@@ -131,36 +124,19 @@ end
 -- Fuzzy finder / picker
 ---------------------------------------------------------------------------
 
+-- Pickers whose list is a plain buffer of result lines.
 local LIST_FILETYPES = {
-  ['ddu-ff'] = true,
   TelescopeResults = true,
-  snacks_picker_list = true,
   minipick = true,
 }
 local PROMPT_FILETYPES = {
-  ['ddu-ff-filter'] = true,
   TelescopePrompt = true,
-  snacks_picker_input = true,
 }
 
 -- Highlight groups pickers use for marked (multi-selected) items.
 local MARKED_HIGHLIGHTS = {
-  Statement = true, -- ddu-ui-ff's default `highlights.selected`
   TelescopeMultiSelection = true,
-  SnacksPickerSelected = true,
 }
-
---- ddu fills its list asynchronously, and a reopened list briefly shows the
---- previous session's lines (the buffer is reused): it is loading until ddu
---- reports the items gathered and drawn.
-local function ddu_loading(buf)
-  local name = vim.fn.bufname(buf):match('^ddu%-ff%-(.+)$')
-  if not name then
-    return false
-  end
-  local ok, context = pcall(vim.fn['ddu#get_context'], name)
-  return ok and type(context) == 'table' and not (context.done and context.doneUi) or false
-end
 
 local function marked_lines(buf)
   local lines = {}
@@ -172,13 +148,68 @@ local function marked_lines(buf)
   return lines
 end
 
---- { open, floating, focused, loading, items, visible, current, marked, query }
---- loading: the picker is still filling the list; items: non-empty lines of
---- the result list; visible: those on screen in the list window; current:
---- the line under the list cursor (the item <CR> acts on); marked: lines
---- marked for a multi-item action; query: the prompt text.
+--- The text a snacks.nvim picker shows for an item (without the column
+--- marking selected items).
+local function snacks_text(picker, item)
+  local hl = Snacks.picker.highlight
+  local ok, text = pcall(function()
+    return (hl.to_text(hl.resolve(picker.format(item, picker), 1000)))
+  end)
+  return ok and text:gsub('%s+$', '') or item.text
+end
+
+--- snacks.nvim renders only the visible part of its list: read its state.
+local function snacks_picker(result)
+  local ok, pickers = pcall(function()
+    return Snacks.picker.get()
+  end)
+  local picker = ok and pickers[#pickers]
+  if not picker then
+    return false
+  end
+  local cur = vim.api.nvim_get_current_win()
+  local list, input = picker.list, picker.input
+  result.open = true
+  result.source = picker.opts.source
+  for _, win in ipairs({ list.win.win, input.win.win }) do
+    if win and vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative ~= '' then
+      result.floating = true
+    end
+  end
+  if list.win.win == cur then
+    result.focus = 'list'
+  elseif input.win.win == cur then
+    result.focus = 'prompt'
+  end
+  result.focused = result.focus ~= nil
+  result.loading = picker:is_active() or list.target ~= nil
+  for i = 1, list:count() do
+    result.items[#result.items + 1] = snacks_text(picker, list:get(i))
+  end
+  local height = list:height()
+  for i = list.top, math.min(list.top + height - 1, list:count()) do
+    result.visible[#result.visible + 1] = result.items[i]
+  end
+  result.current = result.items[list.cursor]
+  for _, item in ipairs(picker:selected({ fallback = false })) do
+    result.marked[#result.marked + 1] = snacks_text(picker, item)
+  end
+  result.query = input.win:valid() and input:get() or nil
+  return true
+end
+
+--- { open, floating, focused, focus, loading, items, visible, current,
+---   marked, query, source }
+--- focus: 'prompt' or 'list', the picker window with the cursor; loading:
+--- the picker is still filling the list; items: the results, as shown;
+--- visible: those on screen in the list window; current: the selected one
+--- (the item <CR> acts on); marked: those marked for a multi-item action;
+--- query: the prompt text; source: the picker's name for what it lists.
 function M.picker()
   local result = { open = false, floating = false, focused = false, loading = false, items = {}, visible = {}, marked = {}, query = nil, current = nil }
+  if snacks_picker(result) then
+    return result
+  end
   local cur = vim.api.nvim_get_current_win()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(win)
@@ -187,8 +218,9 @@ function M.picker()
     if LIST_FILETYPES[ft] then
       result.open = true
       result.floating = result.floating or floating
-      result.focused = result.focused or win == cur
-      result.list_filetype = ft
+      if win == cur then
+        result.focus = 'list'
+      end
       local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
       for _, line in ipairs(lines) do
         if line ~= '' then
@@ -198,7 +230,6 @@ function M.picker()
       local row = vim.api.nvim_win_get_cursor(win)[1]
       result.current = lines[row] ~= '' and lines[row] or nil
       result.marked = marked_lines(buf)
-      result.loading = result.loading or (ft == 'ddu-ff' and ddu_loading(buf))
       local info = vim.fn.getwininfo(win)[1]
       for i = info.topline, info.botline do
         if lines[i] and lines[i] ~= '' then
@@ -208,40 +239,85 @@ function M.picker()
     elseif PROMPT_FILETYPES[ft] then
       result.open = true
       result.floating = result.floating or floating
-      result.focused = result.focused or win == cur
-      result.prompt_filetype = ft
+      if win == cur then
+        result.focus = 'prompt'
+      end
       result.query = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] or ''
     end
   end
+  result.focused = result.focus ~= nil
   return result
 end
 
 --- True once the background services started at VimEnter are up (you
 --- never type within the first second after launching).
 function M.services_ready()
-  if vim.g.did_coc_loaded and vim.g.coc_service_initialized ~= 1 then
-    return false
-  end
   return true
 end
 
---- True once the picker backend can serve requests (ddu runs in denops,
---- which starts after startup).
+--- True once the picker backend can serve requests.
 function M.picker_ready()
-  if has_fn('denops#plugin#is_loaded') then
-    return vim.fn['denops#server#status']() == 'running' and vim.fn['denops#plugin#is_loaded']('ddu') == 1
-  end
   return true
 end
 
---- True once a choice menu (code actions etc.) accepts keys: coc runs its
---- own key loop, the built-in vim.ui.select prompts on the command line.
+--- True once a choice menu (code actions etc.) accepts keys: a picker
+--- listing the choices, or the built-in vim.ui.select on the command line.
 function M.choice_menu_ready()
-  if has_fn('coc#prompt#activated') and vim.fn['coc#prompt#activated']() == 1 then
+  local picker = M.picker()
+  if picker.open and not picker.loading and #picker.items > 0 then
     return true
   end
   local mode = vim.api.nvim_get_mode().mode
   return mode == 'c' or mode:sub(1, 1) == 'r'
+end
+
+--- The open picker (snacks.nvim's), or nil.
+local function open_picker()
+  local ok, pickers = pcall(function()
+    return Snacks.picker.get()
+  end)
+  return ok and pickers[#pickers] or nil
+end
+
+--- Where the open picker is on the screen: the first row and column of its
+--- outer window, border included, and its last row (1-based).
+function M.picker_box()
+  local picker = open_picker()
+  local win = picker and picker.layout.root.win
+  if not (win and vim.api.nvim_win_is_valid(win)) then
+    return nil
+  end
+  local pos = vim.api.nvim_win_get_position(win)
+  local border = vim.api.nvim_win_get_config(win).border or {}
+  local function edge(i)
+    local char = border[i] or ''
+    return (type(char) == 'table' and char[1] or char) ~= '' and 1 or 0
+  end
+  -- (a side takes a row when its middle character is set)
+  local height = edge(2) + vim.api.nvim_win_get_height(win) + edge(6)
+  return { row = pos[1] + 1, col = pos[2] + 1, last_row = pos[1] + height }
+end
+
+--- The background colors of the open picker's input, list and border.
+function M.picker_colors()
+  local picker = open_picker()
+  if not picker then
+    return nil
+  end
+  --- The color `group` has in `win`, through its 'winhighlight'.
+  local function background(win, group)
+    for from, to in vim.wo[win].winhighlight:gmatch('([^:,]+):([^,]+)') do
+      if from == group then
+        group = to
+      end
+    end
+    return vim.api.nvim_get_hl(0, { name = group, link = false }).bg
+  end
+  return {
+    input = background(picker.input.win.win, 'NormalFloat'),
+    list = background(picker.list.win.win, 'NormalFloat'),
+    border = background(picker.layout.root.win, 'FloatBorder'),
+  }
 end
 
 ---------------------------------------------------------------------------
@@ -272,20 +348,10 @@ end
 --- cursor" (LSP document highlight).
 function M.reference_highlights()
   local positions = {}
-  for _, m in ipairs(vim.fn.getmatches()) do
-    if m.group:match('^CocHighlight') then
-      for i = 1, 8 do
-        local pos = m['pos' .. i]
-        if pos then
-          positions[#positions + 1] = { pos[1], pos[2] }
-        end
-      end
-    end
-  end
   local marks = vim.api.nvim_buf_get_extmarks(0, -1, 0, -1, { details = true })
   for _, mark in ipairs(marks) do
     local hl = mark[4].hl_group
-    if type(hl) == 'string' and (hl:match('^LspReference') or hl:match('^CocHighlight')) then
+    if type(hl) == 'string' and hl:match('^LspReference') then
       positions[#positions + 1] = { mark[2] + 1, mark[3] + 1 }
     end
   end
@@ -298,19 +364,23 @@ end
 --- Diagnostic counts for the current buffer, from whichever client owns them.
 function M.diagnostics()
   local counts = { error = 0, warning = 0, info = 0, hint = 0 }
-  local coc = vim.b.coc_diagnostic_info
-  if type(coc) == 'table' then
-    counts.error = counts.error + (coc.error or 0)
-    counts.warning = counts.warning + (coc.warning or 0)
-    counts.info = counts.info + (coc.information or 0)
-    counts.hint = counts.hint + (coc.hint or 0)
-  end
   local s = vim.diagnostic.severity
   for _, d in ipairs(vim.diagnostic.get(0)) do
     local key = ({ [s.ERROR] = 'error', [s.WARN] = 'warning', [s.INFO] = 'info', [s.HINT] = 'hint' })[d.severity]
     counts[key] = counts[key] + 1
   end
   return counts
+end
+
+---------------------------------------------------------------------------
+-- Operator formatting
+---------------------------------------------------------------------------
+
+--- Whether operator formatting (creasty/opfmt) is switched on.
+function M.opfmt_enabled()
+  local ok, configs = pcall(require, 'nvim-treesitter.configs')
+  local opfmt = ok and configs.get_module('opfmt')
+  return type(opfmt) == 'table' and opfmt.enable == true
 end
 
 return M

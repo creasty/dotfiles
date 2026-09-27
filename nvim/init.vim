@@ -286,6 +286,9 @@ nnoremap <C-w>s     <C-w>n
 nnoremap <C-w><C-c> <Nop>
 nnoremap <C-w>c     <Nop>
 
+" command-line shortcuts (:s/ -> :s/\v//g, :ee, :w!!, ...)
+lua require('user.cmdline').setup()
+
 " submode for window resizing
 nnoremap <SID>(ws) <Nop>
 nnoremap <script> <C-w>+ <C-w>+<SID>(ws)
@@ -427,6 +430,9 @@ endif
 
 let g:dein#install_log_filename = s:dein_path . '/install.log'
 
+" (before the tree-sitter plugins load)
+lua require('user.plugin.treesitter.compat')
+
 if dein#min#load_state(s:dein_path)
   let s:dein_default_toml = s:dein_path . '/default.toml'
   let s:dein_lazy_toml = s:dein_path . '/lazy.toml'
@@ -475,214 +481,7 @@ function! DeinPluginNameComplete(a, l, p) abort
   return filter(l:list, { _, v -> v =~# a:a })
 endfunction
 
-function! s:check_plugin(...) abort
-  for l:name in a:000
-    if !dein#is_available(l:name)
-      return v:false
-    endif
-  endfor
-  return v:true
-endfunction
-
 "  Cross-plugin integration
 "-----------------------------------------------
-if s:check_plugin('coc.nvim', 'copilot.vim', 'lexima.vim', 'ddu.vim')
-  function! s:stop_intelligence() abort
-    " coc.nvim
-    let b:coc_suggest_disable = 1
-    " copilot.vim
-    let b:copilot_disabled = v:true
-    " lexima.vim
-    let b:lexima_disabled = 1
-  endfunction
-
-  function! s:resume_intelligence() abort
-    " coc.nvim
-    unlet! b:coc_suggest_disable
-    " copilot.vim
-    unlet! b:copilot_disabled
-    " lexima.vim
-    unlet! b:lexima_disabled
-  endfunction
-
-  augroup _init_intelligence
-    autocmd!
-
-    " plugin/blockwise_visual_insert.vim
-    autocmd User BlockwiseVisualInsertPre call s:stop_intelligence()
-    autocmd User BlockwiseVisualInsertPost call s:resume_intelligence()
-
-    " ddu.vim
-    autocmd FileType ddu-ff-filter call s:stop_intelligence()
-  augroup END
-endif
-
-if s:check_plugin('coc.nvim')
-  " plugin/emacs_cursor.vim
-  let g:EmacsCursorPumvisible = function('coc#pum#visible')
-endif
-
-if s:check_plugin('ddu.vim', 'coc.nvim')
-  let g:coc_enable_locationlist = 0
-  nnoremap <silent> gll <Cmd>call user#plugin#ddu#coc_locations(v:true)<CR>
-
-  augroup _init_coc_ddu
-    autocmd!
-    autocmd User CocLocationsChange call user#plugin#ddu#coc_locations(v:false)
-  augroup END
-endif
-
-if s:check_plugin('coc.nvim', 'copilot.vim', 'ultisnips')
-  function! s:dismiss_copilot(disabled) abort
-    if a:disabled
-      let b:copilot_enabled = v:false
-      call copilot#Dismiss()
-    else
-      unlet! b:copilot_enabled
-    endif
-  endfunction
-
-  augroup _init_auto_dismiss_copilot
-    autocmd!
-    autocmd User CocOpenFloat call s:dismiss_copilot(v:true)
-    autocmd TextChangedI,CursorMovedI * call s:dismiss_copilot(coc#pum#visible() || UltiSnips#CanExpandSnippet())
-    autocmd InsertEnter * call s:dismiss_copilot(v:false)
-  augroup END
-endif
-
-if s:check_plugin('coc.nvim', 'ultisnips')
-  augroup _init_jump_placeholder
-    autocmd!
-    autocmd User UltiSnipsEnterFirstSnippet doautocmd User CocJumpPlaceholder
-    autocmd User UltiSnipsExitLastSnippet doautocmd User CocJumpPlaceholder
-  augroup END
-endif
-
-if s:check_plugin('coc.nvim', 'copilot.vim', 'lexima.vim', 'ultisnips')
-  function! s:is_copilot_suggested() abort
-    let l:copilot = copilot#GetDisplayedSuggestion()
-    return !empty(l:copilot.text)
-  endfunction
-
-  function! s:super_s_tab() abort
-    if coc#pum#visible()
-      return coc#pum#cancel()
-    endif
-    return "\<Plug>(ultisnips-expand)"
-  endfunction
-
-  function! s:super_i_tab() abort
-    if coc#pum#visible()
-      return coc#pum#confirm()
-    elseif pumvisible()
-      return "\<Plug>(completion-accept)"
-    endif
-
-    if UltiSnips#CanExpandSnippet()
-      return "\<Plug>(ultisnips-expand)"
-    endif
-
-    return lexima#expand('<TAB>', 'i')
-  endfunction
-
-  function! s:super_i_esc() abort
-    if coc#pum#visible()
-      return coc#pum#cancel()
-    elseif pumvisible()
-      return "\<Plug>(completion-cancel)"
-    endif
-
-    if coc#float#has_float()
-      return "\<C-o>\<Plug>(coc-float-hide)"
-    endif
-
-    if s:is_copilot_suggested()
-      call copilot#Dismiss()
-      return ''
-    endif
-
-    return "\<Plug>(lexima-escape)"
-  endfunction
-
-  function! s:super_i_cr() abort
-    if coc#pum#visible()
-      return coc#pum#confirm()
-    elseif pumvisible()
-      return "\<Plug>(completion-accept)"
-    endif
-
-    " return "\<Plug>(coc-enter)"
-    return lexima#expand('<CR>', 'i')
-  endfunction
-
-  function! s:super_i_c_l() abort
-    if coc#pum#visible()
-      return coc#refresh()
-    endif
-    return lexima#expand('<C-L>', 'i')
-  endfunction
-
-  function! s:super_i_c_s_c_j() abort
-    if s:is_copilot_suggested()
-      return copilot#Accept('')
-    endif
-    return "\<Ignore>"
-  endfunction
-
-  function! s:super_iv_c_s_c_p() abort
-    if coc#jumpable()
-      return "\<Plug>(coc-snippet-prev)"
-    endif
-    if UltiSnips#CanJumpBackwards()
-      return "\<Plug>(ultisnips-jump-backward)"
-    endif
-    return ''
-  endfunction
-
-  function! s:super_iv_c_s_c_n() abort
-    if coc#jumpable()
-      return "\<Plug>(coc-snippet-next)"
-    endif
-    if UltiSnips#CanJumpForwards()
-      return "\<Plug>(ultisnips-jump-forward)"
-    endif
-    return ''
-  endfunction
-
-  function! s:super_iv_c_s_c_c() abort
-    if s:is_copilot_suggested()
-      call copilot#Dismiss()
-      return ''
-    endif
-    if get(b:, 'coc_snippet_active', v:false)
-      call CocAction('snippetCancel')
-      return ''
-    endif
-    return ''
-  endfunction
-
-  inoremap <Plug>(completion-cancel) <C-e>
-  inoremap <Plug>(completion-accept) <C-y>
-  inoremap <Plug>(coc-enter) <C-g>u<CR><C-r>=coc#on_enter()<CR>
-  inoremap <Plug>(lexima-escape) <C-r>=lexima#insmode#escape()<CR><Esc>
-
-  function! s:setup_super_mappings() abort
-    smap <silent><expr> <Tab> <SID>super_s_tab()
-    imap <silent><expr> <Tab> <SID>super_i_tab()
-    imap <silent><expr> <Esc> <SID>super_i_esc()
-    imap <silent><expr> <CR>  <SID>super_i_cr()
-    imap <silent><expr> <C-l> <SID>super_i_c_l()
-    imap <silent><expr> <C-s><C-j> <SID>super_i_c_s_c_j()
-    imap <silent><expr> <C-s><C-p> <SID>super_iv_c_s_c_p()
-    vmap <silent><expr> <C-s><C-p> <SID>super_iv_c_s_c_p()
-    imap <silent><expr> <C-s><C-n> <SID>super_iv_c_s_c_n()
-    vmap <silent><expr> <C-s><C-n> <SID>super_iv_c_s_c_n()
-    imap <silent><expr> <C-s><C-c> <SID>super_iv_c_s_c_c()
-    vmap <silent><expr> <C-s><C-c> <SID>super_iv_c_s_c_c()
-  endfunction
-
-  augroup _init_super_mappings
-    autocmd!
-    autocmd User PluginLeximaPostInit call s:setup_super_mappings()
-  augroup END
-endif
+" completion, snippets, auto-pairs and AI suggestions sharing the insert-mode keys
+lua require('user.intelligence').setup()
