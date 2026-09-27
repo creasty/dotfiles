@@ -7,16 +7,11 @@ name: nvim-e2e
 on:
   push:
     branches: [master]
-    paths:
-      - "nvim/**"
-      - "bin/**"
-      - ".github/workflows/nvim-e2e.yml"
   pull_request:
-    paths:
-      - "nvim/**"
-      - "bin/**"
-      - ".github/workflows/nvim-e2e.yml"
   workflow_dispatch:
+  schedule:
+    # Every Monday, at 10:00 JST
+    - cron: "0 1 * * 1"
 
 jobs:
   e2e:

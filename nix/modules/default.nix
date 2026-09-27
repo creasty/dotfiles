@@ -9,6 +9,7 @@
     ./homebrew.nix
     ./packages.nix
     ./shell.nix
+    ./tmux.nix
     ./ssh.nix
     ./macos.nix
     ./neovim.nix

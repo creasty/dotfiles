@@ -63,14 +63,15 @@ prefers_nix() {
 
 @test "interactive shells start within the startup budget" {
   local budget="${DOTFILES_VERIFY_STARTUP_MS:-150}"
-  # The median of 10 runs after 3 warm-up runs, like `hyperfine --warmup 3 'zsh -i -c exit'`
+  # The median of 10 runs after 3 warm-up runs, like `hyperfine --warmup 3 'zsh -i -c exit'` (without job control, as
+  # login_zsh)
   run -0 pristine "$VERIFY_ZSH" -c '
     zmodload zsh/datetime zsh/mathfunc
     local -a ms
     local start
     repeat 13; do
       start=$EPOCHREALTIME
-      $1 -i -c exit > /dev/null 2>&1
+      $1 -i +m -c exit > /dev/null 2>&1
       ms+=( $(( int((EPOCHREALTIME - start) * 1000) )) )
     done
     ms=( ${(n)ms[4,-1]} )

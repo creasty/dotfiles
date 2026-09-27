@@ -44,8 +44,14 @@
       # One configuration per user, which ./provision and ./verify pick with `#$(id -un)`
       darwinConfigurations = {
         creasty = mkDarwin "creasty" [ ];
-        # The user of GitHub Actions' macOS runners, which have no Apple Account to install App Store apps with
-        runner = mkDarwin "runner" [ { dotfiles.appStore = false; } ];
+        # The user of GitHub Actions' macOS runners, which have no Apple Account to install App Store apps with, and
+        # whose shared addresses run out of the GitHub API requests that mise checks Python's attestations with
+        runner = mkDarwin "runner" [
+          {
+            dotfiles.appStore = false;
+            dotfiles.verifyPythonAttestations = false;
+          }
+        ];
       };
 
       # Pinned tools for ./provision and ./verify

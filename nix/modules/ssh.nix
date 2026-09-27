@@ -12,22 +12,14 @@
 
         includes = [ "config.d/*" ];
 
-        # `*` comes last, after the other hosts
-        settings = {
-          "va_* 192.168.33.*" = {
-            User = "vagrant";
-            IdentityFile = "~/.vagrant.d/insecure_private_key";
-          };
-
-          "*" = {
-            IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
-            IdentitiesOnly = true;
-            ServerAliveInterval = 30;
-            TCPKeepAlive = true;
-            StrictHostKeyChecking = false;
-            UserKnownHostsFile = "/dev/null";
-            LogLevel = "ERROR";
-          };
+        settings."*" = {
+          IdentityAgent = ''"~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"'';
+          IdentitiesOnly = true;
+          ServerAliveInterval = 30;
+          TCPKeepAlive = true;
+          # Trusts a host's key on the first connection (into ~/.ssh/known_hosts), and refuses the host once it changes
+          StrictHostKeyChecking = "accept-new";
+          LogLevel = "ERROR";
         };
       };
 

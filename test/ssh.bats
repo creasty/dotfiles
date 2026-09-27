@@ -24,12 +24,11 @@ file_mode() {
   assert_like "$(grep '^identityagent ' <<< "$output")" '*/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock*'
   assert_line 'identitiesonly yes'
   assert_line 'serveraliveinterval 30'
-  assert_line 'userknownhostsfile /dev/null'
 }
 
-@test "Vagrant machines use Vagrant's key" {
-  run -0 ssh -G va_example
-  assert_line 'user vagrant'
+@test "ssh trusts a host's key on the first connection, and refuses the host once it changes" {
+  run -0 ssh -G example.com
+  assert_line 'stricthostkeychecking accept-new'
   # With the home directory as `~` or expanded
-  assert_like "$(grep '^identityfile ' <<< "$output")" '*/.vagrant.d/insecure_private_key'
+  assert_like "$(grep '^userknownhostsfile ' <<< "$output")" 'userknownhostsfile */.ssh/known_hosts *'
 }
