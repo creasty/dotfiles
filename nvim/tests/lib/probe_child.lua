@@ -80,6 +80,17 @@ end
 -- Ghost text (AI inline suggestions)
 ---------------------------------------------------------------------------
 
+--- Whether the AI plugin would ask for a suggestion now. copilot.lua marks
+--- its client initialized a moment after the server has the buffer open, and
+--- drops what you type before that until the cursor moves again.
+function M.ai_ready()
+  local copilot = package.loaded['copilot.client']
+  if copilot then
+    return copilot.initialized == true and copilot.buf_is_attached(0) == true
+  end
+  return true
+end
+
 --- All virtual text anchored on the cursor line (virt_text + virt_lines),
 --- except right-aligned status text (such as a picker's result counter).
 function M.ghost_text()

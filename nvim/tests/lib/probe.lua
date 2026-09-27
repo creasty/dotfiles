@@ -129,13 +129,14 @@ end
 -- AI suggestions (fakes/copilot.lua)
 ---------------------------------------------------------------------------
 
---- Waits until the AI client attached the current buffer. Clients start
---- lazily on the first InsertEnter, so call this from insert mode.
+--- Waits until the AI client attached the current buffer and is ready to
+--- suggest. Clients start lazily on the first InsertEnter, so call this from
+--- insert mode.
 function probe.wait_ai(nvim, opts)
   opts = opts or {}
   local path = vim.uv.fs_realpath(nvim:bufname()) or nvim:bufname()
   nvim:wait_for(function()
-    return server_has_open(nvim.copilot_state, path)
+    return server_has_open(nvim.copilot_state, path) and call(nvim, 'ai_ready')
   end, { timeout = opts.timeout or 15000, message = 'the AI client to attach ' .. path })
 end
 

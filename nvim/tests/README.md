@@ -115,11 +115,12 @@ behavior may well be the better one: update or delete the test.
 2. Swap the plugin in the config.
 3. Adapt the seam — not the specs:
    - `lib/probe_child.lua` — how to *observe* plugin UI: completion menu,
-     snippet session, ghost text, picker (items, visible lines, selection,
-     marks, query, focus), signs, highlights. It already recognizes blink.cmp,
-     nvim-cmp, the built-in popup menu, LuaSnip, `vim.snippet`, snacks.nvim's
-     picker (through its API: its list is drawn lazily) and Telescope-style
-     pickers whose list is a buffer of results.
+     snippet session, ghost text (and whether the AI client is ready to
+     suggest), picker (items, visible lines, selection, marks, query, focus),
+     signs, highlights. It already recognizes blink.cmp, nvim-cmp, the
+     built-in popup menu, LuaSnip, `vim.snippet`, snacks.nvim's picker
+     (through its API: its list is drawn lazily) and Telescope-style pickers
+     whose list is a buffer of results.
    - `lib/prelude.lua` — how to *point* plugins at the fakes: the fake server
      is `vim.lsp.config('e2e', ...)` and the only one `vim.lsp.enable()` takes;
      conform.nvim and nvim-lint run no external formatter or linter.
