@@ -1,7 +1,7 @@
 # Neovim, with the language servers, linters and formatters its config relies on
-# (nvim/lua/user/plugin/{lsp,lint,format}.lua). lazy.nvim installs the plugins, and itself on the
-# first start (nvim/lua/user/plugins.lua); copilot.lua downloads GitHub's copilot-language-server
-# (unfree in nixpkgs).
+# (nvim/lua/user/plugin/{lsp,lint,format}.lua). lazy.nvim installs the plugins at the commits
+# nvim/flake.lock pins, and itself on the first start (nvim/lua/user/plugins.lua); copilot.lua
+# downloads GitHub's copilot-language-server (unfree in nixpkgs).
 { pkgs, username, ... }:
 {
   home-manager.users.${username} = {

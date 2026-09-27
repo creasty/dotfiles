@@ -1,8 +1,8 @@
 name: nvim-e2e
 
 # Runs the Neovim end-to-end workflow tests (nvim/tests) against the plugin
-# versions pinned in nvim/lazy-lock.json and nvim/tests/lock.json, so a pull
-# request shows which workflows it changes. The job summary lists every
+# versions pinned in nvim/flake.lock, so a pull request (Dependabot's bumps
+# included) shows which workflows it changes. The job summary lists every
 # changed workflow.
 
 on:
@@ -20,7 +20,7 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 45
     env:
-      # Toolchain versions the lockfiles were written with. (nvim-lspconfig needs
+      # Toolchain versions the plugins were pinned with. (nvim-lspconfig needs
       # Neovim 0.11.3+; blink.cmp is pinned to v1, which supports 0.11.)
       NVIM_VERSION: v0.11.7
       TREE_SITTER_CLI_VERSION: 0.25.3
@@ -59,7 +59,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ runner.temp }}/e2e/plugins
-          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/lazy-lock.json', 'nvim/tests/lock.json') }}
+          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/flake.lock', 'nvim/lua/user/plugin/treesitter/parsers.lua') }}
 
       - name: Install the locked plugins
         run: nvim/tests/plugins install
