@@ -255,18 +255,6 @@ describe('Tree-sitter', function()
       t.contains(langs, 'bash')
     end)
 
-    it('dein toml: hook_add / hook_source are highlighted as vim', function()
-      local nvim = buffer('plugins.toml', { '[[plugins]]', "repo = 'x/y'", "hook_add = '''", 'let g:x = 1', "'''" })
-      local langs = nvim:lua([[
-        local parser = vim.treesitter.get_parser(0)
-        parser:parse(true)
-        local langs = {}
-        for lang in pairs(parser:children()) do langs[#langs + 1] = lang end
-        return langs
-      ]])
-      t.contains(langs, 'vim')
-    end)
-
     it('typescript: decorator objects are attributes, #private fields are private members', function()
       local nvim = buffer('a.ts', { 'class A {', '  @computed.struct', '  #secret = 1;', '}' })
       t.contains(captures_at(nvim, 2, 3), 'attribute@typescript')

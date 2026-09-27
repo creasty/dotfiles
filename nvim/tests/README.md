@@ -16,7 +16,7 @@ copilot.lua.
 ## Running
 
 ```sh
-nvim/tests/run                      # everything: ~670 tests, ~50s with 4 workers
+nvim/tests/run                      # everything: ~670 tests, about a minute with 4 workers
 nvim/tests/run completion lsp       # spec files whose name contains a word
 nvim/tests/run -f 'Esc' -f scroll   # tests whose full name matches a Lua pattern (any -f)
 nvim/tests/run -l                   # list the requirements (-q adds quirk notes)
@@ -28,39 +28,40 @@ nvim/tests/run --update-golden snippet_library   # re-pin golden output
 screen and its `:messages`.
 
 Needs what the config itself needs: Neovim 0.11.3 or later, the installed
-dein plugins (found through `~/.config/nvim/dein/repos`, or set
-`E2E_DEIN_REPOS`), Ruby's `erb`, git, fd, rg and ghq. No language server,
+plugins (found where lazy.nvim installs them, `~/.local/share/nvim/lazy`, or
+set `E2E_PLUGINS`), Ruby's `erb`, git, fd, rg and ghq. No language server,
 formatter or linter is needed: the fakes stand in for them. Temporary files go
 to `$E2E_TMPDIR` (default `$TMPDIR`), which must not be inside a project such
 as a git repository: the config finds project roots by walking up from a file.
 
 ## Plugin versions
 
-`nvim/dein/lock.json` pins what is installed on your machine: the commit of
-every dein plugin and the revision of every tree-sitter parser. CI installs
-exactly that.
+Two files pin what is installed on your machine, and CI installs exactly
+that: `nvim/lazy-lock.json`, lazy.nvim's lockfile, the commit of every plugin
+it installs (`:Lazy update` pins the new ones); `nvim/tests/lock.json` the
+commit of each plugin it loads from your working copy instead (`dev` in
+`nvim/lua/user/plugins.lua`), and the revision of every tree-sitter parser.
 
 ```sh
-nvim/tests/plugins check      # do the installed plugins match lock.json?
-nvim/tests/plugins lock       # re-pin after updating plugins, then commit it
+nvim/tests/plugins check      # do the installed plugins match the locks?
+nvim/tests/plugins lock       # re-pin after updating plugins, then commit both
 nvim/tests/plugins install    # install exactly the pinned versions (what CI runs)
 ```
 
-`install` clones into `$E2E_DEIN_REPOS` (default `nvim/dein/repos`) and builds
+`install` clones into `$E2E_PLUGINS` (default: lazy.nvim's root) and builds
 the parsers. It never changes a plugin that is already installed at another
 commit.
 
 `lock` warns about plugins whose repository it cannot reach (a fresh install
-could not clone them either). To keep one pinned anyway, give its entry a
-`"mirror"` that has the same commit; `install` fetches from it and `lock`
-keeps it.
+could not clone them either). To keep one pinned anyway, point its spec at a
+fork or mirror that has the commit.
 
 ## CI
 
 `.github/workflows/nvim-e2e.yml` runs the suite on macOS for pull requests and
 pushes to master that touch `nvim/` or `bin/`, with the versions this setup was
 pinned on (Neovim 0.11.7, and tree-sitter CLI 0.25.3 on Node 20.18.2 to build
-parsers) and the plugins in `lock.json`. The job summary
+parsers) and the plugins the locks pin. The job summary
 lists every workflow that changed: the assertion, the child's screen, and
 whether the test was a pinned quirk (`run --summary FILE` writes it).
 
@@ -143,8 +144,10 @@ engine leaves the cursor at.
 - **Isolation.** Each child gets its own XDG state/cache directories (XDG
   data is per run), an in-memory clipboard, a fake `trash`, and no shada.
   Your real state is never touched. The config directory is a tree of
-  symlinks to this working tree, cached per working tree (with dein's state
-  cache) in `$TMPDIR/nvim-e2e-cache/`.
+  symlinks to this working tree, and lazy.nvim's root a link to the installed
+  plugins. With empty caches, a child compiles every Lua module it loads, so
+  the startup budget is checked once a first boot has filled them, as your
+  starts find them.
 - **Fakes.** `fakes/lsp.lua` is a deterministic language server (its header
   documents what "definition", "references", etc. mean), the only one the
   children start. `fakes/copilot.lua` suggests only after a few fixed

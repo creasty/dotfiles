@@ -1,5 +1,8 @@
 #!/bin/sh
-# Pins the plugins the suite runs against (nvim/dein/lock.json). See: plugins --help
+# Pins the plugins the suite runs against (nvim/lazy-lock.json, nvim/tests/lock.json). See: plugins --help
+# Where the plugins are installed: lazy.nvim's root, unless E2E_PLUGINS says otherwise.
+E2E_PLUGINS=${E2E_PLUGINS:-${XDG_DATA_HOME:-$HOME/.local/share}/nvim/lazy}
+export E2E_PLUGINS
 # nvim-treesitter builds parsers under stdpath('data'): keep that out of yours.
 tmp=$(mktemp -d "${TMPDIR:-/tmp}/nvim-plugins.XXXXXX") || exit 1
 trap 'rm -rf "$tmp"' EXIT

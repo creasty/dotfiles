@@ -113,6 +113,7 @@ Original plugins:
 - [restore_buffer.vim](./nvim/plugin/restore_buffer.vim)
 
 Third-party plugins (excerpt):
+- [lazy.nvim](https://github.com/folke/lazy.nvim), which installs and loads the others
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig), for Neovim's built-in LSP client
 - [blink.cmp](https://github.com/saghen/blink.cmp)
 - [LuaSnip](https://github.com/L3MON4D3/LuaSnip)
@@ -126,9 +127,9 @@ Third-party plugins (excerpt):
 
 ```sh-session
 $ hyperfine --warmup 3 --prepare 'sleep 0.1' 'nvim --headless -c quit'
-$ cloc --exclude-dir=dein,template nvim
-$ rg '^repo\b.+\bcreasty/' nvim/dein/*.toml
-$ rg --no-heading '^\[\[plugins' nvim/dein/*.toml | wc -l
+$ cloc --exclude-dir=template nvim
+$ rg -o "'creasty/[\w.-]+'" nvim/lua/user/plugins.lua | sort -u
+$ rg -o "'[\w.-]+/[\w.-]+'" nvim/lua/user/plugins.lua | sort -u | wc -l
 ```
 
 Profiling:
