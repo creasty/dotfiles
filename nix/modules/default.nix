@@ -12,6 +12,7 @@
     ./tmux.nix
     ./ssh.nix
     ./macos.nix
+    ./keyboard.nix
     ./neovim.nix
     ./vscode.nix
     ./docker.nix

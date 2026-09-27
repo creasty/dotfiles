@@ -17,8 +17,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Upstream
 
-- **creasty/homebrew-tools has no CI**, only a `.travis.yml` from the travis-ci.org days, so nothing noticed when Homebrew removed `appcast` (fixed in [creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)).
-  A workflow like the one `brew tap-new` generates (`brew test-bot --only-tap-syntax`) would catch the next one.
 - **JetBrains' tap fails `brew tap`'s check**: its kotlin-lsp formula has a URL only `on_macos`, so on Linux it "requires at least a URL", and `brew tap jetbrains/utils` refuses the whole tap.
   `nix/modules/java.nix` installs the formula without declaring the tap, which skips the check; the tap can go in `homebrew.taps` once the formula has a URL outside `on_macos` too.
 
