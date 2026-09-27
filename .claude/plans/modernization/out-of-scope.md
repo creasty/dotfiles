@@ -22,8 +22,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Worth modernizing later
 
-- **ctags**: nixpkgs' `ctags` is Exuberant Ctags, unmaintained since 2009.
-  `universal-ctags` replaces it, but the two conflict, and Universal Ctags reads `~/.ctags.d/*.ctags` instead of `~/.ctags`.
 - **nvim-treesitter** is pinned to `master`; development moved to `main`, an incompatible rewrite.
   Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
 - **Plugin manager**: dein.vim's author now develops dpp.vim, and Neovim 0.12 has a built-in `vim.pack`.
@@ -43,6 +41,10 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 - Fresh Neovim installs broke: nvim-treesitter's default branch became the incompatible `main`.
   `phaazon/hop.nvim`, gone as well, moved to `smoka7/hop.nvim` in [creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106).
 - `creasty/tools/keyboard` stopped loading when Homebrew removed `appcast` ([creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)), and Google Chrome's cask failed on CI runners, which ship Chrome.
+
+## Fixed by moving to Universal Ctags
+
+- The Nix migration installed nixpkgs' `ctags`, Exuberant Ctags built without regex support: every run printed 18 warnings about `~/.ctags`, and Rails' associations and scopes, `.proto` and `.graphql` files went untagged.
 
 ## Fixed by replacing coc.nvim, ddu, UltiSnips, lexima and copilot.vim
 
