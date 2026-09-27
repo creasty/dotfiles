@@ -82,6 +82,6 @@ load helper
     if grep -qxF -- "${path##*/}" <<< "$commands"; then
       problems+="${file#"$DOTFILES_PATH/"}: $path"$'\n'
     fi
-  done < <(grep -rEo --exclude-dir=dein '/opt/homebrew/bin/[A-Za-z0-9._+-]+' "$DOTFILES_PATH"/{config,home,nvim,shell,vscode})
+  done < <(grep -rEo '/opt/homebrew/bin/[A-Za-z0-9._+-]+' "$DOTFILES_PATH"/{config,home,nvim,shell,vscode})
   assert_none "$problems" 'Homebrew paths of commands from Nix'
 }

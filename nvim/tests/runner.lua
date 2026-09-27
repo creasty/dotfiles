@@ -28,7 +28,7 @@ Options:
   -h, --help             show this help
 
 spec: a file under spec/ or a substring of its name (e.g. `completion`).
-Environment: E2E_DEIN_REPOS, E2E_COC_EXTENSIONS, E2E_TMPDIR (see README).]]
+Environment: E2E_PLUGINS, E2E_TMPDIR (see README).]]
 
 local function parse_args(argv)
   local opts = { jobs = 4, timeout = 30000, specs = {}, filters = {} }

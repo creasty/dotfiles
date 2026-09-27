@@ -5,9 +5,6 @@ __pycache__
 tmp/
 
 nvim/.netrwhist
-nvim/dein/*
-!nvim/dein/*.toml
-!nvim/dein/lock.json
 
 # nix build
 /result

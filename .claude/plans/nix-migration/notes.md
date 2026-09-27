@@ -8,7 +8,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 - **A module per topic** (`nix/modules/*.nix`), in place of an Ansible role. Each configures both the system and the home directory, so everything about a tool is in one file.
 - **Links follow the tree**, instead of the central `link:` list of `provisioning/config.yml`:
   - `home/<path>` → `~/.<path>`, `config/<path>` → `~/.config/<path>`, file by file (`nix/modules/links.nix`).
-  - The modules add only the links that live elsewhere: `nvim/` (as a directory, since dein.vim writes into it), the shell files, and VS Code's settings.
+  - The modules add only the links that live elsewhere: `nvim/` (as a directory, so that new files apply without a switch), the shell files, and VS Code's settings.
   - Links point into the checkout (`mkOutOfStoreSymlink`), so edits apply without a rebuild. A new file needs `git add` and a switch.
 - **Packages:**
   - Command-line tools come from nixpkgs, pinned by `flake.lock`.

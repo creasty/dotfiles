@@ -45,7 +45,7 @@ if has('vim_starting')
 
 	let s:config_path = stdpath('config')
 	let s:paths = filter(split(&g:rtp, ','), { _, v -> v !=# s:config_path && v !=# s:config_path . '/after' })
-	let s:paths += map(s:repos, { _, v -> s:config_path . '/dein/repos/github.com/' . v })
+	let s:paths += map(s:repos, { _, v -> stdpath('data') . '/lazy/' . v })
 	let &g:rtp = join(s:paths, ',')
 endif]]),
 }

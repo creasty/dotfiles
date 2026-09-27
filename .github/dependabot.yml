@@ -1,0 +1,39 @@
+# Dependabot bumps what the repository pins, in pull requests CI tests: the Neovim plugins
+# (nvim-e2e), the Nix inputs and the workflows' actions (provisioning).
+version: 2
+updates:
+  # The Neovim plugins, locked in nvim/flake.lock (see nvim/flake.nix)
+  - package-ecosystem: nix
+    directory: /nvim
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    groups:
+      nvim-plugins:
+        patterns: ["*"]
+
+  # nixpkgs, nix-darwin and home-manager, together: their release branches must match
+  - package-ecosystem: nix
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    groups:
+      nix:
+        patterns: ["*"]
+
+  # The workflows' actions, pinned to commit SHAs
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    groups:
+      actions:
+        patterns: ["*"]
