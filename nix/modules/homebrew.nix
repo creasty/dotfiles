@@ -27,7 +27,6 @@
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
       "appcleaner" # https://freemacsoft.net/appcleaner/
       "creasty/tools/keyboard" # https://github.com/creasty/Keyboard
-      "docker-desktop" # https://www.docker.com/products/docker-desktop
       "figma" # https://www.figma.com/
       "gcloud-cli" # https://cloud.google.com/cli/
       "google-chrome" # https://www.google.com/chrome/

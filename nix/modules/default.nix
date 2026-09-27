@@ -12,6 +12,7 @@
     ./macos.nix
     ./neovim.nix
     ./vscode.nix
+    ./docker.nix
     ./mise.nix
     ./java.nix
     ./go.nix

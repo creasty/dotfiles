@@ -62,6 +62,9 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    $ rm ~/.config/.ripgreprc              # ripgrep's config is at ~/.config/ripgrep/config now
    ```
 
+   - Docker Desktop can come back from its upgrade in "User" mode, which adds a PATH section to the top of the shell files on every start (`./verify` fails then).
+     Set Settings > Advanced > CLI tools to "System", then remove the sections: `git -C ~/dotfiles checkout shell/profile shell/bash/bash_profile`, and `rm ~/.zprofile.before-nix` if it only holds Docker Desktop's.
+
 3. Uninstall the formulae that Nix provides now, when convenient.
    - Until then, Nix's come first on `PATH`.
    - The switch never uninstalls anything (`cleanup = "none"`).
