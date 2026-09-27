@@ -63,6 +63,21 @@ if [[ "$OSTYPE" =~ ^darwin ]]; then
   _register_keycommand '^v' _paste_from_cb
 fi
 
+# View the scrollback in Neovim, to select text in it with the keyboard: v in Ghostty's copy mode
+# (config/ghostty/config.ghostty) sends F20, then the path of the file it wrote the screen to, and a return
+_view_scrollback() {
+  zle push-line
+  BUFFER=' view_scrollback '
+  CURSOR=$#BUFFER
+}
+_register_keycommand '^[[34~' _view_scrollback
+
+view_scrollback() {
+  [ -f "$1" ] || return
+  nvim -M + -- "$1"
+  rm -f -- "$1" && rmdir -- "${1:h}"
+}
+
 #=== Helper
 #==============================================================================================
 _buffer_insert() {
@@ -339,11 +354,20 @@ title() {
 title_precmd() {
   emulate -L zsh
 
+  # Ghostty's tabs show the title: the name of the directory, as tmux's window list did
+  if [[ "$TERM_PROGRAM" == ghostty ]]; then
+    title '%1d'
+    return
+  fi
+
   title '%~' '%n@%m: %~'
 }
 title_preexec() {
   emulate -L zsh
   setopt extended_glob
+
+  # ...even while commands run
+  [[ "$TERM_PROGRAM" == ghostty ]] && return
 
   # cmd name only, or if this is sudo or ssh, the next cmd
   local cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}

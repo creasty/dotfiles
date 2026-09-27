@@ -29,6 +29,7 @@
       "creasty/tools/keyboard" # https://github.com/creasty/Keyboard
       "figma" # https://www.figma.com/
       "gcloud-cli" # https://cloud.google.com/cli/
+      "ghostty" # https://ghostty.org/
       "google-chrome" # https://www.google.com/chrome/
       "google-drive" # https://www.google.com/drive/
       "google-japanese-ime" # https://www.google.co.jp/ime/

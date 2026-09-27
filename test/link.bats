@@ -45,6 +45,15 @@ load helper
   assert_equal "$output" ''
 }
 
+# The cask puts Ghostty's command-line tool in its app only
+@test "Ghostty accepts the config, and reads it from the dotfiles" {
+  local ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
+  run -0 pristine "$ghostty" +validate-config
+  assert_equal "$output" ''
+  run -0 pristine "$ghostty" +show-config
+  assert_line 'font-family = Menlo'
+}
+
 # Alacritty starts tmux in new windows, which can't attach to a server of another version: one started before an
 # update of tmux, or before Nix's replaced Homebrew's
 @test "a running tmux server is the tmux that new windows start" {
