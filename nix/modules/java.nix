@@ -10,15 +10,11 @@ let
   jdk = version: "/opt/homebrew/opt/openjdk@${version}/libexec/openjdk.jdk";
 in
 {
-  homebrew.taps = [
-    {
-      name = "jetbrains/utils"; # for kotlin-lsp
-      trusted = true;
-    }
-  ];
-
   homebrew.brews = map (version: "openjdk@${version}") versions ++ [
-    "jetbrains/utils/kotlin-lsp" # JetBrains' Kotlin language server, which nixpkgs doesn't have
+    # JetBrains' Kotlin language server, which nixpkgs doesn't have. Its tap isn't in homebrew.taps: `brew tap` checks
+    # that the tap's formulae load on Linux too, and this one has a URL only on macOS. Installing the formula taps it
+    # without that check, and nix-darwin trusts the formula itself.
+    "jetbrains/utils/kotlin-lsp"
   ];
 
   # For /usr/libexec/java_home, and the apps that use it
