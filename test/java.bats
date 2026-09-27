@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-# Homebrew's JDKs, selected by mise from config/mise/config.toml or .java-version (nix/modules/java.nix)
+# Homebrew's JDKs, selected by mise from config/mise/config.toml or .java-version, and JVM tools (nix/modules/java.nix)
 
 load helper
 
@@ -47,4 +47,9 @@ jdk_home() {
   echo 'class Hello { public static void main(String[] args) { System.out.println("hello"); } }' > Hello.java
   run -0 login_zsh 'java Hello.java'
   assert_equal "$output" hello
+}
+
+@test "the Kotlin language server runs" {
+  # By the name Neovim runs it by (nvim/lua/user/plugin/lsp.lua), which starts no server it can't find
+  run -0 login_zsh 'kotlin-lsp --version'
 }
