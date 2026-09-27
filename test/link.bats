@@ -45,6 +45,21 @@ load helper
   assert_equal "$output" ''
 }
 
+# Alacritty starts tmux in new windows, which can't attach to a server of another version: one started before an
+# update of tmux, or before Nix's replaced Homebrew's
+@test "a running tmux server is the tmux that new windows start" {
+  local server
+  run login_zsh 'tmux display-message -p "tmux #{version}"'
+  case "$output" in
+    'no server running'* | 'error connecting to'*) skip 'no tmux server running' ;;
+  esac
+  server="$output"
+  run -0 login_zsh 'tmux -V'
+  [ "$server" = "$output" ] && return
+  printf 'server:      %s\nnew windows: %s\nEnd its sessions, then `tmux kill-server`\n' "$server" "$output" >&2
+  return 1
+}
+
 # Such a path breaks once the formula is uninstalled, as the migration does
 @test "configs don't run Homebrew's copies of the commands Nix provides" {
   local commands file path problems=''
