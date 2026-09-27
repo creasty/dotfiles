@@ -11,19 +11,14 @@
 --exclude=vendor
 --exclude=node_modules
 
---languages=-html
+# Not JSON: lock files and generated schemas would flood the tags with its keys
+--languages=-html,json
 
---regex-ruby=/(^|[:;])[ \t]*([A-Z][[:alnum:]_]+) *=/\2/c,class,constant/
---regex-ruby=/(^|;)[ \t]*(has_many|belongs_to|has_one|has_and_belongs_to_many)\(? *:([[:alnum:]_]+)/\3/f,function,association/
---regex-ruby=/(^|;)[ \t]*scope\(? *:([[:alnum:]_]+)/\2/f,function,named_scope/
+# Rails' associations and scopes, as the methods they define
+--regex-ruby=/(^|;)[ \t]*(has_many|belongs_to|has_one|has_and_belongs_to_many)\(? *:([[:alnum:]_]+)/\3/f/
+--regex-ruby=/(^|;)[ \t]*scope\(? *:([[:alnum:]_]+)/\2/f/
 
---langdef=proto
---langmap=proto:.proto
---regex-proto=/^[ \t]*message[ \t]+([a-zA-Z0-9_\.]+)/\1/m,message/
---regex-proto=/^[ \t]*enum[ \t]+([a-zA-Z0-9_\.]+)/\1/e,enum/
---regex-proto=/^[ \t]*(required|repeated|optional)[ \t]+[a-zA-Z0-9_\.]+[ \t]+([a-zA-Z0-9_]+)[ \t]*=/\2/f,field/
---regex-proto=/^[ \t]*([A-Z0-9_]+)[ \t]*=/\1/f,enum/
-
+# GraphQL, which Universal Ctags has no parser for
 --langdef=graphql
 --langmap=graphql:.graphql
 --regex-graphql=/^[ \t]*enum[ \t]+([_A-Za-z][_0-9A-Za-z]*)/\1/e,enum/

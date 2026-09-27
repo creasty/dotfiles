@@ -17,16 +17,13 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Upstream
 
-- **creasty/homebrew-tools has no CI**, only a `.travis.yml` from the travis-ci.org days, so nothing noticed when Homebrew removed `appcast` (fixed in [creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)).
-  A workflow like the one `brew tap-new` generates (`brew test-bot --only-tap-syntax`) would catch the next one.
+- **JetBrains' tap fails `brew tap`'s check**: its kotlin-lsp formula has a URL only `on_macos`, so on Linux it "requires at least a URL", and `brew tap jetbrains/utils` refuses the whole tap.
+  `nix/modules/java.nix` installs the formula without declaring the tap, which skips the check; the tap can go in `homebrew.taps` once the formula has a URL outside `on_macos` too.
 
 ## Worth modernizing later
 
-- **ctags**: nixpkgs' `ctags` is Exuberant Ctags, unmaintained since 2009.
-  `universal-ctags` replaces it, but the two conflict, and Universal Ctags reads `~/.ctags.d/*.ctags` instead of `~/.ctags`.
 - **nvim-treesitter** is pinned to `master`; development moved to `main`, an incompatible rewrite.
   Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
-- **Kotlin**: JetBrains now develops an official language server, `kotlin-lsp` (nvim-lspconfig's `kotlin_lsp`), besides the community `kotlin-language-server` the config enables.
 - **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7.
   0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter's `master` and nvim-treesitter-endwise rely on (markdown code blocks, as in hover docs, broke with them): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until the move to `main` (see nvim-treesitter above).
   opfmt relies on 0.11's default for directives and is switched off until it handles 0.12; its tests skip meanwhile.
@@ -42,6 +39,10 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 - Fresh Neovim installs broke: nvim-treesitter's default branch became the incompatible `main`.
   `phaazon/hop.nvim`, gone as well, moved to `smoka7/hop.nvim` in [creasty/dotfiles#106](https://github.com/creasty/dotfiles/pull/106).
 - `creasty/tools/keyboard` stopped loading when Homebrew removed `appcast` ([creasty/homebrew-tools#10](https://github.com/creasty/homebrew-tools/pull/10)), and Google Chrome's cask failed on CI runners, which ship Chrome.
+
+## Fixed by moving to Universal Ctags
+
+- The Nix migration installed nixpkgs' `ctags`, Exuberant Ctags built without regex support: every run printed 18 warnings about `~/.ctags`, and Rails' associations and scopes, `.proto` and `.graphql` files went untagged.
 
 ## Fixed by replacing coc.nvim, ddu, UltiSnips, lexima and copilot.vim
 
