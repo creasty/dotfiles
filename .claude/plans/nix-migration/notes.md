@@ -14,7 +14,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
   - Command-line tools come from nixpkgs, pinned by `flake.lock`.
   - Homebrew keeps:
     - the casks
-    - what nixpkgs lacks (carthage) or has only as unfree (terraform)
+    - what nixpkgs lacks (carthage)
     - the JDKs, which `/usr/libexec/java_home` and mise use at stable paths
     - Ruby's build libraries (openssl@3, libyaml, zlib)
     - libpq (psql)
@@ -55,6 +55,8 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    - home-manager removes the links Ansible made into the checkout, and keeps other files in the way with a `.before-nix` suffix (e.g. the `~/.ssh/config` Ansible assembled).
    - nix-darwin takes over `/etc/zshenv`, `/etc/zprofile`, `/etc/zshrc` and `/etc/bashrc`. It keeps known versions with a `.before-nix-darwin` suffix.
      - If it aborts with "Unexpected files in /etc", check those files and rename them that way.
+   - If it fails with "toolchain 'stable-…' does not contain component 'rust-analyzer'", the stable toolchain predates Rust 1.64, and `rustup update` fails too on its `rls`, which Rust no longer ships.
+     `rustup toolchain uninstall stable`, then run it again: rustup installs the current stable.
 2. Clean up what the switch leaves behind:
 
    ```sh-session
@@ -62,16 +64,23 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    $ rm ~/.config/.ripgreprc              # ripgrep's config is at ~/.config/ripgrep/config now
    ```
 
+   - Docker Desktop can come back from its upgrade in "User" mode, which adds a PATH section to the top of the shell files on every start (`./verify` fails then).
+     Set Settings > Advanced > CLI tools to "System", then remove the sections: `git -C ~/dotfiles checkout shell/profile shell/bash/bash_profile`, and `rm ~/.zprofile.before-nix` if it only holds Docker Desktop's.
+   - Tabnine is no longer installed, but stays until uninstalled, and its VS Code extension adds `tabnine.experimentalAutoImports` to `vscode/settings.json` whenever it activates.
+     `code --uninstall-extension tabnine.tabnine-vscode`, and `:CocUninstall coc-tabnine` in Neovim. With VS Code quit, its data can go too: `~/Library/Application Support/TabNine`, `~/Library/Preferences/TabNine` and `~/Library/Application Support/Code/User/globalStorage/tabnine.tabnine-vscode`.
+
 3. Uninstall the formulae that Nix provides now, when convenient.
    - Until then, Nix's come first on `PATH`.
    - The switch never uninstalls anything (`cleanup = "none"`).
+   - A tmux server started before keeps running Homebrew's tmux, which Nix's can't attach to: new Alacritty windows close at once ("open terminal failed: not a terminal").
+     End its sessions, then `tmux kill-server`.
 
    ```sh-session
    $ brew uninstall awscli bat cloc ctags curl deno difftastic direnv envchain expect eza fd ffmpeg gh ghq git \
        git-filter-repo git-lfs gnupg graphviz hyperfine imagemagick jo jq massren ngrep nkf parallel pastel peco \
        procs protobuf ripgrep sd tmux uv webp xh mise go gopls golangci-lint rustup gradle pre-commit coursier \
        kotlin-language-server neovim ansible-lint clang-format llvm shellcheck terraform-ls watchman yarn ansible
-   $ brew untap golangci/tap
+   $ brew untap golangci/tap hashicorp/tap
    $ brew uninstall --cask 1password-cli  # if still installed, from either tap
    $ brew untap 1password/tap             # if still tapped
    ```

@@ -20,7 +20,6 @@
         })
         [
           "creasty/tools" # for keyboard, rid
-          "hashicorp/tap" # for terraform
         ];
 
     # brew list --cask --full-name
@@ -28,7 +27,6 @@
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
       "appcleaner" # https://freemacsoft.net/appcleaner/
       "creasty/tools/keyboard" # https://github.com/creasty/Keyboard
-      "docker-desktop" # https://www.docker.com/products/docker-desktop
       "figma" # https://www.figma.com/
       "gcloud-cli" # https://cloud.google.com/cli/
       "google-chrome" # https://www.google.com/chrome/
@@ -50,7 +48,6 @@
 
     brews = [
       "creasty/tools/rid" # Run commands in container as if were native
-      "hashicorp/tap/terraform" # nixpkgs has it as unfree (BUSL), outside the binary cache
       "icu4c" # for the charlock_holmes gem (home/bundle/config)
       "libiconv" # Conversion library
       "libpq" # psql and pg_dump of the latest PostgreSQL (on PATH through shell/profile)

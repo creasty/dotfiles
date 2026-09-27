@@ -54,8 +54,9 @@ mods = "Control"
 hide_when_typing = false # @see https://github.com/alacritty/alacritty/issues/6452
 
 [shell]
-args = ["-l", "-u"] # @see https://github.com/tmux/tmux/issues/328
-program = "/opt/homebrew/bin/tmux"
+# Through zsh, which puts Nix's profile on PATH (Alacritty's own PATH is launchd's)
+args = ["-c", "exec tmux -l -u"] # @see https://github.com/tmux/tmux/issues/328
+program = "/bin/zsh"
 
 [window]
 decorations = "full"

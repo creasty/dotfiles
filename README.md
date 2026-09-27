@@ -22,12 +22,14 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 It clones this repository to `~/dotfiles`, installs Homebrew and [Nix](https://determinate.systems/nix/), and applies the [nix-darwin](https://github.com/nix-darwin/nix-darwin) configuration of `flake.nix` for the current user, [home-manager](https://github.com/nix-community/home-manager) included.
 
-To apply changes later:
+To apply changes later, provision again:
 
 ```sh-session
-$ sudo darwin-rebuild switch --flake ~/dotfiles#$(id -un)
+$ ~/dotfiles/provision
 ```
 
+It skips what's already installed, and pulls master first unless the checkout is on another branch or has changes of its own.
+Then it switches to the configuration and [verifies](#verification) the result.
 Flakes only see files tracked by git, so `git add` a new file first.
 
 ### Links

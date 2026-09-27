@@ -36,3 +36,12 @@ configured_defaults() {
   run -0 nvram StartupMute
   assert_like "$output" 'StartupMute*%01'
 }
+
+# nix/modules/default.nix. pam_reattach comes first, so that Touch ID works in tmux too.
+@test "sudo accepts Touch ID, in tmux too" {
+  grep -qE '^auth[[:space:]]+include[[:space:]]+sudo_local' /etc/pam.d/sudo
+  run -0 awk '$1 == "auth" { print $3 }' /etc/pam.d/sudo_local
+  assert_like "${lines[0]}" '*/pam_reattach.so'
+  [ -f "${lines[0]}" ]
+  assert_equal "${lines[1]}" pam_tid.so
+}

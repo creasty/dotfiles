@@ -28,7 +28,6 @@ let g:coc_global_extensions = [
   \ 'coc-spell-checker',
   \ 'coc-sqlfluff',
   \ 'coc-syntax',
-  \ 'coc-tabnine',
   \ 'coc-tag',
   \ 'coc-tsserver',
   \ 'coc-vimlsp',

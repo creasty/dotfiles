@@ -16,7 +16,8 @@
       "com.apple.springing.delay" = 0.5;
       "com.apple.springing.enabled" = true;
       AppleAntiAliasingThreshold = 4;
-      AppleAquaColorVariant = 6;
+      # The Multicolor theme, and an automatic highlight color, which set no AppleAccentColor or AppleHighlightColor
+      AppleAquaColorVariant = 1;
       AppleEnableMenuBarTransparency = true;
       AppleEnableSwipeNavigateWithScrolls = false;
       AppleInterfaceStyle = "Dark";

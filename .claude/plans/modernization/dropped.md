@@ -18,7 +18,7 @@ Provisioning never uninstalls anything, so a Mac provisioned before keeps all of
 
 | Dropped | Why | Instead |
 |---|---|---|
-| `terraform` | Removed from homebrew-core after HashiCorp's license change | `hashicorp/tap/terraform` |
+| `terraform` | Removed from homebrew-core after HashiCorp's license change; `hashicorp/tap/terraform` replaced it until it was dropped too | Install it by hand to use it |
 | `trash` | Keg-only (not linked into `PATH`) now that macOS ships `/usr/bin/trash` | macOS's `trash`, which Neovim's file deletion (`nvim/plugin/file.vim`) uses too. The formula had extra flags (`-F` via Finder, `-l` list, `-e` empty) |
 | `readline`, `libxslt` and `ruby-build` as Ruby build dependencies | Ruby 3.3+ uses reline, nokogiri ships precompiled, mise bundles ruby-build | |
 
