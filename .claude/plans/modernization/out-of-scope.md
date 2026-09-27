@@ -15,12 +15,6 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
   On a fresh Mac, macOS's own programs in panes (`less`, `clear`, ...) don't know the terminal.
   tmux's man page asks for `screen`, `tmux` or a derivative: `screen-256color` ships with macOS, `tmux-256color` needs `tic` too.
 
-## Security
-
-- **ssh doesn't check host keys**: `nix/modules/ssh.nix` sets `StrictHostKeyChecking no` and `UserKnownHostsFile /dev/null` under `Host *` (as Ansible's `_common` did).
-  ssh takes the first value it finds, so this covers every host that doesn't set them earlier, github.com included: a changed or spoofed host key goes unnoticed.
-  Limit it to the Vagrant hosts, and use `StrictHostKeyChecking accept-new` with a real `known_hosts` elsewhere.
-
 ## Verification gaps
 
 - **Neovim's config**: `./verify` runs Neovim without it (`-u NONE`).
