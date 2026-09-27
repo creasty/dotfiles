@@ -9,6 +9,9 @@ on:
     branches: [master]
   pull_request:
   workflow_dispatch:
+  schedule:
+    # Every Monday, at 10:00 JST
+    - cron: "0 1 * * 1"
 
 jobs:
   e2e:
