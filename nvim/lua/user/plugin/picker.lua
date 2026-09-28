@@ -21,8 +21,6 @@
 
 local M = {}
 
-local ACTIONS = { 'open', 'split', 'vsplit', 'tab', 'yank', 'quickfix' }
-
 ---------------------------------------------------------------------------
 -- State
 ---------------------------------------------------------------------------
@@ -134,19 +132,13 @@ local function run_action(name, items)
     local text = table.concat(vim.tbl_map(path_of, items), '\n')
     vim.fn.setreg('"', text, 'v')
     vim.fn.setreg(vim.v.register, text, 'v')
-  elseif name == 'quickfix' then
-    vim.fn.setqflist(vim.tbl_map(function(item)
-      return { filename = path_of(item), lnum = item.pos and item.pos[1] or 1, col = item.pos and item.pos[2] + 1 or 1, text = item.line or item.text }
-    end, items))
-    vim.cmd('botright copen')
   elseif name == 'cd' then
     vim.fn.chdir(path_of(items[1]))
   else
-    local cmd = ({ open = 'edit', split = 'split', vsplit = 'vsplit', tab = 'tabedit' })[name]
     for i = #items, 2, -1 do
       vim.bo[vim.fn.bufadd(path_of(items[i]))].buflisted = true
     end
-    vim.cmd[cmd](vim.fn.fnameescape(path_of(items[1])))
+    vim.cmd.edit(vim.fn.fnameescape(path_of(items[1])))
     local pos = items[1].pos
     if pos and pos[1] > 0 then
       vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] })
@@ -156,41 +148,6 @@ local function run_action(name, items)
 end
 
 local actions = {}
-
---- Lists the actions for the item(s); cancelling returns to the picker.
-function actions.choose_action(picker)
-  local source = picker.opts.source
-  local items = picker:selected({ fallback = true })
-  local names = picker.opts.item_actions or ACTIONS
-  picker:close()
-  local chosen = false
-  vim.schedule(function()
-    Snacks.picker({
-      source = 'item_actions',
-      title = 'Actions',
-      layout = { preset = 'select' },
-      focus = 'list',
-      items = vim.tbl_map(function(name)
-        return { text = name }
-      end, names),
-      format = 'text',
-      confirm = function(p, item)
-        chosen = true
-        p:close()
-        vim.schedule(function()
-          run_action(item.text, items)
-        end)
-      end,
-      on_close = function()
-        if not chosen then
-          vim.schedule(function()
-            M.resume(source)
-          end)
-        end
-      end,
-    })
-  end)
-end
 
 for _, name in ipairs({ 'open', 'yank', 'cd' }) do
   actions['item_' .. name] = function(picker)
@@ -271,7 +228,9 @@ local function keys(extra)
     ['<CR>'] = { 'confirm', mode = { 'n', 'i' } },
     ['<c-j>'] = { 'confirm', mode = { 'n', 'i' } },
     ['<c-q>'] = { 'close', mode = { 'n', 'i' } },
-    ['<Tab>'] = { 'choose_action', mode = { 'n', 'i' } },
+    -- nothing (unmapped, it would jump in the list, as <C-i> does, and type
+    -- spaces in the prompt)
+    ['<Tab>'] = { function() end, mode = { 'n', 'i' } },
     ['<S-Tab>'] = false,
     ['<c-l>'] = { 'refresh', mode = { 'n', 'i' } },
     ['<c-r>'] = { 'reload', mode = { 'n', 'i' } },
@@ -736,7 +695,6 @@ function M.open()
       finder = cached('repositories', repos_finder),
       format = format_file,
       confirm = 'item_cd',
-      item_actions = { 'cd', 'yank' },
     }, resume)
   end
   return open({
@@ -874,13 +832,6 @@ function M.diagnostics()
   return Snacks.picker.diagnostics({ focus = 'list' })
 end
 
---- Reopens a source as it was left, whatever the directory.
-function M.resume(source)
-  if require('snacks.picker.resume').state[source] then
-    Snacks.picker.resume({ source = source })
-  end
-end
-
 --- Where a list of `count` code actions opens: next to the cursor, just below
 --- the line, or just above it when there is no room below. (Placed on the
 --- screen, not at the cursor, which is the prompt's by the time the picker
@@ -899,6 +850,16 @@ local function next_to_cursor(count)
   return { relative = 'editor', row = row, col = cursor.col - 1, width = 0.4, min_width = 50, max_width = 80 }
 end
 
+--- How tall the vertical layout is inside its border: as its preset has it
+--- (80% of the screen, at least 30 rows), but no taller than fits above the
+--- command line. (On a shorter screen, snacks keeps the 30 rows without
+--- counting the border, and Neovim, to fit the list on the screen, moves it
+--- up onto the prompt's rule, which hides the first result.)
+local function vertical_height()
+  local fits = vim.o.lines - vim.o.cmdheight - 2 -- (the border)
+  return math.min(math.max(math.floor(vim.o.lines * 0.8) - 2, 30), fits)
+end
+
 function M.setup()
   require('snacks').setup({
     picker = {
@@ -907,6 +868,9 @@ function M.setup()
         preset = 'vertical',
         hidden = { 'preview' },
         cycle = false,
+      },
+      layouts = {
+        vertical = { layout = { height = vertical_height, min_height = 0 } },
       },
       actions = actions,
       win = {
