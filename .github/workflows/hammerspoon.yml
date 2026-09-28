@@ -1,0 +1,30 @@
+name: hammerspoon
+
+# Runs the specs of the Hammerspoon config (hammerspoon/tests), on a fake of
+# Hammerspoon's API.
+
+on:
+  push:
+    paths:
+      - hammerspoon/**
+      - .github/workflows/hammerspoon.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Lua 5.4, as Hammerspoon's
+      - name: Install Lua
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends lua5.4
+
+      - name: Run the specs
+        run: hammerspoon/tests/run

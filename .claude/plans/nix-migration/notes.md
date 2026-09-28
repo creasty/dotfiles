@@ -21,7 +21,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
     - icu4c, for the charlock_holmes gem
 - **Runtimes stay with mise** (`config/mise/config.toml`). home-manager runs `mise install` on every switch, after registering the JDKs.
 - **1Password's CLI** comes from nixpkgs through nix-darwin, which copies `op` to `/usr/local/bin`, the path the app's integration requires.
-- **Keyboard** comes from its GitHub release through Nix instead of a cask, and home-manager copies the app into `~/Applications/Home Manager Apps`.
+- **Keyboard** came from its GitHub release through Nix instead of a cask, until Hammerspoon took over its key bindings (`hammerspoon.nix`, `hammerspoon/`).
 - **1Password manages the SSH keys:**
   - `~/.ssh/config` is generated and makes ssh use 1Password's SSH agent.
   - Private keys move into 1Password; public keys stay in `~/.ssh/keys` to pick a key per host (`IdentitiesOnly`).
@@ -39,7 +39,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 |---|---|
 | link | `links.nix` (the tree), plus the modules below for their own files |
 | ssh | `ssh.nix` |
-| homebrew | `homebrew.nix` (taps, casks, formulae), `packages.nix` (command-line tools), `keyboard.nix` (Keyboard) |
+| homebrew | `homebrew.nix` (taps, casks, formulae), `packages.nix` (command-line tools), `hammerspoon.nix` (Hammerspoon, in place of Keyboard) |
 | mise, ruby, nodejs | `mise.nix` |
 | java | `java.nix` |
 | golang, rust, swift | `go.nix`, `rust.nix`, `swift.nix` |
@@ -89,7 +89,7 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
    $ brew untap creasty/tools
    ```
 
-   - Uninstalling Keyboard's cask removes `/Applications/Keyboard.app`: a login item that started it needs `~/Applications/Home Manager Apps/Keyboard.app` instead (System Settings > General > Login Items).
+   - Uninstalling Keyboard's cask removes `/Applications/Keyboard.app`: remove the login item that started it (System Settings > General > Login Items), as Hammerspoon replaces it (`hammerspoon/README.md`).
 
 4. Move the SSH keys into 1Password.
    - Import each private key, and turn on the SSH agent in 1Password's settings (Developer).
@@ -112,6 +112,6 @@ Ansible is replaced by a flake: [nix-darwin](https://github.com/nix-darwin/nix-d
 | `llvm`, `clang-format` formulae | Only clangd and clang-format were used | nixpkgs' `clang-tools`, with no `clangd.path` setting |
 | `golangci/tap` | golangci-lint is in nixpkgs | |
 | Homebrew's `1password-cli` cask | The CLI comes from nixpkgs, like the other command-line tools | nix-darwin's `programs._1password`, `op` at `/usr/local/bin` |
-| The `creasty/tools/keyboard` cask | Homebrew quarantines the apps of casks, and Gatekeeper won't open Keyboard, which isn't notarized, until it's allowed in System Settings > Privacy & Security | Its GitHub release through Nix (`keyboard.nix`), in `~/Applications/Home Manager Apps` |
+| The `creasty/tools/keyboard` cask | Homebrew quarantines the apps of casks, and Gatekeeper won't open Keyboard, which isn't notarized, until it's allowed in System Settings > Privacy & Security | Its GitHub release through Nix, until Hammerspoon replaced it (`hammerspoon/`) |
 | `creasty/tools/rid`, and the `creasty/tools` tap | Not used any more; rid's last release, an Intel build, is from 2018 | |
 | `./verify --tags`, `DOTFILES_NOEDIT_SECRETS` | No Ansible tags or secrets file | `./verify [bats options]` |

@@ -41,7 +41,7 @@ Files are linked into the home directory by where they are in the repository, wi
 | `home/<path>` | `~/.<path>` (`home/aws/config` → `~/.aws/config`) |
 | `config/<path>` | `~/.config/<path>` (`config/git/config` → `~/.config/git/config`) |
 
-The Nix modules link the rest: `nvim/`, the shell files and VS Code's settings.
+The Nix modules link the rest: `nvim/`, `hammerspoon/`, the shell files and VS Code's settings.
 Links point into the checkout, so edits apply without a rebuild.
 
 ### App Store apps
@@ -87,6 +87,8 @@ After merging, provision again, and run `:Lazy update` in Neovim to check out th
 
 - **`bin/`** : Custom executable scripts and commands (Added to system `PATH`)
 - **`config/*`** : XDG-compliant configuration files (linked into `~/.config`)
+- **`hammerspoon/`** : Hammerspoon config: the key bindings of [Keyboard](https://github.com/creasty/Keyboard) ([README](./hammerspoon/README.md))
+  - **`tests/`** : Specs, on a fake of Hammerspoon's API
 - **`home/*`** : Home directory dotfiles (linked into `~` with a leading dot)
 - **`nvim/`** : Neovim configurations
   - **`tests/`** : End-to-end workflow tests ([README](./nvim/tests/README.md))
