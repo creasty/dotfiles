@@ -114,8 +114,11 @@ resize-overlay = never
 
 #  Font
 #-----------------------------------------------
-# Menlo 12, as Alacritty (macOS's default), with the 2px of its offset between lines (glyphs centered)
+# Menlo 12, as Alacritty (macOS's default), with the 2px of its offset between lines (glyphs centered). Japanese in
+# Hiragino Sans, which macOS falls back to in Alacritty: Ghostty asks macOS for kanji only, and takes kana from any
+# font that has them, e.g. a serif one (Mincho).
 font-family = Menlo
+font-family = Hiragino Sans
 font-size = 12
 adjust-cell-height = 2
 

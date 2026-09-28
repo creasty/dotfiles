@@ -21,6 +21,7 @@ Its config, `config/ghostty/config.ghostty`, reproduces both with Ghostty's own 
 | `q`, `C-c` | `:q` |
 | Window list: `#{b:pane_current_path}` | Tab titles from `shell/zsh/src/term.zsh` |
 | Colors, Menlo 12, padding, maximized window | The same |
+| Japanese in Hiragino Sans, macOS's fallback | Named after Menlo: Ghostty asks macOS for kanji only, and could take kana from a serif font |
 | `history-limit 15000` | `scrollback-limit`, in bytes: about 15000 lines |
 
 ## Where Ghostty differs
