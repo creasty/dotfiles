@@ -233,6 +233,40 @@ describe('Picker', function()
     end)
   end)
 
+  describe('on a short screen (a split pane)', function()
+    --- Waits until a row of the screen shows `text`.
+    local function wait_on_screen(nvim, text)
+      nvim:wait_for(function()
+        for _, line in ipairs(nvim:screen()) do
+          if line:find(text, 1, true) then
+            return true
+          end
+        end
+      end, { message = text .. ' on the screen' })
+    end
+
+    it('shows the first result below the prompt, in grep too', function()
+      local nvim = in_project({ lines = 24 })
+      local picker = open_finder(nvim)
+      wait_on_screen(nvim, picker.items[1])
+      nvim:type('<C-q>')
+      probe.wait_picker_closed(nvim)
+      nvim:type('<Space>/')
+      nvim:type('needle<CR>')
+      picker = probe.wait_picker(nvim, function(p)
+        return #p.items == 3
+      end)
+      wait_on_screen(nvim, picker.items[1])
+    end)
+
+    it('shows the first result when the screen shrinks while the picker is open', function()
+      local nvim = in_project()
+      local picker = open_finder(nvim)
+      nvim:cmd('set lines=24')
+      wait_on_screen(nvim, picker.items[1])
+    end)
+  end)
+
   -- As in VS Code's search view: the files to search, and a replacement
   -- every line of the list previews before R replaces what it lists.
   local SEARCH_TREE = {
@@ -708,15 +742,26 @@ describe('Picker', function()
       t.eq(2, #listed, 'two files opened: ' .. vim.inspect(listed))
     end)
 
-    it('<Tab> offers the actions for the item', function()
+    it('<Tab> does nothing, in the list or in the prompt', function()
       local nvim = in_project()
-      grep(nvim, 'upper')
+      local before = grep(nvim, 'needle')
+      local floats = #nvim:floats()
       nvim:type('<Tab>')
-      local picker = probe.wait_picker(nvim, function(p)
-        return vim.tbl_contains(p.items, 'open')
+      nvim:sleep(300)
+      local after = probe.picker(nvim)
+      t.eq({ 'list', before.current, {} }, { after.focus, after.current, after.marked })
+      t.eq(floats, #nvim:floats(), 'no other window')
+      nvim:type('i')
+      nvim:wait_for(function()
+        return probe.picker(nvim).focus == 'prompt'
       end)
-      t.contains(picker.items, 'open')
-      t.contains(picker.items, 'yank')
+      nvim:wait_mode('i')
+      nvim:type('<Tab>')
+      nvim:sleep(300)
+      after = probe.picker(nvim)
+      t.eq({ 'prompt', '', before.current }, { after.focus, after.query, after.current })
+      t.eq('i', nvim:mode())
+      t.eq(floats, #nvim:floats(), 'no other window')
     end)
 
     it('p shows a preview of the item; p again hides it', function()
