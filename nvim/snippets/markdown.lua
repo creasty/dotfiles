@@ -1,4 +1,3 @@
--- Converted from UltiSnips' markdown.snippets
 local S = require('user.snippets')
 
 -- `2x3` -> a table of 3 columns and 2 rows, a tabstop in each cell.

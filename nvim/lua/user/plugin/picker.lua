@@ -514,10 +514,10 @@ function M.resume(source)
   end
 end
 
---- Where a list of `count` code actions opens: next to the cursor, as
---- coc.nvim's did, just below the line, or just above it when there is no
---- room below. (Placed on the screen, not at the cursor, which is the
---- prompt's by the time the picker lays itself out again.)
+--- Where a list of `count` code actions opens: next to the cursor, just below
+--- the line, or just above it when there is no room below. (Placed on the
+--- screen, not at the cursor, which is the prompt's by the time the picker
+--- lays itself out again.)
 local function next_to_cursor(count)
   -- as tall as the select layout makes it: the list (as many rows as items,
   -- at least 2), the prompt and its rule, the border

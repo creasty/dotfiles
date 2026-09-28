@@ -48,7 +48,7 @@ load helper
   echo 'type Hidden { me: User }' > node_modules/schema.graphql
   echo '{ "name": "app" }' > package.json
   # Recursing into the directory, GraphQL, and skipping node_modules and JSON are the config's, which Universal Ctags
-  # reads from ~/.config/ctags (Exuberant Ctags read ~/.ctags). Warnings about it would be extra lines.
+  # reads from ~/.config/ctags. Warnings about it would be extra lines.
   run -0 login_zsh 'ctags -f -'
   assert_equal "${#lines[@]}" 1
   assert_like "${lines[0]}" "Query${tab}schema.graphql${tab}*${tab}language:graphql"
@@ -63,7 +63,7 @@ load helper
   assert_line 'font-family = Menlo'
 }
 
-# Such a path breaks once the formula is uninstalled, as the migration does
+# Provisioning installs these commands with Nix, not Homebrew: a path to Homebrew's copy finds nothing
 @test "configs don't run Homebrew's copies of the commands Nix provides" {
   local commands file path problems=''
   commands="$(manifest '.commands[]')"

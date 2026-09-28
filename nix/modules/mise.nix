@@ -17,9 +17,9 @@ in
   };
 
   config = {
-    # Ruby is built against Homebrew's libraries (ruby.compile), like rbenv did. Each is installed on its own: Homebrew
-    # removes a library that was installed as another formula's dependency along with that formula, and Ruby then fails
-    # to start (as with gmp, which ruby-build builds against whenever it finds it).
+    # Ruby is built against Homebrew's libraries (ruby.compile). Each is installed on its own: Homebrew removes a
+    # library that was installed as another formula's dependency along with that formula, and Ruby then fails to start
+    # (as with gmp, which ruby-build builds against whenever it finds it).
     homebrew.brews = [
       "gmp"
       "libyaml"

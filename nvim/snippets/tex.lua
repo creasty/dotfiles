@@ -1,4 +1,3 @@
--- Converted from UltiSnips' tex.snippets
 local S = require('user.snippets')
 
 -- `3` -> `$1 & $2 & $3`

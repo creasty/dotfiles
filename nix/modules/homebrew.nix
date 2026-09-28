@@ -4,7 +4,7 @@
   homebrew = {
     enable = true;
 
-    # Like the Ansible playbook's `state: latest`. Nothing is ever uninstalled.
+    # Everything at its latest on every switch. Nothing is ever uninstalled.
     onActivation = {
       autoUpdate = true;
       upgrade = true;

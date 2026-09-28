@@ -53,21 +53,6 @@ in
         home.file = lib.mapAttrs (_: source: {
           source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${source}";
         }) config.dotfiles.link;
-
-        # Ansible linked whole directories (e.g. ~/.config/git) and files straight into the checkout. Remove those
-        # links first: home-manager would otherwise back up a file *through* a linked directory, i.e. rename it in
-        # the repository.
-        home.activation.unlinkAnsibleLinks = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-          for target in ${lib.escapeShellArgs (lib.attrNames config.dotfiles.link)}; do
-            path="$HOME/$target"
-            while [ "$path" != "$HOME" ]; do
-              if [ -L "$path" ] && [[ "$(readlink "$path")" == ${lib.escapeShellArg dotfiles}/* ]]; then
-                run rm $VERBOSE_ARG "$path"
-              fi
-              path="$(dirname "$path")"
-            done
-          done
-        '';
       };
     };
 }

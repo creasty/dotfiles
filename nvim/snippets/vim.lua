@@ -1,4 +1,3 @@
--- Converted from UltiSnips' vim.snippets
 local S = require('user.snippets')
 
 -- `plugin/foo-bar.vim` -> `foo_bar_vim`

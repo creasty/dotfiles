@@ -1,5 +1,5 @@
 # The Mac, as a nix-darwin configuration. Each module configures one topic, for both the system and the
-# user's home (home-manager), in place of an Ansible role.
+# user's home (home-manager).
 { username, ... }:
 {
   imports = [

@@ -8,10 +8,7 @@ popups, pickers, signs, the statusline.
 The specs describe workflows ("`<Esc>` closes the completion menu but stays in
 insert mode"), not plugins. A thin adapter layer is the only code that knows
 which plugin provides a behavior, so the same specs keep running while you
-replace a plugin — and fail exactly where your workflow changes. That is how
-coc.nvim, ddu, UltiSnips, lexima and copilot.vim were replaced by Neovim's LSP
-client with blink.cmp, snacks.nvim's picker, LuaSnip, nvim-autopairs and
-copilot.lua.
+replace a plugin — and fail exactly where your workflow changes.
 
 ## Running
 
@@ -139,10 +136,9 @@ behavior may well be the better one: update or delete the test.
    update the spec if the change is what you want.
 
 The snippet library is pinned trigger by trigger in
-`golden/snippets/*.snippets.txt`: it was recorded with UltiSnips and checked
-against the converted LuaSnip library. With a placeholder selected, the
-recorded cursor sits on its last character, whichever end of the selection an
-engine leaves the cursor at.
+`golden/snippets/*.snippets.txt`. With a placeholder selected, the recorded
+cursor sits on its last character, whichever end of the selection an engine
+leaves the cursor at.
 
 ## How it works
 

@@ -1,4 +1,3 @@
--- Converted from UltiSnips' typescript.snippets
 local ls = require('luasnip')
 local fmt = require('luasnip.extras.fmt').fmt
 local S = require('user.snippets')

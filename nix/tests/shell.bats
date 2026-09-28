@@ -33,7 +33,7 @@ starts_cleanly() {
   assert_equal "$output" '1 1 1'
 }
 
-# Nix's packages come first, even over formulae left from before, then Homebrew's, then macOS's commands
+# Nix's packages come first, then Homebrew's, then macOS's commands
 prefers_nix() {
   run -0 "$1" 'echo "$PATH"'
   assert_before "$output" "$PROFILE_BIN" "$HOMEBREW_PREFIX/bin"

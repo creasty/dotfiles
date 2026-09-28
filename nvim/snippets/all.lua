@@ -1,4 +1,3 @@
--- Converted from UltiSnips' all.snippets
 local S = require('user.snippets')
 
 -- `x-` -> `x -> `: the word before an arrow, spaced out.

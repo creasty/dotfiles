@@ -1,4 +1,3 @@
--- Converted from UltiSnips' sql.snippets
 local S = require('user.snippets')
 
 return {

@@ -10,7 +10,7 @@
 --
 -- Bodies use the LSP snippet syntax ($1, ${1:default}, $0, $TM_SELECTED_TEXT
 -- for what <Tab> cut from a selection, $LS_CAPTURE_1 for a regex group); a
--- body can also be a list of LuaSnip nodes. Options keep UltiSnips' meaning:
+-- body can also be a list of LuaSnip nodes. Options have UltiSnips' meaning:
 --
 --   (none)  the trigger follows whitespace or starts the line
 --   w       the trigger follows a non-word character

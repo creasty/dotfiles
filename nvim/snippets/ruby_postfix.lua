@@ -1,4 +1,3 @@
--- Converted from UltiSnips' ruby_postfix.snippets
 local S = require('user.snippets')
 
 -- A variable name for an expression: its last word, singular and lowercase

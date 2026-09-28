@@ -1,4 +1,3 @@
--- Converted from UltiSnips' javascriptreact.snippets
 local S = require('user.snippets')
 
 return {

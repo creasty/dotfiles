@@ -1,4 +1,3 @@
--- Converted from UltiSnips' ruby.snippets
 local ls = require('luasnip')
 local fmta = require('luasnip.extras.fmt').fmta
 local S = require('user.snippets')

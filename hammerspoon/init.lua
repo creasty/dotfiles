@@ -1,6 +1,6 @@
 -- Hammerspoon's config (https://www.hammerspoon.org), linked as ~/.hammerspoon: see README.md
 
--- Starts at login, as Keyboard did
+-- Starts at login
 if not hs.autoLaunch() then hs.autoLaunch(true) end
 
 -- A global, for the console

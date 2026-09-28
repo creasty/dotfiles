@@ -1,4 +1,3 @@
--- Converted from UltiSnips' javascript.snippets
 local S = require('user.snippets')
 
 return {

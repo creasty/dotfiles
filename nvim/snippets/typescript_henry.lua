@@ -1,4 +1,3 @@
--- Converted from UltiSnips' typescript_henry.snippets
 local S = require('user.snippets')
 
 return {

@@ -1,4 +1,3 @@
--- Converted from UltiSnips' clike_stmt.snippets
 local S = require('user.snippets')
 
 return {
