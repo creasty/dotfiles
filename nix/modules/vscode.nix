@@ -26,7 +26,6 @@ let
     "pflannery.vscode-versionlens"
     "sleistner.vscode-fileutils"
     "steoates.autoimport"
-    "streetsidesoftware.code-spell-checker"
     "styled-components.vscode-styled-components"
     "swindh.enumerator"
     "tamasfe.even-better-toml"

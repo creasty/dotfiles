@@ -7,7 +7,6 @@ function! s:setup_matchadd() abort
     call matchdelete(l:match_id)
   endfor
 
-  " cSpell:disable
   let w:candle_match_ids = [
     \ matchadd("SpellRare", '[０１２３４５６７８９　]'),
     \ matchadd("SpellRare", '[ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ]'),
