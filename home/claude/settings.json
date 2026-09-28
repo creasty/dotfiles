@@ -1,0 +1,19 @@
+{
+  "env": {
+    "CLAUDE_AFK_TIMEOUT_MS": "2147483647",
+    "CLAUDE_CODE_USER_DIALOG_TIMEOUT_MS": "0"
+  },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "enabledPlugins": {
+    "mcp-server-dev@claude-plugins-official": true
+  },
+  "effortLevel": "xhigh",
+  "alwaysThinkingEnabled": true,
+  "askUserQuestionTimeout": "never",
+  "skipWorkflowUsageWarning": true,
+  "switchModelsOnFlag": false,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
+}

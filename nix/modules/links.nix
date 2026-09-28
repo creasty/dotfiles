@@ -6,6 +6,8 @@
 # The other modules add the few links that live elsewhere (dotfiles.link), e.g. nvim/ and the shell files.
 # Links point into the checkout rather than the Nix store, so that edits apply without a rebuild. A new file
 # needs `git add`, since flakes only see tracked files, and a switch.
+# A file already in a link's place is moved aside (backupFileExtension in default.nix), unless it's identical to the
+# one linked: home-manager leaves that one in place, unlinked, so replace it with the link before the switch.
 { username, dotfiles, ... }:
 let
   root = ../..;
