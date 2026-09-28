@@ -6,7 +6,9 @@
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
 -- as long as you stay in the directory of the previous picker; the results
--- are gathered again only with <C-l> (refresh) or <C-r> (reload).
+-- are gathered again only with <C-l> (refresh) or <C-r> (reload). Grep and
+-- the locations open in the list: i narrows it in the prompt, and <C-c> or
+-- <Esc> goes back to it.
 --
 -- In grep's list, as in VS Code's search view:
 --
@@ -200,12 +202,38 @@ for _, name in ipairs({ 'open', 'yank', 'cd' }) do
   end
 end
 
---- <Esc>: leaves insert mode in the prompt, closes the picker otherwise.
+--- Whether the picker opens in the list (grep, locations), where the prompt
+--- (i) only narrows the list.
+local function opens_in_list(picker)
+  return picker.opts.focus == 'list'
+end
+
+--- From the prompt back to the list, still narrowed.
+local function back_to_list(picker)
+  picker:norm(function()
+    picker:focus('list')
+  end)
+end
+
+--- <Esc> in the prompt: leaves insert mode, and closes the picker from normal
+--- mode; goes back to the list in a picker that opens there.
 function actions.escape(picker)
-  if vim.fn.mode():sub(1, 1) == 'i' then
+  if opens_in_list(picker) then
+    back_to_list(picker)
+  elseif vim.fn.mode():sub(1, 1) == 'i' then
     vim.cmd.stopinsert()
   else
     picker:close()
+  end
+end
+
+--- <C-c> in the prompt: closes the picker at once; goes back to the list in
+--- a picker that opens there, as <Esc> does.
+function actions.interrupt(picker)
+  if opens_in_list(picker) then
+    back_to_list(picker)
+  else
+    picker:action('cancel')
   end
 end
 
@@ -253,6 +281,7 @@ end
 
 local input_keys = keys({
   ['<Esc>'] = { 'escape', mode = { 'n', 'i' } },
+  ['<c-c>'] = { 'interrupt', mode = { 'i' } },
   ['q'] = 'close',
   ['<c-n>'] = { 'list_down', mode = { 'n', 'i' } },
   ['<c-p>'] = { 'list_up', mode = { 'n', 'i' } },

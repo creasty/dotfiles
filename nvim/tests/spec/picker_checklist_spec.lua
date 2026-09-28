@@ -540,6 +540,28 @@ describe('Picker', function()
         t.eq('', picker.query)
         in_prompt(nvim)
       end, { timeout = 40000 })
+
+      it('<C-c> in the prompt goes back to the list, still narrowed', function()
+        local nvim = go_project()
+        refs_state(nvim)
+        nvim:type('i')
+        nvim:wait_for(function()
+          return probe.picker(nvim).focus == 'prompt'
+        end)
+        nvim:type('7')
+        probe.wait_picker(nvim, function(p)
+          return #p.items == 1
+        end)
+        nvim:sleep(100) -- (a <C-c> typed while Neovim is busy interrupts instead)
+        nvim:type('<C-c>')
+        nvim:wait_for(function()
+          return probe.picker(nvim).focus == 'list'
+        end, { message = 'the list to have the focus' })
+        local picker = probe.picker(nvim)
+        t.eq({ REFS[2] }, picker.items)
+        t.eq('7', picker.query)
+        in_list(nvim)
+      end, { timeout = 40000 })
     end)
 
     it('each source keeps its own state: files, grep and locations', function()

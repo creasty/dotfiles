@@ -97,6 +97,7 @@ Every picker source is checked for the same things:
 | | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`gR` `gD` `gT`, `gll` |
 |---|---|---|---|---|
 | focus when opened | prompt | prompt | list | list |
+| `<C-c>` in the prompt | closes | closes | back to the list, still narrowed (`<Esc>` too) | back to the list, still narrowed (`<Esc>` too) |
 | reopens as left: query, results, selected line, focus | ✓ | ✓ | ✓ and marks | ✓ |
 | keeps its own state while others are used | ✓ | ✓ | ✓ | ✓ |
 | a long list scrolls; reopens at the selected line, where it was | `<C-n>` `<C-p>` | `<C-n>` `<C-p>` | `j` `k` `<Down>` `<Up>` | `j` `k` |
