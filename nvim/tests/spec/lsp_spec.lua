@@ -609,22 +609,9 @@ describe('LSP', function()
   end)
 
   describe('spell checking', function()
-    it("skips words under 4 letters and possessives (creasty's), knows your words, and reports hints", function()
+    it('reports misspellings as hints', function()
       local nvim = t.nvim()
-      local init = nvim:lua([[
-        local params = {}
-        vim.lsp.config.codebook.before_init(params, {})
-        local options = params.initializationOptions
-        return {
-          severity = options.diagnosticSeverity,
-          config = vim.fn.readfile(options.globalConfigPath),
-          word = vim.fn.readfile(vim.fn.stdpath('config') .. '/dict/user.txt')[1],
-        }
-      ]])
-      t.eq('hint', init.severity)
-      t.contains(init.config, 'min_word_length = 4')
-      t.contains(init.config, [=[ignore_patterns = ["\\w+['’]\\w+"]]=])
-      t.contains(init.config, ('  %q,'):format(init.word), 'the words in nvim/dict/user.txt')
+      t.eq('hint', nvim:lua('return vim.lsp.config.codebook.init_options.diagnosticSeverity'))
     end)
   end)
 end)

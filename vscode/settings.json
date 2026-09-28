@@ -89,18 +89,6 @@
   //==============================================================================================
   "eslint.validate": ["javascript", "javascriptreact"],
 
-  //=== Code Spell Checker
-  //==============================================================================================
-  "cSpell.diagnosticLevel": "Hint",
-  "cSpell.fixSpellingWithRenameProvider": true,
-  "cSpell.ignoreRegExpList": ["\\w+'\\w+"],
-  "cSpell.dictionaryDefinitions": [
-    {
-      "name": "user",
-      "path": "/Users/creasty/.config/nvim/dict/user.txt",
-    },
-  ],
-
   //=== Prettier
   //==============================================================================================
   "prettier.trailingComma": "es5",
@@ -158,7 +146,4 @@
     "editor.defaultFormatter": null,
     "editor.formatOnSave": false,
   },
-  "cSpell.userWords": [
-    "evals"
-  ],
 }

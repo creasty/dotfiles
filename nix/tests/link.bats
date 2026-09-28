@@ -54,6 +54,17 @@ load helper
   assert_like "${lines[0]}" "Query${tab}schema.graphql${tab}*${tab}language:graphql"
 }
 
+@test "Codebook reads its config from the dotfiles" {
+  cd "$BATS_TEST_TMPDIR"
+  # One of your words, a word under 4 letters and a possessive pass by the config; the misspelling doesn't
+  printf '%s\n' creasty qwx "zzyzx's" qwxz > words.txt
+  run -1 login_zsh 'codebook-lsp lint words.txt'
+  # using global config /Users/me/.config/codebook/codebook.toml
+  assert_same_file "${lines[0]#using global config }" "$DOTFILES_PATH/config/codebook/codebook.toml"
+  assert_like "$output" '*words.txt:4:1*qwxz*'
+  assert_line 'Found 1 spelling error(s) in 1 file(s).'
+}
+
 # The cask puts Ghostty's command-line tool in its app only
 @test "Ghostty accepts the config, and reads it from the dotfiles" {
   local ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
