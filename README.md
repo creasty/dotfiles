@@ -87,6 +87,8 @@ After merging, provision again, and run `:Lazy update` in Neovim to check out th
 
 - **`bin/`** : Custom executable scripts and commands (Added to system `PATH`)
 - **`config/*`** : XDG-compliant configuration files (linked into `~/.config`)
+- **`ghostty-pane/`** : The shell of Ghostty's panes, with Neovim over the pane on <kbd>C-y</kbd> in place of tmux's copy mode
+  - **`tests/`** : End-to-end tests, with tmux as the terminal
 - **`hammerspoon/`** : Hammerspoon config: the key bindings of [Keyboard](https://github.com/creasty/Keyboard) ([README](./hammerspoon/README.md))
   - **`tests/`** : Specs, on a fake of Hammerspoon's API
 - **`home/*`** : Home directory dotfiles (linked into `~` with a leading dot)

@@ -63,24 +63,6 @@ if [[ "$OSTYPE" =~ ^darwin ]]; then
   _register_keycommand '^v' _paste_from_cb
 fi
 
-# View the scrollback in Neovim, to select text in it with the keyboard: v in Ghostty's copy mode
-# (config/ghostty/config.ghostty) sends F20, then the path of the file it wrote the screen to, and a return.
-# Neovim opens from the line editor, as edit-command-line's does, so no command shows up or goes to the history.
-_view_scrollback() {
-  local file key
-  while read -t 1 -k 1 key && [[ "$key" != [$'\r\n'] ]]; do
-    file+="$key"
-  done
-  [ -f "$file" ] || return
-  nvim -M + -- "$file" < /dev/tty
-  rm -f -- "$file" && rmdir -- "${file:h}"
-  # Neovim leaves the application mode that zle-line-init set, and its title
-  (( ${+terminfo[smkx]} )) && echoti smkx
-  title_precmd
-  zle reset-prompt
-}
-_register_keycommand '^[[34~' _view_scrollback
-
 #=== Helper
 #==============================================================================================
 _buffer_insert() {

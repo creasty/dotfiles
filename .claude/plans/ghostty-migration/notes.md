@@ -15,21 +15,22 @@ Its config, `config/ghostty/config.ghostty`, reproduces both with Ghostty's own 
 | `C-s d`, `C-s c` | Close the split |
 | `C-s :` (command prompt), `C-s r` | Command palette, reload the config |
 | `C-s p` (pbpaste) | Paste |
-| `C-y` copy mode: `j k C-e C-y C-d C-u C-f C-b g G` | Key table `copy`: the same keys scroll the view |
-| `{` `}` (paragraphs) | Previous and next prompt |
-| `/` `?` then `n` `N` | Search bar: type, Enter, Escape back to `n` (older) and `N` (newer) |
-| `v` … `y` (pbcopy) | `v` opens the screen and the history in Neovim, to select and yank there |
-| `q`, `C-c` | Leave copy mode |
+| `C-y` copy mode | Neovim over the pane, on its screen and history (`ghostty-pane/`) |
+| `j k C-e C-y C-d C-u C-f C-b g G`, `/ ? n N`, `{ }` | Neovim's |
+| `v` … `y` (pbcopy) | Neovim's `v` … `y`, to the clipboard (`clipboard=unnamed`) |
+| `q`, `C-c` | `:q` |
 | Window list: `#{b:pane_current_path}` | Tab titles from `shell/zsh/src/term.zsh` |
 | Colors, Menlo 12, padding, maximized window | The same |
 | `history-limit 15000` | `scrollback-limit`, in bytes: about 15000 lines |
 
 ## Where Ghostty differs
 
-- **No keyboard selection** ([ghostty-org/ghostty#3488](https://github.com/ghostty-org/ghostty/discussions/3488)): copy mode scrolls the view, with no cursor to move or select from.
-  `v` sends F20, the path of a file with the screen and its history, and a return; `term.zsh` reads them and opens the file in Neovim from the line editor (`_view_scrollback`), so no command shows up or goes to the history, then deletes it.
-  That takes a shell prompt: in a full-screen program (Neovim, less), the path is typed into it.
-- **Search** goes one way: `n` goes to older matches, `N` to newer ones, whether it started with `/` or `?`, and it doesn't wrap around.
+- **Copy mode is Neovim**, as Ghostty can't select text with the keyboard ([ghostty-org/ghostty#3488](https://github.com/ghostty-org/ghostty/discussions/3488)).
+  `C-y` has Ghostty write the screen and its history to a file, then send F20, the file's path and a return.
+  `ghostty-pane`, which runs the shell of each pane in a terminal of its own, takes them and opens the file in Neovim over the pane, then deletes it.
+  What runs in the pane keeps running: its output shows once Neovim quits, after the modes it had set that Neovim resets (bracketed paste, the keypad, the mouse, the title...), and a program on the alternate screen redraws it.
+  Neovim has the text without its colors, and starts on the last line with text.
+- **Ghostty sees a raw terminal** through `ghostty-pane`, as it would tmux: its secure input for password prompts (`macos-auto-secure-input`) doesn't turn on.
 - **Unbound keys after the prefix** go to the program together with `C-s`, where tmux dropped them.
 - **Closing a split** (`C-s d`) can't even out the remaining splits: `C-s =` does.
 - **No activity monitoring** of tabs (`monitor-activity`); a bell marks a tab with 🔔.
@@ -48,3 +49,4 @@ Once Ghostty replaces them:
 - `pam_reattach` in `nix/modules/default.nix` (Touch ID for sudo in tmux) and its mention in `test/osx.bats`, unless something else runs outside the login session
 - `shell/zsh/src/functions.zsh`: the tmux line of `reload`, and `tmk`
 - The "Zsh + tmux (Alacritty)" screenshot of `README.md`
+- `ghostty-pane/tests` run in tmux: keep it to run them locally (the tests workflow installs its own)

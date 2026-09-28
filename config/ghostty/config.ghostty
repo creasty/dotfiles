@@ -5,8 +5,10 @@
 
 #=== General
 #==============================================================================================
-# zsh, as tmux's default-shell (Ghostty starts it as a login shell)
-command = /bin/zsh
+# zsh, as tmux's default-shell, which Ghostty starts as a login shell. It runs through ghostty-pane (ghostty-pane/), for
+# copy mode (see "Copy & paste"): Ghostty can't tell the shell then, so the shell integration is told it's zsh.
+command = /etc/profiles/per-user/$USER/bin/ghostty-pane /bin/zsh
+shell-integration = zsh
 
 # new tabs and windows start in the home directory, as tmux's new windows and Alacritty did, and splits in the
 # directory of the pane they split
@@ -41,8 +43,13 @@ keybind = ctrl+s>ctrl+s=text:\x13
 
 #  Copy & paste
 #-----------------------------------------------
-# copy mode (see "Copy mode")
-keybind = ctrl+y=activate_key_table:copy
+# copy mode: the screen and its history in Neovim, over the pane, to scroll, search and yank with vi's keys. Ghostty
+# can't select text with the keyboard, so it writes them to a file, then sends F20, the file's path and a return,
+# which ghostty-pane takes (ghostty-pane/). What runs in the pane keeps running, and its output shows once Neovim
+# quits. In Neovim, C-y scrolls up.
+keybind = ctrl+y=csi:34~
+keybind = chain=write_screen_file:paste
+keybind = chain=text:\r
 
 # paste
 keybind = ctrl+s>p=paste_from_clipboard
@@ -76,73 +83,6 @@ keybind = ctrl+s>shift++=resize_split:up,15
 # close pane. Ghostty can't even out the other panes after it, as tmux's d did: C-s = does.
 keybind = ctrl+s>d=close_surface
 keybind = ctrl+s>c=close_surface
-
-#  Copy mode
-#-----------------------------------------------
-# Scrolls and searches the history with vi's keys, as tmux's copy mode. Ghostty can't select text with the keyboard,
-# so v opens the screen and its history in Neovim to select there. Other keys do nothing, and Cmd leaves copy mode
-# for Ghostty's shortcuts.
-keybind = copy/catch_all=ignore
-keybind = copy/super+catch_all=deactivate_key_table
-
-# scroll by lines, half pages and pages, and to the top and the bottom
-keybind = copy/j=scroll_page_lines:1
-keybind = copy/k=scroll_page_lines:-1
-keybind = copy/arrow_down=scroll_page_lines:1
-keybind = copy/arrow_up=scroll_page_lines:-1
-keybind = copy/ctrl+e=scroll_page_lines:1
-keybind = copy/ctrl+y=scroll_page_lines:-1
-keybind = copy/ctrl+d=scroll_page_fractional:0.5
-keybind = copy/ctrl+u=scroll_page_fractional:-0.5
-keybind = copy/ctrl+f=scroll_page_down
-keybind = copy/ctrl+b=scroll_page_up
-keybind = copy/g=scroll_to_top
-keybind = copy/shift+g=scroll_to_bottom
-
-# to the previous and the next prompt, in place of paragraphs
-keybind = copy/shift+{=jump_to_prompt:-1
-keybind = copy/shift+}=jump_to_prompt:1
-
-# search upward, as tmux's ?: type the text and Enter, then Escape goes back to n and N. Escape again clears it.
-keybind = copy//=start_search
-keybind = copy/shift+?=start_search
-keybind = copy/n=navigate_search:next
-keybind = copy/shift+n=navigate_search:previous
-keybind = copy/escape=end_search
-
-# select in Neovim: F20 has term.zsh open the file that Ghostty writes the screen to, at the prompt
-keybind = copy/v=deactivate_key_table
-keybind = chain=end_search
-keybind = chain=scroll_to_bottom
-keybind = chain=csi:34~
-keybind = chain=write_screen_file:paste
-keybind = chain=text:\r
-
-# copy the selection (of the mouse), and leave
-keybind = copy/y=copy_to_clipboard:plain
-keybind = chain=deactivate_key_table
-keybind = chain=end_search
-keybind = chain=scroll_to_bottom
-keybind = copy/enter=copy_to_clipboard:plain
-keybind = chain=deactivate_key_table
-keybind = chain=end_search
-keybind = chain=scroll_to_bottom
-
-# leave
-keybind = copy/q=deactivate_key_table
-keybind = chain=end_search
-keybind = chain=scroll_to_bottom
-keybind = copy/ctrl+c=deactivate_key_table
-keybind = chain=end_search
-keybind = chain=scroll_to_bottom
-
-# switch tabs and panes, leaving copy mode on in this pane, as tmux
-keybind = copy/ctrl+s>ctrl+b=previous_tab
-keybind = copy/ctrl+s>ctrl+n=next_tab
-keybind = copy/ctrl+s>ctrl+h=goto_split:left
-keybind = copy/ctrl+s>ctrl+j=goto_split:down
-keybind = copy/ctrl+s>ctrl+k=goto_split:up
-keybind = copy/ctrl+s>ctrl+l=goto_split:right
 
 #  Others
 #-----------------------------------------------

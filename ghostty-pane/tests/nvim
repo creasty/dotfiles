@@ -1,0 +1,17 @@
+#!/bin/sh
+# A fake Neovim for the tests: it does to the terminal what Neovim 0.11 does as it starts and quits, and logs its
+# arguments, the file's first line, and the keys it gets until q
+log="${FAKE_NVIM_LOG:?}"
+for arg; do file="$arg"; done
+echo "args: $*" >> "$log"
+echo "file: $(head -n 1 "$file")" >> "$log"
+
+printf '\033[?1049h\033[?1h\033=\033[H\033[2J\033[?2004h\033[?1004h\033[2 q\033[?1002h\033[?1006h\033]2;%s - NVIM\007' "${file##*/}"
+printf 'fake nvim\r\n'
+stty raw -echo
+while :; do
+  key="$(dd bs=1 count=1 2> /dev/null | od -An -tx1 | tr -d ' \n')"
+  echo "key: $key" >> "$log"
+  [ "$key" = 71 ] && break
+done
+printf '\033[?1002l\033[?1006l\033[?25h\033[?1l\033>\033[?2004l\033[?1004l\033[?1049l'

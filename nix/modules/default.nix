@@ -13,6 +13,7 @@
     ./ssh.nix
     ./macos.nix
     ./hammerspoon.nix
+    ./ghostty.nix
     ./neovim.nix
     ./vscode.nix
     ./docker.nix
