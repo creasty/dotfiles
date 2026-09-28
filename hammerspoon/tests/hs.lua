@@ -10,7 +10,7 @@ local codes = {
   a = 0x00, s = 0x01, d = 0x02, f = 0x03, h = 0x04, g = 0x05, x = 0x07, c = 0x08, v = 0x09, b = 0x0b, w = 0x0d,
   e = 0x0e, r = 0x0f, t = 0x11, o = 0x1f, p = 0x23, l = 0x25, j = 0x26, k = 0x28, [';'] = 0x29, n = 0x2d, m = 0x2e,
   ['return'] = 0x24, tab = 0x30, space = 0x31, delete = 0x33, escape = 0x35, cmd = 0x37, eisu = 0x66,
-  forwarddelete = 0x75, f1 = 0x7a, left = 0x7b, right = 0x7c, down = 0x7d, up = 0x7e,
+  forwarddelete = 0x75, left = 0x7b, right = 0x7c, down = 0x7d, up = 0x7e,
 }
 local names = {}
 for name, code in pairs(codes) do names[code] = name end
@@ -128,6 +128,35 @@ end
 
 local function record(call) table.insert(fake.calls, call) end
 
+-- A window of fake.windows, equal to the other objects of the same window as hs.window's are
+local Window = {}
+Window.__index = Window
+function Window.__eq(a, b) return a.spec == b.spec end
+
+local function new_window(spec) return setmetatable({ spec = spec }, Window) end
+
+function Window:id() return self.spec.id end
+function Window:isStandard() return self.spec.standard ~= false end
+function Window:application() return hs.application.frontmostApplication() end
+
+function Window:moveToUnit(unit, duration)
+  assert(duration == 0, 'animated')
+  record(('move %g,%g,%g,%g'):format(table.unpack(unit)))
+end
+
+-- Brings it to the front, where it has the focus
+function Window:focus()
+  record('focus window ' .. self.spec.id)
+  for i, spec in ipairs(fake.windows) do
+    if spec == self.spec then
+      table.remove(fake.windows, i)
+      break
+    end
+  end
+  table.insert(fake.windows, 1, self.spec)
+  return self
+end
+
 function fake.reset()
   fake.now = 0 -- in milliseconds
   fake.timers = {}
@@ -137,7 +166,9 @@ function fake.reset()
   fake.calls = {} -- what else the config did
   fake.logged = {} -- errors
   fake.front = 'com.google.Chrome' -- the frontmost app
-  fake.window = true -- whether it has a focused window
+  -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
+  -- for a panel and the like
+  fake.windows = { { id = 1 } }
   fake.layouts = { 'com.apple.keylayout.ABC' }
   fake.methods = { 'com.google.inputmethod.Japanese.base' }
   fake.source = 'com.apple.keylayout.ABC'
@@ -210,6 +241,12 @@ function fake.reset()
             fake.front = nil
             return true
           end,
+          -- Front to back, as the Accessibility API lists them
+          visibleWindows = function()
+            local windows = {}
+            for _, spec in ipairs(fake.windows) do table.insert(windows, new_window(spec)) end
+            return windows
+          end,
         }
       end,
       launchOrFocusByBundleID = function(id)
@@ -221,13 +258,8 @@ function fake.reset()
 
     window = {
       focusedWindow = function()
-        if not fake.window then return nil end
-        return {
-          moveToUnit = function(_, unit, duration)
-            assert(duration == 0, 'animated')
-            record(('move %g,%g,%g,%g'):format(table.unpack(unit)))
-          end,
-        }
+        local spec = fake.front and fake.windows[1]
+        return spec and new_window(spec) or nil
       end,
     },
 

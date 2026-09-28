@@ -16,7 +16,7 @@ local key = {
   a = 0x00, s = 0x01, d = 0x02, f = 0x03, h = 0x04, c = 0x08, b = 0x0b, e = 0x0e, t = 0x11, p = 0x23, l = 0x25,
   j = 0x26, k = 0x28, [';'] = 0x29, n = 0x2d, m = 0x2e,
   enter = 0x24, tab = 0x30, backspace = 0x33, escape = 0x35, command = 0x37, eisu = 0x66, forward_delete = 0x75,
-  f1 = 0x7a, left = 0x7b, right = 0x7c, down = 0x7d, up = 0x7e,
+  left = 0x7b, right = 0x7c, down = 0x7d, up = 0x7e,
 }
 
 local function set(list)
@@ -85,6 +85,25 @@ local function move_window(unit)
   if win then win:moveToUnit(unit, 0) end
 end
 
+-- Focuses the app's next window, or its previous one (step -1): going around its windows on the current space in the
+-- order they opened, skipping panels and the like
+local function focus_window(step)
+  local focused = hs.window.focusedWindow()
+  if not focused then return end
+  local windows = {}
+  for _, win in ipairs(focused:application():visibleWindows()) do
+    if win:isStandard() or win == focused then table.insert(windows, win) end
+  end
+  -- Window IDs grow as windows open
+  table.sort(windows, function(a, b) return a:id() < b:id() end)
+  for i, win in ipairs(windows) do
+    if win == focused then
+      windows[(i - 1 + step) % #windows + 1]:focus()
+      return
+    end
+  end
+end
+
 -- Brings the app to the front, launching it if needed, or hides it when it's already there
 local function toggle_app(bundle_id)
   local app = hs.application.frontmostApplication()
@@ -119,13 +138,14 @@ end
 --  Super keys: the super key, and the keys held with it
 --------------------------------------------------
 local shortcuts = {
-  -- Window/space navigation
+  -- Window/space navigation. Moving a space strokes Mission Control's shortcut, as macOS has no public API for it:
+  -- hs.spaces.gotoSpace clicks the space in Mission Control, showing it
   ['S+H'] = function() stroke(key.left, { 'ctrl', 'fn' }) end, -- Move left a space
   ['S+L'] = function() stroke(key.right, { 'ctrl', 'fn' }) end, -- Move right a space
   ['S+J'] = next_app,
   ['S+K'] = previous_app,
-  ['S+N'] = function() stroke(key.f1, { 'cmd', 'fn' }) end, -- Move focus to next window
-  ['S+B'] = function() stroke(key.f1, { 'cmd', 'shift', 'fn' }) end,
+  ['S+N'] = function() focus_window(1) end,
+  ['S+B'] = function() focus_window(-1) end,
   ['S+M'] = function() hs.spaces.toggleMissionControl() end,
 
   -- Window resizing/positioning
