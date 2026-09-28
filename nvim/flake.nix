@@ -3,7 +3,7 @@
 # flake; it only locks. An input is named after its plugin, with dashes for dots, and follows the
 # plugin's default branch unless the spec sets another.
 #
-# To bump a plugin by hand: nix flake update --flake ./nvim <input>, then :Lazy update
+# To bump a plugin by hand: nix flake update --flake ./nvim <input>; the next start checks it out
 {
   inputs = {
     lazy-nvim = {

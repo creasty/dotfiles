@@ -7,17 +7,18 @@ local master = require('user.plugin.treesitter.master')
 local install_dir = vim.fs.joinpath(require('lazy.core.config').plugins['nvim-treesitter'].dir, 'site')
 ts.setup { install_dir = install_dir }
 
-local languages = require('user.plugin.treesitter.parsers')
-
--- nvim-treesitter builds the parsers with the tree-sitter CLI
--- (nix/modules/neovim.nix). Without it, installing them fails with an error at
--- every startup, so they wait until the CLI is there. (What is missing is
--- checked here: nvim-treesitter takes milliseconds to find nothing is.)
+-- nvim-treesitter's build installs the parsers of parsers.lua (build.lua).
+-- When one is missing (added since, or the build failed), lazy.nvim runs the
+-- build again, as it installs missing plugins: at startup, in its window. Not
+-- without a UI (scripts, the e2e suite), nor without the tree-sitter CLI it
+-- builds them with (nix/modules/neovim.nix): it would fail at every startup.
+-- (What is missing is checked here: nvim-treesitter takes milliseconds to find
+-- nothing is.)
 local missing = vim.tbl_filter(function(lang)
   return not vim.uv.fs_stat(vim.fs.joinpath(install_dir, 'parser', lang .. '.so'))
-end, languages)
-if #missing > 0 and vim.fn.executable('tree-sitter') == 1 then
-  ts.install(missing)
+end, require('user.plugin.treesitter.parsers'))
+if #missing > 0 and #vim.api.nvim_list_uis() > 0 and vim.fn.executable('tree-sitter') == 1 then
+  require('lazy').build({ plugins = { 'nvim-treesitter' }, wait = true })
 end
 
 -- These indent with nvim-yati, which still does better than nvim-treesitter's

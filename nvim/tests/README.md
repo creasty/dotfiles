@@ -43,10 +43,10 @@ set `E2E_TMPDIR`, or the test that reopens a file fails.
 on your machine and CI installs too. The tree-sitter parsers follow: each is
 built at the revision the pinned nvim-treesitter's table of parsers gives it
 (as `:TSUpdate` does). Dependabot bumps the pins in pull requests, so each shows
-which workflows the new commits change; after pulling one, `:Lazy update`
-checks them out. A plugin lazy.nvim loads from your working copy (`dev` in
-`nvim/lua/user/plugins.lua`) is yours to keep at any commit, and CI installs
-its pin instead.
+which workflows the new commits change; after pulling one, Neovim checks them
+out when it next starts, and rebuilds the parsers they change. A plugin
+lazy.nvim loads from your working copy (`dev` in `nvim/lua/user/plugins.lua`)
+is yours to keep at any commit, and CI installs its pin instead.
 
 ```sh
 nvim/tests/plugins check      # do the installed plugins and parsers match the pins?

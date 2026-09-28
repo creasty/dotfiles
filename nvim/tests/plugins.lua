@@ -143,7 +143,7 @@ local function differences(pins, plugins)
     if not installed[lang] then
       problems[#problems + 1] = ('parser %s: not installed'):format(lang)
     elseif installed[lang] ~= revision then
-      problems[#problems + 1] = ('parser %s: at %s, nvim-treesitter pins %s (run: :TSUpdate)'):format(
+      problems[#problems + 1] = ('parser %s: at %s, nvim-treesitter pins %s (run: :Lazy build nvim-treesitter)'):format(
         lang, installed[lang]:sub(1, 12), (revision or '?'):sub(1, 12))
     end
   end
