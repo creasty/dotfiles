@@ -124,7 +124,7 @@ Keyboard differed where this follows what it meant to do:
 ## Tests
 
 `tests/` specs what reaches the apps as keys are typed, on a fake of Hammerspoon's API that routes the events through the config's event tap as macOS does.
-They need Lua 5.4, Hammerspoon's, and CI runs them (`.github/workflows/hammerspoon.yml`).
+They need Lua 5.4, Hammerspoon's, and CI runs them (the `hammerspoon` job of `.github/workflows/tests.yml`).
 
 ```sh-session
 $ nix shell --inputs-from . nixpkgs#lua5_4 --command hammerspoon/tests/run
