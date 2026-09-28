@@ -9,7 +9,6 @@
     ./homebrew.nix
     ./packages.nix
     ./shell.nix
-    ./tmux.nix
     ./ssh.nix
     ./macos.nix
     ./hammerspoon.nix
@@ -44,10 +43,6 @@
     users.${username}.home.stateVersion = "26.05";
   };
 
-  # Touch ID for sudo, which darwin-rebuild and the installers of some casks ask for. pam_reattach lets it work in
-  # tmux too, where Alacritty starts shells, outside the login session Touch ID needs.
-  security.pam.services.sudo_local = {
-    touchIdAuth = true;
-    reattach = true;
-  };
+  # Touch ID for sudo, which darwin-rebuild and the installers of some casks ask for
+  security.pam.services.sudo_local.touchIdAuth = true;
 }

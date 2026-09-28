@@ -36,7 +36,6 @@
     protobuf # Protocol buffers (Google's data interchange format)
     ripgrep # Search tool like grep and The Silver Searcher
     sd # Intuitive find & replace CLI
-    tmux # Terminal multiplexer
     universal-ctags # Maintained ctags implementation
     uv # Extremely fast Python package installer and resolver, written in Rust
     xh # Friendly and fast tool for sending HTTP requests

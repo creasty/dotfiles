@@ -1,7 +1,7 @@
 # @see https://ghostty.org/docs/config/reference
 #
-# Alacritty running tmux (config/alacritty, config/tmux), with Ghostty's own tabs and splits in place of tmux's windows
-# and panes: a tab holds splits, and the prefix key drives them.
+# In place of Alacritty running tmux, as they were set up: Ghostty's own tabs and splits take the place of tmux's
+# windows and panes (a tab holds splits), with tmux's prefix key and copy mode.
 
 #=== General
 #==============================================================================================

@@ -12,9 +12,9 @@
 
 This repository contains my personal dotfiles configuration for macOS, featuring thoroughly tailored setups for NeoVim and Zsh with performance in mind.
 
-| Neovim (Kitty) | Zsh + tmux (Alacritty) |
-|---|---|
-| ![](./docs/images/screenshots/neovim.png) | ![](./docs/images/screenshots/tmux.png) |
+| Neovim (Kitty) |
+|---|
+| ![](./docs/images/screenshots/neovim.png) |
 
 ## Installation
 

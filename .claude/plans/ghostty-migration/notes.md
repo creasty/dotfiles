@@ -1,7 +1,7 @@
-# Trying Ghostty in place of Alacritty and tmux
+# Ghostty in place of Alacritty and tmux
 
-Ghostty is provisioned next to Alacritty and tmux, which stay as they are until Ghostty proves itself.
-Its config, `config/ghostty/config.ghostty`, reproduces both with Ghostty's own tabs and splits: a tab holds splits, as a tmux window holds panes.
+Ghostty replaced Alacritty and tmux.
+Its config, `config/ghostty/config.ghostty`, carries theirs over with Ghostty's own tabs and splits: a tab holds splits, as a tmux window held panes.
 `C-s r` reloads it after an edit, and `/Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config` checks it.
 
 ## What maps to what
@@ -23,6 +23,7 @@ Its config, `config/ghostty/config.ghostty`, reproduces both with Ghostty's own 
 | Colors, Menlo 12, padding, maximized window | The same |
 | Japanese in Hiragino Sans, macOS's fallback | Named after Menlo: Ghostty asks macOS for kanji only, and could take kana from a serif font |
 | `history-limit 15000` | `scrollback-limit`, in bytes: about 15000 lines |
+| `;+M` (Hammerspoon) brings Alacritty to the front | Ghostty |
 
 ## Where Ghostty differs
 
@@ -39,15 +40,5 @@ Its config, `config/ghostty/config.ghostty`, reproduces both with Ghostty's own 
   The tab bar takes the terminal's background, not the status bar's.
 - **Shells don't outlive the app**: tmux's server kept them when Alacritty quit.
   `Cmd+Z` brings back a closed split, tab or window within 5 seconds.
+- **Touch ID for sudo** needs no `pam_reattach`: shells run in Ghostty's login session, where tmux's server ran outside it.
 - `+show-config` and `+list-keybinds` of Ghostty 1.3.1 print the bindings that follow a chained one in a sequence as `chain=>…`, though they work.
-
-## Removing Alacritty and tmux
-
-Once Ghostty replaces them:
-
-- `config/alacritty/`, `config/tmux/`
-- tmux: `nix/modules/tmux.nix` and its import in `nix/modules/default.nix`, `tmux` in `nix/modules/packages.nix`, `test/tmux.bats`, and the tmux tests of `test/link.bats`
-- `pam_reattach` in `nix/modules/default.nix` (Touch ID for sudo in tmux) and its mention in `test/osx.bats`, unless something else runs outside the login session
-- `shell/zsh/src/functions.zsh`: the tmux line of `reload`, and `tmk`
-- The "Zsh + tmux (Alacritty)" screenshot of `README.md`
-- `ghostty-pane/tests` run in tmux: keep it to run them locally (the tests workflow installs its own)

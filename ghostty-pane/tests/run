@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# End-to-end tests of ghostty-pane, with tmux as the terminal in place of Ghostty, and tests/nvim as Neovim. They
-# need tmux, and cc to build ghostty-pane.c unless given a build:
+# End-to-end tests of ghostty-pane, with tmux as the terminal in place of Ghostty, and tests/nvim as Neovim. They build
+# ghostty-pane.c with cc, unless given a build:
 #
-#   ghostty-pane/tests/run [<ghostty-pane>]
+#   nix shell --inputs-from . nixpkgs#tmux --command ghostty-pane/tests/run [<ghostty-pane>]
 #
 # shellcheck disable=SC2317 # the tests run by their name, from declare -F
 set -u
