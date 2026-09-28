@@ -22,13 +22,14 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 ## Worth modernizing later
 
-- **nvim-treesitter** is pinned to `master`; development moved to `main`, an incompatible rewrite.
-  Moving means rewriting the treesitter config and `creasty/opfmt`, which both use `nvim-treesitter.configs`.
-- **Neovim 0.12**: nixpkgs installs 0.12.4, while CI tests on 0.11.7.
-  0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter's `master` and nvim-treesitter-endwise rely on (markdown code blocks, as in hover docs, broke with them): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until the move to `main` (see nvim-treesitter above).
-  opfmt relies on 0.11's default for directives and is switched off until it handles 0.12; its tests skip meanwhile.
-  Two pinned quirks behave differently on 0.12 (xml/eruby `>`, `vs` without a parser).
-  blink.cmp's v2 and Neovim's built-in inline completion (`vim.lsp.inline_completion`, for Copilot) need 0.12 too.
+- **opfmt** is off (lazy.nvim's `cond`) until it moves to nvim-treesitter's `main`: it requires `nvim-treesitter.configs`, `.query`, `.parsers` and `.ts_utils` as it loads, and its directive relies on Neovim 0.11's `all = false` default.
+  It stays pinned in `nvim/flake.lock`, and its tests skip meanwhile.
+- **Rust's and TOML's indentation** lost ground when nvim-yati went (with syntax-tree-surfer, both unmaintained and written for nvim-treesitter's `master`): re-indenting real code, nvim-treesitter's queries get 2.9% of Rust's lines wrong (macro bodies) against yati's 0.1%, and 4.5% of TOML's against 2.5%.
+  `nvim/queries/typescript/indents.scm` shows how to add the shapes they miss, as it does for TypeScript and TSX: over 18,300 lines of real code, 4.3% of TypeScript's lines and 4.6% of TSX's come out wrong with it, against yati's 4.4% and 4.9%, and the queries' own 8.5% and 9.8%.
+  Nothing swaps syntax nodes since syntax-tree-surfer went; Neovim 0.12 selects them with `an`, `in`, `]n` and `[n` (`gs` grows with `an`).
+- **Neovim 0.12**, which CI runs now (0.12.4, as nixpkgs installs), allows blink.cmp's v2 and Neovim's built-in inline completion (`vim.lsp.inline_completion`, for Copilot).
+  0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter-endwise relies on (no `endfunction` after `function` in Vim script): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until endwise takes lists.
+  0.12's `'shada'` keeps no cursor positions for files under `/tmp` and `/private`, where the e2e tests' sandboxes are on macOS unless `E2E_TMPDIR` points elsewhere (CI's does).
 
 ## Found and fixed in #105
 
@@ -59,6 +60,12 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 - A fresh Mac got every plugin's latest commit (the toml files pinned none), not the ones CI tests: lazy.nvim installs the commits `nvim/flake.lock` pins.
 - Plugin updates were manual (`:DeinUpdate`) and reached CI only once pinned: Dependabot bumps `nvim/flake.lock` weekly, in pull requests the e2e suite tests, and the Nix inputs and the workflows' actions (now pinned by SHA) as well.
 - opfmt's working copy was a hard-coded `/Users/creasty/...` path, which CI created with sudo: lazy.nvim's `dev` option looks under ghq's root, and installs opfmt as usual without a working copy.
+
+## Fixed by moving to nvim-treesitter's main
+
+- `main` builds every parser with the tree-sitter CLI and generates with the arguments 0.26 takes: the config's own `tree-sitter generate` arguments are gone.
+  It dropped the jsonc parser (jsonc files use json's), the one whose GitLab tarball needed git, so parsers come as tarballs again.
+- On Neovim 0.12, typing `>` in xml and eruby buffers raised an error: `vim.treesitter.get_parser()` returns nil there instead of the error nvim-ts-autotag caught, and its update checks for nil.
 
 ## Fixed by the Nix migration
 

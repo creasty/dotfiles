@@ -27,23 +27,26 @@ nvim/tests/run --update-golden snippet_library   # re-pin golden output
 `run --help` shows all options. A failure prints the assertion, the child's
 screen and its `:messages`.
 
-Needs what the config itself needs: Neovim 0.11.3 or later, the installed
-plugins (found where lazy.nvim installs them, `~/.local/share/nvim/lazy`, or
-set `E2E_PLUGINS`), Ruby's `erb`, git, fd, rg and ghq. No language server,
+Needs what the config itself needs: Neovim 0.12 or later, the installed plugins
+(found where lazy.nvim installs them, `~/.local/share/nvim/lazy`, or set
+`E2E_PLUGINS`), Ruby's `erb`, git, fd, rg and ghq. No language server,
 formatter or linter is needed: the fakes stand in for them. Temporary files go
 to `$E2E_TMPDIR` (default `$TMPDIR`), which must not be inside a project such
 as a git repository: the config finds project roots by walking up from a file.
+Nor under `/tmp` or `/private`, where Neovim 0.12 keeps no cursor positions
+(`'shada'`): on macOS, whose `$TMPDIR` resolves to `/private/var/folders/…`,
+set `E2E_TMPDIR`, or the test that reopens a file fails.
 
 ## Plugin versions
 
 `nvim/flake.lock` pins the commit of every plugin, which lazy.nvim installs
 on your machine and CI installs too. The tree-sitter parsers follow: each is
-built at the revision the pinned nvim-treesitter's lockfile gives it (as
-`:TSUpdate` does). Dependabot bumps the pins in pull requests, so each shows
-which workflows the new commits change; after pulling one, `:Lazy update`
-checks them out. A plugin lazy.nvim loads from your working copy (`dev` in
-`nvim/lua/user/plugins.lua`) is yours to keep at any commit, and CI installs
-its pin instead.
+built at the revision the pinned nvim-treesitter's table of parsers gives it
+(as `:TSUpdate` does). Dependabot bumps the pins in pull requests, so each shows
+which workflows the new commits change; after pulling one, Neovim checks them
+out when it next starts, and rebuilds the parsers they change. A plugin
+lazy.nvim loads from your working copy (`dev` in `nvim/lua/user/plugins.lua`)
+is yours to keep at any commit, and CI installs its pin instead.
 
 ```sh
 nvim/tests/plugins check      # do the installed plugins and parsers match the pins?
@@ -51,8 +54,8 @@ nvim/tests/plugins install    # install exactly the pinned versions (what CI run
 ```
 
 `install` clones into `$E2E_PLUGINS` (default: lazy.nvim's root) and builds
-the parsers. It never changes a plugin that is already installed at another
-commit.
+the parsers with the tree-sitter CLI. It never changes a plugin that is already
+installed at another commit.
 
 A pinned repository that disappears breaks fresh installs, though not CI's
 cached plugins: point its input in `nvim/flake.nix` and its spec at a fork or
@@ -62,8 +65,8 @@ mirror that has the commit.
 
 The `nvim-e2e` job of `.github/workflows/tests.yml` runs the suite on macOS for
 pull requests, pushes to master and every Monday, with the versions this setup
-was pinned on (Neovim 0.11.7, and tree-sitter CLI 0.25.3 on Node 20.18.2 to
-build parsers) and the plugins `nvim/flake.lock` pins. The job summary
+was pinned on (Neovim 0.12.4, and tree-sitter CLI 0.26.8 to build parsers:
+those nixpkgs installs) and the plugins `nvim/flake.lock` pins. The job summary
 lists every workflow that changed: the assertion, the child's screen, and
 whether the test was a pinned quirk (`run --summary FILE` writes it).
 

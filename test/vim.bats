@@ -5,7 +5,7 @@
 load helper
 
 @test "Neovim runs" {
-  run -0 login_zsh "nvim --headless -u NONE -i NONE -c 'if has(\"nvim-0.11.3\") | qall | else | cquit | endif'"
+  run -0 login_zsh "nvim --headless -u NONE -i NONE -c 'if has(\"nvim-0.12\") | qall | else | cquit | endif'"
 }
 
 @test "clangd runs" {
@@ -13,7 +13,7 @@ load helper
 }
 
 @test "the tree-sitter CLI runs" {
-  # nvim-treesitter generates the latex and swift parsers with it
+  # nvim-treesitter builds the parsers with it
   run -0 login_zsh 'tree-sitter --version'
 }
 

@@ -1,7 +1,7 @@
 -- Installs and checks the plugins the suite runs against: the commits
 -- nvim/flake.lock pins (which Dependabot bumps), and the tree-sitter parsers
 -- of user/plugin/treesitter/parsers.lua at the revisions the pinned
--- nvim-treesitter's lockfile pins. CI installs exactly those.
+-- nvim-treesitter's table of parsers pins. CI installs exactly those.
 --
 -- Run through nvim/tests/plugins (see usage below).
 
@@ -62,34 +62,44 @@ local function declared(root)
   return require('lazy.core.config').plugins
 end
 
---- Parsers nvim-treesitter compiled into its own directory, with the revision
---- each was built from (only those it still knows how to build).
+--- Where the config has nvim-treesitter install the parsers: its own
+--- directory's site/ (user/plugin/treesitter).
+local function site(ts)
+  return ts .. '/site'
+end
+
+--- Parsers nvim-treesitter built, with the revision each was built from.
 local function installed_parsers(ts)
   local parsers = {}
-  for name, type in vim.fs.dir(ts .. '/parser-info') do
+  for name, type in vim.fs.dir(site(ts) .. '/parser-info') do
     local lang = name:match('^(.*)%.revision$')
-    if type == 'file' and lang and vim.uv.fs_stat(('%s/parser/%s.so'):format(ts, lang)) then
-      parsers[lang] = vim.trim(env.read_file(ts .. '/parser-info/' .. name))
+    if type == 'file' and lang and vim.uv.fs_stat(('%s/parser/%s.so'):format(site(ts), lang)) then
+      parsers[lang] = vim.trim(env.read_file(site(ts) .. '/parser-info/' .. name))
     end
   end
   return parsers
 end
 
---- The revision of each parser that nvim-treesitter's lockfile pins.
+--- nvim-treesitter's table of parsers: how to build each, at which revision.
+local function parser_table(ts)
+  vim.opt.rtp:prepend(ts)
+  return require('nvim-treesitter.parsers')
+end
+
+--- The revision of each parser that nvim-treesitter pins.
 local function pinned_parsers(ts)
-  local lockfile = vim.json.decode(env.read_file(ts .. '/lockfile.json') or '{}')
+  local known = parser_table(ts)
   local parsers = {}
   for _, lang in ipairs(PARSERS) do
-    parsers[lang] = lockfile[lang] and lockfile[lang].revision
+    parsers[lang] = known[lang] and known[lang].install_info and known[lang].install_info.revision
   end
   return parsers
 end
 
 local function buildable(ts, langs)
-  vim.opt.rtp:prepend(ts)
-  local configs = require('nvim-treesitter.parsers').get_parser_configs()
+  local known = parser_table(ts)
   return vim.tbl_filter(function(lang)
-    return configs[lang] ~= nil
+    return known[lang] ~= nil and known[lang].install_info ~= nil
   end, langs)
 end
 
@@ -119,8 +129,11 @@ local function differences(pins, plugins)
       end
     end
   end
+  -- (a plugin the spec switches off with `cond`, which lazy.nvim neither
+  -- installs nor loads, keeps its pin for when it is back on)
+  local off = require('lazy.core.config').spec.disabled
   for name in pairs(pins) do
-    if not plugins[name] then
+    if not plugins[name] and not (off[name] and off[name]._.cond == false) then
       problems[#problems + 1] = name .. ': pinned, but no longer in nvim/lua/user/plugins.lua'
     end
   end
@@ -130,7 +143,7 @@ local function differences(pins, plugins)
     if not installed[lang] then
       problems[#problems + 1] = ('parser %s: not installed'):format(lang)
     elseif installed[lang] ~= revision then
-      problems[#problems + 1] = ('parser %s: at %s, nvim-treesitter pins %s (run: :TSUpdate)'):format(
+      problems[#problems + 1] = ('parser %s: at %s, nvim-treesitter pins %s (run: :Lazy build nvim-treesitter)'):format(
         lang, installed[lang]:sub(1, 12), (revision or '?'):sub(1, 12))
     end
   end
@@ -243,17 +256,10 @@ function commands.install()
   if #missing > 0 then
     say(('Compiling %d tree-sitter parsers'):format(#missing))
     vim.opt.rtp:prepend(ts)
-    local ts_install = require('nvim-treesitter.install')
-    ts_install.ensure_installed_sync(missing)
-    -- Some hosts answer a tarball download with a bot check; git gets through.
-    local retry = vim.tbl_filter(function(lang)
-      return not installed_parsers(ts)[lang]
-    end, missing)
-    if #retry > 0 then
-      say('Retrying with git: ' .. table.concat(retry, ' '))
-      ts_install.prefer_git = true
-      ts_install.ensure_installed_sync(retry)
-    end
+    local nvim_treesitter = require('nvim-treesitter')
+    nvim_treesitter.setup({ install_dir = site(ts) })
+    -- (one build per CPU: it would run them all at once)
+    nvim_treesitter.install(missing, { summary = true, max_jobs = vim.uv.available_parallelism() }):wait(30 * 60 * 1000)
   end
 
   local problems = differences(pins, plugins)

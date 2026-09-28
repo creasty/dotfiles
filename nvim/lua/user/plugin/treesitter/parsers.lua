@@ -1,5 +1,5 @@
--- The tree-sitter parsers to install, at the revisions nvim-treesitter's own
--- lockfile pins (nvim/tests/plugins installs the same ones).
+-- The tree-sitter parsers to install, at the revisions nvim-treesitter's table
+-- of parsers pins (nvim/tests/plugins installs the same ones).
 return {
   'bash',
   'c',
@@ -20,7 +20,6 @@ return {
   'javascript',
   'jsdoc',
   'json',
-  'jsonc',
   'kotlin',
   'latex',
   'lua',

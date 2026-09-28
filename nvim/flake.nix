@@ -3,7 +3,7 @@
 # flake; it only locks. An input is named after its plugin, with dashes for dots, and follows the
 # plugin's default branch unless the spec sets another.
 #
-# To bump a plugin by hand: nix flake update --flake ./nvim <input>, then :Lazy update
+# To bump a plugin by hand: nix flake update --flake ./nvim <input>; the next start checks it out
 {
   inputs = {
     lazy-nvim = {
@@ -83,23 +83,15 @@
 
     # Treesitter
     nvim-treesitter = {
-      url = "git+https://github.com/nvim-treesitter/nvim-treesitter?ref=master&shallow=1";
+      url = "git+https://github.com/nvim-treesitter/nvim-treesitter?ref=main&shallow=1";
       flake = false;
     };
     nvim-treesitter-context = {
       url = "git+https://github.com/nvim-treesitter/nvim-treesitter-context?shallow=1";
       flake = false;
     };
-    syntax-tree-surfer = {
-      url = "git+https://github.com/ziontee113/syntax-tree-surfer?shallow=1";
-      flake = false;
-    };
     nvim-ts-autotag = {
       url = "git+https://github.com/windwp/nvim-ts-autotag?shallow=1";
-      flake = false;
-    };
-    nvim-yati = {
-      url = "git+https://github.com/yioneko/nvim-yati?shallow=1";
       flake = false;
     };
     nvim-treesitter-endwise = {
