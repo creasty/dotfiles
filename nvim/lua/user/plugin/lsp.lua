@@ -17,6 +17,7 @@ M.servers = {
   'jsonls', -- vscode-langservers-extracted
   'kotlin_lsp', -- JetBrains' kotlin-lsp (nix/modules/java.nix)
   'lua_ls',
+  'nil_ls', -- nil, for Nix
   'pyright',
   'rust_analyzer',
   'solargraph',

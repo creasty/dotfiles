@@ -11,6 +11,8 @@
       clang-tools # clangd, clang-format
       codebook # spell checking (codebook-lsp)
       lua-language-server
+      nil # Nix's language server
+      nixfmt
       prettier
       pyright
       shellcheck # through bash-language-server
