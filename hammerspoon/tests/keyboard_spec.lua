@@ -221,9 +221,11 @@ it('with Command or Option, Control keys stay', function()
 end)
 
 it('terminals keep Ctrl-C, still switching to English, and the Emacs keys', function()
-  fake.front = 'net.kovidgoyal.kitty'
-  keys('ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
-  received('eisu↓ eisu↑ ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
+  for _, terminal in ipairs({ 'net.kovidgoyal.kitty', 'org.alacritty', 'com.mitchellh.ghostty' }) do
+    fake.front, fake.received = terminal, {}
+    keys('ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
+    received('eisu↓ eisu↑ ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
+  end
 end)
 
 it('VS Code keeps Ctrl-D, H, A and E', function()

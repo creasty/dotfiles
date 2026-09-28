@@ -196,6 +196,7 @@ local escape_key_disabled_apps = set({
   'io.alacritty',
   'org.alacritty',
   'net.kovidgoyal.kitty',
+  'com.mitchellh.ghostty',
   'com.ident.goneovim',
   'com.qvacua.VimR',
 })
@@ -245,6 +246,7 @@ local all_cursor_keys_disabled_apps = set({
   'io.alacritty',
   'org.alacritty',
   'net.kovidgoyal.kitty',
+  'com.mitchellh.ghostty',
 
   -- Vim
   'org.vim.MacVim',
