@@ -1,8 +1,8 @@
 local ts = require('nvim-treesitter')
 
--- Parsers and their queries go into nvim-treesitter's own directory, as they
--- did with its master branch: with the plugins lazy.nvim keeps, where the e2e
--- tests find them (nvim/tests/plugins.lua).
+-- Parsers and their queries go into nvim-treesitter's own directory: with the
+-- plugins lazy.nvim keeps, where the e2e tests find them
+-- (nvim/tests/plugins.lua).
 local install_dir = vim.fs.joinpath(require('lazy.core.config').plugins['nvim-treesitter'].dir, 'site')
 ts.setup { install_dir = install_dir }
 

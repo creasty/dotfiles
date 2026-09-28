@@ -339,7 +339,7 @@ title() {
 title_precmd() {
   emulate -L zsh
 
-  # Ghostty's tabs show the title: the name of the directory, as tmux's window list did
+  # Ghostty's tabs show the title: the name of the directory
   if [[ "$TERM_PROGRAM" == ghostty ]]; then
     title '%1d'
     return

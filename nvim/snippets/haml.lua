@@ -1,4 +1,3 @@
--- Converted from UltiSnips' haml.snippets
 local S = require('user.snippets')
 
 return {

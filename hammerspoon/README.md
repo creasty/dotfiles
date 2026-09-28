@@ -1,22 +1,17 @@
 # Hammerspoon
 
-[creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org), in place of the app: `keyboard.lua`, with the super keys in `superkey.lua`.
+[creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `keyboard.lua`, with the super keys in `superkey.lua`.
 Its mouse keys and its guard on <kbd>Cmd-Q</kbd> are left out.
 
 `nix/modules/hammerspoon.nix` installs Hammerspoon, and links this directory as `~/.hammerspoon`.
 Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibility, and reload its config (its menu bar icon > Reload Config).
 It starts at login from then on.
 
-System Settings > Keyboard > Keyboard Shortcuts, as Keyboard needed them:
+System Settings > Keyboard > Keyboard Shortcuts, as the key bindings need them:
 
 - Mission Control > Move left a space: <kbd>Ctrl-LeftArrow</kbd> (the default)
 - Mission Control > Move right a space: <kbd>Ctrl-RightArrow</kbd> (the default)
 - Keyboard > Move focus to next window: <kbd>Cmd-F1</kbd>
-
-## Moving from Keyboard
-
-Provisioning removes Keyboard from `~/Applications/Home Manager Apps`, but a running Keyboard keeps running: quit it (its menu bar icon K > Quit), remove it from System Settings > General > Login Items, and set up Hammerspoon as above.
-A `~/.hammerspoon` that was there before is kept as `~/.hammerspoon.before-nix`.
 
 ## Key bindings
 
@@ -110,16 +105,6 @@ A super key waits to see what it's for (`superkey.lua`), with Keyboard's timings
 - Released before that, it types, and so do the keys pressed with it, in order: `sdk` typed fast is text, not <kbd>S+D+K</kbd>.
 - A key pressed with <kbd>Cmd</kbd>, <kbd>Option</kbd>, <kbd>Ctrl</kbd> or <kbd>Shift</kbd> ends it, typing what it held back first.
 - The apps get neither the super key nor the keys a chord took, their releases and repeats included.
-
-Keyboard differed where this follows what it meant to do:
-
-- With two keys or more typed past a super key before its release, it lost them all, the super key too.
-  It lost a super key still held as a key with modifiers went down, too: typing `a` then <kbd>Cmd-V</kbd> fast pasted without the `a`.
-- It acted on a second key at once, even typed fast: `sdk` moved the window.
-- Once the super key was up, it let the keys a chord took through: their release, and their repeats while still held.
-- It sized windows to the whole screen, menu bar and Dock included, rather than to the part windows get.
-- <kbd>Ctrl-;</kbd> followed the input menu's order, which Hammerspoon doesn't tell, and passed its repeats on to the app.
-- It opened Mission Control.app for <kbd>S+M</kbd>, and used [Witch](https://manytricks.com/witch/)'s shortcuts for <kbd>S+J</kbd>, <kbd>S+K</kbd>, <kbd>S+N</kbd> and <kbd>S+B</kbd> when Witch was installed.
 
 ## Tests
 

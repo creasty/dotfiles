@@ -146,9 +146,9 @@ local function capture(nvim)
   return normalize(table.concat(lines, '\n'), nvim)
 end
 
---- When several snippets match, an engine may ask which one to expand
---- (UltiSnips did, with inputlist; LuaSnip takes the first by priority).
---- Record the offered choices and pick the first.
+--- When several snippets match, an engine may ask which one to expand, with
+--- inputlist (LuaSnip takes the first by priority). Record the offered choices
+--- and pick the first.
 local function resolve_choice(nvim)
   if nvim:mode() ~= 'c' then
     return nil

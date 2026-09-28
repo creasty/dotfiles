@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Verifies that the provisioning is reflected on this machine by running the behavioral tests in test/.
+# Verifies that the provisioning is reflected on this machine by running the behavioral tests in nix/tests/.
 # The tests compare the machine with /etc/dotfiles/manifest.json, which the activated configuration wrote.
 #
 #   ./verify [bats options]    e.g. ./verify --filter java
@@ -20,7 +20,7 @@ run_tests() {
   echo 'Verifying...'
   cd "$DOTFILES_PATH"
   nix shell "$DOTFILES_PATH#bats" "$DOTFILES_PATH#yq-go" --command \
-    bats --timing --print-output-on-failure "$@" test
+    bats --timing --print-output-on-failure "$@" nix/tests
 }
 
 #=== Entrypoint

@@ -1,4 +1,3 @@
--- Converted from UltiSnips' gitattributes.snippets
 local S = require('user.snippets')
 
 return {

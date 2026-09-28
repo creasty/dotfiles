@@ -1,4 +1,4 @@
-// ghostty-pane: the shell of Ghostty's panes, with Neovim over the pane on C-y in place of tmux's copy mode
+// ghostty-pane: the shell of Ghostty's panes, with Neovim over the pane on C-y as copy mode
 // (config/ghostty/config.ghostty)
 //
 //   ghostty-pane <shell> [<arg>...]

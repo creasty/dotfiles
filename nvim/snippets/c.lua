@@ -1,4 +1,3 @@
--- Converted from UltiSnips' c.snippets
 local S = require('user.snippets')
 
 -- `main.c` -> `MAIN_C`

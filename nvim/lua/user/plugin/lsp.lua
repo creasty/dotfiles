@@ -60,7 +60,7 @@ local settings = {
     before_init = function(params)
       params.initializationOptions = vim.tbl_extend('force', params.initializationOptions or {}, {
         globalConfigPath = codebook_config(),
-        -- the least prominent, as cSpell's were
+        -- the least prominent, as cSpell's in VS Code (vscode/settings.json)
         diagnosticSeverity = 'hint',
       })
     end,

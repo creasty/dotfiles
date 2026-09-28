@@ -1,9 +1,9 @@
 ; extends
 
-; Where nvim-treesitter's indentation differs from prettier's and nvim-yati's
-; didn't (TSX inherits these; tsx/indents.scm has its own). nvim-treesitter
-; counts one level for each line a node that indents starts on, so each rule
-; below adds a level, or takes one back, for a shape prettier formats.
+; Where nvim-treesitter's indentation differs from prettier's (TSX inherits
+; these; tsx/indents.scm has its own). nvim-treesitter counts one level for
+; each line a node that indents starts on, so each rule below adds a level, or
+; takes one back, for a shape prettier formats.
 
 ; Lines in a multi-line template string keep theirs (rather than none)
 (template_string) @indent.auto

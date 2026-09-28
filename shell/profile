@@ -47,7 +47,7 @@ export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 
 #  Nix
 #-----------------------------------------------
-# In front of Homebrew, so that formulae left from before Nix don't shadow its packages
+# In front of Homebrew, so that its formulae don't shadow Nix's packages
 export PATH="/etc/profiles/per-user/${USER:-$(id -un)}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
 
 #  App config

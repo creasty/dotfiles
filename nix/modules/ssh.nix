@@ -25,8 +25,6 @@
 
       home.activation.sshDirectories = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         run install -d -m 700 $VERBOSE_ARG "$HOME/.ssh" "$HOME/.ssh/config.d" "$HOME/.ssh/keys"
-        # Copies of the common config that Ansible assembled ~/.ssh/config from, now part of the config itself
-        run rm -f $VERBOSE_ARG "$HOME/.ssh/config.d/_common" "$HOME/.ssh/config.d/_va"
       '';
     };
 }

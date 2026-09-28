@@ -1,4 +1,3 @@
--- Converted from UltiSnips' pg.snippets
 local S = require('user.snippets')
 
 return {

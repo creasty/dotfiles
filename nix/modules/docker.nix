@@ -16,7 +16,7 @@ in
     { lib, ... }:
     {
       # Only before the first start: Docker Desktop reads the file when it starts, and saves its own settings
-      # over it. test/docker.bats checks an installation that already started.
+      # over it. nix/tests/docker.bats checks an installation that already started.
       home.activation.configureDockerDesktop = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         settings="$HOME/Library/Group Containers/group.com.docker/settings-store.json"
         if [ ! -e "$settings" ]; then

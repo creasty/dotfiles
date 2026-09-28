@@ -1,32 +1,30 @@
 # @see https://ghostty.org/docs/config/reference
 #
-# In place of Alacritty running tmux, as they were set up: Ghostty's own tabs and splits take the place of tmux's
-# windows and panes (a tab holds splits), with tmux's prefix key and copy mode.
+# Ghostty's own tabs and splits (a tab holds splits), behind a prefix key, with a copy mode in Neovim.
 
 #=== General
 #==============================================================================================
-# zsh, as tmux's default-shell, which Ghostty starts as a login shell. It runs through ghostty-pane (ghostty-pane/), for
-# copy mode (see "Copy & paste"): Ghostty can't tell the shell then, so the shell integration is told it's zsh.
+# zsh, which Ghostty starts as a login shell. It runs through ghostty-pane (ghostty-pane/), for copy mode (see
+# "Copy & paste"): Ghostty can't tell the shell then, so the shell integration is told it's zsh.
 command = /etc/profiles/per-user/$USER/bin/ghostty-pane /bin/zsh
 shell-integration = zsh
 
-# new tabs and windows start in the home directory, as tmux's new windows and Alacritty did, and splits in the
-# directory of the pane they split
+# new tabs and windows start in the home directory, and splits in the directory of the pane they split
 working-directory = home
 window-inherit-working-directory = false
 tab-inherit-working-directory = false
 
-# history of about 15000 lines, as tmux's history-limit: Ghostty limits it by memory, about 2 KB a line
+# history of about 15000 lines: Ghostty limits it by memory, about 2 KB a line
 scrollback-limit = 30000000
 
 # the shell integration reports the directory to splits and marks the prompts, but term.zsh sets the title and the
 # cursor stays a block. sudo keeps Ghostty's terminfo, and ssh gives remote hosts xterm-256color.
 shell-integration-features = no-cursor,no-title,sudo,ssh-env
 
-# close panes without asking, as tmux's kill-pane (Cmd+Z brings one back within 5 seconds)
+# close panes without asking (Cmd+Z brings one back within 5 seconds)
 confirm-close-surface = false
 
-# quit with the last window, as Alacritty
+# quit with the last window
 quit-after-last-window-closed = true
 
 # paste without asking: zsh has bracketed paste off (zshrc), which Ghostty would take as unsafe
@@ -34,11 +32,11 @@ clipboard-paste-protection = false
 
 #=== Key bindings
 #==============================================================================================
-# Ghostty's own shortcuts (Cmd+C, Cmd+V, Cmd+T...) stay, as Alacritty's did
+# Ghostty's own shortcuts (Cmd+C, Cmd+V, Cmd+T...) stay
 
 #  Prefix key
 #-----------------------------------------------
-# C-s, as tmux's; pressed twice, it goes to the program. Unlike tmux, a key without a binding goes there with it.
+# C-s; pressed twice, it goes to the program. A key without a binding goes there with it.
 keybind = ctrl+s>ctrl+s=text:\x13
 
 #  Copy & paste
@@ -61,7 +59,7 @@ keybind = ctrl+s>t=new_tab
 keybind = ctrl+s>ctrl+b=previous_tab
 keybind = ctrl+s>ctrl+n=next_tab
 
-# split. v evens out the panes, as tmux's even-horizontal layout, and so does = (shift+= is = on JIS keyboards)
+# split. v evens out the panes, and so does = (shift+= is = on JIS keyboards)
 keybind = ctrl+s>s=new_split:down
 keybind = ctrl+s>v=new_split:right
 keybind = chain=equalize_splits
@@ -80,13 +78,13 @@ keybind = ctrl+s>shift+period=resize_split:right,7
 keybind = ctrl+s>-=resize_split:down,15
 keybind = ctrl+s>shift++=resize_split:up,15
 
-# close pane. Ghostty can't even out the other panes after it, as tmux's d did: C-s = does.
+# close pane. Ghostty can't even out the other panes after it: C-s = does.
 keybind = ctrl+s>d=close_surface
 keybind = ctrl+s>c=close_surface
 
 #  Others
 #-----------------------------------------------
-# command palette, in place of tmux's command prompt (: is shift+: on US keyboards, and : on JIS ones)
+# command palette (: is shift+: on US keyboards, and : on JIS ones)
 keybind = ctrl+s>shift+:=toggle_command_palette
 keybind = ctrl+s>:=toggle_command_palette
 
@@ -97,15 +95,14 @@ keybind = ctrl+s>r=reload_config
 #==============================================================================================
 #  Window
 #-----------------------------------------------
-# maximized, as Alacritty's startup_mode
+# maximized
 maximize = true
 
-# padding, as Alacritty's: what's left of a cell goes to the right and the bottom
+# padding: what's left of a cell goes to the right and the bottom
 window-padding-x = 6
 window-padding-y = 6
 
-# tabs in the title bar, at the top as tmux's status bar, in the terminal's font. term.zsh titles them with the name
-# of the directory, as tmux's window list.
+# tabs in the title bar, in the terminal's font. term.zsh titles them with the name of the directory.
 macos-titlebar-style = tabs
 window-title-font-family = Menlo
 
@@ -114,9 +111,8 @@ resize-overlay = never
 
 #  Font
 #-----------------------------------------------
-# Menlo 12, as Alacritty (macOS's default), with the 2px of its offset between lines (glyphs centered). Japanese in
-# Hiragino Sans, which macOS falls back to in Alacritty: Ghostty asks macOS for kanji only, and takes kana from any
-# font that has them, e.g. a serif one (Mincho).
+# Menlo 12 (macOS's default), with 2px more between lines (glyphs centered). Japanese in Hiragino Sans, named after it:
+# otherwise Ghostty asks macOS for kanji only, and takes kana from any font that has them, e.g. a serif one (Mincho).
 font-family = Menlo
 font-family = Hiragino Sans
 font-size = 12
@@ -124,14 +120,14 @@ adjust-cell-height = 2
 
 #  Cursor
 #-----------------------------------------------
-# a steady block in the colors of the cell under it, as Alacritty's
+# a steady block in the colors of the cell under it
 cursor-style-blink = false
 cursor-color = cell-foreground
 cursor-text = cell-background
 
 #  Colors
 #-----------------------------------------------
-# Alacritty's: the normal colors (0-7), then the bright ones (8-15)
+# the normal colors (0-7), then the bright ones (8-15)
 background = #1b1b1b
 foreground = #c0c0c0
 palette = 0=#424242
@@ -151,8 +147,7 @@ palette = 13=#b07bb4
 palette = 14=#80c7bc
 palette = 15=#575757
 
-# selection in tmux's mode-style, and search matches in the colors of tmux's copy-mode-match-style (cyan) and
-# copy-mode-current-match-style (magenta)
+# selection, and search matches in cyan, the current one in magenta
 selection-foreground = #575757
 selection-background = #262626
 search-foreground = #424242
@@ -162,6 +157,6 @@ search-selected-background = #a186a3
 
 #  Split
 #-----------------------------------------------
-# dividers in the color of tmux's pane borders, and the other panes not dimmed
+# dividers, and the other panes not dimmed
 split-divider-color = #262626
 unfocused-split-opacity = 1

@@ -1,5 +1,5 @@
-# Hammerspoon (https://www.hammerspoon.org), with hammerspoon/ as its config: creasty/Keyboard's key bindings, in
-# place of the app (hammerspoon/README.md)
+# Hammerspoon (https://www.hammerspoon.org), with hammerspoon/ as its config: creasty/Keyboard's key bindings
+# (hammerspoon/README.md)
 { username, ... }:
 {
   homebrew.casks = [ "hammerspoon" ];

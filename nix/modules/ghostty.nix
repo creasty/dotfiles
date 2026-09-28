@@ -1,5 +1,5 @@
 # Ghostty (https://ghostty.org), with config/ghostty/config.ghostty, and ghostty-pane (ghostty-pane/): the shell of its
-# panes, with Neovim over the pane on C-y in place of tmux's copy mode
+# panes, with Neovim over the pane on C-y as copy mode
 { pkgs, username, ... }:
 let
   ghostty-pane = pkgs.runCommandCC "ghostty-pane" { meta.mainProgram = "ghostty-pane"; } ''
