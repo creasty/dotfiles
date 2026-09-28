@@ -81,7 +81,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow/heading snippets | **LuaSnip** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
 | `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>` dismiss | **copilot.lua** |
-| `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, list keys | **snacks.nvim** |
+| `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys | **snacks.nvim** |
 | `picker_checklist` | every source × reopen as left, own state, scroll, `<C-l>`, `<C-r>` (below) | **snacks.nvim** |
 | `integration` | no pairs/completion/AI in picker prompts and block inserts | `user/intelligence.lua` |
 | `ui` | tabline, statusline, title, signs (marks, git), whitespace | `user/ui.lua`, gitsigns.nvim |
@@ -97,6 +97,7 @@ Every picker source is checked for the same things:
 | | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`gR` `gD` `gT`, `gll` |
 |---|---|---|---|---|
 | focus when opened | prompt | prompt | list | list |
+| `<C-c>` in the prompt | closes | closes | back to the list, still narrowed (`<Esc>` too) | back to the list, still narrowed (`<Esc>` too) |
 | reopens as left: query, results, selected line, focus | ✓ | ✓ | ✓ and marks | ✓ |
 | keeps its own state while others are used | ✓ | ✓ | ✓ | ✓ |
 | a long list scrolls; reopens at the selected line, where it was | `<C-n>` `<C-p>` | `<C-n>` `<C-p>` | `j` `k` `<Down>` `<Up>` | `j` `k` |
@@ -106,6 +107,11 @@ Every picker source is checked for the same things:
 A picker opened after `:cd` starts fresh, and so does one opened back in the
 first directory. `<Tab>` lists the actions for the item; `q` there returns to
 the picker as you left it.
+
+Grep also reopens with the files it searches (`f`), the replacement its list
+previews (`r`) and the lines dropped from it (`x`); `<C-l>` and `<C-r>` bring
+the dropped lines back, and a new search (`:Search`) starts with none of
+them.
 
 Tests marked **[quirk]** pin an oddity of today's setup instead of a
 requirement (e.g. "html: typing a tag leaves a stray >").
@@ -119,8 +125,9 @@ behavior may well be the better one: update or delete the test.
 3. Adapt the seam — not the specs:
    - `lib/probe_child.lua` — how to *observe* plugin UI: completion menu,
      snippet session, ghost text (and whether the AI client is ready to
-     suggest), picker (items, visible lines, selection, marks, query, focus),
-     signs, highlights. It already recognizes blink.cmp, nvim-cmp, the
+     suggest), picker (items, visible lines, selection, marks, query, focus,
+     title; struck-through text, as a replacement's preview shows it, reads
+     `{-text-}`), signs, highlights. It already recognizes blink.cmp, nvim-cmp, the
      built-in popup menu, LuaSnip, `vim.snippet`, snacks.nvim's picker
      (through its API: its list is drawn lazily) and Telescope-style pickers
      whose list is a buffer of results.

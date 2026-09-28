@@ -220,6 +220,9 @@ function M.setup()
   hi.SnacksPickerDir = { fg = s.gray300 }
   hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.bright_blue, bg = s.background }
+  -- (user.plugin.picker: the replacement grep's list previews)
+  hi.PickerReplaceOld = { fg = s.red, bg = s.dark_red, strikethrough = 1 }
+  hi.PickerReplaceNew = { fg = s.green, bg = s.dark_green }
 
   -- gitsigns.nvim
   hi.GitSignsAdd = { fg = s.dark_green }

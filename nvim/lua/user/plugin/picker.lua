@@ -1,12 +1,23 @@
 -- Fuzzy finder built on snacks.nvim's picker.
 --
 --   <C-q>      files, or ghq repositories in $HOME (:Open)
---   <Space>/   grep for a pattern (:Search [dir])
+--   <Space>/   grep for a pattern (:Search [dir]), and replace it
 --   gR gD gT   LSP locations (user.plugin.lsp); gll reopens them
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
 -- as long as you stay in the directory of the previous picker; the results
--- are gathered again only with <C-l> (refresh) or <C-r> (reload).
+-- are gathered again only with <C-l> (refresh) or <C-r> (reload). Grep and
+-- the locations open in the list: i narrows it in the prompt, and <C-c> or
+-- <Esc> goes back to it.
+--
+-- In grep's list, as in VS Code's search view:
+--
+--   f   the files to search: paths and globs, ! before those to leave out
+--       (src/ !*.test.ts); <Tab> completes the paths
+--   r   the replacement ($1 for the first group), which every line previews
+--   x   drops the line, or the marked lines, from the results
+--   R   replaces the matches of the lines in the list (the marked ones if
+--       any) in their files; deletes them without a replacement
 
 local M = {}
 
@@ -77,27 +88,34 @@ local function format_file(item)
   return format_path(item.label or item.file)
 end
 
+--- The matches (`item.matches`: start, end, replacement) highlighted; with a
+--- replacement (`item.replaced`: the line after it), what each turns into,
+--- after the match struck through (as VS Code previews it).
 local function format_location(item)
   local ret = {
     { item.label, 'Identifier' },
     { ' ' },
     { ('%d:%d |'):format(item.pos[1], item.col_label), 'Comment' },
   }
-  local line = item.line or ''
-  local s, e = item.match and item.match[1], item.match and item.match[2]
-  if s and e and e > s then
-    ret[#ret + 1] = { line:sub(1, s) }
-    ret[#ret + 1] = { line:sub(s + 1, e), 'Constant' }
-    ret[#ret + 1] = { line:sub(e + 1) }
-  else
-    ret[#ret + 1] = { line }
+  local line, at = item.line or '', 0
+  for _, match in ipairs(item.matches or {}) do
+    ret[#ret + 1] = { line:sub(at + 1, match[1]) }
+    local old = line:sub(match[1] + 1, match[2])
+    if item.replaced then
+      ret[#ret + 1] = { old, 'PickerReplaceOld', inline = true }
+      ret[#ret + 1] = { match[3] or '', 'PickerReplaceNew' }
+    else
+      ret[#ret + 1] = { old, 'Constant' }
+    end
+    at = match[2]
   end
+  ret[#ret + 1] = { line:sub(at + 1) }
   return ret
 end
 
 --- The text an item shows (what the matcher filters on).
 local function location_text(item)
-  return ('%s %d:%d |%s'):format(item.label, item.pos[1], item.col_label, item.line or '')
+  return ('%s %d:%d |%s'):format(item.label, item.pos[1], item.col_label, item.replaced or item.line or '')
 end
 
 ---------------------------------------------------------------------------
@@ -184,17 +202,46 @@ for _, name in ipairs({ 'open', 'yank', 'cd' }) do
   end
 end
 
---- <Esc>: leaves insert mode in the prompt, closes the picker otherwise.
+--- Whether the picker opens in the list (grep, locations), where the prompt
+--- (i) only narrows the list.
+local function opens_in_list(picker)
+  return picker.opts.focus == 'list'
+end
+
+--- From the prompt back to the list, still narrowed.
+local function back_to_list(picker)
+  picker:norm(function()
+    picker:focus('list')
+  end)
+end
+
+--- <Esc> in the prompt: leaves insert mode, and closes the picker from normal
+--- mode; goes back to the list in a picker that opens there.
 function actions.escape(picker)
-  if vim.fn.mode():sub(1, 1) == 'i' then
+  if opens_in_list(picker) then
+    back_to_list(picker)
+  elseif vim.fn.mode():sub(1, 1) == 'i' then
     vim.cmd.stopinsert()
   else
     picker:close()
   end
 end
 
+--- <C-c> in the prompt: closes the picker at once; goes back to the list in
+--- a picker that opens there, as <Esc> does.
+function actions.interrupt(picker)
+  if opens_in_list(picker) then
+    back_to_list(picker)
+  else
+    picker:action('cancel')
+  end
+end
+
 --- <C-l>: gathers the items again, keeping the query; selects the first line.
 function actions.refresh(picker)
+  if picker.opts.refresh then
+    picker.opts.refresh(picker)
+  end
   cache[picker.opts.source] = nil
   picker.list:set_selected()
   picker.list:set_target(1, 1, { force = true })
@@ -234,6 +281,7 @@ end
 
 local input_keys = keys({
   ['<Esc>'] = { 'escape', mode = { 'n', 'i' } },
+  ['<c-c>'] = { 'interrupt', mode = { 'i' } },
   ['q'] = 'close',
   ['<c-n>'] = { 'list_down', mode = { 'n', 'i' } },
   ['<c-p>'] = { 'list_up', mode = { 'n', 'i' } },
@@ -295,69 +343,383 @@ local function repos_finder(opts, ctx)
   )
 end
 
---- Lines matching `pattern` below `dir` (relative paths), sorted by position.
-local function grep_finder(pattern, dir)
-  return function(opts, ctx)
-    local matches = {}
-    local run = require('snacks.picker.source.proc').proc(
-      ctx:opts({
-        cmd = 'rg',
-        args = { '--json', '--', pattern },
-        cwd = dir,
-        notify = false,
-        transform = function(item)
-          local ok, json = pcall(vim.json.decode, item.text)
-          if ok and json.type == 'match' then
-            local data = json.data
-            local sub = data.submatches[1] or { start = 0, ['end'] = 0 }
-            local line = (data.lines.text or ''):gsub('\r?\n$', '')
-            local match = {
-              label = data.path.text,
-              file = vim.fs.joinpath(dir, data.path.text),
-              pos = { data.line_number, sub.start },
-              col_label = sub.start,
-              line = line,
-              match = { sub.start, sub['end'] },
-            }
-            match.text = location_text(match)
+--- The search <Space>/ reopens: its pattern, the directory it runs in, the
+--- files it searches there (see filter_globs()), the replacement its list
+--- previews (nil: none), and the lines dropped from its results (by
+--- line_key()) until it runs again.
+local grep = { filter = '', dropped = {} }
+
+--- The paths and globs of a filter, between spaces or commas (not those of
+--- a {a,b} glob).
+local function filter_entries(filter)
+  local entries, entry, depth = {}, '', 0
+  for char in filter:gmatch('.') do
+    depth = math.max(depth + (char == '{' and 1 or char == '}' and -1 or 0), 0)
+    if char:match('%s') or (char == ',' and depth == 0) then
+      entries[#entries + 1] = entry ~= '' and entry or nil
+      entry = ''
+    else
+      entry = entry .. char
+    end
+  end
+  entries[#entries + 1] = entry ~= '' and entry or nil
+  return entries
+end
+
+--- rg's globs for the files to search: `src/ lib/util *.ts !*.test.ts`.
+--- Each is a pattern as in .gitignore, but one with a / anywhere is a path
+--- from the search directory, as <Tab> completes it (./src too), and a
+--- directory stands for everything below it. Those after ! are left out.
+local function filter_globs(filter)
+  local globs = {}
+  for _, entry in ipairs(filter_entries(filter)) do
+    local bang, glob = entry:match('^(!?)(.*)$')
+    glob = glob:gsub('^%./', '/')
+    if glob:find('/') and not glob:find('^/') and not glob:find('^%*%*/') then
+      glob = '/' .. glob
+    end
+    local everything = glob:find('^/?$')
+    if bang == '!' and not everything then
+      globs[#globs + 1] = '!' .. glob -- (rg leaves out a directory as a whole)
+    elseif not everything then
+      -- rg searches the files an include matches, not those below a
+      -- directory it matches
+      local dir = glob:match('^(.*)/$')
+      if not dir then
+        globs[#globs + 1] = glob
+        dir = glob
+      end
+      if not dir:find('%*%*$') then
+        globs[#globs + 1] = (dir:find('/') and dir or '**/' .. dir) .. '/**'
+      end
+    end
+  end
+  return globs
+end
+
+--- Where a result is: its file and line.
+local function line_key(item)
+  return item.file .. ':' .. item.pos[1]
+end
+
+--- `line` with its matches (start, end, replacement) replaced; by nothing
+--- when they have no replacement.
+local function replace_matches(line, matches)
+  local parts, at = {}, 0
+  for _, match in ipairs(matches) do
+    parts[#parts + 1] = line:sub(at + 1, match[1])
+    parts[#parts + 1] = match[3] or ''
+    at = match[2]
+  end
+  parts[#parts + 1] = line:sub(at + 1)
+  return table.concat(parts)
+end
+
+--- A result, from rg's JSON message about a line with matches.
+local function grep_item(data, dir)
+  -- (rg gives the bytes, not the text, of a line that is not UTF-8: the
+  -- list shows it empty, and R leaves it as it is)
+  local raw = data.lines.text and data.lines.text:gsub('\n$', '')
+  local item = {
+    label = data.path.text,
+    file = vim.fs.joinpath(dir, data.path.text),
+    raw = raw, -- (with the \r of a CRLF line)
+    line = raw and raw:gsub('\r$', '') or '',
+    matches = {},
+  }
+  for _, sub in ipairs(data.submatches) do
+    item.matches[#item.matches + 1] = { sub.start, sub['end'], sub.replacement and sub.replacement.text }
+  end
+  local col = item.matches[1] and item.matches[1][1] or 0
+  item.pos = { data.line_number, col }
+  item.col_label = col
+  if grep.replacement then
+    item.replaced = replace_matches(item.line, item.matches)
+  end
+  item.text = location_text(item)
+  return item
+end
+
+--- Lines matching the pattern below the directory (relative paths), sorted
+--- by position, but for those dropped from the results.
+local function grep_finder(opts, ctx)
+  local dir, matches = grep.dir, {}
+  -- (nothing in .git, which rg searches with --hidden)
+  local args = { '--json', '--glob=!.git' }
+  if grep.replacement then
+    args[#args + 1] = '--replace=' .. grep.replacement
+  end
+  for _, glob in ipairs(filter_globs(grep.filter)) do
+    args[#args + 1] = '--glob=' .. glob
+  end
+  vim.list_extend(args, { '--', grep.pattern })
+  local run = require('snacks.picker.source.proc').proc(
+    ctx:opts({
+      cmd = 'rg',
+      args = args,
+      cwd = dir,
+      notify = false,
+      transform = function(item)
+        local ok, json = pcall(vim.json.decode, item.text)
+        if ok and json.type == 'match' and json.data.path.text then
+          local match = grep_item(json.data, dir)
+          if not grep.dropped[line_key(match)] then
             matches[#matches + 1] = match
           end
-          return false
-        end,
-      }),
-      ctx
-    )
-    return function(cb)
-      run(function() end)
-      table.sort(matches, function(a, b)
-        if a.label ~= b.label then
-          return a.label < b.label
         end
-        if a.pos[1] ~= b.pos[1] then
-          return a.pos[1] < b.pos[1]
-        end
-        return a.pos[2] < b.pos[2]
-      end)
-      for _, match in ipairs(matches) do
-        cb(match)
+        return false
+      end,
+    }),
+    ctx
+  )
+  return function(cb)
+    run(function() end)
+    table.sort(matches, function(a, b)
+      if a.label ~= b.label then
+        return a.label < b.label
       end
+      if a.pos[1] ~= b.pos[1] then
+        return a.pos[1] < b.pos[1]
+      end
+      return a.pos[2] < b.pos[2]
+    end)
+    for _, match in ipairs(matches) do
+      cb(match)
     end
   end
 end
 
-local grep_pattern
-
 --- The grep pattern: asks for one when there is none yet or when `ask`.
 --- Returns nil when the prompt is cancelled.
 local function pattern_for(ask)
-  if ask or not grep_pattern then
+  if ask or not grep.pattern then
     local ok, input = pcall(vim.fn.input, 'Search: ')
     if not ok or input == '' then
       return nil
     end
-    grep_pattern = input
+    grep.pattern = input
   end
-  return grep_pattern
+  return grep.pattern
+end
+
+--- The pattern, the replacement and the files to search.
+local function grep_title()
+  local title = 'Grep ' .. grep.pattern
+  if grep.replacement then
+    title = title .. ' → ' .. grep.replacement
+  end
+  if grep.filter ~= '' then
+    title = title .. ' · ' .. grep.filter
+  end
+  return title
+end
+
+--- Shows the search as it is now in the title, and when it reopens.
+local function update_title(picker)
+  picker.title = grep_title()
+  picker.init_opts.title = picker.title
+  picker:update_titles()
+end
+
+--- Completes the last path of the files to search (f), below the search
+--- directory. (input() completes the whole line: the others stay.)
+function M.complete_files(lead)
+  local before, word = lead:match('^(.*[%s,])(.-)$')
+  if not before then
+    before, word = '', lead
+  end
+  local bang, path = word:match('^(!?)(.*)$')
+  local dir, name = path:match('^(.*/)(.-)$')
+  if not dir then
+    dir, name = '', path
+  end
+  local base = vim.fs.joinpath(grep.dir or vim.fn.getcwd(), dir)
+  if path:find('[*?[{]') or (vim.uv.fs_stat(base) or {}).type ~= 'directory' then
+    return {}
+  end
+  local case = vim.o.wildignorecase and string.lower or function(s)
+    return s
+  end
+  local paths = {}
+  for entry, kind in vim.fs.dir(base) do
+    -- (hidden ones once the name starts with a dot, as in the shell)
+    local hidden = entry:sub(1, 1) == '.' and name:sub(1, 1) ~= '.'
+    if not hidden and entry ~= '.git' and vim.startswith(case(entry), case(name)) then
+      if kind == 'link' then
+        kind = (vim.uv.fs_stat(vim.fs.joinpath(base, entry)) or {}).type
+      end
+      paths[#paths + 1] = before .. bang .. dir .. entry .. (kind == 'directory' and '/' or '')
+    end
+  end
+  table.sort(paths)
+  return paths
+end
+
+local function plural(n, one, many)
+  return ('%d %s'):format(n, n == 1 and one or many)
+end
+
+--- Replaces the matches of `items` (results of grep) in their files: in its
+--- buffer when a file is loaded (and writes it, unless it has changes of
+--- its own), in the file itself otherwise. A line that changed since the
+--- search stays as it is. Returns the numbers of matches replaced, of files
+--- changed and of lines left.
+local function replace_in_files(items)
+  local by_file, files = {}, {}
+  for _, item in ipairs(items) do
+    if not by_file[item.file] then
+      by_file[item.file] = {}
+      files[#files + 1] = item.file
+    end
+    table.insert(by_file[item.file], item)
+  end
+  local bufs = {}
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local path = vim.api.nvim_buf_is_loaded(buf) and vim.uv.fs_realpath(vim.api.nvim_buf_get_name(buf))
+    if path then
+      bufs[path] = buf
+    end
+  end
+
+  local replaced, changed, left = 0, 0, 0
+  for _, file in ipairs(files) do
+    local buf = bufs[vim.uv.fs_realpath(file) or file]
+    local ok, lines = true, nil
+    if buf then
+      lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    else
+      ok, lines = pcall(vim.fn.readfile, file, 'b')
+    end
+    local lnums, count = {}, 0
+    for _, item in ipairs(by_file[file]) do
+      local old = item.raw
+      local new = old and replace_matches(old, item.matches)
+      if old and buf and vim.bo[buf].fileformat == 'dos' then
+        old, new = (old:gsub('\r$', '')), (new:gsub('\r$', ''))
+      end
+      local lnum = item.pos[1]
+      if ok and old and lines[lnum] == old then
+        lines[lnum] = new
+        lnums[#lnums + 1] = lnum
+        count = count + #item.matches
+      else
+        left = left + 1
+      end
+    end
+    if #lnums > 0 then
+      local written
+      if buf then
+        local modified = vim.bo[buf].modified
+        for _, lnum in ipairs(lnums) do
+          vim.api.nvim_buf_set_lines(buf, lnum - 1, lnum, true, { lines[lnum] })
+        end
+        written = modified or pcall(vim.api.nvim_buf_call, buf, function()
+          vim.cmd('silent update')
+        end)
+      else
+        local wrote, result = pcall(vim.fn.writefile, lines, file, 'b')
+        written = wrote and result == 0
+      end
+      if written then
+        replaced, changed = replaced + count, changed + 1
+      else
+        vim.notify('Cannot write ' .. vim.fn.fnamemodify(file, ':~:.'), vim.log.levels.ERROR)
+      end
+    end
+  end
+  return replaced, changed, left
+end
+
+--- f: asks for the files to search (filter_globs()).
+function actions.grep_files(picker)
+  local ok, filter = pcall(vim.fn.input, {
+    prompt = 'Files: ',
+    default = grep.filter,
+    completion = "customlist,v:lua.require'user.plugin.picker'.complete_files",
+    cancelreturn = vim.NIL,
+  })
+  if not ok or filter == vim.NIL then
+    return
+  end
+  grep.filter = vim.trim(filter)
+  update_title(picker)
+  actions.refresh(picker)
+end
+
+--- r: asks for the replacement (rg's: $1 for the first group, $$ for a $)
+--- that every line previews, staying on the line; none ends the preview.
+function actions.grep_replace(picker)
+  local ok, replacement = pcall(vim.fn.input, {
+    prompt = 'Replace: ',
+    default = grep.replacement or '',
+    cancelreturn = vim.NIL,
+  })
+  if not ok or replacement == vim.NIL then
+    return
+  end
+  grep.replacement = replacement ~= '' and replacement or nil
+  update_title(picker)
+  cache.rg = nil
+  picker:refresh()
+end
+
+--- x: drops the marked lines, or the line under the cursor, from the results
+--- (and from what R replaces), until the search runs again.
+function actions.grep_drop(picker)
+  local dropped = {}
+  for _, item in ipairs(picker:selected({ fallback = true })) do
+    dropped[line_key(item)] = true
+    grep.dropped[line_key(item)] = true
+  end
+  local function kept(item)
+    return not dropped[line_key(item)]
+  end
+  if cache.rg then
+    cache.rg = vim.tbl_filter(kept, cache.rg)
+  end
+  -- on the line that took the place of the one under the cursor
+  local count = #vim.tbl_filter(kept, picker:items())
+  picker.list:set_selected()
+  picker.list:set_target(math.max(math.min(picker.list.cursor, count), 1), nil, { force = true })
+  picker:find({ refresh = true })
+end
+
+--- R: replaces the matches of the lines in the list (the marked ones, if
+--- any) in their files, once you confirm; deletes them without a
+--- replacement. The search then runs again, without it.
+function actions.grep_apply(picker)
+  local items = picker:selected()
+  if #items == 0 then
+    items = picker:items()
+  end
+  local matches, files = 0, {}
+  for _, item in ipairs(items) do
+    matches = matches + #item.matches
+    files[item.file] = true
+  end
+  if matches == 0 then
+    return
+  end
+  local what = ('%s in %s'):format(plural(matches, 'match', 'matches'), plural(vim.tbl_count(files), 'file', 'files'))
+  local question = grep.replacement and ('Replace %s with "%s"? [y/N] '):format(what, grep.replacement)
+    or ('Delete %s? [y/N] '):format(what)
+  local ok, answer = pcall(vim.fn.input, question)
+  if not ok or not answer:match('^%s*[yY]') then
+    return
+  end
+  local replaced, changed, left = replace_in_files(items)
+  local message = ('%s %s in %s'):format(
+    grep.replacement and 'Replaced' or 'Deleted',
+    plural(replaced, 'match', 'matches'),
+    plural(changed, 'file', 'files')
+  )
+  if left > 0 then
+    message = ('%s; left %s that changed since the search'):format(message, plural(left, 'line', 'lines'))
+  end
+  vim.notify(message, left > 0 and vim.log.levels.WARN or vim.log.levels.INFO)
+  grep.replacement = nil
+  update_title(picker)
+  actions.refresh(picker)
 end
 
 ---------------------------------------------------------------------------
@@ -387,38 +749,43 @@ function M.open()
   }, resume)
 end
 
---- <Space>/ (resume) and :Search {dir}: grep, with the results focused.
+--- <Space>/ (resume) and :Search {dir}: grep, with the results focused. A
+--- new search starts with every file, and no replacement.
 function M.search(dir, resume)
   resume = resume and can_resume()
   if not resume then
     last_cwd = vim.fn.getcwd()
   end
-  if resume and require('snacks.picker.resume').state.rg and grep_pattern then
+  if resume and require('snacks.picker.resume').state.rg and grep.pattern then
     return Snacks.picker.resume({ source = 'rg' })
   end
-  local pattern = pattern_for(not resume)
-  if not pattern then
+  if not pattern_for(not resume) then
     return
   end
-  dir = vim.fs.normalize(vim.fn.fnamemodify(dir ~= '' and dir or '.', ':p'))
-  local finder = grep_finder(pattern, dir)
+  grep.dir = vim.fs.normalize(vim.fn.fnamemodify(dir ~= '' and dir or '.', ':p'))
+  grep.filter, grep.replacement, grep.dropped = '', nil, {}
   cache.rg = nil
   return Snacks.picker({
     source = 'rg',
-    title = 'Grep',
-    finder = cached('rg', function(opts, ctx)
-      return finder(opts, ctx)
-    end),
+    title = grep_title(),
+    finder = cached('rg', grep_finder),
     format = format_location,
     focus = 'list',
-    reload = function(picker)
-      local new = pattern_for(true)
-      if not new then
-        return
-      end
-      finder = grep_finder(new, dir)
-      actions.refresh(picker)
+    -- (searching again brings back the lines dropped from the results)
+    refresh = function()
+      grep.dropped = {}
     end,
+    reload = function(picker)
+      if pattern_for(true) then
+        update_title(picker)
+        actions.refresh(picker)
+      end
+    end,
+    win = {
+      list = {
+        keys = { f = 'grep_files', r = 'grep_replace', x = 'grep_drop', R = 'grep_apply' },
+      },
+    },
   })
 end
 
@@ -431,7 +798,7 @@ local function location_item(it)
     line = it.text,
   }
   if it.end_lnum == it.lnum and it.end_col and it.end_col > it.col then
-    item.match = { it.col - 1, it.end_col - 1 }
+    item.matches = { { it.col - 1, it.end_col - 1 } }
   end
   item.text = location_text(item)
   return item
