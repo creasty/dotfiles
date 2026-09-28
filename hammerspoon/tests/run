@@ -1,0 +1,63 @@
+#!/usr/bin/env lua
+-- Runs the specs of the Hammerspoon config (tests/*_spec.lua) on a fake of Hammerspoon's API (tests/hs.lua), with
+-- Lua 5.4 as Hammerspoon's:
+--
+--   nix shell --inputs-from . nixpkgs#lua5_4 --command hammerspoon/tests/run [pattern]
+--
+-- A pattern (Lua's) picks the tests whose name it matches.
+assert(_VERSION == 'Lua 5.4', 'needs Lua 5.4, as Hammerspoon: ' .. _VERSION)
+
+local tests_dir = arg[0]:match('^(.*)/[^/]*$') or '.'
+local config_dir = tests_dir .. '/..'
+package.path = ('%s/?.lua;%s/?.lua;%s'):format(config_dir, tests_dir, package.path)
+
+local fake = require('hs')
+local pattern = arg[1]
+
+local tests = {}
+-- Registers a test, run on a fresh fake with the config not loaded yet
+function test(name, fn)
+  table.insert(tests, { name = name, fn = fn })
+end
+
+local function load_specs()
+  local ls = assert(io.popen(('ls %q'):format(tests_dir)))
+  for file in ls:lines() do
+    if file:match('_spec%.lua$') then
+      local spec = file:gsub('_spec%.lua$', '')
+      local count = #tests
+      dofile(tests_dir .. '/' .. file)
+      for i = count + 1, #tests do tests[i].name = spec .. ': ' .. tests[i].name end
+    end
+  end
+  ls:close()
+end
+
+-- Forgets the config's modules, and what it set
+local function unload()
+  for name in pairs(package.loaded) do
+    if name ~= 'hs' and package.searchpath(name, config_dir .. '/?.lua') then package.loaded[name] = nil end
+  end
+  keyboard = nil
+end
+
+load_specs()
+local passed, failed = 0, 0
+for _, t in ipairs(tests) do
+  if not pattern or t.name:match(pattern) then
+    unload()
+    fake.reset()
+    local ok, err = xpcall(t.fn, debug.traceback)
+    if ok and #fake.logged > 0 then
+      ok, err = false, 'logged:\n' .. table.concat(fake.logged, '\n')
+    end
+    if ok then
+      passed = passed + 1
+    else
+      failed = failed + 1
+      print(('FAIL %s\n%s\n'):format(t.name, err))
+    end
+  end
+end
+print(('%d passed, %d failed'):format(passed, failed))
+os.exit(failed == 0 and passed > 0)

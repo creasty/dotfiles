@@ -60,10 +60,10 @@ mirror that has the commit.
 
 ## CI
 
-`.github/workflows/nvim-e2e.yml` runs the suite on macOS for pull requests and
-pushes to master that touch `nvim/` or `bin/`, with the versions this setup was
-pinned on (Neovim 0.11.7, and tree-sitter CLI 0.25.3 on Node 20.18.2 to build
-parsers) and the plugins `nvim/flake.lock` pins. The job summary
+The `nvim-e2e` job of `.github/workflows/tests.yml` runs the suite on macOS for
+pull requests, pushes to master and every Monday, with the versions this setup
+was pinned on (Neovim 0.11.7, and tree-sitter CLI 0.25.3 on Node 20.18.2 to
+build parsers) and the plugins `nvim/flake.lock` pins. The job summary
 lists every workflow that changed: the assertion, the child's screen, and
 whether the test was a pinned quirk (`run --summary FILE` writes it).
 
