@@ -27,7 +27,7 @@ Its config, `config/ghostty/config.ghostty`, reproduces both with Ghostty's own 
 ## Where Ghostty differs
 
 - **No keyboard selection** ([ghostty-org/ghostty#3488](https://github.com/ghostty-org/ghostty/discussions/3488)): copy mode scrolls the view, with no cursor to move or select from.
-  `v` sends F20, the path of a file with the screen and its history, and a return; `term.zsh` opens it in Neovim (`view_scrollback`), then deletes it.
+  `v` sends F20, the path of a file with the screen and its history, and a return; `term.zsh` reads them and opens the file in Neovim from the line editor (`_view_scrollback`), so no command shows up or goes to the history, then deletes it.
   That takes a shell prompt: in a full-screen program (Neovim, less), the path is typed into it.
 - **Search** goes one way: `n` goes to older matches, `N` to newer ones, whether it started with `/` or `?`, and it doesn't wrap around.
 - **Unbound keys after the prefix** go to the program together with `C-s`, where tmux dropped them.
