@@ -12,7 +12,7 @@
     ./tmux.nix
     ./ssh.nix
     ./macos.nix
-    ./keyboard.nix
+    ./hammerspoon.nix
     ./neovim.nix
     ./vscode.nix
     ./docker.nix

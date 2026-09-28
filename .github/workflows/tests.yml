@@ -1,9 +1,13 @@
-name: nvim-e2e
+name: tests
 
-# Runs the Neovim end-to-end workflow tests (nvim/tests) against the plugin
-# versions pinned in nvim/flake.lock, so a pull request (Dependabot's bumps
-# included) shows which workflows it changes. The job summary lists every
-# changed workflow.
+# The test suites of the configs, which need no provisioned Mac:
+#
+# - hammerspoon: the specs of the Hammerspoon config (hammerspoon/tests), on a
+#   fake of Hammerspoon's API.
+# - nvim-e2e: the Neovim end-to-end workflow tests (nvim/tests), against the
+#   plugin versions pinned in nvim/flake.lock, so a pull request (Dependabot's
+#   bumps included) shows which workflows it changes. The job summary lists
+#   every changed workflow.
 
 on:
   push:
@@ -14,8 +18,26 @@ on:
     # Every Monday, at 10:00 JST
     - cron: "0 1 * * 1"
 
+permissions:
+  contents: read
+
 jobs:
-  e2e:
+  hammerspoon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Lua 5.4, as Hammerspoon's
+      - name: Install Lua
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends lua5.4
+
+      - name: Run the specs
+        run: hammerspoon/tests/run
+
+  nvim-e2e:
     # Same OS as the machine the behavior was pinned on.
     runs-on: macos-14
     timeout-minutes: 45
