@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 #
-# Helpers for the behavioral tests that ../verify runs.
+# Helpers for the behavioral tests that ../../verify runs.
 # Tests run on macOS's bash 3.2: no associative arrays, mapfile, ${var,,} or negative indices.
 
 bats_require_minimum_version 1.8.0

@@ -103,7 +103,7 @@ After merging, provision again; Neovim checks out the new plugin commits the nex
 
 - **`docs/`** : Setup documentation and resources
 - **`flake.nix`**, **`nix/modules/`** : The nix-darwin configuration, a module per topic
-- **`test/`** : Behavioral tests of the provisioning
+- **`nix/tests/`** : Behavioral tests of the provisioning
 
 ## Stats
 
