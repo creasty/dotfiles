@@ -7,11 +7,11 @@ Its mouse keys and its guard on <kbd>Cmd-Q</kbd> are left out.
 Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibility, and reload its config (its menu bar icon > Reload Config).
 It starts at login from then on.
 
-The module also sets the shortcuts of System Settings > Keyboard > Keyboard Shortcuts that the key bindings stroke, which macOS reads at login:
+<kbd>S+H</kbd> and <kbd>S+L</kbd> stroke Mission Control's shortcuts, as macOS has no public API to move a space.
+The module also sets them in System Settings > Keyboard > Keyboard Shortcuts, which macOS reads at login:
 
 - Mission Control > Move left a space: <kbd>Ctrl-LeftArrow</kbd> (the default)
 - Mission Control > Move right a space: <kbd>Ctrl-RightArrow</kbd> (the default)
-- Keyboard > Move focus to next window: <kbd>Cmd-F1</kbd>
 
 ## Key bindings
 
@@ -31,6 +31,7 @@ The key still types when tapped, and typing that rolls over it types in order.
 | <kbd>S+M</kbd> | Mission Control |
 
 The application switcher stays open while <kbd>S</kbd> is held, as it does while <kbd>Cmd</kbd> is: <kbd>J</kbd> and <kbd>K</kbd> go through the applications, and releasing <kbd>S</kbd> switches.
+<kbd>S+N</kbd> and <kbd>S+B</kbd> go around the app's windows on the current space in the order they opened, skipping minimized windows and panels.
 
 ### Window resizing/positioning
 

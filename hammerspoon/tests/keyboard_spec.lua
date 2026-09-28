@@ -138,9 +138,18 @@ it('a key with modifiers closes the application switcher', function()
   received('cmd↓ cmd+tab↓ cmd+tab↑ cmd↑ cmd+w↓ cmd+w↑')
 end)
 
-it('S+N and S+B move the focus to the next window and back', function()
+it('S+N and S+B focus the next window of the app and the previous one, in the order they opened', function()
+  -- Front to back, with a panel
+  fake.windows = { { id = 12 }, { id = 10 }, { id = 13, standard = false }, { id = 11 } }
+  keys('s↓ 200ms n↓ n↑ 200ms n↓ n↑ n↓ n↑ b↓ b↑ s↑')
+  did('focus window 10, focus window 11, focus window 12, focus window 11')
+  received('')
+end)
+
+it('from a focused panel, S+N and S+B go on from where it opened', function()
+  fake.windows = { { id = 11, standard = false }, { id = 10 }, { id = 12 } }
   keys('s↓ 200ms n↓ n↑ 200ms b↓ b↑ s↑')
-  received('cmd+fn+f1↓ cmd+fn+f1↑ shift+cmd+fn+f1↓ shift+cmd+fn+f1↑')
+  did('focus window 12, focus window 10')
 end)
 
 it('S+M shows Mission Control', function()
@@ -162,9 +171,9 @@ it('S+D+F, H, J, K and L fill the screen, its left, bottom, top and right halves
   received('')
 end)
 
-it('with no window focused, a window chord does nothing', function()
-  fake.window = false
-  keys('s↓ 200ms d↓ 200ms f↓ f↑ d↑ s↑')
+it('with no window focused, window chords do nothing', function()
+  fake.windows = {}
+  keys('s↓ 200ms d↓ 200ms f↓ f↑ d↑ n↓ n↑ b↓ b↑ s↑')
   did('')
 end)
 
