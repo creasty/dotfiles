@@ -10,5 +10,9 @@ in
 {
   homebrew.casks = [ "ghostty" ];
 
-  home-manager.users.${username}.home.packages = [ ghostty-pane ];
+  home-manager.users.${username}.home = {
+    packages = [ ghostty-pane ];
+    # Ghostty starts the command of a pane with login(1), which prints the last login unless there's a ~/.hushlogin
+    file.".hushlogin".text = "";
+  };
 }

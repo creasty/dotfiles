@@ -17,3 +17,14 @@ load helper
     /usr/bin/script -q /dev/null /bin/bash --noprofile --norc -c "exec -l $command -c $(q "$check")" < /dev/null
   assert_like "$output" '*login shell: on, in ghostty-pane*'
 }
+
+# Ghostty starts the command of a pane with `login -flp <user> <command>`, as the user
+@test "Ghostty's panes start without the last login" {
+  local login=(/usr/bin/perl -e 'alarm shift; exec @ARGV' 60 /usr/bin/script -q /dev/null
+    /usr/bin/login -flp "$(id -un)")
+  # A login first, for the second to report
+  run -0 pristine "${login[@]}" /usr/bin/true < /dev/null
+  run -0 pristine "${login[@]}" /bin/echo started < /dev/null
+  assert_like "$output" '*started*'
+  [[ $output != *'Last login'* ]]
+}
