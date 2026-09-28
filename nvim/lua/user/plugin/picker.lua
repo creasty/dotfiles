@@ -899,6 +899,16 @@ local function next_to_cursor(count)
   return { relative = 'editor', row = row, col = cursor.col - 1, width = 0.4, min_width = 50, max_width = 80 }
 end
 
+--- How tall the vertical layout is inside its border: as its preset has it
+--- (80% of the screen, at least 30 rows), but no taller than fits above the
+--- command line. (On a shorter screen, snacks keeps the 30 rows without
+--- counting the border, and Neovim, to fit the list on the screen, moves it
+--- up onto the prompt's rule, which hides the first result.)
+local function vertical_height()
+  local fits = vim.o.lines - vim.o.cmdheight - 2 -- (the border)
+  return math.min(math.max(math.floor(vim.o.lines * 0.8) - 2, 30), fits)
+end
+
 function M.setup()
   require('snacks').setup({
     picker = {
@@ -907,6 +917,9 @@ function M.setup()
         preset = 'vertical',
         hidden = { 'preview' },
         cycle = false,
+      },
+      layouts = {
+        vertical = { layout = { height = vertical_height, min_height = 0 } },
       },
       actions = actions,
       win = {

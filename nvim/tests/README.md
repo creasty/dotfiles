@@ -81,7 +81,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow/heading snippets | **LuaSnip** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
 | `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>` dismiss | **copilot.lua** |
-| `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys | **snacks.nvim** |
+| `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys, short screens | **snacks.nvim** |
 | `picker_checklist` | every source × reopen as left, own state, scroll, `<C-l>`, `<C-r>` (below) | **snacks.nvim** |
 | `integration` | no pairs/completion/AI in picker prompts and block inserts | `user/intelligence.lua` |
 | `ui` | tabline, statusline, title, signs (marks, git), whitespace | `user/ui.lua`, gitsigns.nvim |

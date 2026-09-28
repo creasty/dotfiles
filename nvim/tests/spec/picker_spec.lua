@@ -233,6 +233,40 @@ describe('Picker', function()
     end)
   end)
 
+  describe('on a short screen (a split pane)', function()
+    --- Waits until a row of the screen shows `text`.
+    local function wait_on_screen(nvim, text)
+      nvim:wait_for(function()
+        for _, line in ipairs(nvim:screen()) do
+          if line:find(text, 1, true) then
+            return true
+          end
+        end
+      end, { message = text .. ' on the screen' })
+    end
+
+    it('shows the first result below the prompt, in grep too', function()
+      local nvim = in_project({ lines = 24 })
+      local picker = open_finder(nvim)
+      wait_on_screen(nvim, picker.items[1])
+      nvim:type('<C-q>')
+      probe.wait_picker_closed(nvim)
+      nvim:type('<Space>/')
+      nvim:type('needle<CR>')
+      picker = probe.wait_picker(nvim, function(p)
+        return #p.items == 3
+      end)
+      wait_on_screen(nvim, picker.items[1])
+    end)
+
+    it('shows the first result when the screen shrinks while the picker is open', function()
+      local nvim = in_project()
+      local picker = open_finder(nvim)
+      nvim:cmd('set lines=24')
+      wait_on_screen(nvim, picker.items[1])
+    end)
+  end)
+
   -- As in VS Code's search view: the files to search, and a replacement
   -- every line of the list previews before R replaces what it lists.
   local SEARCH_TREE = {
