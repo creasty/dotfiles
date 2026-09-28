@@ -16,6 +16,7 @@ M.formatters_by_ft = {
   jsonc = prettier,
   less = prettier,
   markdown = prettier,
+  nix = { 'nixfmt' },
   proto = { 'clang-format' },
   scss = prettier,
   sql = { 'sqlfluff' },
