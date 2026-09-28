@@ -143,7 +143,7 @@ local shortcuts = {
 
   -- Switch between apps
   [';+F'] = function() toggle_app('com.apple.finder') end,
-  [';+M'] = function() toggle_app('org.alacritty') end,
+  [';+M'] = function() toggle_app('com.mitchellh.ghostty') end,
   [';+T'] = function() toggle_app('com.culturedcode.ThingsMac') end,
   [';+N'] = function() toggle_app('net.shinyfrog.bear') end,
 }

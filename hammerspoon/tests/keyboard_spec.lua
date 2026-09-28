@@ -183,9 +183,9 @@ it(';+F brings Finder to the front, or hides it when it is there', function()
   received('')
 end)
 
-it(';+M, ;+T and ;+N bring Alacritty, Things and Bear to the front', function()
+it(';+M, ;+T and ;+N bring Ghostty, Things and Bear to the front', function()
   keys(';↓ 200ms m↓ m↑ 200ms t↓ t↑ n↓ n↑ ;↑')
-  did('focus org.alacritty, focus com.culturedcode.ThingsMac, focus net.shinyfrog.bear')
+  did('focus com.mitchellh.ghostty, focus com.culturedcode.ThingsMac, focus net.shinyfrog.bear')
 end)
 
 it('a semicolon types, before a return too', function()
