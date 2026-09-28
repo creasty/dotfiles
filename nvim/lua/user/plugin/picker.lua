@@ -21,8 +21,6 @@
 
 local M = {}
 
-local ACTIONS = { 'open', 'split', 'vsplit', 'tab', 'yank', 'quickfix' }
-
 ---------------------------------------------------------------------------
 -- State
 ---------------------------------------------------------------------------
@@ -134,19 +132,13 @@ local function run_action(name, items)
     local text = table.concat(vim.tbl_map(path_of, items), '\n')
     vim.fn.setreg('"', text, 'v')
     vim.fn.setreg(vim.v.register, text, 'v')
-  elseif name == 'quickfix' then
-    vim.fn.setqflist(vim.tbl_map(function(item)
-      return { filename = path_of(item), lnum = item.pos and item.pos[1] or 1, col = item.pos and item.pos[2] + 1 or 1, text = item.line or item.text }
-    end, items))
-    vim.cmd('botright copen')
   elseif name == 'cd' then
     vim.fn.chdir(path_of(items[1]))
   else
-    local cmd = ({ open = 'edit', split = 'split', vsplit = 'vsplit', tab = 'tabedit' })[name]
     for i = #items, 2, -1 do
       vim.bo[vim.fn.bufadd(path_of(items[i]))].buflisted = true
     end
-    vim.cmd[cmd](vim.fn.fnameescape(path_of(items[1])))
+    vim.cmd.edit(vim.fn.fnameescape(path_of(items[1])))
     local pos = items[1].pos
     if pos and pos[1] > 0 then
       vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] })
@@ -156,41 +148,6 @@ local function run_action(name, items)
 end
 
 local actions = {}
-
---- Lists the actions for the item(s); cancelling returns to the picker.
-function actions.choose_action(picker)
-  local source = picker.opts.source
-  local items = picker:selected({ fallback = true })
-  local names = picker.opts.item_actions or ACTIONS
-  picker:close()
-  local chosen = false
-  vim.schedule(function()
-    Snacks.picker({
-      source = 'item_actions',
-      title = 'Actions',
-      layout = { preset = 'select' },
-      focus = 'list',
-      items = vim.tbl_map(function(name)
-        return { text = name }
-      end, names),
-      format = 'text',
-      confirm = function(p, item)
-        chosen = true
-        p:close()
-        vim.schedule(function()
-          run_action(item.text, items)
-        end)
-      end,
-      on_close = function()
-        if not chosen then
-          vim.schedule(function()
-            M.resume(source)
-          end)
-        end
-      end,
-    })
-  end)
-end
 
 for _, name in ipairs({ 'open', 'yank', 'cd' }) do
   actions['item_' .. name] = function(picker)
@@ -271,7 +228,9 @@ local function keys(extra)
     ['<CR>'] = { 'confirm', mode = { 'n', 'i' } },
     ['<c-j>'] = { 'confirm', mode = { 'n', 'i' } },
     ['<c-q>'] = { 'close', mode = { 'n', 'i' } },
-    ['<Tab>'] = { 'choose_action', mode = { 'n', 'i' } },
+    -- nothing (unmapped, it would jump in the list, as <C-i> does, and type
+    -- spaces in the prompt)
+    ['<Tab>'] = { function() end, mode = { 'n', 'i' } },
     ['<S-Tab>'] = false,
     ['<c-l>'] = { 'refresh', mode = { 'n', 'i' } },
     ['<c-r>'] = { 'reload', mode = { 'n', 'i' } },
@@ -736,7 +695,6 @@ function M.open()
       finder = cached('repositories', repos_finder),
       format = format_file,
       confirm = 'item_cd',
-      item_actions = { 'cd', 'yank' },
     }, resume)
   end
   return open({
@@ -872,13 +830,6 @@ end
 function M.diagnostics()
   last_cwd = vim.fn.getcwd()
   return Snacks.picker.diagnostics({ focus = 'list' })
-end
-
---- Reopens a source as it was left, whatever the directory.
-function M.resume(source)
-  if require('snacks.picker.resume').state[source] then
-    Snacks.picker.resume({ source = source })
-  end
 end
 
 --- Where a list of `count` code actions opens: next to the cursor, just below

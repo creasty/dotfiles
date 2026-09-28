@@ -105,8 +105,7 @@ Every picker source is checked for the same things:
 | `<C-r>`: reload | clears the query, lists every file | clears the query, lists every repository | asks for a new pattern (`<Esc>` keeps the search) | clears the query |
 
 A picker opened after `:cd` starts fresh, and so does one opened back in the
-first directory. `<Tab>` lists the actions for the item; `q` there returns to
-the picker as you left it.
+first directory.
 
 Grep also reopens with the files it searches (`f`), the replacement its list
 previews (`r`) and the lines dropped from it (`x`); `<C-l>` and `<C-r>` bring
