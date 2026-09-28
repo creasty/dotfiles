@@ -79,7 +79,7 @@ Versions are pinned, and [Dependabot](./.github/dependabot.yml) bumps them every
 | `flake.lock` | nixpkgs, nix-darwin and home-manager | Provisioning |
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
-After merging, provision again, and run `:Lazy update` in Neovim to check out the new plugin commits.
+After merging, provision again; Neovim checks out the new plugin commits the next time it starts.
 
 ## Project structure
 

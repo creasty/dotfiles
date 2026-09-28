@@ -237,9 +237,17 @@ describe('Editing keys', function()
 
     it('<C-\\> inserts the next key literally (the original <C-v>)', function()
       local nvim = t.nvim()
+      -- (the first i and : load plugins, so the keys can land a moment after
+      -- type() returns)
       nvim:type('i<C-\\><Tab><Esc>')
+      nvim:wait_for(function()
+        return nvim:line(1) ~= ''
+      end, { message = 'the typed keys' })
       t.eq({ '\t' }, nvim:lines())
       nvim:type(':<C-\\><Tab>')
+      nvim:wait_for(function()
+        return nvim:call('getcmdline') ~= ''
+      end, { message = 'the typed keys' })
       t.eq('\t', nvim:call('getcmdline'))
     end)
   end)

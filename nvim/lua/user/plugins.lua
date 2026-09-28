@@ -1,7 +1,7 @@
 -- Plugins, installed and loaded by lazy.nvim (:Lazy), each at the commit
 -- nvim/flake.lock pins. Dependabot bumps the pins in pull requests; after
--- pulling one, `:Lazy update` checks out the new commits. A plugin added here
--- needs an input in nvim/flake.nix as well.
+-- pulling one, the next start checks out the new commits (M.sync). A plugin
+-- added here needs an input in nvim/flake.nix as well.
 --
 -- A plugin with an event, a command or keys loads on the first of them, the
 -- others at startup. `init` runs at startup either way, `config` once the
@@ -12,6 +12,10 @@ local M = {}
 M.spec = {
   { -- a modern plugin manager for Neovim, which manages itself too
     'folke/lazy.nvim',
+    -- (before any plugin loads)
+    init = function()
+      M.sync()
+    end,
   },
 
   --  Editing
@@ -192,8 +196,12 @@ M.spec = {
   -----------------------------------------------
   { -- Treesitter configurations and abstraction layer for Neovim
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master', -- `main` is an incompatible rewrite (no nvim-treesitter.configs, which opfmt also relies on)
-    build = ':TSUpdate',
+    branch = 'main',
+    -- Installs and updates the parsers, in a Neovim of its own (see the file)
+    build = ('%s --clean -l %s'):format(
+      vim.fn.shellescape(vim.v.progpath),
+      vim.fn.shellescape(vim.fn.stdpath('config') .. '/lua/user/plugin/treesitter/build.lua')
+    ),
     config = function()
       require('user.plugin.treesitter')
     end,
@@ -203,21 +211,8 @@ M.spec = {
     'nvim-treesitter/nvim-treesitter-context',
   },
 
-  { -- A plugin for Neovim that helps you surf through your document and move elements around using the nvim-treesitter API.
-    'ziontee113/syntax-tree-surfer',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    init = function()
-      vim.fn['user#plugin#syntax_tree_surfer#init']()
-    end,
-  },
-
   { -- Use treesitter to autoclose and autorename html tag
     'windwp/nvim-ts-autotag',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-  },
-
-  { -- Yet another tree-sitter powered indent plugin for Neovim
-    'yioneko/nvim-yati',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
 
@@ -230,6 +225,7 @@ M.spec = {
     'creasty/opfmt',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     dev = true,
+    cond = false, -- it needs nvim-treesitter's master branch (nvim-treesitter.configs): off until it moves to main
   },
 
   --  UI
@@ -359,6 +355,37 @@ M.opts = {
   -- (only a record of what it installed: nvim/flake.lock pins the commits)
   lockfile = vim.fn.stdpath('state') .. '/lazy/lazy-lock.json',
 }
+
+--- Checks out the commits nvim/flake.lock pins where lazy.nvim recorded
+--- others, as after pulling new pins: before the plugins load, since the
+--- config may need the new ones. Otherwise it only reads that record, one
+--- small file. Headless, as in scripts and the e2e suite, what is installed
+--- stays.
+function M.sync()
+  if #vim.api.nvim_list_uis() == 0 then
+    return
+  end
+  local ok, recorded = pcall(function()
+    return vim.json.decode(table.concat(vim.fn.readfile(M.opts.lockfile), '\n'))
+  end)
+  if not ok then
+    recorded = {}
+  end
+  local stale = {}
+  for name, plugin in pairs(require('lazy.core.config').plugins) do
+    if plugin.commit and plugin._.installed and not plugin._.is_local then
+      -- (a plugin missing from the record is looked up in its checkout)
+      local at = recorded[name] and recorded[name].commit
+        or (require('lazy.manage.git').info(plugin.dir) or {}).commit
+      if at ~= plugin.commit then
+        stale[#stale + 1] = name
+      end
+    end
+  end
+  if #stale > 0 then
+    require('lazy').update({ plugins = stale, wait = true })
+  end
+end
 
 --- What a flake.lock pins, by plugin name (the end of the input's URL):
 --- { url, branch, commit }.

@@ -376,11 +376,10 @@ end
 -- Operator formatting
 ---------------------------------------------------------------------------
 
---- Whether operator formatting (creasty/opfmt) is switched on.
+--- Whether operator formatting (creasty/opfmt) is switched on: it is not
+--- loaded until it moves to nvim-treesitter's main branch.
 function M.opfmt_enabled()
-  local ok, configs = pcall(require, 'nvim-treesitter.configs')
-  local opfmt = ok and configs.get_module('opfmt')
-  return type(opfmt) == 'table' and opfmt.enable == true
+  return package.loaded['opfmt'] ~= nil
 end
 
 return M
