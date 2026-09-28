@@ -211,21 +211,8 @@ M.spec = {
     'nvim-treesitter/nvim-treesitter-context',
   },
 
-  { -- A plugin for Neovim that helps you surf through your document and move elements around using the nvim-treesitter API.
-    'ziontee113/syntax-tree-surfer',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    init = function()
-      vim.fn['user#plugin#syntax_tree_surfer#init']()
-    end,
-  },
-
   { -- Use treesitter to autoclose and autorename html tag
     'windwp/nvim-ts-autotag',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-  },
-
-  { -- Yet another tree-sitter powered indent plugin for Neovim
-    'yioneko/nvim-yati',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
 

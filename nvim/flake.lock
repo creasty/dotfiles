@@ -291,23 +291,6 @@
         "url": "https://github.com/windwp/nvim-ts-autotag"
       }
     },
-    "nvim-yati": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1718009720,
-        "narHash": "sha256-hsSGj/bKY0FxZi1BlJxa/U2zvJzOwrFSz1W/MUtPunU=",
-        "ref": "refs/heads/main",
-        "rev": "df3dc06076c6fe20a1dcd8643e712af5c252d042",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/yioneko/nvim-yati"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/yioneko/nvim-yati"
-      }
-    },
     "opfmt": {
       "flake": false,
       "locked": {
@@ -344,11 +327,9 @@
         "nvim-treesitter-context": "nvim-treesitter-context",
         "nvim-treesitter-endwise": "nvim-treesitter-endwise",
         "nvim-ts-autotag": "nvim-ts-autotag",
-        "nvim-yati": "nvim-yati",
         "opfmt": "opfmt",
         "snacks-nvim": "snacks-nvim",
         "switch-vim": "switch-vim",
-        "syntax-tree-surfer": "syntax-tree-surfer",
         "text-case-nvim": "text-case-nvim",
         "vim-altr": "vim-altr",
         "vim-easy-align": "vim-easy-align",
@@ -398,23 +379,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/AndrewRadev/switch.vim"
-      }
-    },
-    "syntax-tree-surfer": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1696602452,
-        "narHash": "sha256-jYVNw+2ZlJl5EaGZ0EfjInHOtQHlL6FYGAXZgXu983Q=",
-        "ref": "refs/heads/master",
-        "rev": "732ea6d0f868bcccd2f526be73afa46997d5a2fb",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/ziontee113/syntax-tree-surfer"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/ziontee113/syntax-tree-surfer"
       }
     },
     "text-case-nvim": {

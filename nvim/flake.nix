@@ -90,16 +90,8 @@
       url = "git+https://github.com/nvim-treesitter/nvim-treesitter-context?shallow=1";
       flake = false;
     };
-    syntax-tree-surfer = {
-      url = "git+https://github.com/ziontee113/syntax-tree-surfer?shallow=1";
-      flake = false;
-    };
     nvim-ts-autotag = {
       url = "git+https://github.com/windwp/nvim-ts-autotag?shallow=1";
-      flake = false;
-    };
-    nvim-yati = {
-      url = "git+https://github.com/yioneko/nvim-yati?shallow=1";
       flake = false;
     };
     nvim-treesitter-endwise = {

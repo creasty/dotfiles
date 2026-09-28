@@ -24,9 +24,9 @@ What #105 dropped, and how to clean up a Mac provisioned before, is in [dropped.
 
 - **opfmt** is off (lazy.nvim's `cond`) until it moves to nvim-treesitter's `main`: it requires `nvim-treesitter.configs`, `.query`, `.parsers` and `.ts_utils` as it loads, and its directive relies on Neovim 0.11's `all = false` default.
   It stays pinned in `nvim/flake.lock`, and its tests skip meanwhile.
-- **nvim-yati and syntax-tree-surfer**, both unmaintained, were written for nvim-treesitter's `master`: `nvim/lua/user/plugin/treesitter/master.lua` lends them what they call of it while they load.
-  Re-indenting 22,500 lines of real code, nvim-treesitter's own indent queries now get more lines right than yati in C, C++, GraphQL and Python, but more wrong in TypeScript (6.5% against 1.8%: multi-line union types and type arguments), TSX (9.6% against 1.8%) and Rust (2.9% against 0.1%: macro bodies); the other languages come out even.
-  Neovim 0.12 selects nodes with `an`, `in`, `]n` and `[n` (`gs` grows with `an`), but unlike syntax-tree-surfer it doesn't skip comments or climb out of a node's only child, and it swaps nothing.
+- **Rust's and TOML's indentation** lost ground when nvim-yati went (with syntax-tree-surfer, both unmaintained and written for nvim-treesitter's `master`): re-indenting real code, nvim-treesitter's queries get 2.9% of Rust's lines wrong (macro bodies) against yati's 0.1%, and 4.5% of TOML's against 2.5%.
+  `nvim/queries/typescript/indents.scm` shows how to add the shapes they miss, as it does for TypeScript and TSX: over 18,300 lines of real code, 4.3% of TypeScript's lines and 4.6% of TSX's come out wrong with it, against yati's 4.4% and 4.9%, and the queries' own 8.5% and 9.8%.
+  Nothing swaps syntax nodes since syntax-tree-surfer went; Neovim 0.12 selects them with `an`, `in`, `]n` and `[n` (`gs` grows with `an`).
 - **Neovim 0.12**, which CI runs now (0.12.4, as nixpkgs installs), allows blink.cmp's v2 and Neovim's built-in inline completion (`vim.lsp.inline_completion`, for Copilot).
   0.12 no longer gives query handlers registered with `all = false` one node per capture, which nvim-treesitter-endwise relies on (no `endfunction` after `function` in Vim script): `nvim/lua/user/plugin/treesitter/compat.lua` restores it until endwise takes lists.
   0.12's `'shada'` keeps no cursor positions for files under `/tmp` and `/private`, where the e2e tests' sandboxes are on macOS unless `E2E_TMPDIR` points elsewhere (CI's does).

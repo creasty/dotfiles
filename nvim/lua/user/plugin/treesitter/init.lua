@@ -1,5 +1,4 @@
 local ts = require('nvim-treesitter')
-local master = require('user.plugin.treesitter.master')
 
 -- Parsers and their queries go into nvim-treesitter's own directory, as they
 -- did with its master branch: with the plugins lazy.nvim keeps, where the e2e
@@ -20,29 +19,6 @@ end, require('user.plugin.treesitter.parsers'))
 if #missing > 0 and #vim.api.nvim_list_uis() > 0 and vim.fn.executable('tree-sitter') == 1 then
   require('lazy').build({ plugins = { 'nvim-treesitter' }, wait = true })
 end
-
--- These indent with nvim-yati, which still does better than nvim-treesitter's
--- queries in TypeScript, TSX and Rust
--- @see https://github.com/yioneko/nvim-yati/tree/main/lua/nvim-yati/configs
-master.load_yati()
-local yati = {
-  c = true,
-  cpp = true,
-  css = true,
-  graphql = true,
-  html = true,
-  javascript = true,
-  jsdoc = true,
-  json = true,
-  json5 = true,
-  jsx = true,
-  lua = true,
-  python = true,
-  rust = true,
-  toml = true,
-  tsx = true,
-  typescript = true,
-}
 
 --- Selects the syntax node under the cursor.
 local function select_node()
@@ -83,9 +59,9 @@ vim.api.nvim_create_autocmd('FileType', {
     if has('highlights') then
       vim.treesitter.start(ev.buf, lang)
     end
-    if yati[lang] then
-      vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-yati.indent'.indentexpr()"
-    elseif has('indents') then
+    -- (nvim/queries/typescript/indents.scm adds the shapes prettier gives
+    -- TypeScript and TSX)
+    if has('indents') then
       vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end
     -- gs selects the node under the cursor, then the one around the selection
@@ -93,8 +69,6 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.keymap.set('x', 'gs', 'an', { buffer = ev.buf, remap = true })
   end,
 })
-
-master.load_syntax_tree_surfer()
 
 require('treesitter-context').setup {
   enable = true,           -- Enable this plugin (Can be enabled/disabled later via commands)

@@ -36,26 +36,92 @@ describe('Tree-sitter', function()
   end)
 
   describe('indentation', function()
-    it('uses nvim-yati for the web and C-family languages, tree-sitter indent elsewhere', function()
-      local expect = {
-        ['a.ts'] = 'yati',
-        ['a.tsx'] = 'yati',
-        ['a.js'] = 'yati',
-        ['a.lua'] = 'yati',
-        ['a.py'] = 'yati',
-        ['a.c'] = 'yati',
-        ['a.go'] = 'nvim%-treesitter',
-        ['a.rb'] = 'nvim%-treesitter',
-      }
-      for name, engine in pairs(expect) do
+    it("indents with nvim-treesitter's queries", function()
+      for _, name in ipairs({ 'a.ts', 'a.tsx', 'a.js', 'a.lua', 'a.py', 'a.c', 'a.go', 'a.rb' }) do
         local nvim = buffer(name, { 'x' })
-        t.match(engine, nvim:eval('&l:indentexpr'), name)
+        t.match('nvim%-treesitter', nvim:eval('&l:indentexpr'), name)
         nvim:close()
       end
     end)
 
     it('o inside a block indents to the block body', function()
       local nvim = buffer('a.ts', { 'function f() {', '  const x = 1;', '}' })
+      nvim:type('jox')
+      t.eq('  x', nvim:line(3))
+    end)
+
+    -- (nvim/queries/typescript/indents.scm and tsx/indents.scm)
+    it('typescript: = keeps what prettier formats', function()
+      local lines = {
+        'export type Config =',
+        '  | UserConfig',
+        '  | Promise<UserConfig>',
+        '',
+        'type Resolved = Omit<',
+        '  Options,',
+        "  'root'",
+        '>',
+        '',
+        'const hosts = raw',
+        "  .split(',')",
+        '  .map((host) => host.trim())',
+        '',
+        'const value =',
+        '  compute(() => {',
+        '    return 1',
+        '  })',
+        '',
+        'const options = {',
+        '  createEnvironment:',
+        "    name === 'client'",
+        '      ? createClient',
+        '      : createServer,',
+        '}',
+        '',
+        'const message = `',
+        '  Hello,',
+        '    world',
+        '`',
+      }
+      local nvim = buffer('a.ts', lines)
+      nvim:type('gg=G')
+      t.eq(lines, nvim:lines())
+    end)
+
+    it('tsx: = keeps what prettier formats', function()
+      local lines = {
+        'export function Row({',
+        '  row,',
+        '}: {',
+        '  row: RowData',
+        '}) {',
+        '  return (',
+        '    <ul>',
+        '      {[',
+        "        'light',",
+        "        'dark',",
+        '      ].map((name) => (',
+        '        <li key={name}>{name}</li>',
+        '      ))}',
+        '    </ul>',
+        '  )',
+        '}',
+        '',
+        'const Label = ({',
+        '  text,',
+        '}: {',
+        '  text: string',
+        '}) => (',
+        '  <span>{text}</span>',
+        ')',
+      }
+      local nvim = buffer('a.tsx', lines)
+      nvim:type('gg=G')
+      t.eq(lines, nvim:lines())
+    end)
+
+    it('o in a multi-line template string keeps the indentation of the line above', function()
+      local nvim = buffer('a.ts', { 'const message = `', '  Hello,', '`' })
       nvim:type('jox')
       t.eq('  x', nvim:line(3))
     end)
@@ -159,64 +225,6 @@ describe('Tree-sitter', function()
       nvim:type('gs')
       t.eq(11, nvim:call('col', 'v') - 1, 'grew to the argument list')
     end)
-
-    it('vs selects the node under the cursor; s + l / h moves to siblings', function()
-      local nvim = buffer('a.ts', { 'f(alpha, beta, gamma);' })
-      nvim:set_cursor(1, 9)
-      nvim:type('vs')
-      t.eq('v', nvim:mode())
-      local function selection()
-        return nvim:lua([[return table.concat(vim.fn.getregion(vim.fn.getpos('v'), vim.fn.getpos('.'), { type = 'v' }), '\n')]])
-      end
-      t.eq('beta', selection())
-      nvim:type('sl')
-      t.eq('gamma', selection())
-      nvim:type('shh')
-      t.eq('alpha', selection(), 'the submode repeats h')
-    end)
-
-    it('vS selects the whole statement; s + k / j go to the parent / child node', function()
-      local nvim = buffer('a.ts', { 'const x = f(alpha, beta);' })
-      local function selection()
-        return nvim:lua([[return table.concat(vim.fn.getregion(vim.fn.getpos('v'), vim.fn.getpos('.'), { type = 'v' }), '\n')]])
-      end
-      nvim:set_cursor(1, 12)
-      nvim:type('vS')
-      t.eq('const x = f(alpha, beta);', selection())
-      nvim:type('<Esc>')
-      nvim:set_cursor(1, 12)
-      nvim:type('vs')
-      t.eq('alpha', selection())
-      nvim:type('sk')
-      t.eq('(alpha, beta)', selection())
-      nvim:type('sj')
-      t.eq('alpha', selection())
-    end)
-
-    it('s + L swaps the selected node with the next sibling', function()
-      local nvim = buffer('a.ts', { 'f(alpha, beta);' })
-      nvim:set_cursor(1, 3)
-      nvim:type('vssL')
-      t.eq({ 'f(beta, alpha);' }, nvim:lines())
-    end)
-
-    it('visual s is taken by the node-surfing keys (it no longer substitutes)', function()
-      local nvim = buffer('a.ts', { 'abc' })
-      nvim:type('v')
-      nvim:type('s')
-      t.eq('v', nvim:mode())
-      t.eq({ 'abc' }, nvim:lines())
-    end)
-
-    t.quirk(
-      'vs in a buffer without a tree-sitter parser raises an error',
-      'the normal-mode vs mapping calls STSSelectCurrentNode, which assumes a parser',
-      function()
-        local nvim = buffer('a.txt', { 'abc' })
-        nvim:type('vs')
-        t.match('syntax%-tree%-surfer/init%.lua:%d+: attempt to index a nil value', nvim:messages())
-      end
-    )
   end)
 
   it('shows the enclosing function at the top once its header scrolls away', function()
