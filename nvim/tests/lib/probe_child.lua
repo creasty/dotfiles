@@ -148,12 +148,24 @@ local function marked_lines(buf)
   return lines
 end
 
+local function struck_through(group)
+  return type(group) == 'string' and vim.api.nvim_get_hl(0, { name = group, link = false }).strikethrough == true
+end
+
 --- The text a snacks.nvim picker shows for an item (without the column
---- marking selected items).
+--- marking selected items). Text shown struck through between the
+--- characters, as a replacement's preview shows what it replaces, reads
+--- {-text-}.
 local function snacks_text(picker, item)
   local hl = Snacks.picker.highlight
   local ok, text = pcall(function()
-    return (hl.to_text(hl.resolve(picker.format(item, picker), 1000)))
+    local line = hl.resolve(picker.format(item, picker), 1000)
+    for _, chunk in ipairs(line) do
+      if chunk.inline and type(chunk[1]) == 'string' and struck_through(chunk[2]) then
+        chunk[1], chunk.inline = '{-' .. chunk[1] .. '-}', nil
+      end
+    end
+    return (hl.to_text(line))
   end)
   return ok and text:gsub('%s+$', '') or item.text
 end
@@ -171,6 +183,7 @@ local function snacks_picker(result)
   local list, input = picker.list, picker.input
   result.open = true
   result.source = picker.opts.source
+  result.title = picker.title
   for _, win in ipairs({ list.win.win, input.win.win }) do
     if win and vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative ~= '' then
       result.floating = true
@@ -199,12 +212,13 @@ local function snacks_picker(result)
 end
 
 --- { open, floating, focused, focus, loading, items, visible, current,
----   marked, query, source }
+---   marked, query, source, title }
 --- focus: 'prompt' or 'list', the picker window with the cursor; loading:
---- the picker is still filling the list; items: the results, as shown;
---- visible: those on screen in the list window; current: the selected one
---- (the item <CR> acts on); marked: those marked for a multi-item action;
---- query: the prompt text; source: the picker's name for what it lists.
+--- the picker is still filling the list; items: the results, as shown
+--- (struck-through text in {- -}); visible: those on screen in the list
+--- window; current: the selected one (the item <CR> acts on); marked: those
+--- marked for a multi-item action; query: the prompt text; source: the
+--- picker's name for what it lists; title: the title on its border.
 function M.picker()
   local result = { open = false, floating = false, focused = false, loading = false, items = {}, visible = {}, marked = {}, query = nil, current = nil }
   if snacks_picker(result) then
