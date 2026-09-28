@@ -7,7 +7,7 @@ Its mouse keys and its guard on <kbd>Cmd-Q</kbd> are left out.
 Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibility, and reload its config (its menu bar icon > Reload Config).
 It starts at login from then on.
 
-System Settings > Keyboard > Keyboard Shortcuts, as the key bindings need them:
+The module also sets the shortcuts of System Settings > Keyboard > Keyboard Shortcuts that the key bindings stroke, which macOS reads at login:
 
 - Mission Control > Move left a space: <kbd>Ctrl-LeftArrow</kbd> (the default)
 - Mission Control > Move right a space: <kbd>Ctrl-RightArrow</kbd> (the default)
