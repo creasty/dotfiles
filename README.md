@@ -1,4 +1,4 @@
-![creasty's dotfiles](./docs/images/cover.png)
+![creasty's dotfiles](./cover.png)
 
 # creasty's dotfiles
 
@@ -71,7 +71,6 @@ After merging, provision again; Neovim checks out the new plugin commits the nex
 
 - **`bin/`** : Commands, on `PATH`
 - **`config/`** : Configs, linked into `~/.config`
-- **`docs/`** : [The macOS preferences to set by hand](./docs/system_preference.md)
 - **`ghostty-pane/`** : The shell of Ghostty's panes, with Neovim over the pane on <kbd>C-y</kbd> as copy mode
   - **`tests/`** : End-to-end tests, with tmux as the terminal
 - **`hammerspoon/`** : Key bindings, on Hammerspoon ([README](./hammerspoon/README.md))

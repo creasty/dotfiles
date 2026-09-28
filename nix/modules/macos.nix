@@ -1,4 +1,4 @@
-# macOS preferences. What can't be scripted is set by hand: docs/system_preference.md
+# macOS preferences
 {
   config,
   lib,
