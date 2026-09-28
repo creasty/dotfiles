@@ -28,7 +28,7 @@ Provisioning never uninstalls anything, so a Mac provisioned before keeps all of
 |---|---|---|
 | `docker`, `google-cloud-sdk` | Renamed | `docker-desktop`, `gcloud-cli`, to which Homebrew migrates installed ones |
 | `1password/tap/1password-cli`, and its tap | Since 2026-09-26, Homebrew refuses to tap `1password/tap`: its cask lacks Linux stanzas (or `depends_on :macos`) | `op` from nixpkgs, which nix-darwin installs at `/usr/local/bin` |
-| `alacritty` | Disabled in Homebrew on 2026-09-01: fails Gatekeeper | Its config (`config/alacritty`) stays; install it by hand to use it |
+| `alacritty` | Disabled in Homebrew on 2026-09-01: fails Gatekeeper | Ghostty, which replaced it and tmux (`.claude/plans/ghostty-migration/notes.md`) |
 | `chromedriver` | Disabled in Homebrew on 2026-09-01: fails Gatekeeper | |
 | `pushplaylabs-sidekick` | Discontinued; disabled in Homebrew on 2025-10-05 | |
 | `quicklook-json` | Disabled in Homebrew on 2025-12-23 | `syntax-highlight`, which previews JSON too |

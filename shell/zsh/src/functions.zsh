@@ -1,7 +1,6 @@
 # Reload config
 reload() {
   exec zsh -l
-  [ -n "$TMUX" ] && tmux source-file ~/.tmux.conf
 }
 
 # Move to project root
@@ -14,14 +13,6 @@ cdrt() {
 # Make a directory and cd there
 mkd() {
   mkdir -p "$@" && cd "$@"
-}
-
-# Tmux: kill all non-attached sessions
-tmk() {
-  tmux ls \
-    | grep -v attached \
-    | cut -d: -f 1 \
-    | xargs -n 1 tmux kill-session -t
 }
 
 # Load .env

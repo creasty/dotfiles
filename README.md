@@ -12,9 +12,9 @@
 
 This repository contains my personal dotfiles configuration for macOS, featuring thoroughly tailored setups for NeoVim and Zsh with performance in mind.
 
-| Neovim (Kitty) | Zsh + tmux (Alacritty) |
-|---|---|
-| ![](./docs/images/screenshots/neovim.png) | ![](./docs/images/screenshots/tmux.png) |
+| Neovim (Kitty) |
+|---|
+| ![](./docs/images/screenshots/neovim.png) |
 
 ## Installation
 
@@ -87,6 +87,8 @@ After merging, provision again; Neovim checks out the new plugin commits the nex
 
 - **`bin/`** : Custom executable scripts and commands (Added to system `PATH`)
 - **`config/*`** : XDG-compliant configuration files (linked into `~/.config`)
+- **`ghostty-pane/`** : The shell of Ghostty's panes, with Neovim over the pane on <kbd>C-y</kbd> in place of tmux's copy mode
+  - **`tests/`** : End-to-end tests, with tmux as the terminal
 - **`hammerspoon/`** : Hammerspoon config: the key bindings of [Keyboard](https://github.com/creasty/Keyboard) ([README](./hammerspoon/README.md))
   - **`tests/`** : Specs, on a fake of Hammerspoon's API
 - **`home/*`** : Home directory dotfiles (linked into `~` with a leading dot)

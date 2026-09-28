@@ -96,7 +96,7 @@ Change the input source to English as you leave 'insert mode' in Vim with <kbd>E
 | Key | App | Bundle ID |
 |:---|:---|:---|
 | <kbd>;+F</kbd> | Finder | `com.apple.finder` |
-| <kbd>;+M</kbd> | Alacritty | `org.alacritty` |
+| <kbd>;+M</kbd> | Ghostty | `com.mitchellh.ghostty` |
 | <kbd>;+T</kbd> | Things | `com.culturedcode.ThingsMac` |
 | <kbd>;+N</kbd> | Bear | `net.shinyfrog.bear` |
 

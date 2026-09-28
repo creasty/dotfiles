@@ -54,24 +54,13 @@ load helper
   assert_like "${lines[0]}" "Query${tab}schema.graphql${tab}*${tab}language:graphql"
 }
 
-@test "tmux accepts the config" {
-  run -0 login_zsh 'tmux -L verify -f /dev/null start-server \; source-file -n ~/.config/tmux/tmux.conf'
+# The cask puts Ghostty's command-line tool in its app only
+@test "Ghostty accepts the config, and reads it from the dotfiles" {
+  local ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
+  run -0 pristine "$ghostty" +validate-config
   assert_equal "$output" ''
-}
-
-# Alacritty starts tmux in new windows, which can't attach to a server of another version: one started before an
-# update of tmux, or before Nix's replaced Homebrew's
-@test "a running tmux server is the tmux that new windows start" {
-  local server
-  run login_zsh 'tmux display-message -p "tmux #{version}"'
-  case "$output" in
-    'no server running'* | 'error connecting to'*) skip 'no tmux server running' ;;
-  esac
-  server="$output"
-  run -0 login_zsh 'tmux -V'
-  [ "$server" = "$output" ] && return
-  printf 'server:      %s\nnew windows: %s\nEnd its sessions, then `tmux kill-server`\n' "$server" "$output" >&2
-  return 1
+  run -0 pristine "$ghostty" +show-config
+  assert_line 'font-family = Menlo'
 }
 
 # Such a path breaks once the formula is uninstalled, as the migration does

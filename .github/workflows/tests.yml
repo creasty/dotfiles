@@ -4,6 +4,8 @@ name: tests
 #
 # - hammerspoon: the specs of the Hammerspoon config (hammerspoon/tests), on a
 #   fake of Hammerspoon's API.
+# - ghostty-pane: the end-to-end tests of ghostty-pane (ghostty-pane/tests),
+#   with tmux as the terminal, on Linux and on macOS, which it's for.
 # - nvim-e2e: the Neovim end-to-end workflow tests (nvim/tests), against the
 #   plugin versions pinned in nvim/flake.lock, so a pull request (Dependabot's
 #   bumps included) shows which workflows it changes. The job summary lists
@@ -36,6 +38,32 @@ jobs:
 
       - name: Run the specs
         run: hammerspoon/tests/run
+
+  ghostty-pane:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-26]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install tmux
+        run: |
+          if [ "$RUNNER_OS" = macOS ]; then
+            brew install tmux
+          else
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends tmux
+          fi
+          tmux -V
+
+      - name: Run the tests
+        run: ghostty-pane/tests/run
 
   nvim-e2e:
     # Same OS as the machine the behavior was pinned on.

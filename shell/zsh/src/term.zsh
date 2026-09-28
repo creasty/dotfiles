@@ -339,11 +339,20 @@ title() {
 title_precmd() {
   emulate -L zsh
 
+  # Ghostty's tabs show the title: the name of the directory, as tmux's window list did
+  if [[ "$TERM_PROGRAM" == ghostty ]]; then
+    title '%1d'
+    return
+  fi
+
   title '%~' '%n@%m: %~'
 }
 title_preexec() {
   emulate -L zsh
   setopt extended_glob
+
+  # ...even while commands run
+  [[ "$TERM_PROGRAM" == ghostty ]] && return
 
   # cmd name only, or if this is sudo or ssh, the next cmd
   local cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}

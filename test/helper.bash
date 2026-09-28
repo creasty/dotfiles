@@ -30,7 +30,7 @@ pristine() {
     TMPDIR="${TMPDIR:-/tmp}" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$@"
 }
 
-# A new terminal tab or tmux pane: an interactive login shell. Without job control (+m), as on CI, where there's no
+# A new terminal tab or pane: an interactive login shell. Without job control (+m), as on CI, where there's no
 # terminal: an interactive zsh with job control takes over the terminal, and C-c would interrupt its command instead
 # of ./verify.
 login_zsh() {
