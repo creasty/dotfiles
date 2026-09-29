@@ -8,7 +8,7 @@ What the code and the README don't tell about this repository.
   The e2e suite (`nvim/tests/`) runs it with the plugins `nvim/flake.lock` pins, but CI restores those from its cache: a pinned repository that vanishes breaks fresh installs unnoticed, until Dependabot fails to bump it or the pins change.
   The provisioning job has everything installed, so a test there could start Neovim with its config.
 - **Idempotency**: nothing checks that a second switch changes nothing.
-  The activation steps (mise, rustup, VS Code's extensions) skip what's done, but no test runs them twice.
+  The activation steps (mise, rustup, VS Code's extensions, the agent skills) skip what's done, but no test runs them twice.
 - **Startup budget on CI**: `zsh -i -c exit` measured 39–101 ms across runs, against the 150 ms budget (`nix/tests/shell.bats`).
   If it ever flakes, give CI its own `DOTFILES_VERIFY_STARTUP_MS` rather than loosening the local default.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
