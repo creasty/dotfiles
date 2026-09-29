@@ -298,10 +298,11 @@ M.spec = {
 
   --  Picker
   -----------------------------------------------
-  { -- A collection of QoL plugins for Neovim (its picker)
+  { -- A collection of QoL plugins for Neovim (its picker and gitbrowse)
     'folke/snacks.nvim',
     config = function()
       require('user.plugin.picker').setup()
+      require('user.plugin.gitbrowse').setup()
     end,
   },
 
@@ -318,13 +319,9 @@ M.spec = {
     end,
   },
 
-  { -- A Git wrapper so awesome, it should be illegal
-    'tpope/vim-fugitive',
-    cmd = { 'Git', 'GBrowse' },
-    init = function()
-      vim.cmd([[let g:fugitive_browse_handlers = [function('user#plugin#fugitive#browse_handler')] ]])
-      vim.api.nvim_create_user_command('GBlame', 'Git blame', {})
-    end,
+  { -- Single tabpage interface for easily cycling through diffs for all modified files for any git rev
+    'dlyongemallo/diffview-plus.nvim',
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
   },
 
   --  Runner

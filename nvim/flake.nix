@@ -150,8 +150,8 @@
       url = "git+https://github.com/kana/vim-altr?shallow=1";
       flake = false;
     };
-    vim-fugitive = {
-      url = "git+https://github.com/tpope/vim-fugitive?shallow=1";
+    diffview-plus-nvim = {
+      url = "git+https://github.com/dlyongemallo/diffview-plus.nvim?shallow=1";
       flake = false;
     };
 

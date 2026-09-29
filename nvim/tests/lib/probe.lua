@@ -268,6 +268,39 @@ function probe.choose(nvim, label, opts)
 end
 
 ---------------------------------------------------------------------------
+-- Git views
+---------------------------------------------------------------------------
+
+--- Waits until the current buffer's git state is known, as a person sees the
+--- git signs of a file they opened before asking for its blame.
+function probe.wait_git(nvim)
+  nvim:wait_for(function()
+    return call(nvim, 'git_ready')
+  end, { message = "the buffer's git state" })
+end
+
+--- The lines of the blame shown beside the file, or nil.
+function probe.blame_view(nvim)
+  local lines = call(nvim, 'blame_view')
+  return lines ~= vim.NIL and lines or nil
+end
+
+--- Waits until a diff of many files is open (and `pred(view)` holds), and
+--- returns it: { files = the text of its file list, sides = the lines of each
+--- window in diff mode, left to right }.
+function probe.wait_diff_view(nvim, pred)
+  local last
+  local ok = pcall(nvim.wait_for, nvim, function()
+    last = call(nvim, 'diff_view')
+    return last ~= vim.NIL and last ~= nil and (not pred or pred(last))
+  end, { timeout = 15000 })
+  if not ok then
+    error('the diff view did not reach the expected state; last: ' .. vim.inspect(last), 2)
+  end
+  return last
+end
+
+---------------------------------------------------------------------------
 -- Operator formatting
 ---------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
--- Git changes in the sign column, and hunk / conflict navigation.
+-- Git changes in the sign column, hunk / conflict navigation, and :GBlame.
 
 local M = {}
 
@@ -35,6 +35,8 @@ function M.setup()
   vim.keymap.set('n', ']g', hunk('next'), { desc = 'Next git hunk' })
   vim.keymap.set('n', '[C', conflict(-1), { desc = 'Previous merge conflict' })
   vim.keymap.set('n', ']C', conflict(1), { desc = 'Next merge conflict' })
+
+  vim.api.nvim_create_user_command('GBlame', 'Gitsigns blame', { desc = 'Blame the file' })
 end
 
 return M

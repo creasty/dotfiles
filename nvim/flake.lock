@@ -69,6 +69,23 @@
         "url": "https://github.com/zbirenbaum/copilot.lua"
       }
     },
+    "diffview-plus-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789991967,
+        "narHash": "sha256-gA9brMpvV6I7pHHarRE90oRUeEd1UNIkxaJTJnBgu0I=",
+        "ref": "refs/heads/main",
+        "rev": "5152bada7d81cd602373e77534aabc631419e8e0",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/dlyongemallo/diffview-plus.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/dlyongemallo/diffview-plus.nvim"
+      }
+    },
     "gitsigns-nvim": {
       "flake": false,
       "locked": {
@@ -314,6 +331,7 @@
         "blink-cmp": "blink-cmp",
         "conform-nvim": "conform-nvim",
         "copilot-lua": "copilot-lua",
+        "diffview-plus-nvim": "diffview-plus-nvim",
         "gitsigns-nvim": "gitsigns-nvim",
         "hop-nvim": "hop-nvim",
         "lazy-nvim": "lazy-nvim",
@@ -333,7 +351,6 @@
         "text-case-nvim": "text-case-nvim",
         "vim-altr": "vim-altr",
         "vim-easy-align": "vim-easy-align",
-        "vim-fugitive": "vim-fugitive",
         "vim-operator-replace": "vim-operator-replace",
         "vim-operator-user": "vim-operator-user",
         "vim-pasta": "vim-pasta",
@@ -430,23 +447,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/junegunn/vim-easy-align"
-      }
-    },
-    "vim-fugitive": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1772910953,
-        "narHash": "sha256-GK/bC8qc72Hw9kJP3pueYIPMNmwfNhiVRUbfI9AiRYg=",
-        "ref": "refs/heads/master",
-        "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/tpope/vim-fugitive"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/tpope/vim-fugitive"
       }
     },
     "vim-operator-replace": {
