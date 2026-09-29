@@ -106,10 +106,10 @@
     "lazy-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1762421181,
-        "narHash": "sha256-h5404njTAfqMJFQ3MAr2PWSbV81eS4aIs0cxAXkT0EM=",
+        "lastModified": 1765971162,
+        "narHash": "sha256-5A4kducPwKb5fKX4oSUFvo898P0dqfsqqLxFaXBsbQY=",
         "ref": "refs/heads/main",
-        "rev": "85c7ff3711b730b4030d03144f6db6375044ae82",
+        "rev": "306a05526ada86a7b30af95c5cc81ffba93fef97",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/folke/lazy.nvim"
@@ -123,10 +123,10 @@
     "live-command-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1726858589,
-        "narHash": "sha256-01sljUxJu1x8QpNNgnXK2H3Sr3moavxMXADRkItk1SE=",
+        "lastModified": 1766179329,
+        "narHash": "sha256-agfevFIUb9KcKK1kiVoUbyyIubn0hs6xD3MXy/ZssuM=",
         "ref": "refs/heads/main",
-        "rev": "b0723697bf60d89ede953c4a5fedce3157784c15",
+        "rev": "fc8c36d7e5b96945fbc52af7029facc317a47377",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/smjonas/live-command.nvim"
@@ -157,10 +157,10 @@
     "nerdtree": {
       "flake": false,
       "locked": {
-        "lastModified": 1721451676,
-        "narHash": "sha256-xZvCKPzv0LwzgV3QoZkPn+TItrOVLPDPFqvdsII7K8k=",
+        "lastModified": 1758902859,
+        "narHash": "sha256-yp5AE8gv1xW3cXMd24D23BXCOqCp4CJQPFRhU9YdvRo=",
         "ref": "refs/heads/master",
-        "rev": "9b465acb2745beb988eff3c1e4aa75f349738230",
+        "rev": "690d061b591525890f1471c6675bcb5bdc8cdff9",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/preservim/nerdtree"
@@ -243,10 +243,10 @@
     "nvim-treesitter-context": {
       "flake": false,
       "locked": {
-        "lastModified": 1742401063,
-        "narHash": "sha256-D4i4ChXK9yWCd/uBIkZaWq5hoYcBRfznHPbIRRaOPYo=",
+        "lastModified": 1785660708,
+        "narHash": "sha256-1aCV2J243C28+hiTMacVcLfEfVRYfpnLBQgCoOX24gM=",
         "ref": "refs/heads/master",
-        "rev": "93b29a32d5f4be10e39226c6b796f28d68a8b483",
+        "rev": "f3061339b8eaf9fda873600bc425b8d2d8502533",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nvim-treesitter/nvim-treesitter-context"
@@ -367,10 +367,10 @@
     "switch-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1739475392,
-        "narHash": "sha256-tev5ZqUQNpkBlYaFk1gwoi9K3O/q97wnMmF/Mo0PT10=",
+        "lastModified": 1772034051,
+        "narHash": "sha256-dnZ0tiqb7X49buiCXk4vqYprhkMK1YIP1k35RdV4TiE=",
         "ref": "refs/heads/main",
-        "rev": "b6bab56113312ebaa53038461c1a61bcb1e4a9d9",
+        "rev": "297346b630943ebd4ea58598dfd30bae5debc739",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/AndrewRadev/switch.vim"
@@ -435,10 +435,10 @@
     "vim-fugitive": {
       "flake": false,
       "locked": {
-        "lastModified": 1740005044,
-        "narHash": "sha256-Pl2t8eCfwX43AyY/2S7UaDWyXnvq9QhQnHRhTDc0qqY=",
+        "lastModified": 1772910953,
+        "narHash": "sha256-GK/bC8qc72Hw9kJP3pueYIPMNmwfNhiVRUbfI9AiRYg=",
         "ref": "refs/heads/master",
-        "rev": "4a745ea72fa93bb15dd077109afbb3d1809383f2",
+        "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/tpope/vim-fugitive"
