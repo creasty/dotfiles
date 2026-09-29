@@ -114,9 +114,23 @@ describe('Completion', function()
 
   it('<C-l> refreshes an open menu (and otherwise inserts nothing)', function()
     local nvim = go_buffer()
+    -- the completion requests sent to the language server
+    nvim:lua([[
+      vim.g.e2e_requests = 0
+      vim.api.nvim_create_autocmd('LspRequest', {
+        callback = function(event)
+          local request = event.data.request
+          if request.method == 'textDocument/completion' and request.type == 'pending' then
+            vim.g.e2e_requests = vim.g.e2e_requests + 1
+          end
+        end,
+      })
+    ]])
     nvim:type('ae2e')
     probe.wait_completion(nvim)
+    local requests = nvim:eval('g:e2e_requests')
     nvim:type('<C-l>')
+    nvim:wait_for(('g:e2e_requests > %d'):format(requests), { message = 'a new completion request' })
     probe.wait_completion(nvim, { item = 'e2eAlpha' })
     t.eq('\te2e', nvim:line(4))
     nvim:type('<Esc>')
