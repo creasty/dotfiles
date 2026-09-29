@@ -26,6 +26,9 @@ augroup filetypedetect
   autocmd! BufNewFile,BufRead LICENSE,LICENSE.txt set filetype=license
   autocmd! BufNewFile,BufRead coc-settings.json set filetype=jsonc
 
+  " the screen Ghostty writes for copy mode (ghostty-pane/)
+  autocmd! BufNewFile,BufRead screen.txt set filetype=ghosttyscreen
+
   " Compound filetypes
   autocmd! BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
   autocmd! BufNewFile,BufRead *.bq.sql setlocal ft=sql.bq
