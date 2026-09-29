@@ -146,7 +146,13 @@ in
       remapCapsLockToControl = true;
     };
 
-    dotfiles.hotKeys."52" = null; # no shortcut for Launchpad & Dock > Turn Dock hiding on/off
+    dotfiles.hotKeys = {
+      "52" = null; # no shortcut for Launchpad & Dock > Turn Dock hiding on/off
+      # No shortcuts for Input Sources > Select the previous input source (Ctrl-Space) and Select next source in Input
+      # menu (Ctrl-Option-Space)
+      "60" = null;
+      "61" = null;
+    };
 
     system.startup.chime = false;
 
