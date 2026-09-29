@@ -15,6 +15,7 @@
     ./ghostty.nix
     ./neovim.nix
     ./vscode.nix
+    ./skills.nix
     ./docker.nix
     ./mise.nix
     ./java.nix

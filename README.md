@@ -40,6 +40,11 @@ mas can't install iPhone and iPad apps, such as Kindle's, so get those from the 
 ssh signs in through [1Password's SSH agent](https://developer.1password.com/docs/ssh/), so private keys live in 1Password instead of `~/.ssh`.
 Keep a host's public key in `~/.ssh/keys` and point its `IdentityFile` at it (in `~/.ssh/config.d/`) to pick the key.
 
+### Agent skills
+
+`npx skills add -g` and `gh skill install` record the skills they install in `~/.agents/.skill-lock.json`, which is linked to `home/agents/.skill-lock.json`, so commit it with each install.
+Provisioning installs the skills it lists for Claude Code.
+
 ## Verification
 
 Provisioning ends by verifying its result with behavioral tests (`nix/tests/`): shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
