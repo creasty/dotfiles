@@ -78,6 +78,15 @@ function M.find_plugins()
   error(('Cannot find the installed plugins in %s. Set E2E_PLUGINS to where they are installed.'):format(root))
 end
 
+--- mise's global config on this machine, which it trusts only at that path.
+--- XDG_CONFIG_HOME below moves the path, so mise takes the machine's config
+--- for an untrusted local one and every tool it manages (erb, for the file
+--- templates) prints a trust error instead of running.
+function M.mise_config()
+  local config = os.getenv('XDG_CONFIG_HOME')
+  return (config and config ~= '' and config or vim.fs.normalize('~/.config')) .. '/mise/config.toml'
+end
+
 --- Environment variables for a child process.
 function M.child_env(ctx, extra)
   local env = {
@@ -86,6 +95,7 @@ function M.child_env(ctx, extra)
     XDG_STATE_HOME = ctx.xdg.state,
     XDG_CACHE_HOME = ctx.xdg.cache,
     PATH = table.concat({ ctx.bin_dir, M.repo_dir .. '/bin', os.getenv('PATH') }, ':'),
+    MISE_TRUSTED_CONFIG_PATHS = M.mise_config(),
     E2E_CONTEXT = ctx.context_file,
     E2E_TRASH = ctx.trash_dir,
     GHQ_ROOT = ctx.run_dir .. '/ghq',
