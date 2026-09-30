@@ -235,7 +235,7 @@ describe('Navigation', function()
       t.eq('https://github.com/acme/app/blob/main/a.txt', nvim:eval('g:e2e_opened'))
     end)
 
-    it(':GBlame shows who changed each line beside the file, and o the commit of one', function()
+    it(':GBlame shows who changed each line beside the file, o the commit of one, and q closes each', function()
       local nvim = t.nvim()
       local sha = repo(nvim, { ['a.txt'] = { 'x' } })
       nvim:edit('a.txt')
@@ -245,8 +245,7 @@ describe('Navigation', function()
         return probe.blame_view(nvim)
       end, { message = 'the blame view' })
       t.match('e2e', lines[1])
-      nvim:type('o')
-      nvim:wait_for(function()
+      local function commit_shown()
         return nvim:lua(
           [[
           for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
@@ -254,10 +253,23 @@ describe('Navigation', function()
               return true
             end
           end
+          return false
         ]],
           sha
         )
-      end, { message = "a window with the line's commit" })
+      end
+      nvim:type('o')
+      nvim:wait_for(commit_shown, { message = "a window with the line's commit" })
+      nvim:type('q')
+      nvim:wait_for(function()
+        return not commit_shown()
+      end, { message = 'the commit to close' })
+      -- (the blame is the leftmost window)
+      nvim:cmd('wincmd t')
+      nvim:type('q')
+      nvim:wait_for(function()
+        return probe.blame_view(nvim) == nil
+      end, { message = 'the blame to close' })
     end)
 
     it(':GBlame shows the lines of the commit under the cursor as faintly as a changed line in a diff', function()

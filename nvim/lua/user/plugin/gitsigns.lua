@@ -37,12 +37,14 @@ function M.setup()
   vim.keymap.set('n', ']C', conflict(1), { desc = 'Next merge conflict' })
 
   vim.api.nvim_create_user_command('GBlame', 'Gitsigns blame', { desc = 'Blame the file' })
+  local group = vim.api.nvim_create_augroup('user_gitsigns', {})
   vim.api.nvim_create_autocmd('FileType', {
-    group = vim.api.nvim_create_augroup('user_gitsigns', {}),
+    group = group,
     pattern = 'gitsigns-blame',
     callback = function(ev)
-      -- o shows the line's commit, as s does
+      -- o shows the line's commit, as s does, and q closes the blame
       vim.keymap.set('n', 'o', 's', { buffer = ev.buf, remap = true, desc = 'Show commit in a vertical split' })
+      vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf, nowait = true, desc = 'Close the blame' })
 
       -- The lines of the commit under the cursor (CursorLine) as faint as a
       -- changed line in a diff, in the blame and in the file's window (the
@@ -65,6 +67,16 @@ function M.setup()
           end
         end,
       })
+    end,
+  })
+  -- q closes a commit gitsigns shows (the blame's o, s and S)
+  vim.api.nvim_create_autocmd('FileType', {
+    group = group,
+    pattern = 'git',
+    callback = function(ev)
+      if vim.api.nvim_buf_get_name(ev.buf):find('^gitsigns://') then
+        vim.keymap.set('n', 'q', '<Cmd>close<CR>', { buffer = ev.buf, nowait = true, desc = 'Close the commit' })
+      end
     end,
   })
 end
