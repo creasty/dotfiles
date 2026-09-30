@@ -114,11 +114,11 @@ function M.setup()
   hi.SpellCap = { undercurl = 1, sp = s.bright_blue }
   hi.SpellRare = { undercurl = 1, sp = s.bright_purple }
 
-  -- Diff highlighting
-  hi.DiffAdd = { fg = s.green }
-  hi.DiffChange = { fg = s.blue }
-  hi.DiffDelete = { fg = s.red }
-  hi.DiffText = { fg = s.blue, bold = 1 }
+  -- Diff highlighting: backgrounds only, so the syntax shows through
+  hi.DiffAdd = { bg = s.dim_green }
+  hi.DiffChange = { bg = s.gray580 }
+  hi.DiffDelete = { bg = s.dim_red }
+  hi.DiffText = { bg = s.dim_blue }
 
   -- LSP
   -- hi.LspReferenceText = {  }
@@ -230,6 +230,9 @@ function M.setup()
   hi.GitSignsChangedelete = { fg = s.dark_blue }
   hi.GitSignsDelete = { fg = s.dark_red }
   hi.GitSignsTopdelete = { fg = s.dark_red }
+
+  -- diffview.nvim: the lines a side lacks ('fillchars' diff:╱)
+  hi.DiffviewDiffDeleteDim = { fg = s.gray500 }
 
   -- copilot.lua
   hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }

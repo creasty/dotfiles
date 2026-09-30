@@ -128,9 +128,9 @@ describe('Startup', function()
       -- plugin/
       'AutoSaveToggle', 'Rename', 'Delete', 'NextFile', 'PrevFile',
       -- plugin configuration
-      'Format', 'Import', 'Open', 'Search', 'GBlame',
+      'Format', 'Import', 'Open', 'Search', 'GBlame', 'GBrowse',
       -- plugin commands used directly
-      'Git', 'GBrowse', 'Switch', 'RengBang', 'Subs', 'QuickRun', 'NERDTree', 'Copilot', 'Template',
+      'DiffviewOpen', 'DiffviewFileHistory', 'Switch', 'RengBang', 'Subs', 'QuickRun', 'NERDTree', 'Copilot', 'Template',
     }) do
       t.ok(commands[name], (':%s is missing'):format(name))
     end

@@ -387,6 +387,75 @@ function M.diagnostics()
 end
 
 ---------------------------------------------------------------------------
+-- Git views
+---------------------------------------------------------------------------
+
+--- True once the current buffer's git state is known (its signs, its blame).
+--- (gitsigns sets its status before it attaches, and the counts of changes
+--- once it has compared the buffer.)
+function M.git_ready()
+  local status = vim.b.gitsigns_status_dict
+  return status ~= nil and status.added ~= nil
+end
+
+--- The windows of the current tab page, left to right, then top to bottom.
+local function tab_wins()
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+  table.sort(wins, function(a, b)
+    local pa, pb = vim.api.nvim_win_get_position(a), vim.api.nvim_win_get_position(b)
+    return pa[2] < pb[2] or (pa[2] == pb[2] and pa[1] < pb[1])
+  end)
+  return wins
+end
+
+local function win_lines(win)
+  return vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(win), 0, -1, false)
+end
+
+--- The lines of the blame shown beside the file, or nil.
+function M.blame_view()
+  for _, win in ipairs(tab_wins()) do
+    local ft = vim.bo[vim.api.nvim_win_get_buf(win)].filetype
+    if ft == 'gitsigns-blame' or ft == 'fugitiveblame' then
+      return win_lines(win)
+    end
+  end
+end
+
+--- The backgrounds of the blamed file's first line as shown beside the blame,
+--- and of a changed line in a diff (DiffChange): { line, changed }.
+function M.blame_backgrounds()
+  -- (the first inspection sets the highlights up anew: redrawn after it)
+  vim.api.nvim__inspect_cell(1, 0, 0)
+  vim.cmd('redraw!')
+  local blamed = false
+  for _, win in ipairs(tab_wins()) do
+    local ft = vim.bo[vim.api.nvim_win_get_buf(win)].filetype
+    if ft == 'gitsigns-blame' or ft == 'fugitiveblame' then
+      blamed = true
+    elseif blamed then
+      local row, col = unpack(vim.api.nvim_win_get_position(win))
+      local cell = vim.api.nvim__inspect_cell(1, row, col + vim.fn.getwininfo(win)[1].textoff)
+      return { line = cell[2].background or -1, changed = vim.api.nvim_get_hl(0, { name = 'DiffChange' }).bg or -1 }
+    end
+  end
+end
+
+--- The diff of many files: { files = the text of its file list, sides = the
+--- lines of each window in diff mode, left to right }, or nil.
+function M.diff_view()
+  local view = { sides = {} }
+  for _, win in ipairs(tab_wins()) do
+    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'DiffviewFiles' then
+      view.files = table.concat(win_lines(win), '\n')
+    elseif vim.wo[win].diff then
+      view.sides[#view.sides + 1] = win_lines(win)
+    end
+  end
+  return view.files and view or nil
+end
+
+---------------------------------------------------------------------------
 -- Operator formatting
 ---------------------------------------------------------------------------
 

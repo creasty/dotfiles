@@ -1,10 +1,17 @@
 -- Getting around: alternate files, project root, hop, git, file tree, runner.
 local t = require('t')
+local probe = require('probe')
 local describe, it = t.describe, t.it
 
---- Runs git in the sandbox, isolated from the user's git config.
+--- Runs git in the sandbox, isolated from the user's git config. A last
+--- argument `true` lets it fail (a merge that conflicts).
 local function git(nvim, ...)
-  local res = vim.system({ 'git', ... }, {
+  local args = { ... }
+  local allow_failure = args[#args] == true
+  if allow_failure then
+    table.remove(args)
+  end
+  local res = vim.system(vim.list_extend({ 'git' }, args), {
     cwd = nvim.dir,
     text = true,
     env = {
@@ -16,7 +23,7 @@ local function git(nvim, ...)
       GIT_COMMITTER_EMAIL = 'e2e@example.com',
     },
   }):wait()
-  assert(res.code == 0, 'git ' .. table.concat({ ... }, ' ') .. ': ' .. (res.stderr or ''))
+  assert(allow_failure or res.code == 0, 'git ' .. table.concat(args, ' ') .. ': ' .. (res.stderr or ''))
   return vim.trim(res.stdout or '')
 end
 
@@ -210,20 +217,163 @@ describe('Navigation', function()
       t.eq('https://github.com/acme/app/blob/main/a.txt', nvim:getreg('+'))
     end)
 
-    it(':GBlame opens the blame view', function()
+    it(':GBrowse! ignores a hash-like word under the cursor (a long number)', function()
       local nvim = t.nvim()
-      repo(nvim, { ['a.txt'] = { 'x' } })
+      repo(nvim, { ['a.txt'] = { 'at = 1790723329' } }, 'git@github.com:acme/app.git')
       nvim:edit('a.txt')
+      nvim:set_cursor(1, 7)
+      nvim:cmd('GBrowse!')
+      t.eq('https://github.com/acme/app/blob/main/a.txt', nvim:getreg('+'))
+    end)
+
+    it(':GBrowse opens the URL in the browser', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'x' } }, 'git@github.com:acme/app.git')
+      nvim:edit('a.txt')
+      nvim:lua('vim.ui.open = function(url) vim.g.e2e_opened = url end')
+      nvim:cmd('GBrowse')
+      t.eq('https://github.com/acme/app/blob/main/a.txt', nvim:eval('g:e2e_opened'))
+    end)
+
+    it(':GBlame shows who changed each line beside the file, o the commit of one, and q closes each', function()
+      local nvim = t.nvim()
+      local sha = repo(nvim, { ['a.txt'] = { 'x' } })
+      nvim:edit('a.txt')
+      probe.wait_git(nvim)
       nvim:cmd('GBlame')
-      nvim:wait_for(function()
-        return nvim:lua([[
-          for _, w in ipairs(vim.api.nvim_list_wins()) do
-            if vim.bo[vim.api.nvim_win_get_buf(w)].filetype == 'fugitiveblame' then
+      local lines = nvim:wait_for(function()
+        return probe.blame_view(nvim)
+      end, { message = 'the blame view' })
+      t.match('e2e', lines[1])
+      local function commit_shown()
+        return nvim:lua(
+          [[
+          for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w)):find(..., 1, true) then
               return true
             end
           end
-        ]])
+          return false
+        ]],
+          sha
+        )
+      end
+      nvim:type('o')
+      nvim:wait_for(commit_shown, { message = "a window with the line's commit" })
+      nvim:type('q')
+      nvim:wait_for(function()
+        return not commit_shown()
+      end, { message = 'the commit to close' })
+      -- (the blame is the leftmost window)
+      nvim:cmd('wincmd t')
+      nvim:type('q')
+      nvim:wait_for(function()
+        return probe.blame_view(nvim) == nil
+      end, { message = 'the blame to close' })
+    end)
+
+    it(':GBlame shows the lines of the commit under the cursor as faintly as a changed line in a diff', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'x', 'y' } })
+      nvim:edit('a.txt')
+      probe.wait_git(nvim)
+      nvim:cmd('GBlame')
+      nvim:wait_for(function()
+        return probe.blame_view(nvim)
+      end, { message = 'the blame view' })
+      nvim:type('jk')
+      local last
+      local ok = pcall(nvim.wait_for, nvim, function()
+        last = probe.blame_backgrounds(nvim)
+        return last and last.line == last.changed
       end)
+      t.ok(ok, 'backgrounds: ' .. vim.inspect(last))
+    end)
+
+    it(':DiffviewOpen lists the unstaged and the staged changes, and diffs the first', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'a' }, ['b.txt'] = { 'b' } })
+      nvim:write_file('a.txt', { 'a changed' })
+      nvim:write_file('b.txt', { 'b changed' })
+      git(nvim, 'add', 'b.txt')
+      nvim:cmd('DiffviewOpen')
+      local view = probe.wait_diff_view(nvim, function(v)
+        return v.files:find('b%.txt') and #v.sides == 2
+      end)
+      -- a.txt among the changes, b.txt among the staged ones after them
+      local a, staged, b = view.files:find('a%.txt'), view.files:find('[Ss]taged'), view.files:find('b%.txt')
+      t.ok(a and staged and b and a < staged and staged < b, view.files)
+      t.eq({ { 'a' }, { 'a changed' } }, view.sides)
+      -- no fold column beside the diff
+      t.eq({ '0', '0' }, nvim:lua([[
+        local columns = {}
+        for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          if vim.wo[w].diff then
+            columns[#columns + 1] = vim.wo[w].foldcolumn
+          end
+        end
+        return columns
+      ]]))
+    end)
+
+    it(':DiffviewOpen closes on q, from the file list and from the diff', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'a' } })
+      nvim:write_file('a.txt', { 'a changed' })
+      for _, from_diff in ipairs({ false, true }) do
+        nvim:cmd('DiffviewOpen')
+        probe.wait_diff_view(nvim, function(v)
+          return #v.sides == 2
+        end)
+        if from_diff then
+          nvim:cmd('wincmd l')
+        end
+        nvim:type('q')
+        nvim:wait_for(function()
+          return probe.diff_view(nvim) == nil
+        end, { message = 'the view to close' })
+      end
+    end)
+
+    it(':DiffviewOpen main...HEAD lists what the branch changed since it forked', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'a' }, ['b.txt'] = { 'b' } })
+      git(nvim, 'checkout', '-q', '-b', 'feature')
+      nvim:write_file('b.txt', { 'b on feature' })
+      nvim:write_file('c.txt', { 'c' })
+      git(nvim, 'add', '-A')
+      git(nvim, 'commit', '-q', '-m', 'feature')
+      git(nvim, 'checkout', '-q', 'main')
+      nvim:write_file('d.txt', { 'd' })
+      git(nvim, 'add', '-A')
+      git(nvim, 'commit', '-q', '-m', 'main moves on')
+      git(nvim, 'checkout', '-q', 'feature')
+      nvim:cmd('DiffviewOpen main...HEAD')
+      local view = probe.wait_diff_view(nvim, function(v)
+        return v.files:find('b%.txt') and v.files:find('c%.txt')
+      end)
+      t.no_match('a%.txt', view.files)
+      t.no_match('d%.txt', view.files)
+    end)
+
+    it(':DiffviewOpen shows a merge conflict as ours | the file | theirs', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'a', 'x', 'b' } })
+      git(nvim, 'checkout', '-q', '-b', 'other')
+      nvim:write_file('a.txt', { 'a', 'X-other', 'b' })
+      git(nvim, 'commit', '-q', '-am', 'other')
+      git(nvim, 'checkout', '-q', 'main')
+      nvim:write_file('a.txt', { 'a', 'X-main', 'b' })
+      git(nvim, 'commit', '-q', '-am', 'main')
+      git(nvim, 'merge', '-q', 'other', true)
+      nvim:cmd('DiffviewOpen')
+      local view = probe.wait_diff_view(nvim, function(v)
+        return #v.sides == 3
+      end)
+      t.match('a%.txt', view.files)
+      t.eq({ 'a', 'X-main', 'b' }, view.sides[1])
+      t.contains(view.sides[2], '<<<<<<< HEAD')
+      t.eq({ 'a', 'X-other', 'b' }, view.sides[3])
     end)
   end)
 

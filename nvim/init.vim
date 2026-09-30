@@ -132,6 +132,12 @@ set listchars=tab:──⏵,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮
 set breakindent
 set showbreak=↳
 
+" diagonal lines where a diff has none on one side
+" U+2571 (Box Drawings Light Diagonal Upper Right to Lower Left)
+set fillchars+=diff:╱
+" and no fold column, which diff mode opens
+set diffopt+=foldcolumn:0
+
 " transparent pmenu
 set pumblend=10
 
