@@ -4,11 +4,13 @@
 
 [ci]: https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml
 [ci-badge]: https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg
+[tests]: https://github.com/creasty/dotfiles/actions/workflows/tests.yml
+[tests-badge]: https://github.com/creasty/dotfiles/actions/workflows/tests.yml/badge.svg
 [platform-badge]: https://img.shields.io/badge/Platform-macOS-lightgrey
 [license]: ./LICENSE.txt
 [license-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 
-[![Provisioning][ci-badge]][ci] ![Platform: macOS][platform-badge] [![License: MIT][license-badge]][license]
+[![Provisioning][ci-badge]][ci] [![Tests][tests-badge]][tests] ![Platform: macOS][platform-badge] [![License: MIT][license-badge]][license]
 
 This repository contains my personal dotfiles configuration for macOS, featuring thoroughly tailored setups for NeoVim and Zsh with performance in mind.
 
