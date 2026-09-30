@@ -19,7 +19,6 @@ endfor
 
 augroup filetypedetect
   autocmd! BufNewFile,BufRead .env,.env.* setlocal ft=sh
-  autocmd! BufNewFile,BufRead *.frag,*.vert setlocal ft=glsl
   autocmd! BufNewFile,BufRead config setlocal ft=config
   autocmd! BufNewFile,BufRead gitconfig setlocal ft=gitconfig
   autocmd! BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
