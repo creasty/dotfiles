@@ -552,7 +552,6 @@ describe('Picker', function()
         probe.wait_picker(nvim, function(p)
           return #p.items == 1
         end)
-        nvim:sleep(100) -- (a <C-c> typed while Neovim is busy interrupts instead)
         nvim:type('<C-c>')
         nvim:wait_for(function()
           return probe.picker(nvim).focus == 'list'

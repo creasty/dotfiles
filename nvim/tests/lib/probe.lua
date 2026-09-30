@@ -64,6 +64,14 @@ function probe.wait_completion(nvim, opts)
   return last
 end
 
+--- Waits until the completion menu is closed (blink.cmp closes it on an event
+--- after the key).
+function probe.wait_completion_closed(nvim)
+  nvim:wait_for(function()
+    return not probe.completion_visible(nvim)
+  end, { message = 'the completion menu to close' })
+end
+
 function probe.disable_completion(nvim)
   call(nvim, 'disable_completion')
 end
