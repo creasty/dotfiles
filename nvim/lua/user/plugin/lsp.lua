@@ -368,11 +368,6 @@ function M.setup()
     pattern = '*.go',
     callback = auto_format,
   })
-
-  vim.api.nvim_create_autocmd({ 'DiagnosticChanged', 'LspProgress' }, {
-    group = group,
-    command = 'redrawstatus',
-  })
 end
 
 return M

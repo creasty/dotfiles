@@ -4,6 +4,14 @@ local current_normal_winnr_key = 'user_ui_current_normal_winnr'
 local separator = '∙'
 local no_name_file = 'Untitled'
 
+-- Unfinished work of each language server ($/progress), by client id and token
+local lsp_work = {}
+
+--- Text to show as is in a statusline or tabline.
+local function escape(text)
+  return (text:gsub('%%', '%%%%'))
+end
+
 local function file_exists(name)
   local f = io.open(name, 'r')
   return f ~= nil and io.close(f)
@@ -14,6 +22,18 @@ local function update_filereadable()
   if path ~= '' then
     vim.api.nvim_buf_set_var(0, file_readable_key, file_exists(path))
   end
+end
+
+local function update_lsp_work(ev)
+  local token, value = ev.data.params.token, ev.data.params.value
+  -- (anything but "work done progress" has no title to show)
+  if type(value) ~= 'table' or not value.kind then
+    return
+  end
+  local work = lsp_work[ev.data.client_id] or {}
+  lsp_work[ev.data.client_id] = work
+  -- (Neovim carries the title of `begin` over to `report` and `end`)
+  work[token] = value.kind ~= 'end' and value.title and value or nil
 end
 
 local function safe_buf_get_var(bufnr, name, default)
@@ -139,10 +159,20 @@ local statusline = retry_call_wrap(function ()
     table.insert(l0, table.concat(flags, ''))
   end
 
-  if active and is_file then
-    local last_saved_time = safe_buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
-    if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
-      table.insert(l1, os.date('✓ %X', last_saved_time))
+  if active then
+    local git = vim.b[bufnr].gitsigns_status_dict
+    if git and git.head and git.head ~= '' then
+      local text = {escape(git.head)}
+      if (git.added or 0) > 0 then
+        table.insert(text, '%#StatusLineGitAdd#+%*')
+      end
+      if (git.changed or 0) > 0 then
+        table.insert(text, '%#StatusLineGitChange#~%*')
+      end
+      if (git.removed or 0) > 0 then
+        table.insert(text, '%#StatusLineGitDelete#-%*')
+      end
+      table.insert(l1, table.concat(text, ''))
     end
   end
 
@@ -174,14 +204,26 @@ local statusline = retry_call_wrap(function ()
     end
   end
 
+  if active and is_file then
+    local last_saved_time = safe_buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
+    if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
+      table.insert(l1, os.date('✓ %X', last_saved_time))
+    end
+  end
+
   if active then
     local luasnip = package.loaded.luasnip
     if luasnip and luasnip.get_active_snip() then
       table.insert(r1, 'SNIP')
     end
-    local lsp_status = vim.lsp.status()
-    if lsp_status ~= '' then
-      table.insert(r1, string.sub(lsp_status, 0, 60))
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+      local _, work = next(lsp_work[client.id] or {})
+      if work then
+        local percentage = work.percentage and string.format(' %d%%%%', work.percentage) or ''
+        table.insert(r1, string.format('%s: %s%s', client.name, escape(work.title), percentage))
+      else
+        table.insert(r1, client.name)
+      end
     end
   end
 
@@ -198,7 +240,8 @@ local statusline = retry_call_wrap(function ()
 
   return table.concat({
     table.concat(l0, ' '),
-    '%*',
+    -- (too long, it's cut here: the branch, not the filetype)
+    '%*%<',
     table.concat(l1, ' '),
     '%=',
     table.concat(r1, ' '),
@@ -218,9 +261,24 @@ local function setup()
       autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * lua require'user.ui'.update_filereadable()
       autocmd WinLeave,BufLeave * lua vim.wo.statusline=require'user.ui'.statusline()
       autocmd BufWinEnter,WinEnter,BufEnter * set statusline<
-      autocmd VimResized * redrawstatus
+      autocmd VimResized,DiagnosticChanged * redrawstatus
+      autocmd User GitSignsUpdate redrawstatus
     augroup END
   ]], false)
+  vim.api.nvim_create_autocmd('LspProgress', {
+    group = 'user_ui_statusline',
+    callback = function(ev)
+      update_lsp_work(ev)
+      vim.cmd.redrawstatus()
+    end,
+  })
+  -- (once the client is attached, or detached: LspDetach comes before)
+  vim.api.nvim_create_autocmd({ 'LspAttach', 'LspDetach' }, {
+    group = 'user_ui_statusline',
+    callback = function()
+      vim.schedule(vim.cmd.redrawstatus)
+    end,
+  })
 end
 
 return {

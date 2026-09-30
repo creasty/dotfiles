@@ -67,11 +67,15 @@ describe('UI', function()
       t.match('^ plain ', nvim:statusline())
     end)
 
-    it('shows ✓ and the time of the last save for a minute', function()
+    it('shows ✓ and the time of the last save for a minute, after the diagnostics', function()
       local nvim = t.nvim()
       nvim:edit('a.txt', { 'x' })
+      nvim:lua([[
+        local diagnostic = { lnum = 0, col = 0, message = 'e2e', severity = vim.diagnostic.severity.ERROR }
+        vim.diagnostic.set(vim.api.nvim_create_namespace('e2e'), 0, { diagnostic })
+      ]])
       nvim:cmd('write')
-      t.match(' ✓ %d%d:%d%d:%d%d ', nvim:statusline())
+      t.match(' ✕ 1 ✓ %d%d:%d%d:%d%d ', nvim:statusline())
     end)
 
     it('is a single global statusline for the current window', function()
@@ -98,6 +102,48 @@ describe('UI', function()
       nvim:wait_for(function()
         return nvim:statusline():find('SNIP', 1, true)
       end)
+    end)
+
+    it('shows the git branch, marked when lines are added (+), changed (~) or removed (-)', function()
+      local nvim = t.nvim()
+      nvim:files({ ['a.txt'] = { '1', '2', '3', '4', '5', '6', '7', '8', '9' } })
+      git(nvim, 'init', '-q', '-b', 'main')
+      git(nvim, 'add', '-A')
+      git(nvim, 'commit', '-q', '-m', 'init')
+      nvim:edit('a.txt')
+      probe.wait_services(nvim)
+      nvim:wait_for(function()
+        return nvim:statusline():find('  main ', 1, true)
+      end, { timeout = 10000, message = 'the branch in the statusline' })
+      nvim:set_buffer({ '1', 'two', '3', '4', '6', '7', '8', '9', '10' })
+      nvim:wait_for(function()
+        return nvim:statusline():find('  main+~- ', 1, true)
+      end, { timeout = 10000, message = 'the changed lines in the statusline' })
+    end)
+
+    it('lists the language servers of the buffer, with the work one is doing', function()
+      local nvim = t.nvim()
+      nvim:files({ ['.e2e-root'] = '' })
+      nvim:edit('main.go', { 'package main' })
+      probe.wait_lsp(nvim)
+      t.contains(nvim:statusline(), ' e2e ')
+      -- $/progress, as a server reports it
+      local function progress(value)
+        nvim:lua(
+          [[
+          local client = vim.lsp.get_clients({ bufnr = 0, name = 'e2e' })[1]
+          vim.lsp.handlers['$/progress'](nil, { token = 'index', value = ... }, { client_id = client.id })
+        ]],
+          value
+        )
+      end
+      progress({ kind = 'begin', title = 'Indexing' })
+      t.contains(nvim:statusline(), ' e2e: Indexing ')
+      progress({ kind = 'report', percentage = 45 })
+      t.contains(nvim:statusline(), ' e2e: Indexing 45% ')
+      progress({ kind = 'end' })
+      t.contains(nvim:statusline(), ' e2e ')
+      t.no(nvim:statusline():find('Indexing', 1, true), 'no work once it ends')
     end)
   end)
 

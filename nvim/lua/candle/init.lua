@@ -198,6 +198,9 @@ function M.setup()
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
   hi.StatusLineDiagnosticsHint = { fg = s.gray200, bg = s.window }
+  hi.StatusLineGitAdd = { fg = s.green, bg = s.window }
+  hi.StatusLineGitChange = { fg = s.blue, bg = s.window }
+  hi.StatusLineGitDelete = { fg = s.red, bg = s.window }
 
   hi.GitConflictMarker = { link = 'Todo' }
   hi.SnipPlaceholder = { fg = s.blue, bg = s.dark_blue }
