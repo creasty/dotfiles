@@ -75,6 +75,25 @@ describe('Picker', function()
       t.eq('src/app.ts', picker.items[1])
     end)
 
+    it('ranks tests below the sources that match as well, not below those that match worse', function()
+      local nvim = t.nvim()
+      nvim:files({
+        ['.git/'] = true,
+        ['lua/user/lsp.lua'] = { '' },
+        ['lua/lisp.lua'] = { '' },
+        ['tests/lsp.lua'] = { '' },
+        ['src/lsp.test.ts'] = { '' },
+      })
+      probe.wait_picker_ready(nvim)
+      open_finder(nvim)
+      nvim:type('lsp')
+      local picker = probe.wait_picker(nvim, function(p)
+        return #p.items == 4
+      end)
+      -- (shorter paths first among those that rank the same)
+      t.eq({ 'lua/user/lsp.lua', 'tests/lsp.lua', 'src/lsp.test.ts', 'lua/lisp.lua' }, picker.items)
+    end)
+
     it('<CR> opens the top match in the current window and closes the finder', function()
       local nvim = in_project()
       open_finder(nvim)

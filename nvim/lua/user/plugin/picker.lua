@@ -281,6 +281,27 @@ local function files_finder(opts, ctx)
   return require('snacks.picker.source.files').files(opts, ctx)
 end
 
+local TEST_DIRS = { test = true, tests = true, __tests__ = true, spec = true, testdata = true }
+local TEST_NAMES = { '[_.]test%.', '[_.]spec%.', '%lTest%.', '%lSpec%.', '^test_.+%.py$' }
+
+--- Whether a file belongs to tests: below a test/, tests/, __tests__/, spec/
+--- or testdata/ directory, or named as a test (foo_test.go, foo.test.ts,
+--- foo_spec.lua, FooTest.kt, test_foo.py).
+local function is_test(path)
+  for dir in path:gmatch('([^/]+)/') do
+    if TEST_DIRS[dir] then
+      return true
+    end
+  end
+  local name = path:match('[^/]*$')
+  for _, pattern in ipairs(TEST_NAMES) do
+    if name:find(pattern) then
+      return true
+    end
+  end
+  return false
+end
+
 --- Repositories under `ghq root`, with the packages of monorepos.
 local function repos_finder(opts, ctx)
   local root = vim.trim(vim.fn.system({ 'ghq', 'root' }))
@@ -704,6 +725,11 @@ function M.open()
     format = format_file,
     hidden = true,
     follow = true,
+    transform = function(item)
+      item.test = is_test(item.file) and 1 or 0
+    end,
+    -- tests after the sources that match as well
+    sort = { fields = { 'score:desc', 'test', '#text', 'idx' } },
   }, resume)
 end
 
