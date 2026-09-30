@@ -164,22 +164,15 @@ local statusline = retry_call_wrap(function ()
     if git and git.head and git.head ~= '' then
       local text = {escape(git.head)}
       if (git.added or 0) > 0 then
-        table.insert(text, string.format('%%#StatusLineGitAdd#+%d%%*', git.added))
+        table.insert(text, '%#StatusLineGitAdd#+%*')
       end
       if (git.changed or 0) > 0 then
-        table.insert(text, string.format('%%#StatusLineGitChange#~%d%%*', git.changed))
+        table.insert(text, '%#StatusLineGitChange#~%*')
       end
       if (git.removed or 0) > 0 then
-        table.insert(text, string.format('%%#StatusLineGitDelete#-%d%%*', git.removed))
+        table.insert(text, '%#StatusLineGitDelete#-%*')
       end
-      table.insert(l1, table.concat(text, ' '))
-    end
-  end
-
-  if active and is_file then
-    local last_saved_time = safe_buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
-    if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
-      table.insert(l1, os.date('✓ %X', last_saved_time))
+      table.insert(l1, table.concat(text, ''))
     end
   end
 
@@ -208,6 +201,13 @@ local statusline = retry_call_wrap(function ()
     if diagnostics.H > 0 then
       local text = string.format('%%#StatusLineDiagnosticsHint#%s %d%%*', '*', diagnostics.H)
       table.insert(l1, text)
+    end
+  end
+
+  if active and is_file then
+    local last_saved_time = safe_buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
+    if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
+      table.insert(l1, os.date('✓ %X', last_saved_time))
     end
   end
 
