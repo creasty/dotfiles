@@ -322,6 +322,11 @@ M.spec = {
   { -- Single tabpage interface for easily cycling through diffs for all modified files for any git rev
     'dlyongemallo/diffview-plus.nvim',
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+    config = function()
+      -- removed lines red on the old side too, rather than DiffAdd's green,
+      -- and the lines a side lacks dim
+      require('diffview').setup({ enhanced_diff_hl = true })
+    end,
   },
 
   --  Runner

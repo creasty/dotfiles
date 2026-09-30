@@ -8,6 +8,7 @@ local schema = {
   gray450 = '#303030',
   gray500 = '#2c2c2c',
   gray550 = '#262626',
+  gray580 = '#202020',
   gray600 = '#1b1b1b',
   gray610 = '#1a1a1a',
   gray650 = '#161616',
@@ -46,6 +47,11 @@ local schema = {
   dark_blue   = '#39444d',
   dark_purple = '#47404d',
   dark_pink   = '#c585a8', -- TODO
+
+  -- dim: the dark ones blended toward the background, for backgrounds
+  dim_red   = '#302424',
+  dim_green = '#2f2e23',
+  dim_blue  = '#2a3034',
 }
 
 schema.foreground = schema.gray100
