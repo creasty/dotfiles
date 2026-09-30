@@ -217,7 +217,7 @@ function M.setup()
   -- snacks.nvim (picker)
   hi.SnacksPicker = { link = 'BorderedFloat' } -- its windows, as its border
   hi.SnacksPickerMatch = { link = 'Constant' }
-  hi.SnacksPickerDir = { fg = s.gray100 }
+  hi.SnacksPickerDir = { fg = s.gray150 }
   hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.bright_blue, bg = s.background }
   -- (user.plugin.picker: the replacement grep's list previews)

@@ -2,6 +2,7 @@ local schema = {
   -- grayscale
   white   = '#e7e7e7',
   gray100 = '#c0c0c0',
+  gray150 = '#a0a0a0',
   gray200 = '#7f7e7e',
   gray300 = '#575757',
   gray400 = '#424242',
