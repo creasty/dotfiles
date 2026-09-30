@@ -285,6 +285,13 @@ function probe.blame_view(nvim)
   return lines ~= vim.NIL and lines or nil
 end
 
+--- The backgrounds of the blamed file's first line as shown beside the blame,
+--- and of a changed line in a diff: { line, changed }, or nil.
+function probe.blame_backgrounds(nvim)
+  local bgs = call(nvim, 'blame_backgrounds')
+  return bgs ~= vim.NIL and bgs or nil
+end
+
 --- The diff of many files that is open: { files = the text of its file
 --- list, sides = the lines of each window in diff mode, left to right }, or nil.
 function probe.diff_view(nvim)

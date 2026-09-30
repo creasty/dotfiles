@@ -37,12 +37,34 @@ function M.setup()
   vim.keymap.set('n', ']C', conflict(1), { desc = 'Next merge conflict' })
 
   vim.api.nvim_create_user_command('GBlame', 'Gitsigns blame', { desc = 'Blame the file' })
-  -- o in the blame shows the line's commit, as s does
   vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('user_gitsigns', {}),
     pattern = 'gitsigns-blame',
     callback = function(ev)
+      -- o shows the line's commit, as s does
       vim.keymap.set('n', 'o', 's', { buffer = ev.buf, remap = true, desc = 'Show commit in a vertical split' })
+
+      -- The lines of the commit under the cursor (CursorLine) as faint as a
+      -- changed line in a diff, in the blame and in the file's window (the
+      -- one it split from) while the blame is open
+      local blame_win = vim.api.nvim_get_current_win()
+      local file_win = vim.fn.win_getid(vim.fn.winnr('#'))
+      vim.wo[blame_win].winhighlight = 'CursorLine:DiffChange'
+      if file_win == 0 or file_win == blame_win then
+        return
+      end
+      local file_winhighlight = vim.wo[file_win].winhighlight
+      vim.wo[file_win].winhighlight = (file_winhighlight == '' and '' or file_winhighlight .. ',')
+        .. 'CursorLine:DiffChange'
+      vim.api.nvim_create_autocmd('WinClosed', {
+        pattern = tostring(blame_win),
+        once = true,
+        callback = function()
+          if vim.api.nvim_win_is_valid(file_win) then
+            vim.wo[file_win].winhighlight = file_winhighlight
+          end
+        end,
+      })
     end,
   })
 end
