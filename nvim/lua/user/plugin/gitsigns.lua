@@ -37,6 +37,14 @@ function M.setup()
   vim.keymap.set('n', ']C', conflict(1), { desc = 'Next merge conflict' })
 
   vim.api.nvim_create_user_command('GBlame', 'Gitsigns blame', { desc = 'Blame the file' })
+  -- o in the blame shows the line's commit, as s does
+  vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup('user_gitsigns', {}),
+    pattern = 'gitsigns-blame',
+    callback = function(ev)
+      vim.keymap.set('n', 'o', 's', { buffer = ev.buf, remap = true, desc = 'Show commit in a vertical split' })
+    end,
+  })
 end
 
 return M

@@ -323,9 +323,19 @@ M.spec = {
     'dlyongemallo/diffview-plus.nvim',
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     config = function()
-      -- removed lines red on the old side too, rather than DiffAdd's green,
-      -- and the lines a side lacks dim
-      require('diffview').setup({ enhanced_diff_hl = true })
+      local close = { 'n', 'q', '<Cmd>DiffviewClose<CR>', { desc = 'Close the view' } }
+      require('diffview').setup({
+        -- removed lines red on the old side too, rather than DiffAdd's green,
+        -- and the lines a side lacks dim
+        enhanced_diff_hl = true,
+        keymaps = { view = { close }, file_panel = { close }, file_history_panel = { close } },
+        hooks = {
+          -- no fold column, which diffview opens (the folds stay)
+          diff_buf_win_enter = function(_, winid)
+            vim.wo[winid].foldcolumn = '0'
+          end,
+        },
+      })
     end,
   },
 

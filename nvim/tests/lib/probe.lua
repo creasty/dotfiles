@@ -285,14 +285,20 @@ function probe.blame_view(nvim)
   return lines ~= vim.NIL and lines or nil
 end
 
+--- The diff of many files that is open: { files = the text of its file
+--- list, sides = the lines of each window in diff mode, left to right }, or nil.
+function probe.diff_view(nvim)
+  local view = call(nvim, 'diff_view')
+  return view ~= vim.NIL and view or nil
+end
+
 --- Waits until a diff of many files is open (and `pred(view)` holds), and
---- returns it: { files = the text of its file list, sides = the lines of each
---- window in diff mode, left to right }.
+--- returns it (probe.diff_view).
 function probe.wait_diff_view(nvim, pred)
   local last
   local ok = pcall(nvim.wait_for, nvim, function()
-    last = call(nvim, 'diff_view')
-    return last ~= vim.NIL and last ~= nil and (not pred or pred(last))
+    last = probe.diff_view(nvim)
+    return last and (not pred or pred(last))
   end, { timeout = 15000 })
   if not ok then
     error('the diff view did not reach the expected state; last: ' .. vim.inspect(last), 2)

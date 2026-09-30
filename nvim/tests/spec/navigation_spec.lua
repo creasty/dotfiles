@@ -235,9 +235,9 @@ describe('Navigation', function()
       t.eq('https://github.com/acme/app/blob/main/a.txt', nvim:eval('g:e2e_opened'))
     end)
 
-    it(':GBlame shows who changed each line beside the file', function()
+    it(':GBlame shows who changed each line beside the file, and o the commit of one', function()
       local nvim = t.nvim()
-      repo(nvim, { ['a.txt'] = { 'x' } })
+      local sha = repo(nvim, { ['a.txt'] = { 'x' } })
       nvim:edit('a.txt')
       probe.wait_git(nvim)
       nvim:cmd('GBlame')
@@ -245,6 +245,19 @@ describe('Navigation', function()
         return probe.blame_view(nvim)
       end, { message = 'the blame view' })
       t.match('e2e', lines[1])
+      nvim:type('o')
+      nvim:wait_for(function()
+        return nvim:lua(
+          [[
+          for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w)):find(..., 1, true) then
+              return true
+            end
+          end
+        ]],
+          sha
+        )
+      end, { message = "a window with the line's commit" })
     end)
 
     it(':DiffviewOpen lists the unstaged and the staged changes, and diffs the first', function()
@@ -261,6 +274,35 @@ describe('Navigation', function()
       local a, staged, b = view.files:find('a%.txt'), view.files:find('[Ss]taged'), view.files:find('b%.txt')
       t.ok(a and staged and b and a < staged and staged < b, view.files)
       t.eq({ { 'a' }, { 'a changed' } }, view.sides)
+      -- no fold column beside the diff
+      t.eq({ '0', '0' }, nvim:lua([[
+        local columns = {}
+        for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          if vim.wo[w].diff then
+            columns[#columns + 1] = vim.wo[w].foldcolumn
+          end
+        end
+        return columns
+      ]]))
+    end)
+
+    it(':DiffviewOpen closes on q, from the file list and from the diff', function()
+      local nvim = t.nvim()
+      repo(nvim, { ['a.txt'] = { 'a' } })
+      nvim:write_file('a.txt', { 'a changed' })
+      for _, from_diff in ipairs({ false, true }) do
+        nvim:cmd('DiffviewOpen')
+        probe.wait_diff_view(nvim, function(v)
+          return #v.sides == 2
+        end)
+        if from_diff then
+          nvim:cmd('wincmd l')
+        end
+        nvim:type('q')
+        nvim:wait_for(function()
+          return probe.diff_view(nvim) == nil
+        end, { message = 'the view to close' })
+      end
     end)
 
     it(':DiffviewOpen main...HEAD lists what the branch changed since it forked', function()
