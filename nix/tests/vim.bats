@@ -19,9 +19,9 @@ load helper
 
 @test "the language servers are on PATH" {
   # (nvim/lua/user/plugin/lsp.lua starts only the ones it finds)
-  for cmd in codebook-lsp lua-language-server nil pyright-langserver tailwindcss-language-server \
-    vim-language-server vscode-css-language-server vscode-eslint-language-server \
-    vscode-json-language-server yaml-language-server; do
+  for cmd in codebook-lsp glsl_analyzer lua-language-server nil pyright-langserver \
+    tailwindcss-language-server vim-language-server vscode-css-language-server \
+    vscode-eslint-language-server vscode-json-language-server yaml-language-server; do
     run -0 login_zsh "command -v $cmd"
   done
 }

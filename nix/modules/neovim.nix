@@ -10,6 +10,7 @@
       ansible-lint
       clang-tools # clangd, clang-format
       codebook # spell checking (codebook-lsp)
+      glsl_analyzer
       lua-language-server
       nil # Nix's language server
       nixfmt

@@ -12,6 +12,7 @@ M.servers = {
   'dartls',
   'denols', -- in Deno projects (ts_ls in the others)
   'eslint', -- vscode-langservers-extracted
+  'glsl_analyzer',
   'gopls',
   'graphql', -- graphql-language-service-cli
   'jsonls', -- vscode-langservers-extracted
