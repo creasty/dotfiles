@@ -48,9 +48,10 @@ local schema = {
   dark_purple = '#47404d',
   dark_pink   = '#c585a8', -- TODO
 
-  -- dim: the dark ones blended toward the background, for backgrounds
+  -- dim, for backgrounds: the dark ones near the background, and green
+  -- greener (dark_green's hue reads brown over a large area)
   dim_red   = '#302424',
-  dim_green = '#2f2e23',
+  dim_green = '#2a3024',
   dim_blue  = '#2a3034',
 }
 
