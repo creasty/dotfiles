@@ -166,17 +166,20 @@ leaves the cursor at.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so
-  type a whole submode chain in one call. A literal `<` is `<lt>`.
+  type a whole submode chain in one call. A literal `<` is `<lt>`. A burst
+  with a `<C-c>` goes to the typeahead, which Neovim reads when it next waits
+  for a key: through the input queue, a `<C-c>` that arrives while Neovim
+  works through its events is an interrupt and runs no mapping
+  (`:help map_CTRL-C`).
 - **Timing.** Asynchronous results are awaited with `nvim:wait_for()` and the
   `probe.wait_*()` helpers (`wait_picker` also waits for the picker to finish
   loading). Where a person would pause (between closing and reopening a
-  picker, before typing into a fresh placeholder), the tests pause too.
-  Typed while Neovim is still busy (a menu just opened), `<C-c>` interrupts
-  instead of running its mapping (`:help map_CTRL-C`), so pause before it. An
+  picker, before typing into a fresh placeholder), the tests pause too. An
   accepted completion item lands a moment after the key (blink.cmp may
-  resolve it with the server first), so wait for the text. Tests that race a
-  plugin's own internals can be marked `retry`, with a random back-off; a
-  real regression fails every attempt.
+  resolve it with the server first), so wait for the text; a dismissed menu
+  closes a moment after it too (`probe.wait_completion_closed()`). Tests that
+  race a plugin's own internals can be marked `retry`, with a random
+  back-off; a real regression fails every attempt.
 
 ## Writing tests
 

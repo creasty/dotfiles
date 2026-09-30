@@ -1,8 +1,9 @@
 -- A child Neovim running the real config, driven over msgpack-RPC.
 --
--- Keys go through nvim_input(), i.e. they are *typed*: mappings, abbreviations,
--- <expr> maps and autocommands behave exactly as when you type them. Each
--- type() call is a burst of keystrokes followed by a pause (see settle()).
+-- Keys go through nvim_input() (see type() for <C-c>), i.e. they are *typed*:
+-- mappings, abbreviations, <expr> maps and autocommands behave exactly as when
+-- you type them. Each type() call is a burst of keystrokes followed by a pause
+-- (see settle()).
 
 local env = require('env')
 
@@ -118,9 +119,18 @@ function Child:settle()
 end
 
 --- Types keys (Neovim key notation; a literal "<" is "<lt>").
+---
+--- Keys with a <C-c> go to the typeahead instead (nvim_feedkeys(), as typed),
+--- which Neovim reads when it next waits for a key. Through nvim_input(), a
+--- <C-c> that arrives while Neovim works through its queued events is an
+--- interrupt, and runs no mapping (:help map_CTRL-C).
 function Child:type(keys, opts)
   opts = opts or {}
-  self:request('nvim_input', keys)
+  if keys:find('<[Cc]%-[Cc]>') then
+    self:request('nvim_feedkeys', self:request('nvim_replace_termcodes', keys, true, true, true), 't', false)
+  else
+    self:request('nvim_input', keys)
+  end
   if opts.settle ~= false then
     self:settle()
   end
