@@ -207,10 +207,16 @@ local function new_app(id)
     bundleID = function() return id end,
     pid = function() return PID end,
     path = function() return '/Applications/' .. id .. '.app' end,
+    isHidden = function() return fake.hidden[id] == true end,
     hide = function()
       record('hide ' .. id)
-      fake.front = nil
+      fake.hidden[id] = true
+      if fake.front == id then fake.front = nil end
       return true
+    end,
+    focusedWindow = function()
+      local spec = fake.front == id and fake.windows[1]
+      return spec and new_window(spec) or nil
     end,
     -- Front to back, as the Accessibility API lists them
     visibleWindows = function()
@@ -230,6 +236,7 @@ function fake.reset()
   fake.calls = {} -- what else the config did
   fake.logged = {} -- errors
   fake.front = 'com.google.Chrome' -- the frontmost app
+  fake.hidden = {} -- the hidden apps, as a set of bundle IDs
   -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
   -- for a panel and the like, `spaces = { <space ID>, ... }` for one on those spaces only, not on every space, and
   -- `kitty = <kitty window ID>` for one of kitty's
@@ -302,6 +309,7 @@ function fake.reset()
       launchOrFocusByBundleID = function(id)
         record('focus ' .. id)
         fake.front = id
+        fake.hidden[id] = nil
         return true
       end,
     },

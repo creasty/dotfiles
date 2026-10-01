@@ -197,6 +197,15 @@ it(';+M, ;+T and ;+N bring kitty, Things and Bear to the front', function()
   did('kitten ls, focus net.kovidgoyal.kitty, focus com.culturedcode.ThingsMac, focus net.shinyfrog.bear')
 end)
 
+it(';+M brings kitty back with the window it had in front, when another space shows another', function()
+  local one, two = { id = 1, kitty = 10 }, { id = 2, kitty = 20 }
+  fake.front, fake.windows = 'net.kovidgoyal.kitty', { two, one }
+  keys(';↓ 200ms m↓ m↑ 200ms ;↑')
+  fake.space, fake.windows = 2, { one, two }
+  keys(';↓ 200ms m↓ m↑ 200ms ;↑')
+  did('hide net.kovidgoyal.kitty, kitten ls, focus net.kovidgoyal.kitty, focus window 2')
+end)
+
 it(";+M brings kitty's windows on other spaces to the current one first, as kitty takes them off every space", function()
   local one = { id = 1, kitty = 10 }
   local two, three = { id = 2, kitty = 20, spaces = { 1 } }, { id = 3, kitty = 30, spaces = { 1 } }
@@ -205,7 +214,16 @@ it(";+M brings kitty's windows on other spaces to the current one first, as kitt
   fake.space, fake.windows = 2, { one, two, three }
   keys(';↓ 200ms m↓ m↑ 200ms ;↑')
   did('hide net.kovidgoyal.kitty, kitten ls, kitten resize-os-window --match id:20 or id:30 --action hide, '
-    .. 'kitten resize-os-window --match id:20 or id:30 --action show, focus net.kovidgoyal.kitty')
+    .. 'kitten resize-os-window --match id:20 or id:30 --action show, focus net.kovidgoyal.kitty, focus window 2')
+end)
+
+it(';+M leaves the window in front alone once kitty was shown otherwise since it hid it', function()
+  fake.front, fake.windows = 'net.kovidgoyal.kitty', { { id = 2, kitty = 20 }, { id = 1, kitty = 10 } }
+  keys(';↓ 200ms m↓ m↑ 200ms ;↑')
+  -- Shown with Cmd-Tab, then left for Chrome
+  fake.hidden, fake.front = {}, 'com.google.Chrome'
+  keys(';↓ 200ms m↓ m↑ 200ms ;↑')
+  did('hide net.kovidgoyal.kitty, kitten ls, focus net.kovidgoyal.kitty')
 end)
 
 it('a semicolon types, before a return too', function()
