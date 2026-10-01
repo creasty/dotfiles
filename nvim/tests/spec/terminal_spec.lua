@@ -8,14 +8,24 @@ local function text(nvim, buf)
   return table.concat(nvim:lines(buf), '\n')
 end
 
+--- Waits for `cond`, failing with what the terminal `buf` shows.
+local function wait_showing(nvim, buf, cond, opts)
+  local ok, result = pcall(nvim.wait_for, nvim, cond, opts)
+  if not ok then
+    error(('%s; the terminal shows:\n%s'):format(result, text(nvim, buf)), 2)
+  end
+  return result
+end
+
 --- Runs `cmd` with sh in a terminal in the current window, and waits for `ready` in its output.
 local function terminal(nvim, cmd, ready)
   nvim:cmd('set shell=/bin/sh')
   nvim:cmd('terminal ' .. cmd)
-  nvim:wait_for(function()
-    return text(nvim):find(ready, 1, true)
+  local buf = nvim:call('bufnr')
+  wait_showing(nvim, buf, function()
+    return text(nvim, buf):find(ready, 1, true)
   end, { message = ready })
-  return nvim:call('bufnr')
+  return buf
 end
 
 local function window_count(nvim)
@@ -149,8 +159,10 @@ describe('Files opened from a terminal (flatten.nvim)', function()
   it('nvim in a terminal opens the file in this Neovim, in another window', function()
     local nvim = t.nvim()
     nvim:files({ ['notes.txt'] = { 'x' } })
-    local term = terminal(nvim, 'echo ready; ' .. nvim:eval('v:progpath') .. ' notes.txt; echo exited; cat', 'ready')
-    nvim:wait_for(function()
+    nvim:cmd('set shell=/bin/sh')
+    nvim:cmd('terminal ' .. nvim:eval('v:progpath') .. ' notes.txt; echo exited; cat')
+    local term = nvim:call('bufnr')
+    wait_showing(nvim, term, function()
       return window_of(nvim, 'notes.txt')
     end, { timeout = 20000, message = 'notes.txt in a window' })
     t.eq(true, nvim:call('bufwinnr', term) > 0, "the terminal's window stays")
@@ -162,8 +174,10 @@ describe('Files opened from a terminal (flatten.nvim)', function()
   it('git commit waits for the message to be written and its window closed', function()
     local nvim = t.nvim()
     nvim:files({ ['COMMIT_EDITMSG'] = { '' } })
-    local term = terminal(nvim, 'echo ready; ' .. nvim:eval('v:progpath') .. ' COMMIT_EDITMSG; echo done; cat', 'ready')
-    local win = nvim:wait_for(function()
+    nvim:cmd('set shell=/bin/sh')
+    nvim:cmd('terminal ' .. nvim:eval('v:progpath') .. ' COMMIT_EDITMSG; echo done; cat')
+    local term = nvim:call('bufnr')
+    local win = wait_showing(nvim, term, function()
       return window_of(nvim, 'COMMIT_EDITMSG')
     end, { timeout = 20000, message = 'COMMIT_EDITMSG in a window' })
     t.eq(nil, text(nvim, term):find('done', 1, true), 'nvim waits in the terminal')
