@@ -88,6 +88,7 @@ Change the input source to English as you leave 'insert mode' in Vim with <kbd>E
 ### Switch between apps
 
 <kbd>;+</kbd> brings the app to the front, launching it if needed, or hides it when it's there already.
+kitty takes the windows it opens off every space, whatever Dock > Options > Assign To says: <kbd>;+M</kbd> first brings those on other spaces to the current one, through kitty's remote control (`config/kitty/kitty.conf`).
 
 | Key | App | Bundle ID |
 |:---|:---|:---|

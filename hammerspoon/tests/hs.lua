@@ -157,6 +157,70 @@ function Window:focus()
   return self
 end
 
+-- The window of fake.windows with the ID
+local function window_spec(id)
+  for _, spec in ipairs(fake.windows) do
+    if spec.id == id then return spec end
+  end
+end
+
+-- macOS's temporary directory of the user, which it gives every app
+local TMPDIR, PID = '/var/folders/xx/T/', 4242
+local getenv = os.getenv
+function os.getenv(name)
+  if name == 'TMPDIR' then return TMPDIR end
+  return getenv(name)
+end
+
+-- What `kitten @ ls` prints, which hs.json.decode reads as fake.windows' kitty windows
+local KITTY_LS = '<kitten @ ls>'
+
+-- A task running `kitten @ <command>` against the kitty app, which records the command and ends with its output
+local function new_task(path, fn, args)
+  assert(path == '/Applications/net.kovidgoyal.kitty.app/Contents/MacOS/kitten', path)
+  assert(table.concat(args, ' ', 1, 3) == ('@ --to unix:%skitty-%d'):format(TMPDIR, PID), table.concat(args, ' '))
+  local command = { table.unpack(args, 4) }
+  return {
+    start = function(self)
+      record('kitten ' .. table.concat(command, ' '))
+      fn(0, command[1] == 'ls' and KITTY_LS or '', '')
+      return self
+    end,
+  }
+end
+
+-- kitty's OS windows as `kitten @ ls` lists them: those of fake.windows with `kitty`, the ID of a kitty window in it
+local function kitty_ls(text)
+  assert(text == KITTY_LS, text)
+  local os_windows = {}
+  for _, spec in ipairs(fake.windows) do
+    if spec.kitty then
+      table.insert(os_windows, { platform_window_id = spec.id, tabs = { { windows = { { id = spec.kitty } } } } })
+    end
+  end
+  return os_windows
+end
+
+-- A running app, by its bundle ID: fake.windows are its windows while it's the frontmost
+local function new_app(id)
+  return {
+    bundleID = function() return id end,
+    pid = function() return PID end,
+    path = function() return '/Applications/' .. id .. '.app' end,
+    hide = function()
+      record('hide ' .. id)
+      fake.front = nil
+      return true
+    end,
+    -- Front to back, as the Accessibility API lists them
+    visibleWindows = function()
+      local windows = {}
+      for _, spec in ipairs(fake.windows) do table.insert(windows, new_window(spec)) end
+      return windows
+    end,
+  }
+end
+
 function fake.reset()
   fake.now = 0 -- in milliseconds
   fake.timers = {}
@@ -167,8 +231,10 @@ function fake.reset()
   fake.logged = {} -- errors
   fake.front = 'com.google.Chrome' -- the frontmost app
   -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
-  -- for a panel and the like
+  -- for a panel and the like, `spaces = { <space ID>, ... }` for one on those spaces only, not on every space, and
+  -- `kitty = <kitty window ID>` for one of kitty's
   fake.windows = { { id = 1 } }
+  fake.space = 1 -- the current space
   fake.layouts = { 'com.apple.keylayout.ABC' }
   fake.methods = { 'com.google.inputmethod.Japanese.base' }
   fake.source = 'com.apple.keylayout.ABC'
@@ -231,24 +297,8 @@ function fake.reset()
     },
 
     application = {
-      frontmostApplication = function()
-        local id = fake.front
-        if not id then return nil end
-        return {
-          bundleID = function() return id end,
-          hide = function()
-            record('hide ' .. id)
-            fake.front = nil
-            return true
-          end,
-          -- Front to back, as the Accessibility API lists them
-          visibleWindows = function()
-            local windows = {}
-            for _, spec in ipairs(fake.windows) do table.insert(windows, new_window(spec)) end
-            return windows
-          end,
-        }
-      end,
+      frontmostApplication = function() return fake.front and new_app(fake.front) end,
+      applicationsForBundleID = function(id) return { new_app(id) } end,
       launchOrFocusByBundleID = function(id)
         record('focus ' .. id)
         fake.front = id
@@ -263,7 +313,17 @@ function fake.reset()
       end,
     },
 
-    spaces = { toggleMissionControl = function() record('mission control') end },
+    task = { new = new_task },
+    json = { decode = kitty_ls },
+
+    spaces = {
+      toggleMissionControl = function() record('mission control') end,
+      focusedSpace = function() return fake.space end,
+      windowSpaces = function(id)
+        local spec = assert(window_spec(id), 'no window ' .. id)
+        return spec.spaces or { fake.space }
+      end,
+    },
 
     keycodes = {
       layouts = function(ids)

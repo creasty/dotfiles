@@ -32,6 +32,13 @@ Neovim 0.12 dropped the option and always passes a list of nodes, which breaks e
 `compat.lua` wraps `vim.treesitter.query.add_predicate` and `add_directive` to bring the option back, as Neovim 0.11 had it; `nvim/init.vim` loads it before the tree-sitter plugins.
 Remove it once endwise takes lists: the endwise tests in `nvim/tests/spec/treesitter_spec.lua` tell.
 
+## kitty off every Space
+
+kitty takes each window it opens off every Space, the first at launch included, whatever Dock > Options > Assign To says: `_glfwPlatformShowWindow` in its `glfw/cocoa_window.m` resets the window's collection behavior, a workaround for its quick-access terminal (kitty#8740), from 0.48.0 and still in 0.49.2.
+Hammerspoon can't put a window back: the private calls `hs.spaces.moveWindowToSpace` makes fail on macOS 26, and restarting the Dock doesn't either.
+So `bring_kitty_windows` (`hammerspoon/keyboard.lua`) has kitty hide and show its windows on other Spaces as ;+M brings it, through its remote control (`allow_remote_control` and `listen_on` in `config/kitty/kitty.conf`), which adds them to the current Space.
+Remove both once kitty leaves a new window on every Space.
+
 ## Homebrew tap trap
 
 `brew tap` checks that every formula and cask of a tap loads on Linux too, and refuses the whole tap when one doesn't: a formula with a URL only `on_macos`, or a cask without Linux stanzas or `depends_on :macos`.
