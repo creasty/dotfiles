@@ -104,13 +104,60 @@ local function focus_window(step)
   end
 end
 
+-- Whether the window, by its ID, is on the current space
+local function on_current_space(id)
+  local current = hs.spaces.focusedSpace()
+  for _, space in ipairs(hs.spaces.windowSpaces(id) or {}) do
+    if space == current then return true end
+  end
+  return false
+end
+
+-- Runs `kitten @` against the kitty app (config/kitty/kitty.conf's listen_on), then `fn` with its output, or nil
+local function kitten(app, args, fn)
+  local socket = ('unix:%skitty-%d'):format(os.getenv('TMPDIR'), app:pid())
+  hs.task.new(app:path() .. '/Contents/MacOS/kitten', function(code, stdout, stderr)
+    if code ~= 0 then log.e(('kitten @ %s: %s'):format(table.concat(args, ' '), stderr)) end
+    fn(code == 0 and stdout or nil)
+  end, { '@', '--to', socket, table.unpack(args) }):start()
+end
+
+-- Brings kitty's windows on other spaces to the current one, then calls `done`. kitty takes the windows it opens off
+-- every space (Dock > Options > Assign To > All Desktops), but hiding and showing one adds it to the current space.
+local function bring_kitty_windows(app, done)
+  kitten(app, { 'ls' }, function(out)
+    local ok, os_windows = pcall(hs.json.decode, out or '')
+    local matches = {}
+    for _, os_window in ipairs(ok and os_windows or {}) do
+      if not on_current_space(os_window.platform_window_id) then
+        -- (by a window in it: --match picks the OS windows of the windows it matches)
+        table.insert(matches, 'id:' .. os_window.tabs[1].windows[1].id)
+      end
+    end
+    if #matches == 0 then return done() end
+    local match = table.concat(matches, ' or ')
+    kitten(app, { 'resize-os-window', '--match', match, '--action', 'hide' }, function()
+      kitten(app, { 'resize-os-window', '--match', match, '--action', 'show' }, done)
+    end)
+  end)
+end
+
+-- What brings an app's windows to the current space before toggle_app shows it, calling back once done
+local bring_windows = { ['net.kovidgoyal.kitty'] = bring_kitty_windows }
+
 -- Brings the app to the front, launching it if needed, or hides it when it's already there
 local function toggle_app(bundle_id)
   local app = hs.application.frontmostApplication()
   if app and app:bundleID() == bundle_id then
     app:hide()
+    return
+  end
+  local function show() hs.application.launchOrFocusByBundleID(bundle_id) end
+  app = hs.application.applicationsForBundleID(bundle_id)[1]
+  if app and bring_windows[bundle_id] then
+    bring_windows[bundle_id](app, show)
   else
-    hs.application.launchOrFocusByBundleID(bundle_id)
+    show()
   end
 end
 
