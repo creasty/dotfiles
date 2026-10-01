@@ -144,14 +144,44 @@ describe('Terminals', function()
     end
   end)
 
-  it('are named by the title their program sets, in the tabline and the window title', function()
+  it('are named in the tabline by the title their program sets, with no flags', function()
     local nvim = t.nvim()
     terminal(nvim, [[sleep 0.2; printf '\033]2;project\007'; echo ready; cat]], 'ready')
     nvim:wait_for("get(b:, 'term_title') ==# 'project'")
+    -- (and entered again, where the files' flags are looked up)
     nvim:cmd('tabnew')
-    t.contains(nvim:tabline(), 'project')
-    nvim:type('<C-s>b')
-    t.eq('project', nvim:eval('UserTitleString()'))
+    nvim:cmd('tabprevious')
+    nvim:cmd('tabnext')
+    t.eq(' project ∙ Untitled', (nvim:tabline():gsub('%s+$', '')))
+  end)
+
+  it("titles the window with the shell's directory, from OSC 7", function()
+    local nvim = t.nvim()
+    nvim:files({ ['sub/.keep'] = '', ['osc7.sh'] = { [[cd sub && printf '\033]7;file://host%s\033\\' "$PWD"]], 'echo ready', 'cat' } })
+    terminal(nvim, 'sh osc7.sh', 'ready')
+    nvim:wait_for("exists('b:user_terminal_cwd')")
+    t.eq(nvim:path('sub'), nvim:eval('UserTitleString()'))
+  end)
+
+  it("marks a tab whose terminal prints while another tab is the current one, until it's current again", function()
+    local nvim = t.nvim()
+    local function tab_highlights()
+      local line = nvim:lua("return require('user.ui').tabline()")
+      local groups = {}
+      for group in line:gmatch('%%#(TabLine%a*)# ') do
+        groups[#groups + 1] = group
+      end
+      return groups
+    end
+    terminal(nvim, 'echo ready; sleep 1; echo printed; cat', 'ready')
+    nvim:cmd('tabnew')
+    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights())
+    nvim:wait_for(function()
+      return tab_highlights()[1] == 'TabLineActivity'
+    end, { message = 'the first tab marked' })
+    nvim:cmd('tabprevious')
+    nvim:cmd('tabnext')
+    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights())
   end)
 end)
 

@@ -339,9 +339,11 @@ title() {
 title_precmd() {
   emulate -L zsh
 
-  # Neovim's terminals: the name of the directory, for Neovim's tabline and window title
+  # Neovim's terminals: the name of the directory for Neovim's tabline, and the directory itself (OSC 7) for its window
+  # title (nvim/lua/user/terminal.lua)
   if [[ -n "$NVIM" ]]; then
     title '%1d'
+    print -n "\e]7;file://${HOST}${PWD}\e\\"
     return
   fi
 
@@ -351,12 +353,15 @@ title_preexec() {
   emulate -L zsh
   setopt extended_glob
 
-  # ...even while commands run
-  [[ -n "$NVIM" ]] && return
-
   # cmd name only, or if this is sudo or ssh, the next cmd
   local cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
   local line="${2:gs/%/%%}"
+
+  # Neovim's terminals: the command's name alone, for Neovim's tabline
+  if [[ -n "$NVIM" ]]; then
+    title '$cmd'
+    return
+  fi
 
   title '$cmd' '%100>...>$line%<<'
 }

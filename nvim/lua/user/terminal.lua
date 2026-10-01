@@ -12,15 +12,45 @@
 --   <C-y>       copy mode: Normal mode, scrolled a line up, to search and yank; i types again
 --
 -- Entering a terminal's window types into it, unless it was left in copy mode.
+--
+-- A terminal's tab shows the command it runs, or its shell's directory at the prompt (the title term.zsh sets), and
+-- stands out once the terminal prints while another tab is the current one, as tmux's windows did, until the tab is
+-- current again. The window title shows the shell's directory (OSC 7, from term.zsh).
 
 local M = {}
 
 -- Set while a terminal is in copy mode, until it types again
 local copy_mode_key = 'user_terminal_copy_mode'
+-- Set once a terminal prints while not in the current tab, until it is (nvim/lua/user/ui.lua's tabline shows it)
+local activity_key = 'user_terminal_activity'
+-- The shell's directory, from OSC 7 (UserTitleString in nvim/init.vim shows it)
+local cwd_key = 'user_terminal_cwd'
 
 local function is_running(buf)
   local channel = vim.bo[buf].channel
   return channel > 0 and vim.fn.jobwait({ channel }, 0)[1] == -1
+end
+
+local function in_current_tab(buf)
+  local tab = vim.api.nvim_get_current_tabpage()
+  for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+    if vim.api.nvim_win_get_tabpage(win) == tab then
+      return true
+    end
+  end
+  return false
+end
+
+local function watch_activity(buf)
+  vim.api.nvim_buf_attach(buf, false, {
+    on_lines = function(_, b)
+      if vim.b[b][activity_key] or in_current_tab(b) then
+        return
+      end
+      vim.b[b][activity_key] = true
+      vim.schedule(vim.cmd.redrawtabline)
+    end,
+  })
 end
 
 local function pick()
@@ -61,8 +91,26 @@ function M.setup()
     callback = function(ev)
       -- (Neovim takes the numbers and signs off)
       vim.wo[0][0].colorcolumn = ''
+      watch_activity(ev.buf)
       if ev.buf == vim.api.nvim_get_current_buf() then
         vim.cmd.startinsert()
+      end
+    end,
+  })
+  vim.api.nvim_create_autocmd({ 'TabEnter', 'BufWinEnter', 'WinEnter' }, {
+    group = group,
+    callback = function()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        vim.b[vim.api.nvim_win_get_buf(win)][activity_key] = nil
+      end
+    end,
+  })
+  vim.api.nvim_create_autocmd('TermRequest', {
+    group = group,
+    callback = function(ev)
+      local dir = ev.data.sequence:match('^\027%]7;file://[^/]*(/.*)$')
+      if dir and vim.fn.isdirectory(dir) == 1 then
+        vim.b[ev.buf][cwd_key] = dir
       end
     end,
   })

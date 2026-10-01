@@ -19,7 +19,8 @@ end
 
 local function update_filereadable()
   local path = vim.api.nvim_buf_get_name(0)
-  if path ~= '' then
+  -- (files only: a terminal's name is term://...)
+  if path ~= '' and vim.bo.buftype == '' then
     vim.api.nvim_buf_set_var(0, file_readable_key, file_exists(path))
   end
 end
@@ -101,16 +102,22 @@ local tabline = retry_call_wrap(function ()
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
 
-    -- (a terminal by the title its program sets: the shell's directory)
+    -- (a terminal by the title its shell sets: the command it runs, or its directory)
     local name = vim.bo[bufnr].buftype == 'terminal' and vim.b[bufnr].term_title or vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or no_name_file
 
     local flags = get_buffer_flags(bufnr)
 
+    -- (a terminal of the tab printed while another tab was the current one: user/terminal.lua)
+    local active = false
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tabnr)) do
+      active = active or vim.b[vim.api.nvim_win_get_buf(win)].user_terminal_activity == true
+    end
+
     local tab = {
       (i > 1 and separator or ''),
       '%', tabnr, 'T',
-      (tabnr == current and '%#TabLineSel#' or '%#TabLine#'),
+      (tabnr == current and '%#TabLineSel#' or (active and '%#TabLineActivity#' or '%#TabLine#')),
       ' ',
       (#flags > 0 and '' .. table.concat(flags, '') or ''),
       name,

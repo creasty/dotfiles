@@ -141,8 +141,8 @@ set diffopt+=foldcolumn:0
 " transparent pmenu
 set pumblend=10
 
-" change cursor styles
-set guicursor=n-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,v-r-cr-o:hor20-Cursor
+" change cursor styles (a terminal's as Insert mode's)
+set guicursor=n-c-sm:block-Cursor,i-ci-ve-t:ver25-Cursor,v-r-cr-o:hor20-Cursor
 
 " line offset when scrolling
 set scrolloff=5
@@ -159,15 +159,13 @@ set foldlevelstart=20
 set title titlestring=%{UserTitleString()}
 
 function! UserTitleString() abort
-  let l:is_file = empty(&buftype)
-  if l:is_file
-    let l:path = expand('%:p')
+  " a file's path, or a terminal's directory (nvim/lua/user/terminal.lua)
+  if empty(&buftype) || &buftype ==# 'terminal'
+    let l:path = (&buftype ==# 'terminal') ? get(b:, 'user_terminal_cwd', '') : expand('%:p')
     let l:path = (l:path !=# '') ? l:path : getcwd()
     let l:path = substitute(l:path, $HOME, '~', '')
     let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
     return l:path
-  elseif &buftype ==# 'terminal'
-    return get(b:, 'term_title', bufname())
   else
     let l:name = bufname()
     let l:name = (l:name !=# '') ? l:name : &buftype

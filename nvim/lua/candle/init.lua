@@ -67,6 +67,7 @@ function M.setup()
   hi.TabLine = { fg = s.comment, bg = s.window }
   hi.TabLineFill = { fg = s.comment, bg = s.window }
   hi.TabLineSel = { fg = s.foreground, bg = s.window }
+  hi.TabLineActivity = { fg = s.gray200, bg = s.window }
   hi.Title = { fg = s.foreground, bold = 1 }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }

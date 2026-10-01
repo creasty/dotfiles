@@ -83,7 +83,7 @@ describe('Startup', function()
       breakindent = 1,
       showbreak = '↳',
       pumblend = 10,
-      guicursor = 'n-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,v-r-cr-o:hor20-Cursor',
+      guicursor = 'n-c-sm:block-Cursor,i-ci-ve-t:ver25-Cursor,v-r-cr-o:hor20-Cursor',
       scrolloff = 5,
       updatetime = 200,
       foldmethod = 'indent',
