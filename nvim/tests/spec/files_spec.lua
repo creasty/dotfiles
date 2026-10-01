@@ -115,13 +115,16 @@ describe('Files', function()
   end)
 
   it('reopening a file restores the last cursor position', function()
-    local nvim = t.nvim({ shada = 'shada' })
+    -- Neovim keeps no marks for files in /tmp or /private ('shada' r items), and the sandbox can be in either: macOS's
+    -- temporary directory is in /private
+    local keep_marks = { '--cmd', 'set shada-=r/tmp/ shada-=r/private/' }
+    local nvim = t.nvim({ shada = 'shada', args = keep_marks })
     local shada = nvim:path('shada')
     nvim:edit('a.txt', { '1', '2', '3', '4', '5' })
     nvim:type('4G')
     nvim:cmd('wshada! ' .. shada)
     nvim:close()
-    local again = t.nvim({ cwd = nvim.dir, shada = shada })
+    local again = t.nvim({ cwd = nvim.dir, shada = shada, args = keep_marks })
     again:edit('a.txt')
     t.eq(4, again:cursor()[1])
   end)
