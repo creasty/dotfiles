@@ -17,43 +17,37 @@ local log = hs.logger.new('keyboard', 'warning')
 local types = hs.eventtap.event.types
 local props = hs.eventtap.event.properties
 
-local emit, key_event, stroke = events.emit, events.key_event, events.stroke
-local next_app, previous_app, close_switcher = switcher.next, switcher.previous, switcher.close
-local move_window, focus_window = windows.move, windows.focus
-local toggle_app = apps.toggle
-local remap = emacs.remap
-
 --  Super keys: the super key, and the keys held with it
 --------------------------------------------------
 local shortcuts = {
   -- Window/space navigation. Moving a space strokes Mission Control's shortcut, as macOS has no public API for it:
   -- hs.spaces.gotoSpace clicks the space in Mission Control, showing it
-  ['S+H'] = function() stroke(key.left, { 'ctrl', 'fn' }) end, -- Move left a space
-  ['S+L'] = function() stroke(key.right, { 'ctrl', 'fn' }) end, -- Move right a space
-  ['S+J'] = next_app,
-  ['S+K'] = previous_app,
-  ['S+N'] = function() focus_window(1) end,
-  ['S+B'] = function() focus_window(-1) end,
+  ['S+H'] = function() events.stroke(key.left, { 'ctrl', 'fn' }) end, -- Move left a space
+  ['S+L'] = function() events.stroke(key.right, { 'ctrl', 'fn' }) end, -- Move right a space
+  ['S+J'] = switcher.next,
+  ['S+K'] = switcher.previous,
+  ['S+N'] = function() windows.focus(1) end,
+  ['S+B'] = function() windows.focus(-1) end,
   ['S+M'] = function() hs.spaces.toggleMissionControl() end,
 
   -- Window resizing/positioning
-  ['S+D+F'] = function() move_window({ 0, 0, 1, 1 }) end,
-  ['S+D+H'] = function() move_window({ 0, 0, 0.5, 1 }) end,
-  ['S+D+J'] = function() move_window({ 0, 0.5, 1, 0.5 }) end,
-  ['S+D+K'] = function() move_window({ 0, 0, 1, 0.5 }) end,
-  ['S+D+L'] = function() move_window({ 0.5, 0, 0.5, 1 }) end,
+  ['S+D+F'] = function() windows.move({ 0, 0, 1, 1 }) end,
+  ['S+D+H'] = function() windows.move({ 0, 0, 0.5, 1 }) end,
+  ['S+D+J'] = function() windows.move({ 0, 0.5, 1, 0.5 }) end,
+  ['S+D+K'] = function() windows.move({ 0, 0, 1, 0.5 }) end,
+  ['S+D+L'] = function() windows.move({ 0.5, 0, 0.5, 1 }) end,
 
   -- Word motions
-  ['A+D'] = function() stroke(key.forward_delete, { 'alt' }) end,
-  ['A+H'] = function() stroke(key.backspace, { 'alt' }) end,
-  ['A+B'] = function() stroke(key.left, { 'alt' }) end,
-  ['A+F'] = function() stroke(key.right, { 'alt' }) end,
+  ['A+D'] = function() events.stroke(key.forward_delete, { 'alt' }) end,
+  ['A+H'] = function() events.stroke(key.backspace, { 'alt' }) end,
+  ['A+B'] = function() events.stroke(key.left, { 'alt' }) end,
+  ['A+F'] = function() events.stroke(key.right, { 'alt' }) end,
 
   -- Switch between apps
-  [';+F'] = function() toggle_app('com.apple.finder') end,
-  [';+M'] = function() toggle_app('net.kovidgoyal.kitty') end,
-  [';+T'] = function() toggle_app('com.culturedcode.ThingsMac') end,
-  [';+N'] = function() toggle_app('net.shinyfrog.bear') end,
+  [';+F'] = function() apps.toggle('com.apple.finder') end,
+  [';+M'] = function() apps.toggle('net.kovidgoyal.kitty') end,
+  [';+T'] = function() apps.toggle('com.culturedcode.ThingsMac') end,
+  [';+N'] = function() apps.toggle('net.shinyfrog.bear') end,
 }
 
 -- A chord of key codes as a string, the same whatever their order
@@ -79,7 +73,7 @@ local function perform(super, chord)
   for code in pairs(chord) do table.insert(codes, code) end
   local action = actions[super][chord_id(codes)]
   if not action then return end
-  if action ~= next_app and action ~= previous_app then close_switcher() end
+  if action ~= switcher.next and action ~= switcher.previous then switcher.close() end
   local ok, err = pcall(action)
   if not ok then log.e(err) end
 end
@@ -87,7 +81,7 @@ end
 local supers = superkey.new({
   keys = actions,
   perform = perform,
-  finish = close_switcher,
+  finish = switcher.close,
   now = function() return hs.timer.absoluteTime() / 1e9 end,
   after = hs.timer.doAfter,
 })
@@ -105,9 +99,9 @@ local function handle(event)
 
   local swallow, keys = supers:handle(code, is_down, is_repeat, plain)
   for _, k in ipairs(keys or {}) do
-    emit(key_event(k[1], k[2]))
+    events.emit(events.key_event(k[1], k[2]))
   end
-  if not swallow then swallow = remap(code, is_down, is_repeat, flags) end
+  if not swallow then swallow = emacs.remap(code, is_down, is_repeat, flags) end
   return swallow
 end
 
@@ -119,7 +113,7 @@ local function on_event(event)
   -- Hammerspoon drops the event of a failing callback: let it through instead, and start over
   log.e(swallow)
   supers:reset()
-  close_switcher()
+  switcher.close()
   return false, ahead
 end
 
@@ -136,7 +130,7 @@ function keyboard.stop()
   if keyboard.tap then keyboard.tap:stop() end
   keyboard.tap = nil
   supers:reset()
-  close_switcher()
+  switcher.close()
 end
 
 keyboard.start()

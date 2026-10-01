@@ -1,4 +1,6 @@
 -- kitty's windows on other spaces (;+M)
+local M = {}
+
 local log = hs.logger.new('keyboard', 'warning')
 
 -- Whether the window, by its ID, is on the current space
@@ -21,7 +23,7 @@ end
 
 -- Brings kitty's windows on other spaces to the current one, then calls `done`. kitty takes the windows it opens off
 -- every space (Dock > Options > Assign To > All Desktops), but hiding and showing one adds it to the current space.
-local function bring_kitty_windows(app, done)
+function M.bring_windows(app, done)
   kitten(app, { 'ls' }, function(out)
     local ok, os_windows = pcall(hs.json.decode, out or '')
     local matches = {}
@@ -39,4 +41,4 @@ local function bring_kitty_windows(app, done)
   end)
 end
 
-return { bring_windows = bring_kitty_windows }
+return M

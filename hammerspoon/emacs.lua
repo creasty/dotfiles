@@ -3,8 +3,7 @@ local key = require('keycodes')
 local events = require('events')
 local input_source = require('input_source')
 
-local emit, key_event, stroke = events.emit, events.key_event, events.stroke
-local select_next_input_source = input_source.select_next
+local M = {}
 
 local function set(list)
   local t = {}
@@ -108,7 +107,7 @@ local emacs_keys = {
   [key.e] = { to = key.right, mods = { 'cmd' }, shift = true, advanced = true }, -- end of line
 }
 
-local function eisu() stroke(key.eisu) end
+local function eisu() events.stroke(key.eisu) end
 
 local function frontmost_app()
   local app = hs.application.frontmostApplication()
@@ -116,7 +115,7 @@ local function frontmost_app()
 end
 
 -- Handles a key the super keys let through: returns whether to swallow it
-local function remap(code, is_down, is_repeat, flags)
+function M.remap(code, is_down, is_repeat, flags)
   if flags.alt or flags.cmd then return false end
 
   if not flags.ctrl then
@@ -127,7 +126,7 @@ local function remap(code, is_down, is_repeat, flags)
 
   if code == key[';'] and not flags.shift then
     if not is_down then return false end
-    if not is_repeat then select_next_input_source() end
+    if not is_repeat then input_source.select_next() end
     return true
   end
 
@@ -135,7 +134,7 @@ local function remap(code, is_down, is_repeat, flags)
     if is_down then eisu() end
     -- Ctrl-C is Escape, but where it's Ctrl-C's own
     if escape_key_disabled_apps[frontmost_app()] then return false end
-    emit(key_event(key.escape, is_down))
+    events.emit(events.key_event(key.escape, is_down))
     return true
   end
 
@@ -146,8 +145,8 @@ local function remap(code, is_down, is_repeat, flags)
   if emacs.advanced and advanced_cursor_keys_disabled_apps[app] then return false end
   local mods = { table.unpack(emacs.mods or {}) }
   if flags.shift then table.insert(mods, 'shift') end
-  emit(key_event(emacs.to, is_down, mods))
+  events.emit(events.key_event(emacs.to, is_down, mods))
   return true
 end
 
-return { remap = remap }
+return M

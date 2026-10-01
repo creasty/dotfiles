@@ -2,8 +2,9 @@
 local key = require('keycodes')
 local events = require('events')
 
+local M = {}
+
 local types = hs.eventtap.event.types
-local emit, stroke = events.emit, events.stroke
 
 -- Command going down or up on its own, as the keyboard reports it
 local function command_event(is_down)
@@ -19,19 +20,19 @@ local switching = false
 
 local function switch_app(mods)
   if not switching then
-    emit(command_event(true))
+    events.emit(command_event(true))
     switching = true
   end
-  stroke(key.tab, mods)
+  events.stroke(key.tab, mods)
 end
 
-local function next_app() switch_app({ 'cmd' }) end
-local function previous_app() switch_app({ 'cmd', 'shift' }) end
+function M.next() switch_app({ 'cmd' }) end
+function M.previous() switch_app({ 'cmd', 'shift' }) end
 
-local function close_switcher()
+function M.close()
   if not switching then return end
-  emit(command_event(false))
+  events.emit(command_event(false))
   switching = false
 end
 
-return { next = next_app, previous = previous_app, close = close_switcher }
+return M

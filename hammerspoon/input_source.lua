@@ -1,7 +1,8 @@
 -- Switching the input source (Ctrl-;)
+local M = {}
 
 -- Selects the next input source of the input menu, taking keyboard layouts before input methods
-local function select_next_input_source()
+function M.select_next()
   local layouts, sources, cjkv = hs.keycodes.layouts(true), {}, {}
   for _, id in ipairs(layouts) do table.insert(sources, id) end
   for _, id in ipairs(hs.keycodes.methods(true)) do
@@ -21,4 +22,4 @@ local function select_next_input_source()
   end
 end
 
-return { select_next = select_next_input_source }
+return M

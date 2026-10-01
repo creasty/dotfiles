@@ -1,12 +1,14 @@
 -- Moving and focusing windows (S+D+…, S+N, S+B)
-local function move_window(unit)
+local M = {}
+
+function M.move(unit)
   local win = hs.window.focusedWindow()
   if win then win:moveToUnit(unit, 0) end
 end
 
 -- Focuses the app's next window, or its previous one (step -1): going around its windows on the current space in the
 -- order they opened, skipping panels and the like
-local function focus_window(step)
+function M.focus(step)
   local focused = hs.window.focusedWindow()
   if not focused then return end
   local windows = {}
@@ -23,4 +25,4 @@ local function focus_window(step)
   end
 end
 
-return { move = move_window, focus = focus_window }
+return M

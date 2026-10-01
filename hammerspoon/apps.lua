@@ -1,18 +1,18 @@
 -- Switching between apps (;+…)
 local kitty = require('kitty')
 
-local bring_kitty_windows = kitty.bring_windows
+local M = {}
 
--- The window each app had in front as toggle_app hid it: brought back on another space, an app on every space may
+-- The window each app had in front as M.toggle hid it: brought back on another space, an app on every space may
 -- show another of its windows in front
 local hidden_windows = {}
 
--- What brings an app's windows to the current space before toggle_app shows it, calling back once done
-local bring_windows = { ['net.kovidgoyal.kitty'] = bring_kitty_windows }
+-- What brings an app's windows to the current space before M.toggle shows it, calling back once done
+local bring_windows = { ['net.kovidgoyal.kitty'] = kitty.bring_windows }
 
 -- Brings the app to the front, launching it if needed, or hides it when it's already there. Brought back while still
 -- hidden, it shows the window it had in front.
-local function toggle_app(bundle_id)
+function M.toggle(bundle_id)
   local app = hs.application.frontmostApplication()
   if app and app:bundleID() == bundle_id then
     hidden_windows[bundle_id] = app:focusedWindow()
@@ -35,4 +35,4 @@ local function toggle_app(bundle_id)
   end
 end
 
-return { toggle = toggle_app }
+return M
