@@ -60,17 +60,20 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
 
 ## Git and pull requests
 
-- Fetch first and start from the base on origin before planning, since other sessions merge all day; fetch again before opening a PR or measuring.
+- Fetch first and start from the base on origin before planning, since other sessions merge all day; fetch again before opening a PR, pushing to one or measuring.
+  A fix to a merged PR goes in a new one.
 - I edit files, plans and docs between your turns: keep changes you didn't make, as mine.
   When I've staged changes, a commit takes exactly what's staged.
 - Once a PR is open and I'm reviewing it, commit and push each verified fix and tell me.
   Ask first for a merge, a push to the default branch, a PR I didn't ask for, or any other rewrite of pushed history.
 - Write commits and PRs for someone who never saw this session.
   The title states the goal, not the mechanism; the description gives each fix's cause, when it started, and its impact, and the decisions we made in chat.
+  Check each at its source before the PR opens: when something started is the first release that has it, found through every commit that touched it, not the first one you came across.
   Keep the title and description true after every push.
 - Before opening a PR, rename a random branch (`claude/peaceful-curie-r1d11b`) to say what it changes, and run the checks CI runs over the whole repository.
 - I squash-merge PRs myself; "#N merged" means fetch, rebase what's next onto it, force-push that branch with lease, and carry on.
 - In GitHub bodies, comments and release notes, a newline renders as a line break: write each paragraph on one line, and backtick any `@name` that isn't a mention.
+- In a report to another project, point to our code by its permalink at a commit, never to our PRs.
 
 ## This machine
 
