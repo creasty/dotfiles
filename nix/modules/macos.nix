@@ -43,6 +43,12 @@ let
       (lib.generators.toPlist { escape = true; } entry)
     ]) hotKeys
   );
+
+  # The same for app-bindings: each bundle ID followed by AllSpaces
+  allDesktopsArgs = lib.concatMap (id: [
+    id
+    "AllSpaces"
+  ]) config.dotfiles.allDesktops;
 in
 {
   options.dotfiles.hotKeys = lib.mkOption {
@@ -52,6 +58,15 @@ in
       Shortcuts of System Settings > Keyboard > Keyboard Shortcuts, by their IDs in com.apple.symbolichotkeys: the
       character (65535 for none), key code and modifier flags of their keys, or null to turn them off. The others stay
       as they are.
+    '';
+  };
+
+  options.dotfiles.allDesktops = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ ];
+    description = ''
+      Apps, by bundle ID, whose windows show on every Space (Dock > Options > Assign To > All Desktops). The other
+      apps' assignments stay as they are.
     '';
   };
 
@@ -154,6 +169,8 @@ in
       "61" = null;
     };
 
+    dotfiles.allDesktops = [ "com.apple.finder" ];
+
     system.startup.chime = false;
 
     # The preferences above, for the next switch to tell whether they changed
@@ -174,8 +191,25 @@ in
       # Adds the shortcuts to the user's, where CustomUserPreferences would replace them all. macOS reads them at login.
       launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
         defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add ${lib.escapeShellArgs hotKeyArgs}
+    ''
+    + lib.optionalString (config.dotfiles.allDesktops != [ ]) ''
+      # Adds the apps to the user's assignments to Spaces, where CustomUserPreferences would replace them all (the
+      # others hold the UUIDs of this Mac's Spaces), and restarts the Dock, which reads them when it starts, if that
+      # changed them
+      bindings() {
+        local verb="$1"
+        shift
+        launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
+          defaults "$verb" com.apple.spaces app-bindings "$@"
+      }
+      before="$(bindings read 2> /dev/null || true)"
+      bindings write -dict-add ${lib.escapeShellArgs allDesktopsArgs}
+      if [ "$(bindings read)" != "$before" ]; then
+        killall -u ${username} Dock 2> /dev/null || true
+      fi
     '';
 
     dotfiles.manifest.hotKeys = hotKeys;
+    dotfiles.manifest.allDesktops = config.dotfiles.allDesktops;
   };
 }

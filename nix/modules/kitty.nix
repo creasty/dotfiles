@@ -3,6 +3,9 @@
 {
   homebrew.casks = [ "kitty" ];
 
+  # on every Space, where ;+M (Hammerspoon) brings it
+  dotfiles.allDesktops = [ "net.kovidgoyal.kitty" ];
+
   # kitty starts Neovim through zsh with login(1), which prints the last login unless there's a ~/.hushlogin
   home-manager.users.${username}.home.file.".hushlogin".text = "";
 }
