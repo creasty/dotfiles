@@ -39,10 +39,18 @@ window-padding-y = 6
 # in Hiragino Sans, named after it: otherwise Ghostty asks macOS for kanji only, and takes kana from any font that has
 # them, e.g. a serif one (Mincho).
 font-family = Menlo
-font-family = Hiragino Sans
+font-family = Hiragino Sans W4
 font-size = 12
 adjust-cell-height = 16%
 adjust-underline-position = 2
+
+# as heavy as kitty draws them: Menlo thickened, and Japanese a weight up from macOS's fallback, W3 and W6 in bold
+font-family-bold = Menlo
+font-family-bold = Hiragino Sans W7
+font-family-bold-italic = Menlo
+font-family-bold-italic = Hiragino Sans W7
+font-thicken = true
+font-thicken-strength = 128
 
 #  Colors
 #-----------------------------------------------
