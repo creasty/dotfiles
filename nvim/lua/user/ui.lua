@@ -60,6 +60,17 @@ local function tabpage_get_win(tabnr)
   return safe_tabpage_get_var(tabnr, current_normal_winnr_key, winnr)
 end
 
+--- A terminal's name: `$` and the title its program sets, or the name of the command it runs (Neovim titles it with the
+--- buffer's name, term://{cwd}//{pid}:{cmd}, until the program does).
+local function terminal_name(bufnr)
+  local title = vim.b[bufnr].term_title or ''
+  local path = vim.api.nvim_buf_get_name(bufnr)
+  if title == '' or title == path then
+    title = vim.fn.fnamemodify(path:match('^term://.-//%d+:(%S*)') or '', ':t')
+  end
+  return '$' .. title
+end
+
 local function get_buffer_flags(bufnr)
   local flags = {}
   if vim.bo[bufnr].readonly then
@@ -102,8 +113,7 @@ local tabline = retry_call_wrap(function ()
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
 
-    -- (a terminal by the title its shell sets: the command it runs, or its directory)
-    local name = vim.bo[bufnr].buftype == 'terminal' and vim.b[bufnr].term_title or vim.fn.fnamemodify(path, ':t')
+    local name = vim.bo[bufnr].buftype == 'terminal' and terminal_name(bufnr) or vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or no_name_file
 
     local flags = get_buffer_flags(bufnr)
@@ -120,7 +130,7 @@ local tabline = retry_call_wrap(function ()
       (tabnr == current and '%#TabLineSel#' or (active and '%#TabLineActivity#' or '%#TabLine#')),
       ' ',
       (#flags > 0 and '' .. table.concat(flags, '') or ''),
-      name,
+      escape(name),
       ' %#TabLine#',
     }
     table.insert(line, table.concat(tab, ''))

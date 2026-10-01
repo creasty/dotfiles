@@ -13,9 +13,9 @@
 --
 -- Entering a terminal's window types into it, unless it was left in copy mode.
 --
--- A terminal's tab shows the command it runs, or its shell's directory at the prompt (the title term.zsh sets), and
--- stands out once the terminal prints while another tab is the current one, as tmux's windows did, until the tab is
--- current again. The window title shows the shell's directory (OSC 7, from term.zsh).
+-- A terminal's tab shows `$` and the command it runs ($bun), or the shell's name at the prompt ($zsh), from the title
+-- term.zsh sets; it stands out once the terminal prints while another tab is the current one, as tmux's windows did,
+-- until the tab is current again. The window title shows the shell's directory (OSC 7, from term.zsh).
 
 local M = {}
 
@@ -91,6 +91,8 @@ function M.setup()
     callback = function(ev)
       -- (Neovim takes the numbers and signs off)
       vim.wo[0][0].colorcolumn = ''
+      -- copy mode keeps the cursor where terminal mode had it, which has no 'scrolloff'
+      vim.wo[0][0].scrolloff = 0
       watch_activity(ev.buf)
       if ev.buf == vim.api.nvim_get_current_buf() then
         vim.cmd.startinsert()

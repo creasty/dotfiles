@@ -339,10 +339,10 @@ title() {
 title_precmd() {
   emulate -L zsh
 
-  # Neovim's terminals: the name of the directory for Neovim's tabline, and the directory itself (OSC 7) for its window
-  # title (nvim/lua/user/terminal.lua)
+  # Neovim's terminals: the shell's name for Neovim's tabline, and the directory (OSC 7) for its window title
+  # (nvim/lua/user/terminal.lua)
   if [[ -n "$NVIM" ]]; then
-    title '%1d'
+    title 'zsh'
     print -n "\e]7;file://${HOST}${PWD}\e\\"
     return
   fi
