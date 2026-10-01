@@ -73,7 +73,7 @@ describe('Terminals', function()
     t.eq({ '', 'n' }, { nvim:eval('&buftype'), nvim:mode() })
   end)
 
-  it('Esc goes to the program; <C-y> is copy mode, scrolled a line up with the cursor on its row, until i', function()
+  it('Esc goes to the program; <C-y> is copy mode, with the cursor where it was, until i', function()
     local nvim = t.nvim()
     terminal(nvim, 'seq 200; echo ready; cat -v', 'ready')
     nvim:type('<Esc><CR>')
@@ -82,9 +82,9 @@ describe('Terminals', function()
     end, { message = '^[' })
     t.eq('t', nvim:mode())
 
-    local top, row = nvim:call('line', 'w0'), nvim:call('winline')
+    local view = { nvim:call('line', '.'), nvim:call('line', 'w0') }
     nvim:type('<C-y>')
-    t.eq({ 'nt', top - 1, row }, { nvim:mode(), nvim:call('line', 'w0'), nvim:call('winline') })
+    t.eq({ 'nt', view }, { nvim:mode(), { nvim:call('line', '.'), nvim:call('line', 'w0') } })
 
     -- another window, and back: copy mode stays
     nvim:type('<C-s>s')
