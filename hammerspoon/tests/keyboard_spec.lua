@@ -1,4 +1,4 @@
--- keyboard.lua: what reaches the apps as keys are typed, and what else happens
+-- The config: what reaches the apps as keys are typed, and what else happens
 local fake = require('hs')
 
 local function keys(line) fake.type(line) end
@@ -15,7 +15,7 @@ local function did(expected) expect(table.concat(fake.calls, ', '), expected) en
 
 local function it(name, fn)
   test(name, function()
-    require('keyboard').start()
+    dofile(package.searchpath('init', package.path))
     fn()
   end)
 end
@@ -338,14 +338,14 @@ it('an error in the tap lets the key through, and starts over', function()
 end)
 
 it('starting again replaces the tap', function()
-  require('keyboard').start()
+  keyboard.start()
   expect(#fake.taps, 1)
   keys('s↓ 30ms s↑')
   received('s↓ s↑')
 end)
 
 it('stopped, keys pass', function()
-  require('keyboard').stop()
+  keyboard.stop()
   keys('s↓ s↑ ctrl+p↓')
   received('s↓ s↑ ctrl+p↓')
 end)
@@ -355,7 +355,6 @@ end)
 test('init.lua starts Hammerspoon at login, and the keys', function()
   dofile(package.searchpath('init', package.path))
   expect(fake.autolaunch, true)
-  expect(keyboard, require('keyboard'))
   fake.type('ctrl+p↓ ctrl+p↑')
   received('up↓ up↑')
 end)
