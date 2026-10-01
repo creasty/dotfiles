@@ -394,11 +394,11 @@ augroup _restore_last_pos
     \ endif
 augroup END
 
-" file detect on read / save
+" file detect on read / save (not a terminal's, whose name ends in its command: term://...:/bin/zsh)
 augroup _enhance_ftdetect
   autocmd!
   autocmd BufWritePost,BufReadPost,BufEnter *
-    \ if &filetype ==# '' || exists('b:ftdetect') |
+    \ if &buftype !=# 'terminal' && (&filetype ==# '' || exists('b:ftdetect')) |
       \ unlet! b:ftdetect |
       \ filetype detect |
     \ endif
