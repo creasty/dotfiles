@@ -22,7 +22,6 @@
       "google-japanese-ime" # https://www.google.co.jp/ime/
       "imageoptim" # https://imageoptim.com/mac
       "istat-menus" # https://bjango.com/mac/istatmenus/
-      "kitty" # https://github.com/kovidgoyal/kitty
       "ngrok" # https://ngrok.com/
       "proxyman" # https://proxyman.io/
       "qlmarkdown" # https://github.com/sbarex/QLMarkdown

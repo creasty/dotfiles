@@ -42,7 +42,7 @@ interactive_zsh() {
   pristine "$VERIFY_ZSH" -i +m -c "$1"
 }
 
-# Scripts, and programs that run commands (e.g. kitty starting nvim): a non-interactive shell
+# Scripts, and programs that run commands: a non-interactive shell
 script_zsh() {
   pristine "$VERIFY_ZSH" -c "$1"
 }

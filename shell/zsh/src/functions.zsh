@@ -54,8 +54,7 @@ openx() {
   fi
 }
 
-# Concat ssh configs
+# ssh, giving remote hosts a terminal type they know, as kitty's own (xterm-kitty) is rarely installed there
 ssh() {
-  cat ~/.ssh/config.d/* > ~/.ssh/config
-  [ $# -gt 0 ] && command ssh "$@"
+  TERM=${TERM/xterm-kitty/xterm-256color} command ssh "$@"
 }

@@ -332,18 +332,6 @@ command! -nargs=0 ProfStart
 command! -nargs=0 ProfStop profile stop
 command! -nargs=0 ProfOpen vsplit /tmp/vim-vimscript.log |
 
-" change font size
-command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
-cnoreabbrev <expr> font getcmdtype() ==# ':' && getcmdline() ==# 'font' ? 'Font' : 'font'
-
-function! s:change_font_size(size) abort
-  exec 'set' 'guifont=Menlo:h' . a:size
-
-  if $NVIM_GUI ==# 'kitty'
-    call jobstart(['kitty', '@', 'set-font-size', a:size])
-  endif
-endfunction
-
 " capture Ex command output and print to a buffer
 command! -nargs=+ -complete=command Capture
   \ try |

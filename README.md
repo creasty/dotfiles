@@ -78,8 +78,6 @@ After merging, provision again; Neovim checks out the new plugin commits the nex
 
 - **`bin/`** : Commands, on `PATH`
 - **`config/`** : Configs, linked into `~/.config`
-- **`ghostty-pane/`** : The shell of Ghostty's panes, with Neovim over the pane on <kbd>C-y</kbd> as copy mode
-  - **`tests/`** : End-to-end tests, with tmux as the terminal
 - **`hammerspoon/`** : Key bindings, on Hammerspoon ([README](./hammerspoon/README.md))
   - **`tests/`** : Specs, on a fake of Hammerspoon's API
 - **`home/`** : Dotfiles, linked into `~` with a leading dot

@@ -138,14 +138,6 @@ describe('Command line', function()
         t.eq(filetype, nvim:filetype())
       end)
     end
-
-    it(':font is :Font', function()
-      local nvim = t.nvim()
-      nvim:type(':font 14<CR>')
-      t.eq('Menlo:h14', nvim:eval('&guifont'))
-      nvim:type(':Font<CR>')
-      t.eq('Menlo:h12', nvim:eval('&guifont'), 'defaults to 12')
-    end)
   end)
 
   describe('live preview commands', function()

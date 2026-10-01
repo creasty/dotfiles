@@ -99,7 +99,6 @@ function M.child_env(ctx, extra)
     E2E_CONTEXT = ctx.context_file,
     E2E_TRASH = ctx.trash_dir,
     GHQ_ROOT = ctx.run_dir .. '/ghq',
-    NVIM_GUI = '',
     NVIM_APPNAME = '',
     NVIM = '',
     NVIM_LISTEN_ADDRESS = '',

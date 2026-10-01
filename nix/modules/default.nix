@@ -12,6 +12,7 @@
     ./ssh.nix
     ./macos.nix
     ./hammerspoon.nix
+    ./kitty.nix
     ./ghostty.nix
     ./neovim.nix
     ./vscode.nix

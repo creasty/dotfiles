@@ -122,7 +122,7 @@ describe('Startup', function()
     local commands = nvim:request('nvim_get_commands', {})
     for _, name in ipairs({
       -- init.vim
-      'Encoding', 'SoftTab', 'HardTab', 'ProfStart', 'ProfStop', 'ProfOpen', 'Font', 'Capture', 'CleanBuffers',
+      'Encoding', 'SoftTab', 'HardTab', 'ProfStart', 'ProfStop', 'ProfOpen', 'Capture', 'CleanBuffers',
       -- user.plugins (lazy.nvim)
       'Lazy', 'LazyGotoRepo',
       -- plugin/

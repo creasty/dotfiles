@@ -339,8 +339,8 @@ title() {
 title_precmd() {
   emulate -L zsh
 
-  # Ghostty's tabs show the title: the name of the directory
-  if [[ "$TERM_PROGRAM" == ghostty ]]; then
+  # kitty's title bar: the name of the directory
+  if [[ "$TERM" == xterm-kitty ]]; then
     title '%1d'
     return
   fi
@@ -352,7 +352,7 @@ title_preexec() {
   setopt extended_glob
 
   # ...even while commands run
-  [[ "$TERM_PROGRAM" == ghostty ]] && return
+  [[ "$TERM" == xterm-kitty ]] && return
 
   # cmd name only, or if this is sudo or ssh, the next cmd
   local cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
