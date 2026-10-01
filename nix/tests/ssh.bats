@@ -32,12 +32,3 @@ file_mode() {
   # With the home directory as `~` or expanded
   assert_like "$(grep '^userknownhostsfile ' <<< "$output")" 'userknownhostsfile */.ssh/known_hosts *'
 }
-
-# The ssh function (shell/zsh/src/functions.zsh), with a fake ssh that prints the terminal type it's given
-@test "ssh gives remote hosts xterm-256color in place of kitty's terminal type" {
-  mkdir "$BATS_TEST_TMPDIR/bin"
-  printf '#!/bin/sh\necho "TERM=$TERM"\n' > "$BATS_TEST_TMPDIR/bin/ssh"
-  chmod +x "$BATS_TEST_TMPDIR/bin/ssh"
-  run -0 pristine env TERM=xterm-kitty "$VERIFY_ZSH" -il +m -c "path=($(q "$BATS_TEST_TMPDIR/bin") \$path); ssh example.com"
-  assert_line 'TERM=xterm-256color'
-}

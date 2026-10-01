@@ -166,6 +166,8 @@ function! UserTitleString() abort
     let l:path = substitute(l:path, $HOME, '~', '')
     let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
     return l:path
+  elseif &buftype ==# 'terminal'
+    return get(b:, 'term_title', bufname())
   else
     let l:name = bufname()
     let l:name = (l:name !=# '') ? l:name : &buftype
@@ -291,6 +293,9 @@ nnoremap <C-w><C-s> <C-w><C-n>
 nnoremap <C-w>s     <C-w>n
 nnoremap <C-w><C-c> <Nop>
 nnoremap <C-w>c     <Nop>
+
+" terminals: shells and commands, in windows and tabs too
+lua require('user.terminal').setup()
 
 " command-line shortcuts (:s/ -> :s/\v//g, :ee, :w!!, ...)
 lua require('user.cmdline').setup()

@@ -258,6 +258,15 @@ function M.setup()
   -- json
   hi['@property.json.2'] = { fg = s.purple }
   hi['@property.json.3'] = { fg = s.blue }
+
+  -- terminals' colors: the normal ones (0-7), then the bright ones (8-15)
+  local terminal_colors = {
+    s.gray400, s.red, s.green, s.yellow, s.blue, s.purple, s.aqua, s.gray300,
+    s.gray400, s.bright_red, s.bright_green, s.bright_yellow, s.bright_blue, s.bright_purple, s.bright_aqua, s.gray300,
+  }
+  for i, color in ipairs(terminal_colors) do
+    vim.g['terminal_color_' .. (i - 1)] = color
+  end
 end
 
 return M

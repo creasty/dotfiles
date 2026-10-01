@@ -101,7 +101,8 @@ local tabline = retry_call_wrap(function ()
     local bufnr = vim.api.nvim_win_get_buf(winnr)
     local path = vim.api.nvim_buf_get_name(bufnr)
 
-    local name = vim.fn.fnamemodify(path, ':t')
+    -- (a terminal by the title its program sets: the shell's directory)
+    local name = vim.bo[bufnr].buftype == 'terminal' and vim.b[bufnr].term_title or vim.fn.fnamemodify(path, ':t')
     name = name ~= '' and name or no_name_file
 
     local flags = get_buffer_flags(bufnr)

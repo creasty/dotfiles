@@ -53,8 +53,3 @@ openx() {
     exit 1
   fi
 }
-
-# ssh, giving remote hosts a terminal type they know, as kitty's own (xterm-kitty) is rarely installed there
-ssh() {
-  TERM=${TERM/xterm-kitty/xterm-256color} command ssh "$@"
-}

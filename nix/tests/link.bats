@@ -65,22 +65,13 @@ load helper
   assert_line 'Found 1 spelling error(s) in 1 file(s).'
 }
 
-# The cask puts Ghostty's command-line tool in its app only
-@test "Ghostty accepts the config, and reads it from the dotfiles" {
-  local ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
-  run -0 pristine "$ghostty" +validate-config
-  assert_equal "$output" ''
-  run -0 pristine "$ghostty" +show-config
-  assert_line 'font-family = Menlo'
-}
-
 # kitty has no command to check a config: its loader reports the options it doesn't know, but not values or actions
 @test "kitty accepts the config, and reads it from the dotfiles" {
   assert_same_file ~/.config/kitty/kitty.conf "$DOTFILES_PATH/config/kitty/kitty.conf"
   run -0 pristine /Applications/kitty.app/Contents/MacOS/kitty +runpy \
-    'import sys; from kitty.config import load_config; print(load_config(sys.argv[-1]).scrollback_pager[0])' \
+    'import sys; from kitty.config import load_config; print(load_config(sys.argv[-1]).shell)' \
     ~/.config/kitty/kitty.conf
-  assert_equal "$output" 'nvim'
+  assert_equal "$output" "/bin/zsh -c 'exec nvim'"
 }
 
 # Provisioning installs these commands with Nix, not Homebrew: a path to Homebrew's copy finds nothing

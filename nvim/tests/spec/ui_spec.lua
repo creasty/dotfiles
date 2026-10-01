@@ -1,4 +1,4 @@
--- What the screen shows: tabline, statusline, title, signs, whitespace, kitty's scrollback.
+-- What the screen shows: tabline, statusline, title, signs, whitespace.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -268,46 +268,5 @@ describe('UI', function()
     nvim:set_buffer({ '\tx  ' })
     local row = nvim:screen()[2]
     t.contains(row, '───⏵x··')
-  end)
-
-  describe("kitty's scrollback (copy mode)", function()
-    --- kitty's scrollback_pager: lines with their colors, read from stdin into an unnamed buffer
-    local function scrollback(nvim, n)
-      nvim:cmd('enew')
-      local lines = {}
-      for i = 1, n do
-        lines[i] = ('\27[3%dmline %d\27[0m'):format(i % 7 + 1, i)
-      end
-      lines[n + 1] = '$ ls'
-      nvim:set_buffer(lines)
-    end
-
-    it('has no line numbers, signs, color column, scroll offset or language servers', function()
-      local nvim = t.nvim()
-      nvim:files({ ['.e2e-root'] = '', ['notes.txt'] = { 'x' } })
-      nvim:lua("vim.lsp.config('e2e', { filetypes = { 'text' } })")
-      nvim:edit('notes.txt')
-      probe.wait_lsp(nvim)
-      scrollback(nvim, 3)
-      nvim:lua("require('user.scrollback').open(1, 4, 3)")
-      t.eq(
-        { 0, 'no', '', 0, 'terminal', 0 },
-        nvim:eval(
-          "[&number, &signcolumn, &colorcolumn, &scrolloff, &buftype, luaeval('#vim.lsp.get_clients({ bufnr = 0 })')]"
-        )
-      )
-    end)
-
-    it("keeps kitty's screen where it was, with no tabline, statusline or command line, and the cursor on kitty's", function()
-      local nvim = t.nvim()
-      scrollback(nvim, 60)
-      -- kitty's screen of 40 lines: line 22 at the top, the prompt at the bottom, the cursor on its third column
-      nvim:lua("require('user.scrollback').open(22, 40, 3)")
-      local screen = nvim:screen()
-      t.eq(nvim:eval('&lines'), nvim:eval('winheight(0)'))
-      t.eq('line 22', screen[1])
-      t.eq('$ ls', screen[40])
-      t.eq({ 61, 2 }, nvim:cursor())
-    end)
   end)
 end)

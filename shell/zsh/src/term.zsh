@@ -339,8 +339,8 @@ title() {
 title_precmd() {
   emulate -L zsh
 
-  # kitty's title bar: the name of the directory
-  if [[ "$TERM" == xterm-kitty ]]; then
+  # Neovim's terminals: the name of the directory, for Neovim's tabline and window title
+  if [[ -n "$NVIM" ]]; then
     title '%1d'
     return
   fi
@@ -352,7 +352,7 @@ title_preexec() {
   setopt extended_glob
 
   # ...even while commands run
-  [[ "$TERM" == xterm-kitty ]] && return
+  [[ -n "$NVIM" ]] && return
 
   # cmd name only, or if this is sudo or ssh, the next cmd
   local cmd=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}

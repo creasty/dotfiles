@@ -1,11 +1,11 @@
 #!/usr/bin/env bats
 #
-# kitty starts the shell, and Ghostty Neovim, with login(1) (nix/modules/kitty.nix)
+# kitty starts Neovim through zsh with login(1) (nix/modules/kitty.nix)
 
 load helper
 
 # As `login -f -l -p <user> <command>`, as the user
-@test "kitty's windows start without the last login" {
+@test "kitty starts without the last login" {
   local login=(/usr/bin/perl -e 'alarm shift; exec @ARGV' 60 /usr/bin/script -q /dev/null
     /usr/bin/login -flp "$(id -un)")
   # A login first, for the second to report

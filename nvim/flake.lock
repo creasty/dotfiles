@@ -86,6 +86,23 @@
         "url": "https://github.com/dlyongemallo/diffview-plus.nvim"
       }
     },
+    "flatten-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781880011,
+        "narHash": "sha256-ZixskxLpno0BbzseafBILoFzRzs14HrBeWlRQrqkAS8=",
+        "ref": "refs/heads/main",
+        "rev": "d92ca41e9c330f45c1b854a80c89c8488a9d730c",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/willothy/flatten.nvim"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/willothy/flatten.nvim"
+      }
+    },
     "gitsigns-nvim": {
       "flake": false,
       "locked": {
@@ -332,6 +349,7 @@
         "conform-nvim": "conform-nvim",
         "copilot-lua": "copilot-lua",
         "diffview-plus-nvim": "diffview-plus-nvim",
+        "flatten-nvim": "flatten-nvim",
         "gitsigns-nvim": "gitsigns-nvim",
         "hop-nvim": "hop-nvim",
         "lazy-nvim": "lazy-nvim",
