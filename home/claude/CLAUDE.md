@@ -73,6 +73,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
 - Before opening a PR, rename a random branch (`claude/peaceful-curie-r1d11b`) to say what it changes, and run the checks CI runs over the whole repository.
 - I squash-merge PRs myself; "#N merged" means fetch, rebase what's next onto it, force-push that branch with lease, and carry on.
 - In GitHub bodies, comments and release notes, a newline renders as a line break: write each paragraph on one line, and backtick any `@name` that isn't a mention.
+- In a report to another project, point to our code by its permalink at a commit, never to our PRs.
 
 ## This machine
 
