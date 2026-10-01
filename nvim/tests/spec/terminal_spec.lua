@@ -167,10 +167,14 @@ describe('Terminals', function()
 
   it("titles the window with the shell's directory, from OSC 7", function()
     local nvim = t.nvim()
-    nvim:files({ ['sub/.keep'] = '', ['osc7.sh'] = { [[cd sub && printf '\033]7;file://host%s\033\\' "$PWD"]], 'echo ready', 'cat' } })
+    nvim:cmd('let $HOME = ' .. vim.fn.string(nvim:path('home')))
+    nvim:files({
+      ['home/sub/.keep'] = '',
+      ['osc7.sh'] = { [[cd home/sub && printf '\033]7;file://host%s\033\\' "$PWD"]], 'echo ready', 'cat' },
+    })
     terminal(nvim, 'sh osc7.sh', 'ready')
     nvim:wait_for("exists('b:user_terminal_cwd')")
-    t.eq(nvim:path('sub'), nvim:eval('UserTitleString()'))
+    t.eq('~/sub', nvim:eval('UserTitleString()'))
   end)
 
   it("marks a tab whose terminal prints while another tab is the current one, until it's current again", function()
