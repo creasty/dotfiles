@@ -67,6 +67,7 @@ function M.setup()
   hi.TabLine = { fg = s.comment, bg = s.window }
   hi.TabLineFill = { fg = s.comment, bg = s.window }
   hi.TabLineSel = { fg = s.foreground, bg = s.window }
+  hi.TabLineActivity = { fg = s.gray200, bg = s.window }
   hi.Title = { fg = s.foreground, bold = 1 }
   hi.Visual = { bg = s.selection }
   hi.WarningMsg = { fg = s.red }
@@ -223,6 +224,11 @@ function M.setup()
   hi.SnacksPickerDir = { fg = s.gray150 }
   hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.bright_blue, bg = s.background }
+
+  -- snacks.nvim's other windows (terminals...) on the editor's background, as its picker: the floats' darker one
+  -- (NormalFloat) is for completion's documentation and hovers
+  hi.SnacksNormal = { link = 'Normal' }
+  hi.SnacksNormalNC = { link = 'Normal' }
   -- (user.plugin.picker: the replacement grep's list previews)
   hi.PickerReplaceOld = { fg = s.red, bg = s.dark_red, strikethrough = 1 }
   hi.PickerReplaceNew = { fg = s.green, bg = s.dark_green }
@@ -258,6 +264,15 @@ function M.setup()
   -- json
   hi['@property.json.2'] = { fg = s.purple }
   hi['@property.json.3'] = { fg = s.blue }
+
+  -- terminals' colors: the normal ones (0-7), then the bright ones (8-15)
+  local terminal_colors = {
+    s.gray400, s.red, s.green, s.yellow, s.blue, s.purple, s.aqua, s.gray300,
+    s.gray400, s.bright_red, s.bright_green, s.bright_yellow, s.bright_blue, s.bright_purple, s.bright_aqua, s.gray300,
+  }
+  for i, color in ipairs(terminal_colors) do
+    vim.g['terminal_color_' .. (i - 1)] = color
+  end
 end
 
 return M

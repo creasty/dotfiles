@@ -39,6 +39,16 @@ configured_defaults() {
   assert_none "$problems" 'unexpected shortcuts'
 }
 
+# The apps the switch assigns to All Desktops, among the user's assignments to Spaces
+@test "apps show on every Space" {
+  local bindings id problems=''
+  bindings="$(defaults export com.apple.spaces - | plutil -convert json -o - -)"
+  while read -r id; do
+    [ "$(yq -p json ".[\"app-bindings\"][\"$id\"]" <<< "$bindings")" = AllSpaces ] || problems+="$id"$'\n'
+  done < <(manifest '.allDesktops[]')
+  assert_none "$problems" 'not on every Space'
+}
+
 # On every keyboard: nix-darwin maps it with hidutil
 @test "Caps Lock is Control" {
   run -0 hidutil property --get UserKeyMapping

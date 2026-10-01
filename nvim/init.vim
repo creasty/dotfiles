@@ -141,8 +141,8 @@ set diffopt+=foldcolumn:0
 " transparent pmenu
 set pumblend=10
 
-" change cursor styles
-set guicursor=n-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,v-r-cr-o:hor20-Cursor
+" change cursor styles (a terminal's as Insert mode's)
+set guicursor=n-c-sm:block-Cursor,i-ci-ve-t:ver25-Cursor,v-r-cr-o:hor20-Cursor
 
 " line offset when scrolling
 set scrolloff=5
@@ -159,9 +159,9 @@ set foldlevelstart=20
 set title titlestring=%{UserTitleString()}
 
 function! UserTitleString() abort
-  let l:is_file = empty(&buftype)
-  if l:is_file
-    let l:path = expand('%:p')
+  " a file's path, or a terminal's directory (nvim/lua/user/terminal.lua)
+  if empty(&buftype) || &buftype ==# 'terminal'
+    let l:path = (&buftype ==# 'terminal') ? get(b:, 'user_terminal_cwd', '') : expand('%:p')
     let l:path = (l:path !=# '') ? l:path : getcwd()
     let l:path = substitute(l:path, $HOME, '~', '')
     let l:path = substitute(l:path, '\~/go/src/github.com', '~g', '')
@@ -292,6 +292,9 @@ nnoremap <C-w>s     <C-w>n
 nnoremap <C-w><C-c> <Nop>
 nnoremap <C-w>c     <Nop>
 
+" terminals: shells and commands, in windows and tabs too
+lua require('user.terminal').setup()
+
 " command-line shortcuts (:s/ -> :s/\v//g, :ee, :w!!, ...)
 lua require('user.cmdline').setup()
 
@@ -331,18 +334,6 @@ command! -nargs=0 ProfStart
   \ profile! file *
 command! -nargs=0 ProfStop profile stop
 command! -nargs=0 ProfOpen vsplit /tmp/vim-vimscript.log |
-
-" change font size
-command! -nargs=? Font call <SID>change_font_size(<q-args> ? <q-args> : 12)
-cnoreabbrev <expr> font getcmdtype() ==# ':' && getcmdline() ==# 'font' ? 'Font' : 'font'
-
-function! s:change_font_size(size) abort
-  exec 'set' 'guifont=Menlo:h' . a:size
-
-  if $NVIM_GUI ==# 'kitty'
-    call jobstart(['kitty', '@', 'set-font-size', a:size])
-  endif
-endfunction
 
 " capture Ex command output and print to a buffer
 command! -nargs=+ -complete=command Capture
@@ -403,11 +394,11 @@ augroup _restore_last_pos
     \ endif
 augroup END
 
-" file detect on read / save
+" file detect on read / save (not a terminal's, whose name ends in its command: term://...:/bin/zsh)
 augroup _enhance_ftdetect
   autocmd!
   autocmd BufWritePost,BufReadPost,BufEnter *
-    \ if &filetype ==# '' || exists('b:ftdetect') |
+    \ if &buftype !=# 'terminal' && (&filetype ==# '' || exists('b:ftdetect')) |
       \ unlet! b:ftdetect |
       \ filetype detect |
     \ endif

@@ -353,6 +353,20 @@ M.spec = {
       vim.keymap.set('n', '<Leader>r', '<Plug>(quickrun)', { remap = true })
     end,
   },
+
+  --  Terminal
+  -----------------------------------------------
+  { -- opens the files that a program in a terminal (user/terminal.lua) opens with nvim in this Neovim, rather than
+    -- in another inside the terminal; git commit waits for its message's buffer to close
+    'willothy/flatten.nvim',
+    -- (before the other plugins, to hand the files over sooner)
+    lazy = false,
+    priority = 1001,
+    opts = {
+      -- in another window, keeping the terminal's
+      window = { open = 'smart' },
+    },
+  },
 }
 
 --- lazy.nvim's options (nvim/tests/plugins.lua reads them too).

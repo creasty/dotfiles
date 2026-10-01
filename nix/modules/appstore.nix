@@ -25,6 +25,9 @@ in
     # brew bundle runs the first mas on its PATH, which starts with Homebrew's, so keep that one current
     homebrew.brews = [ "mas" ];
 
+    # Bear on every Space, where ;+N (Hammerspoon) brings it
+    dotfiles.allDesktops = [ "net.shinyfrog.bear" ];
+
     dotfiles.manifest.appStore = {
       install = config.dotfiles.appStore;
       # As `<id> <name>` lines

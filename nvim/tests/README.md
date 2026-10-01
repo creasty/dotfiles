@@ -84,7 +84,8 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys, short screens | **snacks.nvim** |
 | `picker_checklist` | every source × reopen as left, own state, scroll, `<C-l>`, `<C-r>` (below) | **snacks.nvim** |
 | `integration` | no pairs/completion/AI in picker prompts and block inserts | `user/intelligence.lua` |
-| `ui` | tabline, statusline, title, signs (marks, git), whitespace, Ghostty's screen (copy mode) | `user/ui.lua`, gitsigns.nvim, `ftplugin/ghosttyscreen.vim` |
+| `ui` | tabline, statusline, title, signs (marks, git), whitespace | `user/ui.lua`, gitsigns.nvim |
+| `terminal` | terminals' keys (`<C-s>`, `<C-y>`), `<C-/>`, `<Space>t`, titles, files opened from them | `user/terminal.lua`, **snacks.nvim**, **flatten.nvim** |
 | `files`, `navigation`, `text_ops`, `treesitter`, `filetypes`, `templates` | everything else | various |
 
 The files named above are under `nvim/lua/`; `user/intelligence.lua` is where

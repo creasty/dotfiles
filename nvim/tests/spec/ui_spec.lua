@@ -1,4 +1,4 @@
--- What the screen shows: tabline, statusline, title, signs, whitespace, Ghostty's screen.
+-- What the screen shows: tabline, statusline, title, signs, whitespace.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -268,25 +268,5 @@ describe('UI', function()
     nvim:set_buffer({ '\tx  ' })
     local row = nvim:screen()[2]
     t.contains(row, '───⏵x··')
-  end)
-
-  it("Ghostty's screen (copy mode) has no line numbers, signs, color column or language servers", function()
-    local nvim = t.nvim()
-    nvim:files({ ['.e2e-root'] = '', ['notes.txt'] = { 'x' }, ['screen.txt'] = { '$ ls' } })
-    nvim:lua("vim.lsp.config('e2e', { filetypes = { 'text' } })")
-    nvim:edit('notes.txt')
-    probe.wait_lsp(nvim)
-    nvim:edit('screen.txt')
-    t.eq(
-      { 0, 'no', '', 0 },
-      nvim:eval("[&number, &signcolumn, &colorcolumn, luaeval('#vim.lsp.get_clients({ bufnr = 0 })')]")
-    )
-  end)
-
-  it("Ghostty's screen (copy mode) fills the terminal, with no tabline, statusline or command line", function()
-    local nvim = t.nvim()
-    nvim:edit('screen.txt', { '$ ls' })
-    t.eq(nvim:eval('&lines'), nvim:eval('winheight(0)'))
-    t.eq('$ ls', nvim:screen()[1])
   end)
 end)
