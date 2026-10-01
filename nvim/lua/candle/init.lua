@@ -223,6 +223,11 @@ function M.setup()
   hi.SnacksPickerDir = { fg = s.gray150 }
   hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.bright_blue, bg = s.background }
+
+  -- snacks.nvim's other windows (terminals...) on the editor's background, as its picker: the floats' darker one
+  -- (NormalFloat) is for completion's documentation and hovers
+  hi.SnacksNormal = { link = 'Normal' }
+  hi.SnacksNormalNC = { link = 'Normal' }
   -- (user.plugin.picker: the replacement grep's list previews)
   hi.PickerReplaceOld = { fg = s.red, bg = s.dark_red, strikethrough = 1 }
   hi.PickerReplaceNew = { fg = s.green, bg = s.dark_green }

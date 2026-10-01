@@ -8,8 +8,7 @@
 --
 -- In a terminal, the keys go to the program (Esc too), but:
 --
---   <C-s>       the window keys of Normal mode (<C-s> v, <C-s><C-n>...); <C-s><C-s> sends C-s to the program, and
---               <C-s>p pastes
+--   <C-s>       the window keys of Normal mode (<C-s> v, <C-s><C-n>...); <C-s><C-s> sends C-s to the program
 --   <C-y>       copy mode: Normal mode, scrolled a line up, to search and yank; i types again
 --
 -- Entering a terminal's window types into it, unless it was left in copy mode.
@@ -45,7 +44,6 @@ function M.setup()
 
   vim.keymap.set('t', '<C-s>', [[<C-\><C-n><C-s>]], { remap = true, desc = 'Window keys' })
   vim.keymap.set('t', '<C-s><C-s>', '<C-s>', { desc = 'C-s to the program' })
-  vim.keymap.set('t', '<C-s>p', [[<C-\><C-n>pi]], { desc = 'Paste' })
   vim.keymap.set('t', '<C-y>', function()
     vim.b[copy_mode_key] = true
     return [[<C-\><C-n><C-y>]]

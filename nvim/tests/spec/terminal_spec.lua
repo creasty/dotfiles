@@ -63,17 +63,6 @@ describe('Terminals', function()
     t.eq({ '', 'n' }, { nvim:eval('&buftype'), nvim:mode() })
   end)
 
-  it('<C-s>p pastes into the program', function()
-    local nvim = t.nvim()
-    terminal(nvim, 'echo ready; cat', 'ready')
-    nvim:lua("vim.fn.setreg('*', 'pasted')")
-    nvim:type('<C-s>p')
-    nvim:wait_for(function()
-      return text(nvim):find('pasted', 1, true)
-    end, { message = 'pasted' })
-    t.eq('t', nvim:mode())
-  end)
-
   it('Esc goes to the program; <C-y> is copy mode, scrolled a line up, until i', function()
     local nvim = t.nvim()
     terminal(nvim, 'seq 200; echo ready; cat -v', 'ready')
@@ -108,6 +97,14 @@ describe('Terminals', function()
     nvim:wait_mode('t')
     local buf = nvim:call('bufnr')
     t.eq({ 2, 'terminal' }, { window_count(nvim), nvim:eval('&buftype') })
+    -- on the editor's background (Normal has none), not the floats' darker one
+    t.eq(
+      { 'SnacksNormal', 'none' },
+      nvim:lua([[
+        local group = vim.wo.winhighlight:match('Normal:([%w_]+)')
+        return { group, vim.api.nvim_get_hl(0, { name = group, link = false }).bg or 'none' }
+      ]])
+    )
 
     nvim:type('<C-/>')
     t.eq(1, window_count(nvim))
