@@ -5,8 +5,9 @@
 --   gR gD gT   LSP locations (user.plugin.lsp); gll reopens them
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
--- as long as you stay in the directory of the previous picker; the results
--- are gathered again only with <C-l> (refresh) or <C-r> (reload). Grep and
+-- as long as you stay in the directory of the previous picker, but a grep
+-- that left no results asks for a new pattern; the results are gathered
+-- again only with <C-l> (refresh) or <C-r> (reload). Grep and
 -- the locations open in the list: i narrows it in the prompt, and <C-c> or
 -- <Esc> goes back to it.
 --
@@ -736,7 +737,7 @@ end
 --- <Space>/ (resume) and :Search {dir}: grep, with the results focused. A
 --- new search starts with every file, and no replacement.
 function M.search(dir, resume)
-  resume = resume and can_resume()
+  resume = resume and can_resume() and not (cache.rg and #cache.rg == 0)
   if not resume then
     last_cwd = vim.fn.getcwd()
   end

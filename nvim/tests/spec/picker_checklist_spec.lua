@@ -21,7 +21,8 @@ describe('Picker', function()
   -- or list focus), each source keeps its own state, a long list scrolls
   -- with the up/down keys, and while it is open <C-l> refreshes and <C-r>
   -- reloads. Reopening resumes only when the previous picker call happened
-  -- in the same directory (can_resume() in user.plugin.picker).
+  -- in the same directory (can_resume() in user.plugin.picker), and grep
+  -- only when its search left results.
   describe('every source', function()
     local FILES = {
       ['.git/'] = true,
@@ -472,6 +473,39 @@ describe('Picker', function()
         t.eq('', nvim:call('getcmdprompt'), 'no new pattern is asked for')
         probe.wait_picker(nvim, function(p)
           return vim.deep_equal(p.items, before.items) and p.current == before.current
+        end)
+      end)
+
+      it('a search that found nothing asks for a new pattern when reopened', function()
+        local nvim = project()
+        nvim:type('<Space>/')
+        nvim:type('haystack<CR>')
+        nvim:wait_for(function()
+          return nvim:messages():find('No results', 1, true)
+        end, { message = 'the picker to report no results' })
+        probe.wait_picker_closed(nvim)
+        nvim:type('<Space>/')
+        t.eq('Search: ', nvim:call('getcmdprompt'))
+        nvim:type('needle 2<CR>')
+        probe.wait_picker(nvim, function(p)
+          return vim.deep_equal(p.items, { 'b.txt 1:0 |needle 2' })
+        end)
+      end)
+
+      it('<C-r> to a pattern that finds nothing: reopening asks for a new pattern', function()
+        local nvim = project()
+        grep_state(nvim)
+        nvim:type('<C-r>')
+        nvim:type('<C-u>haystack<CR>')
+        probe.wait_picker(nvim, function(p)
+          return #p.items == 0
+        end)
+        close(nvim, 'q')
+        nvim:type('<Space>/')
+        t.eq('Search: ', nvim:call('getcmdprompt'))
+        nvim:type('needle 2<CR>')
+        probe.wait_picker(nvim, function(p)
+          return vim.deep_equal(p.items, { 'b.txt 1:0 |needle 2' })
         end)
       end)
     end)
