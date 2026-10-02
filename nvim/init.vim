@@ -416,6 +416,17 @@ function! s:mkdir(dir) abort
   endif
 endfunction
 
+" once the last UI is gone (its window closed), save the ShaDa file with any error silenced, and not again on exit:
+" an error on exit waits for Enter where no one can press it, and keeps Neovim running (CLAUDE.md)
+augroup _exit_without_ui
+  autocmd!
+  autocmd UILeave *
+    \ if v:exiting is v:null && empty(nvim_list_uis()) |
+      \ silent! wshada |
+      \ set shada= |
+    \ endif
+augroup END
+
 "=== Plugins
 "==============================================================================================
 " (before the tree-sitter plugins load)
