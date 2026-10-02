@@ -79,6 +79,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
 - It's shared: several sessions and worktrees run at once.
   Stop only what you started, through its handle (TaskStop, preview_stop) or a PID you captured, never by name, pattern or port; when a port is taken, use another.
   Stop your servers when you're done unless I'm looking at them.
+- Never load it to make a race or a flaky test show up (CPU-hogging processes, parallel loops of a test): run such a load on CI, or in an isolated Docker container with capped CPUs and memory.
 - I work in the desktop app, locally and in the cloud: push before handing work to a cloud session.
 - Give me times in JST.
 - Keep secrets out of repositories, URLs, logs and messages; read them at the point of use.
