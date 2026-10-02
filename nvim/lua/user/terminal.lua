@@ -24,6 +24,8 @@ local M = {}
 local copy_mode_key = 'user_terminal_copy_mode'
 -- Set once a terminal prints while not in the current tab, until it is (nvim/lua/user/ui.lua's tabline shows it)
 local activity_key = 'user_terminal_activity'
+-- What a terminal showed as its tab was left, to tell its printing from a resize, which rewrites its lines as they were
+local shown_key = 'user_terminal_shown'
 -- The shell's directory, from OSC 7 (UserTitleString in nvim/init.vim shows it)
 local cwd_key = 'user_terminal_cwd'
 
@@ -42,14 +44,29 @@ local function in_current_tab(buf)
   return false
 end
 
+--- A terminal's line count and last lines, its screen among them
+local function shown(buf)
+  local count = vim.api.nvim_buf_line_count(buf)
+  return { count, vim.api.nvim_buf_get_lines(buf, math.max(count - vim.o.lines, 0), -1, false) }
+end
+
 local function watch_activity(buf)
+  local pending = false
   vim.api.nvim_buf_attach(buf, false, {
     on_lines = function(_, b)
-      if vim.b[b][activity_key] or in_current_tab(b) then
+      if pending or vim.b[b][activity_key] or in_current_tab(b) then
         return
       end
-      vim.b[b][activity_key] = true
-      vim.schedule(vim.cmd.redrawtabline)
+      pending = true
+      -- (after the refresh: a resize moves lines between the scrollback and the screen one change at a time)
+      vim.schedule(function()
+        pending = false
+        if vim.api.nvim_buf_is_valid(b) and not in_current_tab(b)
+          and not vim.deep_equal(shown(b), vim.b[b][shown_key]) then
+          vim.b[b][activity_key] = true
+          vim.cmd.redrawtabline()
+        end
+      end)
     end,
   })
 end
@@ -103,6 +120,17 @@ function M.setup()
     callback = function()
       for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         vim.b[vim.api.nvim_win_get_buf(win)][activity_key] = nil
+      end
+    end,
+  })
+  vim.api.nvim_create_autocmd('TabLeave', {
+    group = group,
+    callback = function()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].buftype == 'terminal' then
+          vim.b[buf][shown_key] = shown(buf)
+        end
       end
     end,
   })
