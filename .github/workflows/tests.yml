@@ -21,6 +21,11 @@ on:
 permissions:
   contents: read
 
+# A new push cancels the run on its pull request; on master, each run has its own group
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/master' && github.run_id || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   hammerspoon:
     runs-on: ubuntu-latest
