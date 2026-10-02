@@ -36,16 +36,12 @@ it('terminals keep Ctrl-C, still switching to English, and the Emacs keys', func
   end
 end)
 
-it('VS Code keeps Ctrl-D, H, A and E', function()
-  fake.front = 'com.microsoft.VSCode'
-  keys('ctrl+d↓ ctrl+d↑ ctrl+h↓ ctrl+h↑ ctrl+a↓ ctrl+a↑ ctrl+e↓ ctrl+e↑ ctrl+p↓ ctrl+p↑ ctrl+c↓ ctrl+c↑')
-  received('ctrl+d↓ ctrl+d↑ ctrl+h↓ ctrl+h↑ ctrl+a↓ ctrl+a↑ ctrl+e↓ ctrl+e↑ up↓ up↑ eisu↓ eisu↑ escape↓ escape↑')
-end)
-
-it('Emacs keeps the Emacs keys, but Ctrl-C is Escape', function()
-  fake.front = 'org.gnu.Emacs'
-  keys('ctrl+p↓ ctrl+p↑ ctrl+c↓ ctrl+c↑')
-  received('ctrl+p↓ ctrl+p↑ eisu↓ eisu↑ escape↓ escape↑')
+it('Emacs and VS Code keep the Emacs keys, but Ctrl-C is Escape', function()
+  for _, app in ipairs({ 'org.gnu.Emacs', 'com.microsoft.VSCode' }) do
+    fake.front, fake.received = app, {}
+    keys('ctrl+p↓ ctrl+p↑ ctrl+j↓ ctrl+j↑ ctrl+a↓ ctrl+a↑ ctrl+c↓ ctrl+c↑')
+    received('ctrl+p↓ ctrl+p↑ ctrl+j↓ ctrl+j↑ ctrl+a↓ ctrl+a↑ eisu↓ eisu↑ escape↓ escape↑')
+  end
 end)
 
 --  Switch input source with Escape key

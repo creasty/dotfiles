@@ -26,11 +26,6 @@ local escape_key_disabled_apps = set({
   'com.qvacua.VimR',
 })
 
--- Apps that keep their own Ctrl-D, Ctrl-H, Ctrl-A and Ctrl-E
-local advanced_cursor_keys_disabled_apps = set({
-  'com.microsoft.VSCode',
-})
-
 -- Apps that keep their own Emacs keys
 local all_cursor_keys_disabled_apps = set({
   -- Eclipse
@@ -86,6 +81,9 @@ local all_cursor_keys_disabled_apps = set({
   'com.parallels.desktop.console',
   'org.virtualbox.app.VirtualBoxVM',
 
+  -- VS Code
+  'com.microsoft.VSCode',
+
   -- X11
   'org.x.X11',
   'com.apple.x11',
@@ -93,18 +91,17 @@ local all_cursor_keys_disabled_apps = set({
   'org.macports.X11',
 })
 
--- Ctrl-<key> to key: `mods` added to it; `shift`: Shift-Ctrl-<key> too, adding Shift; `advanced`: not for the apps
--- that keep the advanced ones
+-- Ctrl-<key> to key: `mods` added to it; `shift`: Shift-Ctrl-<key> too, adding Shift
 local emacs_keys = {
-  [key.d] = { to = key.forward_delete, advanced = true },
-  [key.h] = { to = key.backspace, advanced = true },
+  [key.d] = { to = key.forward_delete },
+  [key.h] = { to = key.backspace },
   [key.j] = { to = key.enter },
   [key.p] = { to = key.up, shift = true },
   [key.n] = { to = key.down, shift = true },
   [key.b] = { to = key.left, shift = true },
   [key.f] = { to = key.right, shift = true },
-  [key.a] = { to = key.left, mods = { 'cmd' }, shift = true, advanced = true }, -- beginning of line
-  [key.e] = { to = key.right, mods = { 'cmd' }, shift = true, advanced = true }, -- end of line
+  [key.a] = { to = key.left, mods = { 'cmd' }, shift = true }, -- beginning of line
+  [key.e] = { to = key.right, mods = { 'cmd' }, shift = true }, -- end of line
 }
 
 local function eisu() events.stroke(key.eisu) end
@@ -140,9 +137,7 @@ function M.remap(code, is_down, is_repeat, flags)
 
   local emacs = emacs_keys[code]
   if not emacs or (flags.shift and not emacs.shift) then return false end
-  local app = frontmost_app()
-  if all_cursor_keys_disabled_apps[app] then return false end
-  if emacs.advanced and advanced_cursor_keys_disabled_apps[app] then return false end
+  if all_cursor_keys_disabled_apps[frontmost_app()] then return false end
   local mods = { table.unpack(emacs.mods or {}) }
   if flags.shift then table.insert(mods, 'shift') end
   events.emit(events.key_event(emacs.to, is_down, mods))
