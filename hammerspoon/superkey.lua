@@ -10,39 +10,60 @@
 -- * A key pressed with modifiers ends it, and types what it held back first.
 --
 -- The apps get neither the super key nor the keys a chord took, their releases and repeats included.
+local key = require('keycodes')
+
 local M = {}
 M.__index = M
 
+-- Keyboard's timings, in seconds
+local rollover, delay = 0.05, 0.15
+
+-- A chord of key codes as a string, the same whatever their order
+local function chord_id(codes)
+  table.sort(codes)
+  return table.concat(codes, ',')
+end
+
 -- opts:
---   keys      the super keys, as a set of key codes
---   perform   function(key, chord), running the shortcut of a chord (a set of key codes) held with a super key
---   finish    function(key), called when a super key stops acting after it performed
---   now       function() -> seconds
---   after     function(seconds, fn) -> timer, which :stop() cancels
---   rollover  seconds (default: Keyboard's 50 ms)
---   delay     seconds (default: Keyboard's 150 ms)
+--   shortcuts  { ['S+D+F'] = action, ... }: the actions, by their keys' names in keycodes.lua, the super key first
+--   before     function(action), called before a shortcut's action runs
+--   finish     function(key), called when a super key stops acting after it performed
+--   log        function(message), given an action's error
+--   now        function() -> seconds
+--   after      function(seconds, fn) -> timer, which :stop() cancels
 function M.new(opts)
+  -- [super key][chord id] = action
+  local actions = {}
+  for keys, action in pairs(opts.shortcuts) do
+    local codes = {}
+    for name in keys:gmatch('[^+]+') do
+      table.insert(codes, key[name:lower()] or error('no key ' .. name))
+    end
+    local super = table.remove(codes, 1)
+    actions[super] = actions[super] or {}
+    actions[super][chord_id(codes)] = action
+  end
   local self = setmetatable({
-    keys = opts.keys,
-    perform = opts.perform,
-    finish = opts.finish or function() end,
+    actions = actions,
+    before = opts.before,
+    finish = opts.finish,
+    log = opts.log,
     now = opts.now,
     after = opts.after,
-    rollover = opts.rollover or 0.05,
-    delay = opts.delay or 0.15,
     taken = {}, -- the keys chords took, until their release
   }, M)
   self:reset()
   return self
 end
 
--- Forgets the super key held. The states:
+-- Forgets the super key held, finishing it if it acts. The states:
 --   idle     none held
 --   held     held, with no other key yet
 --   pending  keys pressed with it, their chord waiting for `delay`
 --   active   chords act as their keys go down
 --   off      acting no more until its release: typing rolled over it, or a key with modifiers ended it
 function M:reset()
+  if self.state == 'active' then self.finish(self.key) end
   if self.timer then self.timer:stop() end
   self.timer = nil
   self.state = 'idle'
@@ -94,13 +115,24 @@ function M:untake(code)
   end
 end
 
+-- Runs the action of the chord (a set of key codes) held with the super key, if it has one
+function M:perform(chord)
+  local codes = {}
+  for code in pairs(chord) do table.insert(codes, code) end
+  local action = self.actions[self.key][chord_id(codes)]
+  if not action then return end
+  self.before(action)
+  local ok, err = pcall(action)
+  if not ok then self.log(err) end
+end
+
 function M:schedule()
   if self.timer then self.timer:stop() end
-  self.timer = self.after(self.delay, function()
+  self.timer = self.after(delay, function()
     self.timer = nil
     self.state = 'active'
     self.typed = {}
-    self.perform(self.key, self.chord)
+    self:perform(self.chord)
   end)
 end
 
@@ -115,14 +147,14 @@ function M:handle(code, is_down, is_repeat, plain)
       if not is_down then
         self:untake(code)
       elseif self.state == 'active' and self.pressed[code] then
-        self.perform(self.key, copy(self.pressed))
+        self:perform(copy(self.pressed))
       end
       return true
     end
   end
 
   if self.state == 'idle' then
-    if is_down and not is_repeat and plain and self.keys[code] then
+    if is_down and not is_repeat and plain and self.actions[code] then
       self.state, self.key, self.down_at = 'held', code, self.now()
       return true
     end
@@ -145,7 +177,7 @@ function M:handle(code, is_down, is_repeat, plain)
   if is_repeat then return true end
 
   if self.state == 'held' then
-    if self.now() - self.down_at < self.rollover then return false, self:stop() end
+    if self.now() - self.down_at < rollover then return false, self:stop() end
     self.state = 'pending'
   end
 
@@ -156,7 +188,7 @@ function M:handle(code, is_down, is_repeat, plain)
     self.chord = copy(self.pressed)
     self:schedule()
   else
-    self.perform(self.key, copy(self.pressed))
+    self:perform(copy(self.pressed))
   end
   return true
 end

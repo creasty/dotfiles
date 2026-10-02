@@ -50,38 +50,11 @@ local shortcuts = {
   [';+N'] = function() apps.toggle('net.shinyfrog.bear') end,
 }
 
--- A chord of key codes as a string, the same whatever their order
-local function chord_id(codes)
-  table.sort(codes)
-  return table.concat(codes, ',')
-end
-
--- [super key][chord id] = action
-local actions = {}
-for keys, action in pairs(shortcuts) do
-  local codes = {}
-  for name in keys:gmatch('[^+]+') do
-    table.insert(codes, key[name:lower()] or error('no key ' .. name))
-  end
-  local super = table.remove(codes, 1)
-  actions[super] = actions[super] or {}
-  actions[super][chord_id(codes)] = action
-end
-
-local function perform(super, chord)
-  local codes = {}
-  for code in pairs(chord) do table.insert(codes, code) end
-  local action = actions[super][chord_id(codes)]
-  if not action then return end
-  if action ~= switcher.next and action ~= switcher.previous then switcher.close() end
-  local ok, err = pcall(action)
-  if not ok then log.e(err) end
-end
-
 local supers = superkey.new({
-  keys = actions,
-  perform = perform,
+  shortcuts = shortcuts,
+  before = switcher.before,
   finish = switcher.close,
+  log = log.e,
   now = function() return hs.timer.absoluteTime() / 1e9 end,
   after = hs.timer.doAfter,
 })
@@ -113,7 +86,6 @@ local function on_event(event)
   -- Hammerspoon drops the event of a failing callback: let it through instead, and start over
   log.e(swallow)
   supers:reset()
-  switcher.close()
   return false, ahead
 end
 
@@ -130,7 +102,6 @@ function keyboard.stop()
   if keyboard.tap then keyboard.tap:stop() end
   keyboard.tap = nil
   supers:reset()
-  switcher.close()
 end
 
 keyboard.start()
