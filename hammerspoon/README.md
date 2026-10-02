@@ -1,6 +1,6 @@
 # Hammerspoon
 
-[creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `keyboard.lua`, with the super keys in `superkey.lua`.
+[creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `init.lua` hands each key to the super keys (`superkey.lua`), then to Emacs mode (`emacs.lua`).
 Its mouse keys and its guard on <kbd>Cmd-Q</kbd> are left out.
 
 `nix/modules/hammerspoon.nix` installs Hammerspoon, and links this directory as `~/.hammerspoon`.
@@ -58,7 +58,7 @@ The application switcher stays open while <kbd>S</kbd> is held, as it does while
 | <kbd>Ctrl-A</kbd> | Beginning of line | YES |
 | <kbd>Ctrl-E</kbd> | End of line | YES |
 
-Terminals, Vim, Emacs, Eclipse, virtual machines, remote desktops and X11 keep their own <kbd>Ctrl</kbd> keys, and VS Code its <kbd>Ctrl-D</kbd>, <kbd>Ctrl-H</kbd>, <kbd>Ctrl-A</kbd> and <kbd>Ctrl-E</kbd> (`keyboard.lua` lists the apps).
+Terminals, Vim, Emacs, Eclipse, virtual machines, remote desktops and X11 keep their own <kbd>Ctrl</kbd> keys, and VS Code its <kbd>Ctrl-D</kbd>, <kbd>Ctrl-H</kbd>, <kbd>Ctrl-A</kbd> and <kbd>Ctrl-E</kbd> (`emacs.lua` lists the apps).
 <kbd>Ctrl-C</kbd> stays <kbd>Ctrl-C</kbd> only in terminals and Neovim's GUIs.
 
 ### Word motions

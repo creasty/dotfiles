@@ -37,7 +37,7 @@ Remove it once endwise takes lists: the endwise tests in `nvim/tests/spec/treesi
 kitty takes each window it opens off every Space, the first at launch included, whatever Dock > Options > Assign To says ([kitty#10581](https://github.com/kovidgoyal/kitty/issues/10581), seen with 0.49.1 and 0.49.2).
 The likely cause is `_glfwPlatformShowWindow` in its `glfw/cocoa_window.m`, which resets the window's collection behavior as it shows it (from 0.43.0) and adds it to the active Space (from 0.48.0), a workaround for its quick-access terminal (kitty#8740).
 Hammerspoon can't put a window back: the private calls `hs.spaces.moveWindowToSpace` makes fail on macOS 26, and restarting the Dock doesn't either.
-So `bring_kitty_windows` (`hammerspoon/keyboard.lua`) has kitty hide and show its windows on other Spaces as ;+M brings it, through its remote control (`allow_remote_control` and `listen_on` in `config/kitty/kitty.conf`), which adds them to the current Space.
+So as ;+M brings kitty, `hammerspoon/kitty.lua` (called from `hammerspoon/apps.lua`) has it hide and show its windows on other Spaces through its remote control (`allow_remote_control` and `listen_on` in `config/kitty/kitty.conf`), which adds them to the current Space.
 Remove both once kitty#10581 is fixed and a new window stays on every Space.
 
 ## Homebrew tap trap

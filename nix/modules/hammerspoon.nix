@@ -7,8 +7,8 @@
   # As a whole, so that new files apply without a switch
   home-manager.users.${username}.dotfiles.link.".hammerspoon" = "hammerspoon";
 
-  # The shortcuts S+H and S+L stroke (keyboard.lua): no character (65535), the key code, and the modifier flags, with
-  # the Fn flag (8388608) that arrow keys carry besides Ctrl's (262144)
+  # The shortcuts S+H and S+L stroke (hammerspoon/init.lua): no character (65535), the key code, and the modifier
+  # flags, with the Fn flag (8388608) that arrow keys carry besides Ctrl's (262144)
   dotfiles.hotKeys = {
     # Mission Control > Move left a space: Ctrl-LeftArrow
     "79" = [
