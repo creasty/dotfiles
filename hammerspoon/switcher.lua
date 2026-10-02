@@ -35,9 +35,4 @@ function M.close()
   switching = false
 end
 
--- Closes the switcher before another shortcut acts: S+J and S+K go on through it
-function M.before(action)
-  if action ~= M.next and action ~= M.previous then M.close() end
-end
-
 return M

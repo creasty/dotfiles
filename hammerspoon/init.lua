@@ -52,7 +52,10 @@ local shortcuts = {
 
 local supers = superkey.new({
   shortcuts = shortcuts,
-  before = switcher.before,
+  -- The application switcher, which S+J and S+K go through, closes as another shortcut acts or S stops
+  before = function(action)
+    if action ~= switcher.next and action ~= switcher.previous then switcher.close() end
+  end,
   finish = switcher.close,
   log = log.e,
   now = function() return hs.timer.absoluteTime() / 1e9 end,
