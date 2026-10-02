@@ -1,6 +1,6 @@
 -- Hammerspoon's config (https://www.hammerspoon.org), linked as ~/.hammerspoon: the key bindings of creasty/Keyboard
--- (https://github.com/creasty/Keyboard), all but its mouse keys and its guard on Cmd-Q. README.md lists them, with what
--- they need from System Settings.
+-- (https://github.com/creasty/Keyboard), all but its mouse keys. README.md lists them, with what they need from System
+-- Settings.
 
 -- Starts at login
 if not hs.autoLaunch() then hs.autoLaunch(true) end
@@ -11,6 +11,7 @@ local events = require('events')
 local switcher = require('switcher')
 local windows = require('windows')
 local apps = require('apps')
+local quit = require('quit')
 local emacs = require('emacs')
 
 local log = hs.logger.new('keyboard', 'warning')
@@ -77,6 +78,7 @@ local function handle(event)
   for _, k in ipairs(keys or {}) do
     events.emit(events.key_event(k[1], k[2]))
   end
+  if not swallow then swallow = quit.guard(code, is_down, is_repeat, flags) end
   if not swallow then swallow = emacs.remap(code, is_down, is_repeat, flags) end
   return swallow
 end

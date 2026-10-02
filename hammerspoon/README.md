@@ -1,7 +1,7 @@
 # Hammerspoon
 
-[creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `init.lua` hands each key to the super keys (`superkey.lua`), then to Emacs mode (`emacs.lua`).
-Its mouse keys and its guard on <kbd>Cmd-Q</kbd> are left out.
+[creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `init.lua` hands each key to the super keys (`superkey.lua`), then to the guard on <kbd>Cmd-Q</kbd> (`quit.lua`) and Emacs mode (`emacs.lua`).
+Its mouse keys are left out.
 
 `nix/modules/hammerspoon.nix` installs Hammerspoon, and links this directory as `~/.hammerspoon`.
 Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibility, and reload its config (its menu bar icon > Reload Config).
@@ -97,6 +97,18 @@ kitty takes the windows it opens off every space, whatever Dock > Options > Assi
 | <kbd>;+M</kbd> | kitty | `net.kovidgoyal.kitty` |
 | <kbd>;+T</kbd> | Things | `com.culturedcode.ThingsMac` |
 | <kbd>;+N</kbd> | Bear | `net.shinyfrog.bear` |
+
+### Quit application
+
+An app quits on a second <kbd>Cmd-Q</kbd>, not on one pressed by mistake.
+
+| Key | Description |
+|:---|:---|
+| <kbd>Cmd-Q</kbd> | Nothing |
+| <kbd>Cmd-Q, Cmd-Q</kbd> | Quits the app, the second within 300 ms of the first |
+
+Held down, <kbd>Cmd-Q</kbd> doesn't repeat: its repeats would quit the app that comes to the front next.
+Chrome guards <kbd>Cmd-Q</kbd> itself (Chrome > Warn Before Quitting, on by default), so it gets it as it is: it quits on <kbd>Cmd-Q</kbd> held for half a second, or pressed again within a second.
 
 ## Super keys
 
