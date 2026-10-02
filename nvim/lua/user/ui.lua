@@ -277,7 +277,7 @@ local function setup()
     augroup user_ui_statusline
       autocmd!
       autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * lua require'user.ui'.update_filereadable()
-      autocmd WinLeave,BufLeave * lua vim.wo.statusline=require'user.ui'.statusline()
+      " (this statusline in place of a window's own: quickfix's, NERDTree's)
       autocmd BufWinEnter,WinEnter,BufEnter * set statusline<
       autocmd VimResized,DiagnosticChanged * redrawstatus
       autocmd User GitSignsUpdate redrawstatus
