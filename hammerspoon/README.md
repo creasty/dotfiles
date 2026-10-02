@@ -58,7 +58,7 @@ The application switcher stays open while <kbd>S</kbd> is held, as it does while
 | <kbd>Ctrl-A</kbd> | Beginning of line | YES |
 | <kbd>Ctrl-E</kbd> | End of line | YES |
 
-Terminals, Vim, Emacs, Eclipse, virtual machines, remote desktops and X11 keep their own <kbd>Ctrl</kbd> keys, and VS Code its <kbd>Ctrl-D</kbd>, <kbd>Ctrl-H</kbd>, <kbd>Ctrl-A</kbd> and <kbd>Ctrl-E</kbd> (`emacs.lua` lists the apps).
+Terminals, Vim, Emacs, Eclipse, VS Code, virtual machines, remote desktops and X11 keep their own <kbd>Ctrl</kbd> keys (`emacs.lua` lists the apps).
 <kbd>Ctrl-C</kbd> stays <kbd>Ctrl-C</kbd> only in terminals and Neovim's GUIs.
 
 ### Word motions
