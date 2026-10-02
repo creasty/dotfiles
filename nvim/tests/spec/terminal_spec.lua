@@ -32,6 +32,16 @@ local function window_count(nvim)
   return #nvim:request('nvim_tabpage_list_wins', 0)
 end
 
+--- The highlight groups of the tabline's tabs.
+local function tab_highlights(nvim)
+  local line = nvim:lua("return require('user.ui').tabline()")
+  local groups = {}
+  for group in line:gmatch('%%#(TabLine%a*)# ') do
+    groups[#groups + 1] = group
+  end
+  return groups
+end
+
 local function is_running(nvim, buf)
   return nvim:lua('return vim.fn.jobwait({ vim.bo[...].channel }, 0)[1] == -1', buf)
 end
@@ -179,23 +189,29 @@ describe('Terminals', function()
 
   it("marks a tab whose terminal prints while another tab is the current one, until it's current again", function()
     local nvim = t.nvim()
-    local function tab_highlights()
-      local line = nvim:lua("return require('user.ui').tabline()")
-      local groups = {}
-      for group in line:gmatch('%%#(TabLine%a*)# ') do
-        groups[#groups + 1] = group
-      end
-      return groups
-    end
     terminal(nvim, 'echo ready; sleep 1; echo printed; cat', 'ready')
     nvim:cmd('tabnew')
-    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights())
+    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights(nvim))
     nvim:wait_for(function()
-      return tab_highlights()[1] == 'TabLineActivity'
+      return tab_highlights(nvim)[1] == 'TabLineActivity'
     end, { message = 'the first tab marked' })
     nvim:cmd('tabprevious')
     nvim:cmd('tabnext')
-    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights())
+    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights(nvim))
+  end)
+
+  it('mark no tab when only resized, as by <C-s>t from a split', function()
+    local nvim = t.nvim()
+    nvim:cmd('split')
+    local buf = terminal(nvim, 'seq 100; echo ready; cat', 'ready')
+    nvim:sleep(100) -- (as a person pauses: the terminal has its window's size by then)
+    local tick = nvim:request('nvim_buf_get_changedtick', buf)
+    -- the new tab's window shows the terminal for a moment, as large as the screen, then the split has it back
+    nvim:type('<C-s>t')
+    nvim:wait_for(function()
+      return nvim:request('nvim_buf_get_changedtick', buf) > tick
+    end, { message = 'the terminal rewritten at its size' })
+    t.eq({ 'TabLine', 'TabLineSel' }, tab_highlights(nvim))
   end)
 end)
 
