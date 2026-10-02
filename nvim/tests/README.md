@@ -72,6 +72,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | Spec | Workflows | Provided today by |
 |---|---|---|
 | `startup` | quiet boot, startup time budget, options, commands | init.vim |
+| `exit` | closing the window saves the history and quits, even when the history can't be saved | init.vim |
 | `editing`, `windows` | init.vim keymaps, submodes, `<C-s>` window keys, tags | init.vim, `plugin/` |
 | `emacs_keys` | insert/cmdline/select-mode Emacs keys | `plugin/emacs_cursor.vim` |
 | `autopairs` | pairs, step-over, `<CR>`/`<Space>` rules, custom rules, dot repeat | **nvim-autopairs**, `user/plugin/autopairs.lua` |
@@ -163,7 +164,8 @@ leaves the cursor at.
 - **UI.** Children run headless, so no UI attaches. When one does, Neovim
   fires `UIEnter` after `VimEnter`, and some plugins finish setting up then
   (snacks.nvim takes over `vim.ui.select`), so `lib/prelude.lua` fires it the
-  same way.
+  same way. `exit` runs the terminal UI itself, on a pty, as kitty does, and
+  closes the pty.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so

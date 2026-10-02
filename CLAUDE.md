@@ -32,6 +32,13 @@ Neovim 0.12 dropped the option and always passes a list of nodes, which breaks e
 `compat.lua` wraps `vim.treesitter.query.add_predicate` and `add_directive` to bring the option back, as Neovim 0.11 had it; `nvim/init.vim` loads it before the tree-sitter plugins.
 Remove it once endwise takes lists: the endwise tests in `nvim/tests/spec/treesitter_spec.lua` tell.
 
+## Neovim's exit without a UI
+
+An error on exit has Neovim wait for Enter (`getout()` calls `wait_return()`), which a server whose UI is gone never gets: it keeps running, with its terminals ([neovim#42096](https://github.com/neovim/neovim/issues/42096), seen with 0.12.4).
+Writing the ShaDa file is such an error when several Neovims exit at once, as kitty or Ghostty quitting with several windows has them: `vim_rename()` deletes `main.shada` before renaming its temporary file onto it, and one that checks for it in between fails with E137 and keeps its `main.shada.tmp.X` ([neovim#41940](https://github.com/neovim/neovim/issues/41940)).
+So `_exit_without_ui` in `nvim/init.vim` writes the ShaDa file as the last UI leaves, with errors silenced, and empties `'shada'` so the exit doesn't write it again.
+Remove it once neovim#42096 is fixed: the read-only case in `nvim/tests/spec/exit_spec.lua` passes without it.
+
 ## kitty off every Space
 
 kitty takes each window it opens off every Space, the first at launch included, whatever Dock > Options > Assign To says ([kitty#10581](https://github.com/kovidgoyal/kitty/issues/10581), seen with 0.49.1 and 0.49.2).
