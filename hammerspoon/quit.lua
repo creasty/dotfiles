@@ -6,9 +6,9 @@ local M = {}
 -- How soon the second Cmd-Q follows the first, in seconds: Keyboard's
 local interval = 0.3
 
--- Apps that guard Cmd-Q themselves, which get it as it is: held back, a double press would reach them as one, and a
--- hold not at all. Chrome (Warn Before Quitting, on by default) quits on Cmd-Q held for half a second, or pressed
--- again within a second.
+-- Apps whose own guard on Cmd-Q takes a second press or a hold, which get it as it is: held back, a double press would
+-- reach them as one, and a hold not at all. Chrome (Warn Before Quitting, on by default) quits on Cmd-Q held for half a
+-- second, or pressed again within a second.
 local self_guarding_apps = { ['com.google.Chrome'] = true }
 
 -- When the Cmd-Q held back went down, in seconds
