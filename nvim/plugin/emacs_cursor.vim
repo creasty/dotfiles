@@ -43,7 +43,6 @@ imap <C-e> <Plug>(emacs-eol)
 imap <C-k> <Plug>(emacs-kill)
 inoremap <C-t> <Esc>"0ylxa<C-r>0<Left>
 
-cmap <C-h> <BS>
 cmap <C-a> <Home>
 cmap <C-b> <Left>
 cmap <C-f> <Right>
@@ -56,7 +55,6 @@ smap <C-e> <C-g>A
 smap <C-b> <C-g>I
 smap <C-f> <C-g>A
 smap <C-d> <Del>
-smap <C-c> <Esc>
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo

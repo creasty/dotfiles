@@ -20,15 +20,6 @@ M.spec = {
 
   --  Editing
   -----------------------------------------------
-  { -- create your own text objects
-    'kana/vim-textobj-user',
-  },
-
-  { -- text objects for indented blocks of lines
-    'kana/vim-textobj-indent',
-    dependencies = { 'kana/vim-textobj-user' },
-  },
-
   { -- deleting, changing, and adding surroundings
     'tpope/vim-surround',
   },
@@ -74,27 +65,6 @@ M.spec = {
     end,
   },
 
-  { -- sequencial numbering with pattern
-    'deris/vim-rengbang',
-    init = function()
-      vim.g.rengbang_default_usefirst = 1
-      vim.g.rengbang_default_pattern = [[\(\<\d\+\>\)]]
-    end,
-  },
-
-  { -- operator to replace text with register content
-    'kana/vim-operator-replace',
-    dependencies = {
-      'kana/vim-operator-user', -- define your own operator easily
-    },
-    keys = {
-      { 'r', '<Plug>(operator-replace)', mode = { 'n', 'x', 'o' }, remap = true },
-    },
-    init = function()
-      vim.keymap.set({ 'n', 'x', 'o' }, 'R', 'r')
-    end,
-  },
-
   { -- a simple, easy-to-use Vim alignment plugin
     'junegunn/vim-easy-align',
     keys = {
@@ -131,44 +101,6 @@ M.spec = {
     },
     config = function()
       require('hop').setup()
-    end,
-  },
-
-  { -- The easiest way to create previewable commands in Neovim.
-    'smjonas/live-command.nvim',
-    event = 'CmdlineEnter',
-    config = function()
-      require('live-command').setup({
-        commands = {
-          Norm = { cmd = 'norm' },
-          G = { cmd = 'g' },
-          V = { cmd = 'v' },
-        },
-      })
-    end,
-  },
-
-  { -- An all in one plugin for converting text case in Neovim
-    'johmsalas/text-case.nvim',
-    cmd = 'Subs',
-    init = function()
-      -- (require() loads the plugin)
-      for lhs, method in pairs({
-        ['ge_'] = 'to_snake_case',
-        ['ge-'] = 'to_dash_case',
-        ['ge.'] = 'to_dot_case',
-        ['ge/'] = 'to_path_case',
-        ['gec'] = 'to_camel_case',
-        ['gep'] = 'to_pascal_case',
-        ['gek'] = 'to_constant_case',
-      }) do
-        vim.keymap.set('n', lhs, function()
-          require('textcase').operator(method)
-        end, { silent = true })
-        vim.keymap.set('x', lhs, function()
-          require('textcase').visual(method)
-        end, { silent = true })
-      end
     end,
   },
 
@@ -276,9 +208,19 @@ M.spec = {
 
   --  Picker
   -----------------------------------------------
-  { -- A collection of QoL plugins for Neovim (its picker and gitbrowse)
+  { -- A collection of QoL plugins for Neovim (its picker, gitbrowse and scope)
     'folke/snacks.nvim',
     config = function()
+      require('snacks').setup({
+        picker = require('user.plugin.picker').config,
+        -- text objects for the lines of a scope, tree-sitter's (or the
+        -- indentation's, without a parser): ii inside it, ai with its first and
+        -- last lines; [i ]i jump to those
+        scope = {
+          enabled = true,
+          keys = { textobject = { ii = { linewise = true }, ai = { linewise = true } } },
+        },
+      })
       require('user.plugin.picker').setup()
       require('user.plugin.gitbrowse').setup()
     end,

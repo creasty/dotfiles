@@ -290,6 +290,9 @@ lua require('user.terminal').setup()
 " command-line shortcuts (:s/ -> :s/\v//g, :ee, :w!!, ...)
 lua require('user.cmdline').setup()
 
+" operators and commands on text: r{motion}, ge_ and the other cases, :Subs, :RengBang
+lua require('user.text_ops').setup()
+
 " submode for window resizing
 nnoremap <SID>(ws) <Nop>
 nnoremap <script> <C-w>+ <C-w>+<SID>(ws)

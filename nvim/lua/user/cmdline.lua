@@ -8,8 +8,11 @@
 --   :eh :eg :ev :e ~/  ~/go/src/github.com/  $VIMRUNTIME/
 --   :s/         :s/\v|//g, with any of / ~ ! @ # % : as the delimiter,
 --               after % or '<,'> too; :sc/ adds \C, :si/ \c, and :sm/
---               starts a case-preserving :Subs/|/ (text-case.nvim)
+--               starts a case-preserving :Subs/|/ (user.text_ops)
 --   / and ?     escaped inside a search for / and ? respectively
+--
+-- And :Norm, :G and :V: :normal, :global and :vglobal, with their changes
+-- previewed as you type, as :s has them.
 
 local M = {}
 
@@ -109,6 +112,23 @@ function M.setup()
     vim.keymap.set('c', char, function()
       return escape_search(char)
     end, { expr = true, replace_keycodes = false })
+  end
+
+  -- (the preview runs the command, and Neovim takes its changes back)
+  for name, command in pairs({ Norm = { 'normal', true }, G = { 'global', '%' }, V = { 'vglobal', '%' } }) do
+    local function run(opts)
+      local range = opts.range > 0 and ('%d,%d'):format(opts.line1, opts.line2) or ''
+      vim.cmd(range .. command[1] .. (opts.bang and '!' or '') .. ' ' .. opts.args)
+    end
+    vim.api.nvim_create_user_command(name, run, {
+      nargs = '+',
+      bang = true,
+      range = command[2],
+      preview = function(opts)
+        run(opts)
+        return 1
+      end,
+    })
   end
 end
 

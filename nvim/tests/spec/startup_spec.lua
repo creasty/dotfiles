@@ -124,10 +124,12 @@ describe('Startup', function()
       'Lazy', 'LazyGotoRepo',
       -- plugin/
       'AutoSaveToggle', 'Rename', 'Delete', 'NextFile', 'PrevFile',
+      -- user.cmdline, user.text_ops
+      'Norm', 'G', 'V', 'Subs', 'RengBang',
       -- plugin configuration
       'Format', 'Import', 'Open', 'Search', 'GBlame', 'GBrowse',
       -- plugin commands used directly
-      'DiffviewOpen', 'DiffviewFileHistory', 'Switch', 'RengBang', 'Subs', 'QuickRun', 'NERDTree', 'Template',
+      'DiffviewOpen', 'DiffviewFileHistory', 'Switch', 'QuickRun', 'NERDTree', 'Template',
     }) do
       t.ok(commands[name], (':%s is missing'):format(name))
     end

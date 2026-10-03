@@ -76,7 +76,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `editing`, `windows` | init.vim keymaps, submodes, `<C-s>` window keys, tags | init.vim, `plugin/` |
 | `emacs_keys` | insert/cmdline/select-mode Emacs keys | `plugin/emacs_cursor.vim` |
 | `autopairs` | pairs, step-over, `<CR>`/`<Space>` rules, custom rules, dot repeat | **nvim-autopairs**, `user/plugin/autopairs.lua` |
-| `cmdline` | `:'`, `:w!!`, `:ee`…, `:s/` family, search escaping, abbreviations | `user/cmdline.lua`, live-command |
+| `cmdline` | `:'`, `:w!!`, `:ee`…, `:s/` family, search escaping, abbreviations, previewed commands | `user/cmdline.lua`, `user/text_ops.lua` |
 | `completion` | popup, `<Tab>`/`<CR>`/`<Esc>`/`<C-n>`, sources, LSP snippets | **blink.cmp**, **LuaSnip** |
 | `lsp` | `gd gD grr gri grt gll gh grn gra`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow/heading snippets | **LuaSnip** |

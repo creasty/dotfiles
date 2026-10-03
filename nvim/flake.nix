@@ -12,14 +12,6 @@
     };
 
     # Editing
-    vim-textobj-user = {
-      url = "git+https://github.com/kana/vim-textobj-user?shallow=1";
-      flake = false;
-    };
-    vim-textobj-indent = {
-      url = "git+https://github.com/kana/vim-textobj-indent?shallow=1";
-      flake = false;
-    };
     vim-surround = {
       url = "git+https://github.com/tpope/vim-surround?shallow=1";
       flake = false;
@@ -36,18 +28,6 @@
       url = "git+https://github.com/AndrewRadev/switch.vim?shallow=1";
       flake = false;
     };
-    vim-rengbang = {
-      url = "git+https://github.com/deris/vim-rengbang?shallow=1";
-      flake = false;
-    };
-    vim-operator-user = {
-      url = "git+https://github.com/kana/vim-operator-user?shallow=1";
-      flake = false;
-    };
-    vim-operator-replace = {
-      url = "git+https://github.com/kana/vim-operator-replace?shallow=1";
-      flake = false;
-    };
     vim-easy-align = {
       url = "git+https://github.com/junegunn/vim-easy-align?shallow=1";
       flake = false;
@@ -62,14 +42,6 @@
     };
     hop-nvim = {
       url = "git+https://github.com/smoka7/hop.nvim?shallow=1";
-      flake = false;
-    };
-    live-command-nvim = {
-      url = "git+https://github.com/smjonas/live-command.nvim?shallow=1";
-      flake = false;
-    };
-    text-case-nvim = {
-      url = "git+https://github.com/johmsalas/text-case.nvim?shallow=1";
       flake = false;
     };
 
