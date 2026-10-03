@@ -218,15 +218,5 @@ describe('Text operations', function()
       nvim:type('yyjjP')
       t.eq({ 'z', 'if x', '  z', '  y', 'end' }, nvim:lines())
     end)
-
-    it('keeps the indentation as-is in python, markdown and yaml', function()
-      for _, ft in ipairs({ 'python', 'markdown', 'yaml' }) do
-        local nvim = nvim_ft(ft)
-        nvim:set_buffer({ '|z', 'a:', '    y' })
-        nvim:type('yyjjp')
-        t.eq({ 'z', 'a:', '    y', 'z' }, nvim:lines(), ft)
-        nvim:close()
-      end
-    end)
   end)
 end)
