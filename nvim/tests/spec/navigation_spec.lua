@@ -402,22 +402,13 @@ describe('Navigation', function()
     end)
   end
 
-  it(',r runs the current file and shows its output in a split', function()
+  it(',r runs the current file and shows its output in a split 15 lines high, across the bottom', function()
     local nvim = t.nvim()
     nvim:edit('hello.sh', { 'echo hello-from-quickrun' })
     nvim:type(',r')
-    quickrun_window(nvim)
+    local win = quickrun_window(nvim)
+    t.eq(15, win.height)
+    t.eq(0, win.col)
+    t.ok(win.row > 0, 'below the file')
   end)
-
-  t.quirk(
-    ',r opens the output with quickrun\'s default layout, not :botright 15sp',
-    "the config sets 'outputter/buffer/split', but quickrun's option is 'outputter/buffer/opener'",
-    function()
-      local nvim = t.nvim()
-      nvim:edit('hello.sh', { 'echo hello-from-quickrun' })
-      nvim:type(',r')
-      local win = quickrun_window(nvim)
-      t.neq(15, win.height)
-    end
-  )
 end)

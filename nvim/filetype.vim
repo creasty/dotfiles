@@ -19,14 +19,9 @@ endfor
 
 augroup filetypedetect
   autocmd! BufNewFile,BufRead .env,.env.* setlocal ft=sh
-  autocmd! BufNewFile,BufRead config setlocal ft=config
-  autocmd! BufNewFile,BufRead gitconfig setlocal ft=gitconfig
-  autocmd! BufNewFile,BufRead .gitattributes setlocal ft=gitattributes.toml
   autocmd! BufNewFile,BufRead LICENSE,LICENSE.txt set filetype=license
-  autocmd! BufNewFile,BufRead coc-settings.json set filetype=jsonc
 
   " Compound filetypes
-  autocmd! BufNewFile,BufRead *_spec.rb setlocal ft=ruby.rspec
   autocmd! BufNewFile,BufRead *.bq.sql setlocal ft=sql.bq
   autocmd! BufNewFile,BufRead *.pg.sql setlocal ft=sql.pg
 augroup END

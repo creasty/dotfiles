@@ -6,10 +6,6 @@ let g:loaded_project_dir = 1
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-if exists('+autochdir')
-  set noautochdir
-endif
-
 let s:root_patterns = [
   \ '.git',
   \ '.git/',

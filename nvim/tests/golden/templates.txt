@@ -272,3 +272,10 @@ Host work
   User webapp
   Port 22
   IdentityFile ~/.ssh/keys/work_webapp
+
+=== ruby/spec/template_spec.rb @ spec/lib/acme/client_spec.rb
+require 'spec_helper'
+
+RSpec.describe Acme::Client, type: :lib do
+ ‸ 
+end

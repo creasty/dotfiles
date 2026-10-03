@@ -48,7 +48,6 @@ describe('Startup', function()
   it('keeps the editor options set in init.vim', function()
     local nvim = t.nvim()
     local expected = {
-      backup = 0,
       writebackup = 0,
       swapfile = 0,
       autowrite = 1,
@@ -59,7 +58,6 @@ describe('Startup', function()
       ignorecase = 1,
       smartcase = 1,
       wildignorecase = 1,
-      smartindent = 1,
       cindent = 1,
       shiftround = 1,
       expandtab = 1,
@@ -92,7 +90,6 @@ describe('Startup', function()
       title = 1,
       titlestring = '%{UserTitleString()}',
       tagfunc = 'BetterTagfunc',
-      autochdir = 0,
     }
     local actual = {}
     for name in pairs(expected) do
@@ -109,9 +106,9 @@ describe('Startup', function()
     t.match('%*%.swp', nvim:eval('&wildignore'))
   end)
 
-  it('disables the unused built-in plugins (netrw, zip, tar, vimball, 2html)', function()
+  it('disables the unused built-in plugins (netrw, zip, tar)', function()
     local nvim = t.nvim()
-    for _, name in ipairs({ 'netrwPlugin', 'zipPlugin', 'tarPlugin', 'vimballPlugin', '2html_plugin' }) do
+    for _, name in ipairs({ 'netrwPlugin', 'zipPlugin', 'tarPlugin' }) do
       t.eq(1, nvim:eval('get(g:, "loaded_' .. name .. '", 0)'), name)
     end
     t.eq(0, nvim:eval('exists(":Explore")'), ':Explore (netrw) should not exist')

@@ -42,7 +42,7 @@ M.spec = {
     init = function()
       vim.g.pasta_disabled_filetypes = {
         'python', 'markdown', 'yaml',
-        'nerdtree', 'dirvish',
+        'nerdtree',
         'snacks_picker_list', 'snacks_picker_input',
       }
     end,
@@ -241,11 +241,8 @@ M.spec = {
   { -- a tree explorer
     'preservim/nerdtree',
     init = function()
-      vim.g.NERDSpaceDelims = 1
-      vim.g.NERDShutUp = 1
       vim.g.NERDTreeShowHidden = 1
       vim.g.NERDTreeIgnore = { [[\~$]], [[\.git$]] }
-      vim.g.NERDTreeAutoDeleteBuffer = 1
 
       vim.g.loaded_nerdtree_fs_menu = 1
     end,
@@ -262,7 +259,7 @@ M.spec = {
 
   { -- Performant, batteries-included completion plugin for Neovim
     'saghen/blink.cmp',
-    branch = 'v1', -- v2 requires Neovim 0.12
+    branch = 'v1', -- v2, its main branch, has no release yet
     config = function()
       require('user.plugin.blink').setup()
     end,
@@ -347,7 +344,7 @@ M.spec = {
       vim.g.quickrun_config = {
         _ = {
           runner = 'nvim_job',
-          ['outputter/buffer/split'] = ':botright 15sp',
+          ['outputter/buffer/opener'] = ':botright 15sp',
         },
       }
       vim.keymap.set('n', '<Leader>r', '<Plug>(quickrun)', { remap = true })

@@ -78,7 +78,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `autopairs` | pairs, step-over, `<CR>`/`<Space>` rules, custom rules, dot repeat | **nvim-autopairs**, `user/plugin/autopairs.lua` |
 | `cmdline` | `:'`, `:w!!`, `:ee`…, `:s/` family, search escaping, abbreviations | `user/cmdline.lua`, live-command |
 | `completion` | popup, `<Tab>`/`<CR>`/`<Esc>`/`<C-n>`, sources, LSP snippets | **blink.cmp**, **LuaSnip** |
-| `lsp` | `gd gt gi gD gT gR gll gh gr gq`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
+| `lsp` | `gd gD grr gri grt gll gh grn gra`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow/heading snippets | **LuaSnip** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
 | `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>` dismiss | **copilot.lua** |
@@ -96,7 +96,7 @@ completion, snippets, auto-pairs and AI suggestions share the insert-mode keys.
 
 Every picker source is checked for the same things:
 
-| | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`gR` `gD` `gT`, `gll` |
+| | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`grr` `gD`, `gll` |
 |---|---|---|---|---|
 | focus when opened | prompt | prompt | list | list |
 | `<C-c>` in the prompt | closes | closes | back to the list, still narrowed (`<Esc>` too) | back to the list, still narrowed (`<Esc>` too) |

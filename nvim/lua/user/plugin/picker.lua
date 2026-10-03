@@ -2,7 +2,7 @@
 --
 --   <C-q>      files, or ghq repositories in $HOME (:Open)
 --   <Space>/   grep for a pattern (:Search [dir]), and replace it
---   gR gD gT   LSP locations (user.plugin.lsp); gll reopens them
+--   grr gD     LSP locations (user.plugin.lsp); gll reopens them
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
 -- as long as you stay in the directory of the previous picker, but a grep

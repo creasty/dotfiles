@@ -22,6 +22,6 @@ class_name = class_name
 -%>
 require 'spec_helper'
 
-Rspec.describe <%= class_name %>, type: :<%= spec_type %> do
+RSpec.describe <%= class_name %>, type: :<%= spec_type %> do
   <+CURSOR+>
 end

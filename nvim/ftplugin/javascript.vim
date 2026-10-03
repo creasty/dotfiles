@@ -1,6 +1,3 @@
-setlocal et
-setlocal tabstop=2 shiftwidth=2
-
 let b:switch_custom_definitions = [
   \ switch#Words(['const', 'let']),
   \ switch#Words(['onFocus', 'onBlur']),
