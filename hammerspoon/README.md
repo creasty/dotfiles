@@ -8,7 +8,7 @@ Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibili
 It starts at login from then on.
 
 <kbd>S+H</kbd> and <kbd>S+L</kbd> stroke Mission Control's shortcuts, as macOS has no public API to move a space.
-The module also sets them in System Settings > Keyboard > Keyboard Shortcuts, which macOS reads at login:
+The module also sets them in System Settings > Keyboard > Keyboard Shortcuts:
 
 - Mission Control > Move left a space: <kbd>Ctrl-LeftArrow</kbd> (the default)
 - Mission Control > Move right a space: <kbd>Ctrl-RightArrow</kbd> (the default)

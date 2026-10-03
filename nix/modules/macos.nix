@@ -191,9 +191,12 @@ in
       fi
     ''
     + lib.optionalString (hotKeys != { }) ''
-      # Adds the shortcuts to the user's, where CustomUserPreferences would replace them all. macOS reads them at login.
+      # Adds the shortcuts to the user's, where CustomUserPreferences would replace them all, and has the session take
+      # them up, which it would only at the next login
       launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
         defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add ${lib.escapeShellArgs hotKeyArgs}
+      launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     ''
     + lib.optionalString (config.dotfiles.allDesktops != [ ]) ''
       # Adds the apps to the user's assignments to Spaces, where CustomUserPreferences would replace them all (the
