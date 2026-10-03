@@ -1,5 +1,5 @@
 -- GitHub Copilot's inline suggestions: Neovim's inline completion, from
--- copilot-language-server (config/mise/default-npm-packages) with
+-- copilot-language-server (config/mise/config.toml) with
 -- nvim-lspconfig's `copilot` config, which adds :LspCopilotSignIn and
 -- :LspCopilotSignOut. Accepted with <C-s><C-j> and dismissed with <Esc> /
 -- <C-s><C-c> (user.intelligence); hidden while the completion menu, a
