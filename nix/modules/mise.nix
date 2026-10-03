@@ -1,4 +1,4 @@
-# mise, and the runtimes and npm tools of config/mise/config.toml. Ruby's postinstall hook adds the default gems.
+# mise, and the runtimes and tools of config/mise/config.toml
 {
   config,
   lib,

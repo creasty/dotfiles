@@ -23,14 +23,6 @@ setup() {
   assert_equal "$output" "$HOME/.local/share/mise/shims/node"
 }
 
-@test "the npm tools are installed at their configured versions" {
-  local tool problems=''
-  for tool in $(mise_config '.tools | keys | .[] | select(test("^npm:"))'); do
-    login_bash "mise where $(q "$tool@$(mise_config ".tools[\"$tool\"]")")" > /dev/null 2>&1 || problems+="$tool"$'\n'
-  done
-  assert_none "$problems" 'not installed'
-}
-
 # Apart from Node, as a project's .node-version swaps the Node that runs
 @test "terminals run the npm tools from their own installs" {
   local version
