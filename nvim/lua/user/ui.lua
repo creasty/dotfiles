@@ -271,7 +271,8 @@ end)
 
 local marks_ns = vim.api.nvim_create_namespace('user_ui_marks')
 
---- Shows the buffer's marks a-z in the sign column, two at most on a line.
+--- Shows the buffer's marks a-z in the sign column, two at most on a line,
+--- keeping each mark's sign in b:user_ui_mark_signs.
 local function update_mark_signs(buf)
   if not vim.api.nvim_buf_is_loaded(buf) then
     return
@@ -284,15 +285,61 @@ local function update_mark_signs(buf)
       names[lnum] = (names[lnum] or '') .. mark.mark:sub(2)
     end
   end
+  local signs = {}
   for lnum, text in pairs(names) do
     -- (hidden along with its line once that is deleted, as the mark is)
-    vim.api.nvim_buf_set_extmark(buf, marks_ns, lnum - 1, 0, {
+    local id = vim.api.nvim_buf_set_extmark(buf, marks_ns, lnum - 1, 0, {
       sign_text = text:sub(1, 2),
       sign_hl_group = 'Statement',
       priority = 10,
       invalidate = true,
     })
+    for name in text:gmatch('.') do
+      signs[name] = id
+    end
   end
+  vim.b[buf].user_ui_mark_signs = signs
+end
+
+--- Deletes mark `name` if it's on the line of its sign, where it was set
+--- again.
+local function toggle_mark(buf, name)
+  local id = (vim.b[buf].user_ui_mark_signs or {})[name]
+  local sign = id and vim.api.nvim_buf_get_extmark_by_id(buf, marks_ns, id, { details = true }) or {}
+  if sign[1] and not sign[3].invalid and sign[1] + 1 == vim.api.nvim_buf_get_mark(buf, name)[1] then
+    vim.api.nvim_buf_del_mark(buf, name)
+  end
+end
+
+-- How many times each mark was set or deleted, by buffer, since Neovim last
+-- waited for a key
+local mark_sets
+
+--- A mark set again on its line is deleted, as a second ma does. But MarkSet
+--- comes once Neovim waits for a key: after a macro or a mapping, for all the
+--- marks it set; one it set more than once is left where it is.
+local function on_mark_set(ev)
+  if not mark_sets then
+    mark_sets = {}
+    -- (after the other MarkSet events waiting)
+    vim.schedule(function()
+      local sets = mark_sets
+      mark_sets = nil
+      for buf, times in pairs(sets) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+          for name, n in pairs(times) do
+            if n == 1 then
+              toggle_mark(buf, name)
+            end
+          end
+          update_mark_signs(buf)
+        end
+      end
+    end)
+  end
+  local times = mark_sets[ev.buf] or {}
+  mark_sets[ev.buf] = times
+  times[ev.data.name] = (times[ev.data.name] or 0) + 1
 end
 
 local function setup()
@@ -324,9 +371,11 @@ local function setup()
     end,
   })
 
-  -- (as a mark is set or deleted, and for those a file brings from the ShaDa file)
-  vim.api.nvim_create_autocmd({ 'MarkSet', 'BufEnter' }, {
-    group = vim.api.nvim_create_augroup('user_ui_marks', {}),
+  local group = vim.api.nvim_create_augroup('user_ui_marks', {})
+  vim.api.nvim_create_autocmd('MarkSet', { group = group, callback = on_mark_set })
+  -- (for the marks a file brings from the ShaDa file)
+  vim.api.nvim_create_autocmd('BufEnter', {
+    group = group,
     callback = function(ev)
       update_mark_signs(ev.buf)
     end,
