@@ -1,7 +1,7 @@
 # Hammerspoon
 
 [creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `init.lua` hands each key to the super keys (`superkey.lua`), then to the guard on <kbd>Cmd-Q</kbd> (`quit.lua`) and Emacs mode (`emacs.lua`).
-Its mouse keys are left out.
+Its mouse keys are left out, and so is its <kbd>Ctrl-;</kbd>: macOS's own shortcut selects the next input source on it (System Settings > Keyboard > Keyboard Shortcuts > Input Sources), which `nix/modules/macos.nix` sets.
 
 `nix/modules/hammerspoon.nix` installs Hammerspoon, and links this directory as `~/.hammerspoon`.
 Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibility, and reload its config (its menu bar icon > Reload Config).
@@ -69,12 +69,6 @@ Terminals, Vim, Emacs, Eclipse, VS Code, virtual machines, remote desktops and X
 | <kbd>A+H</kbd> | Delete word before cursor |
 | <kbd>A+B</kbd> | Move cursor backward by word |
 | <kbd>A+F</kbd> | Move cursor forward by word |
-
-### Switch input source
-
-| Key | Description |
-|:---|:---|
-| <kbd>Ctrl-;</kbd> | Selects the next input source: the keyboard layouts, then the input methods |
 
 ### Switch input source with Escape key
 
