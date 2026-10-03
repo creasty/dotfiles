@@ -87,6 +87,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `integration` | no pairs/completion/AI in picker prompts and block inserts | `user/intelligence.lua` |
 | `ui` | tabline, statusline, title, signs (marks, git), whitespace | `user/ui.lua`, gitsigns.nvim |
 | `terminal` | terminals' keys (`<C-s>`, `<C-y>`), `<C-/>`, `<Space>t`, titles, files opened from them | `user/terminal.lua`, **snacks.nvim**, **flatten.nvim** |
+| `input_source` | macOS's keyboard layout in normal mode: after insert mode, a command line, a terminal, or on starting or gaining focus | `user/input_source.lua` |
 | `files`, `navigation`, `text_ops`, `treesitter`, `filetypes`, `templates` | everything else | various |
 
 The files named above are under `nvim/lua/`; `user/intelligence.lua` is where

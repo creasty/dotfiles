@@ -1,4 +1,4 @@
--- Emacs mode, and Escape switching to English
+-- Emacs mode
 local key = require('keycodes')
 local events = require('events')
 
@@ -103,8 +103,6 @@ local emacs_keys = {
   [key.e] = { to = key.right, mods = { 'cmd' }, shift = true }, -- end of line
 }
 
-local function eisu() events.stroke(key.eisu) end
-
 local function frontmost_app()
   local app = hs.application.frontmostApplication()
   return app and app:bundleID()
@@ -112,16 +110,9 @@ end
 
 -- Handles a key the super keys let through: returns whether to swallow it
 function M.remap(code, is_down, flags)
-  if flags.alt or flags.cmd then return false end
-
-  if not flags.ctrl then
-    -- Escape switches to English first (EISUU), for Vim's normal mode
-    if code == key.escape and is_down and not flags.shift then eisu() end
-    return false
-  end
+  if flags.alt or flags.cmd or not flags.ctrl then return false end
 
   if code == key.c and not flags.shift then
-    if is_down then eisu() end
     -- Ctrl-C is Escape, but where it's Ctrl-C's own
     if escape_key_disabled_apps[frontmost_app()] then return false end
     events.emit(events.key_event(key.escape, is_down))

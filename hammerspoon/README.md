@@ -1,7 +1,10 @@
 # Hammerspoon
 
 [creasty/Keyboard](https://github.com/creasty/Keyboard)'s key bindings on [Hammerspoon](https://www.hammerspoon.org): `init.lua` hands each key to the super keys (`superkey.lua`), then to the guard on <kbd>Cmd-Q</kbd> (`quit.lua`) and Emacs mode (`emacs.lua`).
-Its mouse keys are left out, and so is its <kbd>Ctrl-;</kbd>: macOS's own shortcut selects the next input source on it (System Settings > Keyboard > Keyboard Shortcuts > Input Sources), which `nix/modules/macos.nix` sets.
+Its mouse keys are left out, and so are two of its keys:
+
+- <kbd>Ctrl-;</kbd>: macOS's own shortcut selects the next input source on it (System Settings > Keyboard > Keyboard Shortcuts > Input Sources), which `nix/modules/macos.nix` sets.
+- Switching to English (EISUU) on <kbd>Escape</kbd> and <kbd>Ctrl-C</kbd>: Neovim switches to macOS's keyboard layout itself whenever it's in Normal mode (`nvim/lua/user/input_source.lua`).
 
 `nix/modules/hammerspoon.nix` installs Hammerspoon, and links this directory as `~/.hammerspoon`.
 Open Hammerspoon, allow it in System Settings > Privacy & Security > Accessibility, and reload its config (its menu bar icon > Reload Config).
@@ -69,15 +72,6 @@ Terminals, Vim, Emacs, Eclipse, VS Code, virtual machines, remote desktops and X
 | <kbd>A+H</kbd> | Delete word before cursor |
 | <kbd>A+B</kbd> | Move cursor backward by word |
 | <kbd>A+F</kbd> | Move cursor forward by word |
-
-### Switch input source with Escape key
-
-Change the input source to English as you leave 'insert mode' in Vim with <kbd>Escape</kbd> key so it can prevent IME from capturing key strokes in 'normal mode'.
-
-| Key | Description |
-|:---|:---|
-| <kbd>Ctrl-C</kbd> | Invokes <kbd>EISUU, Ctrl-C</kbd> in terminals and Neovim's GUIs, <kbd>EISUU, Escape</kbd> elsewhere |
-| <kbd>Escape</kbd> | Invokes <kbd>EISUU, Escape</kbd> |
 
 ### Switch between apps
 
