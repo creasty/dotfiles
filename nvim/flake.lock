@@ -137,23 +137,6 @@
         "url": "https://github.com/folke/lazy.nvim"
       }
     },
-    "live-command-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1766179329,
-        "narHash": "sha256-agfevFIUb9KcKK1kiVoUbyyIubn0hs6xD3MXy/ZssuM=",
-        "ref": "refs/heads/main",
-        "rev": "fc8c36d7e5b96945fbc52af7029facc317a47377",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/smjonas/live-command.nvim"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/smjonas/live-command.nvim"
-      }
-    },
     "mold-vim": {
       "flake": false,
       "locked": {
@@ -335,7 +318,6 @@
         "gitsigns-nvim": "gitsigns-nvim",
         "hop-nvim": "hop-nvim",
         "lazy-nvim": "lazy-nvim",
-        "live-command-nvim": "live-command-nvim",
         "mold-vim": "mold-vim",
         "nerdtree": "nerdtree",
         "nvim-autopairs": "nvim-autopairs",
@@ -348,19 +330,13 @@
         "opfmt": "opfmt",
         "snacks-nvim": "snacks-nvim",
         "switch-vim": "switch-vim",
-        "text-case-nvim": "text-case-nvim",
         "vim-altr": "vim-altr",
         "vim-easy-align": "vim-easy-align",
-        "vim-operator-replace": "vim-operator-replace",
-        "vim-operator-user": "vim-operator-user",
         "vim-quickrun": "vim-quickrun",
-        "vim-rengbang": "vim-rengbang",
         "vim-repeat": "vim-repeat",
         "vim-signature": "vim-signature",
         "vim-surround": "vim-surround",
-        "vim-textmanip": "vim-textmanip",
-        "vim-textobj-indent": "vim-textobj-indent",
-        "vim-textobj-user": "vim-textobj-user"
+        "vim-textmanip": "vim-textmanip"
       }
     },
     "snacks-nvim": {
@@ -397,23 +373,6 @@
         "url": "https://github.com/AndrewRadev/switch.vim"
       }
     },
-    "text-case-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722628320,
-        "narHash": "sha256-2IMufSMy9JW50VzZ3SgOtp8kYs81ANwV0eP0ZH3rTFo=",
-        "ref": "refs/heads/main",
-        "rev": "e898cfd46fa6cde0e83abb624a16e67d2ffc6457",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/johmsalas/text-case.nvim"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/johmsalas/text-case.nvim"
-      }
-    },
     "vim-altr": {
       "flake": false,
       "locked": {
@@ -448,40 +407,6 @@
         "url": "https://github.com/junegunn/vim-easy-align"
       }
     },
-    "vim-operator-replace": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1424793379,
-        "narHash": "sha256-2Gyr95P5bQqy9BC2WiOU6NuXvzuHNdydvH/xH8xdkR0=",
-        "ref": "refs/heads/master",
-        "rev": "1345a556a321a092716e149d4765a5e17c0e9f0f",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-operator-replace"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-operator-replace"
-      }
-    },
-    "vim-operator-user": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1424176932,
-        "narHash": "sha256-yykX2bTr77HMqDjFt6VQLI1qNHodxYIom5s8XrN3wps=",
-        "ref": "refs/heads/master",
-        "rev": "c3dfd41c1ed516b4b901c97562e644de62c367aa",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-operator-user"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-operator-user"
-      }
-    },
     "vim-quickrun": {
       "flake": false,
       "locked": {
@@ -497,23 +422,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/thinca/vim-quickrun"
-      }
-    },
-    "vim-rengbang": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1560773971,
-        "narHash": "sha256-kCiPQw2R3AbytiT3ZR71HddEMCffv6UjTcXGYlLC+sA=",
-        "ref": "refs/heads/master",
-        "rev": "e8c58cade2208b90dca989abfa9bcf1d79c4e931",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/deris/vim-rengbang"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/deris/vim-rengbang"
       }
     },
     "vim-repeat": {
@@ -582,40 +490,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/t9md/vim-textmanip"
-      }
-    },
-    "vim-textobj-indent": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1358509589,
-        "narHash": "sha256-oFzUPG+IOkbKZ2gU/kduQ3G/LsLDlEjFhRP0BHBE+1Q=",
-        "ref": "refs/heads/master",
-        "rev": "deb76867c302f933c8f21753806cbf2d8461b548",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-textobj-indent"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-textobj-indent"
-      }
-    },
-    "vim-textobj-user": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1582277364,
-        "narHash": "sha256-4+9SlywaEKpJL6MM2jcBjFoy2dpLqviil9idVNkeL/g=",
-        "ref": "refs/heads/master",
-        "rev": "41a675ddbeefd6a93664a4dc52f302fe3086a933",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-textobj-user"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kana/vim-textobj-user"
       }
     }
   },

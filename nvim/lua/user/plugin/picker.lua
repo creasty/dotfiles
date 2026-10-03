@@ -887,26 +887,27 @@ local function vertical_height()
   return math.min(math.max(math.floor(vim.o.lines * 0.8) - 2, 30), fits)
 end
 
+--- The picker's options (snacks.nvim's `picker`).
+M.config = {
+  ui_select = false, -- (set below, placing code actions)
+  layout = {
+    preset = 'vertical',
+    hidden = { 'preview' },
+    cycle = false,
+  },
+  layouts = {
+    vertical = { layout = { height = vertical_height, min_height = 0 } },
+  },
+  actions = actions,
+  win = {
+    input = { keys = input_keys },
+    list = { keys = list_keys },
+  },
+  icons = { files = { enabled = false } },
+}
+
+--- (once snacks.nvim is set up)
 function M.setup()
-  require('snacks').setup({
-    picker = {
-      ui_select = false, -- (set below, placing code actions)
-      layout = {
-        preset = 'vertical',
-        hidden = { 'preview' },
-        cycle = false,
-      },
-      layouts = {
-        vertical = { layout = { height = vertical_height, min_height = 0 } },
-      },
-      actions = actions,
-      win = {
-        input = { keys = input_keys },
-        list = { keys = list_keys },
-      },
-      icons = { files = { enabled = false } },
-    },
-  })
   vim.ui.select = function(items, opts, on_choice)
     if opts and opts.kind == 'codeaction' then
       opts = vim.tbl_extend('force', opts, { snacks = { layout = { layout = next_to_cursor(#items) } } })
