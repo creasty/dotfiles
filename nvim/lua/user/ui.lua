@@ -269,6 +269,32 @@ local statusline = retry_call_wrap(function ()
   }, ' ')
 end)
 
+local marks_ns = vim.api.nvim_create_namespace('user_ui_marks')
+
+--- Shows the buffer's marks a-z in the sign column, two at most on a line.
+local function update_mark_signs(buf)
+  if not vim.api.nvim_buf_is_loaded(buf) then
+    return
+  end
+  vim.api.nvim_buf_clear_namespace(buf, marks_ns, 0, -1)
+  local names = {}
+  for _, mark in ipairs(vim.fn.getmarklist(buf)) do
+    local lnum = mark.pos[2]
+    if mark.mark:match("^'%l$") and lnum <= vim.api.nvim_buf_line_count(buf) then
+      names[lnum] = (names[lnum] or '') .. mark.mark:sub(2)
+    end
+  end
+  for lnum, text in pairs(names) do
+    -- (hidden along with its line once that is deleted, as the mark is)
+    vim.api.nvim_buf_set_extmark(buf, marks_ns, lnum - 1, 0, {
+      sign_text = text:sub(1, 2),
+      sign_hl_group = 'Statement',
+      priority = 10,
+      invalidate = true,
+    })
+  end
+end
+
 local function setup()
   vim.o.tabline = [[%!v:lua.require'user.ui'.tabline()]]
 
@@ -277,7 +303,7 @@ local function setup()
     augroup user_ui_statusline
       autocmd!
       autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * lua require'user.ui'.update_filereadable()
-      " (this statusline in place of a window's own: quickfix's, NERDTree's)
+      " (this statusline in place of a window's own: quickfix's)
       autocmd BufWinEnter,WinEnter,BufEnter * set statusline<
       autocmd VimResized,DiagnosticChanged * redrawstatus
       autocmd User GitSignsUpdate redrawstatus
@@ -295,6 +321,14 @@ local function setup()
     group = 'user_ui_statusline',
     callback = function()
       vim.schedule(vim.cmd.redrawstatus)
+    end,
+  })
+
+  -- (as a mark is set or deleted, and for those a file brings from the ShaDa file)
+  vim.api.nvim_create_autocmd({ 'MarkSet', 'BufEnter' }, {
+    group = vim.api.nvim_create_augroup('user_ui_marks', {}),
+    callback = function(ev)
+      update_mark_signs(ev.buf)
     end,
   })
 end

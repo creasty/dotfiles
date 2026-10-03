@@ -90,6 +90,16 @@ describe('LSP', function()
       t.eq({ 7, 5 }, nvim:cursor())
     end)
 
+    it('<C-]> jumps to the definition, as the server gives it', function()
+      local nvim = project(GO, 'main.go')
+      nvim:set_cursor(12, 19)
+      nvim:type('<C-]>')
+      nvim:wait_for(function()
+        return nvim:cursor()[1] == 7
+      end)
+      t.eq({ 7, 5 }, nvim:cursor())
+    end)
+
     it('gd jumps into another file', function()
       local nvim = project(GO, 'util.go')
       nvim:set_cursor(4, 8)

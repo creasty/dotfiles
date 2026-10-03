@@ -154,23 +154,6 @@
         "url": "https://github.com/creasty/mold.vim"
       }
     },
-    "nerdtree": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758902859,
-        "narHash": "sha256-yp5AE8gv1xW3cXMd24D23BXCOqCp4CJQPFRhU9YdvRo=",
-        "ref": "refs/heads/master",
-        "rev": "690d061b591525890f1471c6675bcb5bdc8cdff9",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/preservim/nerdtree"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/preservim/nerdtree"
-      }
-    },
     "nvim-autopairs": {
       "flake": false,
       "locked": {
@@ -319,7 +302,6 @@
         "hop-nvim": "hop-nvim",
         "lazy-nvim": "lazy-nvim",
         "mold-vim": "mold-vim",
-        "nerdtree": "nerdtree",
         "nvim-autopairs": "nvim-autopairs",
         "nvim-lint": "nvim-lint",
         "nvim-lspconfig": "nvim-lspconfig",
@@ -334,7 +316,6 @@
         "vim-easy-align": "vim-easy-align",
         "vim-quickrun": "vim-quickrun",
         "vim-repeat": "vim-repeat",
-        "vim-signature": "vim-signature",
         "vim-surround": "vim-surround",
         "vim-textmanip": "vim-textmanip"
       }
@@ -439,23 +420,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/tpope/vim-repeat"
-      }
-    },
-    "vim-signature": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1530910672,
-        "narHash": "sha256-9eZ7IZV5PSEHAACZYQ4iiCs8iZxSxWOPinkrf85rpSI=",
-        "ref": "refs/heads/master",
-        "rev": "6bc3dd1294a22e897f0dcf8dd72b85f350e306bc",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kshenoy/vim-signature"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/kshenoy/vim-signature"
       }
     },
     "vim-surround": {
