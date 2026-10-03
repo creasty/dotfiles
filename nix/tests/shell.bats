@@ -56,6 +56,17 @@ prefers_nix() {
   prefers_nix login_bash
 }
 
+# Claude Code runs its Bash tool in the shell CLAUDE_CODE_SHELL names (home/claude/settings.json), and silently in the
+# login zsh when that isn't a bash or zsh that runs. Claude writes bash: zsh leaves an unquoted $var unsplit and fails
+# on a glob that matches nothing. macOS's bash 3.2 lacks mapfile, ${var,,} and associative arrays.
+@test "Claude Code runs commands in bash 4 or later" {
+  local shell
+  shell="$(yq -p json -o yaml '.env.CLAUDE_CODE_SHELL' "$HOME/.claude/settings.json")"
+  assert_like "$shell" '*/bash'
+  run -0 "$shell" -c 'echo "${BASH_VERSINFO[0]}"'
+  [ "$output" -ge 4 ]
+}
+
 @test "terminals find the dotfiles' commands" {
   run -0 login_zsh 'whence -p git-info'
   assert_same_file "$output" "$DOTFILES_PATH/bin/git-info"
