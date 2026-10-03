@@ -353,7 +353,6 @@
         "vim-easy-align": "vim-easy-align",
         "vim-operator-replace": "vim-operator-replace",
         "vim-operator-user": "vim-operator-user",
-        "vim-pasta": "vim-pasta",
         "vim-quickrun": "vim-quickrun",
         "vim-rengbang": "vim-rengbang",
         "vim-repeat": "vim-repeat",
@@ -481,23 +480,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/kana/vim-operator-user"
-      }
-    },
-    "vim-pasta": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1691834732,
-        "narHash": "sha256-nfJmV+PNJy1upgz52uWIf9YkLqY6ELK04uoUnEUojeA=",
-        "ref": "refs/heads/master",
-        "rev": "2b786703eef9f82ae7a56f3de4ee43e1e5efaaa5",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/ku1ik/vim-pasta"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/ku1ik/vim-pasta"
       }
     },
     "vim-quickrun": {

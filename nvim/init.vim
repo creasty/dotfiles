@@ -247,6 +247,10 @@ xnoremap <Space>h g^
 nnoremap <Space>l g$
 xnoremap <Space>l g$
 
+" paste lines at the indentation of the cursor's line
+nnoremap p ]p
+nnoremap P [p
+
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
