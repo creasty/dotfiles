@@ -1,6 +1,6 @@
 -- How completion (blink.cmp), snippets (LuaSnip), auto-pairs and AI
--- suggestions (copilot.lua) share the insert-mode keys, and where they stay
--- out of the way.
+-- suggestions (Copilot, through Neovim's inline completion) share the
+-- insert-mode keys, and where they stay out of the way.
 --
 --   <Tab>        accept the completion item / expand a snippet / indent
 --   <CR>         accept the completion item / newline (with auto-pairs)
@@ -33,13 +33,18 @@ local function expandable()
   return ls ~= nil and ls.expandable()
 end
 
-local function suggestion()
-  return package.loaded['copilot.suggestion']
+--- Dismisses the AI suggestion; false when there is none.
+local function dismiss_ai(buf)
+  return vim.lsp.inline_completion.get({ bufnr = buf, on_accept = function() end })
 end
 
-local function ai_visible()
-  local s = suggestion()
-  return s ~= nil and s.is_visible()
+--- The AI suggestion, unless it was made for another line (the one before a
+--- <CR> or a move).
+local function on_cursor_line(item)
+  if item.range and item.range:to_extmark() ~= vim.api.nvim_win_get_cursor(0)[1] - 1 then
+    return nil
+  end
+  return item
 end
 
 local function autopairs()
@@ -54,18 +59,13 @@ end
 -- AI suggestions stay hidden while something else is offered
 ---------------------------------------------------------------------------
 
+-- (Neovim shows each suggestion as it arrives: one that arrives while hidden
+-- is dismissed, in the LspRequest autocmd below, and the next keystroke brings
+-- a new one)
 local function set_ai_hidden(hidden)
-  local was_hidden = vim.b.copilot_suggestion_hidden
-  vim.b.copilot_suggestion_hidden = hidden
-  local s = suggestion()
-  if not s then
-    return
-  end
-  if hidden and s.is_visible() then
-    s.dismiss()
-  elseif not hidden and was_hidden then
-    -- a suggestion that arrived while hidden shows up now
-    pcall(s.update_preview)
+  vim.b.user_ai_hidden = hidden
+  if hidden then
+    dismiss_ai(0)
   end
 end
 
@@ -116,6 +116,8 @@ function keys.cr()
   elseif vim.fn.pumvisible() == 1 then
     return k('<C-y>')
   end
+  -- (the suggestion was for this line)
+  dismiss_ai(0)
   return autopairs().cr()
 end
 
@@ -129,8 +131,7 @@ function keys.esc()
   elseif cmp and cmp.is_signature_visible() then
     cmp.hide_signature()
     return ''
-  elseif ai_visible() then
-    suggestion().dismiss()
+  elseif dismiss_ai(0) then
     return ''
   end
   return k('<Esc>')
@@ -151,9 +152,7 @@ function keys.c_l()
 end
 
 function keys.accept_ai()
-  if ai_visible() then
-    return cmd("require('copilot.suggestion').accept()")
-  end
+  vim.lsp.inline_completion.get({ on_accept = on_cursor_line })
   return ''
 end
 
@@ -169,8 +168,8 @@ end
 
 function keys.cancel()
   local ls = luasnip()
-  if ai_visible() then
-    suggestion().dismiss()
+  if dismiss_ai(0) then
+    return ''
   elseif ls and ls.get_active_snip() then
     return cmd("require('luasnip').unlink_current()")
   end
@@ -254,6 +253,20 @@ function M.setup()
     group = group,
     callback = function()
       set_ai_hidden(vim.b.user_intelligence_stopped == true)
+    end,
+  })
+  -- a suggestion that arrives while hidden (once Neovim has shown it)
+  vim.api.nvim_create_autocmd('LspRequest', {
+    group = group,
+    callback = function(ev)
+      local request = ev.data.request
+      if request.method == 'textDocument/inlineCompletion' and request.type == 'complete' then
+        vim.schedule(function()
+          if vim.api.nvim_buf_is_valid(ev.buf) and vim.b[ev.buf].user_ai_hidden then
+            dismiss_ai(ev.buf)
+          end
+        end)
+      end
     end,
   })
   -- signature help popups

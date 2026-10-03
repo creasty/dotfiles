@@ -80,15 +80,15 @@ end
 -- Ghost text (AI inline suggestions)
 ---------------------------------------------------------------------------
 
---- Whether the AI plugin would ask for a suggestion now. copilot.lua marks
---- its client initialized a moment after the server has the buffer open, and
---- drops what you type before that until the cursor moves again.
+--- Whether an inline completion client would ask for a suggestion now: one is
+--- attached to the buffer and initialized.
 function M.ai_ready()
-  local copilot = package.loaded['copilot.client']
-  if copilot then
-    return copilot.initialized == true and copilot.buf_is_attached(0) == true
+  for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/inlineCompletion' })) do
+    if client.initialized then
+      return true
+    end
   end
-  return true
+  return false
 end
 
 --- All virtual text anchored on the cursor line (virt_text + virt_lines),

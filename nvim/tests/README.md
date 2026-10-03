@@ -81,7 +81,7 @@ whether the test was a pinned quirk (`run --summary FILE` writes it).
 | `lsp` | `gd gD grr gri grt gll gh grn gra`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow/heading snippets | **LuaSnip** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
-| `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>` dismiss | **copilot.lua** |
+| `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>`/`<CR>` dismiss | **Neovim's inline completion**, `user/intelligence.lua` |
 | `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys, short screens | **snacks.nvim** |
 | `picker_checklist` | every source × reopen as left, own state, scroll, `<C-l>`, `<C-r>` (below) | **snacks.nvim** |
 | `integration` | no pairs/completion/AI in picker prompts and block inserts | `user/intelligence.lua` |
@@ -133,7 +133,7 @@ behavior may well be the better one: update or delete the test.
      (through its API: its list is drawn lazily) and Telescope-style pickers
      whose list is a buffer of results.
    - `lib/prelude.lua` — how to *point* plugins at the fakes: the fake server
-     is `vim.lsp.config('e2e', ...)` and the only one `vim.lsp.enable()` takes;
+     is `vim.lsp.config('e2e', ...)`, and `vim.lsp.enable()` takes only it and Copilot's;
      conform.nvim and nvim-lint run no external formatter or linter.
    - `lib/env.lua` — fake executables on `PATH` (`trash`, and
      `copilot-language-server`, which runs `fakes/copilot.lua`; it speaks

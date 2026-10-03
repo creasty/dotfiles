@@ -237,8 +237,8 @@ function M.setup()
   -- diffview.nvim: the lines a side lacks ('fillchars' diff:╱)
   hi.DiffviewDiffDeleteDim = { fg = s.gray500 }
 
-  -- copilot.lua
-  hi.CopilotSuggestion = { fg = s.gray400, underdotted = 1 }
+  -- inline completion (Copilot's suggestions)
+  hi.ComplHint = { fg = s.gray400, underdotted = 1 }
 
   -- nvim-treesitter-context
   hi.TreesitterContext = { link = 'Normal' }

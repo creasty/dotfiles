@@ -1,5 +1,6 @@
--- AI inline suggestions (copilot.lua today) against fakes/copilot.lua, which
--- only suggests after specific text (see SUGGESTIONS there).
+-- AI inline suggestions (Neovim's inline completion today) against
+-- fakes/copilot.lua, which only suggests after specific text (see SUGGESTIONS
+-- there).
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -86,6 +87,31 @@ describe('AI suggestions', function()
     t.eq('i', nvim:mode())
     t.eq('', probe.ghost_text(nvim))
     t.eq({ 'return ' }, nvim:lines())
+  end)
+
+  it('<CR> dismisses the suggestion of the line it ends', function()
+    local nvim = insert_in('app.ts')
+    nvim:type('return ')
+    probe.wait_ghost(nvim, "'from ai';")
+    nvim:type('<CR>')
+    t.eq('', nvim:lua([[
+      local texts = {}
+      for _, mark in ipairs(vim.api.nvim_buf_get_extmarks(0, -1, { 0, 0 }, { 0, -1 }, { details = true })) do
+        for _, chunk in ipairs(mark[4].virt_text or {}) do
+          texts[#texts + 1] = chunk[1]
+        end
+      end
+      return table.concat(texts)
+    ]]), 'no ghost text left on the line above')
+  end)
+
+  it('<C-s><C-j> does not accept the suggestion of another line', function()
+    local nvim = insert_in('app.ts', { '', '' })
+    nvim:type('return ')
+    probe.wait_ghost(nvim, "'from ai';")
+    nvim:type('<Down><C-s><C-j>')
+    t.eq({ 'return ', '' }, nvim:lines())
+    t.eq(2, nvim:cursor()[1])
   end)
 
   describe('stay out of the way', function()

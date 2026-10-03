@@ -5,7 +5,7 @@
 -- Plugin-specific wiring lives here, so when a plugin is replaced, point its
 -- replacement at the same fakes:
 --   * LSP      -> fakes/lsp.lua (registered for LSP_FILETYPES); the config's
---                 own servers are never enabled
+--                 own servers are never enabled, but for Copilot's
 --   * Copilot  -> fakes/copilot.lua, as `copilot-language-server` on PATH
 --                 (env.lua writes it)
 --   * formatters and linters (conform.nvim, nvim-lint) -> none, so the
@@ -43,7 +43,11 @@ vim.lsp.config('e2e', {
 })
 local enable = vim.lsp.enable
 enable('e2e')
-vim.lsp.enable = function() end
+vim.lsp.enable = function(name, ...)
+  if name == 'copilot' then
+    enable(name, ...)
+  end
+end
 
 --- Patches a Lua module when it is first required.
 local function patch(name, fn)
