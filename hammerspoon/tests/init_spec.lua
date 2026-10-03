@@ -25,6 +25,11 @@ end)
 
 --  The tap
 --------------------------------------------------
+it('Ctrl-; reaches macOS, for its shortcut that selects the next input source', function()
+  keys('ctrl+;↓ ctrl+;⟳ ctrl+;↑')
+  received('ctrl+;↓ ctrl+;↓ ctrl+;↑')
+end)
+
 it('an error in an action is logged, and the keys still act', function()
   hs.window.focusedWindow = function() error('AX timed out') end
   keys('s↓ 200ms d↓ 200ms f↓ f↑ d↑ s↑ ctrl+p↓ ctrl+p↑')

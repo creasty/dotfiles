@@ -163,10 +163,13 @@ in
 
     dotfiles.hotKeys = {
       "52" = null; # no shortcut for Launchpad & Dock > Turn Dock hiding on/off
-      # No shortcuts for Input Sources > Select the previous input source (Ctrl-Space) and Select next source in Input
-      # menu (Ctrl-Option-Space)
-      "60" = null;
-      "61" = null;
+      "60" = null; # no shortcut for Input Sources > Select the previous input source (Ctrl-Space)
+      # Input Sources > Select next source in Input menu: Ctrl-; (the character, its key code, and Ctrl's flag)
+      "61" = [
+        59
+        41
+        262144
+      ];
     };
 
     dotfiles.allDesktops = [ "com.apple.finder" ];

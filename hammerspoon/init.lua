@@ -79,7 +79,7 @@ local function handle(event)
     events.emit(events.key_event(k[1], k[2]))
   end
   if not swallow then swallow = quit.guard(code, is_down, is_repeat, flags) end
-  if not swallow then swallow = emacs.remap(code, is_down, is_repeat, flags) end
+  if not swallow then swallow = emacs.remap(code, is_down, flags) end
   return swallow
 end
 

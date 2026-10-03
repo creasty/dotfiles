@@ -1,7 +1,6 @@
--- Emacs mode, and switching the input source
+-- Emacs mode, and Escape switching to English
 local key = require('keycodes')
 local events = require('events')
-local input_source = require('input_source')
 
 local M = {}
 
@@ -112,19 +111,13 @@ local function frontmost_app()
 end
 
 -- Handles a key the super keys let through: returns whether to swallow it
-function M.remap(code, is_down, is_repeat, flags)
+function M.remap(code, is_down, flags)
   if flags.alt or flags.cmd then return false end
 
   if not flags.ctrl then
     -- Escape switches to English first (EISUU), for Vim's normal mode
     if code == key.escape and is_down and not flags.shift then eisu() end
     return false
-  end
-
-  if code == key[';'] and not flags.shift then
-    if not is_down then return false end
-    if not is_repeat then input_source.select_next() end
-    return true
   end
 
   if code == key.c and not flags.shift then
