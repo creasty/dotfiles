@@ -148,7 +148,7 @@ end
 --- Returns the context table that workers and children read back.
 function M.prepare()
   local base = realpath(os.getenv('E2E_TMPDIR') or os.getenv('TMPDIR') or '/tmp')
-  -- Sandboxes must not live inside a project: plugin/project_dir.vim takes the
+  -- Sandboxes must not live inside a project: plugin/project_dir.lua takes the
   -- outermost-priority marker it finds walking up (an enclosing .git wins),
   -- and language servers would take that project as their root.
   local markers = { '.git', 'Rakefile', 'Gemfile', 'package.json', '.vimprojectroot', 'build.sbt' }

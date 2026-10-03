@@ -3,6 +3,9 @@
 --   <C-q>      files, or ghq repositories in $HOME (:Open)
 --   <Space>/   grep for a pattern (:Search [dir]), and replace it
 --   grr gD     LSP locations (user.plugin.lsp); gll reopens them
+--   :e {dir}   the explorer, a tree of the files in a sidebar (nvim {dir} too):
+--              dotfiles shown, .git and backups (~) not, and files git
+--              ignores with I
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
 -- as long as you stay in the directory of the previous picker, but a grep
@@ -904,6 +907,9 @@ M.config = {
     list = { keys = list_keys },
   },
   icons = { files = { enabled = false } },
+  sources = {
+    explorer = { hidden = true, exclude = { '.git', '*~' } },
+  },
 }
 
 --- (once snacks.nvim is set up)

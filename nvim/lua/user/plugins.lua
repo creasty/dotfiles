@@ -140,26 +140,6 @@ M.spec = {
     cond = false, -- it needs nvim-treesitter's master branch (nvim-treesitter.configs): off until it moves to main
   },
 
-  --  UI
-  -----------------------------------------------
-  { -- toggle, display and navigate marks
-    'kshenoy/vim-signature',
-    init = function()
-      vim.g.SignatureIncludeMarks = 'abcdefghijklmnopqrtuvwxyz'
-      vim.g.SignatureMarkTextHL = 'Statement'
-    end,
-  },
-
-  { -- a tree explorer
-    'preservim/nerdtree',
-    init = function()
-      vim.g.NERDTreeShowHidden = 1
-      vim.g.NERDTreeIgnore = { [[\~$]], [[\.git$]] }
-
-      vim.g.loaded_nerdtree_fs_menu = 1
-    end,
-  },
-
   --  LSP, completion and snippets
   -----------------------------------------------
   { -- Quickstart configs for Nvim LSP
@@ -208,11 +188,13 @@ M.spec = {
 
   --  Picker
   -----------------------------------------------
-  { -- A collection of QoL plugins for Neovim (its picker, gitbrowse and scope)
+  { -- A collection of QoL plugins for Neovim (its picker, explorer, gitbrowse and scope)
     'folke/snacks.nvim',
     config = function()
       require('snacks').setup({
         picker = require('user.plugin.picker').config,
+        -- (the explorer, a picker, opens for a directory)
+        explorer = { enabled = true },
         -- text objects for the lines of a scope, tree-sitter's (or the
         -- indentation's, without a parser): ii inside it, ai with its first and
         -- last lines; [i ]i jump to those

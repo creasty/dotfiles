@@ -67,16 +67,6 @@
       flake = false;
     };
 
-    # UI
-    vim-signature = {
-      url = "git+https://github.com/kshenoy/vim-signature?shallow=1";
-      flake = false;
-    };
-    nerdtree = {
-      url = "git+https://github.com/preservim/nerdtree?shallow=1";
-      flake = false;
-    };
-
     # LSP, completion and snippets
     nvim-lspconfig = {
       url = "git+https://github.com/neovim/nvim-lspconfig?shallow=1";

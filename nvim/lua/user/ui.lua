@@ -269,6 +269,79 @@ local statusline = retry_call_wrap(function ()
   }, ' ')
 end)
 
+local marks_ns = vim.api.nvim_create_namespace('user_ui_marks')
+
+--- Shows the buffer's marks a-z in the sign column, two at most on a line,
+--- keeping each mark's sign in b:user_ui_mark_signs.
+local function update_mark_signs(buf)
+  if not vim.api.nvim_buf_is_loaded(buf) then
+    return
+  end
+  vim.api.nvim_buf_clear_namespace(buf, marks_ns, 0, -1)
+  local names = {}
+  for _, mark in ipairs(vim.fn.getmarklist(buf)) do
+    local lnum = mark.pos[2]
+    if mark.mark:match("^'%l$") and lnum <= vim.api.nvim_buf_line_count(buf) then
+      names[lnum] = (names[lnum] or '') .. mark.mark:sub(2)
+    end
+  end
+  local signs = {}
+  for lnum, text in pairs(names) do
+    -- (hidden along with its line once that is deleted, as the mark is)
+    local id = vim.api.nvim_buf_set_extmark(buf, marks_ns, lnum - 1, 0, {
+      sign_text = text:sub(1, 2),
+      sign_hl_group = 'Statement',
+      priority = 10,
+      invalidate = true,
+    })
+    for name in text:gmatch('.') do
+      signs[name] = id
+    end
+  end
+  vim.b[buf].user_ui_mark_signs = signs
+end
+
+--- Deletes mark `name` if it's on the line of its sign, where it was set
+--- again.
+local function toggle_mark(buf, name)
+  local id = (vim.b[buf].user_ui_mark_signs or {})[name]
+  local sign = id and vim.api.nvim_buf_get_extmark_by_id(buf, marks_ns, id, { details = true }) or {}
+  if sign[1] and not sign[3].invalid and sign[1] + 1 == vim.api.nvim_buf_get_mark(buf, name)[1] then
+    vim.api.nvim_buf_del_mark(buf, name)
+  end
+end
+
+-- How many times each mark was set or deleted, by buffer, since Neovim last
+-- waited for a key
+local mark_sets
+
+--- A mark set again on its line is deleted, as a second ma does. But MarkSet
+--- comes once Neovim waits for a key: after a macro or a mapping, for all the
+--- marks it set; one it set more than once is left where it is.
+local function on_mark_set(ev)
+  if not mark_sets then
+    mark_sets = {}
+    -- (after the other MarkSet events waiting)
+    vim.schedule(function()
+      local sets = mark_sets
+      mark_sets = nil
+      for buf, times in pairs(sets) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+          for name, n in pairs(times) do
+            if n == 1 then
+              toggle_mark(buf, name)
+            end
+          end
+          update_mark_signs(buf)
+        end
+      end
+    end)
+  end
+  local times = mark_sets[ev.buf] or {}
+  mark_sets[ev.buf] = times
+  times[ev.data.name] = (times[ev.data.name] or 0) + 1
+end
+
 local function setup()
   vim.o.tabline = [[%!v:lua.require'user.ui'.tabline()]]
 
@@ -277,7 +350,7 @@ local function setup()
     augroup user_ui_statusline
       autocmd!
       autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * lua require'user.ui'.update_filereadable()
-      " (this statusline in place of a window's own: quickfix's, NERDTree's)
+      " (this statusline in place of a window's own: quickfix's)
       autocmd BufWinEnter,WinEnter,BufEnter * set statusline<
       autocmd VimResized,DiagnosticChanged * redrawstatus
       autocmd User GitSignsUpdate redrawstatus
@@ -295,6 +368,16 @@ local function setup()
     group = 'user_ui_statusline',
     callback = function()
       vim.schedule(vim.cmd.redrawstatus)
+    end,
+  })
+
+  local group = vim.api.nvim_create_augroup('user_ui_marks', {})
+  vim.api.nvim_create_autocmd('MarkSet', { group = group, callback = on_mark_set })
+  -- (for the marks a file brings from the ShaDa file)
+  vim.api.nvim_create_autocmd('BufEnter', {
+    group = group,
+    callback = function(ev)
+      update_mark_signs(ev.buf)
     end,
   })
 end

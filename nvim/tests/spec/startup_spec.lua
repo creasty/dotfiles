@@ -89,7 +89,6 @@ describe('Startup', function()
       foldlevelstart = 20,
       title = 1,
       titlestring = '%{UserTitleString()}',
-      tagfunc = 'BetterTagfunc',
     }
     local actual = {}
     for name in pairs(expected) do
@@ -129,7 +128,7 @@ describe('Startup', function()
       -- plugin configuration
       'Format', 'Import', 'Open', 'Search', 'GBlame', 'GBrowse',
       -- plugin commands used directly
-      'DiffviewOpen', 'DiffviewFileHistory', 'Switch', 'QuickRun', 'NERDTree', 'Template',
+      'DiffviewOpen', 'DiffviewFileHistory', 'Switch', 'QuickRun', 'Template',
     }) do
       t.ok(commands[name], (':%s is missing'):format(name))
     end
