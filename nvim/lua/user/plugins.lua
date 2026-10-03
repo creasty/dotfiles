@@ -37,17 +37,6 @@ M.spec = {
     'tpope/vim-repeat',
   },
 
-  { -- pasting with indentation adjusted to paste destination
-    'ku1ik/vim-pasta',
-    init = function()
-      vim.g.pasta_disabled_filetypes = {
-        'python', 'markdown', 'yaml',
-        'nerdtree',
-        'snacks_picker_list', 'snacks_picker_input',
-      }
-    end,
-  },
-
   { -- a genius template engine
     'creasty/mold.vim',
     init = function()

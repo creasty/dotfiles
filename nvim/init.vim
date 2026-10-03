@@ -247,6 +247,10 @@ xnoremap <Space>h g^
 nnoremap <Space>l g$
 xnoremap <Space>l g$
 
+" paste lines at the indentation of the cursor's line, but where indentation is meaningful
+nnoremap <expr> p index(['python', 'markdown', 'yaml'], &filetype) < 0 ? ']p' : 'p'
+nnoremap <expr> P index(['python', 'markdown', 'yaml'], &filetype) < 0 ? '[p' : 'P'
+
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 

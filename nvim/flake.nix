@@ -28,10 +28,6 @@
       url = "git+https://github.com/tpope/vim-repeat?shallow=1";
       flake = false;
     };
-    vim-pasta = {
-      url = "git+https://github.com/ku1ik/vim-pasta?shallow=1";
-      flake = false;
-    };
     mold-vim = {
       url = "git+https://github.com/creasty/mold.vim?shallow=1";
       flake = false;
