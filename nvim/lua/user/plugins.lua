@@ -145,15 +145,6 @@ M.spec = {
     end,
   },
 
-  { -- Fully featured & enhanced replacement for copilot.vim complete with API for interacting with Github Copilot
-    'zbirenbaum/copilot.lua',
-    event = 'InsertEnter',
-    cmd = 'Copilot',
-    config = function()
-      require('user.plugin.copilot').setup()
-    end,
-  },
-
   { -- The easiest way to create previewable commands in Neovim.
     'smjonas/live-command.nvim',
     event = 'CmdlineEnter',
@@ -254,6 +245,7 @@ M.spec = {
     'neovim/nvim-lspconfig',
     config = function()
       require('user.plugin.lsp').setup()
+      require('user.plugin.copilot').setup()
     end,
   },
 

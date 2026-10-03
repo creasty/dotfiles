@@ -68,10 +68,6 @@
       url = "git+https://github.com/smoka7/hop.nvim?shallow=1";
       flake = false;
     };
-    copilot-lua = {
-      url = "git+https://github.com/zbirenbaum/copilot.lua?shallow=1";
-      flake = false;
-    };
     live-command-nvim = {
       url = "git+https://github.com/smjonas/live-command.nvim?shallow=1";
       flake = false;

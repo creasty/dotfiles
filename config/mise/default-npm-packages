@@ -1,4 +1,5 @@
 @antfu/ni
+@github/copilot-language-server
 @openai/codex
 @styled/typescript-styled-plugin
 bash-language-server

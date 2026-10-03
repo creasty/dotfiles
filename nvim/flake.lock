@@ -52,23 +52,6 @@
         "url": "https://github.com/stevearc/conform.nvim"
       }
     },
-    "copilot-lua": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1790214455,
-        "narHash": "sha256-zL2yBu52mnMEj52tutE1aa++O75CAYGr9uHafDH8Qv0=",
-        "ref": "refs/heads/master",
-        "rev": "f76a0a281de089e27b605ec8017093f1aab73b07",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/zbirenbaum/copilot.lua"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/zbirenbaum/copilot.lua"
-      }
-    },
     "diffview-plus-nvim": {
       "flake": false,
       "locked": {
@@ -347,7 +330,6 @@
         "LuaSnip": "LuaSnip",
         "blink-cmp": "blink-cmp",
         "conform-nvim": "conform-nvim",
-        "copilot-lua": "copilot-lua",
         "diffview-plus-nvim": "diffview-plus-nvim",
         "flatten-nvim": "flatten-nvim",
         "gitsigns-nvim": "gitsigns-nvim",
