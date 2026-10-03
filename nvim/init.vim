@@ -10,26 +10,22 @@
 "----------------------------------------------------------------------------------------------
 
 language en_US
-scriptencoding utf-8
 
 " disable builtin plugins
-let g:loaded_2html_plugin = 1
 let g:loaded_netrwPlugin = 1
 let g:loaded_tar = 1
 let g:loaded_tarPlugin = 1
-let g:loaded_vimball = 1
-let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
 
 " configure runtime features
+let g:markdown_folding = 1
 let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
 
 "=== Basic
 "==============================================================================================
 " no backup and swap files
-set nobackup
 set nowritebackup
 set noswapfile
 
@@ -62,7 +58,6 @@ set smartcase
 set wildignorecase
 
 " indent
-set smartindent
 set cindent
 set shiftround
 set expandtab
@@ -252,10 +247,6 @@ xnoremap <Space>h g^
 nnoremap <Space>l g$
 xnoremap <Space>l g$
 
-" insert blank lines without going into insert mode
-nnoremap <Space>o mZo<Esc>`ZmZ
-nnoremap <Space>O mZO<Esc>`ZmZ
-
 " reselect pasted text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
@@ -269,9 +260,6 @@ xnoremap <Space>s "xy:<C-u>%s/<C-r>=escape(@x, '\\/.*$^~')<CR>/
 nnoremap <Space>* "xyiw:<C-u>%s/\<<C-r>=escape(@x, '\\/.*$^~')<CR>\>/
 
 " tags
-nnoremap tn <Cmd>tn<CR>
-nnoremap tp <Cmd>tp<CR>
-nnoremap tl <Cmd>tags<CR>
 nnoremap <C-]> g<C-]>
 
 " window and buffer navigation
@@ -398,8 +386,7 @@ augroup END
 augroup _enhance_ftdetect
   autocmd!
   autocmd BufWritePost,BufReadPost,BufEnter *
-    \ if &buftype !=# 'terminal' && (&filetype ==# '' || exists('b:ftdetect')) |
-      \ unlet! b:ftdetect |
+    \ if &buftype !=# 'terminal' && &filetype ==# '' |
       \ filetype detect |
     \ endif
 augroup END

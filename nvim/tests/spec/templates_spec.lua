@@ -34,6 +34,7 @@ local CASES = {
   { 'ruby/app/template_concern.rb', 'app/models/concerns/taggable_concern.rb' },
   { 'ruby/lib/template.rb', 'lib/acme/client.rb' },
   { 'ruby/lib/template/version.rb', 'lib/acme/version.rb' },
+  { 'ruby/spec/template_spec.rb', 'spec/lib/acme/client_spec.rb' },
   { 'sh/template', 'bin/script.sh' },
   { 'tla/template.tla', 'Spec.tla' },
   { 'typescript/resolvers/mutations/template.ts', 'resolvers/mutations/createUser.ts' },
@@ -98,17 +99,6 @@ describe('Templates', function()
   )
 
   t.quirk(
-    ':Template in a *_spec.rb file finds no template',
-    'mold looks templates up by &filetype, which is ruby.rspec for specs, and there is no template/ruby.rspec/',
-    function()
-      local nvim = t.nvim()
-      nvim:cmd('AutoSaveToggle')
-      local text = apply(nvim, 'spec/models/user_spec.rb')
-      t.eq('‸', text)
-    end
-  )
-
-  t.quirk(
     ':Template in a *.stories.tsx file finds no template',
     'mold looks templates up by &filetype, which is typescriptreact, while the template lives in template/typescript/',
     function()
@@ -125,7 +115,6 @@ describe('Templates', function()
       covered[case[1]] = true
     end
     covered['java/main.java'] = true -- see the quirk above
-    covered['ruby/spec/template_spec.rb'] = true -- see the quirk above
     covered['typescript/template.stories.tsx'] = true -- see the quirk above
     local missing = {}
     for name, type in vim.fs.dir(TEMPLATES, { depth = 10 }) do

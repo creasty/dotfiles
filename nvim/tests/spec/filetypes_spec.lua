@@ -9,13 +9,10 @@ describe('Filetypes', function()
       ['.env.local'] = 'sh',
       ['shader.frag'] = 'glsl',
       ['shader.vert'] = 'glsl',
-      ['config'] = 'config',
-      ['gitconfig'] = 'gitconfig',
-      ['.gitattributes'] = 'gitattributes.toml',
+      ['.gitattributes'] = 'gitattributes',
       ['LICENSE'] = 'license',
       ['LICENSE.txt'] = 'license',
-      ['coc-settings.json'] = 'jsonc',
-      ['user_spec.rb'] = 'ruby.rspec',
+      ['user_spec.rb'] = 'ruby',
       ['query.bq.sql'] = 'sql.bq',
       ['query.pg.sql'] = 'sql.pg',
     }) do
@@ -46,8 +43,9 @@ describe('Filetypes', function()
         ['a.js'] = { 1, 2, 2 },
         ['a.ts'] = { 1, 2, 2 },
         ['a.tsx'] = { 1, 2, 2 },
-        ['gitconfig'] = { 1, 2, 2 },
         ['a.rb'] = { 1, 2, 2 },
+        ['a.py'] = { 1, 4, 4 },
+        ['a.scala'] = { 1, 4, 2 },
       }
       local actual = {}
       for name in pairs(expected) do
@@ -55,24 +53,6 @@ describe('Filetypes', function()
       end
       t.eq(expected, actual)
     end)
-
-    t.quirk(
-      'python indents with spaces although ftplugin/python.vim sets noexpandtab',
-      "Neovim's own python ftplugin (PEP 8 style) runs after ftplugin/python.vim; overrides belong in after/ftplugin/",
-      function()
-        local nvim = t.nvim()
-        t.eq({ 1, 4, 4 }, settings(nvim, 'a.py'))
-      end
-    )
-
-    t.quirk(
-      'scala indents by 2 although ftplugin/scala.vim sets shiftwidth=4',
-      "Neovim's own scala ftplugin runs after ftplugin/scala.vim; overrides belong in after/ftplugin/",
-      function()
-        local nvim = t.nvim()
-        t.eq({ 1, 4, 2 }, settings(nvim, 'a.scala'))
-      end
-    )
 
     it('ruby words include ! and ?; yaml words include -; scheme words are the default', function()
       local nvim = t.nvim()

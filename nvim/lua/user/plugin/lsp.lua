@@ -267,32 +267,20 @@ function M.setup()
 
   vim.diagnostic.config({
     signs = { text = M.signs },
-    virtual_text = false,
     severity_sort = true,
     float = { source = 'if_many', border = M.padding },
-    jump = { float = false },
   })
-
-  -- the gr* defaults would make gr wait
-  for _, lhs in ipairs({ 'grn', 'gra', 'grr', 'gri', 'grt' }) do
-    for _, mode in ipairs({ 'n', 'x' }) do
-      pcall(vim.keymap.del, mode, lhs)
-    end
-  end
 
   local map = vim.keymap.set
 
-  -- Cross references
+  -- Cross references, in the picker: grr, gri and grt take the place of
+  -- Neovim's own, which fill the quickfix list. (Its grn renames, and its gra
+  -- lists the code actions through vim.ui.select, in the picker too.)
   map('n', 'gd', locations('definition'), { desc = 'Go to definition' })
-  map('n', 'gt', locations('type_definition'), { desc = 'Go to type definition' })
-  map('n', 'gi', locations('implementation'), { desc = 'Go to implementation' })
   map('n', 'gD', locations('definition', { list = true }), { desc = 'List definitions' })
-  map('n', 'gT', locations('type_definition', { list = true }), { desc = 'List type definitions' })
-  map('n', 'gR', locations('references', { list = true }), { desc = 'List references' })
-
-  -- Refactoring
-  map('n', 'gr', vim.lsp.buf.rename, { nowait = true, desc = 'Rename symbol' })
-  map({ 'n', 'x' }, 'gq', vim.lsp.buf.code_action, { desc = 'Code action' })
+  map('n', 'grr', locations('references', { list = true }), { desc = 'List references' })
+  map('n', 'gri', locations('implementation'), { desc = 'Go to implementation' })
+  map('n', 'grt', locations('type_definition'), { desc = 'Go to type definition' })
 
   -- Hover
   map('n', 'gh', function()
@@ -302,16 +290,14 @@ function M.setup()
     require('blink.cmp').show_signature()
   end, { desc = 'Signature help' })
 
-  -- Diagnostics
-  local function jump(count, sev)
+  -- Errors only (Neovim's ]d / [d go to any diagnostic)
+  local function jump_to_error(count)
     return function()
-      vim.diagnostic.jump({ count = count, severity = sev })
+      vim.diagnostic.jump({ count = count, severity = severity.ERROR })
     end
   end
-  map('n', '[d', jump(-1), { desc = 'Previous diagnostic' })
-  map('n', ']d', jump(1), { desc = 'Next diagnostic' })
-  map('n', '[e', jump(-1, severity.ERROR), { desc = 'Previous error' })
-  map('n', ']e', jump(1, severity.ERROR), { desc = 'Next error' })
+  map('n', '[e', jump_to_error(-1), { desc = 'Previous error' })
+  map('n', ']e', jump_to_error(1), { desc = 'Next error' })
 
   -- Scroll float
   map('n', '<C-f>', scroll('<C-f>'), { desc = 'Scroll the float, or page down' })

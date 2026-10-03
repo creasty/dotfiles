@@ -17,7 +17,6 @@ M.filetype = {
   typescript_henry = 'typescript',
   bq = 'sql.bq',
   pg = 'sql.pg',
-  gitattributes = 'gitattributes.toml',
 }
 
 --- File extension used for the buffer, so snippets reading the file name
@@ -43,7 +42,6 @@ M.extension = {
   typescript = 'ts',
   typescriptreact = 'tsx',
   vim = 'vim',
-  ['gitattributes.toml'] = 'gitattributes',
 }
 
 local loaded = false

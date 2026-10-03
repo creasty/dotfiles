@@ -135,18 +135,18 @@ function M.setup()
   hi.DiagnosticUnderlineHint = { undercurl = 1, sp = s.gray200 }
 
   -- Treesitter
-  hi['@annotation'] = { fg = s.brown }
   hi['@attribute'] = { fg = s.yellow }
   hi['@boolean'] = { fg = s.orange }
   hi['@character'] = { fg = s.orange }
   hi['@comment'] = { fg = s.comment }
+  hi['@comment.error'] = { link = 'ErrorMsg' }
   hi['@comment.note'] = { fg = s.green }
   hi['@comment.todo'] = { fg = s.background, bg = s.comment }
+  hi['@comment.warning'] = { link = 'WarningMsg' }
   hi['@constant'] = { fg = s.orange }
   hi['@constant.builtin'] = { fg = s.yellow, italic = 1 }
   hi['@constant.macro'] = { fg = s.yellow, bold = 1 }
   hi['@constructor'] = { fg = s.yellow }
-  hi['@field'] = { fg = s.brown }
   hi['@function'] = { fg = s.pink }
   hi['@function.builtin'] = { fg = s.pink, italic = 1 }
   hi['@function.macro'] = { fg = s.pink, bold = 1 }
@@ -156,6 +156,15 @@ function M.setup()
   hi['@keyword.operator'] = { fg = s.aqua, italic = 1 }
   hi['@keyword.repeat'] = { fg = s.purple }
   hi['@label'] = { fg = s.purple }
+  hi['@markup.heading'] = { link = 'Title' }
+  hi['@markup.italic'] = { italic = 1 }
+  hi['@markup.link'] = { link = 'Constant' }
+  hi['@markup.link.url'] = { underline = 1, sp = s.dark_blue }
+  hi['@markup.math'] = { link = 'Special' }
+  hi['@markup.raw'] = { fg = s.orange }
+  hi['@markup.strikethrough'] = { strikethrough = 1 }
+  hi['@markup.strong'] = { bold = 1 }
+  hi['@markup.underline'] = { underline = 1 }
   hi['@module'] = { fg = s.brown }
   hi['@none'] = { fg = s.foreground } -- ??
   hi['@number'] = { fg = s.orange }
@@ -165,27 +174,12 @@ function M.setup()
   hi['@punctuation.special'] = { fg = s.aqua }
   hi['@string'] = { fg = s.green }
   hi['@string.escape'] = { fg = s.dark_aqua }
-  hi['@string.regex'] = { fg = s.aqua }
+  hi['@string.regexp'] = { fg = s.aqua }
   hi['@string.special'] = { fg = s.bright_green }
-  hi['@symbol'] = { fg = s.red }
+  hi['@string.special.symbol'] = { fg = s.red }
   hi['@tag'] = { fg = s.yellow }
   hi['@tag.attribute'] = { fg = s.brown }
   hi['@tag.delimiter'] = { fg = s.gray200 }
-  hi['@text.danger'] = { link = 'ErrorMsg' }
-  hi['@text.emphasis'] = { italic = 1 }
-  hi['@text.environment'] = { link = 'Macro' }
-  hi['@text.environment.name'] = { link = 'Type' }
-  hi['@text.literal'] = { fg = s.orange }
-  hi['@text.math'] = { link = 'Special' }
-  hi['@text.note'] = { link = 'SpecialComment' }
-  hi['@text.reference'] = { link = 'Constant' }
-  hi['@text.strike'] = { strikethrough = 1 }
-  hi['@text.strong'] = { bold = 1 }
-  hi['@text.title'] = { link = 'Title' }
-  hi['@text.todo'] = { link = 'Todo' }
-  hi['@text.underline'] = { underline = 1 }
-  hi['@text.uri'] = { underline = 1, sp = s.dark_blue }
-  hi['@text.warning'] = { link = 'WarningMsg' }
   hi['@type.builtin'] = { fg = s.yellow, italic = 1 }
   hi['@type.definition'] = { fg = s.purple }
   hi['@variable'] = { fg = s.blue }
@@ -255,10 +249,8 @@ function M.setup()
   -- markdown
   hi['@markup.quote.markdown'] = { link = '@string' }
   hi['@markup.link.markdown'] = { link = '@tag.delimiter' }
-  hi['@markup.link.url.markdown'] = { link = '@text.uri' }
   hi['@markup.link.label.markdown'] = { link = '@constant' }
   hi['@markup.link.markdown_inline'] = { link = '@tag.delimiter' }
-  hi['@markup.link.url.markdown_inline'] = { link = '@text.uri' }
   hi['@markup.link.label.markdown_inline'] = { link = '@variable' }
 
   -- json

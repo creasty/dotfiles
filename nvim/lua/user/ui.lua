@@ -273,7 +273,7 @@ local function setup()
   vim.o.tabline = [[%!v:lua.require'user.ui'.tabline()]]
 
   vim.o.statusline = [[%!v:lua.require'user.ui'.statusline()]]
-  vim.api.nvim_exec([[
+  vim.cmd([[
     augroup user_ui_statusline
       autocmd!
       autocmd FocusGained,BufEnter,BufReadPost,BufWritePost * lua require'user.ui'.update_filereadable()
@@ -282,7 +282,7 @@ local function setup()
       autocmd VimResized,DiagnosticChanged * redrawstatus
       autocmd User GitSignsUpdate redrawstatus
     augroup END
-  ]], false)
+  ]])
   vim.api.nvim_create_autocmd('LspProgress', {
     group = 'user_ui_statusline',
     callback = function(ev)

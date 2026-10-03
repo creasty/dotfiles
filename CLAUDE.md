@@ -29,8 +29,8 @@ With `dev = true`, lazy.nvim loads it from its working copy in `~/go/src/github.
 
 nvim-treesitter-endwise registers its `endwise!` directive with `all = false`, for a handler that gets one node per capture.
 Neovim 0.12 dropped the option and always passes a list of nodes, which breaks endwise: no `endfunction` after `function` in Vim script.
-`compat.lua` wraps `vim.treesitter.query.add_predicate` and `add_directive` to bring the option back, as Neovim 0.11 had it; `nvim/init.vim` loads it before the tree-sitter plugins.
-Remove it once endwise takes lists: the endwise tests in `nvim/tests/spec/treesitter_spec.lua` tell.
+`compat.lua` wraps `vim.treesitter.query.add_directive` to bring the option back, as Neovim 0.11 had it; `nvim/init.vim` loads it before the tree-sitter plugins.
+Remove it once endwise takes lists ([nvim-treesitter-endwise#60](https://github.com/RRethy/nvim-treesitter-endwise/pull/60) would): the endwise tests in `nvim/tests/spec/treesitter_spec.lua` tell.
 
 ## Neovim's exit without a UI
 
