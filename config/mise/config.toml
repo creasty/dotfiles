@@ -2,9 +2,25 @@
 [tools]
 bun = "1.4.2"
 java = "21" # Homebrew's openjdk, registered with `mise link` by provisioning
-node = { version = "24.21.0", postinstall = "sed 's/#.*//' ~/.config/mise/default-npm-packages | xargs -n 1 npm install -g || true" }
+node = "24.21.0"
 python = "3.14.7"
-ruby = { version = "4.0.7", postinstall = "sed 's/#.*//' ~/.config/mise/default-gems | xargs -n 1 gem install || true" }
+ruby = "4.0.7"
+# Tools from npm and RubyGems, each installed apart from Node and Ruby, so that a project pinning another version
+# still has them. npm's run on the project's Node; RubyGems' on the Ruby they were installed with, unless the
+# project's Ruby has its own (e.g. from its bundle).
+"npm:@antfu/ni" = "30.6.0"
+"npm:@github/copilot-language-server" = "1.551.2"
+"npm:@openai/codex" = "0.157.1"
+"npm:bash-language-server" = "5.8.1"
+"npm:eslint" = "10.11.0"
+"npm:graphql-language-service-cli" = "3.5.0"
+"npm:pnpm" = "12.6.0" # runs the version a project's packageManager names
+"npm:typescript" = "7.0.2"
+"npm:yarn" = "1.22.22"
+"gem:cocoapods" = "1.17.0"
+"gem:pry" = "0.16.0"
+"gem:rails" = "8.1.4"
+"gem:solargraph" = "0.60.4"
 
 [settings]
 # Read .java-version, .node-version, .nvmrc and .ruby-version too

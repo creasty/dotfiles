@@ -5,7 +5,7 @@
 load helper
 
 setup() {
-  ruby_version="$(mise_config '.tools.ruby.version')"
+  ruby_version="$(mise_config '.tools.ruby')"
 }
 
 @test "terminals run ruby from mise at the configured version" {
@@ -42,12 +42,11 @@ setup() {
   assert_none "$problems" 'linked, but not installed by provisioning'
 }
 
-@test "default gems are installed" {
-  local gem problems=''
-  run -0 login_bash 'gem list --no-versions'
-  # shellcheck disable=SC2013
-  for gem in $(sed 's/#.*//' "$DOTFILES_PATH/config/mise/default-gems"); do
-    grep -qxF -- "$gem" <<< "$output" || problems+="$gem"$'\n'
-  done
-  assert_none "$problems" 'not installed'
+# Apart from Ruby, as a project's .ruby-version swaps the Ruby that runs
+@test "terminals run the gem tools from their own installs" {
+  local version
+  version="$(mise_config '.tools["gem:solargraph"]')"
+  run -0 login_zsh 'print -r -- $commands[solargraph]; solargraph --version'
+  assert_equal "${lines[0]}" "$HOME/.local/share/mise/installs/gem-solargraph/$version/bin/solargraph"
+  assert_equal "${lines[1]}" "$version"
 }

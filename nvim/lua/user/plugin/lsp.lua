@@ -10,7 +10,7 @@ M.servers = {
   'codebook', -- spell checking; your words are in config/codebook/codebook.toml
   'cssls', -- vscode-langservers-extracted
   'dartls',
-  'denols', -- in Deno projects (ts_ls in the others)
+  'denols', -- in Deno projects (tsc in the others)
   'eslint', -- vscode-langservers-extracted
   'glsl_analyzer',
   'gopls',
@@ -24,8 +24,7 @@ M.servers = {
   'solargraph',
   'tailwindcss',
   'terraformls',
-  'ts_ls', -- typescript-language-server, for TypeScript 6 and older
-  'tsc', -- TypeScript 7's own server
+  'tsc', -- TypeScript 7's own server: the project's, or mise's (config/mise/config.toml)
   'vimls',
   'yamlls',
 }
@@ -60,47 +59,7 @@ local settings = {
       },
     },
   },
-  ts_ls = {
-    init_options = {
-      preferences = { includeCompletionsWithSnippetText = false },
-    },
-  },
 }
-
---- Whether the project's TypeScript still ships the tsserver.js that
---- typescript-language-server runs (TypeScript 6 and older).
-local function has_tsserver(root)
-  return vim.uv.fs_stat(vim.fs.joinpath(root, 'node_modules/typescript/lib/tsserver.js')) ~= nil
-end
-
---- TypeScript 7 (the native compiler) is its own language server, `tsc
---- --lsp`: ts_ls takes the projects on an older TypeScript, tsc the others,
---- including those without one (mise installs TypeScript 7).
-local function route_typescript()
-  -- (nvim-lspconfig's: the project root, unless the file is Deno's)
-  local project_root = vim.lsp.config.ts_ls.root_dir
-  -- nvim-lspconfig's tsc picks a binary that has --lsp in its root_dir and
-  -- starts it in its cmd; keep both from this load of the config, as each
-  -- load has its own choice of binary.
-  local tsc = vim.lsp.config.tsc
-  settings.ts_ls.root_dir = function(bufnr, on_dir)
-    project_root(bufnr, function(root)
-      if has_tsserver(root) then
-        on_dir(root)
-      end
-    end)
-  end
-  settings.tsc = {
-    cmd = tsc.cmd,
-    root_dir = function(bufnr, on_dir)
-      project_root(bufnr, function(root)
-        if not has_tsserver(root) then
-          tsc.root_dir(bufnr, on_dir)
-        end
-      end)
-    end,
-  }
-end
 
 local severity = vim.diagnostic.severity
 
@@ -258,7 +217,6 @@ end
 ---------------------------------------------------------------------------
 
 function M.setup()
-  route_typescript()
   -- (blink.cmp adds its completion capabilities to every server itself)
   for name, config in pairs(settings) do
     vim.lsp.config(name, config)

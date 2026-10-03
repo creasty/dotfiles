@@ -5,7 +5,7 @@
 load helper
 
 setup() {
-  node_version="$(mise_config '.tools.node.version')"
+  node_version="$(mise_config '.tools.node')"
 }
 
 @test "terminals run node from mise at the configured version" {
@@ -23,14 +23,13 @@ setup() {
   assert_equal "$output" "$HOME/.local/share/mise/shims/node"
 }
 
-@test "default npm packages are installed" {
-  local pkg problems=''
-  run -0 login_bash 'npm ls --global --parseable --depth=0'
-  # shellcheck disable=SC2013
-  for pkg in $(sed 's/#.*//' "$DOTFILES_PATH/config/mise/default-npm-packages"); do
-    grep -qx ".*/node_modules/$pkg" <<< "$output" || problems+="$pkg"$'\n'
-  done
-  assert_none "$problems" 'not installed'
+# Apart from Node, as a project's .node-version swaps the Node that runs
+@test "terminals run the npm tools from their own installs" {
+  local version
+  version="$(mise_config '.tools["npm:typescript"]')"
+  run -0 login_zsh 'print -r -- $commands[tsc]; tsc --version'
+  assert_equal "${lines[0]}" "$HOME/.local/share/mise/installs/npm-typescript/$version/bin/tsc"
+  assert_equal "${lines[1]}" "Version $version"
 }
 
 @test "yarn runs" {

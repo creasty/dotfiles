@@ -573,45 +573,6 @@ describe('LSP', function()
     end)
   end)
 
-  describe('TypeScript', function()
-    -- TypeScript 7 is its own language server (`tsc --lsp`), and no longer
-    -- ships the tsserver.js typescript-language-server (ts_ls) runs.
-    local function ts_project(files)
-      local nvim = t.nvim()
-      nvim:files(vim.tbl_extend('force', { ['package-lock.json'] = { '{}' } }, files))
-      return nvim
-    end
-
-    --- Whether the server would start for the current buffer.
-    local function starts(nvim, name)
-      return nvim:lua(
-        [[
-          local started = false
-          vim.lsp.config[...].root_dir(0, function()
-            started = true
-          end)
-          return started
-        ]],
-        name
-      )
-    end
-
-    it('a project on TypeScript 7 gets its tsc, not ts_ls', function()
-      local nvim = ts_project({ ['node_modules/.bin/tsc'] = { '#!/bin/sh', 'echo "Version 7.0.2"' } })
-      vim.uv.fs_chmod(nvim:path('node_modules/.bin/tsc'), tonumber('755', 8))
-      nvim:edit('app.ts', { '' })
-      t.ok(starts(nvim, 'tsc'), 'tsc starts')
-      t.no(starts(nvim, 'ts_ls'), 'ts_ls does not')
-    end)
-
-    it('a project on an older TypeScript gets ts_ls, not tsc', function()
-      local nvim = ts_project({ ['node_modules/typescript/lib/tsserver.js'] = { '' } })
-      nvim:edit('app.ts', { '' })
-      t.ok(starts(nvim, 'ts_ls'), 'ts_ls starts')
-      t.no(starts(nvim, 'tsc'), 'tsc does not')
-    end)
-  end)
-
   describe('spell checking', function()
     it('reports misspellings as hints', function()
       local nvim = t.nvim()
