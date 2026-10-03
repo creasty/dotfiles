@@ -241,21 +241,6 @@ M.spec = {
     end,
   },
 
-  --  Runner
-  -----------------------------------------------
-  { -- run commands quickly
-    'thinca/vim-quickrun',
-    init = function()
-      vim.g.quickrun_config = {
-        _ = {
-          runner = 'nvim_job',
-          ['outputter/buffer/opener'] = ':botright 15sp',
-        },
-      }
-      vim.keymap.set('n', '<Leader>r', '<Plug>(quickrun)', { remap = true })
-    end,
-  },
-
   --  Terminal
   -----------------------------------------------
   { -- opens the files that a program in a terminal (user/terminal.lua) opens with nvim in this Neovim, rather than

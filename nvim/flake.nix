@@ -109,12 +109,6 @@
       flake = false;
     };
 
-    # Runner
-    vim-quickrun = {
-      url = "git+https://github.com/thinca/vim-quickrun?shallow=1";
-      flake = false;
-    };
-
     # Terminal
     flatten-nvim = {
       url = "git+https://github.com/willothy/flatten.nvim?shallow=1";
