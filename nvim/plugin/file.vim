@@ -22,7 +22,10 @@ function! s:rename_current_file(new_path) abort
     if l:answer !~# '^[yY]$'
       return
     endif
-    call s:delete(l:new_path)
+    if !s:delete(l:new_path)
+      echohl ErrorMsg | echomsg 'Could not delete' l:new_path | echohl None
+      return
+    endif
   endif
 
   keepalt enew
@@ -38,13 +41,14 @@ function! s:rename_current_file(new_path) abort
   exec 'keepalt' 'edit' fnameescape(l:new_path)
 endfunction
 
+" moves the file to the Trash (macOS's trash, or https://github.com/ali-rantakari/trash), or deletes it
+" where there's no trash command; true once it's gone
 function! s:delete(file) abort
-  " @see https://github.com/ali-rantakari/trash
   if executable('trash')
-    call jobstart(['trash', a:file])
-  else
-    call delete(a:file)
+    call system(['trash', a:file])
+    return v:shell_error == 0
   endif
+  return delete(a:file) == 0
 endfunction
 
 function! s:delete_current_file() abort

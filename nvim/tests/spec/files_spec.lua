@@ -146,6 +146,22 @@ describe('Files', function()
       t.eq({ 'fresh' }, nvim:read_file('fresh.txt'))
     end)
 
+    it(':Rename onto an existing file, once confirmed, moves that file to the Trash first', function()
+      local nvim = t.nvim()
+      nvim:files({ ['taken.txt'] = 'overwritten' })
+      nvim:edit('renamed.txt', { 'content' })
+      nvim:type(':Rename taken.txt<CR>y<CR>')
+      local trashed = nvim.ctx.trash_dir .. '/taken.txt'
+      nvim:wait_for(function()
+        return vim.fn.filereadable(trashed) == 1
+      end)
+      t.eq({ 'overwritten' }, vim.fn.readfile(trashed))
+      nvim:sleep(200)
+      t.eq({ 'content' }, nvim:read_file('taken.txt'))
+      t.no(nvim:exists('renamed.txt'))
+      t.eq(nvim:path('taken.txt'), nvim:bufname())
+    end)
+
     it(':Delete moves the file to the Trash and closes its buffer', function()
       local nvim = t.nvim()
       nvim:edit('doomed.txt', { 'bye' })
