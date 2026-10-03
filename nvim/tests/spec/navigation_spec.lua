@@ -1,4 +1,4 @@
--- Getting around: alternate files, project root, hop, git, file tree, runner.
+-- Getting around: alternate files, project root, hop, git, file tree.
 local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
@@ -400,29 +400,5 @@ describe('Navigation', function()
       t.eq('list', picker.focus)
       t.eq(40, nvim:lua('return vim.api.nvim_win_get_width(0)'))
     end)
-  end)
-
-  local function quickrun_window(nvim)
-    return nvim:wait_for(function()
-      return nvim:lua([[
-        for _, w in ipairs(vim.api.nvim_list_wins()) do
-          local lines = vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(w), 0, -1, false)
-          if table.concat(lines, '\n'):find('hello-from-quickrun', 1, true) and vim.bo[vim.api.nvim_win_get_buf(w)].buftype ~= '' then
-            local pos = vim.api.nvim_win_get_position(w)
-            return { height = vim.api.nvim_win_get_height(w), row = pos[1], col = pos[2] }
-          end
-        end
-      ]])
-    end)
-  end
-
-  it(',r runs the current file and shows its output in a split 15 lines high, across the bottom', function()
-    local nvim = t.nvim()
-    nvim:edit('hello.sh', { 'echo hello-from-quickrun' })
-    nvim:type(',r')
-    local win = quickrun_window(nvim)
-    t.eq(15, win.height)
-    t.eq(0, win.col)
-    t.ok(win.row > 0, 'below the file')
   end)
 end)

@@ -314,7 +314,6 @@
         "switch-vim": "switch-vim",
         "vim-altr": "vim-altr",
         "vim-easy-align": "vim-easy-align",
-        "vim-quickrun": "vim-quickrun",
         "vim-repeat": "vim-repeat",
         "vim-surround": "vim-surround",
         "vim-textmanip": "vim-textmanip"
@@ -386,23 +385,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/junegunn/vim-easy-align"
-      }
-    },
-    "vim-quickrun": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1720759488,
-        "narHash": "sha256-EoE1oc0uOopxjZ0XrfpQm4xK+acmvr6mD2I/9d2e17U=",
-        "ref": "refs/heads/master",
-        "rev": "77b4d6ea9972a206f02c736882c2398c36d2983c",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/thinca/vim-quickrun"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/thinca/vim-quickrun"
       }
     },
     "vim-repeat": {
