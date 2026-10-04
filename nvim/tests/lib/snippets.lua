@@ -23,12 +23,9 @@ M.filetype = {
 --- (`expand('%:t')`) see a realistic one.
 M.extension = {
   c = 'c',
-  css = 'css',
   go = 'go',
-  haml = 'haml',
   javascript = 'js',
   javascriptreact = 'jsx',
-  lua = 'lua',
   markdown = 'md',
   proto = 'proto',
   ruby = 'rb',

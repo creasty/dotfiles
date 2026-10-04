@@ -5,4 +5,4 @@ source <sfile>:h/javascript.vim
 " Example diff:
 "   -className="foo bar"
 "   +className={`foo bar`}
-command! ReactAttrToExp normal cs"`ysa`}%h
+command! -buffer ReactAttrToExp normal cs"`ysa`}%h

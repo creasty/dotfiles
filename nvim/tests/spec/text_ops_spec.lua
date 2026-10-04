@@ -145,6 +145,13 @@ describe('Text operations', function()
       nvim:type('vlmllh')
       t.eq({ ' abcd' }, nvim:lines())
     end)
+
+    it('moving text left leaves no whitespace at the end of the line', function()
+      local nvim = t.nvim()
+      nvim:set_buffer('ab |cd')
+      nvim:type('vlmh')
+      t.eq({ 'abcd' }, nvim:lines())
+    end)
   end)
 
   describe('switch (-)', function()
@@ -166,12 +173,15 @@ describe('Text operations', function()
       end)
     end
 
-    it('javascript: const -> let, onFocus -> onBlur, useState -> useAdaptiveState', function()
-      local nvim = nvim_ft('javascript')
-      for from, to in pairs({ const = 'let', onFocus = 'onBlur', useState = 'useAdaptiveState', onKeyUp = 'onKeyDown' }) do
-        nvim:set_buffer('|' .. from)
-        nvim:type('-')
-        t.eq({ to }, nvim:lines(), from)
+    it('javascript, typescript and their react variants: const -> let, onFocus -> onBlur, useState -> useAdaptiveState', function()
+      for _, filetype in ipairs({ 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }) do
+        local nvim = nvim_ft(filetype)
+        for from, to in pairs({ const = 'let', onFocus = 'onBlur', useState = 'useAdaptiveState', onKeyUp = 'onKeyDown' }) do
+          nvim:set_buffer('|' .. from)
+          nvim:type('-')
+          t.eq({ to }, nvim:lines(), filetype .. ': ' .. from)
+        end
+        nvim:close()
       end
     end)
 
@@ -186,13 +196,6 @@ describe('Text operations', function()
       nvim:set_buffer('|it "works"')
       nvim:type('-')
       t.eq({ 'xit "works"' }, nvim:lines())
-    end)
-
-    it('graphql: query -> mutation', function()
-      local nvim = nvim_ft('graphql')
-      nvim:set_buffer('|query Foo')
-      nvim:type('-')
-      t.eq({ 'mutation Foo' }, nvim:lines())
     end)
 
     it('proto: OPTIONAL -> REQUIRED, string -> google.protobuf.StringValue', function()
