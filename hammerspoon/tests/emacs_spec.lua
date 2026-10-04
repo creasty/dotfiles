@@ -1,4 +1,4 @@
--- emacs.lua: Emacs mode, and Escape switching to English
+-- emacs.lua: Emacs mode
 local fake = require('hs')
 local t = require('t')
 local it, keys, received = t.it, t.keys, t.received
@@ -18,9 +18,9 @@ it('Ctrl-D, H and J are Forward Delete, Delete and Return, but not with Shift', 
   received('forwarddelete↓ forwarddelete↑ delete↓ delete↑ return↓ return↑ ctrl+shift+h↓ ctrl+shift+h↑')
 end)
 
-it('Ctrl-C is Escape, switching to English (EISUU) first', function()
-  keys('ctrl+c↓ ctrl+c↑')
-  received('eisu↓ eisu↑ escape↓ escape↑')
+it('Ctrl-C is Escape, and Escape passes as it is', function()
+  keys('ctrl+c↓ ctrl+c↑ escape↓ escape↑')
+  received('escape↓ escape↑ escape↓ escape↑')
 end)
 
 it('with Command or Option, Control keys stay', function()
@@ -28,11 +28,11 @@ it('with Command or Option, Control keys stay', function()
   received('ctrl+cmd+p↓ ctrl+cmd+p↑ ctrl+alt+c↓ ctrl+alt+c↑ ctrl+shift+c↓ ctrl+shift+c↑')
 end)
 
-it('terminals keep Ctrl-C, still switching to English, and the Emacs keys', function()
+it('terminals keep Ctrl-C and the Emacs keys', function()
   for _, terminal in ipairs({ 'net.kovidgoyal.kitty', 'org.alacritty', 'com.mitchellh.ghostty' }) do
     fake.front, fake.received = terminal, {}
     keys('ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
-    received('eisu↓ eisu↑ ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
+    received('ctrl+c↓ ctrl+c↑ ctrl+p↓ ctrl+p↑ ctrl+a↓ ctrl+a↑')
   end
 end)
 
@@ -40,13 +40,6 @@ it('Emacs and VS Code keep the Emacs keys, but Ctrl-C is Escape', function()
   for _, app in ipairs({ 'org.gnu.Emacs', 'com.microsoft.VSCode' }) do
     fake.front, fake.received = app, {}
     keys('ctrl+p↓ ctrl+p↑ ctrl+j↓ ctrl+j↑ ctrl+a↓ ctrl+a↑ ctrl+c↓ ctrl+c↑')
-    received('ctrl+p↓ ctrl+p↑ ctrl+j↓ ctrl+j↑ ctrl+a↓ ctrl+a↑ eisu↓ eisu↑ escape↓ escape↑')
+    received('ctrl+p↓ ctrl+p↑ ctrl+j↓ ctrl+j↑ ctrl+a↓ ctrl+a↑ escape↓ escape↑')
   end
-end)
-
---  Switch input source with Escape key
---------------------------------------------------
-it('Escape switches to English (EISUU) first', function()
-  keys('escape↓ escape↑ shift+escape↓ shift+escape↑')
-  received('eisu↓ eisu↑ escape↓ escape↑ shift+escape↓ shift+escape↑')
 end)

@@ -290,6 +290,9 @@ lua require('user.terminal').setup()
 " command-line shortcuts (:s/ -> :s/\v//g, :ee, :w!!, ...)
 lua require('user.cmdline').setup()
 
+" macOS's keyboard layout (ABC) in normal mode, not an input method
+lua require('user.input_source').setup()
+
 " operators and commands on text: r{motion}, ge_ and the other cases, :Subs, :RengBang
 lua require('user.text_ops').setup()
 

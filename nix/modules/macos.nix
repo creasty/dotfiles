@@ -97,6 +97,7 @@ in
         KeyRepeat = 1; # 16.7ms
         InitialKeyRepeat = 12; # 200ms
         ApplePressAndHoldEnabled = false; # no accents popup
+        TSMLanguageIndicatorEnabled = false; # no input source bubble at the cursor, which apps read as they start
         AppleKeyboardUIMode = 3; # full keyboard access for all controls
         AppleLocale = "en_JP@currency=JPY";
         AppleMeasurementUnits = "Centimeters";
