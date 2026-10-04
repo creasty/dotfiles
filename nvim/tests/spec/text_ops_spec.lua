@@ -145,6 +145,13 @@ describe('Text operations', function()
       nvim:type('vlmllh')
       t.eq({ ' abcd' }, nvim:lines())
     end)
+
+    it('moving text left leaves no whitespace at the end of the line', function()
+      local nvim = t.nvim()
+      nvim:set_buffer('ab |cd')
+      nvim:type('vlmh')
+      t.eq({ 'abcd' }, nvim:lines())
+    end)
   end)
 
   describe('switch (-)', function()

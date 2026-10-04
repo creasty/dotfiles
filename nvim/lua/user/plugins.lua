@@ -32,15 +32,39 @@ M.spec = {
     'creasty/mold.vim',
     init = function()
       local group = vim.api.nvim_create_augroup('user_plugin_mold', {})
+      local cursor
       vim.api.nvim_create_autocmd('User', {
         group = group,
         pattern = 'MoldTemplateLoadPre',
-        command = 'call user#plugin#mold#before_load()',
+        callback = function()
+          cursor = vim.fn.getcurpos()
+        end,
       })
+      -- the template's macros replaced, its ERB run, and the cursor on
+      -- <+CURSOR+>, or back where it was
       vim.api.nvim_create_autocmd('User', {
         group = group,
         pattern = 'MoldTemplateLoadPost',
-        command = 'call user#plugin#mold#after_load()',
+        callback = function()
+          local macros = {
+            FILE_PATH = vim.fn.expand('%:p'),
+            FILE_NAME = vim.fn.expand('%:t'),
+            FILE_BASE_NAME = vim.fn.expand('%:t:r'),
+            FULL_NAME = 'Yuki Iwanaga',
+            USER_NAME = 'Creasty',
+          }
+          local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+          for i, line in ipairs(lines) do
+            lines[i] = line:gsub('[%w_]+', macros)
+          end
+          vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
+          vim.cmd([[silent! %!erb -T '-']])
+          if vim.fn.search('<+CURSOR+>') > 0 then
+            vim.cmd('normal! "_da>')
+          else
+            vim.fn.setpos('.', cursor)
+          end
+        end,
       })
     end,
   },
@@ -89,7 +113,22 @@ M.spec = {
       'duplicate-down', 'duplicate-up', 'duplicate-left', 'duplicate-right',
     }),
     init = function()
-      vim.fn['user#plugin#textmanip#init']()
+      -- moved or duplicated characters (not lines) leave no whitespace at the
+      -- ends of their lines (in Vim script: the plugin's helper takes its own
+      -- state, which a Lua function gets a copy of)
+      vim.cmd([[let g:textmanip_hooks = {'finish': {tm -> tm.linewise ? 0 : textmanip#helper#get().remove_trailing_WS(tm)}}]])
+
+      -- in visual mode, m then h j k l moves the selection and H J K L
+      -- duplicates it, as many times as typed
+      vim.keymap.set('x', '<Plug>(user-textmanip)', '<Nop>')
+      vim.keymap.set('x', 'm', '<Plug>(user-textmanip)', { remap = true })
+      vim.keymap.set('x', '<Plug>(user-textmanip)m', '<Plug>(user-textmanip)', { remap = true })
+      for key, action in pairs({
+        j = 'move-down', k = 'move-up', h = 'move-left', l = 'move-right',
+        J = 'duplicate-down', K = 'duplicate-up', H = 'duplicate-left', L = 'duplicate-right',
+      }) do
+        vim.keymap.set('x', '<Plug>(user-textmanip)' .. key, '<Plug>(textmanip-' .. action .. ')<Plug>(user-textmanip)', { remap = true })
+      end
     end,
   },
 
@@ -217,7 +256,36 @@ M.spec = {
       { 'gA', '<Plug>(altr-back)', remap = true },
     },
     config = function()
-      vim.fn['user#plugin#altr#lazy_init']()
+      local define = vim.fn['altr#define']
+      -- header files
+      define('%.c', '%.h', '%.m')
+      -- Rails / Ruby
+      define('app/models/%.rb', 'spec/models/%_spec.rb', 'spec/factories/%s.rb')
+      define('app/%/%.rb', 'spec/%/%_spec.rb')
+      define('lib/%.rb', 'spec/lib/%_spec.rb')
+      define('Gemfile', 'Gemfile.lock')
+      -- frontend
+      define('%.js', '%.test.js', '%.jsx', '%.test.jsx', '%.stories.jsx')
+      define('%.ts', '%.test.ts', '%.tsx', '%.test.tsx', '%.stories.tsx')
+      -- Go
+      define('%.go', '%_test.go', '%_mock.go', '%_ex_test.go')
+      define('go.mod', 'go.sum')
+      -- Docker
+      define('docker-compose.yml', 'Dockerfile')
+      -- config
+      define('.env', '.env.sample', '.env.local', '.env.development', '.env.test')
+      define('.env.%', '.env.%.local')
+      define('default.properties', 'local.properties', 'test.properties')
+      define('%.properties', '%.local.properties')
+      -- TLA+
+      define('%.tla', '%.cfg')
+      -- translations, English and Japanese
+      for _, file in ipairs({
+        'locales/@.yml', 'locales/%.@.yml', 'locales/%/@.yml',
+        'locales/@.json', 'locales/%.@.json', 'locales/%/@.json',
+      }) do
+        define((file:gsub('@', 'en')), (file:gsub('@', 'ja')))
+      end
     end,
   },
 
