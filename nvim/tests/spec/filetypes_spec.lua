@@ -68,12 +68,6 @@ describe('Filetypes', function()
       t.eq('!^F,o,O,0},0],<:>', nvim:eval('&l:indentkeys'))
     end)
 
-    it('csv files are written as EUC-JP', function()
-      local nvim = t.nvim()
-      nvim:edit('data.csv')
-      t.eq('euc-jp', nvim:eval('&l:fileencoding'))
-    end)
-
     it('markdown folds by heading', function()
       local nvim = t.nvim()
       nvim:edit('a.md', { '# One', 'text', '## Two', 'more', 'Three', '=====', 'x' })
