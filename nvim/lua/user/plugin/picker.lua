@@ -908,7 +908,12 @@ M.config = {
   },
   icons = { files = { enabled = false } },
   sources = {
-    explorer = { hidden = true, exclude = { '.git', '*~' } },
+    explorer = {
+      hidden = true,
+      exclude = { '.git', '*~' },
+      -- <C-s> is <C-w> in the sidebar too, as in any other window
+      win = { list = { keys = { ['<c-s>'] = false } } },
+    },
   },
 }
 
