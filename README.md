@@ -1,4 +1,4 @@
-![creasty's dotfiles — Stellar productivity](./cover.jpg)
+![creasty's dotfiles — Stellar productivity](./.github/cover.jpg)
 
 # creasty's dotfiles
 
