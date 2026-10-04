@@ -23,8 +23,4 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
       return arrow:sub(1, 1) == '<' and arrow:sub(2, 2) .. '> ' or '<' .. arrow:sub(1, 1) .. ' '
     end),
   }, { priority = 999 }),
-  S.snip([[/\@<!/]], 'Heading 1', 'br', '//=== $0\n//' .. ('='):rep(94), { priority = 999 }),
-  S.snip([[/\@<!//]], 'Heading 2', 'br', '//  $0\n//' .. ('-'):rep(47), { priority = 999 }),
-  S.snip([[#\@<!#]], 'Heading 1', 'br', '#=== $0\n#' .. ('='):rep(94), { priority = 999 }),
-  S.snip([[#\@<!##]], 'Heading 2', 'br', '#  $0\n#' .. ('-'):rep(47), { priority = 999 }),
 }

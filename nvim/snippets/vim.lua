@@ -34,8 +34,6 @@ let g:loaded_$1 = 1
 redir => ${1:var_name}
 	$0
 redir END]]),
-  S.snip([["\@<!"]], 'Heading 1', 'br', '"=== $0\n"' .. ('='):rep(94)),
-  S.snip([["\@<!""]], 'Heading 2', 'br', '"  $0\n"' .. ('-'):rep(47)),
   S.snip('minimum_rtp', 'Build rtp for minimum init.vim', 'b', [[
 if has('vim_starting')
 	let s:repos = [

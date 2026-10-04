@@ -16,10 +16,6 @@ local SAMPLES = {
     ['\\v(\\S?)[<-]@<!(-{1,2})\\s?'] = { 'x-', 'x--', '-' },
     ['\\v(\\S?)[<=]@<!(\\={1,2})\\s?'] = { 'x=', 'x==' },
     ['\\v([=-]\\>|\\<[=-])\\s?'] = { '->', '=>', '<-', '<=' },
-    ['/\\@<!/'] = { '/' },
-    ['/\\@<!//'] = { '//' },
-    ['#\\@<!#'] = { '#' },
-    ['#\\@<!##'] = { '##' },
   },
   c = {
     ['#include '] = { { keys = '#include ', auto = true } },
@@ -33,10 +29,6 @@ local SAMPLES = {
     ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'p.notnull', 'p.nn' },
     ['\\v(\\S+)\\.while'] = { 'running.while' },
     ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
-  },
-  css = {
-    ['/\\@<!/'] = { '/' },
-    ['/\\@<!//'] = { '//' },
   },
   go_postfix = {
     ['\\v(\\S+)\\.var'] = { 'f(x).var' },
@@ -54,18 +46,9 @@ local SAMPLES = {
     ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
     ['\\v(\\S+)\\.append'] = { 'items.append' },
   },
-  haml = {
-    ['/\\@<!/'] = { '/' },
-    ['/\\@<!//'] = { '//' },
-  },
   markdown = {
     ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
     ['^-\\{3,}'] = { '---' },
-    ['^[\\-=]'] = {
-      { before = { 'Title' }, keys = '-', auto = true },
-      { before = { 'Title' }, keys = '=', auto = true },
-      { before = { '見出し' }, keys = '-', auto = true },
-    },
     ['\\v(<|\\s+)br'] = { 'line br' },
   },
   proto = {
@@ -93,16 +76,10 @@ local SAMPLES = {
   },
   tex = {
     ['\\vtr(\\d+)'] = { 'tr3' },
-    ['%\\@<!%'] = { '%' },
-    ['%\\@<!%%'] = { '%%' },
   },
   tla = {
     ['^-\\{3,}'] = { { keys = '---', auto = true } },
     ['^=\\{3,}'] = { { keys = '===', auto = true } },
-  },
-  vim = {
-    ['"\\@<!"'] = { '"' },
-    ['"\\@<!""'] = { '""' },
   },
 }
 
@@ -186,9 +163,9 @@ local M = {}
 --- Snippet files per spec file (several spec files run in parallel).
 --- Every snippet file must be listed; snippets_spec checks it.
 M.shards = {
-  { 'all', 'c', 'clike_postfix', 'clike_stmt', 'css', 'gitattributes', 'go', 'go_postfix', 'haml' },
+  { 'all', 'c', 'clike_postfix', 'clike_stmt', 'gitattributes', 'go', 'go_postfix' },
   { 'proto' },
-  { 'javascript', 'javascriptreact', 'lua', 'markdown', 'pg', 'ruby', 'ruby_postfix', 'tex' },
+  { 'javascript', 'javascriptreact', 'markdown', 'pg', 'ruby', 'ruby_postfix', 'tex' },
   { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescript_henry', 'typescriptreact', 'vim' },
 }
 

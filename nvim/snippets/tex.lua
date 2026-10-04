@@ -15,6 +15,4 @@ return {
       return row_placeholders(snip.captures[1])
     end),
   }, { docTrig = 'tr3' }),
-  S.snip([[%\@<!%]], 'Heading 1', 'br', '%=== $0\n%' .. ('='):rep(94)),
-  S.snip([[%\@<!%%]], 'Heading 2', 'br', '%  $0\n%' .. ('-'):rep(47)),
 }

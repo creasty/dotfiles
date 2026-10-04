@@ -18,17 +18,6 @@ local function create_table(size)
   return table.concat(lines)
 end
 
--- Width on screen (east asian wide characters take 2 cells).
-local function screen_len(text)
-  return vim.api.nvim_strwidth(text)
-end
-
--- The line above the cursor (nil on the first line).
-local function previous_line()
-  local row = vim.api.nvim_win_get_cursor(0)[1]
-  return row > 1 and vim.api.nvim_buf_get_lines(0, row - 2, row - 1, true)[1] or nil
-end
-
 return {
   S.snip([[\vtb(\d+x\d+)]], 'Customizable table', 'br', {
     S.anon(function(snip)
@@ -40,14 +29,5 @@ return {
 $0
 </details><br>]]),
   S.snip([[^-\{3,}]], 'Horizontal rule', 'r', ('-'):rep(80)),
-  -- Underlines the heading on the line above as wide as it is.
-  S.snip('^[\\-=]', 'Headering', 'rA', '$RULE\n', {
-    condition = function()
-      return (previous_line() or ''):match('^[^%-=%s]') ~= nil
-    end,
-    vars = function(snip)
-      return { RULE = snip.trigger:rep(screen_len(previous_line())) }
-    end,
-  }),
   S.snip([[\v(<|\s+)br]], 'Break line', 'r', '<br>'),
 }
