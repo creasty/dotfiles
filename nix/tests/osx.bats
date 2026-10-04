@@ -39,6 +39,34 @@ configured_defaults() {
   assert_none "$problems" 'unexpected shortcuts'
 }
 
+# The shortcuts the session uses, which the switch has it take up: the window server's, through its private calls
+@test "keyboard shortcuts are live" {
+  local reader="$BATS_TEST_TMPDIR/hotkeys" id expected actual problems=''
+  cc -framework CoreGraphics -x c -o "$reader" - << 'EOF'
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+int32_t CGSGetSymbolicHotKeyValue(int, uint16_t *, uint16_t *, uint32_t *);
+bool CGSIsSymbolicHotKeyEnabled(int);
+// Prints the shortcut of the ID as an entry of AppleSymbolicHotKeys
+int main(int argc, char **argv) {
+  int id = atoi(argv[1]);
+  uint16_t character, code;
+  uint32_t flags;
+  if (!CGSIsSymbolicHotKeyEnabled(id)) return puts("{\"enabled\":false}") < 0;
+  if (CGSGetSymbolicHotKeyValue(id, &character, &code, &flags) != 0) return 1;
+  printf("{\"enabled\":true,\"value\":{\"parameters\":[%u,%u,%u],\"type\":\"standard\"}}\n", character, code, flags);
+}
+EOF
+  while read -r id; do
+    expected="$(manifest ".hotKeys[\"$id\"] | sort_keys(..) | @json")"
+    actual="$("$reader" "$id" | yq -p json 'sort_keys(..) | @json')"
+    [ "$actual" = "$expected" ] || problems+="$id: $actual (expected $expected)"$'\n'
+  done < <(manifest '.hotKeys | keys | .[]')
+  assert_none "$problems" 'shortcuts not live'
+}
+
 # The apps the switch assigns to All Desktops, among the user's assignments to Spaces
 @test "apps show on every Space" {
   local bindings id problems=''

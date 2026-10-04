@@ -163,10 +163,13 @@ in
 
     dotfiles.hotKeys = {
       "52" = null; # no shortcut for Launchpad & Dock > Turn Dock hiding on/off
-      # No shortcuts for Input Sources > Select the previous input source (Ctrl-Space) and Select next source in Input
-      # menu (Ctrl-Option-Space)
-      "60" = null;
-      "61" = null;
+      "60" = null; # no shortcut for Input Sources > Select the previous input source (Ctrl-Space)
+      # Input Sources > Select next source in Input menu: Ctrl-; (the character, its key code, and Ctrl's flag)
+      "61" = [
+        59
+        41
+        262144
+      ];
     };
 
     dotfiles.allDesktops = [ "com.apple.finder" ];
@@ -188,9 +191,12 @@ in
       fi
     ''
     + lib.optionalString (hotKeys != { }) ''
-      # Adds the shortcuts to the user's, where CustomUserPreferences would replace them all. macOS reads them at login.
+      # Adds the shortcuts to the user's, where CustomUserPreferences would replace them all, and has the session take
+      # them up, which it would only at the next login
       launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
         defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add ${lib.escapeShellArgs hotKeyArgs}
+      launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     ''
     + lib.optionalString (config.dotfiles.allDesktops != [ ]) ''
       # Adds the apps to the user's assignments to Spaces, where CustomUserPreferences would replace them all (the

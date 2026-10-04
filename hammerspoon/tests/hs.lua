@@ -243,9 +243,6 @@ function fake.reset()
   -- `kitty = <kitty window ID>` for one of kitty's
   fake.windows = { { id = 1 } }
   fake.space = 1 -- the current space
-  fake.layouts = { 'com.apple.keylayout.ABC' }
-  fake.methods = { 'com.google.inputmethod.Japanese.base' }
-  fake.source = 'com.apple.keylayout.ABC'
   fake.autolaunch = false
 
   local logger = {}
@@ -331,23 +328,6 @@ function fake.reset()
       windowSpaces = function(id)
         local spec = assert(window_spec(id), 'no window ' .. id)
         return spec.spaces or { fake.space }
-      end,
-    },
-
-    keycodes = {
-      layouts = function(ids)
-        assert(ids == true)
-        return { table.unpack(fake.layouts) }
-      end,
-      methods = function(ids)
-        assert(ids == true)
-        return { table.unpack(fake.methods) }
-      end,
-      currentSourceID = function(id)
-        if id == nil then return fake.source end
-        record('select ' .. id)
-        fake.source = id
-        return true
       end,
     },
   }
