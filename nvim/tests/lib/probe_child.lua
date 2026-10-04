@@ -195,7 +195,11 @@ local function snacks_picker(result)
     result.focus = 'prompt'
   end
   result.focused = result.focus ~= nil
-  result.loading = picker:is_active() or list.target ~= nil
+  result.query = input.win:valid() and input:get() or nil
+  -- (snacks filters by what is typed in the prompt once a find it schedules
+  -- runs: until then the list is the one before)
+  local unfiltered = result.query ~= nil and vim.trim(result.query) ~= picker.matcher.pattern
+  result.loading = picker:is_active() or list.target ~= nil or unfiltered
   for i = 1, list:count() do
     result.items[#result.items + 1] = snacks_text(picker, list:get(i))
   end
@@ -207,14 +211,14 @@ local function snacks_picker(result)
   for _, item in ipairs(picker:selected({ fallback = false })) do
     result.marked[#result.marked + 1] = snacks_text(picker, item)
   end
-  result.query = input.win:valid() and input:get() or nil
   return true
 end
 
 --- { open, floating, focused, focus, loading, items, visible, current,
 ---   marked, query, source, title }
 --- focus: 'prompt' or 'list', the picker window with the cursor; loading:
---- the picker is still filling the list; items: the results, as shown
+--- the picker is still filling the list, or has yet to filter it by the
+--- query; items: the results, as shown
 --- (struck-through text in {- -}); visible: those on screen in the list
 --- window; current: the selected one (the item <CR> acts on); marked: those
 --- marked for a multi-item action; query: the prompt text; source: the
