@@ -271,18 +271,25 @@ end)
 
 local marks_ns = vim.api.nvim_create_namespace('user_ui_marks')
 
+--- The lines of the buffer's marks a-z, by name.
+local function mark_lines(buf)
+  local lines = {}
+  for _, mark in ipairs(vim.fn.getmarklist(buf)) do
+    if mark.mark:match("^'%l$") then
+      lines[mark.mark:sub(2)] = mark.pos[2]
+    end
+  end
+  return lines
+end
+
 --- Shows the buffer's marks a-z in the sign column, two at most on a line,
 --- keeping each mark's sign in b:user_ui_mark_signs.
 local function update_mark_signs(buf)
-  if not vim.api.nvim_buf_is_loaded(buf) then
-    return
-  end
   vim.api.nvim_buf_clear_namespace(buf, marks_ns, 0, -1)
   local names = {}
-  for _, mark in ipairs(vim.fn.getmarklist(buf)) do
-    local lnum = mark.pos[2]
-    if mark.mark:match("^'%l$") and lnum <= vim.api.nvim_buf_line_count(buf) then
-      names[lnum] = (names[lnum] or '') .. mark.mark:sub(2)
+  for name, lnum in vim.spairs(mark_lines(buf)) do
+    if lnum <= vim.api.nvim_buf_line_count(buf) then
+      names[lnum] = (names[lnum] or '') .. name
     end
   end
   local signs = {}
@@ -311,35 +318,71 @@ local function toggle_mark(buf, name)
   end
 end
 
--- How many times each mark was set or deleted, by buffer, since Neovim last
--- waited for a key
-local mark_sets
+-- The buffers whose marks to update: how many times each mark was set or
+-- deleted, and the lines of the marks as the buffer was added
+local pending = {}
+-- The last update scheduled, the only one that runs
+local last_update = 0
+
+local update_marks
+
+--- Runs update_marks once Neovim has handled the events waiting.
+local function schedule_update()
+  last_update = last_update + 1
+  local id = last_update
+  vim.schedule(function()
+    if id == last_update then
+      update_marks()
+    end
+  end)
+end
 
 --- A mark set again on its line is deleted, as a second ma does. But MarkSet
 --- comes once Neovim waits for a key: after a macro or a mapping, for all the
 --- marks it set; one it set more than once is left where it is.
-local function on_mark_set(ev)
-  if not mark_sets then
-    mark_sets = {}
-    -- (after the other MarkSet events waiting)
-    vim.schedule(function()
-      local sets = mark_sets
-      mark_sets = nil
-      for buf, times in pairs(sets) do
-        if vim.api.nvim_buf_is_loaded(buf) then
-          for name, n in pairs(times) do
-            if n == 1 then
-              toggle_mark(buf, name)
-            end
-          end
-          update_mark_signs(buf)
+update_marks = function()
+  -- Neovim reads a key typed while it works through its events before them:
+  -- a mark the key sets on another line has its MarkSet still to come, and its
+  -- sign drawn now would make it look set again on its line. Wait for that.
+  local moved = false
+  for buf, update in pairs(pending) do
+    local lines = mark_lines(buf)
+    if not vim.deep_equal(lines, update.lines) then
+      update.lines = lines
+      moved = true
+    end
+  end
+  if moved then
+    schedule_update()
+    return
+  end
+  local updates = pending
+  pending = {}
+  for buf, update in pairs(updates) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      for name, n in pairs(update.sets) do
+        if n == 1 then
+          toggle_mark(buf, name)
         end
       end
-    end)
+      update_mark_signs(buf)
+    end
   end
-  local times = mark_sets[ev.buf] or {}
-  mark_sets[ev.buf] = times
-  times[ev.data.name] = (times[ev.data.name] or 0) + 1
+end
+
+--- Updates the buffer's marks once Neovim has handled the events waiting,
+--- counting mark `name` set (or deleted) once more.
+local function queue_mark_update(buf, name)
+  local update = pending[buf]
+  if not update then
+    update = { sets = {}, lines = mark_lines(buf) }
+    pending[buf] = update
+    -- (once the MarkSet events of the marks in these lines have come)
+    schedule_update()
+  end
+  if name then
+    update.sets[name] = (update.sets[name] or 0) + 1
+  end
 end
 
 local function setup()
@@ -372,12 +415,17 @@ local function setup()
   })
 
   local group = vim.api.nvim_create_augroup('user_ui_marks', {})
-  vim.api.nvim_create_autocmd('MarkSet', { group = group, callback = on_mark_set })
+  vim.api.nvim_create_autocmd('MarkSet', {
+    group = group,
+    callback = function(ev)
+      queue_mark_update(ev.buf, ev.data.name)
+    end,
+  })
   -- (for the marks a file brings from the ShaDa file)
   vim.api.nvim_create_autocmd('BufEnter', {
     group = group,
     callback = function(ev)
-      update_mark_signs(ev.buf)
+      queue_mark_update(ev.buf)
     end,
   })
 end

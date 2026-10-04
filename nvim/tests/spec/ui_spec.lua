@@ -216,6 +216,65 @@ describe('UI', function()
       t.eq(3, nvim:request('nvim_buf_get_mark', 0, 'a')[1])
     end)
 
+    -- Types `keys` as Neovim handles the MarkSet of mark `name` at line `lnum`
+    -- (0 as it's deleted): keys typed while it works through its events are
+    -- read before the events left.
+    local function type_on_mark_set(nvim, name, lnum, keys)
+      nvim:lua(
+        [[
+        local name, lnum, keys = ...
+        vim.api.nvim_create_autocmd('MarkSet', {
+          callback = function(ev)
+            if ev.data.name == name and ev.data.line == lnum then
+              vim.api.nvim_input(keys)
+              return true
+            end
+          end,
+        })
+      ]],
+        name,
+        lnum,
+        keys
+      )
+    end
+
+    -- Waits for mark a's sign on line `lnum`, and checks that the mark stays.
+    local function wait_mark(nvim, lnum)
+      nvim:wait_for(function()
+        return vim.tbl_contains(probe.signs(nvim, lnum), 'a')
+      end)
+      nvim:sleep(100)
+      t.eq(lnum, nvim:request('nvim_buf_get_mark', 0, 'a')[1])
+      t.eq({ 'a' }, probe.signs(nvim, lnum))
+    end
+
+    it('ma typed as a second ma deletes mark a sets it again', function()
+      local nvim = t.nvim()
+      nvim:set_buffer({ 'one', '|two', 'three' })
+      nvim:type('ma')
+      wait_mark(nvim, 2)
+      type_on_mark_set(nvim, 'a', 0, 'ma')
+      nvim:type('$ma')
+      wait_mark(nvim, 2)
+    end)
+
+    it('ma typed as mb is set is a first ma', function()
+      local nvim = t.nvim()
+      nvim:set_buffer({ 'one', '|two', 'three' })
+      type_on_mark_set(nvim, 'b', 2, 'jma')
+      nvim:type('mb')
+      wait_mark(nvim, 3)
+    end)
+
+    it('ma and <C-^> to another file and back, typed at once, sets mark a', function()
+      local nvim = t.nvim()
+      nvim:files({ ['a.txt'] = { 'one', 'two' }, ['b.txt'] = { 'x' } })
+      nvim:edit('b.txt')
+      nvim:edit('a.txt')
+      nvim:type('jma<C-^><C-^>')
+      wait_mark(nvim, 2)
+    end)
+
     it('git changes are marked in the sign column; [g / ]g jump between hunks', function()
       local nvim = t.nvim()
       nvim:files({ ['a.txt'] = { '1', '2', '3', '4', '5', '6', '7', '8', '9' } })
