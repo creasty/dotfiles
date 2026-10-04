@@ -1,4 +1,4 @@
-![creasty's dotfiles](./cover.png)
+![creasty's dotfiles — Stellar productivity](./cover.jpg)
 
 # creasty's dotfiles
 
@@ -30,23 +30,6 @@ It skips what's already installed, and pulls master first unless the checkout is
 Then it switches to the configuration and [verifies](#verification) the result.
 Flakes only see files tracked by git, so `git add` a new file first.
 
-### App Store apps
-
-Homebrew Bundle installs the App Store apps of `nix/modules/appstore.nix` with [mas](https://github.com/mas-cli/mas), which asks for your password (sudo) to install them.
-mas can't sign in to the App Store, so sign in before provisioning.
-`mas list` shows the IDs of installed apps, and `mas search <name>` those of others.
-mas can't install iPhone and iPad apps, such as Kindle's, so get those from the App Store app.
-
-### SSH keys
-
-ssh signs in through [1Password's SSH agent](https://developer.1password.com/docs/ssh/), so private keys live in 1Password instead of `~/.ssh`.
-Keep a host's public key in `~/.ssh/keys` and point its `IdentityFile` at it (in `~/.ssh/config.d/`) to pick the key.
-
-### Agent skills
-
-`npx skills add -g` and `gh skill install` record the skills they install in `~/.agents/.skill-lock.json`, which is linked to `home/agents/.skill-lock.json`, so commit it with each install.
-Provisioning installs the skills it lists for Claude Code.
-
 ## Verification
 
 Provisioning ends by verifying its result with behavioral tests (`nix/tests/`): shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
@@ -76,18 +59,18 @@ After merging, provision again; Neovim checks out the new plugin commits the nex
 
 `flake.nix` configures the system with nix-darwin and the home directory with home-manager, from a module per topic in `nix/modules/`: each has everything about a tool, for both.
 
-- **`bin/`** : Commands, on `PATH`
-- **`config/`** : Configs, linked into `~/.config`
-- **`hammerspoon/`** : Key bindings, on Hammerspoon ([README](./hammerspoon/README.md))
-  - **`tests/`** : Specs, on a fake of Hammerspoon's API
-- **`home/`** : Dotfiles, linked into `~` with a leading dot
-- **`nix/`**
-  - **`modules/`** : The configuration, a module per topic
-  - **`tests/`** : Behavioral tests of the provisioning, which `./verify` runs
-- **`nvim/`** : Neovim
-  - **`tests/`** : End-to-end workflow tests ([README](./nvim/tests/README.md))
-- **`shell/`** : Bash and Zsh
-- **`vscode/`** : VS Code's settings and key bindings
+- `bin/`: Commands, on `PATH`
+- `config/`: Configs, linked into `~/.config`
+- `hammerspoon/`: Key bindings, on [Hammerspoon](./hammerspoon/README.md)
+  - `tests/`: Specs, on a fake of Hammerspoon's API
+- `home/`: Dotfiles, linked into `~` with a leading dot
+- `nix/`
+  - `modules/`: The configuration, a module per topic
+  - `tests/`: Behavioral tests of the provisioning, which `./verify` runs
+- `nvim/`: Neovim
+  - `tests/`: [End-to-end workflow tests](./nvim/tests/README.md)
+- `shell/`: Bash and Zsh
+- `vscode/`: VS Code's settings and key bindings
 
 ### Links
 
@@ -106,6 +89,13 @@ Links point into the checkout, so edits apply without a rebuild.
 Command-line tools come from nixpkgs, pinned by `flake.lock`, ahead of Homebrew's on `PATH`.
 Homebrew installs the apps (casks), and the formulae that nixpkgs lacks or that need a stable path, such as the JDKs and the libraries Ruby is built against.
 mise installs the runtimes of `config/mise/config.toml` on every switch, and takes Homebrew's JDKs for Java.
+
+### App Store apps
+
+Homebrew Bundle installs the App Store apps of `nix/modules/appstore.nix` with [mas](https://github.com/mas-cli/mas), which asks for your password (sudo) to install them.
+mas can't sign in to the App Store, so sign in before provisioning.
+`mas list` shows the IDs of installed apps, and `mas search <name>` those of others.
+mas can't install iPhone and iPad apps, such as Kindle's, so get those from the App Store app.
 
 ## Author
 
