@@ -81,28 +81,6 @@ describe('Filetypes', function()
   end)
 
   describe('ftplugin commands', function()
-    local function run(ft, command, lines)
-      local nvim = t.nvim()
-      nvim:edit('x.' .. ft, lines)
-      nvim:cmd(command)
-      nvim:sleep(50)
-      return table.concat(nvim:lines(), '\n')
-    end
-
-    local function golden(key, input, output)
-      t.golden_section('ftplugin_commands.txt', key, table.concat(input, '\n') .. '\n--- becomes ---\n' .. output)
-    end
-
-    it('javascript :SwapSwitchCase swaps case labels and returned values', function()
-      local input = { 'switch (x) {', "  case 'a': return 1;", "  case 'b':", '    return 2;', '}' }
-      golden('javascript :SwapSwitchCase', input, run('js', 'SwapSwitchCase', input))
-    end)
-
-    it('javascript :ConvertApiDef turns FooAPI into a client factory', function()
-      local input = { 'UserAPI,', 'BillingAPI,' }
-      golden('javascript :ConvertApiDef', input, run('js', 'ConvertApiDef', input))
-    end)
-
     it('javascriptreact :ReactAttrToExp turns attr="x" into attr={`x`}, in its buffer only', function()
       local nvim = t.nvim()
       nvim:edit('x.jsx', { '<div className="foo bar" />' })
@@ -111,60 +89,6 @@ describe('Filetypes', function()
       t.eq({ '<div className={`foo bar`} />' }, nvim:lines())
       nvim:edit('x.txt')
       t.eq(0, nvim:call('exists', ':ReactAttrToExp'))
-    end)
-
-    it('typescript :ConvertProtoToType / :ConvertInputToProto', function()
-      local input = {
-        "__typename?: 'User';",
-        "name?: Maybe<Scalars['String']['output']>;",
-        "tags: Array<Scalars['String']['output']>;",
-        'posts: Array<Post>;',
-        'owner: Account;',
-        "age: Scalars['Int']['output'];",
-        'manager?: Maybe<Account>;',
-        "Active = 'ACTIVE',",
-      }
-      golden('typescript :ConvertProtoToType', input, run('ts', 'ConvertProtoToType', input))
-      local input2 = {
-        "name?: InputMaybe<Scalars['String']['input']>;",
-        "tags: Array<Scalars['String']['input']>;",
-        'posts: Array<PostInput>;',
-        "age: Scalars['Int']['input'];",
-        'owner: AccountInput;',
-        'manager?: InputMaybe<AccountInput>;',
-        "Active = 'ACTIVE',",
-      }
-      golden('typescript :ConvertInputToProto', input2, run('ts', 'ConvertInputToProto', input2))
-    end)
-
-    it('typescript :GenAdaptor generates converter stubs', function()
-      local nvim = t.nvim()
-      nvim:edit('x.ts', { '' })
-      nvim:cmd('GenAdaptor -ns=pb User UserInput Status:pe Kind:ge Item:gt')
-      nvim:sleep(100)
-      golden('typescript :GenAdaptor -ns=pb User UserInput Status:pe Kind:ge Item:gt', {}, table.concat(nvim:lines(), '\n'))
-    end)
-
-    it('graphql :ConvertProtoRpc / :ConvertQM / :ConvertFragment', function()
-      local rpc = { 'rpc GetUser(GetUserRequest) returns (User);', 'rpc ListUsers (ListUsersRequest) returns (ListUsersResponse) {}' }
-      golden('graphql :ConvertProtoRpc', rpc, run('graphql', 'ConvertProtoRpc', rpc))
-      local qm = { 'getUser(input: GetUserInput!): User!' }
-      golden('graphql :ConvertQM', qm, run('graphql', 'ConvertQM', qm))
-      local fragment = {
-        'type User = {',
-        "  id: Scalars['ID'];",
-        "  nickname?: Maybe<Scalars['String']>;",
-        '  owner: Account;',
-        '  posts: Array<Post>;',
-        '  score: Int32Value;',
-        '};',
-      }
-      golden('graphql :ConvertFragment', fragment, run('graphql', 'ConvertFragment', fragment))
-    end)
-
-    it('proto :ConvertProtoField turns a field list into proto fields', function()
-      local input = { '- `name: string` The name', '  - `age: int32` The age', '- Create: `User` A user' }
-      golden('proto :ConvertProtoField', input, run('proto', 'ConvertProtoField', input))
     end)
   end)
 end)

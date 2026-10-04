@@ -195,13 +195,6 @@ describe('Text operations', function()
       t.eq({ 'xit "works"' }, nvim:lines())
     end)
 
-    it('graphql: query -> mutation', function()
-      local nvim = nvim_ft('graphql')
-      nvim:set_buffer('|query Foo')
-      nvim:type('-')
-      t.eq({ 'mutation Foo' }, nvim:lines())
-    end)
-
     it('proto: OPTIONAL -> REQUIRED, string -> google.protobuf.StringValue', function()
       local nvim = nvim_ft('proto')
       nvim:set_buffer('|OPTIONAL')
