@@ -45,8 +45,8 @@ setup() {
 # Apart from Ruby, as a project's .ruby-version swaps the Ruby that runs
 @test "terminals run the gem tools from their own installs" {
   local version
-  version="$(mise_config '.tools["gem:solargraph"]')"
-  run -0 login_zsh 'print -r -- $commands[solargraph]; solargraph --version'
-  assert_equal "${lines[0]}" "$HOME/.local/share/mise/installs/gem-solargraph/$version/bin/solargraph"
-  assert_equal "${lines[1]}" "$version"
+  version="$(mise_config '.tools["gem:rails"]')"
+  run -0 login_zsh 'print -r -- $commands[rails]; rails --version'
+  assert_equal "${lines[0]}" "$HOME/.local/share/mise/installs/gem-rails/$version/bin/rails"
+  assert_equal "${lines[1]}" "Rails $version"
 }

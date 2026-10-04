@@ -20,7 +20,6 @@ ruby = "4.0.7"
 "gem:cocoapods" = "1.17.0"
 "gem:pry" = "0.16.0"
 "gem:rails" = "8.1.4"
-"gem:solargraph" = "0.60.4"
 
 [settings]
 # Read .java-version, .node-version, .nvmrc and .ruby-version too

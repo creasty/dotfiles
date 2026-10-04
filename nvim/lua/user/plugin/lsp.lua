@@ -21,7 +21,6 @@ M.servers = {
   'nil_ls', -- nil, for Nix
   'pyright',
   'rust_analyzer',
-  'solargraph',
   'tailwindcss',
   'terraformls',
   'tsc', -- TypeScript 7's own server: the project's, or mise's (config/mise/config.toml)
