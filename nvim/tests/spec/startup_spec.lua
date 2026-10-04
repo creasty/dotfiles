@@ -45,6 +45,12 @@ describe('Startup', function()
     t.eq(',', nvim:eval('g:mapleader'))
   end)
 
+  -- (in another, the clipboard's pbcopy and pbpaste garble non-ASCII text)
+  it('runs programs in a UTF-8 locale', function()
+    local nvim = t.nvim()
+    t.eq('UTF-8\n', nvim:call('system', { 'locale', 'charmap' }))
+  end)
+
   it('keeps the editor options set in init.vim', function()
     local nvim = t.nvim()
     local expected = {

@@ -9,7 +9,7 @@
 "
 "----------------------------------------------------------------------------------------------
 
-language en_US
+language en_US.UTF-8
 
 " disable builtin plugins
 let g:loaded_netrwPlugin = 1
