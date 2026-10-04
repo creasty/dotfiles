@@ -38,14 +38,14 @@ describe('Filetypes', function()
         ['a.go'] = { 0, 4, 4 },
         ['a.c'] = { 1, 4, 4 },
         ['A.java'] = { 1, 4, 4 },
-        ['a.swift'] = { 1, 4, 4 },
+        ['a.swift'] = { 1, 2, 4 },
         ['a.html'] = { 1, 2, 2 },
         ['a.js'] = { 1, 2, 2 },
         ['a.ts'] = { 1, 2, 2 },
         ['a.tsx'] = { 1, 2, 2 },
         ['a.rb'] = { 1, 2, 2 },
         ['a.py'] = { 1, 4, 4 },
-        ['a.scala'] = { 1, 4, 2 },
+        ['a.scala'] = { 1, 2, 2 },
       }
       local actual = {}
       for name in pairs(expected) do

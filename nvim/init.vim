@@ -50,7 +50,7 @@ set wildignorecase
 set cindent
 set shiftround
 set expandtab
-set tabstop=2 shiftwidth=2 softtabstop=0
+set tabstop=2 shiftwidth=2
 
 " move cursor over lines
 set whichwrap=b,s,h,l,<,>,[,]
