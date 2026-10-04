@@ -177,13 +177,14 @@ leaves the cursor at.
   (`:help map_CTRL-C`).
 - **Timing.** Asynchronous results are awaited with `nvim:wait_for()` and the
   `probe.wait_*()` helpers (`wait_picker` also waits for the picker to finish
-  loading). Where a person would pause (between closing and reopening a
-  picker, before typing into a fresh placeholder), the tests pause too. An
-  accepted completion item lands a moment after the key (blink.cmp may
-  resolve it with the server first), so wait for the text; a dismissed menu
-  closes a moment after it too (`probe.wait_completion_closed()`). Tests that
-  race a plugin's own internals can be marked `retry`, with a random
-  back-off; a real regression fails every attempt.
+  loading and to filter by what was typed). Where a person would pause
+  (between closing and reopening a picker, before typing into a fresh
+  placeholder), the tests pause too. An accepted completion item lands a
+  moment after the key (blink.cmp may resolve it with the server first), so
+  wait for the text; a dismissed menu closes a moment after it too
+  (`probe.wait_completion_closed()`). Tests that race a plugin's own
+  internals can be marked `retry`, with a random back-off; a real regression
+  fails every attempt.
 
 ## Writing tests
 

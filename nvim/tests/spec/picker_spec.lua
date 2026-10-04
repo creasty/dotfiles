@@ -75,23 +75,47 @@ describe('Picker', function()
       t.eq('src/app.ts', picker.items[1])
     end)
 
+    -- Four files that all match `lsp`, and how they rank (shorter paths first
+    -- among those that rank the same).
+    local LSP_FILES = {
+      ['.git/'] = true,
+      ['lua/user/lsp.lua'] = { '' },
+      ['lua/lisp.lua'] = { '' },
+      ['tests/lsp.lua'] = { '' },
+      ['src/lsp.test.ts'] = { '' },
+    }
+    local LSP_RANKED = { 'lua/user/lsp.lua', 'tests/lsp.lua', 'src/lsp.test.ts', 'lua/lisp.lua' }
+
     it('ranks tests below the sources that match as well, not below those that match worse', function()
       local nvim = t.nvim()
-      nvim:files({
-        ['.git/'] = true,
-        ['lua/user/lsp.lua'] = { '' },
-        ['lua/lisp.lua'] = { '' },
-        ['tests/lsp.lua'] = { '' },
-        ['src/lsp.test.ts'] = { '' },
-      })
+      nvim:files(LSP_FILES)
       probe.wait_picker_ready(nvim)
       open_finder(nvim)
       nvim:type('lsp')
       local picker = probe.wait_picker(nvim, function(p)
         return #p.items == 4
       end)
-      -- (shorter paths first among those that rank the same)
-      t.eq({ 'lua/user/lsp.lua', 'tests/lsp.lua', 'src/lsp.test.ts', 'lua/lisp.lua' }, picker.items)
+      t.eq(LSP_RANKED, picker.items)
+    end)
+
+    -- (A look at the picker queued before it filters by the query, as a busy
+    -- machine can queue one, must not take the list before for the results.)
+    it('a look right after typing waits for the results of the query', function()
+      local nvim = t.nvim()
+      nvim:files(LSP_FILES)
+      probe.wait_picker_ready(nvim)
+      open_finder(nvim)
+      nvim:lua([[
+        vim.api.nvim_input('lsp')
+        vim.schedule(function()
+          _G.e2e_seen = __e2e.picker()
+        end)
+      ]])
+      local seen = nvim:wait_for(function()
+        return nvim:lua('return _G.e2e_seen')
+      end)
+      t.eq('lsp', seen.query, 'looked after the keys')
+      t.ok(seen.loading or vim.deep_equal(seen.items, LSP_RANKED), 'loading, or the results: ' .. vim.inspect(seen.items))
     end)
 
     it('<CR> opens the top match in the current window and closes the finder', function()
