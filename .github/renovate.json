@@ -1,0 +1,84 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Renovate bumps what the repository pins, every Monday, in a pull request per kind that CI tests (README.md's Updates)",
+  "extends": ["config:best-practices"],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["* * * * 1"],
+  "lockFileMaintenance": {
+    "schedule": ["* * * * 1"]
+  },
+  "prHourlyLimit": 0,
+  "nix": {
+    "enabled": true
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "The Neovim plugins, each at a commit of the branch it follows, in the repository lazy.nvim's lockfile records (nvim/lua/user/plugins.lua has it record them)",
+      "managerFilePatterns": ["/^nvim/lazy-lock\\.json$/"],
+      "matchStrings": [
+        "\"(?<depName>[^\"]+)\": \\{ \"branch\": \"(?<currentValue>[^\"]+)\", \"commit\": \"(?<currentDigest>[0-9a-f]{40})\", \"url\": \"(?<packageName>[^\"]+)\" \\}"
+      ],
+      "datasourceTemplate": "git-refs",
+      "versioningTemplate": "git"
+    },
+    {
+      "customType": "regex",
+      "description": "The agent skills, each at a commit of its repository's default branch",
+      "managerFilePatterns": ["/^home/agents/\\.skill-lock\\.json$/"],
+      "matchStrings": [
+        "\"(?<depName>[^\"]+)\": \\{[^{}]*?\"sourceUrl\": \"(?<packageName>[^\"]+)\",\\s*\"ref\": \"(?<currentDigest>[0-9a-f]{40})\""
+      ],
+      "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
+      "description": "Sources Nix fetches at a release's commit, with builtins.fetchGit",
+      "managerFilePatterns": ["/^nix/modules/.+\\.nix$/"],
+      "matchStrings": [
+        "url = \"(?<packageName>[^\"]+)\";\\s*ref = \"refs/tags/(?<currentValue>[^\"]+)\";\\s*rev = \"(?<currentDigest>[0-9a-f]{40})\";"
+      ],
+      "depNameTemplate": "{{{replace 'https://github.com/' '' packageName}}}",
+      "datasourceTemplate": "git-tags"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    },
+    {
+      "description": "The runners' images, which the workflows choose",
+      "matchDatasources": ["github-runners"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["mise"],
+      "groupName": "mise tools"
+    },
+    {
+      "description": "Homebrew's JDK, which nix/modules/java.nix installs",
+      "matchManagers": ["mise"],
+      "matchDepNames": ["java"],
+      "enabled": false
+    },
+    {
+      "description": "nixpkgs' release branch, which nix-darwin's and home-manager's follow: flake.lock's weekly maintenance updates the inputs",
+      "matchManagers": ["nix"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    },
+    {
+      "matchFileNames": ["nvim/lazy-lock.json"],
+      "groupName": "Neovim plugins"
+    },
+    {
+      "matchFileNames": ["home/agents/.skill-lock.json"],
+      "groupName": "agent skills"
+    },
+    {
+      "matchFileNames": ["nix/modules/shell.nix"],
+      "groupName": "zsh plugins"
+    }
+  ]
+}

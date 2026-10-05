@@ -45,15 +45,18 @@ Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 
 ## Updates
 
-Versions are pinned, and [Dependabot](./.github/dependabot.yml) bumps them every Monday, in a pull request per kind:
+Versions are pinned, and [Renovate](./.github/renovate.json) bumps them every Monday, in a pull request per kind:
 
 | Pinned in | What | Tested by |
 |---|---|---|
-| `nvim/flake.lock` | Neovim plugins, at the commits lazy.nvim installs | [Neovim's workflow tests](./nvim/tests/README.md) |
+| `nvim/lazy-lock.json` | Neovim plugins, at the commits lazy.nvim installs | [Neovim's workflow tests](./nvim/tests/README.md) |
 | `flake.lock` | nixpkgs, nix-darwin and home-manager | Provisioning |
+| `config/mise/config.toml` | Runtimes and tools, which mise installs | Provisioning |
+| `home/agents/.skill-lock.json` | Agent skills, at commits of their repositories | Provisioning |
+| `nix/modules/shell.nix` | zsh plugins, at their releases' commits | Provisioning |
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
-After merging, provision again; Neovim checks out the new plugin commits the next time it starts.
+After merging, provision again, and run `:Lazy restore` in Neovim to check out the new plugin commits.
 
 ## Project structure
 

@@ -36,36 +36,39 @@ set `E2E_TMPDIR`, or the test that reopens a file fails.
 
 ## Plugin versions
 
-`nvim/flake.lock` pins the commit of every plugin, which lazy.nvim installs
-on your machine and CI installs too. The tree-sitter parsers follow: each is
-built at the revision the pinned nvim-treesitter's table of parsers gives it
-(as `:TSUpdate` does). Dependabot bumps the pins in pull requests, so each shows
-which workflows the new commits change; after pulling one, Neovim checks them
-out when it next starts, and rebuilds the parsers they change. A plugin
-lazy.nvim loads from your working copy (`dev` in `nvim/lua/user/plugins.lua`)
-is yours to keep at any commit, and CI installs its pin instead.
+`nvim/lazy-lock.json`, lazy.nvim's lockfile, pins the commit of every plugin,
+which lazy.nvim installs on your machine and CI installs too. The tree-sitter
+parsers follow: each is built at the revision the pinned nvim-treesitter's
+table of parsers gives it (as `:TSUpdate` does). Renovate bumps the pins in
+pull requests, so each shows which workflows the new commits change; after
+pulling one, `:Lazy restore` checks them out and rebuilds the parsers they
+change. A plugin lazy.nvim loads from your working copy (`dev` in
+`nvim/lua/user/plugins.lua`) is yours to keep at any commit, and CI installs
+its pin instead.
 
 ```sh
 nvim/tests/plugins check      # do the installed plugins and parsers match the pins?
 nvim/tests/plugins install    # install exactly the pinned versions (what CI runs)
 ```
 
-`install` clones into `$E2E_PLUGINS` (default: lazy.nvim's root) and builds
-the parsers with the tree-sitter CLI. It never changes a plugin that is already
-installed at another commit.
+Both also compare each plugin's repository with the one lazy-lock.json
+records, where Renovate looks up newer commits. `install` clones into
+`$E2E_PLUGINS` (default: lazy.nvim's root) and builds the parsers with the
+tree-sitter CLI. It never changes a plugin that is already installed at
+another commit.
 
 A pinned repository that disappears breaks fresh installs, though not CI's
-cached plugins: point its input in `nvim/flake.nix` and its spec at a fork or
-mirror that has the commit.
+cached plugins: point its spec at a fork or mirror that has the commit, and
+`:Lazy restore` records the new repository.
 
 ## CI
 
 The `nvim-e2e` job of `.github/workflows/tests.yml` runs the suite on macOS for
 pull requests, pushes to master and every Monday, with the versions this setup
 was pinned on (Neovim 0.12.4, and tree-sitter CLI 0.26.8 to build parsers:
-those nixpkgs installs) and the plugins `nvim/flake.lock` pins. The job summary
-lists every workflow that changed: the assertion, the child's screen, and
-whether the test was a pinned quirk (`run --summary FILE` writes it).
+those nixpkgs installs) and the plugins `nvim/lazy-lock.json` pins. The job
+summary lists every workflow that changed: the assertion, the child's screen,
+and whether the test was a pinned quirk (`run --summary FILE` writes it).
 
 ## What is covered
 

@@ -1,5 +1,5 @@
 -- Installs and checks the plugins the suite runs against: the commits
--- nvim/flake.lock pins (which Dependabot bumps), and the tree-sitter parsers
+-- nvim/lazy-lock.json pins (which Renovate bumps), and the tree-sitter parsers
 -- of user/plugin/treesitter/parsers.lua at the revisions the pinned
 -- nvim-treesitter's table of parsers pins. CI installs exactly those.
 --
@@ -16,14 +16,14 @@ local PARSERS = require('user.plugin.treesitter.parsers')
 local USAGE = [[
 Usage: nvim/tests/plugins check | install
 
-  check     compare the installed plugins and parsers with what nvim/flake.lock
-            pins (exit 1 if they differ)
+  check     compare the installed plugins and parsers with what
+            nvim/lazy-lock.json pins (exit 1 if they differ)
   install   install what it pins that is missing: plugins into $E2E_PLUGINS
             (default: lazy.nvim's, ~/.local/share/nvim/lazy) and their
             tree-sitter parsers. An installed plugin at another commit is
             reported, never changed.]]
 
-local FLAKE_LOCK = env.config_dir .. '/flake.lock'
+local LOCKFILE = env.config_dir .. '/lazy-lock.json'
 
 local function fail(msg)
   io.stderr:write(msg, '\n')
@@ -44,9 +44,9 @@ local function git(dir, ...)
 end
 
 local function read_pins()
-  local ok, pins = pcall(config.pins, FLAKE_LOCK)
+  local ok, pins = pcall(config.pins, LOCKFILE)
   if not ok then
-    fail(('Cannot read %s: %s'):format(FLAKE_LOCK, pins))
+    fail(('Cannot read %s: %s'):format(LOCKFILE, pins))
   end
   return pins
 end
@@ -110,17 +110,28 @@ local function same_repository(a, b)
   return normalize(a) == normalize(b)
 end
 
---- Differences between nvim/flake.lock and what is installed. Your working
+--- Differences between nvim/lazy-lock.json and what is installed. Your working
 --- copies (lazy.nvim's `dev`) are yours to keep at any commit.
 local function differences(pins, plugins)
   local problems = {}
-  for name, plugin in pairs(plugins) do
+  -- (a plugin the spec switches off with `cond`, which lazy.nvim neither
+  -- installs nor loads, keeps its pin for when it is back on)
+  local off = {}
+  for name, plugin in pairs(require('lazy.core.config').spec.disabled) do
+    if plugin._.cond == false then
+      off[name] = plugin
+    end
+  end
+  for name, plugin in pairs(vim.tbl_extend('error', plugins, off)) do
     local pinned = pins[name]
     if not pinned then
-      problems[#problems + 1] = name .. ': not pinned (add an input to nvim/flake.nix, then: nix flake lock ./nvim)'
+      problems[#problems + 1] = name .. ': not pinned (a start of Neovim installs it and pins its commit)'
+    elseif not pinned.url then
+      -- (which Renovate looks up newer commits in: nvim/lua/user/plugins.lua has lazy.nvim record it)
+      problems[#problems + 1] = name .. ': pinned without its repository (:Lazy restore records it)'
     elseif not same_repository(plugin.url, pinned.url) then
       problems[#problems + 1] = ('%s: installed from %s, pinned from %s'):format(name, plugin.url, pinned.url)
-    elseif not plugin._.is_local then
+    elseif plugins[name] and not plugin._.is_local then
       local commit = git(plugin.dir, 'rev-parse', 'HEAD')
       if not commit then
         problems[#problems + 1] = name .. ': not installed'
@@ -129,11 +140,8 @@ local function differences(pins, plugins)
       end
     end
   end
-  -- (a plugin the spec switches off with `cond`, which lazy.nvim neither
-  -- installs nor loads, keeps its pin for when it is back on)
-  local off = require('lazy.core.config').spec.disabled
   for name in pairs(pins) do
-    if not plugins[name] and not (off[name] and off[name]._.cond == false) then
+    if not plugins[name] and not off[name] then
       problems[#problems + 1] = name .. ': pinned, but no longer in nvim/lua/user/plugins.lua'
     end
   end
@@ -197,8 +205,8 @@ if [ -n "$4" ]; then
 fi
 ]]
 
-local function clone_job(name, dir, pinned)
-  return { name = name, cmd = { 'sh', '-c', CLONE, 'clone', dir, pinned.url, pinned.commit, pinned.branch or '' } }
+local function clone_job(name, dir, url, pinned)
+  return { name = name, cmd = { 'sh', '-c', CLONE, 'clone', dir, url, pinned.commit, pinned.branch or '' } }
 end
 
 local commands = {}
@@ -206,9 +214,9 @@ local commands = {}
 function commands.check()
   local problems = differences(read_pins(), declared(env.find_plugins()))
   if #problems > 0 then
-    fail('The installed plugins differ from nvim/flake.lock:\n  ' .. table.concat(problems, '\n  '))
+    fail('The installed plugins differ from nvim/lazy-lock.json:\n  ' .. table.concat(problems, '\n  '))
   end
-  say('The installed plugins match nvim/flake.lock.')
+  say('The installed plugins match nvim/lazy-lock.json.')
 end
 
 function commands.install()
@@ -218,7 +226,10 @@ function commands.install()
 
   -- lazy.nvim first, which tells where the others go
   if not vim.uv.fs_stat(root .. '/lazy.nvim') then
-    local failed = run_all({ clone_job('lazy.nvim', root .. '/lazy.nvim', pins['lazy.nvim']) }, 1)
+    if not pins['lazy.nvim'] then
+      fail('Not pinned in nvim/lazy-lock.json: lazy.nvim')
+    end
+    local failed = run_all({ clone_job('lazy.nvim', root .. '/lazy.nvim', config.lazy_url, pins['lazy.nvim']) }, 1)
     if #failed > 0 then
       fail('Failed to clone:\n  ' .. failed[1])
     end
@@ -229,7 +240,7 @@ function commands.install()
   for name, plugin in pairs(plugins) do
     if not vim.uv.fs_stat(plugin.dir) then
       if pins[name] then
-        clones[#clones + 1] = clone_job(name, plugin.dir, pins[name])
+        clones[#clones + 1] = clone_job(name, plugin.dir, plugin.url, pins[name])
       else
         unpinned[#unpinned + 1] = name
       end
@@ -237,7 +248,7 @@ function commands.install()
   end
   if #unpinned > 0 then
     table.sort(unpinned)
-    fail('Not pinned in nvim/flake.lock: ' .. table.concat(unpinned, ' '))
+    fail('Not pinned in nvim/lazy-lock.json: ' .. table.concat(unpinned, ' '))
   end
   table.sort(clones, function(a, b)
     return a.name < b.name
@@ -264,9 +275,9 @@ function commands.install()
 
   local problems = differences(pins, plugins)
   if #problems > 0 then
-    fail('Installed, but these differ from nvim/flake.lock:\n  ' .. table.concat(problems, '\n  '))
+    fail('Installed, but these differ from nvim/lazy-lock.json:\n  ' .. table.concat(problems, '\n  '))
   end
-  say('Installed exactly what nvim/flake.lock pins.')
+  say('Installed exactly what nvim/lazy-lock.json pins.')
 end
 
 local command = commands[arg[1] or '']

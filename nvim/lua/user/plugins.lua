@@ -1,7 +1,8 @@
--- Plugins, installed and loaded by lazy.nvim (:Lazy), each at the commit
--- nvim/flake.lock pins. Dependabot bumps the pins in pull requests; after
--- pulling one, the next start checks out the new commits (M.sync). A plugin
--- added here needs an input in nvim/flake.nix as well.
+-- Plugins, installed and loaded by lazy.nvim (:Lazy), each at the commit its
+-- lockfile, nvim/lazy-lock.json, pins. Only Renovate's pull requests and
+-- :Lazy commands change the pins: :Lazy update moves them, and after a pull
+-- :Lazy restore checks out the new ones. A plugin added here is installed on
+-- the next start, which records its commit and repository.
 --
 -- A plugin with an event, a command or keys loads on the first of them, the
 -- others at startup. `init` runs at startup either way, `config` once the
@@ -12,10 +13,6 @@ local M = {}
 M.spec = {
   { -- a modern plugin manager for Neovim, which manages itself too
     'folke/lazy.nvim',
-    -- (before any plugin loads)
-    init = function()
-      M.sync()
-    end,
   },
 
   --  Editing
@@ -324,7 +321,8 @@ M.spec = {
   },
 }
 
---- lazy.nvim's options (nvim/tests/plugins.lua reads them too).
+--- lazy.nvim's options (nvim/tests/plugins.lua reads them too). Its lockfile
+--- is the default one, lazy-lock.json in the config directory.
 M.opts = {
   spec = M.spec,
   -- A plugin with `dev = true` (opfmt) loads from your working copy in ghq's
@@ -333,88 +331,95 @@ M.opts = {
     path = '~/go/src/github.com/creasty',
     fallback = true,
   },
-  -- (only a record of what it installed: nvim/flake.lock pins the commits)
-  lockfile = vim.fn.stdpath('state') .. '/lazy/lazy-lock.json',
 }
 
---- Checks out the commits nvim/flake.lock pins where lazy.nvim recorded
---- others, as after pulling new pins: before the plugins load, since the
---- config may need the new ones. Otherwise it only reads that record, one
---- small file. Headless, as in scripts and the e2e suite, what is installed
---- stays.
-function M.sync()
-  if #vim.api.nvim_list_uis() == 0 then
-    return
+--- Where lazy.nvim installs itself from.
+M.lazy_url = 'https://github.com/folke/lazy.nvim.git'
+
+--- What a lockfile pins, by plugin name: { branch, commit, url }.
+function M.pins(file)
+  return vim.json.decode(table.concat(vim.fn.readfile(file), '\n'))
+end
+
+--- Writes pins the way lazy.nvim writes its lockfile, with each plugin's
+--- repository as well, where Renovate looks up newer commits.
+local function write_pins(file, pins)
+  local config = require('lazy.core.config')
+  local names = vim.tbl_keys(pins)
+  table.sort(names)
+  local lines = { '{' }
+  for i, name in ipairs(names) do
+    local pin = pins[name]
+    local plugin = config.plugins[name] or config.spec.disabled[name]
+    local url = plugin and plugin.url or pin.url
+    lines[#lines + 1] = ('  %q: { "branch": %q, "commit": %q%s }%s'):format(
+      name, pin.branch, pin.commit, url and (', "url": %q'):format(url) or '', i < #names and ',' or '')
   end
-  local ok, recorded = pcall(function()
-    return vim.json.decode(table.concat(vim.fn.readfile(M.opts.lockfile), '\n'))
-  end)
-  if not ok then
-    recorded = {}
+  lines[#lines + 1] = '}'
+  vim.fn.writefile(lines, file)
+end
+
+--- lazy.nvim records only the branch and the commit of each plugin: the
+--- writer it calls after each install, update, restore and clean (an internal
+--- function, which nvim/tests/plugins check notices the loss of) rewrites the
+--- lockfile with the repositories too.
+local function record_urls(file)
+  local lock = require('lazy.manage.lock')
+  local update = lock.update
+  lock.update = function()
+    update()
+    write_pins(file, M.pins(file))
   end
-  local stale = {}
+end
+
+--- A start installs the missing plugins at their pins, and lazy.nvim then
+--- rewrites its lockfile with what is installed: the old commits of plugins a
+--- pull moved, and no pin for one that failed to install. Puts back the pins
+--- of the plugins the spec still has, keeping the commits recorded for new
+--- ones.
+local function keep_pins(file, pins)
+  local lock = M.pins(file)
+  local config = require('lazy.core.config')
+  local changed = false
+  for name, pin in pairs(pins) do
+    local now = lock[name]
+    if (config.plugins[name] or config.spec.disabled[name]) and not (now and now.branch == pin.branch and now.commit == pin.commit) then
+      lock[name] = pin
+      changed = true
+    end
+  end
+  if changed then
+    write_pins(file, lock)
+    -- (for lazy.nvim's commands to read them again)
+    require('lazy.manage.lock')._loaded = false
+  end
+end
+
+--- Tells when plugins are at other commits than their pins, as after a pull.
+local function report_moved(pins)
+  local git = require('lazy.manage.git')
   for name, plugin in pairs(require('lazy.core.config').plugins) do
-    if plugin.commit and plugin._.installed and not plugin._.is_local then
-      -- (a plugin missing from the record is looked up in its checkout)
-      local at = recorded[name] and recorded[name].commit
-        or (require('lazy.manage.git').info(plugin.dir) or {}).commit
-      if at ~= plugin.commit then
-        stale[#stale + 1] = name
-      end
+    local pin = pins[name]
+    if pin and plugin._.installed and not plugin._.is_local and (git.info(plugin.dir) or {}).commit ~= pin.commit then
+      return vim.notify('Plugins differ from lazy-lock.json: :Lazy restore checks out its commits', vim.log.levels.WARN)
     end
-  end
-  if #stale > 0 then
-    require('lazy').update({ plugins = stale, wait = true })
-  end
-end
-
---- What a flake.lock pins, by plugin name (the end of the input's URL):
---- { url, branch, commit }.
-function M.pins(lock_file)
-  local lock = vim.json.decode(table.concat(vim.fn.readfile(lock_file), '\n'))
-  local pins = {}
-  for _, node in pairs(lock.nodes[lock.root].inputs) do
-    local locked = lock.nodes[node].locked
-    -- (git inputs have a URL, github: ones an owner and a repository)
-    local url = locked.url or ('https://github.com/%s/%s'):format(locked.owner, locked.repo)
-    pins[url:match('[^/]+$')] = {
-      url = url,
-      branch = locked.ref and (locked.ref:gsub('^refs/heads/', '')),
-      commit = locked.rev,
-    }
-  end
-  return pins
-end
-
---- Sets the commit of each plugin of `spec`, dependencies included.
-local function pin(spec, pins)
-  for i, plugin in ipairs(spec) do
-    if type(plugin) == 'string' then
-      plugin = { plugin }
-      spec[i] = plugin
-    end
-    local pinned = pins[plugin[1]:match('[^/]+$')]
-    if pinned then
-      plugin.commit = pinned.commit
-    end
-    pin(plugin.dependencies or {}, pins)
   end
 end
 
 --- Installs lazy.nvim when it is missing (it installs the plugins), and
 --- loads the plugins.
 function M.setup()
-  local ok, pins = pcall(M.pins, vim.fn.stdpath('config') .. '/flake.lock')
+  local lockfile = vim.fn.stdpath('config') .. '/lazy-lock.json'
+  local ok, pins = pcall(M.pins, lockfile)
   if not ok then
     vim.notify('The plugins are not pinned: ' .. pins, vim.log.levels.WARN)
     pins = {}
   end
-  pin(M.spec, pins)
 
   local root = vim.fn.stdpath('data') .. '/lazy'
   local lazy = root .. '/lazy.nvim'
   if not vim.uv.fs_stat(lazy) then
-    local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', 'https://github.com/folke/lazy.nvim.git', lazy })
+    local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', M.lazy_url, lazy })
     if vim.v.shell_error == 0 and pins['lazy.nvim'] then
       out = vim.fn.system({ 'git', '-C', lazy, 'checkout', '--quiet', pins['lazy.nvim'].commit })
     end
@@ -425,7 +430,15 @@ function M.setup()
     end
   end
   vim.opt.rtp:prepend(lazy)
+  record_urls(lockfile)
   require('lazy').setup(M.opts)
+  if ok then
+    keep_pins(lockfile, pins)
+    -- (scripts and the e2e suite run what is installed)
+    if #vim.api.nvim_list_uis() > 0 then
+      report_moved(pins)
+    end
+  end
 
   --- Plugin directories by name.
   local function plugin_dirs()
