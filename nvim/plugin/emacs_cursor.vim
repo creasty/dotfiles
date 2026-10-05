@@ -14,15 +14,12 @@ function! s:pumvisible() abort
   return pumvisible()
 endfunction
 
-inoremap <Plug>(emacs-enter) <Cmd>set eventignore+=InsertEnter,InsertLeave<CR>
-inoremap <Plug>(emacs-leave) <Cmd>set eventignore-=InsertEnter,InsertLeave<CR>
-
 imap <expr> <Plug>(emacs-down) <SID>pumvisible()
   \ ? "\<Down>"
-  \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gj\<Plug>(emacs-leave)"
+  \ : "\<C-g>u\<C-o>gj"
 imap <expr> <Plug>(emacs-up) <SID>pumvisible()
   \ ? "\<Up>"
-  \ : "\<Plug>(emacs-enter)\<C-g>u\<C-o>gk\<Plug>(emacs-leave)"
+  \ : "\<C-g>u\<C-o>gk"
 inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
 inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
 inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
