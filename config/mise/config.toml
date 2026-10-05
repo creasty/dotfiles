@@ -3,18 +3,18 @@
 bun = "1.4.2"
 java = "21" # Homebrew's openjdk, registered with `mise link` by provisioning
 node = "24.21.0"
-python = "3.14.7"
+python = "3.14.8"
 ruby = "4.0.7"
 # Tools from npm and RubyGems, each installed apart from Node and Ruby, so that a project pinning another version
 # still has them. npm's run on the project's Node; RubyGems' on the Ruby they were installed with, unless the
 # project's Ruby has its own (e.g. from its bundle).
 "npm:@antfu/ni" = "30.6.0"
 "npm:@github/copilot-language-server" = "1.551.2"
-"npm:@openai/codex" = "0.157.1"
+"npm:@openai/codex" = "0.160.0"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.11.0"
 "npm:graphql-language-service-cli" = "3.5.0"
-"npm:pnpm" = "12.6.0" # runs the version a project's packageManager names
+"npm:pnpm" = "12.8.2" # runs the version a project's packageManager names
 "npm:typescript" = "7.0.2"
 "npm:yarn" = "1.22.22"
 "gem:cocoapods" = "1.17.0"
