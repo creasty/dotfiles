@@ -75,6 +75,44 @@ describe('Emacs-style keys', function()
       t.buffer(nvim, { 'abcdefgh', 'ab', 'abcdef|gh' })
     end)
 
+    it("<C-n> / <C-p> / <C-e> / <C-a> / <C-k>, held, keep insert mode's cursor in the terminal", function()
+      -- (they run their command through normal mode, whose block cursor would flash)
+      local nvim = t.nvim({ tui = true })
+      local lines = {}
+      for i = 1, 20 do
+        lines[i] = 'line ' .. i
+      end
+      nvim:set_buffer(lines)
+      nvim:wait_output()
+      local from = #nvim.output + 1
+      nvim:type('i')
+      --- Holds `key` down, at the key repeat nix/modules/macos.nix sets (16.7 ms).
+      local function hold(key, repeats)
+        for _ = 1, repeats do
+          nvim:type(key, { settle = false })
+          nvim:sleep(17)
+        end
+        nvim:settle()
+      end
+      hold('<C-n>', 10)
+      t.eq({ 11, 0 }, nvim:cursor())
+      hold('<C-p>', 5)
+      t.eq({ 6, 0 }, nvim:cursor())
+      hold('<C-e>', 3)
+      t.eq({ 6, 6 }, nvim:cursor())
+      hold('<C-a>', 3)
+      t.eq({ 6, 0 }, nvim:cursor())
+      hold('<C-k>', 2)
+      t.eq({ 'line 5', 'line 7', 'line 8' }, { nvim:line(5), nvim:line(6), nvim:line(7) })
+      t.eq('i', nvim:mode())
+      nvim:wait_output()
+      local shapes = nvim:cursor_shapes(from)
+      t.contains(shapes, 'bar')
+      t.eq({}, vim.tbl_filter(function(shape)
+        return shape ~= 'bar'
+      end, shapes), "cursor shapes other than insert mode's bar")
+    end, { timeout = 30000 })
+
     it('<C-j> is <CR> and <C-c> is <Esc>', function()
       local nvim = t.nvim()
       nvim:type('ifoo<C-j>bar<C-c>')

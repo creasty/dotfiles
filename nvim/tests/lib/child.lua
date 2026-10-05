@@ -21,20 +21,30 @@ local spawned = 0
 --- opts.shada      shada file path (default: none, like `-i NONE`)
 --- opts.lines / opts.columns   screen size (default 40x120)
 --- opts.name       used to name the sandbox directory
+--- opts.tui        Neovim's terminal UI on a pty, as kitty runs it, rather
+---                 than embedded: self.output records what the terminal
+---                 receives (see cursor_shapes()), and the child is driven
+---                 through --listen
 function Child.new(opts)
   opts = opts or {}
   local ctx = env.load()
   local self = setmetatable({ ctx = ctx, opts = opts }, Child)
   self.dir = opts.cwd or env.sandbox(ctx, opts.name)
 
-  local args = {
-    ctx.nvim,
-    '--embed',
-    '--headless',
+  local lines, columns = opts.lines or 40, opts.columns or 120
+  local args = { ctx.nvim }
+  if opts.tui then
+    -- (a short path: macOS takes about 104 bytes for a socket's)
+    self.address = vim.fn.tempname() .. '.sock'
+    vim.list_extend(args, { '--listen', self.address })
+  else
+    vim.list_extend(args, { '--embed', '--headless' })
+  end
+  vim.list_extend(args, {
     '-i', opts.shada or 'NONE',
-    '--cmd', ('set lines=%d columns=%d'):format(opts.lines or 40, opts.columns or 120),
+    '--cmd', ('set lines=%d columns=%d'):format(lines, columns),
     '--cmd', 'luafile ' .. vim.fn.fnameescape(env.lib_dir .. '/prelude.lua'),
-  }
+  })
   vim.list_extend(args, opts.args or {})
 
   -- The fake servers report which documents they have open here.
@@ -49,16 +59,46 @@ function Child.new(opts)
     E2E_FAKE_COPILOT_STATE = self.copilot_state,
   }, extra_env)
 
+  local job_opts = { cwd = self.dir, env = env.child_env(ctx, child_env) }
+  if opts.tui then
+    -- (a terminal Neovim sets the cursor's shape in)
+    job_opts.env.TERM = 'xterm-256color'
+    job_opts.pty, job_opts.width, job_opts.height = true, columns, lines
+    self.output = {}
+    job_opts.on_stdout = function(_, data)
+      table.insert(self.output, table.concat(data, '\n'))
+    end
+  else
+    job_opts.rpc = true
+  end
+
   local started = vim.uv.hrtime()
-  self.chan = vim.fn.jobstart(args, {
-    rpc = true,
-    cwd = self.dir,
-    env = env.child_env(ctx, child_env),
-  })
-  if self.chan <= 0 then
+  self.job = vim.fn.jobstart(args, job_opts)
+  if self.job <= 0 then
     error('failed to spawn nvim: ' .. vim.inspect(args))
   end
-  self.pid = vim.fn.jobpid(self.chan)
+  if opts.tui then
+    local ok, err = pcall(function()
+      vim.wait(DEFAULT_TIMEOUT, function()
+        local connected, chan = pcall(vim.fn.sockconnect, 'pipe', self.address, { rpc = true })
+        self.chan = connected and chan > 0 and chan or nil
+        return self.chan ~= nil
+      end, 20)
+      assert(self.chan, 'the server does not listen at ' .. self.address)
+      self.pid = self:request('nvim_call_function', 'getpid', {})
+      -- (the server sources the config once the UI has attached)
+      self:wait_for(function()
+        return self:request('nvim_get_vvar', 'vim_did_enter') == 1
+      end, { message = 'Neovim starts' })
+    end)
+    if not ok then
+      vim.fn.jobstop(self.job)
+      error(err, 0)
+    end
+  else
+    self.chan = self.job
+    self.pid = vim.fn.jobpid(self.chan)
+  end
   self:request('nvim_get_mode')
   self.startup_ms = (vim.uv.hrtime() - started) / 1e6
   return self
@@ -82,10 +122,54 @@ function Child:close()
   local chan = self.chan
   self.chan = nil
   pcall(vim.rpcnotify, chan, 'nvim_command', 'qa!')
-  if vim.fn.jobwait({ chan }, 1000)[1] == -1 then
-    vim.fn.jobstop(chan)
-    vim.fn.jobwait({ chan }, 1000)
+  if vim.fn.jobwait({ self.job }, 1000)[1] == -1 then
+    vim.fn.jobstop(self.job)
+    vim.fn.jobwait({ self.job }, 1000)
   end
+end
+
+---------------------------------------------------------------------------
+-- Terminal (opts.tui)
+---------------------------------------------------------------------------
+
+--- Closes the pty, as closing kitty's window does, and tells whether Neovim's
+--- server then exits (it is killed otherwise).
+function Child:close_terminal()
+  vim.fn.chanclose(self.chan)
+  self.chan = nil
+  vim.fn.jobstop(self.job)
+  local exited = vim.wait(5000, function()
+    return vim.uv.kill(self.pid, 0) ~= 0
+  end, 50)
+  if not exited then
+    vim.uv.kill(self.pid, 'sigkill')
+  end
+  return exited
+end
+
+--- Waits until the terminal has received nothing for `ms` (default 100), so
+--- that what Neovim drew for the keys typed so far has arrived.
+function Child:wait_output(ms)
+  ms = ms or 100
+  local count, since = #self.output, vim.uv.now()
+  vim.wait(DEFAULT_TIMEOUT, function()
+    if #self.output ~= count then
+      count, since = #self.output, vim.uv.now()
+    end
+    return vim.uv.now() - since >= ms
+  end, 5)
+end
+
+local CURSOR_SHAPES = { 'block', 'block', 'block', 'underline', 'underline', 'bar', 'bar' }
+
+--- The cursor shapes the terminal was told to show (DECSCUSR), in order, from
+--- self.output[from] on: 'block', 'underline' or 'bar'.
+function Child:cursor_shapes(from)
+  local shapes = {}
+  for n in table.concat(self.output, '', from or 1):gmatch('\27%[(%d) q') do
+    table.insert(shapes, CURSOR_SHAPES[tonumber(n) + 1])
+  end
+  return shapes
 end
 
 ---------------------------------------------------------------------------

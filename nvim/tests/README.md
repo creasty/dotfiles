@@ -168,8 +168,10 @@ leaves the cursor at.
 - **UI.** Children run headless, so no UI attaches. When one does, Neovim
   fires `UIEnter` after `VimEnter`, and some plugins finish setting up then
   (snacks.nvim takes over `vim.ui.select`), so `lib/prelude.lua` fires it the
-  same way. `exit` runs the terminal UI itself, on a pty, as kitty does, and
-  closes the pty.
+  same way. A child started with `t.nvim({ tui = true })` runs the terminal
+  UI itself, on a pty, as kitty does, and records what the terminal receives:
+  `exit` closes the pty, and `emacs_keys` checks the cursor shapes the
+  terminal is told.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so
@@ -215,7 +217,8 @@ end)
 - Child: `type`, `set_buffer`, `buffer`, `lines`, `line`, `cursor`, `mode`,
   `wait_for`, `wait_mode`, `cmd`, `exec`, `eval`, `call`, `lua`, `edit`,
   `files`, `path`, `read_file`, `floats`, `screen`, `statusline`, `tabline`,
-  `messages`, `getreg` (see `lib/child.lua`).
+  `messages`, `getreg`; with `tui = true`, `wait_output`, `cursor_shapes`,
+  `close_terminal` (see `lib/child.lua`).
 - Assertions: `eq`, `neq`, `ok`, `no`, `match`, `no_match`, `contains`,
   `buffer`, `golden_section` (see `lib/t.lua`).
 - Options: `t.it(name, fn, { timeout = ms, retry = n })`,
