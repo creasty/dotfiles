@@ -5,7 +5,7 @@ What the code and the README don't tell about this repository.
 ## Verification gaps
 
 - **Neovim's config**: `./verify` starts Neovim without it (`-u NONE`, `nix/tests/vim.bats`).
-  The e2e suite (`nvim/tests/`) runs it with the plugins `nvim/flake.lock` pins, but CI restores those from its cache: a pinned repository that vanishes breaks fresh installs unnoticed, until Dependabot fails to bump it or the pins change.
+  The e2e suite (`nvim/tests/`) runs it with the plugins `nvim/lazy-lock.json` pins, but CI restores those from its cache: a pinned repository that vanishes breaks fresh installs unnoticed, until Renovate fails to bump it or the pins change.
   The provisioning job has everything installed, so a test there could start Neovim with its config.
 - **kitty**: no test starts it, so that it starts Neovim (`shell`) goes untested; `nix/tests/link.bats` loads its config, which flags only unknown options.
 - **Idempotency**: nothing checks that a second switch changes nothing.
@@ -22,8 +22,14 @@ What the code and the README don't tell about this repository.
 - Its `opfmt!` directive takes a capture as one node, where Neovim 0.12 passes a list of nodes.
   `compat.lua` (below) doesn't cover it, as it's registered without `all = false`.
 
-It stays pinned in `nvim/flake.lock`, and its tests skip while it's off (`probe.opfmt_enabled` in `nvim/tests/spec/treesitter_spec.lua` and `snippets_spec.lua`).
+It stays pinned in `nvim/lazy-lock.json`, where lazy.nvim keeps the pins of the plugins `cond` switches off, and its tests skip while it's off (`probe.opfmt_enabled` in `nvim/tests/spec/treesitter_spec.lua` and `snippets_spec.lua`).
 With `dev = true`, lazy.nvim loads it from its working copy in `~/go/src/github.com/creasty/opfmt` when there is one.
+
+## lazy.nvim rewriting its lockfile at start
+
+After installing missing plugins on a start, lazy.nvim rewrites `nvim/lazy-lock.json` with what is installed: that undoes the pins a pull moved, and drops the pin of a plugin that failed to install.
+So `keep_pins` in `nvim/lua/user/plugins.lua` puts them back.
+Remove it once lazy.nvim keeps the lockfile when it installs from it ([lazy.nvim#2127](https://github.com/folke/lazy.nvim/pull/2127) would): a start that installs a missing plugin while another is behind its pin tells.
 
 ## nvim/lua/user/plugin/treesitter/compat.lua
 

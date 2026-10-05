@@ -119,11 +119,14 @@ local function run(ctx, args, timeout_ms)
 end
 
 --- $XDG_CONFIG_HOME/nvim mirrors this repo's nvim/ (not ~/.config/nvim, so
---- the working tree under test is what boots).
+--- the working tree under test is what boots). lazy-lock.json is a copy, as
+--- lazy.nvim rewrites its lockfile whenever it installs a plugin.
 local function link_config(config_home)
   local nvim_dir = mkdir(config_home .. '/nvim')
   for name in vim.fs.dir(M.config_dir) do
-    if name ~= 'tests' and name ~= '.DS_Store' then
+    if name == 'lazy-lock.json' then
+      assert(uv.fs_copyfile(M.config_dir .. '/' .. name, nvim_dir .. '/' .. name))
+    elseif name ~= 'tests' and name ~= '.DS_Store' then
       symlink(M.config_dir .. '/' .. name, nvim_dir .. '/' .. name)
     end
   end

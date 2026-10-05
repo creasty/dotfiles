@@ -5,7 +5,7 @@ name: tests
 # - hammerspoon: the specs of the Hammerspoon config (hammerspoon/tests), on a
 #   fake of Hammerspoon's API.
 # - nvim-e2e: the Neovim end-to-end workflow tests (nvim/tests), against the
-#   plugin versions pinned in nvim/flake.lock, so a pull request (Dependabot's
+#   plugin versions pinned in nvim/lazy-lock.json, so a pull request (Renovate's
 #   bumps included) shows which workflows it changes. The job summary lists
 #   every changed workflow.
 
@@ -88,7 +88,7 @@ jobs:
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ runner.temp }}/e2e/plugins
-          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/flake.lock', 'nvim/lua/user/plugin/treesitter/parsers.lua') }}
+          key: nvim-e2e-plugins-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nvim/lazy-lock.json', 'nvim/lua/user/plugin/treesitter/parsers.lua') }}
 
       - name: Install the locked plugins
         run: nvim/tests/plugins install
