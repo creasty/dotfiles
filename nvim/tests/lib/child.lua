@@ -22,9 +22,9 @@ local spawned = 0
 --- opts.lines / opts.columns   screen size (default 40x120)
 --- opts.name       used to name the sandbox directory
 --- opts.tui        Neovim's terminal UI on a pty, as kitty runs it, rather
----                 than embedded: self.output records what the terminal
----                 receives (see cursor_shapes()), and the child is driven
----                 through --listen
+---                 than embedded: self.output records each write the
+---                 terminal receives, { time = ms, data = bytes } (see
+---                 cursor_shapes()), and the child is driven through --listen
 function Child.new(opts)
   opts = opts or {}
   local ctx = env.load()
@@ -68,7 +68,7 @@ function Child.new(opts)
     job_opts.pty, job_opts.width, job_opts.height = true, columns, lines
     self.output = {}
     job_opts.on_stdout = function(_, data)
-      table.insert(self.output, table.concat(data, '\n'))
+      table.insert(self.output, { time = vim.uv.hrtime() / 1e6, data = table.concat(data, '\n') })
     end
   else
     job_opts.rpc = true
@@ -149,6 +149,14 @@ function Child:close_terminal()
   return exited
 end
 
+--- Types keys without waiting for Neovim to take them, as a keyboard does, so
+--- that they queue up while it works. A deferred request after them (eval(),
+--- cursor(), not settle()'s nvim_get_mode()) returns once Neovim has run them.
+function Child:press(keys)
+  vim.rpcnotify(self.chan, 'nvim_input', keys)
+  return self
+end
+
 --- Waits until the terminal has received nothing for `ms` (default 100), so
 --- that what Neovim drew for the keys typed so far has arrived.
 function Child:wait_output(ms)
@@ -167,8 +175,12 @@ local CURSOR_SHAPES = { 'block', 'block', 'block', 'underline', 'underline', 'ba
 --- The cursor shapes the terminal was told to show (DECSCUSR), in order, from
 --- self.output[from] on: 'block', 'underline' or 'bar'.
 function Child:cursor_shapes(from)
+  local data = {}
+  for i = from or 1, #self.output do
+    data[#data + 1] = self.output[i].data
+  end
   local shapes = {}
-  for n in table.concat(self.output, '', from or 1):gmatch('\27%[(%d) q') do
+  for n in table.concat(data):gmatch('\27%[(%d) q') do
     table.insert(shapes, CURSOR_SHAPES[tonumber(n) + 1])
   end
   return shapes

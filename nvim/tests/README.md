@@ -169,10 +169,10 @@ leaves the cursor at.
   fires `UIEnter` after `VimEnter`, and some plugins finish setting up then
   (snacks.nvim takes over `vim.ui.select`), so `lib/prelude.lua` fires it the
   same way. A child started with `t.nvim({ tui = true })` runs the terminal
-  UI itself, on a pty, as kitty does, and records what the terminal receives:
-  `exit` closes the pty, and `emacs_keys` checks the cursor shapes the
-  terminal is told. It sets `$NVIM_KEEP_INPUT_SOURCE`, so the Mac's keyboard
-  layout stays as it is.
+  UI itself, on a pty, as kitty does, and records what the terminal receives,
+  and when: `exit` closes the pty, and `emacs_keys` holds keys at the key
+  repeat to check the screen keeps up and the cursor's shape. It sets
+  `$NVIM_KEEP_INPUT_SOURCE`, so the Mac's keyboard layout stays as it is.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so
@@ -180,7 +180,8 @@ leaves the cursor at.
   with a `<C-c>` goes to the typeahead, which Neovim reads when it next waits
   for a key: through the input queue, a `<C-c>` that arrives while Neovim
   works through its events is an interrupt and runs no mapping
-  (`:help map_CTRL-C`).
+  (`:help map_CTRL-C`). `nvim:press(keys)` doesn't wait for Neovim to take
+  them, as a keyboard doesn't, so they queue up while it works.
 - **Timing.** Asynchronous results are awaited with `nvim:wait_for()` and the
   `probe.wait_*()` helpers (`wait_picker` also waits for the picker to finish
   loading and to filter by what was typed). Where a person would pause
@@ -215,11 +216,11 @@ t.describe('Completion', function()
 end)
 ```
 
-- Child: `type`, `set_buffer`, `buffer`, `lines`, `line`, `cursor`, `mode`,
-  `wait_for`, `wait_mode`, `cmd`, `exec`, `eval`, `call`, `lua`, `edit`,
-  `files`, `path`, `read_file`, `floats`, `screen`, `statusline`, `tabline`,
-  `messages`, `getreg`; with `tui = true`, `wait_output`, `cursor_shapes`,
-  `close_terminal` (see `lib/child.lua`).
+- Child: `type`, `press`, `set_buffer`, `buffer`, `lines`, `line`, `cursor`,
+  `mode`, `wait_for`, `wait_mode`, `cmd`, `exec`, `eval`, `call`, `lua`,
+  `edit`, `files`, `path`, `read_file`, `floats`, `screen`, `statusline`,
+  `tabline`, `messages`, `getreg`; with `tui = true`, `wait_output`,
+  `cursor_shapes`, `close_terminal` (see `lib/child.lua`).
 - Assertions: `eq`, `neq`, `ok`, `no`, `match`, `no_match`, `contains`,
   `buffer`, `golden_section` (see `lib/t.lua`).
 - Options: `t.it(name, fn, { timeout = ms, retry = n })`,

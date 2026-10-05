@@ -1,4 +1,5 @@
 local t = require('t')
+local probe = require('probe')
 local describe, it = t.describe, t.it
 
 describe('Emacs-style keys', function()
@@ -75,43 +76,61 @@ describe('Emacs-style keys', function()
       t.buffer(nvim, { 'abcdefgh', 'ab', 'abcdef|gh' })
     end)
 
-    it("<C-n> / <C-p> / <C-e> / <C-a> / <C-k>, held, keep insert mode's cursor in the terminal", function()
-      -- (they run their command through normal mode, whose block cursor would flash)
+    it("<C-n> / <C-p> / <C-e> / <C-a> / <C-k>, held, keep up, in insert mode's cursor", function()
+      -- Held at the key repeat nix/modules/macos.nix sets (16.7 ms), each key
+      -- gets at most one screen update, the last one within the budget, and the
+      -- terminal never shows the cursor of the normal mode they pass through
+      local budget = tonumber(os.getenv('E2E_KEY_REPEAT_BUDGET_MS')) or 16.7
       local nvim = t.nvim({ tui = true })
       local lines = {}
-      for i = 1, 20 do
+      for i = 1, 40 do
         lines[i] = 'line ' .. i
       end
-      nvim:set_buffer(lines)
+      nvim:edit('keys.txt', lines)
       nvim:wait_output()
       local from = #nvim.output + 1
+      -- (the first insert starts the AI client, which the statusline shows a moment later)
       nvim:type('i')
-      --- Holds `key` down, at the key repeat nix/modules/macos.nix sets (16.7 ms).
-      local function hold(key, repeats)
-        for _ = 1, repeats do
-          nvim:type(key, { settle = false })
-          nvim:sleep(17)
-        end
-        nvim:settle()
-      end
-      hold('<C-n>', 10)
-      t.eq({ 11, 0 }, nvim:cursor())
-      hold('<C-p>', 5)
-      t.eq({ 6, 0 }, nvim:cursor())
-      hold('<C-e>', 3)
-      t.eq({ 6, 6 }, nvim:cursor())
-      hold('<C-a>', 3)
-      t.eq({ 6, 0 }, nvim:cursor())
-      hold('<C-k>', 2)
-      t.eq({ 'line 5', 'line 7', 'line 8' }, { nvim:line(5), nvim:line(6), nvim:line(7) })
-      t.eq('i', nvim:mode())
+      probe.wait_ai(nvim)
       nvim:wait_output()
+      local function hold(key, repeats)
+        local first, start, last_key = #nvim.output + 1, vim.uv.hrtime() / 1e6, nil
+        for i = 1, repeats do
+          nvim:press(key)
+          last_key = vim.uv.hrtime() / 1e6
+          nvim:sleep(math.max(0, start + i * 16.7 - last_key))
+        end
+        nvim:eval('0') -- (once Neovim has run the keys)
+        nvim:wait_output()
+        local updates = #nvim.output - first + 1
+        t.ok(updates <= repeats, ('%s held %d times: %d screen updates'):format(key, repeats, updates))
+        local lag = nvim.output[#nvim.output].time - last_key
+        t.ok(
+          lag < budget,
+          ('%s held: the screen followed the last key after %.1fms (budget %.1fms, set E2E_KEY_REPEAT_BUDGET_MS)'):format(
+            key,
+            lag,
+            budget
+          )
+        )
+      end
+      hold('<C-n>', 30)
+      t.eq({ 31, 0 }, nvim:cursor())
+      hold('<C-p>', 25)
+      t.eq({ 6, 0 }, nvim:cursor())
+      hold('<C-e>', 30)
+      t.eq({ 6, 6 }, nvim:cursor())
+      hold('<C-a>', 30)
+      t.eq({ 6, 0 }, nvim:cursor())
+      hold('<C-k>', 30)
+      t.eq({ 'line 5', 'line 21', 'line 22' }, { nvim:line(5), nvim:line(6), nvim:line(7) })
+      t.eq('i', nvim:mode())
       local shapes = nvim:cursor_shapes(from)
       t.contains(shapes, 'bar')
       t.eq({}, vim.tbl_filter(function(shape)
         return shape ~= 'bar'
       end, shapes), "cursor shapes other than insert mode's bar")
-    end, { timeout = 30000 })
+    end, { timeout = 60000, retry = 2 })
 
     it('<C-j> is <CR> and <C-c> is <Esc>', function()
       local nvim = t.nvim()
