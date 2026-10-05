@@ -74,13 +74,16 @@ end)
 
 -- A terminal UI is attached by the end of startup, and Neovim fires UIEnter
 -- after VimEnter; plugins finish setting up then (snacks.nvim installs its
--- vim.ui.select). A headless child has no UI, so fire it the same way.
+-- vim.ui.select). A headless child has no UI, so fire it the same way (a
+-- child with its terminal UI, opts.tui, gets Neovim's own).
 vim.api.nvim_create_autocmd('VimEnter', {
   once = true,
   callback = function()
     -- (after the config's own VimEnter autocommands)
     vim.schedule(function()
-      vim.api.nvim_exec_autocmds('UIEnter', { modeline = false })
+      if #vim.api.nvim_list_uis() == 0 then
+        vim.api.nvim_exec_autocmds('UIEnter', { modeline = false })
+      end
     end)
   end,
 })

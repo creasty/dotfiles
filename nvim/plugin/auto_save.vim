@@ -29,7 +29,8 @@ function! s:is_enabled() abort
   if !empty(&buftype)
     return v:false
   endif
-  if mode() !=# 'n'
+  " Normal mode, not Insert mode's <C-o> (niI)
+  if mode(1) !=# 'n'
     return v:false
   endif
   return v:true

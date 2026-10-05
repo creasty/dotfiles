@@ -49,6 +49,10 @@ function M.setup()
   vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost', 'InsertLeave' }, {
     group = vim.api.nvim_create_augroup('user_plugin_lint', {}),
     callback = function(args)
+      -- not when Insert mode's <C-o> (niI) leaves it for one command
+      if args.event == 'InsertLeave' and vim.api.nvim_get_mode().mode ~= 'n' then
+        return
+      end
       M.lint(args.buf)
     end,
   })
