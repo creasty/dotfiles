@@ -14,15 +14,22 @@ function! s:pumvisible() abort
   return pumvisible()
 endfunction
 
+" A Normal mode command through <C-o>, then an empty <Cmd>: with no key after
+" the command's last one, 'showcmd' would flush the screen while in Normal
+" mode, showing its block cursor for a moment.
+function! s:normal(command) abort
+  return "\<C-o>" . a:command . "\<Cmd>\<CR>"
+endfunction
+
 imap <expr> <Plug>(emacs-down) <SID>pumvisible()
   \ ? "\<Down>"
-  \ : "\<C-g>u\<C-o>gj"
+  \ : "\<C-g>u" . <SID>normal('gj')
 imap <expr> <Plug>(emacs-up) <SID>pumvisible()
   \ ? "\<Up>"
-  \ : "\<C-g>u\<C-o>gk"
-inoremap <Plug>(emacs-eol) <C-g>u<C-o>g$
-inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u\<C-o>g0"
-inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? "\<C-o>gJ" : "\<C-g>u\<C-o>d$"
+  \ : "\<C-g>u" . <SID>normal('gk')
+inoremap <expr> <Plug>(emacs-eol) "\<C-g>u" . <SID>normal('g$')
+inoremap <expr> <Plug>(emacs-bol) col('.') == 2 ? "\<Left>" : "\<C-g>u" . <SID>normal('g0')
+inoremap <expr> <Plug>(emacs-kill) col('.') == col('$') ? <SID>normal('gJ') : "\<C-g>u" . <SID>normal('d$')
 
 nmap <C-c> <Esc>
 nmap <C-j> <CR>
