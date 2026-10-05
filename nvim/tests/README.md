@@ -13,9 +13,10 @@ replace a plugin — and fail exactly where your workflow changes.
 ## Running
 
 ```sh
-nvim/tests/run                      # everything: ~670 tests, about a minute with 4 workers
+nvim/tests/run                      # every test but the benchmarks: ~720, about a minute with 4 workers
 nvim/tests/run completion lsp       # spec files whose name contains a word
 nvim/tests/run -f 'Esc' -f scroll   # tests whose full name matches a Lua pattern (any -f)
+nvim/tests/run --bench              # only the benchmarks, one spec file at a time
 nvim/tests/run -l                   # list the requirements (-q adds quirk notes)
 nvim/tests/run -v                   # print every test, not just failures
 nvim/tests/run --update-golden snippet_library   # re-pin golden output
@@ -23,6 +24,9 @@ nvim/tests/run --update-golden snippet_library   # re-pin golden output
 
 `run --help` shows all options. A failure prints the assertion, the child's
 screen and its `:messages`.
+
+Benchmarks, the tests tagged `bench`, check a time budget, which the children
+of other spec files running in parallel would eat into: other runs skip them.
 
 Needs what the config itself needs: Neovim 0.12 or later, the installed plugins
 (found where lazy.nvim installs them, `~/.local/share/nvim/lazy`, or set
@@ -68,16 +72,17 @@ pull requests, pushes to master and every Monday, with the versions this setup
 was pinned on (Neovim 0.12.4, and tree-sitter CLI 0.26.8 to build parsers:
 those nixpkgs installs) and the plugins `nvim/lazy-lock.json` pins. The job
 summary lists every workflow that changed: the assertion, the child's screen,
-and whether the test was a pinned quirk (`run --summary FILE` writes it).
+and whether the test was a pinned quirk (`run --summary FILE` writes it). The
+benchmarks run after the suite, in a step of their own.
 
 ## What is covered
 
 | Spec | Workflows | Provided today by |
 |---|---|---|
-| `startup` | quiet boot, startup time budget, options, commands | init.vim |
+| `startup` | quiet boot, startup time budget (a benchmark), options, commands | init.vim |
 | `exit` | closing the window saves the history and quits, even when the history can't be saved | init.vim |
 | `editing`, `windows` | init.vim keymaps, submodes, `<C-s>` window keys, tags | init.vim, `plugin/` |
-| `emacs_keys` | insert/cmdline/select-mode Emacs keys | `plugin/emacs_cursor.vim` |
+| `emacs_keys` | insert/cmdline/select-mode Emacs keys, keeping up with the key repeat (a benchmark) | `plugin/emacs_cursor.vim` |
 | `autopairs` | pairs, step-over, `<CR>`/`<Space>` rules, custom rules, dot repeat | **nvim-autopairs**, `user/plugin/autopairs.lua` |
 | `cmdline` | `:'`, `:w!!`, `:ee`…, `:s/` family, search escaping, abbreviations, previewed commands | `user/cmdline.lua`, `user/text_ops.lua` |
 | `completion` | popup, `<Tab>`/`<CR>`/`<Esc>`/`<C-n>`, sources, LSP snippets | **blink.cmp**, **LuaSnip** |
@@ -223,5 +228,5 @@ end)
   `cursor_shapes`, `close_terminal` (see `lib/child.lua`).
 - Assertions: `eq`, `neq`, `ok`, `no`, `match`, `no_match`, `contains`,
   `buffer`, `golden_section` (see `lib/t.lua`).
-- Options: `t.it(name, fn, { timeout = ms, retry = n })`,
+- Options: `t.it(name, fn, { timeout = ms, retry = n, tags = { 'bench' } })`,
   `t.quirk(name, reason, fn)`.

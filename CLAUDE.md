@@ -10,8 +10,9 @@ What the code and the README don't tell about this repository.
 - **kitty**: no test starts it, so that it starts Neovim (`shell`) goes untested; `nix/tests/link.bats` loads its config, which flags only unknown options.
 - **Idempotency**: nothing checks that a second switch changes nothing.
   The activation steps (mise, rustup, VS Code's extensions, the agent skills) skip what's done, but no test runs them twice.
-- **Startup budget on CI**: `zsh -i -c exit` measured 39–101 ms across runs, against the 150 ms budget (`nix/tests/shell.bats`).
-  If it ever flakes, give CI its own `DOTFILES_VERIFY_STARTUP_MS` rather than loosening the local default.
+- **Budgets on CI**: CI's runners measured `zsh -i -c exit` at 68–151 ms over 82 runs (2026-10-01 to 05), as far apart on one config as across configs.
+  So the provisioning job benchmarks it against 200 ms (`DOTFILES_VERIFY_STARTUP_MS`), where the default is 150 ms (`nix/tests/shell.bats`): a regression fails it only once it more than doubles a typical run.
+  Neovim's benchmarks keep their defaults on CI, 150 ms to start (`nvim/tests/spec/startup_spec.lua`) and 16.7 ms to follow a held key (`emacs_keys_spec.lua`), and a pass prints no time, so CI has no numbers for them; if one flakes, give CI its own `E2E_STARTUP_BUDGET_MS` or `E2E_KEY_REPEAT_BUDGET_MS` rather than loosening the default.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
 
 ## opfmt is off

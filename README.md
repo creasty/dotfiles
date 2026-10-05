@@ -38,9 +38,11 @@ To verify a machine again:
 ```sh-session
 $ ./verify
 $ ./verify --filter java  # options go to bats
+$ ./verify --bench        # only the benchmarks
 ```
 
 The tests compare the machine with what the activated configuration lists in `/etc/dotfiles/manifest.json`.
+Benchmarks, the tests tagged `bench` such as the shell's startup time, check a budget that a busy machine misses: provisioning and the other runs skip them.
 Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 
 ## Updates

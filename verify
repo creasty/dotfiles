@@ -3,7 +3,8 @@
 # Verifies that the provisioning is reflected on this machine by running the behavioral tests in nix/tests/.
 # The tests compare the machine with /etc/dotfiles/manifest.json, which the activated configuration wrote.
 #
-#   ./verify [bats options]    e.g. ./verify --filter java
+#   ./verify [bats options]           e.g. ./verify --filter java
+#   ./verify --bench [bats options]   the benchmarks (tests tagged bench) alone, which other runs skip
 
 set -eu
 set -o pipefail
@@ -27,7 +28,12 @@ run_tests() {
 #==============================================================================================
 main() {
   load_envs
-  run_tests "$@"
+  if [ "${1:-}" = --bench ]; then
+    shift
+    VERIFY_BENCH=1 run_tests --filter-tags bench "$@"
+  else
+    run_tests "$@"
+  fi
 }
 
 main "$@"

@@ -7,7 +7,7 @@ name: tests
 # - nvim-e2e: the Neovim end-to-end workflow tests (nvim/tests), against the
 #   plugin versions pinned in nvim/lazy-lock.json, so a pull request (Renovate's
 #   bumps included) shows which workflows it changes. The job summary lists
-#   every changed workflow.
+#   every changed workflow. Its benchmarks run after the tests, alone.
 
 on:
   push:
@@ -102,3 +102,6 @@ jobs:
 
       - name: Run the workflow tests
         run: nvim/tests/run --jobs 3 --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Run the benchmarks
+        run: nvim/tests/run --bench

@@ -39,6 +39,8 @@ end
 ---                 change, review it: the new behavior may be an improvement.
 ---   opts.retry    extra attempts for workflows that race a plugin's own
 ---                 asynchronous internals (a real regression fails them all)
+---   opts.tags     labels, as bats' test_tags: `bench` marks a benchmark,
+---                 which only `run --bench` runs, alone (other runs skip it)
 function t.it(name, fn, opts)
   opts = opts or {}
   table.insert(cases, { name = full_name(current, name), fn = fn, group = current, opts = opts })
