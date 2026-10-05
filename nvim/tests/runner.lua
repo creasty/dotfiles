@@ -18,6 +18,8 @@ Options:
   -f, --filter PATTERN   only run tests whose full name matches the Lua pattern
                          (repeat to run the tests matching any of them)
   -j, --jobs N           number of spec files run in parallel (default: 4)
+      --bench            run only the benchmarks (tests tagged bench), one spec
+                         file at a time; other runs skip them
   -l, --list             list the workflow requirements (test names) and exit
   -q, --quirks           with --list: also show why each quirk is pinned
   -k, --keep             keep the temporary run directory
@@ -41,6 +43,8 @@ local function parse_args(argv)
     elseif a == '-j' or a == '--jobs' then
       i = i + 1
       opts.jobs = tonumber(argv[i])
+    elseif a == '--bench' then
+      opts.bench = true
     elseif a == '-q' or a == '--quirks' then
       opts.quirks = true
     elseif a == '-l' or a == '--list' then
@@ -66,6 +70,11 @@ local function parse_args(argv)
       table.insert(opts.specs, a)
     end
     i = i + 1
+  end
+  -- Benchmarks run alone: no other spec file's children load the machine
+  -- while they measure.
+  if opts.bench then
+    opts.jobs = 1
   end
   return opts
 end
@@ -115,9 +124,12 @@ if opts.worker then
     os.exit(1)
   end
   for _, case in ipairs(cases) do
-    if selected(case.name) then
+    local bench = vim.tbl_contains(case.opts.tags or {}, 'bench')
+    if selected(case.name) and (bench or not opts.bench) then
       if opts.list then
         emit({ event = 'case', name = case.name, quirk = case.opts.quirk })
+      elseif bench and not opts.bench then
+        emit({ event = 'result', name = case.name, status = 'skip', error = 'a benchmark, which nvim/tests/run --bench runs alone', ms = 0 })
       else
         emit({ event = 'start', name = case.name })
         local result = t.run_case(case, opts.timeout)
@@ -232,6 +244,9 @@ local function start_worker(spec)
   end
   if opts.list then
     table.insert(cmd, '--list')
+  end
+  if opts.bench then
+    table.insert(cmd, '--bench')
   end
   local buffered = ''
   local current_case

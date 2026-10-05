@@ -15,6 +15,16 @@ MANIFEST=/etc/dotfiles/manifest.json
 # shellcheck disable=SC2034 # used by the tests
 PROFILE_BIN="/etc/profiles/per-user/$(id -un)/bin"
 
+#  Benchmarks
+#-----------------------------------------------
+# A test tagged bench measures against a budget, which a busy machine misses: `./verify --bench` runs the benchmarks
+# alone, and other runs skip them. A file's own setup() replaces this one.
+setup() {
+  if [[ " ${BATS_TEST_TAGS[*]-} " == *' bench '* && -z ${VERIFY_BENCH:-} ]]; then
+    skip 'a benchmark, which ./verify --bench runs alone'
+  fi
+}
+
 #  Shells
 #-----------------------------------------------
 # The zsh new terminals start: the login shell

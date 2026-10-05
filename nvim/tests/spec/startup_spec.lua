@@ -32,7 +32,7 @@ describe('Startup', function()
       best = math.min(best, boot())
     end
     t.ok(best < budget, ('startup took %.0fms (budget %dms, set E2E_STARTUP_BUDGET_MS)'):format(best, budget))
-  end)
+  end, { tags = { 'bench' } })
 
   it('uses the candle colorscheme with 24-bit colors', function()
     local nvim = t.nvim()

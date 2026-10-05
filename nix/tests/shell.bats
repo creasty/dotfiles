@@ -72,6 +72,7 @@ prefers_nix() {
   assert_same_file "$output" "$DOTFILES_PATH/bin/git-info"
 }
 
+# bats test_tags=bench
 @test "interactive shells start within the startup budget" {
   local budget="${DOTFILES_VERIFY_STARTUP_MS:-150}"
   # The median of 10 runs after 3 warm-up runs, like `hyperfine --warmup 3 'zsh -i -c exit'` (without job control, as
