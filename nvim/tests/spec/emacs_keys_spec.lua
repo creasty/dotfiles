@@ -76,11 +76,12 @@ describe('Emacs-style keys', function()
       t.buffer(nvim, { 'abcdefgh', 'ab', 'abcdef|gh' })
     end)
 
-    it("<C-n> / <C-p> / <C-e> / <C-a> / <C-k>, held, keep up, in insert mode's cursor", function()
-      -- Held at the key repeat nix/modules/macos.nix sets (16.7 ms), each key
-      -- gets at most one screen update, the last one within the budget, and the
-      -- terminal never shows the cursor of the normal mode they pass through
-      local budget = tonumber(os.getenv('E2E_KEY_REPEAT_BUDGET_MS')) or 16.7
+    --- A child in its terminal UI, in insert mode on the first of 40 lines, and
+    --- hold(key, repeats), which holds `key` down at the key repeat
+    --- nix/modules/macos.nix sets (16.7 ms) and returns the screen updates it
+    --- got and how long after its last repeat the screen followed. `from`
+    --- indexes the child's output from entering insert mode on.
+    local function insert_in_terminal()
       local nvim = t.nvim({ tui = true })
       local lines = {}
       for i = 1, 40 do
@@ -102,18 +103,14 @@ describe('Emacs-style keys', function()
         end
         nvim:eval('0') -- (once Neovim has run the keys)
         nvim:wait_output()
-        local updates = #nvim.output - first + 1
-        t.ok(updates <= repeats, ('%s held %d times: %d screen updates'):format(key, repeats, updates))
-        local lag = nvim.output[#nvim.output].time - last_key
-        t.ok(
-          lag < budget,
-          ('%s held: the screen followed the last key after %.1fms (budget %.1fms, set E2E_KEY_REPEAT_BUDGET_MS)'):format(
-            key,
-            lag,
-            budget
-          )
-        )
+        return #nvim.output - first + 1, nvim.output[#nvim.output].time - last_key
       end
+      return nvim, hold, from
+    end
+
+    it("<C-n> / <C-p> / <C-e> / <C-a> / <C-k>, held, keep insert mode's cursor in the terminal", function()
+      -- (they run their command through normal mode, whose block cursor would flash)
+      local nvim, hold, from = insert_in_terminal()
       hold('<C-n>', 30)
       t.eq({ 31, 0 }, nvim:cursor())
       hold('<C-p>', 25)
@@ -130,7 +127,27 @@ describe('Emacs-style keys', function()
       t.eq({}, vim.tbl_filter(function(shape)
         return shape ~= 'bar'
       end, shapes), "cursor shapes other than insert mode's bar")
-    end, { timeout = 60000, retry = 2 })
+    end, { timeout = 60000 })
+
+    it('<C-n> / <C-p> / <C-e> / <C-a> / <C-k>, held, keep up with the key repeat', function()
+      -- Each key gets at most one screen update, and the screen follows its
+      -- last repeat within the budget, one key repeat
+      local budget = tonumber(os.getenv('E2E_KEY_REPEAT_BUDGET_MS')) or 16.7
+      local _, hold = insert_in_terminal()
+      for _, held in ipairs({ { '<C-n>', 30 }, { '<C-p>', 25 }, { '<C-e>', 30 }, { '<C-a>', 30 }, { '<C-k>', 30 } }) do
+        local key, repeats = held[1], held[2]
+        local updates, lag = hold(key, repeats)
+        t.ok(updates <= repeats, ('%s held %d times: %d screen updates'):format(key, repeats, updates))
+        t.ok(
+          lag < budget,
+          ('%s held: the screen followed the last key after %.1fms (budget %.1fms, set E2E_KEY_REPEAT_BUDGET_MS)'):format(
+            key,
+            lag,
+            budget
+          )
+        )
+      end
+    end, { timeout = 60000, retry = 2, tags = { 'bench' } })
 
     it('<C-j> is <CR> and <C-c> is <Esc>', function()
       local nvim = t.nvim()
