@@ -171,7 +171,8 @@ leaves the cursor at.
   same way. A child started with `t.nvim({ tui = true })` runs the terminal
   UI itself, on a pty, as kitty does, and records what the terminal receives:
   `exit` closes the pty, and `emacs_keys` checks the cursor shapes the
-  terminal is told.
+  terminal is told. It sets `$NVIM_KEEP_INPUT_SOURCE`, so the Mac's keyboard
+  layout stays as it is.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so

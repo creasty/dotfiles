@@ -58,8 +58,9 @@ end
 
 local function check()
   -- Only with a UI, which gets its keys through macOS's input sources: not for
-  -- scripts and tests, running headless
-  if in_normal_mode() and #vim.api.nvim_list_uis() > 0 then
+  -- scripts and tests, running headless, nor with $NVIM_KEEP_INPUT_SOURCE set
+  -- (tests with a terminal UI)
+  if in_normal_mode() and #vim.api.nvim_list_uis() > 0 and not vim.env.NVIM_KEEP_INPUT_SOURCE then
     M.select_layout()
   end
 end

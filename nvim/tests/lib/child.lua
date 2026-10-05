@@ -63,6 +63,8 @@ function Child.new(opts)
   if opts.tui then
     -- (a terminal Neovim sets the cursor's shape in)
     job_opts.env.TERM = 'xterm-256color'
+    -- (with a UI, it would select the Mac's keyboard layout: user/input_source.lua)
+    job_opts.env.NVIM_KEEP_INPUT_SOURCE = '1'
     job_opts.pty, job_opts.width, job_opts.height = true, columns, lines
     self.output = {}
     job_opts.on_stdout = function(_, data)
