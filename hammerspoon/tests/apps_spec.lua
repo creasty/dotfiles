@@ -9,9 +9,9 @@ it(';+F brings Finder to the front, or hides it when it is there', function()
   received('')
 end)
 
-it(';+M, ;+T and ;+N bring kitty, Things and Bear to the front', function()
+it(';+M, ;+T and ;+N bring kitty, Toggl Track and Bear to the front', function()
   keys(';↓ 200ms m↓ m↑ 200ms t↓ t↑ n↓ n↑ ;↑')
-  did('kitten ls, focus net.kovidgoyal.kitty, focus com.culturedcode.ThingsMac, focus net.shinyfrog.bear')
+  did('kitten ls, focus net.kovidgoyal.kitty, focus com.toggl.daneel, focus net.shinyfrog.bear')
 end)
 
 it(';+M brings kitty back with the window it had in front, when another space shows another', function()

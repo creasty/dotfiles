@@ -25,10 +25,11 @@ in
     # brew bundle runs the first mas on its PATH, which starts with Homebrew's, so keep that one current
     homebrew.brews = [ "mas" ];
 
-    # Bear and Things on every Space, where ;+N and ;+T (Hammerspoon) bring them
+    # on every Space: Bear and Toggl Track, where ;+N and ;+T (Hammerspoon) bring them, and Things
     dotfiles.allDesktops = [
       "net.shinyfrog.bear"
       "com.culturedcode.ThingsMac"
+      "com.toggl.daneel"
     ];
 
     dotfiles.manifest.appStore = {

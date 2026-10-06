@@ -47,7 +47,7 @@ local shortcuts = {
   -- Switch between apps
   [';+F'] = function() apps.toggle('com.apple.finder') end,
   [';+M'] = function() apps.toggle('net.kovidgoyal.kitty') end,
-  [';+T'] = function() apps.toggle('com.culturedcode.ThingsMac') end,
+  [';+T'] = function() apps.toggle('com.toggl.daneel') end,
   [';+N'] = function() apps.toggle('net.shinyfrog.bear') end,
 }
 
