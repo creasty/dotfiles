@@ -105,6 +105,9 @@ setopt auto_menu
 setopt complete_in_word
 setopt always_to_end
 
+# pasted text looks as if typed, without the highlight until the next edit
+zle_highlight=(paste:none)
+
 # display an exit code of the previous command
 setopt print_exit_value
 
