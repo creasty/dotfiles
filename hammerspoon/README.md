@@ -83,7 +83,7 @@ kitty takes the windows it opens off every space, whatever Dock > Options > Assi
 |:---|:---|:---|
 | <kbd>;+F</kbd> | Finder | `com.apple.finder` |
 | <kbd>;+M</kbd> | kitty | `net.kovidgoyal.kitty` |
-| <kbd>;+T</kbd> | Things | `com.culturedcode.ThingsMac` |
+| <kbd>;+T</kbd> | Toggl Track | `com.toggl.daneel` |
 | <kbd>;+N</kbd> | Bear | `net.shinyfrog.bear` |
 
 ### Quit application
