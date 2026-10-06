@@ -47,7 +47,7 @@ Set `DOTFILES_NOVERIFY=1` to provision without verifying.
 
 ## Updates
 
-Versions are pinned, and [Renovate](./.github/renovate.json) bumps them every Monday, in a pull request per kind:
+Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Friday mornings, in a pull request per kind:
 
 | Pinned in | What | Tested by |
 |---|---|---|
@@ -58,6 +58,7 @@ Versions are pinned, and [Renovate](./.github/renovate.json) bumps them every Mo
 | `nix/modules/shell.nix` | zsh plugins, at their releases' commits | Provisioning |
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
+Patch releases, minor ones from 1.0 on and `flake.lock`'s refresh merge themselves once CI passes.
 After merging, provision again, and run `:Lazy restore` in Neovim to check out the new plugin commits.
 
 ## Project structure

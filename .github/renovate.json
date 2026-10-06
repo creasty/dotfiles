@@ -1,11 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Renovate bumps what the repository pins, every Monday, in a pull request per kind that CI tests (README.md's Updates)",
-  "extends": ["config:best-practices"],
+  "description": "Renovate bumps what the repository pins, on Friday mornings, in a pull request per kind that CI tests (README.md's Updates). The window spans 4 hours, as Mend's app runs on a repository every 4 hours: a narrower one would miss its runs",
+  "extends": ["config:best-practices", ":automergePatch", ":automergeStableNonMajor"],
   "timezone": "Asia/Tokyo",
-  "schedule": ["* * * * 1"],
+  "schedule": ["* 10-13 * * 5"],
   "lockFileMaintenance": {
-    "schedule": ["* * * * 1"]
+    "schedule": ["* 10-13 * * 5"]
   },
   "prHourlyLimit": 0,
   "nix": {
@@ -43,6 +43,11 @@
     }
   ],
   "packageRules": [
+    {
+      "description": "A release waits 3 days, as npm's do (config:best-practices), from the sources that give its date: Renovate would hold an update from the others (git-refs, git-tags) forever",
+      "matchDatasources": ["github-releases", "github-tags", "node-version", "ruby-version", "rubygems"],
+      "minimumReleaseAge": "3 days"
+    },
     {
       "matchManagers": ["github-actions"],
       "groupName": "GitHub Actions"
