@@ -21,3 +21,21 @@ load helper
   done
   assert_none "$problems" 'not from the Nix store'
 }
+
+@test "Neovim's terminal's zsh asks for bracketed paste at its prompt, which keeps a pasted line from running" {
+  # (on a pty, as zle runs only there: zsh -c starts none)
+  run -0 pristine "$VERIFY_ZSH" -fc '
+    zmodload zsh/zpty
+    zpty shell ${(q)1} -i +m
+    local out chunk
+    repeat 100; do
+      zpty -rt shell chunk && out+=$chunk || sleep 0.1
+      if [[ $out == *"$2"* ]]; then
+        zpty -d shell
+        exit
+      fi
+    done
+    print -r -- "the prompt never asked for it: ${(V)out}"
+    exit 1
+  ' zsh "$VERIFY_ZSH" "$(printf '\033[?2004h')"
+}

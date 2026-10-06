@@ -105,9 +105,8 @@ setopt auto_menu
 setopt complete_in_word
 setopt always_to_end
 
-# disable bracketed paste mode
-# @see https://github.com/peco/peco/issues/417
-unset zle_bracketed_paste
+# pasted text looks as if typed, without the highlight until the next edit
+zle_highlight=(paste:none)
 
 # display an exit code of the previous command
 setopt print_exit_value

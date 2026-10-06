@@ -83,6 +83,34 @@ describe('Terminals', function()
     t.eq({ '', 'n' }, { nvim:eval('&buftype'), nvim:mode() })
   end)
 
+  it('<C-v> pastes the clipboard: as typed at a password prompt, bracketed for a program that asks', function()
+    local nvim = t.nvim()
+    nvim:lua("vim.fn.setreg('*', 'secret')")
+    nvim:files({
+      ['paste.sh'] = {
+        'stty -echo', -- (as sudo's prompt has it)
+        'echo ready',
+        'read a',
+        [[printf '\033[?2004h']], -- (as zsh's prompt does)
+        'echo asked',
+        'read b',
+        'stty echo',
+        [[printf '%s|%s\n' "$a" "$b" | cat -v]],
+        'cat',
+      },
+    })
+    terminal(nvim, 'sh paste.sh', 'ready')
+    nvim:type('<C-v><CR>')
+    wait_showing(nvim, nil, function()
+      return text(nvim):find('asked', 1, true)
+    end, { message = 'asked' })
+    nvim:type('<C-v><CR>')
+    wait_showing(nvim, nil, function()
+      return text(nvim):find('secret|^[[200~secret^[[201~', 1, true)
+    end, { message = 'secret|^[[200~secret^[[201~' })
+    t.eq('t', nvim:mode())
+  end)
+
   it('Esc goes to the program; <C-y> is copy mode, with the cursor where it was, until i', function()
     local nvim = t.nvim()
     terminal(nvim, 'seq 200; echo ready; cat -v', 'ready')

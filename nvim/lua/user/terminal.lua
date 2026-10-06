@@ -11,6 +11,8 @@
 --   <C-s>       the window keys of Normal mode (<C-s> v, <C-s><C-n>...); <C-s><C-s> sends C-s to the program
 --   <C-y>       copy mode: Normal mode where the cursor is, to search and yank (on the last line, the view still
 --               follows the output, as in Neovim's terminals); i types again
+--   <C-v>       pastes the clipboard, as in Insert mode: as typed, or bracketed for a program that asks (zsh at its
+--               prompt, which then keeps a pasted line from running)
 --
 -- Entering a terminal's window types into it, unless it was left in copy mode.
 --
@@ -96,6 +98,10 @@ function M.setup()
     vim.b[copy_mode_key] = true
     return [[<C-\><C-n>]]
   end, { expr = true, desc = 'Copy mode' })
+  vim.keymap.set('t', '<C-v>', function()
+    -- (as Neovim's TUI pastes: bracketed as the program asks)
+    vim.api.nvim_paste(vim.fn.getreg('*'), true, -1)
+  end, { desc = 'Paste' })
 
   vim.keymap.set({ 'n', 't' }, '<C-/>', function()
     -- Esc goes to the program, as in the other terminals (not twice to Normal mode)
