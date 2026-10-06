@@ -70,7 +70,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
   The title states the goal, not the mechanism; the description gives each fix's cause, when it started, and its impact, and the decisions we made in chat.
   Check each at its source before the PR opens: when something started is the first release that has it, found through every commit that touched it, not the first one you came across.
   Keep the title and description true after every push.
-- Before opening a PR, rename a random branch (`claude/peaceful-curie-r1d11b`) to say what it changes, and run the checks CI runs over the whole repository.
+- Before opening a PR, rename a random branch (`claude/peaceful-curie-r1d11b`) to say what it changes, and run the checks CI runs over the whole repository that read what the change touches; when none does (a bot's settings, docs), run none.
 - I squash-merge PRs myself; "#N merged" means fetch, rebase what's next onto it, force-push that branch with lease, and carry on.
 - In GitHub bodies, comments and release notes, a newline renders as a line break: write each paragraph on one line, and backtick any `@name` that isn't a mention.
 
