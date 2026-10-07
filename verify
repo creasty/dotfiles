@@ -9,7 +9,8 @@
 set -eu
 set -o pipefail
 
-: "${DOTFILES_PATH:="$HOME/dotfiles"}"
+# Where flake.nix and shell/profile expect the clone
+DOTFILES_PATH="$HOME/dotfiles"
 
 load_envs() {
   # shellcheck source=/dev/null

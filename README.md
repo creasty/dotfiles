@@ -16,9 +16,9 @@ This repository contains my personal dotfiles configuration for macOS, featuring
 
 ## Installation
 
-<pre><code>$ curl -L <a href="https://dotfiles.creasty.com/provision">dotfiles.creasty.com/provision</a> | bash</code></pre>
+<pre><code>$ curl -fsSL <a href="https://dotfiles.creasty.com/provision">https://dotfiles.creasty.com/provision</a> | bash</code></pre>
 
-It clones this repository to `~/dotfiles`, installs Homebrew and [Nix](https://determinate.systems/nix/), and applies the [nix-darwin](https://github.com/nix-darwin/nix-darwin) configuration of `flake.nix` for the current user, [home-manager](https://github.com/nix-community/home-manager) included.
+It installs Homebrew, clones this repository to `~/dotfiles`, installs [Nix](https://determinate.systems/nix/), and applies the [nix-darwin](https://github.com/nix-darwin/nix-darwin) configuration of `flake.nix` for the current user, [home-manager](https://github.com/nix-community/home-manager) included.
 
 To apply changes later, provision again:
 

@@ -2,15 +2,15 @@
 #
 # Provisions this Mac: installs Homebrew and Nix, applies the configuration of flake.nix, and verifies the result.
 #
-#   ./provision [darwin-rebuild options]
+#   curl -fsSL https://dotfiles.creasty.com/provision | bash  # on a new Mac, cloning this repository to ~/dotfiles
+#   ./provision [darwin-rebuild options]                       # from that clone, to apply changes
 
-set -eu
-set -o pipefail
+set -euo pipefail
 
-: "${DOTFILES_PATH:="$HOME/dotfiles"}"
-: "${DOTFILES_BRANCH:=master}"
 : "${DOTFILES_NOVERIFY:=0}"
 
+# Where flake.nix and shell/profile expect the clone
+DOTFILES_PATH="$HOME/dotfiles"
 NIX=/nix/var/nix/profiles/default/bin/nix
 
 #=== Steps
@@ -19,33 +19,38 @@ print_header() {
   printf "\e[34m"
   echo '--------------------------------------------------------------------------------'
   cat << 'EOF'
-   /   / /          ________          \     \           \      \ \     \  \
-/      /                    ---         \         \            \  \    \   \  \
-/   /                             \      \         \  \         \             \
-   /         /    ----------        \           \  \  \    \    \     \        |
-            /                - \     \           \  \  \   \          |        |
-    /  /  /                                                           |
-   /   /    /      /           |        |   ,--. |                  |  |
-   |  /    /     /         ,---| ,---. -+---+--| | ,---. ,---.    |  |       |
-   |    |  |    /  /       |   | |   |  |   |  | | |---' `---.    |  | |     |
-(       (       (  ( ( * ) `---' `---'  `-  |  | | `---  `---'    )  ) )     )
-|  |    |       \  \                                                   |  |
-|  |  \ \        \         Stellar productivity by @creasty            |  |
-   \  \  \         \                                              |    |  |
-    \  \                  _-/    /  /  /  /  /                               |
-          ..------._                           __..-----..._     __...---._    |
-    _..-''          `--...--..____...-----..--'             ``'''          `\
-``''                                                                         \._
+.'       -'        -'      '--   -._                                          \
+      _.     _   '''    '''''-                                                 \
+     _'     --     _     ___          '-_     \
+ /    /         _ ' '''       ._   '           \
+/              '    _   .   '-     -_                                |    |
+     /                        ╷        ╷   ╭──╮ ╷                    |    |
+     /        /     .     ╭───┤ ╭───╮ ─┼───┼─ │ │ ╭───╮ ╭───╴         |   |
+       |     /    / '-    │   │ │   │  │   │  │ │ ├───╯ ╰───╮         |   |
+       |          | /   • ╰───╯ ╰───╯  ╰─  ╵  ╵ ╵ ╰───╴ ╶───╯
+      |            |\                                          |
+  |  |     \              Stellar productivity by @creasty     |
+  |\ \      \             '   _      /     /                  |
+            ____           _.-      /     /
+       __-''    ''''-_.  ___        '_____  _..-'''''''''''-....----''''''-.  |
+----'''                \'   '''--''''     ''                                '.
+                                                                              '-
 EOF
   echo '--------------------------------------------------------------------------------'
   printf "\e[0m\n"
 }
 
+# flake.nix configures only Apple silicon; a shell under Rosetta would have Homebrew install for Intel
 check_os() {
-  if [ "$(uname -s)" != "Darwin" ]; then
-    echo "Sorry, this script is intended only for OS X"
+  if [ "$(uname -s)" != Darwin ] || [ "$(uname -m)" != arm64 ]; then
+    echo 'Sorry, this script is intended only for macOS on Apple silicon, in a shell not under Rosetta'
     exit 1
   fi
+}
+
+# Homebrew's installer runs sudo only with a password already cached (NONINTERACTIVE), so ask for it up front
+authorize_sudo() {
+  sudo -v
 }
 
 clone_or_update_repo() {
@@ -71,7 +76,7 @@ clone_or_update_repo() {
     echo 'done'
   elif ! [ -d "$DOTFILES_PATH" ]; then
     echo 'Cloning repo...'
-    git clone https://github.com/creasty/dotfiles.git --branch "$DOTFILES_BRANCH" "$DOTFILES_PATH"
+    git clone https://github.com/creasty/dotfiles.git "$DOTFILES_PATH"
     echo 'done'
   fi
 }
@@ -98,17 +103,13 @@ install_rosetta2() {
   echo 'done'
 }
 
-load_envs() {
-  # shellcheck source=/dev/null
-  . "$DOTFILES_PATH/shell/profile"
-}
-
-# nix-darwin installs what Homebrew provides, but not Homebrew itself
+# nix-darwin installs what Homebrew provides, but not Homebrew itself.
+# Its installer also installs the Command Line Tools, without which git only offers to install them.
 install_homebrew() {
-  command -v 'brew' > /dev/null 2>&1 && return
+  [ -x /opt/homebrew/bin/brew ] && return
 
   echo 'Installing homebrew...'
-  NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo 'done'
 }
 
@@ -138,12 +139,12 @@ verify_provisioning() {
 main() {
   print_header
   check_os
-  clone_or_update_repo
-  accept_xcode_license
+  authorize_sudo
   install_rosetta2
-
-  load_envs
   install_homebrew
+  accept_xcode_license
+  clone_or_update_repo
+
   install_nix
   switch_configuration "$@"
   verify_provisioning

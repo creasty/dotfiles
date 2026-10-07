@@ -47,7 +47,7 @@ jobs:
       - name: Uninstall homebrew
         run: |
           # cf. https://github.com/homebrew/install#uninstall-homebrew
-          NONINTERACTIVE=1 HAVE_SUDO_ACCESS=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+          NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 
           # Remove residual files
           sudo rm -rf /opt/homebrew/
