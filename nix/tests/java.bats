@@ -50,6 +50,7 @@ jdk_home() {
 }
 
 @test "the Kotlin language server runs" {
+  grep -qxF jetbrains/utils/kotlin-lsp <<< "$(manifest '.homebrew.brews[]')" || skip 'kotlin-lsp is off (CLAUDE.md)'
   # By the name Neovim runs it by (nvim/lua/user/plugin/lsp.lua), which starts no server it can't find
   run -0 login_zsh 'kotlin-lsp --version'
 }
