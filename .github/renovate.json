@@ -8,6 +8,7 @@
     "schedule": ["* 10-13 * * 5"]
   },
   "prHourlyLimit": 0,
+  "labels": ["dependencies"],
   "nix": {
     "enabled": true
   },
