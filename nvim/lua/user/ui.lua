@@ -57,7 +57,9 @@ local function tabpage_get_win(tabnr)
     vim.api.nvim_tabpage_set_var(tabnr, current_normal_winnr_key, winnr)
     return winnr
   end
-  return safe_tabpage_get_var(tabnr, current_normal_winnr_key, winnr)
+  local last = safe_tabpage_get_var(tabnr, current_normal_winnr_key, winnr)
+  -- (closed since: :q in a window beside the explorer leaves Neovim in its list, a float)
+  return vim.api.nvim_win_is_valid(last) and last or winnr
 end
 
 --- A terminal's name: `$` and the title its program sets, or the name of the command it runs (Neovim titles it with the
