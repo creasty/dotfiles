@@ -60,5 +60,11 @@ Remove both once kitty#10581 is fixed and a new window stays on every Space.
 Such a tap can't go in `homebrew.taps`, which nix-darwin taps with that check. Instead:
 
 - Install the formula by its full name, with its tap unlisted: installing taps it without the check, and nix-darwin trusts the formula itself (`trusted`, for Homebrew's `HOMEBREW_REQUIRE_TAP_TRUST`).
-  `nix/modules/java.nix` installs `jetbrains/utils/kotlin-lsp` so, until kotlin-lsp has a URL outside `on_macos` too and its tap can be listed.
+  `nix/modules/java.nix` installs `jetbrains/utils/kotlin-lsp` so when it's on (below), until kotlin-lsp has a URL outside `on_macos` too and its tap can be listed.
 - Or take the tool from nixpkgs, as `nix/modules/1password.nix` does 1Password's CLI: Homebrew refuses `1password/tap`.
+
+## kotlin-lsp is off
+
+`jetbrains/utils/kotlin-lsp` is commented out in `nix/modules/java.nix`, as `brew bundle` fails to install it: its formula downloads from `download-cdn.jetbrains.com`, which answers 404 to a request without a signed query string ([Kotlin/kotlin-lsp#282](https://github.com/Kotlin/kotlin-lsp/issues/282)).
+Its test skips while it's off (`nix/tests/java.bats`), and Neovim starts no server it can't find.
+Put it back once the formula downloads again ([JetBrains/homebrew-utils#20](https://github.com/JetBrains/homebrew-utils/pull/20) would): `brew fetch jetbrains/utils/kotlin-lsp` tells.
