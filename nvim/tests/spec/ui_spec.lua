@@ -24,6 +24,18 @@ local function git(nvim, ...)
   assert(allow_failure or res.code == 0, (res.stderr or ''))
 end
 
+--- A terminfo database with kitty's entry, which kitty brings: Neovim takes a
+--- terminal it has no entry for for xterm.
+local function kitty_terminfo()
+  local dir = vim.fn.tempname()
+  vim.fn.mkdir(dir, 'p')
+  local source = dir .. '/xterm-kitty.src'
+  vim.fn.writefile({ 'xterm-kitty|kitty,', '\tuse=xterm-256color,' }, source)
+  local res = vim.system({ 'tic', '-x', '-o', dir, source }, { text = true }):wait()
+  assert(res.code == 0, res.stderr)
+  return dir
+end
+
 --- Text of a statusline/tabline with highlight and click markers removed.
 local function plain(s)
   return (s:gsub('%s+$', ''))
@@ -163,6 +175,21 @@ describe('UI', function()
       t.contains(nvim:statusline(), ' e2e ')
       t.no(nvim:statusline():find('Indexing', 1, true), 'no work once it ends')
     end)
+  end)
+
+  describe('icons', function()
+    it("are Nerd Font's in kitty, which bundles them", function()
+      local nvim = t.nvim({ tui = true, env = { TERM = 'xterm-kitty', TERMINFO = kitty_terminfo() } })
+      nvim:edit('a.txt', { 'x' })
+      nvim:lua([[
+        local diagnostic = { lnum = 0, col = 0, message = 'e2e', severity = vim.diagnostic.severity.ERROR }
+        vim.diagnostic.set(vim.api.nvim_create_namespace('e2e'), 0, { diagnostic })
+      ]])
+      t.contains(probe.signs(nvim, 1), '\u{ea87}')
+      t.contains(nvim:statusline(), ' \u{ea87} 1 ')
+      nvim:cmd('tabnew | terminal cat')
+      t.contains(nvim:tabline(), ' \u{ea85} cat ')
+    end, { timeout = 30000 })
   end)
 
   describe('window title', function()
