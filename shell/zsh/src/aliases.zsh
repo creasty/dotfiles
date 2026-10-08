@@ -18,8 +18,6 @@ alias sort='LC_ALL=C sort'
 alias path='echo -e ${PATH//:/\\n}'
 alias :q='exit'
 
-alias x64='arch -x86_64'
-
 alias pbc='pbcopy'
 alias pbp='pbpaste'
 alias ql='qlmanage -p "$@" >& /dev/null'

@@ -3,31 +3,28 @@
 # Provisions this Mac: installs Homebrew and Nix, applies the configuration of flake.nix, and verifies the result.
 #
 #   curl -fsSL https://dotfiles.creasty.com/provision | bash  # on a new Mac, cloning this repository to ~/dotfiles
-#   ./provision [darwin-rebuild options]                       # from that clone, to apply changes
+#   ./provision [darwin-rebuild options]                      # from that clone, to apply changes
 
 set -euo pipefail
 
 : "${DOTFILES_NOVERIFY:=0}"
 
-# Where flake.nix and shell/profile expect the clone
 DOTFILES_PATH="$HOME/dotfiles"
 NIX=/nix/var/nix/profiles/default/bin/nix
 
-#=== Steps
-#==============================================================================================
 print_header() {
   printf "\e[34m"
-  echo '--------------------------------------------------------------------------------'
   cat << 'EOF'
+--------------------------------------------------------------------------------
 .'       -'        -'      '--   -._                                          \
       _.     _   '''    '''''-                                                 \
      _'     --     _     ___          '-_     \
  /    /         _ ' '''       ._   '           \
 /              '    _   .   '-     -_                                |    |
-     /                        ╷        ╷   ╭──╮ ╷                    |    |
-     /        /     .     ╭───┤ ╭───╮ ─┼───┼─ │ │ ╭───╮ ╭───╴         |   |
+     /                        ╷        ╷   ╭──┐ ╷                    |    |
+     /        /     .     ╭───┤ ╭───╮ ─┼───┼─ ╷ │ ╭───╮ ╭───╮         |   |
        |     /    / '-    │   │ │   │  │   │  │ │ ├───╯ ╰───╮         |   |
-       |          | /   • ╰───╯ ╰───╯  ╰─  ╵  ╵ ╵ ╰───╴ ╶───╯
+       |          | /   • ╰───╯ ╰───╯  ╰─  ╵  ╵ ╵ ╰───╯ ╰───╯
       |            |\                                          |
   |  |     \              Stellar productivity by @creasty     |
   |\ \      \             '   _      /     /                  |
@@ -35,9 +32,9 @@ print_header() {
        __-''    ''''-_.  ___        '_____  _..-'''''''''''-....----''''''-.  |
 ----'''                \'   '''--''''     ''                                '.
                                                                               '-
+--------------------------------------------------------------------------------
 EOF
-  echo '--------------------------------------------------------------------------------'
-  printf "\e[0m\n"
+  printf "\e[0m"
 }
 
 # flake.nix configures only Apple silicon; a shell under Rosetta would have Homebrew install for Intel
@@ -48,76 +45,44 @@ check_os() {
   fi
 }
 
-# Homebrew's installer runs sudo only with a password already cached (NONINTERACTIVE), so ask for it up front
-authorize_sudo() {
-  sudo -v
-}
-
-clone_or_update_repo() {
-  if [ -d "$DOTFILES_PATH/.git" ]; then
-    echo 'Updating repo...'
-
-    if [ "$(git -C "$DOTFILES_PATH" symbolic-ref --short HEAD 2> /dev/null)" != "master" ]; then
-      echo 'skip (working on a non-master branch)'
-      return
-    fi
-
-    if ! git -C "$DOTFILES_PATH" diff --no-ext-diff --quiet --exit-code > /dev/null 2>&1; then
-      echo 'skip (unstaged changes present)'
-      return
-    fi
-
-    if ! git -C "$DOTFILES_PATH" diff-index --cached --quiet HEAD -- > /dev/null 2>&1; then
-      echo 'skip (uncommitted changes present)'
-      return
-    fi
-
-    git -C "$DOTFILES_PATH" pull origin master
-    echo 'done'
-  elif ! [ -d "$DOTFILES_PATH" ]; then
-    echo 'Cloning repo...'
-    git clone https://github.com/creasty/dotfiles.git "$DOTFILES_PATH"
-    echo 'done'
-  fi
-}
-
-accept_xcode_license() {
-  echo 'Agreeing to Xcode license...'
-
-  if ! [[ "$(/usr/bin/xcrun clang 2>&1 || true)" =~ 'license' ]]; then
-    echo 'skip (already approved)'
-    return
-  fi
-
-  sudo xcodebuild -license accept
-  echo 'done'
-}
-
-install_rosetta2() {
-  echo 'Installing Rosetta 2...'
-  if [ -d /usr/libexec/rosetta ]; then
-    echo 'skip (already installed)'
-    return
-  fi
-  sudo softwareupdate --install-rosetta --agree-to-license
-  echo 'done'
-}
-
 # nix-darwin installs what Homebrew provides, but not Homebrew itself.
 # Its installer also installs the Command Line Tools, without which git only offers to install them.
 install_homebrew() {
   [ -x /opt/homebrew/bin/brew ] && return
-
   echo 'Installing homebrew...'
+  sudo -v # with NONINTERACTIVE, Homebrew's installer aborts instead of asking for the password
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo 'done'
+}
+
+accept_xcode_license() {
+  [[ "$(/usr/bin/xcrun clang 2>&1 || true)" =~ 'license' ]] || return 0
+  echo 'Agreeing to Xcode license...'
+  sudo xcodebuild -license accept
   echo 'done'
 }
 
 install_nix() {
   [ -x "$NIX" ] && return
-
   echo 'Installing Nix...'
   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
+  echo 'done'
+}
+
+clone_or_update_repo() {
+  if [ ! -d "$DOTFILES_PATH" ]; then
+    echo 'Cloning repo...'
+    git clone https://github.com/creasty/dotfiles.git "$DOTFILES_PATH"
+    echo 'done'
+    return
+  fi
+  if [ "$(git -C "$DOTFILES_PATH" branch --show-current)" != master ]; then
+    echo 'Info: working on a non-master branch'
+    return
+  fi
+  git -C "$DOTFILES_PATH" diff --quiet HEAD || return 0 # the switch warns that the tree is dirty
+  echo 'Updating repo...'
+  git -C "$DOTFILES_PATH" pull origin master
   echo 'done'
 }
 
@@ -134,18 +99,15 @@ verify_provisioning() {
   "$DOTFILES_PATH/verify"
 }
 
-#=== Entrypoint
-#==============================================================================================
 main() {
   print_header
   check_os
-  authorize_sudo
-  install_rosetta2
   install_homebrew
   accept_xcode_license
+  install_nix
+
   clone_or_update_repo
 
-  install_nix
   switch_configuration "$@"
   verify_provisioning
 }
