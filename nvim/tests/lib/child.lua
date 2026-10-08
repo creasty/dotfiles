@@ -24,7 +24,8 @@ local spawned = 0
 --- opts.tui        Neovim's terminal UI on a pty, as kitty runs it, rather
 ---                 than embedded: self.output records each write the
 ---                 terminal receives, { time = ms, data = bytes } (see
----                 cursor_shapes()), and the child is driven through --listen
+---                 cursor_shapes()), and the child is driven through --listen;
+---                 $TERM is xterm-256color unless opts.env sets it
 function Child.new(opts)
   opts = opts or {}
   local ctx = env.load()
@@ -62,7 +63,7 @@ function Child.new(opts)
   local job_opts = { cwd = self.dir, env = env.child_env(ctx, child_env) }
   if opts.tui then
     -- (a terminal Neovim sets the cursor's shape in)
-    job_opts.env.TERM = 'xterm-256color'
+    job_opts.env.TERM = job_opts.env.TERM or 'xterm-256color'
     -- (with a UI, it would select the Mac's keyboard layout: user/input_source.lua)
     job_opts.env.NVIM_KEEP_INPUT_SOURCE = '1'
     job_opts.pty, job_opts.width, job_opts.height = true, columns, lines

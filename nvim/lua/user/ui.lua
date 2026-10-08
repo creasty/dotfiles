@@ -1,3 +1,5 @@
+local icons = require('user.icons')
+
 local file_readable_key = 'user_ui_file_readable'
 local current_normal_winnr_key = 'user_ui_current_normal_winnr'
 
@@ -62,15 +64,15 @@ local function tabpage_get_win(tabnr)
   return vim.api.nvim_win_is_valid(last) and last or winnr
 end
 
---- A terminal's name: `$` and the title its program sets, or the name of the command it runs (Neovim titles it with the
---- buffer's name, term://{cwd}//{pid}:{cmd}, until the program does).
+--- A terminal's name: its icon (`$`) and the title its program sets, or the name of the command it runs (Neovim titles it
+--- with the buffer's name, term://{cwd}//{pid}:{cmd}, until the program does).
 local function terminal_name(bufnr)
   local title = vim.b[bufnr].term_title or ''
   local path = vim.api.nvim_buf_get_name(bufnr)
   if title == '' or title == path then
     title = vim.fn.fnamemodify(path:match('^term://.-//%d+:(%S*)') or '', ':t')
   end
-  return '$' .. title
+  return icons.terminal .. title
 end
 
 local function get_buffer_flags(bufnr)
@@ -143,6 +145,14 @@ local tabline = retry_call_wrap(function ()
   return table.concat(line, '')
 end)
 
+-- The statusline's highlight of each diagnostic severity
+local diagnostic_highlights = {
+  [vim.diagnostic.severity.ERROR] = 'StatusLineDiagnosticsError',
+  [vim.diagnostic.severity.WARN] = 'StatusLineDiagnosticsWarning',
+  [vim.diagnostic.severity.INFO] = 'StatusLineDiagnosticsInfo',
+  [vim.diagnostic.severity.HINT] = 'StatusLineDiagnosticsHint',
+}
+
 local statusline = retry_call_wrap(function ()
   local winnr = vim.g.statusline_winid
   if not winnr then
@@ -155,7 +165,7 @@ local statusline = retry_call_wrap(function ()
   local buftype = vim.bo[bufnr].buftype
   local is_file = (buftype == '')
 
-  local l0 = {'%#StatusLinePrimary#'}
+  local l0 = {}
   local l1 = {}
   local r1 = {}
   local r0 = {}
@@ -182,7 +192,7 @@ local statusline = retry_call_wrap(function ()
   if active then
     local git = vim.b[bufnr].gitsigns_status_dict
     if git and git.head and git.head ~= '' then
-      local text = {escape(git.head)}
+      local text = {icons.branch .. escape(git.head)}
       if (git.added or 0) > 0 then
         table.insert(text, '%#StatusLineGitAdd#+%*')
       end
@@ -198,36 +208,19 @@ local statusline = retry_call_wrap(function ()
 
   if active then
     local count = vim.diagnostic.count(bufnr)
-    local severity = vim.diagnostic.severity
-    local diagnostics = {
-      E = count[severity.ERROR] or 0,
-      W = count[severity.WARN] or 0,
-      I = count[severity.INFO] or 0,
-      H = count[severity.HINT] or 0,
-    }
-
-    if diagnostics.E > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsError#%s %d%%*', '✕', diagnostics.E)
-      table.insert(l1, text)
-    end
-    if diagnostics.W > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsWarning#%s %d%%*', '∆', diagnostics.W)
-      table.insert(l1, text)
-    end
-    if diagnostics.I > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsInfo#%s %d%%*', '□', diagnostics.I)
-      table.insert(l1, text)
-    end
-    if diagnostics.H > 0 then
-      local text = string.format('%%#StatusLineDiagnosticsHint#%s %d%%*', '*', diagnostics.H)
-      table.insert(l1, text)
+    -- (by severity, from errors to hints)
+    for severity, hl in ipairs(diagnostic_highlights) do
+      if count[severity] then
+        local text = string.format('%%#%s#%s %d%%*', hl, icons.diagnostics[severity], count[severity])
+        table.insert(l1, text)
+      end
     end
   end
 
   if active and is_file then
     local last_saved_time = safe_buf_get_var(bufnr, 'auto_save_last_saved_time', 0)
     if 0 < last_saved_time and last_saved_time >= os.time() - 60 then
-      table.insert(l1, os.date('✓ %X', last_saved_time))
+      table.insert(l1, '%#Comment#' .. os.date('✓ %X', last_saved_time) .. '%*')
     end
   end
 
@@ -238,12 +231,12 @@ local statusline = retry_call_wrap(function ()
     end
     for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
       local _, work = next(lsp_work[client.id] or {})
+      local text = client.name
       if work then
         local percentage = work.percentage and string.format(' %d%%%%', work.percentage) or ''
-        table.insert(r1, string.format('%s: %s%s', client.name, escape(work.title), percentage))
-      else
-        table.insert(r1, client.name)
+        text = string.format('%s: %s%s', client.name, escape(work.title), percentage)
       end
+      table.insert(r1, '%#Comment#' .. text .. '%*')
     end
   end
 
@@ -258,16 +251,18 @@ local statusline = retry_call_wrap(function ()
     table.insert(r0, '%p%%')
   end
 
+  -- (a space at either end, and two between the groups on the right)
   return table.concat({
+    '',
     table.concat(l0, ' '),
     -- (too long, it's cut here: the branch, not the filetype)
-    '%*%<',
+    '%<',
     table.concat(l1, ' '),
     '%=',
     table.concat(r1, ' '),
-    '%*',
+    '',
     table.concat(r0, ' '),
-    '%*',
+    '',
   }, ' ')
 end)
 

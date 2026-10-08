@@ -65,13 +65,6 @@ local severity = vim.diagnostic.severity
 --- A column of padding left and right of a float, in its own background.
 M.padding = { '', '', '', { ' ', 'NormalFloat' }, '', '', '', { ' ', 'NormalFloat' } }
 
-M.signs = {
-  [severity.ERROR] = '✕',
-  [severity.WARN] = '∆',
-  [severity.INFO] = '□',
-  [severity.HINT] = '*',
-}
-
 ---------------------------------------------------------------------------
 -- Locations: one result jumps, several open the picker
 ---------------------------------------------------------------------------
@@ -223,7 +216,7 @@ function M.setup()
   vim.lsp.enable(M.servers)
 
   vim.diagnostic.config({
-    signs = { text = M.signs },
+    signs = { text = require('user.icons').diagnostics },
     severity_sort = true,
     float = { source = 'if_many', border = M.padding },
   })

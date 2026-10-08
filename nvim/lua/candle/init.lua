@@ -62,7 +62,7 @@ function M.setup()
   hi.Search = { fg = s.yellow, bg = s.dark_yellow, bold = 1 }
   hi.SignColumn = { fg = s.gray200, bg = s.background }
   hi.SpecialKey = { fg = s.dark_aqua }
-  hi.StatusLine = { fg = s.comment, bg = s.window }
+  hi.StatusLine = { fg = s.foreground, bg = s.window }
   hi.StatusLineNC = {}
   hi.TabLine = { fg = s.comment, bg = s.window }
   hi.TabLineFill = { fg = s.comment, bg = s.window }
@@ -188,7 +188,6 @@ function M.setup()
   hi['@variable.member.private'] = { fg = s.brown, italic = 1 }
 
   -- custom
-  hi.StatusLinePrimary = { fg = s.foreground, bg = s.window }
   hi.StatusLineDiagnosticsError = { fg = s.red, bg = s.window }
   hi.StatusLineDiagnosticsWarning = { fg = s.yellow, bg = s.window }
   hi.StatusLineDiagnosticsInfo = { fg = s.blue, bg = s.window }
