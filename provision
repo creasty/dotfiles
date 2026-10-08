@@ -45,13 +45,6 @@ check_os() {
   fi
 }
 
-install_rosetta2() {
-  [ -d /usr/libexec/rosetta ] && return
-  echo 'Installing Rosetta 2...'
-  sudo softwareupdate --install-rosetta --agree-to-license
-  echo 'done'
-}
-
 # nix-darwin installs what Homebrew provides, but not Homebrew itself.
 # Its installer also installs the Command Line Tools, without which git only offers to install them.
 install_homebrew() {
@@ -109,7 +102,6 @@ verify_provisioning() {
 main() {
   print_header
   check_os
-  install_rosetta2
   install_homebrew
   accept_xcode_license
   install_nix
