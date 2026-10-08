@@ -18,5 +18,6 @@
   "skipWorkflowUsageWarning": true,
   "switchModelsOnFlag": false,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "cleanupPeriodDays": 999
 }
