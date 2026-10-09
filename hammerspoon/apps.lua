@@ -35,4 +35,17 @@ function M.toggle(bundle_id)
   end
 end
 
+-- Shows 1Password's Quick Access, or hides it when it has the focus, as 1Password does when its executable starts
+-- again with --quick-access. Started through Launch Services (`open -n -b`), Quick Access loses the focus as it shows,
+-- which hides it. 1Password acts on --quick-access only while it runs, so this launches it when it isn't running.
+function M.quick_access()
+  local bundle_id = 'com.1password.1password'
+  local app = hs.application.applicationsForBundleID(bundle_id)[1]
+  if not app then
+    hs.application.launchOrFocusByBundleID(bundle_id)
+    return
+  end
+  hs.task.new(app:path() .. '/Contents/MacOS/1Password', nil, { '--quick-access' }):start()
+end
+
 return M

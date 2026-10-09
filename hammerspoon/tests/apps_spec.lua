@@ -31,3 +31,15 @@ it(';+M leaves the window in front alone once kitty was shown otherwise since it
   keys(';↓ 200ms m↓ m↑ 200ms ;↑')
   did('hide net.kovidgoyal.kitty, kitten ls, focus net.kovidgoyal.kitty')
 end)
+
+it(';+1 starts 1Password with --quick-access, which shows its Quick Access or hides it', function()
+  keys(';↓ 200ms 1↓ 1↑ 200ms 1↓ 1↑ ;↑')
+  did('1Password --quick-access, 1Password --quick-access')
+  received('')
+end)
+
+it(';+1 launches 1Password when it is not running', function()
+  fake.stopped['com.1password.1password'] = true
+  keys(';↓ 200ms 1↓ 1↑ 200ms ;↑')
+  did('focus com.1password.1password')
+end)

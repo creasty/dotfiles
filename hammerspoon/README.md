@@ -78,6 +78,7 @@ Terminals, Vim, Emacs, Eclipse, VS Code, virtual machines, remote desktops and X
 <kbd>;+</kbd> brings the app to the front, launching it if needed, or hides it when it's there already.
 Brought back from hiding, it shows the window it had in front, after a move to another space too.
 kitty takes the windows it opens off every space, whatever Dock > Options > Assign To says: <kbd>;+M</kbd> first brings those on other spaces to the current one, through kitty's remote control (`config/kitty/kitty.conf`).
+<kbd>;+1</kbd> shows 1Password's Quick Access, or hides it when it has the focus, by starting 1Password's executable with `--quick-access`; it launches 1Password when it isn't running.
 
 | Key | App | Bundle ID |
 |:---|:---|:---|
@@ -85,6 +86,7 @@ kitty takes the windows it opens off every space, whatever Dock > Options > Assi
 | <kbd>;+M</kbd> | kitty | `net.kovidgoyal.kitty` |
 | <kbd>;+T</kbd> | Toggl Track | `com.toggl.daneel` |
 | <kbd>;+N</kbd> | Bear | `net.shinyfrog.bear` |
+| <kbd>;+1</kbd> | 1Password's Quick Access | `com.1password.1password` |
 
 ### Quit application
 
