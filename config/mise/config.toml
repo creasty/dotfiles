@@ -10,7 +10,7 @@ ruby = "4.0.7"
 # project's Ruby has its own (e.g. from its bundle).
 "npm:@antfu/ni" = "30.6.0"
 "npm:@github/copilot-language-server" = "1.551.2"
-"npm:@openai/codex" = "0.160.0"
+"npm:@openai/codex" = "0.160.1"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.11.0"
 "npm:graphql-language-service-cli" = "3.5.0"
