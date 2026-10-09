@@ -50,6 +50,11 @@
       "minimumReleaseAge": "3 days"
     },
     {
+      "description": "The repository of a git-refs dependency, which Renovate looks up for a version but not for a branch's commit: helpers:githubDigestChangelogs (config:recommended) needs it to link a digest update to the diff between the two commits",
+      "matchDatasources": ["git-refs"],
+      "sourceUrl": "{{{replace '\\.git$' '' packageName}}}"
+    },
+    {
       "matchManagers": ["github-actions"],
       "groupName": "GitHub Actions"
     },
