@@ -49,6 +49,7 @@ local shortcuts = {
   [';+M'] = function() apps.toggle('net.kovidgoyal.kitty') end,
   [';+T'] = function() apps.toggle('com.toggl.daneel') end,
   [';+N'] = function() apps.toggle('net.shinyfrog.bear') end,
+  [';+1'] = apps.quick_access,
 }
 
 local supers = superkey.new({

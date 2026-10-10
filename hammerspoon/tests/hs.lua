@@ -8,8 +8,8 @@ local props = { keyboardEventAutorepeat = 8, keyboardEventKeycode = 9, eventSour
 -- Virtual key codes, by the names the specs and the records use
 local codes = {
   a = 0x00, s = 0x01, d = 0x02, f = 0x03, h = 0x04, g = 0x05, x = 0x07, c = 0x08, v = 0x09, b = 0x0b, q = 0x0c,
-  w = 0x0d, e = 0x0e, r = 0x0f, t = 0x11, o = 0x1f, p = 0x23, l = 0x25, j = 0x26, k = 0x28, [';'] = 0x29, n = 0x2d,
-  m = 0x2e,
+  w = 0x0d, e = 0x0e, r = 0x0f, t = 0x11, ['1'] = 0x12, o = 0x1f, p = 0x23, l = 0x25, j = 0x26, k = 0x28, [';'] = 0x29,
+  n = 0x2d, m = 0x2e,
   ['return'] = 0x24, tab = 0x30, space = 0x31, delete = 0x33, escape = 0x35, cmd = 0x37, forwarddelete = 0x75,
   left = 0x7b, right = 0x7c, down = 0x7d, up = 0x7e,
 }
@@ -176,15 +176,22 @@ end
 -- What `kitten @ ls` prints, which hs.json.decode reads as fake.windows' kitty windows
 local KITTY_LS = '<kitten @ ls>'
 
--- A task running `kitten @ <command>` against the kitty app, which records the command and ends with its output
+-- A task running `kitten @ <command>` against the kitty app, which ends with its output, or 1Password with its
+-- options: it records the command
 local function new_task(path, fn, args)
-  assert(path == '/Applications/net.kovidgoyal.kitty.app/Contents/MacOS/kitten', path)
-  assert(table.concat(args, ' ', 1, 3) == ('@ --to unix:%skitty-%d'):format(TMPDIR, PID), table.concat(args, ' '))
-  local command = { table.unpack(args, 4) }
+  local command, out
+  if path == '/Applications/net.kovidgoyal.kitty.app/Contents/MacOS/kitten' then
+    assert(table.concat(args, ' ', 1, 3) == ('@ --to unix:%skitty-%d'):format(TMPDIR, PID), table.concat(args, ' '))
+    command = 'kitten ' .. table.concat(args, ' ', 4)
+    out = args[4] == 'ls' and KITTY_LS or ''
+  else
+    assert(path == '/Applications/com.1password.1password.app/Contents/MacOS/1Password', path)
+    command = '1Password ' .. table.concat(args, ' ')
+  end
   return {
     start = function(self)
-      record('kitten ' .. table.concat(command, ' '))
-      fn(0, command[1] == 'ls' and KITTY_LS or '', '')
+      record(command)
+      if fn then fn(0, out or '', '') end
       return self
     end,
   }
@@ -228,6 +235,30 @@ local function new_app(id)
   }
 end
 
+-- An app's Accessibility element, with its menu bar icon when fake.menu_bar_icons has the app
+local function new_app_element(app)
+  local id = app:bundleID()
+  local icon = {
+    performAction = function(self, action)
+      assert(action == 'AXPress', action)
+      record('click ' .. id .. ' menu bar icon')
+      return self
+    end,
+  }
+  local menu_bar = {
+    attributeValue = function(_, name)
+      assert(name == 'AXChildren', name)
+      return { icon }
+    end,
+  }
+  return {
+    attributeValue = function(_, name)
+      assert(name == 'AXExtrasMenuBar', name)
+      return fake.menu_bar_icons[id] and menu_bar or nil
+    end,
+  }
+end
+
 function fake.reset()
   fake.now = 0 -- in milliseconds
   fake.timers = {}
@@ -238,6 +269,9 @@ function fake.reset()
   fake.logged = {} -- errors
   fake.front = 'com.google.Chrome' -- the frontmost app
   fake.hidden = {} -- the hidden apps, as a set of bundle IDs
+  fake.stopped = {} -- the apps not running, as a set of bundle IDs
+  fake.menu_bar_icons = {} -- the apps with a menu bar icon, as a set of bundle IDs
+  fake.json_files = {} -- what hs.json.read decodes, by path; the others fail to read
   -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
   -- for a panel and the like, `spaces = { <space ID>, ... }` for one on those spaces only, not on every space, and
   -- `kitty = <kitty window ID>` for one of kitty's
@@ -303,11 +337,12 @@ function fake.reset()
 
     application = {
       frontmostApplication = function() return fake.front and new_app(fake.front) end,
-      applicationsForBundleID = function(id) return { new_app(id) } end,
+      applicationsForBundleID = function(id) return fake.stopped[id] and {} or { new_app(id) } end,
       launchOrFocusByBundleID = function(id)
         record('focus ' .. id)
         fake.front = id
         fake.hidden[id] = nil
+        fake.stopped[id] = nil
         return true
       end,
     },
@@ -319,8 +354,9 @@ function fake.reset()
       end,
     },
 
+    axuielement = { applicationElement = new_app_element },
     task = { new = new_task },
-    json = { decode = kitty_ls },
+    json = { decode = kitty_ls, read = function(path) return fake.json_files[path] end },
 
     spaces = {
       toggleMissionControl = function() record('mission control') end,
