@@ -35,9 +35,10 @@ function M.toggle(bundle_id)
   end
 end
 
--- Shows 1Password's Quick Access, or hides it when it has the focus, as 1Password does when its executable starts
--- again with --quick-access. Started through Launch Services (`open -n -b`), Quick Access loses the focus as it shows,
--- which hides it. 1Password acts on --quick-access only while it runs, so this launches it when it isn't running.
+-- Shows 1Password's Quick Access, or hides it when it has the focus. Clicking 1Password's menu bar icon does so, its
+-- action set to Show Quick Access, in about 30 ms. Without the icon, its executable started again with --quick-access
+-- does, in about 190 ms: started through Launch Services instead (`open -n -b`), Quick Access loses the focus as it
+-- shows, which hides it. 1Password acts on neither while it isn't running, so this launches it then.
 function M.quick_access()
   local bundle_id = 'com.1password.1password'
   local app = hs.application.applicationsForBundleID(bundle_id)[1]
@@ -45,7 +46,13 @@ function M.quick_access()
     hs.application.launchOrFocusByBundleID(bundle_id)
     return
   end
-  hs.task.new(app:path() .. '/Contents/MacOS/1Password', nil, { '--quick-access' }):start()
+  local menu_bar = hs.axuielement.applicationElement(app):attributeValue('AXExtrasMenuBar')
+  local icon = menu_bar and (menu_bar:attributeValue('AXChildren') or {})[1]
+  if icon then
+    icon:performAction('AXPress')
+  else
+    hs.task.new(app:path() .. '/Contents/MacOS/1Password', nil, { '--quick-access' }):start()
+  end
 end
 
 return M

@@ -235,6 +235,30 @@ local function new_app(id)
   }
 end
 
+-- An app's Accessibility element, with its menu bar icon when fake.menu_bar_icons has the app
+local function new_app_element(app)
+  local id = app:bundleID()
+  local icon = {
+    performAction = function(self, action)
+      assert(action == 'AXPress', action)
+      record('click ' .. id .. ' menu bar icon')
+      return self
+    end,
+  }
+  local menu_bar = {
+    attributeValue = function(_, name)
+      assert(name == 'AXChildren', name)
+      return { icon }
+    end,
+  }
+  return {
+    attributeValue = function(_, name)
+      assert(name == 'AXExtrasMenuBar', name)
+      return fake.menu_bar_icons[id] and menu_bar or nil
+    end,
+  }
+end
+
 function fake.reset()
   fake.now = 0 -- in milliseconds
   fake.timers = {}
@@ -246,6 +270,7 @@ function fake.reset()
   fake.front = 'com.google.Chrome' -- the frontmost app
   fake.hidden = {} -- the hidden apps, as a set of bundle IDs
   fake.stopped = {} -- the apps not running, as a set of bundle IDs
+  fake.menu_bar_icons = {} -- the apps with a menu bar icon, as a set of bundle IDs
   -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
   -- for a panel and the like, `spaces = { <space ID>, ... }` for one on those spaces only, not on every space, and
   -- `kitty = <kitty window ID>` for one of kitty's
@@ -328,6 +353,7 @@ function fake.reset()
       end,
     },
 
+    axuielement = { applicationElement = new_app_element },
     task = { new = new_task },
     json = { decode = kitty_ls },
 
