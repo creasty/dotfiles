@@ -271,6 +271,7 @@ function fake.reset()
   fake.hidden = {} -- the hidden apps, as a set of bundle IDs
   fake.stopped = {} -- the apps not running, as a set of bundle IDs
   fake.menu_bar_icons = {} -- the apps with a menu bar icon, as a set of bundle IDs
+  fake.json_files = {} -- what hs.json.read decodes, by path; the others fail to read
   -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
   -- for a panel and the like, `spaces = { <space ID>, ... }` for one on those spaces only, not on every space, and
   -- `kitty = <kitty window ID>` for one of kitty's
@@ -355,7 +356,7 @@ function fake.reset()
 
     axuielement = { applicationElement = new_app_element },
     task = { new = new_task },
-    json = { decode = kitty_ls },
+    json = { decode = kitty_ls, read = function(path) return fake.json_files[path] end },
 
     spaces = {
       toggleMissionControl = function() record('mission control') end,

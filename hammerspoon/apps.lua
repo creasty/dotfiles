@@ -35,10 +35,15 @@ function M.toggle(bundle_id)
   end
 end
 
--- Shows 1Password's Quick Access, or hides it when it has the focus. Clicking 1Password's menu bar icon does so, its
--- action set to Show Quick Access, in about 30 ms. Without the icon, its executable started again with --quick-access
--- does, in about 190 ms: started through Launch Services instead (`open -n -b`), Quick Access loses the focus as it
--- shows, which hides it. 1Password acts on neither while it isn't running, so this launches it then.
+-- 1Password's settings, which only its Settings window sets (each value carries an authentication tag)
+local onepassword_settings = '~/Library/Group Containers/2BUA8C4S2C.com.1password'
+  .. '/Library/Application Support/1Password/Data/settings/settings.json'
+
+-- Shows 1Password's Quick Access, or hides it when it has the focus. Clicking 1Password's menu bar icon does so in
+-- about 30 ms, when its settings say so (Settings > General > Click the icon to: Show Quick Access). Otherwise, its
+-- executable started again with --quick-access does, in about 190 ms: started through Launch Services instead
+-- (`open -n -b`), Quick Access loses the focus as it shows, which hides it. 1Password acts on neither while it isn't
+-- running, so this launches it then.
 function M.quick_access()
   local bundle_id = 'com.1password.1password'
   local app = hs.application.applicationsForBundleID(bundle_id)[1]
@@ -46,8 +51,12 @@ function M.quick_access()
     hs.application.launchOrFocusByBundleID(bundle_id)
     return
   end
-  local menu_bar = hs.axuielement.applicationElement(app):attributeValue('AXExtrasMenuBar')
-  local icon = menu_bar and (menu_bar:attributeValue('AXChildren') or {})[1]
+  local settings = hs.json.read(onepassword_settings)
+  local icon
+  if settings and settings['app.trayAction'] == 'quickAccess' then
+    local menu_bar = hs.axuielement.applicationElement(app):attributeValue('AXExtrasMenuBar')
+    icon = menu_bar and (menu_bar:attributeValue('AXChildren') or {})[1]
+  end
   if icon then
     icon:performAction('AXPress')
   else

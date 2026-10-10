@@ -78,8 +78,9 @@ Terminals, Vim, Emacs, Eclipse, VS Code, virtual machines, remote desktops and X
 <kbd>;+</kbd> brings the app to the front, launching it if needed, or hides it when it's there already.
 Brought back from hiding, it shows the window it had in front, after a move to another space too.
 kitty takes the windows it opens off every space, whatever Dock > Options > Assign To says: <kbd>;+M</kbd> first brings those on other spaces to the current one, through kitty's remote control (`config/kitty/kitty.conf`).
-<kbd>;+1</kbd> shows 1Password's Quick Access, or hides it when it has the focus, by clicking 1Password's menu bar icon, whose action 1Password's Settings > General sets to Show Quick Access.
-Without the icon, it starts 1Password's executable with `--quick-access`, which takes about 190 ms more; it launches 1Password when it isn't running.
+<kbd>;+1</kbd> shows 1Password's Quick Access, or hides it when it has the focus, by clicking 1Password's menu bar icon when 1Password's settings file says the icon does that (Settings > General > Click the icon to: Show Quick Access).
+Otherwise it starts 1Password's executable with `--quick-access`, which takes about 190 ms more; it launches 1Password when it isn't running.
+1Password's settings can't be set from here: each value in the file carries an authentication tag, and its documented MDM keys don't cover the icon or the shortcuts.
 
 | Key | App | Bundle ID |
 |:---|:---|:---|

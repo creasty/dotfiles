@@ -32,14 +32,30 @@ it(';+M leaves the window in front alone once kitty was shown otherwise since it
   did('hide net.kovidgoyal.kitty, kitten ls, focus net.kovidgoyal.kitty')
 end)
 
+-- 1Password's settings, with what clicking its menu bar icon does
+local ONEPASSWORD_SETTINGS = '~/Library/Group Containers/2BUA8C4S2C.com.1password'
+  .. '/Library/Application Support/1Password/Data/settings/settings.json'
+local function tray_action(action) fake.json_files[ONEPASSWORD_SETTINGS] = { ['app.trayAction'] = action } end
+
 it(';+1 clicks the menu bar icon of 1Password, which shows its Quick Access or hides it', function()
   fake.menu_bar_icons['com.1password.1password'] = true
+  tray_action('quickAccess')
   keys(';↓ 200ms 1↓ 1↑ 200ms 1↓ 1↑ ;↑')
   did('click com.1password.1password menu bar icon, click com.1password.1password menu bar icon')
   received('')
 end)
 
+it(';+1 starts 1Password with --quick-access when its settings do not say the icon shows Quick Access', function()
+  fake.menu_bar_icons['com.1password.1password'] = true
+  -- Unreadable, then set to show a menu
+  keys(';↓ 200ms 1↓ 1↑ 200ms ;↑')
+  tray_action('menu')
+  keys(';↓ 200ms 1↓ 1↑ 200ms ;↑')
+  did('1Password --quick-access, 1Password --quick-access')
+end)
+
 it(';+1 starts 1Password with --quick-access when it has no menu bar icon', function()
+  tray_action('quickAccess')
   keys(';↓ 200ms 1↓ 1↑ 200ms ;↑')
   did('1Password --quick-access')
 end)
