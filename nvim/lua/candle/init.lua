@@ -217,6 +217,10 @@ function M.setup()
   hi.SnacksPickerDir = { fg = s.gray150 }
   hi.SnacksPickerBorder = { fg = s.bright_blue, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.bright_blue, bg = s.background }
+  -- what git ignores, dimmed: a file, its status, and (user.plugin.picker) a directory
+  hi.SnacksPickerPathIgnored = { fg = s.gray200 }
+  hi.SnacksPickerGitStatusIgnored = { fg = s.gray200 }
+  hi.PickerDirectoryIgnored = { fg = s.muted_blue }
 
   -- snacks.nvim's other windows (terminals...) on the editor's background, as its picker: the floats' darker one
   -- (NormalFloat) is for completion's documentation and hovers

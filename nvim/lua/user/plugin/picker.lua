@@ -5,7 +5,7 @@
 --   grr gD     LSP locations (user.plugin.lsp); gll reopens them
 --   :e {dir}   the explorer, a tree of the files in a sidebar (nvim {dir} too):
 --              dotfiles shown, .git and backups (~) not, and files git
---              ignores with I
+--              ignores with I, dimmed
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
 -- as long as you stay in the directory of the previous picker, but a grep
@@ -88,6 +88,22 @@ end
 
 local function format_file(item)
   return format_path(item.label or item.file)
+end
+
+--- The explorer's rows as snacks formats them, but with a directory git
+--- ignores dimmed apart from a file, and dotfiles as any other entry
+--- (snacks has one group for what git ignores and one for dotfiles,
+--- directory or file).
+local function format_tree(item, picker)
+  local ret = Snacks.picker.format.file(item, picker)
+  for _, chunk in ipairs(ret) do
+    if chunk[2] == 'SnacksPickerPathIgnored' and item.dir then
+      chunk[2] = 'PickerDirectoryIgnored'
+    elseif chunk[2] == 'SnacksPickerPathHidden' then
+      chunk[2] = item.dir and 'SnacksPickerDirectory' or 'SnacksPickerFile'
+    end
+  end
+  return ret
 end
 
 --- The matches (`item.matches`: start, end, replacement) highlighted; with a
@@ -911,6 +927,7 @@ M.config = {
     explorer = {
       hidden = true,
       exclude = { '.git', '*~' },
+      format = format_tree,
       -- <C-s> is <C-w> in the sidebar too, as in any other window
       win = { list = { keys = { ['<c-s>'] = false } } },
     },

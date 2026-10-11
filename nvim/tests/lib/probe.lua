@@ -213,6 +213,12 @@ function probe.picker_colors(nvim)
   return call(nvim, 'picker_colors')
 end
 
+--- The colors the open picker's list shows each of `names` in:
+--- `{ [name] = { fg, bg } }`, the colors as numbers.
+function probe.picker_name_colors(nvim, names)
+  return call(nvim, 'picker_name_colors', names)
+end
+
 ---------------------------------------------------------------------------
 -- Prompts
 ---------------------------------------------------------------------------

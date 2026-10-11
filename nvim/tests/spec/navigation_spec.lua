@@ -42,6 +42,20 @@ local function current_file(nvim)
   return nvim:call('fnamemodify', nvim:bufname(), ':.')
 end
 
+--- The contrast ratio of two colors (0xRRGGBB), as WCAG measures it.
+local function contrast(a, b)
+  local function luminance(color)
+    local sum = 0
+    for i, weight in ipairs({ 0.2126, 0.7152, 0.0722 }) do
+      local c = math.floor(color / 256 ^ (3 - i)) % 256 / 255
+      sum = sum + weight * (c <= 0.04045 and c / 12.92 or ((c + 0.055) / 1.055) ^ 2.4)
+    end
+    return sum
+  end
+  local x, y = luminance(a), luminance(b)
+  return (math.max(x, y) + 0.05) / (math.min(x, y) + 0.05)
+end
+
 describe('Navigation', function()
   describe('alternate files (ga / gA)', function()
     it('go: toggles between x.go and x_test.go', function()
@@ -390,6 +404,37 @@ describe('Navigation', function()
       t.match('visible%.txt', text)
       t.no_match('%.git', text)
       t.no_match('notes%.txt~', text)
+    end)
+
+    it('I shows what git ignores dimmed but readable, a directory apart from a file; dotfiles as any other', function()
+      local nvim = t.nvim()
+      repo(nvim, {
+        ['.gitignore'] = { 'dist/', 'debug.log' },
+        ['.github/ci.yml'] = 'on: push',
+        ['.editorconfig'] = 'root = true',
+        ['src/app.ts'] = 'x',
+        ['README.md'] = 'x',
+      })
+      nvim:files({ ['dist/out.js'] = 'x', ['debug.log'] = 'x' })
+      nvim:cmd('edit .')
+      probe.wait_picker(nvim, function(p)
+        return p.source == 'explorer' and #p.items > 1
+      end)
+      nvim:type('I')
+      local names = { 'src', 'README.md', '.github', '.editorconfig', 'dist', 'debug.log' }
+      local c = nvim:wait_for(function()
+        local colors = probe.picker_name_colors(nvim, names)
+        local dist, log = colors and colors.dist, colors and colors['debug.log']
+        return dist and log and dist.fg ~= colors.src.fg and log.fg ~= colors['README.md'].fg and colors
+      end, { message = 'the ignored directory and file dimmed' })
+      t.neq(c.src.fg, c['README.md'].fg, 'a directory apart from a file')
+      t.neq(c.dist.fg, c['debug.log'].fg, 'an ignored directory apart from an ignored file')
+      for _, name in ipairs({ 'dist', 'debug.log' }) do
+        local ratio = contrast(c[name].fg, c[name].bg)
+        t.ok(ratio >= 4, ('%s readable: %.2f:1 against its background'):format(name, ratio))
+      end
+      t.eq(c.src.fg, c['.github'].fg, 'a dot directory as any directory')
+      t.eq(c['README.md'].fg, c['.editorconfig'].fg, 'a dotfile as any file')
     end)
 
     it('nvim {dir} opens it in a sidebar 40 columns wide, focused', function()
