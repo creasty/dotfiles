@@ -3,6 +3,8 @@
 --   nvim -l nvim/lua/candle/build.lua           writes them
 --   nvim -l nvim/lua/candle/build.lua --check   fails if they aren't what it would write
 --
+-- A change shows in nvim/tests/run scenes, which fails until --update-golden takes its screens (nvim/tests/README.md).
+--
 -- Every hue has the levels 100 (lightest) to 900, evenly spaced in OKLCH lightness, so a level is as light in one
 -- hue as in another. A hue keeps its angle at every level, and its chroma follows the lightness (saturation ×
 -- lightness), as far as sRGB reaches.

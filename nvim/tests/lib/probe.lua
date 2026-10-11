@@ -328,6 +328,16 @@ function probe.wait_diff_view(nvim, pred)
 end
 
 ---------------------------------------------------------------------------
+-- Screen
+---------------------------------------------------------------------------
+
+--- The screen as a terminal with the colors `fg` and `bg` ('#rrggbb') shows
+--- it, cell by cell, the floats composed (probe_child.lua's screen()).
+function probe.screen(nvim, fg, bg)
+  return call(nvim, 'screen', tonumber(fg:sub(2), 16), tonumber(bg:sub(2), 16))
+end
+
+---------------------------------------------------------------------------
 -- Operator formatting
 ---------------------------------------------------------------------------
 

@@ -54,6 +54,12 @@ Hammerspoon can't put a window back: the private calls `hs.spaces.moveWindowToSp
 So as ;+M brings kitty, `hammerspoon/kitty.lua` (called from `hammerspoon/apps.lua`) has it hide and show its windows on other Spaces through its remote control (`allow_remote_control` and `listen_on` in `config/kitty/kitty.conf`), which adds them to the current Space.
 Remove both once kitty#10581 is fixed and a new window stays on every Space.
 
+## The picker's toggles in its title
+
+snacks.nvim adds a picker's toggles (h, f, i) to its title in `pairs()` order (`update_titles()` in `lua/snacks/picker/core/picker.lua`), which differs from one start of Neovim to the next: `Files h f` in one, `Files f h` in the next.
+So `order_toggles` in `nvim/lua/user/plugin/picker.lua` has it go through them in the order of their names.
+Remove it once snacks orders them itself: without it, the file picker's and the explorer's scenes (`nvim/tests/spec/scenes_ui_spec.lua`) fail in about half the runs.
+
 ## Homebrew tap trap
 
 `brew tap` checks that every formula and cask of a tap loads on Linux too, and refuses the whole tap when one doesn't: a formula with a URL only `on_macos`, or a cask without Linux stanzas or `depends_on :macos`.

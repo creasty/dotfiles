@@ -496,6 +496,172 @@ function M.diff_view()
 end
 
 ---------------------------------------------------------------------------
+-- Screen
+---------------------------------------------------------------------------
+
+--- A cell of a grid with its colors (`fg` and `bg` where it has none), or
+--- nil past the grid's edge.
+local function grid_cell(grid, row, col, fg, bg)
+  local ok, cell = pcall(vim.api.nvim__inspect_cell, grid, row, col)
+  if not (ok and cell and cell[1]) then
+    return nil
+  end
+  local attrs = cell[2]
+  local c = { text = cell[1], fg = attrs.foreground or fg, bg = attrs.background or bg, sp = attrs.special, attrs = attrs }
+  if attrs.reverse then
+    c.fg, c.bg = c.bg, c.fg
+  end
+  return c
+end
+
+local function grid_size(grid)
+  local rows, cols = 0, 0
+  while grid_cell(grid, rows, 0) do
+    rows = rows + 1
+  end
+  while grid_cell(grid, 0, cols) do
+    cols = cols + 1
+  end
+  return rows, cols
+end
+
+--- `ratio` percent of `back` and the rest of `front`, per channel, as Neovim
+--- blends a float over what's under it
+local function blend(ratio, back, front)
+  local rgb = 0
+  for _, shift in ipairs({ 16, 8, 0 }) do
+    local b, f = bit.band(bit.rshift(back, shift), 0xff), bit.band(bit.rshift(front, shift), 0xff)
+    rgb = rgb + bit.lshift(math.floor((ratio * b + (100 - ratio) * f) / 100), shift)
+  end
+  return rgb
+end
+
+--- The screen as a terminal shows it, `fg` and `bg` being the terminal's
+--- colors: { mode, cursor = { row, col }, rows = { { cell... }... },
+--- unfound = how many floats it didn't find the grid of }, a cell being
+--- { text, fg, bg, sp ('#rrggbb' or ''), 'b' bold 'i' italic 's' strikethrough,
+--- underline ('line', 'curl', 'double', 'dotted', 'dashed' or '') }.
+---
+--- Without a UI, Neovim keeps each float on a grid of its own rather than
+--- composing it over the windows: this finds each one's grid by its size and by
+--- the text the screen shows there (screenstring() composes), and composes it
+--- as Neovim does, blended by 'winblend'.
+function M.screen(fg, bg)
+  -- (the first inspection sets the highlights up anew: redrawn after it)
+  vim.api.nvim__inspect_cell(1, 0, 0)
+  vim.cmd('redraw!')
+  local lines, columns = vim.o.lines, vim.o.columns
+  local screen = {}
+  for row = 0, lines - 1 do
+    screen[row] = {}
+    for col = 0, columns - 1 do
+      screen[row][col] = grid_cell(1, row, col, fg, bg)
+    end
+  end
+
+  local grids = {}
+  for grid = 2, 1000 do
+    if grid_cell(grid, 0, 0) then
+      local rows, cols = grid_size(grid)
+      table.insert(grids, { handle = grid, rows = rows, cols = cols })
+    end
+  end
+  local floats = {}
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local config = vim.api.nvim_win_get_config(win)
+    if config.relative ~= '' and not config.hide then
+      local border = type(config.border) == 'table' and #config.border == 8 and config.border or nil
+      local function side(i)
+        local char = border and border[i]
+        return char and (type(char) == 'table' and char[1] or char) ~= '' and 1 or 0
+      end
+      local pos = vim.api.nvim_win_get_position(win)
+      table.insert(floats, {
+        win = win,
+        zindex = config.zindex or 50,
+        row = pos[1],
+        col = pos[2],
+        rows = config.height + side(2) + side(6),
+        cols = config.width + side(4) + side(8),
+      })
+    end
+  end
+  table.sort(floats, function(a, b)
+    return a.zindex ~= b.zindex and a.zindex < b.zindex or a.zindex == b.zindex and a.win < b.win
+  end)
+
+  local unfound, taken = 0, {}
+  for _, float in ipairs(floats) do
+    local found, score = nil, -1
+    for _, grid in ipairs(grids) do
+      if not taken[grid.handle] and grid.rows == float.rows and grid.cols == float.cols then
+        local matches = 0
+        for _, row in ipairs({ 0, math.floor(grid.rows / 2), grid.rows - 1 }) do
+          for col = 0, grid.cols - 1 do
+            local srow, scol = float.row + row + 1, float.col + col + 1
+            if srow <= lines and scol <= columns and vim.fn.screenstring(srow, scol) == grid_cell(grid.handle, row, col).text then
+              matches = matches + 1
+            end
+          end
+        end
+        if matches > score then
+          found, score = grid, matches
+        end
+      end
+    end
+    if found then
+      taken[found.handle] = true
+      local winblend = vim.wo[float.win].winblend
+      for row = 0, found.rows - 1 do
+        for col = 0, found.cols - 1 do
+          local back = screen[float.row + row] and screen[float.row + row][float.col + col]
+          if back then
+            local front = grid_cell(found.handle, row, col, fg, bg)
+            local ratio = front.attrs.blend or winblend
+            if ratio > 0 and front.text == ' ' then
+              -- (what's under a blank shows through)
+              front = { text = back.text, fg = blend(ratio, back.fg, front.bg), bg = blend(ratio, back.bg, front.bg), attrs = back.attrs }
+            elseif ratio > 0 then
+              front.bg = blend(ratio, back.bg, front.bg)
+            end
+            screen[float.row + row][float.col + col] = front
+          end
+        end
+      end
+    else
+      unfound = unfound + 1
+    end
+  end
+
+  local function hex(rgb)
+    return rgb and ('#%06x'):format(rgb) or ''
+  end
+  local rows = {}
+  for row = 0, lines - 1 do
+    local cells = {}
+    for col = 0, columns - 1 do
+      local c = screen[row][col]
+      local a = c.attrs
+      local underline = a.undercurl and 'curl' or a.underdouble and 'double' or a.underdotted and 'dotted'
+        or a.underdashed and 'dashed' or a.underline and 'line' or ''
+      local style = (a.bold and 'b' or '') .. (a.italic and 'i' or '') .. (a.strikethrough and 's' or '')
+      table.insert(cells, { c.text, hex(c.fg), hex(c.bg), hex(c.sp), style, underline })
+    end
+    table.insert(rows, cells)
+  end
+
+  -- (past the end of the line in insert mode, the cursor is after the last character)
+  local lnum, col = vim.fn.line('.'), vim.fn.col('.')
+  local pos = vim.fn.screenpos(0, lnum, col)
+  local cursor = { pos.row, pos.col }
+  if pos.row == 0 and col > 1 then
+    local before = vim.fn.screenpos(0, lnum, col - 1)
+    cursor = { before.row, before.endcol + 1 }
+  end
+  return { mode = vim.api.nvim_get_mode().mode, cursor = cursor, rows = rows, unfound = unfound }
+end
+
+---------------------------------------------------------------------------
 -- Operator formatting
 ---------------------------------------------------------------------------
 
