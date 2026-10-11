@@ -96,6 +96,7 @@ benchmarks run after the suite, in a step of their own.
 | `ui` | tabline, statusline, title, signs (marks, git), whitespace | `user/ui.lua`, gitsigns.nvim |
 | `terminal` | terminals' keys (`<C-s>`, `<C-y>`, `<C-v>`), `<C-/>`, `<Space>t`, titles, files opened from them | `user/terminal.lua`, **snacks.nvim**, **flatten.nvim** |
 | `input_source` | macOS's keyboard layout in normal mode: after insert mode, a command line, a terminal, or on starting or gaining focus | `user/input_source.lua` |
+| `scenes_ui`, `scenes_syntax` | what the screen shows: the UI, each language's syntax, against snapshots (below) | `candle/`, the plugins |
 | `files`, `navigation`, `text_ops`, `treesitter`, `filetypes`, `templates` | everything else | various |
 
 The files named above are under `nvim/lua/`; `user/intelligence.lua` is where
@@ -122,6 +123,23 @@ Grep also reopens with the files it searches (`f`), the replacement its list
 previews (`r`) and the lines dropped from it (`x`); `<C-l>` and `<C-r>` bring
 the dropped lines back, and a new search (`:Search`) starts with none of
 them.
+
+### Scenes
+
+`scenes_ui` captures eight scenes of the editor's UI (git signs and
+diagnostics, a diagnostic float, completion, the AI's ghost text, a
+selection, Diffview, the file picker, the explorer), and `scenes_syntax` a
+file of each language (Go, TypeScript React, Python, Markdown, JSON, YAML,
+Kotlin), cell by cell as kitty shows them. Each scene is compared with its
+snapshot in `golden/scenes/`: a change to candle's palette, to Neovim or to a
+plugin that changes what's on the screen fails it. The syntax scenes show
+tree-sitter's highlighting alone, as the fake language server sends no
+semantic tokens.
+
+Each set writes a page, `tmp/scenes-ui.html` and `tmp/scenes-syntax.html`,
+that shows each screen as it is now (Build) or as its snapshot keeps it
+(Old). After looking at them, `run --update-golden scenes` takes the screens
+as the new snapshots.
 
 Tests marked **[quirk]** pin an oddity of today's setup instead of a
 requirement (e.g. "html: typing a tag leaves a stray >").

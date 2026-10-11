@@ -934,8 +934,40 @@ M.config = {
   },
 }
 
+--- snacks.nvim adds a picker's toggles (h hidden, f follow, i ignored) to its title in pairs() order, which differs
+--- from one start of Neovim to the next: in the order of their names instead.
+local function order_toggles()
+  local Picker = require('snacks.picker.core.picker')
+  local update_titles = Picker.update_titles
+  function Picker:update_titles()
+    local toggles, pairs_ = self.opts.toggles, _G.pairs
+    _G.pairs = function(t, ...)
+      if t ~= toggles then
+        return pairs_(t, ...)
+      end
+      local names = {}
+      for name in pairs_(t) do
+        table.insert(names, name)
+      end
+      table.sort(names)
+      local i = 0
+      return function()
+        i = i + 1
+        return names[i], t[names[i]]
+      end
+    end
+    local ok, err = pcall(update_titles, self)
+    _G.pairs = pairs_
+    if not ok then
+      error(err, 0)
+    end
+  end
+end
+
 --- (once snacks.nvim is set up)
 function M.setup()
+  order_toggles()
+
   vim.ui.select = function(items, opts, on_choice)
     if opts and opts.kind == 'codeaction' then
       opts = vim.tbl_extend('force', opts, { snacks = { layout = { layout = next_to_cursor(#items) } } })
