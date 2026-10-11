@@ -7,7 +7,7 @@ What the code and the README don't tell about this repository.
 - **Neovim's config**: `./verify` starts Neovim without it (`-u NONE`, `nix/tests/vim.bats`).
   The e2e suite (`nvim/tests/`) runs it with the plugins `nvim/lazy-lock.json` pins, but CI restores those from its cache: a pinned repository that vanishes breaks fresh installs unnoticed, until Renovate fails to bump it or the pins change.
   The provisioning job has everything installed, so a test there could start Neovim with its config.
-- **kitty**: no test starts it, so that it starts Neovim (`shell`) goes untested; `nix/tests/link.bats` loads its config, which flags only unknown options.
+- **kitty**: no test starts it, so that it starts Neovim (`shell`) goes untested; `nix/tests/link.bats` loads its config, which flags only unknown options and files it can't include.
 - **Idempotency**: nothing checks that a second switch changes nothing.
   The activation steps (mise, rustup, VS Code's extensions, the agent skills) skip what's done, but no test runs them twice.
 - **Budgets on CI**: CI's runners measured `zsh -i -c exit` at 68–151 ms over 82 runs (2026-10-01 to 05), as far apart on one config as across configs.

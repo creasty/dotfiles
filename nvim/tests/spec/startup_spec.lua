@@ -1,4 +1,5 @@
 local t = require('t')
+local env = require('env')
 local probe = require('probe')
 local describe, it = t.describe, t.it
 
@@ -38,6 +39,11 @@ describe('Startup', function()
     local nvim = t.nvim()
     t.eq('candle', nvim:eval('g:colors_name'))
     t.eq(1, nvim:eval('&termguicolors'))
+  end)
+
+  it("reads candle's colors as its build script writes them", function()
+    local res = vim.system({ vim.v.progpath, '-l', env.config_dir .. '/lua/candle/build.lua', '--check' }, { text = true }):wait()
+    t.eq(0, res.code, res.stderr)
   end)
 
   it('uses "," as <Leader>', function()
