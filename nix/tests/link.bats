@@ -65,13 +65,15 @@ load helper
   assert_line 'Found 1 spelling error(s) in 1 file(s).'
 }
 
-# kitty has no command to check a config: its loader reports the options it doesn't know, but not values or actions
-@test "kitty accepts the config, and reads it from the dotfiles" {
+# kitty has no command to check a config: its loader reports the options it doesn't know and the files it can't
+# include, but not values or actions
+@test "kitty accepts the config, and reads it and candle's colors from the dotfiles" {
   assert_same_file ~/.config/kitty/kitty.conf "$DOTFILES_PATH/config/kitty/kitty.conf"
   run -0 pristine /Applications/kitty.app/Contents/MacOS/kitty +runpy \
-    'import sys; from kitty.config import load_config; print(load_config(sys.argv[-1]).shell)' \
+    'import sys; from kitty.config import load_config; o = load_config(sys.argv[-1]); print(o.shell); print(o.background.as_sharp)' \
     ~/.config/kitty/kitty.conf
-  assert_equal "$output" "/bin/zsh -c 'exec nvim'"
+  assert_equal "$output" "/bin/zsh -c 'exec nvim'
+$(sed -n 's/^background  *//p' "$DOTFILES_PATH/config/kitty/candle.conf")"
 }
 
 # Provisioning installs these commands with Nix, not Homebrew: a path to Homebrew's copy finds nothing
