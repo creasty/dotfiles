@@ -316,26 +316,62 @@ function M.picker_box()
   return { row = pos[1] + 1, col = pos[2] + 1, last_row = pos[1] + height }
 end
 
+--- The colors `group` has in `win`, through its 'winhighlight'.
+local function win_hl(win, group)
+  for from, to in vim.wo[win].winhighlight:gmatch('([^:,]+):([^,]+)') do
+    if from == group then
+      group = to
+    end
+  end
+  return vim.api.nvim_get_hl(0, { name = group, link = false })
+end
+
 --- The background colors of the open picker's input, list and border.
 function M.picker_colors()
   local picker = open_picker()
   if not picker then
     return nil
   end
-  --- The color `group` has in `win`, through its 'winhighlight'.
-  local function background(win, group)
-    for from, to in vim.wo[win].winhighlight:gmatch('([^:,]+):([^,]+)') do
-      if from == group then
-        group = to
+  return {
+    input = win_hl(picker.input.win.win, 'NormalFloat').bg,
+    list = win_hl(picker.list.win.win, 'NormalFloat').bg,
+    border = win_hl(picker.layout.root.win, 'FloatBorder').bg,
+  }
+end
+
+--- The colors the open picker's list shows each of `names` in, on the first
+--- line that ends with it: { [name] = { fg, bg } } (the list's own where its
+--- highlight sets none; no entry for a name not shown).
+function M.picker_name_colors(names)
+  local picker = open_picker()
+  local win = picker and picker.list.win.win
+  if not (win and vim.api.nvim_win_is_valid(win)) then
+    return nil
+  end
+  local buf = vim.api.nvim_win_get_buf(win)
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  local normal = win_hl(win, vim.api.nvim_win_get_config(win).relative ~= '' and 'NormalFloat' or 'Normal')
+  local result = {}
+  for _, name in ipairs(names) do
+    for row, line in ipairs(lines) do
+      local col = line:find(vim.pesc(name) .. '%s*$')
+      if col and (col == 1 or not line:sub(col - 1, col - 1):match('[%w%.%-_/]')) then
+        -- (the highlight with the highest priority on the name's first character)
+        local hl, priority = {}, -1
+        local at = { row - 1, col - 1 }
+        for _, mark in ipairs(vim.api.nvim_buf_get_extmarks(buf, -1, at, at, { details = true, overlap = true })) do
+          local d = mark[4]
+          local covers = d.end_row and (d.end_row > at[1] or d.end_col > at[2])
+          if d.hl_group and covers and (d.priority or 0) > priority then
+            hl, priority = win_hl(win, d.hl_group), d.priority or 0
+          end
+        end
+        result[name] = { fg = hl.fg or normal.fg, bg = hl.bg or normal.bg }
+        break
       end
     end
-    return vim.api.nvim_get_hl(0, { name = group, link = false }).bg
   end
-  return {
-    input = background(picker.input.win.win, 'NormalFloat'),
-    list = background(picker.list.win.win, 'NormalFloat'),
-    border = background(picker.layout.root.win, 'FloatBorder'),
-  }
+  return result
 end
 
 ---------------------------------------------------------------------------

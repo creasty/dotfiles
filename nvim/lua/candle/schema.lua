@@ -54,6 +54,9 @@ local schema = {
   dim_red   = '#302424',
   dim_green = '#2a3024',
   dim_blue  = '#2a3034',
+
+  -- muted, for dimmed text: the base ones at gray200's contrast
+  muted_blue = '#70808f',
 }
 
 schema.foreground = schema.gray100
