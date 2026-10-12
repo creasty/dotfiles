@@ -557,6 +557,20 @@ describe('LSP', function()
       t.eq({ { 7, 6 }, { 12, 19 }, { 13, 20 } }, positions)
     end)
 
+    it('...and pauses quietly once that server has stopped and others stay', function()
+      local nvim = project(GO, 'main.go')
+      nvim:type('i')
+      probe.wait_ai(nvim) -- Copilot's server, which highlights nothing
+      nvim:type('<Esc>')
+      nvim:lua("vim.lsp.get_clients({ bufnr = 0, name = 'e2e' })[1]:stop()")
+      nvim:wait_for(function()
+        return nvim:lua("return #vim.lsp.get_clients({ bufnr = 0, name = 'e2e' })") == 0
+      end)
+      nvim:type('12G0f(h')
+      nvim:sleep(400) -- past 'updatetime'
+      t.eq('', nvim:messages())
+    end)
+
     it('<C-s><C-s> shows the signature help in insert mode', function()
       local nvim = project(TS, 'app.ts')
       nvim:type('Go')
