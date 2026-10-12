@@ -4,6 +4,13 @@
 -- :Lazy restore checks out the new ones. A plugin added here is installed on
 -- the next start, which records its commit and repository.
 --
+-- A plugin whose repository tags a release of each change within weeks
+-- follows the releases of a major (`version = '2.*'`): its pin records the
+-- release's tag too, and :Lazy update and Renovate move it from release to
+-- release. Renovate proposes the next major as well, which fails CI until
+-- `version` takes it (nvim/tests/plugins check). The others follow their
+-- branch, a commit at a time.
+--
 -- A plugin with an event, a command or keys loads on the first of them, the
 -- others at startup. `init` runs at startup either way, `config` once the
 -- plugin has loaded.
@@ -13,6 +20,7 @@ local M = {}
 M.spec = {
   { -- a modern plugin manager for Neovim, which manages itself too
     'folke/lazy.nvim',
+    version = '11.*',
   },
 
   --  Editing
@@ -180,6 +188,7 @@ M.spec = {
   -----------------------------------------------
   { -- Quickstart configs for Nvim LSP
     'neovim/nvim-lspconfig',
+    version = '2.*',
     config = function()
       require('user.plugin.lsp').setup()
       require('user.plugin.copilot').setup()
@@ -188,7 +197,7 @@ M.spec = {
 
   { -- Performant, batteries-included completion plugin for Neovim
     'saghen/blink.cmp',
-    branch = 'v1', -- v2, its main branch, has no release yet
+    version = '1.*',
     config = function()
       require('user.plugin.blink').setup()
     end,
@@ -288,6 +297,7 @@ M.spec = {
 
   { -- Single tabpage interface for easily cycling through diffs for all modified files for any git rev
     'dlyongemallo/diffview-plus.nvim',
+    version = '0.*',
     cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     config = function()
       local close = { 'n', 'q', '<Cmd>DiffviewClose<CR>', { desc = 'Close the view' } }
@@ -336,13 +346,26 @@ M.opts = {
 --- Where lazy.nvim installs itself from.
 M.lazy_url = 'https://github.com/folke/lazy.nvim.git'
 
---- What a lockfile pins, by plugin name: { branch, commit, url }.
+--- What a lockfile pins, by plugin name: { branch, commit, tag, url }.
 function M.pins(file)
   return vim.json.decode(table.concat(vim.fn.readfile(file), '\n'))
 end
 
+--- The tag of the release at a commit of a plugin that follows its releases,
+--- among the tags of its clone (lazy.nvim's own `stable` isn't one).
+local function release_tag(plugin, commit)
+  local git = require('lazy.manage.git')
+  local refs = git.get_tag_refs(plugin.dir)
+  for _, version in ipairs(git.get_versions(plugin.dir, plugin.version)) do
+    if refs[version.tag] == commit then
+      return version.tag
+    end
+  end
+end
+
 --- Writes pins the way lazy.nvim writes its lockfile, with each plugin's
---- repository as well, where Renovate looks up newer commits.
+--- repository as well, where Renovate looks up newer commits, and the tag of
+--- a plugin that follows its releases, where it looks up newer ones.
 local function write_pins(file, pins)
   local config = require('lazy.core.config')
   local names = vim.tbl_keys(pins)
@@ -352,8 +375,11 @@ local function write_pins(file, pins)
     local pin = pins[name]
     local plugin = config.plugins[name] or config.spec.disabled[name]
     local url = plugin and plugin.url or pin.url
-    lines[#lines + 1] = ('  %q: { "branch": %q, "commit": %q%s }%s'):format(
-      name, pin.branch, pin.commit, url and (', "url": %q'):format(url) or '', i < #names and ',' or '')
+    -- (lazy.nvim's own writer drops the tag)
+    local tag = plugin and plugin.version and (pin.tag or release_tag(plugin, pin.commit))
+    lines[#lines + 1] = ('  %q: { "branch": %q, "commit": %q%s%s }%s'):format(
+      name, pin.branch, pin.commit, tag and (', "tag": %q'):format(tag) or '',
+      url and (', "url": %q'):format(url) or '', i < #names and ',' or '')
   end
   lines[#lines + 1] = '}'
   vim.fn.writefile(lines, file)

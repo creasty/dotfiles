@@ -110,6 +110,13 @@ local function same_repository(a, b)
   return normalize(a) == normalize(b)
 end
 
+--- Whether a release's tag is in a `version` range, as lazy.nvim reads them.
+local function in_range(range, tag)
+  local semver = require('lazy.manage.semver')
+  local version = semver.version(tag)
+  return version ~= nil and semver.range(range):matches(version)
+end
+
 --- Differences between nvim/lazy-lock.json and what is installed. Your working
 --- copies (lazy.nvim's `dev`) are yours to keep at any commit.
 local function differences(pins, plugins)
@@ -131,6 +138,15 @@ local function differences(pins, plugins)
       problems[#problems + 1] = name .. ': pinned without its repository (:Lazy restore records it)'
     elseif not same_repository(plugin.url, pinned.url) then
       problems[#problems + 1] = ('%s: installed from %s, pinned from %s'):format(name, plugin.url, pinned.url)
+    elseif plugin.version and not pinned.tag then
+      -- (Renovate would move it along its branch, and :Lazy update from release to release)
+      problems[#problems + 1] = name .. ': follows its releases, but pinned without a release tag (:Lazy restore records it)'
+    elseif pinned.tag and not plugin.version then
+      problems[#problems + 1] = ('%s: pinned at release %s, but follows its branch (no `version`)'):format(name, pinned.tag)
+    elseif plugin.version and not in_range(plugin.version, pinned.tag) then
+      -- (Renovate's pull request of a new major, which :Lazy update would undo)
+      problems[#problems + 1] = ("%s: pinned at release %s, outside version = '%s' (widen it to take the new major)"):format(
+        name, pinned.tag, plugin.version)
     elseif plugins[name] and not plugin._.is_local then
       local commit = git(plugin.dir, 'rev-parse', 'HEAD')
       if not commit then

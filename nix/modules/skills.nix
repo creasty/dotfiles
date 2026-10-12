@@ -2,6 +2,10 @@
 # home/agents/.skill-lock.json, and each skill's `ref` there pins the commit of its repository a switch installs it
 # from; Renovate moves the commits. Pin a new skill as you add it, with `npx skills add <owner/repo>#<commit> -g`:
 # `gh skill install` rewrites the lock without `ref`.
+#
+# A skill whose repository tags a release of each change within weeks follows its releases: `ref` is a release's
+# commit, and the `"tag"` you add right before `ref` names that release, by which Renovate looks up newer ones to move
+# both to. `npx skills add` drops the tag when it adds the skill again. The others follow the default branch.
 {
   lib,
   username,
