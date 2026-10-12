@@ -557,6 +557,20 @@ describe('LSP', function()
       t.eq({ { 7, 6 }, { 12, 19 }, { 13, 20 } }, positions)
     end)
 
+    it('...and pauses quietly once that server has stopped and others stay', function()
+      local nvim = project(GO, 'main.go')
+      nvim:type('i')
+      probe.wait_ai(nvim) -- Copilot's server, which highlights nothing
+      nvim:type('<Esc>')
+      nvim:lua("vim.lsp.get_clients({ bufnr = 0, name = 'e2e' })[1]:stop()")
+      nvim:wait_for(function()
+        return nvim:lua("return #vim.lsp.get_clients({ bufnr = 0, name = 'e2e' })") == 0
+      end)
+      nvim:type('12G0f(h')
+      nvim:sleep(400) -- past 'updatetime'
+      t.eq('', nvim:messages())
+    end)
+
     it('<C-s><C-s> shows the signature help in insert mode', function()
       local nvim = project(TS, 'app.ts')
       nvim:type('Go')
@@ -577,6 +591,59 @@ describe('LSP', function()
     it('reports misspellings as hints', function()
       local nvim = t.nvim()
       t.eq('hint', nvim:lua('return vim.lsp.config.codebook.init_options.diagnosticSeverity'))
+    end)
+  end)
+
+  describe('TypeScript', function()
+    -- A project with its own tsc, which marks that it started as a server.
+    local function tsc_project()
+      local nvim = t.nvim()
+      nvim:files({
+        ['.git/'] = true,
+        ['app.ts'] = { 'export const a = 1;' },
+        ['node_modules/.bin/tsc'] = {
+          '#!/bin/sh',
+          'case "$1" in',
+          "  --version) echo 'Version 7.0.2' ;;",
+          '  --lsp) touch "$(dirname "$0")/started" ;;',
+          'esac',
+        },
+      })
+      vim.uv.fs_chmod(nvim:path('node_modules/.bin/tsc'), tonumber('755', 8))
+      return nvim
+    end
+
+    --- The root tsc starts at for the current buffer, or false.
+    local function tsc_root(nvim)
+      return nvim:lua([[
+        local root = false
+        vim.lsp.config.tsc.root_dir(0, function(dir)
+          root = dir
+        end)
+        return root
+      ]])
+    end
+
+    it('tsc stays off buffers without a name', function()
+      local nvim = tsc_project()
+      nvim:edit('app.ts')
+      t.eq(vim.fs.dirname(nvim:bufname()), tsc_root(nvim))
+      nvim:cmd('enew | setfiletype typescript')
+      t.eq(false, tsc_root(nvim))
+    end)
+
+    it("tsc starts the project's binary", function()
+      local nvim = tsc_project()
+      nvim:edit('app.ts')
+      nvim:lua([[
+        local config = vim.lsp.config.tsc
+        config.root_dir(0, function(dir)
+          config.cmd({}, { root_dir = dir })
+        end)
+      ]])
+      nvim:wait_for(function()
+        return vim.uv.fs_stat(nvim:path('node_modules/.bin/started')) ~= nil
+      end)
     end)
   end)
 end)

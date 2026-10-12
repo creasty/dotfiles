@@ -60,6 +60,22 @@ local settings = {
   },
 }
 
+--- nvim-lspconfig's tsc, kept off buffers without a name: the server stops
+--- on the URI Neovim gives one (file://), and the project's other buffers
+--- lose it too (CLAUDE.md). Its root_dir picks the binary its cmd starts,
+--- and each load of the config has its own choice: keep both from this one.
+local function tsc()
+  local config = vim.lsp.config.tsc
+  return {
+    cmd = config.cmd,
+    root_dir = function(bufnr, on_dir)
+      if vim.api.nvim_buf_get_name(bufnr) ~= '' then
+        config.root_dir(bufnr, on_dir)
+      end
+    end,
+  }
+end
+
 local severity = vim.diagnostic.severity
 
 --- A column of padding left and right of a float, in its own background.
@@ -213,6 +229,7 @@ function M.setup()
   for name, config in pairs(settings) do
     vim.lsp.config(name, config)
   end
+  vim.lsp.config('tsc', tsc())
   vim.lsp.enable(M.servers)
 
   vim.diagnostic.config({
@@ -270,29 +287,19 @@ function M.setup()
 
   local group = vim.api.nvim_create_augroup('user_plugin_lsp', {})
 
-  vim.api.nvim_create_autocmd('LspAttach', {
+  -- Highlight the symbol and its references when holding the cursor, while a
+  -- server of the buffer can (one that could may have stopped since).
+  vim.api.nvim_create_autocmd('CursorHold', {
     group = group,
     callback = function(args)
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if not client or not client:supports_method('textDocument/documentHighlight', args.buf) then
-        return
+      if #vim.lsp.get_clients({ bufnr = args.buf, method = 'textDocument/documentHighlight' }) > 0 then
+        vim.lsp.buf.document_highlight()
       end
-      if vim.b[args.buf].user_lsp_highlight then
-        return
-      end
-      vim.b[args.buf].user_lsp_highlight = true
-      -- Highlight the symbol and its references when holding the cursor.
-      vim.api.nvim_create_autocmd('CursorHold', {
-        group = group,
-        buffer = args.buf,
-        callback = vim.lsp.buf.document_highlight,
-      })
-      vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
-        group = group,
-        buffer = args.buf,
-        callback = vim.lsp.buf.clear_references,
-      })
     end,
+  })
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'InsertEnter', 'BufLeave' }, {
+    group = group,
+    callback = vim.lsp.buf.clear_references,
   })
 
   vim.api.nvim_create_autocmd('CursorHold', {
