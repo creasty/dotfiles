@@ -56,7 +56,10 @@ nvim/tests/plugins install    # install exactly the pinned versions (what CI run
 ```
 
 Both also compare each plugin's repository with the one lazy-lock.json
-records, where Renovate looks up newer commits. `install` clones into
+records, where Renovate looks up newer commits. A plugin that follows its
+releases (`version`) must be pinned with a release's tag, where Renovate
+looks up newer releases, and within its `version`, so that Renovate's pull
+request of a new major fails until `version` takes it. `install` clones into
 `$E2E_PLUGINS` (default: lazy.nvim's root) and builds the parsers with the
 tree-sitter CLI. It never changes a plugin that is already installed at
 another commit.

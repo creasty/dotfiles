@@ -25,12 +25,30 @@
     },
     {
       "customType": "regex",
+      "description": "The Neovim plugins that follow their releases (`version` in nvim/lua/user/plugins.lua), each at a tag's commit, which lazy.nvim's lockfile records with the tag",
+      "managerFilePatterns": ["/^nvim/lazy-lock\\.json$/"],
+      "matchStrings": [
+        "\"(?<depName>[^\"]+)\": \\{ \"branch\": \"[^\"]+\", \"commit\": \"(?<currentDigest>[0-9a-f]{40})\", \"tag\": \"(?<currentValue>[^\"]+)\", \"url\": \"(?<packageName>[^\"]+)\" \\}"
+      ],
+      "datasourceTemplate": "git-tags"
+    },
+    {
+      "customType": "regex",
       "description": "The agent skills, each at a commit of its repository's default branch",
       "managerFilePatterns": ["/^home/agents/\\.skill-lock\\.json$/"],
       "matchStrings": [
         "\"(?<depName>[^\"]+)\": \\{[^{}]*?\"sourceUrl\": \"(?<packageName>[^\"]+)\",\\s*\"ref\": \"(?<currentDigest>[0-9a-f]{40})\""
       ],
       "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
+      "description": "The agent skills that follow their repository's releases, each at a tag's commit",
+      "managerFilePatterns": ["/^home/agents/\\.skill-lock\\.json$/"],
+      "matchStrings": [
+        "\"(?<depName>[^\"]+)\": \\{[^{}]*?\"sourceUrl\": \"(?<packageName>[^\"]+)\",\\s*\"tag\": \"(?<currentValue>[^\"]+)\",\\s*\"ref\": \"(?<currentDigest>[0-9a-f]{40})\""
+      ],
+      "datasourceTemplate": "git-tags"
     },
     {
       "customType": "regex",
