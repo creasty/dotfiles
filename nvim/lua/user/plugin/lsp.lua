@@ -60,6 +60,22 @@ local settings = {
   },
 }
 
+--- nvim-lspconfig's tsc, kept off buffers without a name: typescript-go
+--- stops on the URI Neovim gives one (file://), and the project's other
+--- buffers lose it too. Its root_dir picks the binary its cmd starts, and each
+--- load of the config has its own choice: keep both from this one.
+local function tsc()
+  local config = vim.lsp.config.tsc
+  return {
+    cmd = config.cmd,
+    root_dir = function(bufnr, on_dir)
+      if vim.api.nvim_buf_get_name(bufnr) ~= '' then
+        config.root_dir(bufnr, on_dir)
+      end
+    end,
+  }
+end
+
 local severity = vim.diagnostic.severity
 
 --- A column of padding left and right of a float, in its own background.
@@ -213,6 +229,7 @@ function M.setup()
   for name, config in pairs(settings) do
     vim.lsp.config(name, config)
   end
+  vim.lsp.config('tsc', tsc())
   vim.lsp.enable(M.servers)
 
   vim.diagnostic.config({
