@@ -62,10 +62,10 @@ Remove it once snacks orders them itself: without it, the file picker's and the 
 
 ## tsc off buffers without a name
 
-typescript-go stops when it opens a document whose URI is `file://`, which Neovim gives a buffer without a name (`:enew`), seen with TypeScript 7.0.2: `panic: vfs: path "tsconfig.json" is not absolute`.
+TypeScript 7's language server stops when it opens a document whose URI is `file://`, which Neovim gives a buffer without a name (`:enew`): `panic: vfs: path "tsconfig.json" is not absolute` ([microsoft/TypeScript#64300](https://github.com/microsoft/TypeScript/issues/64300), seen with 7.0.2).
 The project's other buffers share that server, so they lose TypeScript with it.
 So `tsc` in `nvim/lua/user/plugin/lsp.lua` keeps nvim-lspconfig's tsc off such buffers.
-Remove it once typescript-go opens such a document: without it, tsc keeps running after `:enew | setfiletype typescript` in a TypeScript project.
+Remove it once the server opens such a document ([microsoft/TypeScript#64396](https://github.com/microsoft/TypeScript/pull/64396) would): without it, tsc keeps running after `:enew | setfiletype typescript` in a TypeScript project.
 
 ## Homebrew tap trap
 

@@ -60,10 +60,10 @@ local settings = {
   },
 }
 
---- nvim-lspconfig's tsc, kept off buffers without a name: typescript-go
---- stops on the URI Neovim gives one (file://), and the project's other
---- buffers lose it too. Its root_dir picks the binary its cmd starts, and each
---- load of the config has its own choice: keep both from this one.
+--- nvim-lspconfig's tsc, kept off buffers without a name: the server stops
+--- on the URI Neovim gives one (file://), and the project's other buffers
+--- lose it too (CLAUDE.md). Its root_dir picks the binary its cmd starts,
+--- and each load of the config has its own choice: keep both from this one.
 local function tsc()
   local config = vim.lsp.config.tsc
   return {
