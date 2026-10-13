@@ -174,10 +174,15 @@ describe('Scenes: the UI', function()
   it('the explorer', function()
     local nvim = project('explorer')
     nvim:cmd('edit .')
+    -- (each refresh of the list puts the cursor back, so `jj` waits for both: git's status hiding what it ignores,
+    -- then `I` showing it)
     probe.wait_picker(nvim, function(p)
-      return p.source == 'explorer' and #p.items > 1
+      return p.source == 'explorer' and #p.items == 7
     end)
     nvim:type('I')
+    probe.wait_picker(nvim, function(p)
+      return #p.items == 9
+    end)
     nvim:type('jj')
     scenes.check(nvim, 'explorer', 'The explorer: the selected line, what git ignores dimmed')
   end)
