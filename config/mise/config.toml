@@ -1,6 +1,6 @@
 # https://mise.jdx.dev/configuration.html
 [tools]
-bun = "1.4.2"
+bun = "1.4.3"
 java = "21" # Homebrew's openjdk, registered with `mise link` by provisioning
 node = "24.21.0"
 python = "3.14.8"
@@ -9,7 +9,7 @@ ruby = "4.0.7"
 # still has them. npm's run on the project's Node; RubyGems' on the Ruby they were installed with, unless the
 # project's Ruby has its own (e.g. from its bundle).
 "npm:@antfu/ni" = "30.6.0"
-"npm:@github/copilot-language-server" = "1.551.2"
+"npm:@github/copilot-language-server" = "1.551.3"
 "npm:@openai/codex" = "0.160.1"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.12.0"
