@@ -423,7 +423,5 @@ lua require('user.plugin.treesitter.compat')
 " installed and loaded by lazy.nvim
 lua require('user.plugins').setup()
 
-"  Cross-plugin integration
-"-----------------------------------------------
 " completion, snippets, auto-pairs and AI suggestions sharing the insert-mode keys
 lua require('user.intelligence').setup()

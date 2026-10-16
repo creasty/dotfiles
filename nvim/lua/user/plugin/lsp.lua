@@ -243,11 +243,16 @@ function M.setup()
   -- Cross references, in the picker: grr, gri and grt take the place of
   -- Neovim's own, which fill the quickfix list. (Its grn renames, and its gra
   -- lists the code actions through vim.ui.select, in the picker too.)
-  map('n', 'gd', locations('definition'), { desc = 'Go to definition' })
-  map('n', 'gD', locations('definition', { list = true }), { desc = 'List definitions' })
-  map('n', 'grr', locations('references', { list = true }), { desc = 'List references' })
+  map('n', 'grr', locations('references'), { desc = 'Go to references' })
   map('n', 'gri', locations('implementation'), { desc = 'Go to implementation' })
   map('n', 'grt', locations('type_definition'), { desc = 'Go to type definition' })
+
+  -- Definition
+  map('n', 'gd', locations('definition'), { desc = 'Go to definitions' })
+
+  -- Code actions: gq as well as gra, in place of the format operator
+  -- (:Format formats, and gw still wraps lines)
+  map({ 'n', 'x' }, 'gq', vim.lsp.buf.code_action, { desc = 'Code action' })
 
   -- Hover
   map('n', 'gh', function()

@@ -89,7 +89,7 @@ benchmarks run after the suite, in a step of their own.
 | `autopairs` | pairs, step-over, `<CR>`/`<Space>` rules, custom rules, dot repeat | **nvim-autopairs**, `user/plugin/autopairs.lua` |
 | `cmdline` | `:'`, `:w!!`, `:ee`…, `:s/` family, search escaping, abbreviations, previewed commands | `user/cmdline.lua`, `user/text_ops.lua` |
 | `completion` | popup, `<Tab>`/`<CR>`/`<Esc>`/`<C-n>`, sources, LSP snippets | **blink.cmp**, **LuaSnip** |
-| `lsp` | `gd gD grr gri grt gll gh grn gra`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
+| `lsp` | `gd grr gri grt gll gh grn gra gq`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow snippets | **LuaSnip** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
 | `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>`/`<CR>` dismiss | **Neovim's inline completion**, `user/intelligence.lua` |
@@ -109,7 +109,7 @@ completion, snippets, auto-pairs and AI suggestions share the insert-mode keys.
 
 Every picker source is checked for the same things:
 
-| | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`grr` `gD`, `gll` |
+| | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`grr`, `gll` |
 |---|---|---|---|---|
 | focus when opened | prompt | prompt | list | list |
 | `<C-c>` in the prompt | closes | closes | back to the list, still narrowed (`<Esc>` too) | back to the list, still narrowed (`<Esc>` too) |
