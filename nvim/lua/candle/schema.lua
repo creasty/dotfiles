@@ -15,7 +15,6 @@ local schema = {
   gray860   = '#232323', -- oklch(25.6% 0.000 0)
   gray875   = '#202020', -- oklch(24.3% 0.000 0)
   gray900   = '#1b1b1b', -- oklch(22.2% 0.000 0)
-  gray905   = '#1a1a1a', -- oklch(21.8% 0.000 0)
 
   -- red
   red100    = '#ffcdca', -- oklch(89.1% 0.057 23)
@@ -115,6 +114,5 @@ schema.comment = schema.gray600
 schema.selection = schema.gray800
 schema.line = schema.gray860
 schema.window = schema.gray850
-schema.guide = schema.gray905
 
 return schema

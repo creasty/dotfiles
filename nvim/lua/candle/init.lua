@@ -32,7 +32,6 @@ function M.setup()
 
   -- Vim editor colors
   hi.Bold = { bold = 1 }
-  hi.ColorColumn = { bg = s.guide }
   hi.Conceal = { fg = s.aqua300 }
   hi.CurSearch = { fg = s.background, bg = s.yellow300, bold = 1 }
   hi.Cursor = { fg = s.background, bg = s.foreground, reverse = 1 }

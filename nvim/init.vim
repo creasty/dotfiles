@@ -2,13 +2,10 @@ language en_US.UTF-8
 
 " disable builtin plugins
 let g:loaded_netrwPlugin = 1
-let g:loaded_tar = 1
 let g:loaded_tarPlugin = 1
-let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
 
 " configure runtime features
-let g:markdown_folding = 1
 let g:omni_sql_no_default_maps = 1
 let g:tex_flavor = 'latex'
 
@@ -32,12 +29,6 @@ set formatoptions& formatoptions+=lm]
 
 " in/decrement
 set nrformats=alpha
-
-" wildcard settings
-set wildignore& wildignore+=*.so,*.swp
-
-" find file with suffixes
-set suffixesadd& suffixesadd+=.ts,.d.ts,.tsx
 
 " ignore case unless contains upper case
 set ignorecase
@@ -83,9 +74,6 @@ set number
 
 " always show sign column
 set signcolumn=yes:2
-
-" color column
-set colorcolumn=90
 
 " match pairs
 set showmatch
