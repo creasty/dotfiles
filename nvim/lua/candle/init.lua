@@ -32,7 +32,6 @@ function M.setup()
 
   -- Vim editor colors
   hi.Bold = { bold = 1 }
-  hi.ColorColumn = { bg = s.guide }
   hi.Conceal = { fg = s.aqua300 }
   hi.CurSearch = { fg = s.background, bg = s.yellow300, bold = 1 }
   hi.Cursor = { fg = s.background, bg = s.foreground, reverse = 1 }
@@ -215,7 +214,6 @@ function M.setup()
   hi.SnacksPicker = { link = 'BorderedFloat' } -- its windows, as its border
   hi.SnacksPickerMatch = { link = 'Constant' }
   hi.SnacksPickerDir = { fg = s.gray300 }
-  hi.SnacksPickerBorder = { fg = s.blue200, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.blue200, bg = s.background }
   -- what git ignores, dimmed: a file, its status, and (user.plugin.picker) a directory
   hi.SnacksPickerPathIgnored = { fg = s.gray450 }

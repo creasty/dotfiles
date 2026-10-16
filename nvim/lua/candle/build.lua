@@ -27,7 +27,7 @@ local HUES = {
 
 -- Levels in between: the editor's surfaces, which differ from the background by little, and the diff's backgrounds
 local NUANCES = {
-  gray = { 450, 825, 850, 860, 875, 905 },
+  gray = { 450, 825, 850, 860, 875 },
   red = { 850 },
   green = { 850 },
   blue = { 850 },
@@ -41,7 +41,6 @@ local ROLES = {
   { 'selection', 'gray800' },
   { 'line', 'gray860' }, -- the cursor's line
   { 'window', 'gray850' }, -- statusline, tabline, separators
-  { 'guide', 'gray905' }, -- 'colorcolumn'
 }
 
 -- kitty's options: it draws Neovim, which paints everything else

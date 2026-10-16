@@ -165,8 +165,8 @@ behavior may well be the better one: update or delete the test.
    - `lib/prelude.lua` — how to *point* plugins at the fakes: the fake server
      is `vim.lsp.config('e2e', ...)`, and `vim.lsp.enable()` takes only it and Copilot's;
      conform.nvim and nvim-lint run no external formatter or linter.
-   - `lib/env.lua` — fake executables on `PATH` (`trash`, and
-     `copilot-language-server`, which runs `fakes/copilot.lua`; it speaks
+   - `lib/env.lua` — fake executables on `PATH` (`trash`, kitty's `kitten`,
+     and `copilot-language-server`, which runs `fakes/copilot.lua`; it speaks
      copilot-language-server's protocol), and the plugin manager or install
      location.
    - `lib/warmup.lua` — first-use warm-up (only needed for slow starters).

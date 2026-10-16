@@ -113,8 +113,6 @@ function M.setup()
   vim.api.nvim_create_autocmd('TermOpen', {
     group = group,
     callback = function(ev)
-      -- (Neovim takes the numbers and signs off)
-      vim.wo[0][0].colorcolumn = ''
       watch_activity(ev.buf)
       if ev.buf == vim.api.nvim_get_current_buf() then
         vim.cmd.startinsert()

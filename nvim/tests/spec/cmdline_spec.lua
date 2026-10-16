@@ -149,12 +149,13 @@ describe('Command line', function()
 
   describe('abbreviations', function()
     for alias, filetype in pairs({ js = 'javascript', jsx = 'javascriptreact', ts = 'typescript', tsx = 'typescriptreact', md = 'markdown', bq = 'sql.bq', pg = 'sql.pg' }) do
-      it((':setf %s sets filetype %s'):format(alias, filetype), function()
+      it((':setf %s sets filetype %s, as do :setfil to :setfiletype'):format(alias, filetype), function()
         local nvim = t.nvim()
-        nvim:type(':setf ' .. alias .. '<CR>')
-        t.eq(filetype, nvim:filetype())
-        nvim:type(':setfiletype ' .. alias .. '<CR>')
-        t.eq(filetype, nvim:filetype())
+        for _, command in ipairs({ 'setf', 'setfil', 'setfiletype' }) do
+          nvim:cmd('set filetype=')
+          nvim:type((':%s %s<CR>'):format(command, alias))
+          t.eq(filetype, nvim:filetype(), command)
+        end
       end)
     end
   end)

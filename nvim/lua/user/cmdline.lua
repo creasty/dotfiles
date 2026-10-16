@@ -10,6 +10,8 @@
 --               after % or '<,'> too; :sc/ adds \C, :si/ \c, and :sm/
 --               starts a case-preserving :Subs/|/ (user.text_ops)
 --   / and ?     escaped inside a search for / and ? respectively
+--   :setf js    :setf javascript, and the other aliases in FILETYPES
+--               (any form from :setf to :setfiletype)
 --
 -- And :Norm, :G and :V: :normal, :global and :vglobal, with their changes
 -- previewed as you type, as :s has them.
@@ -19,6 +21,16 @@ local M = {}
 local k = vim.keycode
 
 local DELIMITERS = { '/', '~', '!', '@', '#', '%', ':' }
+
+local FILETYPES = {
+  js = 'javascript',
+  jsx = 'javascriptreact',
+  ts = 'typescript',
+  tsx = 'typescriptreact',
+  md = 'markdown',
+  bq = 'sql.bq',
+  pg = 'sql.pg',
+}
 
 local DIRECTORIES = {
   h = '~',
@@ -112,6 +124,14 @@ function M.setup()
     vim.keymap.set('c', char, function()
       return escape_search(char)
     end, { expr = true, replace_keycodes = false })
+  end
+
+  for alias, filetype in pairs(FILETYPES) do
+    vim.keymap.set('ca', alias, function()
+      local command = vim.fn.getcmdtype() == ':' and vim.fn.getcmdline():match('^(%a+)%s+' .. alias .. '$')
+      local setf = command and #command >= 4 and vim.startswith('setfiletype', command)
+      return setf and filetype or alias
+    end, { expr = true })
   end
 
   -- (the preview runs the command, and Neovim takes its changes back)

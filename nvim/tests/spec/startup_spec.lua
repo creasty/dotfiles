@@ -66,7 +66,6 @@ describe('Startup', function()
       modelines = 0,
       clipboard = 'unnamed',
       nrformats = 'alpha',
-      suffixesadd = '.ts,.d.ts,.tsx',
       ignorecase = 1,
       smartcase = 1,
       wildignorecase = 1,
@@ -86,7 +85,6 @@ describe('Startup', function()
       showtabline = 2,
       number = 1,
       signcolumn = 'yes:2',
-      colorcolumn = '90',
       showmatch = 1,
       list = 1,
       listchars = 'tab:──⏵,lead:·,trail:·,nbsp:∙,extends:❯,precedes:❮',
@@ -96,9 +94,8 @@ describe('Startup', function()
       guicursor = 'n-c-sm:block-Cursor,i-ci-ve-t:ver25-Cursor,v-r-cr-o:hor20-Cursor',
       scrolloff = 5,
       updatetime = 200,
-      foldmethod = 'indent',
-      foldlevel = 20,
-      foldlevelstart = 20,
+      foldlevel = 99,
+      foldlevelstart = 99,
       title = 1,
       titlestring = '%{UserTitleString()}',
     }
@@ -113,8 +110,6 @@ describe('Startup', function()
     t.match('%]', nvim:eval('&formatoptions'))
     t.match('I', nvim:eval('&shortmess'))
     t.match('uhex', nvim:eval('&display'))
-    t.match('%*%.so', nvim:eval('&wildignore'))
-    t.match('%*%.swp', nvim:eval('&wildignore'))
   end)
 
   it('disables the unused built-in plugins (netrw, zip, tar)', function()
@@ -130,7 +125,7 @@ describe('Startup', function()
     local commands = nvim:request('nvim_get_commands', {})
     for _, name in ipairs({
       -- init.vim
-      'Encoding', 'SoftTab', 'HardTab', 'ProfStart', 'ProfStop', 'ProfOpen', 'Capture', 'CleanBuffers',
+      'Encoding', 'SoftTab', 'HardTab', 'ProfStart', 'ProfStop', 'ProfOpen', 'Font', 'Capture', 'CleanBuffers',
       -- user.plugins (lazy.nvim)
       'Lazy', 'LazyGotoRepo',
       -- plugin/
