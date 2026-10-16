@@ -214,7 +214,6 @@ function M.setup()
   hi.SnacksPicker = { link = 'BorderedFloat' } -- its windows, as its border
   hi.SnacksPickerMatch = { link = 'Constant' }
   hi.SnacksPickerDir = { fg = s.gray300 }
-  hi.SnacksPickerBorder = { fg = s.blue200, bg = s.background }
   hi.SnacksPickerTitle = { fg = s.blue200, bg = s.background }
   -- what git ignores, dimmed: a file, its status, and (user.plugin.picker) a directory
   hi.SnacksPickerPathIgnored = { fg = s.gray450 }

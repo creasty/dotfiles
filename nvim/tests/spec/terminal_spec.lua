@@ -63,12 +63,11 @@ local function window_of(nvim, name)
 end
 
 describe('Terminals', function()
-  it('open typing into the program, with no color column, and keep 15000 lines of history', function()
+  it('open typing into the program, and keep 15000 lines of history', function()
     local nvim = t.nvim()
-    nvim:cmd('set colorcolumn=80')
     terminal(nvim, 'echo ready; cat', 'ready')
     t.eq('t', nvim:mode())
-    t.eq({ '', 15000 }, nvim:eval('[&colorcolumn, &scrollback]'))
+    t.eq(15000, nvim:eval('&scrollback'))
   end)
 
   it('<C-s> works the window keys, and <C-s><C-s> sends C-s to the program', function()

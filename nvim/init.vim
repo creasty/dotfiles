@@ -122,10 +122,8 @@ set scrolloff=5
 " fast update
 set updatetime=200
 
-" folding
-set foldmethod=indent
-set foldlevel=20
-set foldlevelstart=20
+" open with every fold open, whatever a filetype folds by: 'foldlevel' defaults to 0, which closes them all
+set foldlevel=99 foldlevelstart=99
 
 " window title
 set title titlestring=%{UserTitleString()}
@@ -261,6 +259,17 @@ nnoremap <C-w>s     <C-w>n
 nnoremap <C-w><C-c> <Nop>
 nnoremap <C-w>c     <Nop>
 
+" submode for window resizing
+nnoremap <SID>(ws) <Nop>
+nnoremap <script> <C-w>+ <C-w>+<SID>(ws)
+nnoremap <script> <C-w>- <C-w>-<SID>(ws)
+nnoremap <script> <C-w>> <C-w>><SID>(ws)
+nnoremap <script> <C-w>< <C-w><<SID>(ws)
+nnoremap <script> <SID>(ws)+ <C-w>+<SID>(ws)
+nnoremap <script> <SID>(ws)- <C-w>-<SID>(ws)
+nnoremap <script> <SID>(ws)> <C-w>><SID>(ws)
+nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
+
 " terminals: shells and commands, in windows and tabs too
 lua require('user.terminal').setup()
 
@@ -272,17 +281,6 @@ lua require('user.input_source').setup()
 
 " operators and commands on text: r{motion}, ge_ and the other cases, :Subs, :RengBang
 lua require('user.text_ops').setup()
-
-" submode for window resizing
-nnoremap <SID>(ws) <Nop>
-nnoremap <script> <C-w>+ <C-w>+<SID>(ws)
-nnoremap <script> <C-w>- <C-w>-<SID>(ws)
-nnoremap <script> <C-w>> <C-w>><SID>(ws)
-nnoremap <script> <C-w>< <C-w><<SID>(ws)
-nnoremap <script> <SID>(ws)+ <C-w>+<SID>(ws)
-nnoremap <script> <SID>(ws)- <C-w>-<SID>(ws)
-nnoremap <script> <SID>(ws)> <C-w>><SID>(ws)
-nnoremap <script> <SID>(ws)< <C-w><<SID>(ws)
 
 "=== Misc
 "==============================================================================================
@@ -309,6 +307,22 @@ command! -nargs=0 ProfStart
   \ profile! file *
 command! -nargs=0 ProfStop profile stop
 command! -nargs=0 ProfOpen vsplit /tmp/vim-vimscript.log |
+
+" change kitty's font size: :Font 14, :Font +2, or :Font alone for kitty.conf's
+command! -nargs=? Font call <SID>change_font_size(<q-args>)
+cnoreabbrev <expr> font getcmdtype() ==# ':' && getcmdline() ==# 'font' ? 'Font' : 'font'
+
+function! s:change_font_size(size) abort
+  " (without kitty's socket, kitten @ writes to the terminal Neovim draws in)
+  if empty($KITTY_LISTEN_ON)
+    echohl ErrorMsg | echomsg 'Font: not in kitty' | echohl None
+    return
+  endif
+  let l:out = system(['kitten', '@', 'set-font-size', '--', empty(a:size) ? '0' : a:size])
+  if v:shell_error
+    echohl ErrorMsg | echomsg 'Font:' trim(l:out) | echohl None
+  endif
+endfunction
 
 " capture Ex command output and print to a buffer
 command! -nargs=+ -complete=command Capture
@@ -405,10 +419,6 @@ augroup END
 "==============================================================================================
 " (before the tree-sitter plugins load)
 lua require('user.plugin.treesitter.compat')
-
-" filetype.vim before $VIMRUNTIME/filetype.lua, as Neovim sources them after init.vim
-" (lazy.nvim would source filetype.lua first)
-filetype on
 
 " installed and loaded by lazy.nvim
 lua require('user.plugins').setup()

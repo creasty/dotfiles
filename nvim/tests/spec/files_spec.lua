@@ -232,6 +232,29 @@ describe('Files', function()
       t.eq({ 0, 8, 8 }, nvim:eval('[&l:expandtab, &l:tabstop, &l:shiftwidth]'))
     end)
 
+    it(":Font sets the font size of the kitty Neovim runs in, back to kitty.conf's without a size", function()
+      local nvim = t.nvim({
+        env = function(dir)
+          return { KITTY_LISTEN_ON = 'unix:' .. dir .. '/kitty.sock', E2E_KITTEN = dir .. '/kitten.log' }
+        end,
+      })
+      nvim:cmd('Font 14')
+      nvim:cmd('Font -2')
+      nvim:type(':font<CR>')
+      t.eq({ '@ set-font-size -- 14', '@ set-font-size -- -2', '@ set-font-size -- 0' }, nvim:read_file('kitten.log'))
+    end)
+
+    it(':Font outside kitty says so, and runs no kitten', function()
+      local nvim = t.nvim({
+        env = function(dir)
+          return { E2E_KITTEN = dir .. '/kitten.log' }
+        end,
+      })
+      nvim:cmd('Font 14')
+      t.match('Font: not in kitty', nvim:messages())
+      t.eq(nil, nvim:read_file('kitten.log'))
+    end)
+
     it(':Capture inserts the output of a command below the cursor', function()
       local nvim = t.nvim()
       nvim:set_buffer('|first')

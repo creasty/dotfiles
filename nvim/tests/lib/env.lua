@@ -102,6 +102,7 @@ function M.child_env(ctx, extra)
     NVIM_APPNAME = '',
     NVIM = '',
     NVIM_LISTEN_ADDRESS = '',
+    KITTY_LISTEN_ON = '',
     MYVIMRC = '',
     VIMINIT = '',
   }
@@ -192,6 +193,8 @@ function M.prepare()
 
   -- Fake executables shadowing real ones.
   write_file(ctx.bin_dir .. '/trash', '#!/bin/sh\nfor f in "$@"; do mv -- "$f" "$E2E_TRASH/"; done\n', 493)
+  -- (records its arguments in $E2E_KITTEN, one call a line)
+  write_file(ctx.bin_dir .. '/kitten', '#!/bin/sh\necho "$*" >> "${E2E_KITTEN:-/dev/null}"\n', 493)
   write_file(
     ctx.bin_dir .. '/copilot-language-server',
     ('#!/bin/sh\nexec %s --clean -l %s "$@"\n'):format(vim.fn.shellescape(ctx.nvim), vim.fn.shellescape(ctx.fakes.copilot)),
