@@ -510,7 +510,7 @@ describe('Picker', function()
       end)
     end)
 
-    describe('locations (grr / gD, then gll)', function()
+    describe('locations (grr, then gll)', function()
       it('gll reopens as left: results and selected line, in the list', function()
         local nvim = go_project()
         refs_state(nvim)

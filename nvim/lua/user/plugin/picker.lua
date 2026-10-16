@@ -2,7 +2,7 @@
 --
 --   <C-q>      files, or ghq repositories in $HOME (:Open)
 --   <Space>/   grep for a pattern (:Search [dir]), and replace it
---   grr gD     LSP locations (user.plugin.lsp); gll reopens them
+--   grr        LSP locations (user.plugin.lsp); gll reopens them
 --   :e {dir}   the explorer, a tree of the files in a sidebar (nvim {dir} too):
 --              dotfiles shown, .git and backups (~) not, and files git
 --              ignores with I, dimmed

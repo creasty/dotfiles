@@ -250,6 +250,10 @@ function M.setup()
   -- Definition
   map('n', 'gd', locations('definition'), { desc = 'Go to definitions' })
 
+  -- Code actions: gq as well as gra, in place of the format operator
+  -- (:Format formats, and gw still wraps lines)
+  map({ 'n', 'x' }, 'gq', vim.lsp.buf.code_action, { desc = 'Code action' })
+
   -- Hover
   map('n', 'gh', function()
     vim.lsp.buf.hover({ border = M.padding })
