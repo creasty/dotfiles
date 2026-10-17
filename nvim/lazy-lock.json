@@ -13,7 +13,6 @@
   "nvim-lspconfig": { "branch": "master", "commit": "4d363f93c3581b9212a24f7a830d7590b3f050af", "tag": "v2.12.0", "url": "https://github.com/neovim/nvim-lspconfig.git" },
   "nvim-treesitter": { "branch": "main", "commit": "ca581c3436fc2b236847f5b739ebc263739e5ca6", "url": "https://github.com/nvim-treesitter/nvim-treesitter.git" },
   "nvim-treesitter-context": { "branch": "master", "commit": "8decd73460d26ef0a0befb745d022dd1fc2c38b8", "url": "https://github.com/nvim-treesitter/nvim-treesitter-context.git" },
-  "nvim-treesitter-endwise": { "branch": "master", "commit": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244", "url": "https://github.com/RRethy/nvim-treesitter-endwise.git" },
   "nvim-ts-autotag": { "branch": "main", "commit": "d7220b55e16ed3c04e88086256def5d282429493", "url": "https://github.com/windwp/nvim-ts-autotag.git" },
   "opfmt": { "branch": "master", "commit": "dbffa3e28cc0584669129d6a123f40266ddba7c7", "url": "https://github.com/creasty/opfmt.git" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2", "url": "https://github.com/folke/snacks.nvim.git" },

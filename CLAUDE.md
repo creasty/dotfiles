@@ -23,7 +23,6 @@ What the code and the README don't tell about this repository.
 
 - It loads modules only `master` has: `nvim-treesitter.query`, `.parsers` (`has_parser`) and `.ts_utils`, and registers itself as one of `master`'s modules (`define_modules`).
 - Its `opfmt!` directive takes a capture as one node, where Neovim 0.12 passes a list of nodes.
-  `compat.lua` (below) doesn't cover it, as it's registered without `all = false`.
 
 It stays pinned in `nvim/lazy-lock.json`, where lazy.nvim keeps the pins of the plugins `cond` switches off, and its tests skip while it's off (`probe.opfmt_enabled` in `nvim/tests/spec/treesitter_spec.lua` and `snippets_spec.lua`).
 With `dev = true`, lazy.nvim loads it from its working copy in `~/go/src/github.com/creasty/opfmt` when there is one.
@@ -33,13 +32,6 @@ With `dev = true`, lazy.nvim loads it from its working copy in `~/go/src/github.
 After installing missing plugins on a start, lazy.nvim rewrites `nvim/lazy-lock.json` with what is installed: that undoes the pins a pull moved, and drops the pin of a plugin that failed to install.
 So `keep_pins` in `nvim/lua/user/plugins.lua` puts them back.
 Remove it once lazy.nvim keeps the lockfile when it installs from it ([lazy.nvim#2127](https://github.com/folke/lazy.nvim/pull/2127) would): a start that installs a missing plugin while another is behind its pin tells.
-
-## nvim/lua/user/plugin/treesitter/compat.lua
-
-nvim-treesitter-endwise registers its `endwise!` directive with `all = false`, for a handler that gets one node per capture.
-Neovim 0.12 dropped the option and always passes a list of nodes, which breaks endwise: no `endfunction` after `function` in Vim script.
-`compat.lua` wraps `vim.treesitter.query.add_directive` to bring the option back, as Neovim 0.11 had it; `nvim/init.vim` loads it before the tree-sitter plugins.
-Remove it once endwise takes lists ([nvim-treesitter-endwise#60](https://github.com/RRethy/nvim-treesitter-endwise/pull/60) would): the endwise tests in `nvim/tests/spec/treesitter_spec.lua` tell.
 
 ## Neovim's exit without a UI
 

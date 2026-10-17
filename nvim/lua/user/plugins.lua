@@ -172,11 +172,6 @@ M.spec = {
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
 
-  { -- Wisely add "end" in Ruby, Vimscript, Lua, etc
-    'RRethy/nvim-treesitter-endwise',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-  },
-
   { -- Format operators and delimiters as you type, using tree-sitter
     'creasty/opfmt',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
