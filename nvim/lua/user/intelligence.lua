@@ -70,7 +70,7 @@ local function set_ai_hidden(hidden)
 end
 
 local function update_ai()
-  set_ai_hidden(vim.b.user_intelligence_stopped or menu_visible() or expandable())
+  set_ai_hidden(vim.b.user_intelligence_stopped or menu_visible())
 end
 
 ---------------------------------------------------------------------------
@@ -153,27 +153,22 @@ end
 
 function keys.accept_ai()
   vim.lsp.inline_completion.get({ on_accept = on_cursor_line })
-  return ''
 end
 
 local function jump(direction)
   return function()
     local ls = luasnip()
     if ls and ls.jumpable(direction) then
-      return cmd(('require("luasnip").jump(%d)'):format(direction))
+      ls.jump(direction)
     end
-    return ''
   end
 end
 
 function keys.cancel()
   local ls = luasnip()
-  if dismiss_ai(0) then
-    return ''
-  elseif ls and ls.get_active_snip() then
-    return cmd("require('luasnip').unlink_current()")
+  if not dismiss_ai(0) and ls and ls.get_active_snip() then
+    ls.unlink_current()
   end
-  return ''
 end
 
 local function move(key, command)
@@ -199,15 +194,21 @@ function M.setup()
   local function map(modes, lhs, fn)
     vim.keymap.set(modes, lhs, fn, { expr = true, replace_keycodes = false, silent = true })
   end
+  -- (not expressions: when a chord's keys arrive apart, as typed, and its expression returns no keys, Neovim waits
+  -- for the next key without running the callbacks scheduled meanwhile, such as the one that accepts the AI
+  -- suggestion)
+  local function chord(modes, lhs, fn)
+    vim.keymap.set(modes, lhs, fn, { silent = true })
+  end
 
   map('i', '<Tab>', keys.tab)
   map('i', '<CR>', keys.cr)
   map('i', '<Esc>', keys.esc)
   map('i', '<C-l>', keys.c_l)
-  map('i', '<C-s><C-j>', keys.accept_ai)
-  map({ 'i', 's' }, '<C-s><C-n>', jump(1))
-  map({ 'i', 's' }, '<C-s><C-p>', jump(-1))
-  map({ 'i', 's' }, '<C-s><C-c>', keys.cancel)
+  chord('i', '<C-s><C-j>', keys.accept_ai)
+  chord({ 'i', 's' }, '<C-s><C-n>', jump(1))
+  chord({ 'i', 's' }, '<C-s><C-p>', jump(-1))
+  chord({ 'i', 's' }, '<C-s><C-c>', keys.cancel)
   map('i', '<Down>', move('<Down>', 'select_next'))
   map('i', '<Up>', move('<Up>', 'select_prev'))
   map('i', '<Left>', leave_menu('<Left>'))

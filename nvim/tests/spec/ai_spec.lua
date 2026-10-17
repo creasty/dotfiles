@@ -26,6 +26,21 @@ local function insert_in(name, lines, opts)
   return nvim
 end
 
+--- Presses a chord's keys apart, as a keyboard sends them, and waits until
+--- Neovim has taken them. (In one burst, Neovim finds the mapping before it
+--- waits for the chord's second key; nvim_get_mode() is answered meanwhile.)
+local function press_apart(nvim, first, second)
+  local function blocking()
+    return nvim:request('nvim_get_mode').blocking
+  end
+  nvim:press(first)
+  nvim:wait_for(blocking, { message = 'Neovim to wait for the second key' })
+  nvim:press(second)
+  nvim:wait_for(function()
+    return not blocking()
+  end, { timeout = 1000, message = 'Neovim to stop waiting for a key' })
+end
+
 describe('AI suggestions', function()
   it('show up as ghost text after a short pause', function()
     local nvim = insert_in('app.ts')
@@ -41,6 +56,14 @@ describe('AI suggestions', function()
     nvim:type('<C-s><C-j>')
     t.buffer(nvim, "return 'from ai';|")
     t.eq('i', nvim:mode())
+  end)
+
+  it('<C-s><C-j> accepts the suggestion when its keys arrive apart', function()
+    local nvim = insert_in('app.ts')
+    nvim:type('return ')
+    probe.wait_ghost(nvim, "'from ai';")
+    press_apart(nvim, '<C-s>', '<C-j>')
+    t.buffer(nvim, "return 'from ai';|")
   end)
 
   it('<C-s><C-j> accepts a multi-line suggestion', function()
@@ -67,6 +90,15 @@ describe('AI suggestions', function()
     t.eq({ 'return  ' }, nvim:lines(), 'indented to the next tab stop')
   end)
 
+  it('show up where a snippet can expand, and <Tab> expands the snippet', function()
+    local nvim = insert_in('notes.txt')
+    probe.disable_completion(nvim)
+    nvim:type('lorem')
+    probe.wait_ghost(nvim, ' ipsum from ai')
+    nvim:type('<Tab>')
+    t.match('^Lorem ipsum dolor', nvim:line(1))
+  end)
+
   it('<Esc> dismisses the suggestion and stays in insert mode; the next <Esc> leaves', function()
     local nvim = insert_in('app.ts')
     nvim:type('return ')
@@ -87,6 +119,14 @@ describe('AI suggestions', function()
     t.eq('i', nvim:mode())
     t.eq('', probe.ghost_text(nvim))
     t.eq({ 'return ' }, nvim:lines())
+  end)
+
+  it('<C-s><C-c> dismisses the suggestion when its keys arrive apart', function()
+    local nvim = insert_in('app.ts')
+    nvim:type('return ')
+    probe.wait_ghost(nvim, "'from ai';")
+    press_apart(nvim, '<C-s>', '<C-c>')
+    t.eq('', probe.ghost_text(nvim))
   end)
 
   it('<CR> dismisses the suggestion of the line it ends', function()
@@ -123,16 +163,6 @@ describe('AI suggestions', function()
       t.no_match('from ai', probe.ghost_text(nvim))
     end)
 
-    it('are suppressed while a snippet trigger can be expanded', function()
-      local nvim = insert_in('notes.txt')
-      probe.disable_completion(nvim)
-      nvim:type('lorem')
-      nvim:sleep(800)
-      t.no_match('from ai', probe.ghost_text(nvim))
-      nvim:type('<Tab>')
-      t.match('^Lorem ipsum dolor', nvim:line(1), 'the snippet still expands')
-    end)
-
     it('are dismissed when a signature help popup opens', function()
       local nvim = insert_in('app.js', { '' }, { project = true })
       nvim:type('function greet(')
@@ -146,17 +176,6 @@ describe('AI suggestions', function()
       nvim:sleep(800)
       t.no_match("return 'hello'", probe.ghost_text(nvim))
     end)
-
-    t.quirk(
-      'are suppressed right after " = " (the fat-arrow snippet could expand there)',
-      'the all-filetype fat-arrow snippet (nvim/snippets/all.lua) matches "= ", and AI suggestions are hidden whenever a snippet can expand',
-      function()
-        local nvim = insert_in('app.ts')
-        nvim:type('const answer = ')
-        nvim:sleep(1000)
-        t.eq('', probe.ghost_text(nvim))
-      end
-    )
   end)
 
   describe('filetypes', function()

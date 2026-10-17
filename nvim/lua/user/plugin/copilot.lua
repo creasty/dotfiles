@@ -2,8 +2,8 @@
 -- copilot-language-server (config/mise/config.toml) with
 -- nvim-lspconfig's `copilot` config, which adds :LspCopilotSignIn and
 -- :LspCopilotSignOut. Accepted with <C-s><C-j> and dismissed with <Esc> /
--- <C-s><C-c> (user.intelligence); hidden while the completion menu, a
--- signature help or an expandable snippet is shown.
+-- <C-s><C-c> (user.intelligence); hidden while the completion menu or a
+-- signature help is shown.
 
 local M = {}
 
