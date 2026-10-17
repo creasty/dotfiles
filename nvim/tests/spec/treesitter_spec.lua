@@ -1,4 +1,4 @@
--- Tree-sitter powered editing: highlighting, indentation, endwise, tags,
+-- Tree-sitter powered editing: highlighting, indentation, tags,
 -- operator formatting, structural selection, context, custom queries.
 local t = require('t')
 local probe = require('probe')
@@ -125,21 +125,6 @@ describe('Tree-sitter', function()
       nvim:type('jox')
       t.eq('  x', nvim:line(3))
     end)
-  end)
-
-  describe('endwise', function()
-    for _, case in ipairs({
-      { 'a.rb', 'def foo', { 'def foo', '  ', 'end' } },
-      { 'a.lua', 'function f()', { 'function f()', '  ', 'end' } },
-      { 'a.vim', 'function! F() abort', { 'function! F() abort', '  ', 'endfunction' } },
-      { 'a.sh', 'if true; then', { 'if true; then', '  ', 'fi' } },
-    }) do
-      it(('%s: <CR> after "%s" adds the closing keyword'):format(case[1], case[2]), function()
-        local nvim = buffer(case[1])
-        nvim:type('i' .. case[2] .. '<CR>')
-        t.eq(case[3], nvim:lines())
-      end)
-    end
   end)
 
   describe('tags', function()

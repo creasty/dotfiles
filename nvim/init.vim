@@ -417,9 +417,6 @@ augroup END
 
 "=== Plugins
 "==============================================================================================
-" (before the tree-sitter plugins load)
-lua require('user.plugin.treesitter.compat')
-
 " installed and loaded by lazy.nvim
 lua require('user.plugins').setup()
 

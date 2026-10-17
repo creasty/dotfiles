@@ -100,6 +100,7 @@ benchmarks run after the suite, in a step of their own.
 | `terminal` | terminals' keys (`<C-s>`, `<C-y>`, `<C-v>`), `<C-/>`, `<Space>t`, titles, files opened from them | `user/terminal.lua`, **snacks.nvim**, **flatten.nvim** |
 | `input_source` | macOS's keyboard layout in normal mode: after insert mode, a command line, a terminal, or on starting or gaining focus | `user/input_source.lua` |
 | `scenes_ui`, `scenes_syntax` | what the screen shows: the UI, each language's syntax, against snapshots (below) | `candle/`, the plugins |
+| `endwise` | `<CR>` after the line that opens a block adds the line that closes it, in Bash, Lua, Ruby and Vim script | `user/plugin/treesitter/endwise.lua` |
 | `files`, `navigation`, `text_ops`, `treesitter`, `filetypes`, `templates` | everything else | various |
 
 The files named above are under `nvim/lua/`; `user/intelligence.lua` is where

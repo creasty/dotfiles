@@ -3,7 +3,8 @@
 -- insert-mode keys, and where they stay out of the way.
 --
 --   <Tab>        accept the completion item / expand a snippet / indent
---   <CR>         accept the completion item / newline (with auto-pairs)
+--   <CR>         accept the completion item / newline (with auto-pairs, and the
+--                end of a block: user.plugin.treesitter.endwise)
 --   <Esc>        close the menu, signature help or suggestion first
 --   <C-l>        refresh the menu / auto-pairs' <C-l> rules
 --   <C-s><C-j>   accept the AI suggestion
@@ -118,7 +119,7 @@ function keys.cr()
   end
   -- (the suggestion was for this line)
   dismiss_ai(0)
-  return autopairs().cr()
+  return autopairs().cr() .. cmd("require('user.plugin.treesitter.endwise').add()")
 end
 
 function keys.esc()
