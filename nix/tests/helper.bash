@@ -8,7 +8,7 @@ bats_require_minimum_version 1.8.0
 : "${DOTFILES_PATH:="$HOME/dotfiles"}"
 : "${HOMEBREW_PREFIX:=/opt/homebrew}"
 
-# What the activated configuration provisioned (nix/modules/verify.nix)
+# What the activated configuration set up (nix/modules/verify.nix)
 MANIFEST=/etc/dotfiles/manifest.json
 
 # Where the commands of the packages installed with Nix are
@@ -57,7 +57,7 @@ script_zsh() {
   pristine "$VERIFY_ZSH" -c "$1"
 }
 
-# Programs that take the environment of a login shell, like the provisioning's own tasks
+# Programs that take the environment of a login shell, like the switch's own tasks
 login_bash() {
   pristine /bin/bash -lc "$1"
 }

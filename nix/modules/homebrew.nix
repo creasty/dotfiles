@@ -1,4 +1,4 @@
-# Apps (casks), and the formulae nixpkgs doesn't have or can't replace. ./provision installs Homebrew itself.
+# Apps (casks), and the formulae nixpkgs doesn't have or can't replace. ./apply installs Homebrew itself.
 { ... }:
 {
   homebrew = {

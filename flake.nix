@@ -1,5 +1,5 @@
 {
-  description = "creasty's dotfiles: macOS provisioned with nix-darwin and home-manager";
+  description = "creasty's dotfiles: macOS configured with nix-darwin and home-manager";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
@@ -41,7 +41,7 @@
         };
     in
     {
-      # One configuration per user, which ./provision and ./verify pick with `#$(id -un)`
+      # One configuration per user, which ./apply and ./verify pick with `#$(id -un)`
       darwinConfigurations = {
         creasty = mkDarwin "creasty" [ ];
         # The user of GitHub Actions' macOS runners, which have no Apple Account to install App Store apps with, and
@@ -54,7 +54,7 @@
         ];
       };
 
-      # Pinned tools for ./provision and ./verify
+      # Pinned tools for ./apply and ./verify
       packages.${system} = {
         inherit (nix-darwin.packages.${system}) darwin-rebuild;
         inherit (nixpkgs.legacyPackages.${system}) bats yq-go;

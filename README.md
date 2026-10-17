@@ -2,28 +2,28 @@
 
 # creasty's dotfiles
 
-[ci]: https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml
-[ci-badge]: https://github.com/creasty/dotfiles/actions/workflows/provisioning.yml/badge.svg
+[ci]: https://github.com/creasty/dotfiles/actions/workflows/apply.yml
+[ci-badge]: https://github.com/creasty/dotfiles/actions/workflows/apply.yml/badge.svg
 [tests]: https://github.com/creasty/dotfiles/actions/workflows/tests.yml
 [tests-badge]: https://github.com/creasty/dotfiles/actions/workflows/tests.yml/badge.svg
 [platform-badge]: https://img.shields.io/badge/Platform-macOS-lightgrey
 [license]: ./LICENSE.txt
 [license-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
 
-[![Provisioning][ci-badge]][ci] [![Tests][tests-badge]][tests] ![Platform: macOS][platform-badge] [![License: MIT][license-badge]][license]
+[![Apply][ci-badge]][ci] [![Tests][tests-badge]][tests] ![Platform: macOS][platform-badge] [![License: MIT][license-badge]][license]
 
 This repository contains my personal dotfiles configuration for macOS, featuring thoroughly tailored setups for NeoVim and Zsh with performance in mind.
 
 ## Installation
 
-<pre><code>$ curl -fsSL <a href="https://dotfiles.creasty.com/provision">https://dotfiles.creasty.com/provision</a> | bash</code></pre>
+<pre><code>$ curl -fsSL <a href="https://dotfiles.creasty.com/apply">https://dotfiles.creasty.com/apply</a> | bash</code></pre>
 
 It installs Homebrew, clones this repository to `~/dotfiles`, installs [Nix](https://determinate.systems/nix/), and applies the [nix-darwin](https://github.com/nix-darwin/nix-darwin) configuration of `flake.nix` for the current user, [home-manager](https://github.com/nix-community/home-manager) included.
 
-To apply changes later, provision again:
+To apply changes later, run it again:
 
 ```sh-session
-$ ~/dotfiles/provision
+$ ~/dotfiles/apply
 ```
 
 It skips what's already installed, and pulls master first unless the checkout is on another branch or has changes of its own.
@@ -32,7 +32,7 @@ Flakes only see files tracked by git, so `git add` a new file first.
 
 ## Verification
 
-Provisioning ends by verifying its result with behavioral tests (`nix/tests/`): shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
+`./apply` ends by verifying its result with behavioral tests (`nix/tests/`): shells are started the way terminals start them, and have to find the right runtimes, configs and commands.
 To verify a machine again:
 
 ```sh-session
@@ -42,8 +42,8 @@ $ ./verify --bench        # only the benchmarks
 ```
 
 The tests compare the machine with what the activated configuration lists in `/etc/dotfiles/manifest.json`.
-Benchmarks, the tests tagged `bench` such as the shell's startup time, check a budget that a busy machine misses: provisioning and the other runs skip them.
-Set `DOTFILES_NOVERIFY=1` to provision without verifying.
+Benchmarks, the tests tagged `bench` such as the shell's startup time, check a budget that a busy machine misses: `./apply` and the other runs skip them.
+Set `DOTFILES_NOVERIFY=1` to apply without verifying.
 
 ## Updates
 
@@ -52,15 +52,15 @@ Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Frida
 | Pinned in | What | Tested by |
 |---|---|---|
 | `nvim/lazy-lock.json` | Neovim plugins, at the commits lazy.nvim installs | [Neovim's workflow tests](./nvim/tests/README.md) |
-| `flake.lock` | nixpkgs, nix-darwin and home-manager | Provisioning |
-| `config/mise/config.toml` | Runtimes and tools, which mise installs | Provisioning |
-| `home/agents/.skill-lock.json` | Agent skills, at commits of their repositories | Provisioning |
-| `nix/modules/shell.nix` | zsh plugins, at their releases' commits | Provisioning |
+| `flake.lock` | nixpkgs, nix-darwin and home-manager | The `apply` workflow |
+| `config/mise/config.toml` | Runtimes and tools, which mise installs | The `apply` workflow |
+| `home/agents/.skill-lock.json` | Agent skills, at commits of their repositories | The `apply` workflow |
+| `nix/modules/shell.nix` | zsh plugins, at their releases' commits | The `apply` workflow |
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
 A Neovim plugin or an agent skill whose repository tags a release of each change within weeks is pinned at a release's commit, the others at a commit of the branch they follow.
 Patch releases, minor ones from 1.0 on and `flake.lock`'s refresh merge themselves once CI passes.
-After merging, provision again, and run `:Lazy restore` in Neovim to check out the new plugin commits.
+After merging, run `./apply` again, and run `:Lazy restore` in Neovim to check out the new plugin commits.
 
 ## Project structure
 
@@ -73,7 +73,7 @@ After merging, provision again, and run `:Lazy restore` in Neovim to check out t
 - `home/`: Dotfiles, linked into `~` with a leading dot
 - `nix/`
   - `modules/`: The configuration, a module per topic
-  - `tests/`: Behavioral tests of the provisioning, which `./verify` runs
+  - `tests/`: Behavioral tests of the applied configuration, which `./verify` runs
 - `nvim/`: Neovim
   - `tests/`: [End-to-end workflow tests](./nvim/tests/README.md)
 - `shell/`: Bash and Zsh
@@ -100,7 +100,7 @@ mise installs the runtimes of `config/mise/config.toml` on every switch, and tak
 ### App Store apps
 
 Homebrew Bundle installs the App Store apps of `nix/modules/appstore.nix` with [mas](https://github.com/mas-cli/mas), which asks for your password (sudo) to install them.
-mas can't sign in to the App Store, so sign in before provisioning.
+mas can't sign in to the App Store, so sign in before running `./apply`.
 `mas list` shows the IDs of installed apps, and `mas search <name>` those of others.
 mas can't install iPhone and iPad apps, such as Kindle's, so get those from the App Store app.
 

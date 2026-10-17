@@ -76,7 +76,7 @@ load helper
 $(sed -n 's/^background  *//p' "$DOTFILES_PATH/config/kitty/candle.conf")"
 }
 
-# Provisioning installs these commands with Nix, not Homebrew: a path to Homebrew's copy finds nothing
+# The configuration installs these commands with Nix, not Homebrew: a path to Homebrew's copy finds nothing
 @test "configs don't run Homebrew's copies of the commands Nix provides" {
   local commands file path problems=''
   commands="$(manifest '.commands[]')"

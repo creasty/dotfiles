@@ -11,7 +11,7 @@ SETTINGS="$HOME/Library/Group Containers/group.com.docker/settings-store.json"
   for key in $(manifest '.docker.settings | keys | .[]'); do
     [ "$(yq -p json ".$key" "$SETTINGS")" = "$(manifest ".docker.settings.$key")" ] || problems+="$key"$'\n'
   done
-  # Provisioning only sets them before Docker Desktop's first start
+  # The switch only sets them before Docker Desktop's first start
   assert_none "$problems" "not as configured: change them in Docker Desktop's settings"
 }
 

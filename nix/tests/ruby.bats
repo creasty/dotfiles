@@ -28,7 +28,7 @@ setup() {
 
 # Homebrew removes a library installed as another formula's dependency along with that formula, and ruby then fails
 # to start. ruby-build builds against some that it finds installed (e.g. gmp).
-@test "ruby links only the Homebrew formulae that provisioning installs" {
+@test "ruby links only the Homebrew formulae that the configuration installs" {
   local prefix="$HOME/.local/share/mise/installs/ruby/$ruby_version" brews formula problems=''
   brews="$(manifest '.homebrew.brews[]' | sed 's|.*/||')"
   # The ruby command and the libraries and extensions that come with it, not those of gems
@@ -39,7 +39,7 @@ setup() {
   ); do
     grep -qxF -- "${formula##*/}" <<< "$brews" || problems+="${formula##*/}"$'\n'
   done
-  assert_none "$problems" 'linked, but not installed by provisioning'
+  assert_none "$problems" 'linked, but not installed by the configuration'
 }
 
 # Apart from Ruby, as a project's .ruby-version swaps the Ruby that runs
