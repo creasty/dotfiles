@@ -12,7 +12,6 @@ package.path = here .. '/?.lua;' .. package.path
 local rpc = require('jsonrpc')
 
 local SUGGESTIONS = {
-  ['const answer = '] = '42;',
   ['function greet('] = "name) {\n  return 'hello ' + name;\n}",
   ['The quick brown '] = 'fox jumps over the lazy dog.',
   ['greeting: '] = 'hello world',
