@@ -1,4 +1,4 @@
-name: provisioning
+name: apply
 
 on:
   push:
@@ -59,7 +59,7 @@ jobs:
           sudo rm -rf '/Applications/Google Chrome.app'
 
       - name: Run
-        run: ./provision --show-trace
+        run: ./apply --show-trace
         env:
           DOTFILES_NOVERIFY: 1 # in the next step
 

@@ -1,6 +1,6 @@
 name: tests
 
-# The test suites of the configs, which need no provisioned Mac:
+# The test suites of the configs, which need no Mac with the configuration applied:
 #
 # - hammerspoon: the specs of the Hammerspoon config (hammerspoon/tests), on a
 #   fake of Hammerspoon's API.
