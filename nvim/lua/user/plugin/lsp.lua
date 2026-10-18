@@ -62,14 +62,17 @@ local settings = {
 
 --- vim.lsp.start, starting none of M.servers on a buffer without a name: some
 --- fail on the URI Neovim gives one (file://), clangd on every request, and tsc
---- stops, taking the project's other buffers with it (CLAUDE.md).
+--- stops, taking the project's other buffers with it (CLAUDE.md). Such a
+--- buffer is marked, for its servers to start once it has a name.
 local function named_only(start)
   local servers = {}
   for _, name in ipairs(M.servers) do
     servers[name] = true
   end
   return function(config, opts)
-    if servers[config.name] and vim.api.nvim_buf_get_name(opts and opts.bufnr or 0) == '' then
+    local bufnr = opts and opts.bufnr or 0
+    if servers[config.name] and vim.api.nvim_buf_get_name(bufnr) == '' then
+      vim.b[bufnr].user_lsp_unnamed = true
       return nil
     end
     return start(config, opts)
@@ -316,6 +319,18 @@ function M.setup()
     group = group,
     pattern = '*.go',
     callback = auto_format,
+  })
+
+  -- A buffer named_only kept the servers off, once named (:w file, :saveas,
+  -- :file), gets them as Neovim starts them for its filetype.
+  vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufFilePost' }, {
+    group = group,
+    callback = function(args)
+      if vim.b[args.buf].user_lsp_unnamed and vim.api.nvim_buf_get_name(args.buf) ~= '' then
+        vim.b[args.buf].user_lsp_unnamed = nil
+        vim.api.nvim_exec_autocmds('FileType', { group = 'nvim.lsp.enable', buffer = args.buf })
+      end
+    end,
   })
 end
 

@@ -627,6 +627,28 @@ describe('LSP', function()
     t.eq({ 'clangd' }, start({ 'clangd' }))
   end)
 
+  it('a buffer without a name gets its servers once it has one', function()
+    local nvim = t.nvim()
+    nvim:files({ ['.git/'] = true })
+    nvim:cmd('enew | setfiletype c')
+    nvim:lua([[
+      -- (the fake server as clangd, which stays off the buffer)
+      vim.lsp.start(vim.tbl_extend('force', vim.lsp.config.e2e, { name = 'clangd' }), { bufnr = 0 })
+      -- Neovim starting the servers for the buffer's filetype
+      vim.g.e2e_starts = 0
+      vim.api.nvim_create_autocmd('FileType', {
+        group = 'nvim.lsp.enable',
+        callback = function()
+          vim.g.e2e_starts = vim.g.e2e_starts + 1
+        end,
+      })
+    ]])
+    nvim:cmd('silent write main.c')
+    t.eq(1, nvim:eval('g:e2e_starts'))
+    nvim:cmd('silent write')
+    t.eq(1, nvim:eval('g:e2e_starts'), 'only once')
+  end)
+
   describe('TypeScript', function()
     -- A project with its own tsc, which marks that it started as a server.
     local function tsc_project()

@@ -62,7 +62,7 @@ Neovim gives a buffer without a name (`:enew`) the URI `file://`, which some lan
 - clangd fails every request: `-32602: failed to decode textDocument/documentHighlight request: unresolvable URI` (seen with 21.1.8).
 - gopls and terraform-ls fail hover: `no package metadata for file file:///`, `file:: file not found` (seen with 0.22.0 and 0.38.6).
 
-So `named_only` in `nvim/lua/user/plugin/lsp.lua` has `vim.lsp.start` start none of `M.servers` on such a buffer, and `nvim/tests/spec/lsp_spec.lua` checks that none starts on one.
+So `named_only` in `nvim/lua/user/plugin/lsp.lua` has `vim.lsp.start` start none of `M.servers` on such a buffer until it has a name, and `nvim/tests/spec/lsp_spec.lua` checks both.
 It isn't each config's `root_dir`: with one, Neovim starts the server a moment after the FileType event, by when flatten.nvim's guest has deleted its buffer, and the error leaves `git commit` from a terminal waiting (`nvim/tests/spec/terminal_spec.lua`).
 Remove it once Neovim gives such a buffer a URI the servers resolve: without it, clangd answers a request after `:enew | setfiletype c`.
 
