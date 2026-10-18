@@ -54,12 +54,17 @@ snacks.nvim adds a picker's toggles (h, f, i) to its title in `pairs()` order (`
 So `order_toggles` in `nvim/lua/user/plugin/picker.lua` has it go through them in the order of their names.
 Remove it once snacks orders them itself: without it, the file picker's and the explorer's scenes (`nvim/tests/spec/scenes_ui_spec.lua`) fail in about half the runs.
 
-## tsc off buffers without a name
+## Language servers off buffers without a name
 
-TypeScript 7's language server stops when it opens a document whose URI is `file://`, which Neovim gives a buffer without a name (`:enew`): `panic: vfs: path "tsconfig.json" is not absolute` ([microsoft/TypeScript#64300](https://github.com/microsoft/TypeScript/issues/64300), seen with 7.0.2).
-The project's other buffers share that server, so they lose TypeScript with it.
-So `tsc` in `nvim/lua/user/plugin/lsp.lua` keeps nvim-lspconfig's tsc off such buffers.
-Remove it once the server opens such a document ([microsoft/TypeScript#64396](https://github.com/microsoft/TypeScript/pull/64396) would): without it, tsc keeps running after `:enew | setfiletype typescript` in a TypeScript project.
+Neovim gives a buffer without a name (`:enew`) the URI `file://`, which some language servers fail on (seen with Neovim 0.12.4; [neovim#21276](https://github.com/neovim/neovim/issues/21276) concluded that clients shouldn't use `file:` for such buffers):
+
+- TypeScript 7's server stops: `panic: vfs: path "tsconfig.json" is not absolute` ([microsoft/TypeScript#64300](https://github.com/microsoft/TypeScript/issues/64300), seen with 7.0.2), and the project's other buffers, which share it, lose TypeScript with it.
+- clangd fails every request: `-32602: failed to decode textDocument/documentHighlight request: unresolvable URI` (seen with 21.1.8).
+- gopls and terraform-ls fail hover: `no package metadata for file file:///`, `file:: file not found` (seen with 0.22.0 and 0.38.6).
+
+So `named_only` in `nvim/lua/user/plugin/lsp.lua` has `vim.lsp.start` start none of `M.servers` on such a buffer, and `nvim/tests/spec/lsp_spec.lua` checks that none starts on one.
+It isn't each config's `root_dir`: with one, Neovim starts the server a moment after the FileType event, by when flatten.nvim's guest has deleted its buffer, and the error leaves `git commit` from a terminal waiting (`nvim/tests/spec/terminal_spec.lua`).
+Remove it once Neovim gives such a buffer a URI the servers resolve: without it, clangd answers a request after `:enew | setfiletype c`.
 
 ## Homebrew tap trap
 
