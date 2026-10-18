@@ -179,7 +179,7 @@ import "google/api/field_behavior.proto";‸
 -- mode: i
 
 === import empty
-import google.protobuf.Empty‸
+import "google/protobuf/empty.proto";‸
 -- mode: i
 
 === Empty
@@ -200,7 +200,7 @@ google.protobuf.FieldMask update_mask = ‸ [ (google.api.field_behavior) = REQU
 -- mode: i
 
 === import any
-import google.protobuf.Any‸
+import "google/protobuf/any.proto";‸
 -- mode: i
 
 === Any
@@ -208,7 +208,7 @@ google.protobuf.Any‸
 -- mode: i
 
 === import date
-import google.type.Date‸
+import "google/type/date.proto";‸
 -- mode: i
 
 === Date
@@ -228,7 +228,7 @@ string next_page_token = ‸ [ (google.api.field_behavior) = REQUIRED ];
 -- mode: i
 
 === import proto2graphql.option
-import proto2graphql.(google.api.field_behavior) = OPTIONAL‸
+import "proto2graphql/option.proto";‸
 -- mode: i
 
 === skip_on_type
@@ -252,5 +252,5 @@ import "henryapp/util/string_map.proto";‸
 -- mode: i
 
 === import resource
-import (henryapp.util.resource) = {type : "‸"}
+import "henryapp/util/resource.proto";‸
 -- mode: i

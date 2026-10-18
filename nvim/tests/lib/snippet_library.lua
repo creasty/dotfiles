@@ -28,7 +28,6 @@ local SAMPLES = {
   markdown = {
     ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
     ['^-\\{3,}'] = { '---' },
-    ['\\v(<|\\s+)br'] = { 'line br' },
   },
   proto = {
     ['\\vrpc (\\w+)'] = { 'rpc GetUser', 'rpc ListUsers', 'rpc CreateUser', 'rpc DeleteUser', 'rpc Ping' },
@@ -41,10 +40,10 @@ local SAMPLES = {
     },
   },
   ruby = {
-    ['\\v(\\w+)\\.each'] = { 'items.each' },
-    ['\\v(\\w+)\\.eachdo'] = { 'items.eachdo' },
-    ['\\v(\\w+)\\.map'] = { 'items.map' },
-    ['\\v(\\w+)\\.mapdo'] = { 'items.mapdo' },
+    each = { 'items.each', '@items.each' },
+    eachdo = { 'items.eachdo' },
+    map = { 'items.map' },
+    mapdo = { 'items.mapdo' },
   },
   tex = {
     ['\\vtr(\\d+)'] = { 'tr3' },

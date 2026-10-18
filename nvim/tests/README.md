@@ -88,7 +88,7 @@ benchmarks run after the suite, in a step of their own.
 | `cmdline` | `:'`, `:w!!`, `:ee`…, `:s/` family, search escaping, abbreviations, previewed commands | `user/cmdline.lua`, `user/text_ops.lua` |
 | `completion` | popup, `<Tab>`/`<CR>`/`<Esc>`/`<C-n>`, sources, LSP snippets | **blink.cmp**, **LuaSnip** |
 | `lsp` | `gd grr gri grt gll gh grn gra gq`, diagnostics, `:Format`, `:Import`, which TypeScript server starts, spelling as hints | **Neovim's LSP client**, conform.nvim, **snacks.nvim** |
-| `snippets` | `<Tab>` expansion, placeholders, postfix/arrow snippets | **LuaSnip** |
+| `snippets` | `<Tab>` expansion, placeholders, postfix/arrow snippets, the snippets the menu offers and in which order | **LuaSnip**, **blink.cmp** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
 | `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>`/`<CR>` dismiss | **Neovim's inline completion**, `user/intelligence.lua` |
 | `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys, short screens | **snacks.nvim** |
