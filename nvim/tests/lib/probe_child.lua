@@ -52,7 +52,8 @@ function M.completion()
 end
 
 --- Turns the completion menu off for the current buffer, for tests about
---- something else (e.g. pinning snippet expansions) that must not race it.
+--- something else (e.g. AI suggestions, hidden while it shows) that must not
+--- race it.
 function M.disable_completion()
   vim.b.completion = false -- blink.cmp
   local cmp = try_require('cmp')

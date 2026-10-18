@@ -2,7 +2,8 @@
 -- (golden/snippets/<file>.snippets.txt), so a new snippet engine or a
 -- converted library can be checked trigger by trigger.
 --
--- Plain triggers are typed at the start of an empty line followed by <Tab>.
+-- Plain triggers are typed at the start of an empty line followed by <Tab>,
+-- as a person types them, with the completion menu on (probe.expand).
 -- Regex / auto-trigger snippets need sample input: add it to SAMPLES.
 -- Each result records the text (‸ = cursor), the mode, and the selected
 -- placeholder text when a placeholder is selected.
@@ -147,12 +148,12 @@ local function run_case(name, filetype, case)
   local ext = snippets.extension[filetype] or filetype
   nvim:edit('example/example.' .. ext, case.before or { '' })
   nvim:cmd('set filetype=' .. filetype)
-  probe.disable_completion(nvim)
   nvim:type(case.before and 'Go' or 'A')
-  -- Trigger and <Tab> in one burst: given a moment in between, opfmt
-  -- reformats triggers such as `api-client-general` (see the quirk in
-  -- snippets_spec), and this file pins what each snippet expands to.
-  nvim:type(escape_keys(case.keys) .. (case.auto and '' or '<Tab>'))
+  if case.auto then
+    nvim:type(escape_keys(case.keys))
+  else
+    probe.expand(nvim, escape_keys(case.keys))
+  end
   local choice = resolve_choice(nvim)
   local result = capture(nvim)
   return choice and (choice .. '\n' .. result) or result

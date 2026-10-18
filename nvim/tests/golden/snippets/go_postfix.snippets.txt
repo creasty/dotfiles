@@ -15,8 +15,8 @@ const nam‸e = 42
 -- mode: i
 
 === /\v(\S+)\.if/ ok.if
-if ok {
-	‸
+ok.if ‸ {
+	
 }
 -- mode: i
 
@@ -39,10 +39,10 @@ if err != nil {
 -- mode: i
 
 === /\v(\S+)\.for/ items.for
-for ite‸m := range items {
+items.for ‸ {
 	
 }
--- mode: s, selected: "item"
+-- mode: i
 
 === /\v(\S+)\.fori/ items.fori
 for ‸k, v := range items {
