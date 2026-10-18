@@ -175,6 +175,58 @@ describe('Snippets', function()
     end)
   end)
 
+  describe('proto: rpc and message from the name typed in them', function()
+    local function typed(trigger, name)
+      local nvim = buffer_with('proto', 'api.proto')
+      nvim:type('A')
+      probe.expand(nvim, trigger)
+      nvim:type(name)
+      return nvim:lines()
+    end
+
+    it('rpc takes the request and response its verb calls for', function()
+      for name, line in pairs({
+        GetUser = 'rpc GetUser (GetUserRequest) returns (User);',
+        ListUsers = 'rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);',
+        CreateUser = 'rpc CreateUser (User) returns (User);',
+        DeleteUser = 'rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);',
+        Ping = 'rpc Ping (PingRequest) returns (PingResponse);',
+      }) do
+        t.eq({ line }, typed('rpc', name), name)
+      end
+    end)
+
+    it('message takes the fields its verb calls for', function()
+      local function field(type, name, n, behavior)
+        return ('%s %s = %d [ (google.api.field_behavior) = %s ];'):format(type, name, n, behavior or 'REQUIRED')
+      end
+      for name, lines in pairs({
+        GetUserRequest = { '    ' .. field('string', 'uuid', 1) },
+        ListUsersResponse = { '    repeated ' .. field('Users', 'users', 1) },
+        UpdateUserRequest = {
+          '    ' .. field('User', 'user', 1),
+          '    // マスク',
+          '    ' .. field('google.protobuf.FieldMask', 'update_mask', 2),
+        },
+        UpdateMultiUsersRequest = {
+          '    // 更新用レコード',
+          '    repeated ' .. field('Record', 'records', 1),
+          '',
+          '    message Record {',
+          '        ' .. field('Users', 'users', 1),
+          '        // レコード操作',
+          '        ' .. field('RecordOperation', 'record_operation', 2),
+          '        // マスク',
+          '        ' .. field('google.protobuf.FieldMask', 'field_mask', 3, 'OPTIONAL'),
+          '    }',
+        },
+        Plain = { '  ' },
+      }) do
+        t.eq(vim.list_extend({ 'message ' .. name .. ' {' }, vim.list_extend(lines, { '}' })), typed('message', name), name)
+      end
+    end)
+  end)
+
   describe('keyi (a JSX key from an index)', function()
     local function list(callback)
       return { 'const list = (', '  <ul>', '    {items.map(' .. callback .. ' => (', '      <Row />', '    ))}', '  </ul>', ');' }

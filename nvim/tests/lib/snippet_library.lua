@@ -29,16 +29,6 @@ local SAMPLES = {
     ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
     ['^-\\{3,}'] = { '---' },
   },
-  proto = {
-    ['\\vrpc (\\w+)'] = { 'rpc GetUser', 'rpc ListUsers', 'rpc CreateUser', 'rpc DeleteUser', 'rpc Ping' },
-    ['\\v(msg|message) (\\w+)'] = {
-      'message GetUserRequest',
-      'msg ListUsersResponse',
-      'message UpdateUserRequest',
-      'message UpdateMultiUsersRequest',
-      'message Plain',
-    },
-  },
   ruby = {
     each = { 'items.each', '@items.each' },
     eachdo = { 'items.eachdo' },

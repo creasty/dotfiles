@@ -26,9 +26,9 @@ local function field_name(type_name)
   return snake_case(type_name:match('[^.]+$') or type_name)
 end
 
--- `GetUser` -> `rpc GetUser (GetUserRequest) returns (User);`, with the
--- request and response types its verb calls for.
-local function rpc_def(name)
+-- `GetUser` -> `GetUserRequest`, `User`: the request and response types its
+-- verb calls for.
+local function rpc_types(name)
   local verb, object = split_verb(name)
   local request, response = name .. 'Request', name .. 'Response'
   if verb == 'Get' or verb == 'Update' then
@@ -38,7 +38,7 @@ local function rpc_def(name)
   elseif verb == 'Delete' then
     response = 'google.protobuf.Empty'
   end
-  return ('rpc %s (%s) returns (%s);'):format(name, request, response)
+  return request, response
 end
 
 -- `GetUserRequest` -> the fields its verb calls for in a request or response.
@@ -97,9 +97,16 @@ import "$1";]]),
   S.snip('option-java', 'java options', 'b', [[
 option java_package = "$1";
 option java_multiple_files = true;]]),
-  S.snip('rpc', 'define a rpc', 'b', [[
-rpc ${1:Name} (${2:$1Request}) returns (${3:$1Response});]]),
-  S.snip([[\vrpc (\w+)]], 'define a rpc', 'br', { S.capture(1, rpc_def) }),
+  -- the request and response follow the name, as its verb calls for
+  S.snip('rpc', 'define a rpc', 'b', fmt('rpc {} ({}) returns ({});', {
+    i(1, 'Name'),
+    S.placeholder(2, 1, function(name)
+      return (rpc_types(name))
+    end),
+    S.placeholder(3, 1, function(name)
+      return select(2, rpc_types(name))
+    end),
+  })),
   S.snip('service', 'define a service', 'b', [[
 service ${1:Name}Service {
 	$0
@@ -108,18 +115,18 @@ service ${1:Name}Service {
 enum $1 {
 	$0
 }]]),
-  S.snip('message', 'define a message', 'b', [[
-message $1 {
-	$0
-}]]),
-  S.snip([[\v(msg|message) (\w+)]], 'define a message', 'br', [[
-message $LS_CAPTURE_2 {
-${FIELDS}$0
-}]], {
-    vars = function(snip)
-      return { FIELDS = message_fields(snip.captures[2]) }
-    end,
-  }),
+  -- the fields follow the name, as its verb calls for
+  S.snip('message', 'define a message', 'b', fmt([[
+message {} {{
+{}{}
+}}]], {
+    i(1),
+    S.mirror(1, function(name)
+      local fields = message_fields(name)
+      return fields ~= '' and fields or '\t'
+    end),
+    i(0),
+  })),
   S.snip('single', 'define a single field', 'b', fmt('{} {} = {};', {
     i(1, 'Type'),
     S.placeholder(2, 1, field_name),
