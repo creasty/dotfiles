@@ -354,12 +354,4 @@ function probe.screen(nvim, fg, bg)
   return call(nvim, 'screen', tonumber(fg:sub(2), 16), tonumber(bg:sub(2), 16))
 end
 
----------------------------------------------------------------------------
--- Operator formatting
----------------------------------------------------------------------------
-
-function probe.opfmt_enabled(nvim)
-  return call(nvim, 'opfmt_enabled')
-end
-
 return probe

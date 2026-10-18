@@ -17,12 +17,6 @@ return {
     S.placeholder(2, 1, capitalized),
     i(0),
   })),
-  S.snip('useAdaptiveState', 'Variable for useAdaptiveState', 'b', fmt('const [{}, set{}] = useAdaptiveState<{}>({});', {
-    i(1, 'state'),
-    S.mirror(1, capitalized),
-    S.placeholder(2, 1, capitalized),
-    i(0),
-  })),
   S.snip('useRef', 'Variable for React.useRef', 'b', fmt('const {} = useRef<{}>({});', {
     i(1, 'name'),
     S.placeholder(2, 1, capitalized),
@@ -36,7 +30,4 @@ const ${1:name} = useMemo(() => $0, []);]]),
 useEffect(() => $0, []);]]),
   S.snip('useLayoutEffect', 'Variable for React.useLayoutEffect', 'b', [[
 useLayoutEffect(() => $0, []);]]),
-  S.snip('fetchPolicy', 'Useful pair of fetchPolicy and nextFetchPolicy', 'b', [[
-fetchPolicy: "cache-and-network",
-nextFetchPolicy: "cache-first",]]),
 }

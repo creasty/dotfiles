@@ -9,8 +9,8 @@ console.log($0);]]),
 console.error($0);]]),
   S.snip('cwarn', 'console.warn()', 'b', [[
 console.warn($0);]]),
-  S.snip('times', '.times', '', [[
-Array.from({ length: $1 }, (_, i) => i$0)]]),
+  S.snip([[\v([[:alnum:]_$.]+)\.times]], 'Array.from({ length: expr })', 'r', [[
+Array.from({ length: $LS_CAPTURE_1 }, (_, i) => i$0)]]),
   S.snip('iife', 'Immediately Invoked Function Expression', '', [[
 (() => {
 	$0

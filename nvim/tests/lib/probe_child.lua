@@ -662,14 +662,4 @@ function M.screen(fg, bg)
   return { mode = vim.api.nvim_get_mode().mode, cursor = cursor, rows = rows, unfound = unfound }
 end
 
----------------------------------------------------------------------------
--- Operator formatting
----------------------------------------------------------------------------
-
---- Whether operator formatting (creasty/opfmt) is switched on: it is not
---- loaded until it moves to nvim-treesitter's main branch.
-function M.opfmt_enabled()
-  return package.loaded['opfmt'] ~= nil
-end
-
 return M

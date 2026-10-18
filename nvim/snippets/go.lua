@@ -24,18 +24,6 @@ func <>(<>)<><> {
     S.selection('\t'),
     i(0),
   })),
-  S.snip('holder', 'Define holder field', 'b', [[
-${1:name} struct {
-	result ${2:Type}
-	err    error
-	once   sync.Once
-}]]),
-  S.snip('holderdo', 'Initialize holder', 'b', [[
-holder := &c.${1:name}
-holder.once.Do(func() {
-	holder.result, holder.err = $0
-})
-return holder.result, holder.err]]),
   S.snip('if', 'if expr', 'b', [[
 if $1 {
 	$0

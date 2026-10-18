@@ -2,7 +2,7 @@
 vim.filetype.add({
   filename = {
     ['.env'] = 'sh',
-    -- (the templates' filetype: nvim/template/license)
+    -- (the license snippets' filetype: nvim/snippets/license.lua)
     LICENSE = 'license',
     ['LICENSE.txt'] = 'license',
   },

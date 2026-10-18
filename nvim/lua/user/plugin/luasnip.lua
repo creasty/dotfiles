@@ -4,24 +4,14 @@
 
 local M = {}
 
--- Filetypes that also load other snippet files, like UltiSnips' `extends`
--- and <ft>_*.snippets.
+-- Filetypes that also load other snippet files, like UltiSnips' `extends`.
 M.extends = {
   bash = { 'sh' },
-  c = { 'clike_stmt', 'clike_postfix' },
-  go = { 'go_postfix' },
-  javascript = { 'clike_stmt', 'clike_postfix' },
-  javascriptreact = { 'javascript', 'clike_stmt', 'clike_postfix' },
-  ruby = { 'ruby_postfix' },
-  typescript = { 'typescript_henry', 'javascript', 'clike_stmt', 'clike_postfix' },
-  typescriptreact = {
-    'typescript',
-    'typescript_henry',
-    'javascriptreact',
-    'javascript',
-    'clike_stmt',
-    'clike_postfix',
-  },
+  c = { 'clike_stmt' },
+  javascript = { 'clike_stmt' },
+  javascriptreact = { 'javascript', 'clike_stmt' },
+  typescript = { 'javascript', 'clike_stmt' },
+  typescriptreact = { 'typescript', 'javascriptreact', 'javascript', 'clike_stmt' },
   zsh = { 'sh' },
 }
 

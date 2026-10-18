@@ -30,8 +30,8 @@ of other spec files running in parallel would eat into: other runs skip them.
 
 Needs what the config itself needs: Neovim 0.12 or later, the installed plugins
 (found where lazy.nvim installs them, `~/.local/share/nvim/lazy`, or set
-`E2E_PLUGINS`), Ruby's `erb`, git, fd, rg and ghq. No language server,
-formatter or linter is needed: the fakes stand in for them. Temporary files go
+`E2E_PLUGINS`), git, fd, rg and ghq. No language server, formatter or linter
+is needed: the fakes stand in for them. Temporary files go
 to `$E2E_TMPDIR` (default `$TMPDIR`), which must not be inside a project such
 as a git repository: the config finds project roots by walking up from a file.
 Nor under `/tmp` or `/private`, where Neovim 0.12 keeps no cursor positions
@@ -46,9 +46,7 @@ parsers follow: each is built at the revision the pinned nvim-treesitter's
 table of parsers gives it (as `:TSUpdate` does). Renovate bumps the pins in
 pull requests, so each shows which workflows the new commits change; after
 pulling one, `:Lazy restore` checks them out and rebuilds the parsers they
-change. A plugin lazy.nvim loads from your working copy (`dev` in
-`nvim/lua/user/plugins.lua`) is yours to keep at any commit, and CI installs
-its pin instead.
+change.
 
 ```sh
 nvim/tests/plugins check      # do the installed plugins and parsers match the pins?
@@ -101,7 +99,7 @@ benchmarks run after the suite, in a step of their own.
 | `input_source` | macOS's keyboard layout in normal mode: after insert mode, a command line, a terminal, or on starting or gaining focus | `user/input_source.lua` |
 | `scenes_ui`, `scenes_syntax` | what the screen shows: the UI, each language's syntax, against snapshots (below) | `candle/`, the plugins |
 | `endwise` | `<CR>` after the line that opens a block adds the line that closes it, in Bash, Lua, Ruby and Vim script | `user/plugin/treesitter/endwise.lua` |
-| `files`, `navigation`, `text_ops`, `treesitter`, `filetypes`, `templates` | everything else | various |
+| `files`, `navigation`, `text_ops`, `treesitter`, `filetypes` | everything else | various |
 
 The files named above are under `nvim/lua/`; `user/intelligence.lua` is where
 completion, snippets, auto-pairs and AI suggestions share the insert-mode keys.

@@ -22,30 +22,8 @@ local SAMPLES = {
     ['#include '] = { { keys = '#include ', auto = true } },
     ['\\v(\\w+)\\.\\.(\\w)'] = { { keys = 'ptr..x', auto = true } },
   },
-  clike_postfix = {
-    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
-    ['\\v(\\S+)\\.if'] = { 'ok.if' },
-    ['\\v(\\S+)\\.else'] = { 'ok.else' },
-    ['\\v(\\S+)\\.(null|nil)'] = { 'p.null', 'p.nil' },
-    ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'p.notnull', 'p.nn' },
-    ['\\v(\\S+)\\.while'] = { 'running.while' },
-    ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
-  },
-  go_postfix = {
-    ['\\v(\\S+)\\.var'] = { 'f(x).var' },
-    ['\\v(\\S+)\\.varr'] = { 'f(x).varr' },
-    ['\\v(\\S+)\\.const'] = { '42.const' },
-    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
-    ['\\v(\\S+)\\.if'] = { 'ok.if' },
-    ['\\v(\\S+)\\.else'] = { 'ok.else' },
-    ['\\v(\\S+)\\.(null|nil)'] = { 'err.nil' },
-    ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'err.nn' },
-    ['\\v(\\S+)\\.for'] = { 'items.for' },
-    ['\\v(\\S+)\\.fori'] = { 'items.fori' },
-    ['\\v(\\S+)\\.forv'] = { 'items.forv' },
-    ['\\v(\\S+)\\.while'] = { 'running.while' },
-    ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
-    ['\\v(\\S+)\\.append'] = { 'items.append' },
+  javascript = {
+    ['\\v([[:alnum:]_$.]+)\\.times'] = { 'count.times', 'items.length.times', '{rows.times' },
   },
   markdown = {
     ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
@@ -68,13 +46,6 @@ local SAMPLES = {
     ['\\v(\\w+)\\.map'] = { 'items.map' },
     ['\\v(\\w+)\\.mapdo'] = { 'items.mapdo' },
   },
-  ruby_postfix = {
-    ['\\v(\\S+)\\.var'] = { 'compute(1).var' },
-    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
-    ['\\v(\\S+)\\.if'] = { 'ok.if' },
-    ['\\v(\\S+)\\.else'] = { 'ok.else' },
-    ['\\v(\\S+)\\.format'] = { 'value.format' },
-  },
   tex = {
     ['\\vtr(\\d+)'] = { 'tr3' },
   },
@@ -91,6 +62,7 @@ end
 local function normalize(text, nvim)
   text = text:gsub(vim.pesc(nvim.dir), '<SANDBOX>')
   text = text:gsub('%d%d%d%d%-%d%d%-%d%d', '<DATE>')
+  text = text:gsub(os.date('%Y'), '<YEAR>')
   return text
 end
 
@@ -164,10 +136,10 @@ local M = {}
 --- Snippet files per spec file (several spec files run in parallel).
 --- Every snippet file must be listed; snippets_spec checks it.
 M.shards = {
-  { 'all', 'c', 'clike_postfix', 'clike_stmt', 'gitattributes', 'go', 'go_postfix' },
+  { 'all', 'c', 'clike_stmt', 'gitattributes', 'go', 'license' },
   { 'proto' },
-  { 'javascript', 'javascriptreact', 'markdown', 'pg', 'ruby', 'ruby_postfix', 'tex' },
-  { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescript_henry', 'typescriptreact', 'vim' },
+  { 'javascript', 'javascriptreact', 'markdown', 'pg', 'ruby', 'tex' },
+  { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescriptreact', 'vim' },
 }
 
 --- Defines one test per snippet (per sample for regex snippets).

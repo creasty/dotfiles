@@ -17,16 +17,6 @@ What the code and the README don't tell about this repository.
 - **Releases a pin follows**: nothing notices when a repository stops tagging the releases a pin follows (`version` in `nvim/lua/user/plugins.lua`, `"tag"` in `home/agents/.skill-lock.json`); Renovate just proposes no more updates.
   GitHub's comparison of its latest tag with its branch (`compare/<tag>...<branch>`) tells how long its changes have waited.
 
-## opfmt is off
-
-`creasty/opfmt` is switched off (`cond = false` in `nvim/lua/user/plugins.lua`) until it works with nvim-treesitter's `main` branch:
-
-- It loads modules only `master` has: `nvim-treesitter.query`, `.parsers` (`has_parser`) and `.ts_utils`, and registers itself as one of `master`'s modules (`define_modules`).
-- Its `opfmt!` directive takes a capture as one node, where Neovim 0.12 passes a list of nodes.
-
-It stays pinned in `nvim/lazy-lock.json`, where lazy.nvim keeps the pins of the plugins `cond` switches off, and its tests skip while it's off (`probe.opfmt_enabled` in `nvim/tests/spec/treesitter_spec.lua` and `snippets_spec.lua`).
-With `dev = true`, lazy.nvim loads it from its working copy in `~/go/src/github.com/creasty/opfmt` when there is one.
-
 ## lazy.nvim rewriting its lockfile at start
 
 After installing missing plugins on a start, lazy.nvim rewrites `nvim/lazy-lock.json` with what is installed: that undoes the pins a pull moved, and drops the pin of a plugin that failed to install.

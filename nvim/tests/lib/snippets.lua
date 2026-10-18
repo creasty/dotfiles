@@ -11,10 +11,6 @@ M.dir = env.config_dir .. '/snippets'
 M.filetype = {
   all = 'text',
   clike_stmt = 'c',
-  clike_postfix = 'c',
-  go_postfix = 'go',
-  ruby_postfix = 'ruby',
-  typescript_henry = 'typescript',
   bq = 'sql.bq',
   pg = 'sql.pg',
 }

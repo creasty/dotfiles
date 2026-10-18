@@ -33,47 +33,6 @@ M.spec = {
     'tpope/vim-repeat',
   },
 
-  { -- a genius template engine
-    'creasty/mold.vim',
-    init = function()
-      local group = vim.api.nvim_create_augroup('user_plugin_mold', {})
-      local cursor
-      vim.api.nvim_create_autocmd('User', {
-        group = group,
-        pattern = 'MoldTemplateLoadPre',
-        callback = function()
-          cursor = vim.fn.getcurpos()
-        end,
-      })
-      -- the template's macros replaced, its ERB run, and the cursor on
-      -- <+CURSOR+>, or back where it was
-      vim.api.nvim_create_autocmd('User', {
-        group = group,
-        pattern = 'MoldTemplateLoadPost',
-        callback = function()
-          local macros = {
-            FILE_PATH = vim.fn.expand('%:p'),
-            FILE_NAME = vim.fn.expand('%:t'),
-            FILE_BASE_NAME = vim.fn.expand('%:t:r'),
-            FULL_NAME = 'Yuki Iwanaga',
-            USER_NAME = 'Creasty',
-          }
-          local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-          for i, line in ipairs(lines) do
-            lines[i] = line:gsub('[%w_]+', macros)
-          end
-          vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
-          vim.cmd([[silent! %!erb -T '-']])
-          if vim.fn.search('<+CURSOR+>') > 0 then
-            vim.cmd('normal! "_da>')
-          else
-            vim.fn.setpos('.', cursor)
-          end
-        end,
-      })
-    end,
-  },
-
   { -- switch segments of text with predefined replacements
     'AndrewRadev/switch.vim',
     init = function()
@@ -170,13 +129,6 @@ M.spec = {
   { -- Use treesitter to autoclose and autorename html tag
     'windwp/nvim-ts-autotag',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-  },
-
-  { -- Format operators and delimiters as you type, using tree-sitter
-    'creasty/opfmt',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    dev = true,
-    cond = false, -- it needs nvim-treesitter's master branch (nvim-treesitter.configs): off until it moves to main
   },
 
   --  LSP, completion and snippets
@@ -330,12 +282,6 @@ M.spec = {
 --- is the default one, lazy-lock.json in the config directory.
 M.opts = {
   spec = M.spec,
-  -- A plugin with `dev = true` (opfmt) loads from your working copy in ghq's
-  -- root when there is one, and installs as usual otherwise.
-  dev = {
-    path = '~/go/src/github.com/creasty',
-    fallback = true,
-  },
 }
 
 --- Where lazy.nvim installs itself from.
@@ -368,7 +314,7 @@ local function write_pins(file, pins)
   local lines = { '{' }
   for i, name in ipairs(names) do
     local pin = pins[name]
-    local plugin = config.plugins[name] or config.spec.disabled[name]
+    local plugin = config.plugins[name]
     local url = plugin and plugin.url or pin.url
     -- (lazy.nvim's own writer drops the tag)
     local tag = plugin and plugin.version and (pin.tag or release_tag(plugin, pin.commit))
@@ -404,7 +350,7 @@ local function keep_pins(file, pins)
   local changed = false
   for name, pin in pairs(pins) do
     local now = lock[name]
-    if (config.plugins[name] or config.spec.disabled[name]) and not (now and now.branch == pin.branch and now.commit == pin.commit) then
+    if config.plugins[name] and not (now and now.branch == pin.branch and now.commit == pin.commit) then
       lock[name] = pin
       changed = true
     end
@@ -421,7 +367,7 @@ local function report_moved(pins)
   local git = require('lazy.manage.git')
   for name, plugin in pairs(require('lazy.core.config').plugins) do
     local pin = pins[name]
-    if pin and plugin._.installed and not plugin._.is_local and (git.info(plugin.dir) or {}).commit ~= pin.commit then
+    if pin and plugin._.installed and (git.info(plugin.dir) or {}).commit ~= pin.commit then
       return vim.notify('Plugins differ from lazy-lock.json: :Lazy restore checks out its commits', vim.log.levels.WARN)
     end
   end

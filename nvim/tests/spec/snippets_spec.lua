@@ -92,23 +92,17 @@ describe('Snippets', function()
   end)
 
   describe('arrows (all filetypes)', function()
-    it('typescript: x=<Tab> becomes a fat arrow', function()
+    it('typescript: x=<Tab> becomes a fat arrow, x-<Tab> a thin arrow', function()
       local nvim = buffer_with('typescript', 'app.ts')
       nvim:type('A')
       probe.expand(nvim, 'const f = ()=')
       t.buffer(nvim, 'const f = () => |')
+      nvim:type('<Esc>')
+      nvim:set_buffer('|')
+      nvim:type('A')
+      probe.expand(nvim, 'a-')
+      t.buffer(nvim, 'a -> |')
     end)
-
-    t.quirk(
-      'typescript: x-<Tab> expands api-client-general rather than a thin arrow',
-      "the completion menu offers typescript_henry's api-client-general for a-, and <Tab> accepts it first",
-      function()
-        local nvim = buffer_with('typescript', 'app.ts')
-        nvim:type('A')
-        probe.expand(nvim, 'a-')
-        t.match('^export class NameAPI', nvim:line(1))
-      end
-    )
 
     it('<Tab> right after an arrow flips its direction', function()
       local nvim = buffer_with('text', 'notes.txt')
@@ -119,45 +113,32 @@ describe('Snippets', function()
   end)
 
   describe('postfix snippets', function()
-    it('go: err.nn<Tab> wraps the expression in a nil check', function()
-      local nvim = buffer_with('go', 'main.go')
+    it('typescript: count.times<Tab> makes an array of as many indices', function()
+      local nvim = buffer_with('typescript', 'app.ts')
       nvim:type('A')
-      probe.expand(nvim, 'err.nn')
-      t.buffer(nvim, { 'if err != nil {', '\t|', '}' })
+      probe.expand(nvim, 'const xs = count.times')
+      t.buffer(nvim, 'const xs = Array.from({ length: count }, (_, i) => i|)')
     end)
-
-    t.quirk(
-      'typescript: user.if<Tab> expands the if statement after the expression rather than wrapping it',
-      "the completion menu offers clike_stmt's if, and <Tab> accepts it first",
-      function()
-        local nvim = buffer_with('typescript', 'app.ts')
-        nvim:type('A')
-        probe.expand(nvim, 'user.if')
-        t.buffer(nvim, { 'user.if (|) {', '  ', '}' })
-      end
-    )
   end)
 
-  describe('with operator formatting (opfmt)', function()
-    t.quirk(
-      'a trigger with hyphens, typed at a human pace in TypeScript, is spaced out and <Tab> no longer expands it',
-      "opfmt formats `-` as the minus operator once the typed keys run out, so typescript_henry's api-client-* snippets cannot be triggered by typing them",
-      function()
-        local nvim = buffer_with('typescript', 'app.ts')
-        if not probe.opfmt_enabled(nvim) then
-          t.skip("opfmt is off until it moves to nvim-treesitter's main branch")
-        end
-        nvim:type('A')
-        for key in ('api-client-general'):gmatch('.') do
-          nvim:type(key)
-        end
-        nvim:wait_for(function()
-          return nvim:line(1) == 'api - client - general'
-        end, { message = 'opfmt to space out the trigger' })
-        nvim:type('<Tab>')
-        t.no(nvim:line(1):find('BaseClient', 1, true), 'expanded anyway: ' .. nvim:line(1))
-      end
-    )
+  describe('keyi (a JSX key from an index)', function()
+    local function list(callback)
+      return { 'const list = (', '  <ul>', '    {items.map(' .. callback .. ' => (', '      <Row />', '    ))}', '  </ul>', ');' }
+    end
+
+    it('javascriptreact: takes the index of the .map() callback the element is in', function()
+      local nvim = buffer_with('javascriptreact', 'app.jsx', list('(item, idx)'))
+      nvim:type('4G0f/i')
+      probe.expand(nvim, 'keyi')
+      t.eq('      <Row key={idx /* eslint-disable-line react/no-array-index-key */}/>', nvim:line(4))
+    end)
+
+    it('typescriptreact: takes it from a typed parameter too', function()
+      local nvim = buffer_with('typescriptreact', 'app.tsx', list('(item: Item, n: number)'))
+      nvim:type('4G0f/i')
+      probe.expand(nvim, 'keyi')
+      t.eq('      <Row key={n /* eslint-disable-line react/no-array-index-key */}/>', nvim:line(4))
+    end)
   end)
 
   describe('filetype inheritance', function()
