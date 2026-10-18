@@ -605,6 +605,50 @@ describe('LSP', function()
     end)
   end)
 
+  it('no configured server starts on a buffer without a name; one does on a file', function()
+    local nvim = t.nvim()
+    nvim:files({ ['.git/'] = true, ['main.c'] = { 'int main(void) { return 0; }' } })
+    -- The servers that start on the current buffer, of `names`: the fake
+    -- server under each name.
+    local function start(names)
+      return nvim:lua([[
+        local started = {}
+        for _, name in ipairs(...) do
+          if vim.lsp.start(vim.tbl_extend('force', vim.lsp.config.e2e, { name = name }), { bufnr = 0 }) then
+            started[#started + 1] = name
+          end
+        end
+        return started
+      ]], names)
+    end
+    nvim:cmd('enew | setfiletype c')
+    t.eq({}, start(nvim:lua("return require('user.plugin.lsp').servers")))
+    nvim:edit('main.c')
+    t.eq({ 'clangd' }, start({ 'clangd' }))
+  end)
+
+  it('a buffer without a name gets its servers once it has one', function()
+    local nvim = t.nvim()
+    nvim:files({ ['.git/'] = true })
+    nvim:cmd('enew | setfiletype c')
+    nvim:lua([[
+      -- (the fake server as clangd, which stays off the buffer)
+      vim.lsp.start(vim.tbl_extend('force', vim.lsp.config.e2e, { name = 'clangd' }), { bufnr = 0 })
+      -- Neovim starting the servers for the buffer's filetype
+      vim.g.e2e_starts = 0
+      vim.api.nvim_create_autocmd('FileType', {
+        group = 'nvim.lsp.enable',
+        callback = function()
+          vim.g.e2e_starts = vim.g.e2e_starts + 1
+        end,
+      })
+    ]])
+    nvim:cmd('silent write main.c')
+    t.eq(1, nvim:eval('g:e2e_starts'))
+    nvim:cmd('silent write')
+    t.eq(1, nvim:eval('g:e2e_starts'), 'only once')
+  end)
+
   describe('TypeScript', function()
     -- A project with its own tsc, which marks that it started as a server.
     local function tsc_project()
@@ -623,25 +667,6 @@ describe('LSP', function()
       vim.uv.fs_chmod(nvim:path('node_modules/.bin/tsc'), tonumber('755', 8))
       return nvim
     end
-
-    --- The root tsc starts at for the current buffer, or false.
-    local function tsc_root(nvim)
-      return nvim:lua([[
-        local root = false
-        vim.lsp.config.tsc.root_dir(0, function(dir)
-          root = dir
-        end)
-        return root
-      ]])
-    end
-
-    it('tsc stays off buffers without a name', function()
-      local nvim = tsc_project()
-      nvim:edit('app.ts')
-      t.eq(vim.fs.dirname(nvim:bufname()), tsc_root(nvim))
-      nvim:cmd('enew | setfiletype typescript')
-      t.eq(false, tsc_root(nvim))
-    end)
 
     it("tsc starts the project's binary", function()
       local nvim = tsc_project()

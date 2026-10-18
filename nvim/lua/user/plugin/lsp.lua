@@ -60,20 +60,23 @@ local settings = {
   },
 }
 
---- nvim-lspconfig's tsc, kept off buffers without a name: the server stops
---- on the URI Neovim gives one (file://), and the project's other buffers
---- lose it too (CLAUDE.md). Its root_dir picks the binary its cmd starts,
---- and each load of the config has its own choice: keep both from this one.
-local function tsc()
-  local config = vim.lsp.config.tsc
-  return {
-    cmd = config.cmd,
-    root_dir = function(bufnr, on_dir)
-      if vim.api.nvim_buf_get_name(bufnr) ~= '' then
-        config.root_dir(bufnr, on_dir)
-      end
-    end,
-  }
+--- vim.lsp.start, starting none of M.servers on a buffer without a name: some
+--- fail on the URI Neovim gives one (file://), clangd on every request, and tsc
+--- stops, taking the project's other buffers with it (CLAUDE.md). Such a
+--- buffer is marked, for its servers to start once it has a name.
+local function named_only(start)
+  local servers = {}
+  for _, name in ipairs(M.servers) do
+    servers[name] = true
+  end
+  return function(config, opts)
+    local bufnr = opts and opts.bufnr or 0
+    if servers[config.name] and vim.api.nvim_buf_get_name(bufnr) == '' then
+      vim.b[bufnr].user_lsp_unnamed = true
+      return nil
+    end
+    return start(config, opts)
+  end
 end
 
 local severity = vim.diagnostic.severity
@@ -229,7 +232,7 @@ function M.setup()
   for name, config in pairs(settings) do
     vim.lsp.config(name, config)
   end
-  vim.lsp.config('tsc', tsc())
+  vim.lsp.start = named_only(vim.lsp.start)
   vim.lsp.enable(M.servers)
 
   vim.diagnostic.config({
@@ -316,6 +319,18 @@ function M.setup()
     group = group,
     pattern = '*.go',
     callback = auto_format,
+  })
+
+  -- A buffer named_only kept the servers off, once named (:w file, :saveas,
+  -- :file), gets them as Neovim starts them for its filetype.
+  vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufFilePost' }, {
+    group = group,
+    callback = function(args)
+      if vim.b[args.buf].user_lsp_unnamed and vim.api.nvim_buf_get_name(args.buf) ~= '' then
+        vim.b[args.buf].user_lsp_unnamed = nil
+        vim.api.nvim_exec_autocmds('FileType', { group = 'nvim.lsp.enable', buffer = args.buf })
+      end
+    end,
   })
 end
 
