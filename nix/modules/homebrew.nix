@@ -1,14 +1,22 @@
 # Apps (casks), and the formulae nixpkgs doesn't have or can't replace. ./apply installs Homebrew itself.
 { ... }:
+let
+  # brew upgrade leaves the casks that update themselves (auto_updates) to their own updaters: upgrading one replaces
+  # the app under its running process, which breaks Chrome's new tabs until it restarts
+  env.HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS = "1";
+in
 {
+  environment.variables = env;
+
   homebrew = {
     enable = true;
 
-    # Everything at its latest on every switch. Nothing is ever uninstalled.
+    # Everything at its latest on every switch, but the apps that update themselves. Nothing is ever uninstalled.
     onActivation = {
       autoUpdate = true;
       upgrade = true;
       cleanup = "none";
+      extraEnv = env;
     };
 
     # brew list --cask --full-name
