@@ -93,6 +93,23 @@ function probe.snippet_active(nvim)
   return call(nvim, 'snippet_active')
 end
 
+--- Types a snippet's trigger and <Tab> as a person does: <Tab> comes a moment
+--- after the trigger, once the completion menu has opened, and accepts its
+--- selected item rather than expanding the trigger.
+function probe.expand(nvim, trigger)
+  nvim:type(trigger)
+  pcall(probe.wait_completion, nvim, { timeout = 300 })
+  local typed = nvim:lines()
+  nvim:type('<Tab>')
+  -- (an accepted item lands a moment after the key, and the engine then
+  -- selects the first placeholder with keys of its own, which run before the
+  -- keys typed after them)
+  nvim:wait_for(function()
+    return not vim.deep_equal(nvim:lines(), typed)
+  end, { message = '<Tab> to change the buffer' })
+  nvim:type('<Ignore>')
+end
+
 ---------------------------------------------------------------------------
 -- Language server (fakes/lsp.lua)
 ---------------------------------------------------------------------------
@@ -335,14 +352,6 @@ end
 --- it, cell by cell, the floats composed (probe_child.lua's screen()).
 function probe.screen(nvim, fg, bg)
   return call(nvim, 'screen', tonumber(fg:sub(2), 16), tonumber(bg:sub(2), 16))
-end
-
----------------------------------------------------------------------------
--- Operator formatting
----------------------------------------------------------------------------
-
-function probe.opfmt_enabled(nvim)
-  return call(nvim, 'opfmt_enabled')
 end
 
 return probe

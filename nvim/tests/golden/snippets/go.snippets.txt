@@ -4,22 +4,6 @@ func nam‸e(params) type {
 }
 -- mode: s, selected: "name"
 
-=== holder
-nam‸e struct {
-	result Type
-	err    error
-	once   sync.Once
-}
--- mode: s, selected: "name"
-
-=== holderdo
-holder := &c.nam‸e
-holder.once.Do(func() {
-	holder.result, holder.err = 
-})
-return holder.result, holder.err
--- mode: s, selected: "name"
-
 === if
 if ‸ {
 	

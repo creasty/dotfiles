@@ -29,5 +29,5 @@ return {
 $0
 </details><br>]]),
   S.snip([[^-\{3,}]], 'Horizontal rule', 'r', ('-'):rep(80)),
-  S.snip([[\v(<|\s+)br]], 'Break line', 'r', '<br>'),
+  S.snip('br', 'Break line', 'w', '<br>'),
 }

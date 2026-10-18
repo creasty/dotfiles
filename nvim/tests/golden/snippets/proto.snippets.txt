@@ -19,26 +19,6 @@ option java_multiple_files = true;
 rpc Nam‸e (NameRequest) returns (NameResponse);
 -- mode: s, selected: "Name"
 
-=== /\vrpc (\w+)/ rpc GetUser
-rpc GetUser (GetUserRequest) returns (User);‸
--- mode: i
-
-=== /\vrpc (\w+)/ rpc ListUsers
-rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);‸
--- mode: i
-
-=== /\vrpc (\w+)/ rpc CreateUser
-rpc CreateUser (User) returns (User);‸
--- mode: i
-
-=== /\vrpc (\w+)/ rpc DeleteUser
-rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);‸
--- mode: i
-
-=== /\vrpc (\w+)/ rpc Ping
-rpc Ping (PingRequest) returns (PingResponse);‸
--- mode: i
-
 === service
 service Nam‸eService {
   
@@ -54,47 +34,6 @@ enum ‸ {
 === message
 message ‸ {
   
-}
--- mode: i
-
-=== /\v(msg|message) (\w+)/ message GetUserRequest
-message GetUserRequest {
-    string uuid = 1 [ (google.api.field_behavior) = REQUIRED ];‸
-}
--- mode: i
-
-=== /\v(msg|message) (\w+)/ msg ListUsersResponse
-message ListUsersResponse {
-    repeated Users users = 1 [ (google.api.field_behavior) = REQUIRED ];‸
-}
--- mode: i
-
-=== /\v(msg|message) (\w+)/ message UpdateUserRequest
-message UpdateUserRequest {
-    User user = 1 [ (google.api.field_behavior) = REQUIRED ];
-    // マスク
-    google.protobuf.FieldMask update_mask = 2 [ (google.api.field_behavior) = REQUIRED ];‸
-}
--- mode: i
-
-=== /\v(msg|message) (\w+)/ message UpdateMultiUsersRequest
-message UpdateMultiUsersRequest {
-    // 更新用レコード
-    repeated Record records = 1 [ (google.api.field_behavior) = REQUIRED ];
-
-    message Record {
-        Users users = 1 [ (google.api.field_behavior) = REQUIRED ];
-        // レコード操作
-        RecordOperation record_operation = 2 [ (google.api.field_behavior) = REQUIRED ];
-        // マスク
-        google.protobuf.FieldMask field_mask = 3 [ (google.api.field_behavior) = OPTIONAL ];
-    }‸
-}
--- mode: i
-
-=== /\v(msg|message) (\w+)/ message Plain
-message Plain {
-‸
 }
 -- mode: i
 

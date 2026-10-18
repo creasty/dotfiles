@@ -14,12 +14,20 @@ console.error(‸);
 console.warn(‸);
 -- mode: i
 
-=== times
-Array.from({ length: ‸ }, (_, i) => i)
--- mode: i
-
 === iife
 (() => {
   ‸
 })();
+-- mode: i
+
+=== times count.times
+Array.from({ length: count }, (_, i) => i‸)
+-- mode: i
+
+=== times items.length.times
+Array.from({ length: items.length }, (_, i) => i‸)
+-- mode: i
+
+=== times {rows.times
+{Array.from({ length: rows }, (_, i) => i‸)}
 -- mode: i

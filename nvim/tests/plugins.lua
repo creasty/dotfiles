@@ -52,7 +52,7 @@ local function read_pins()
 end
 
 --- The plugins of nvim/lua/user/plugins.lua as lazy.nvim resolves them, by
---- name: `url`, `dir` (in `root`, or your working copy when `_.is_local`).
+--- name: `url`, `dir` (in `root`).
 local function declared(root)
   vim.opt.rtp:prepend(root .. '/lazy.nvim')
   local opts = vim.deepcopy(config.opts)
@@ -117,19 +117,10 @@ local function in_range(range, tag)
   return version ~= nil and semver.range(range):matches(version)
 end
 
---- Differences between nvim/lazy-lock.json and what is installed. Your working
---- copies (lazy.nvim's `dev`) are yours to keep at any commit.
+--- Differences between nvim/lazy-lock.json and what is installed.
 local function differences(pins, plugins)
   local problems = {}
-  -- (a plugin the spec switches off with `cond`, which lazy.nvim neither
-  -- installs nor loads, keeps its pin for when it is back on)
-  local off = {}
-  for name, plugin in pairs(require('lazy.core.config').spec.disabled) do
-    if plugin._.cond == false then
-      off[name] = plugin
-    end
-  end
-  for name, plugin in pairs(vim.tbl_extend('error', plugins, off)) do
+  for name, plugin in pairs(plugins) do
     local pinned = pins[name]
     if not pinned then
       problems[#problems + 1] = name .. ': not pinned (a start of Neovim installs it and pins its commit)'
@@ -147,7 +138,7 @@ local function differences(pins, plugins)
       -- (Renovate's pull request of a new major, which :Lazy update would undo)
       problems[#problems + 1] = ("%s: pinned at release %s, outside version = '%s' (widen it to take the new major)"):format(
         name, pinned.tag, plugin.version)
-    elseif plugins[name] and not plugin._.is_local then
+    else
       local commit = git(plugin.dir, 'rev-parse', 'HEAD')
       if not commit then
         problems[#problems + 1] = name .. ': not installed'
@@ -157,7 +148,7 @@ local function differences(pins, plugins)
     end
   end
   for name in pairs(pins) do
-    if not plugins[name] and not off[name] then
+    if not plugins[name] then
       problems[#problems + 1] = name .. ': pinned, but no longer in nvim/lua/user/plugins.lua'
     end
   end

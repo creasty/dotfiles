@@ -30,21 +30,25 @@ attr_writer :‸
 attr_accessor :‸
 -- mode: i
 
-=== /\v(\w+)\.each/ items.each
+=== each items.each
 items.each { |‸|  }
 -- mode: i
 
-=== /\v(\w+)\.eachdo/ items.eachdo
+=== each @items.each
+@items.each { |‸|  }
+-- mode: i
+
+=== eachdo items.eachdo
 items.each do |‸|
   
 end
 -- mode: i
 
-=== /\v(\w+)\.map/ items.map
-items.each { |‸|  }
+=== map items.map
+items.map { |‸|  }
 -- mode: i
 
-=== /\v(\w+)\.mapdo/ items.mapdo
+=== mapdo items.mapdo
 items.map do |‸|
   
 end

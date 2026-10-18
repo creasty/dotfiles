@@ -10,7 +10,6 @@ local function buffer_with(filetype, name, lines)
   local nvim = t.nvim()
   nvim:edit(name, lines or { '' })
   nvim:cmd('set filetype=' .. filetype)
-  probe.disable_completion(nvim)
   probe.wait_services(nvim)
   return nvim
 end
@@ -18,7 +17,8 @@ end
 describe('Snippets', function()
   it('<Tab> expands the trigger before the cursor', function()
     local nvim = buffer_with('go', 'main.go')
-    nvim:type('Aif<Tab>')
+    nvim:type('A')
+    probe.expand(nvim, 'if')
     t.buffer(nvim, { 'if | {', '\t', '}' })
     t.ok(probe.snippet_active(nvim))
   end)
@@ -33,7 +33,8 @@ describe('Snippets', function()
   -- asynchronously, and nobody types within microseconds of <Tab>.
   it('typing replaces the selected placeholder; then <C-s><C-n> / <C-s><C-p> jump', function()
     local nvim = buffer_with('go', 'main.go')
-    nvim:type('Afunc<Tab>')
+    nvim:type('A')
+    probe.expand(nvim, 'func')
     t.eq('s', nvim:mode(), 'first placeholder is selected')
     nvim:type('run')
     nvim:type('<C-s><C-n>')
@@ -50,7 +51,8 @@ describe('Snippets', function()
 
   it('the last jump lands on $0', function()
     local nvim = buffer_with('go', 'main.go')
-    nvim:type('Afunc<Tab>')
+    nvim:type('A')
+    probe.expand(nvim, 'func')
     nvim:type('run')
     nvim:type('<C-s><C-n>')
     nvim:type('x')
@@ -63,7 +65,8 @@ describe('Snippets', function()
 
   it('<C-s><C-n> on a still-selected placeholder keeps it and jumps to the next one', function()
     local nvim = buffer_with('go', 'main.go')
-    nvim:type('Afunc<Tab>')
+    nvim:type('A')
+    probe.expand(nvim, 'func')
     t.eq('s', nvim:mode())
     nvim:type('<C-s><C-n>')
     t.eq('s', nvim:mode(), 'the next placeholder is selected')
@@ -73,7 +76,8 @@ describe('Snippets', function()
 
   it('mirrors update while typing', function()
     local nvim = buffer_with('c', 'main.c')
-    nvim:type('Adef<Tab>')
+    nvim:type('A')
+    probe.expand(nvim, 'def')
     nvim:type('DEBUG')
     t.eq({ '#ifndef DEBUG', '#define DEBUG value', '#endif' }, nvim:lines())
   end)
@@ -83,91 +87,198 @@ describe('Snippets', function()
     nvim:type('V<C-g><Tab>')
     t.eq('i', nvim:mode())
     t.eq({ '' }, nvim:lines())
-    nvim:type('func<Tab>')
+    probe.expand(nvim, 'func')
     t.eq({ 'func name(params) type {', '\treturn 1', '}' }, nvim:lines())
   end)
 
   describe('arrows (all filetypes)', function()
     it('typescript: x=<Tab> becomes a fat arrow, x-<Tab> a thin arrow', function()
       local nvim = buffer_with('typescript', 'app.ts')
-      nvim:type('Aconst f = ()=<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'const f = ()=')
       t.buffer(nvim, 'const f = () => |')
       nvim:type('<Esc>')
       nvim:set_buffer('|')
-      nvim:type('Aa-<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'a-')
       t.buffer(nvim, 'a -> |')
     end)
 
     it('<Tab> right after an arrow flips its direction', function()
       local nvim = buffer_with('text', 'notes.txt')
-      nvim:type('Aa -><Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'a ->')
       t.buffer(nvim, 'a <- |')
     end)
   end)
 
-  describe('postfix snippets', function()
-    it('go: err.nn<Tab> wraps the expression in a nil check', function()
-      local nvim = buffer_with('go', 'main.go')
-      nvim:type('Aerr.nn<Tab>')
-      t.buffer(nvim, { 'if err != nil {', '\t|', '}' })
+  describe('in the completion menu', function()
+    --- The items the menu offers once `text` is typed on a line of its own.
+    local function offered(nvim, text)
+      nvim:cmd('stopinsert')
+      nvim:set_buffer('|')
+      nvim:type('A' .. text)
+      pcall(probe.wait_completion, nvim, { timeout = 300 })
+      return probe.completion(nvim).items
+    end
+
+    it('a line-start snippet only at the start of a line', function()
+      local nvim = buffer_with('javascript', 'app.js')
+      t.contains(offered(nvim, 'cl'), 'clog')
+      t.contains(offered(nvim, '  cl'), 'clog')
+      for _, text in ipairs({ 'x = cl', '-', '-cl', 'user.cl' }) do
+        t.no(vim.tbl_contains(offered(nvim, text), 'clog'), 'clog offered after ' .. text)
+      end
+      t.no(vim.tbl_contains(offered(nvim, '-'), 'lorem'), 'lorem offered after -')
     end)
 
-    it('typescript: user.if<Tab> wraps the expression in an if', function()
-      local nvim = buffer_with('typescript', 'app.ts')
-      nvim:type('Auser.if<Tab>')
-      t.buffer(nvim, { 'if (user) {', '  |', '}' })
+    it('a snippet typed out comes first, ahead of a word that matches as well', function()
+      local nvim = buffer_with('ruby', 'app.rb', { 'users.each { |u| u }', '' })
+      nvim:type('G')
+      nvim:type('A')
+      probe.expand(nvim, 'items.each')
+      t.eq('items.each { ||  }', nvim:line(2))
+    end)
+
+    it('none after a lone -, so an arrow expands among words', function()
+      local nvim = buffer_with('text', 'notes.txt', { 'some words here', '' })
+      nvim:type('G')
+      nvim:type('A')
+      probe.expand(nvim, 'x -')
+      t.eq('x -> ', nvim:line(2))
+    end)
+
+    it('a snippet after whitespace only there', function()
+      local nvim = buffer_with('sh', 'script.sh')
+      t.contains(offered(nvim, 'cat a | tee'), 'teepipe')
+      t.no(vim.tbl_contains(offered(nvim, 'cat a |tee'), 'teepipe'), 'teepipe offered after |')
     end)
   end)
 
-  describe('with operator formatting (opfmt)', function()
-    t.quirk(
-      'a trigger with hyphens, typed at a human pace in TypeScript, is spaced out and <Tab> no longer expands it',
-      "opfmt formats `-` as the minus operator once the typed keys run out, so typescript_henry's api-client-* snippets cannot be triggered by typing them",
-      function()
-        local nvim = buffer_with('typescript', 'app.ts')
-        if not probe.opfmt_enabled(nvim) then
-          t.skip("opfmt is off until it moves to nvim-treesitter's main branch")
-        end
-        nvim:type('A')
-        for key in ('api-client-general'):gmatch('.') do
-          nvim:type(key)
-        end
-        nvim:wait_for(function()
-          return nvim:line(1) == 'api - client - general'
-        end, { message = 'opfmt to space out the trigger' })
-        nvim:type('<Tab>')
-        t.no(nvim:line(1):find('BaseClient', 1, true), 'expanded anyway: ' .. nvim:line(1))
+  describe('postfix snippets', function()
+    it('typescript: count.times<Tab> makes an array of as many indices', function()
+      local nvim = buffer_with('typescript', 'app.ts')
+      nvim:type('A')
+      probe.expand(nvim, 'const xs = count.times')
+      t.buffer(nvim, 'const xs = Array.from({ length: count }, (_, i) => i|)')
+    end)
+
+    it('typescript: the menu offers times after 10.tim, and <Tab> expands it in place of 10.', function()
+      local nvim = buffer_with('typescript', 'app.ts')
+      nvim:type('Aconst xs = 10.tim')
+      probe.wait_completion(nvim, { item = 'times' })
+      nvim:type('<Tab>')
+      nvim:wait_for(function()
+        return nvim:line(1) ~= 'const xs = 10.tim'
+      end)
+      t.buffer(nvim, 'const xs = Array.from({ length: 10 }, (_, i) => i|)')
+    end)
+  end)
+
+  describe('proto: rpc and message from the name typed in them', function()
+    local function typed(trigger, name)
+      local nvim = buffer_with('proto', 'api.proto')
+      nvim:type('A')
+      probe.expand(nvim, trigger)
+      nvim:type(name)
+      return nvim:lines()
+    end
+
+    it('rpc takes the request and response its verb calls for', function()
+      for name, line in pairs({
+        GetUser = 'rpc GetUser (GetUserRequest) returns (User);',
+        ListUsers = 'rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);',
+        CreateUser = 'rpc CreateUser (User) returns (User);',
+        DeleteUser = 'rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);',
+        Ping = 'rpc Ping (PingRequest) returns (PingResponse);',
+      }) do
+        t.eq({ line }, typed('rpc', name), name)
       end
-    )
+    end)
+
+    it('message takes the fields its verb calls for', function()
+      local function field(type, name, n, behavior)
+        return ('%s %s = %d [ (google.api.field_behavior) = %s ];'):format(type, name, n, behavior or 'REQUIRED')
+      end
+      for name, lines in pairs({
+        GetUserRequest = { '    ' .. field('string', 'uuid', 1) },
+        ListUsersResponse = { '    repeated ' .. field('Users', 'users', 1) },
+        UpdateUserRequest = {
+          '    ' .. field('User', 'user', 1),
+          '    // マスク',
+          '    ' .. field('google.protobuf.FieldMask', 'update_mask', 2),
+        },
+        UpdateMultiUsersRequest = {
+          '    // 更新用レコード',
+          '    repeated ' .. field('Record', 'records', 1),
+          '',
+          '    message Record {',
+          '        ' .. field('Users', 'users', 1),
+          '        // レコード操作',
+          '        ' .. field('RecordOperation', 'record_operation', 2),
+          '        // マスク',
+          '        ' .. field('google.protobuf.FieldMask', 'field_mask', 3, 'OPTIONAL'),
+          '    }',
+        },
+        Plain = { '  ' },
+      }) do
+        t.eq(vim.list_extend({ 'message ' .. name .. ' {' }, vim.list_extend(lines, { '}' })), typed('message', name), name)
+      end
+    end)
+  end)
+
+  describe('keyi (a JSX key from an index)', function()
+    local function list(callback)
+      return { 'const list = (', '  <ul>', '    {items.map(' .. callback .. ' => (', '      <Row />', '    ))}', '  </ul>', ');' }
+    end
+
+    it('javascriptreact: takes the index of the .map() callback the element is in', function()
+      local nvim = buffer_with('javascriptreact', 'app.jsx', list('(item, idx)'))
+      nvim:type('4G0f/i')
+      probe.expand(nvim, 'keyi')
+      t.eq('      <Row key={idx /* eslint-disable-line react/no-array-index-key */}/>', nvim:line(4))
+    end)
+
+    it('typescriptreact: takes it from a typed parameter too', function()
+      local nvim = buffer_with('typescriptreact', 'app.tsx', list('(item: Item, n: number)'))
+      nvim:type('4G0f/i')
+      probe.expand(nvim, 'keyi')
+      t.eq('      <Row key={n /* eslint-disable-line react/no-array-index-key */}/>', nvim:line(4))
+    end)
   end)
 
   describe('filetype inheritance', function()
     it('javascript gets the C-like statements', function()
       local nvim = buffer_with('javascript', 'app.js')
-      nvim:type('Awhile<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'while')
       t.buffer(nvim, { 'while (|) {', '  ', '}' })
     end)
 
     it('typescript gets the javascript snippets', function()
       local nvim = buffer_with('typescript', 'app.ts')
-      nvim:type('Aclog<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'clog')
       t.buffer(nvim, 'console.log(|);')
     end)
 
     it('typescriptreact gets typescript and javascriptreact snippets', function()
       local nvim = buffer_with('typescriptreact', 'app.tsx')
-      nvim:type('AuseRef<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'useRef')
       t.match('useRef', nvim:line(1))
       nvim:type('<Esc>')
       nvim:set_buffer('|')
-      nvim:type('Akeyi<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'keyi')
       t.match('key=', nvim:line(1))
     end)
 
     it('bash and zsh get the sh snippets', function()
       for _, ft in ipairs({ 'bash', 'zsh' }) do
         local nvim = buffer_with(ft, 'script.' .. ft)
-        nvim:type('Aset<Tab>')
+        nvim:type('A')
+        probe.expand(nvim, 'set')
         t.eq({ 'set -euo pipefail' }, nvim:lines(), ft)
         nvim:close()
       end
@@ -175,7 +286,8 @@ describe('Snippets', function()
 
     it('sql.bq gets the sql and bq snippets', function()
       local nvim = buffer_with('sql.bq', 'query.bq.sql')
-      nvim:type('Aday_ago<Tab>')
+      nvim:type('A')
+      probe.expand(nvim, 'day_ago')
       t.neq({ 'day_ago  ' }, nvim:lines())
       t.neq({ 'day_ago' }, nvim:lines())
     end)

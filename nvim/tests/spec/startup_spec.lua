@@ -135,7 +135,7 @@ describe('Startup', function()
       -- plugin configuration
       'Format', 'Import', 'Open', 'Search', 'GBlame', 'GBrowse',
       -- plugin commands used directly
-      'DiffviewOpen', 'DiffviewFileHistory', 'Switch', 'Template',
+      'DiffviewOpen', 'DiffviewFileHistory', 'Switch',
     }) do
       t.ok(commands[name], (':%s is missing'):format(name))
     end

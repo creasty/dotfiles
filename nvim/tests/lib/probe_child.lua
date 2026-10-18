@@ -52,7 +52,8 @@ function M.completion()
 end
 
 --- Turns the completion menu off for the current buffer, for tests about
---- something else (e.g. pinning snippet expansions) that must not race it.
+--- something else (e.g. AI suggestions, hidden while it shows) that must not
+--- race it.
 function M.disable_completion()
   vim.b.completion = false -- blink.cmp
   local cmp = try_require('cmp')
@@ -659,16 +660,6 @@ function M.screen(fg, bg)
     cursor = { before.row, before.endcol + 1 }
   end
   return { mode = vim.api.nvim_get_mode().mode, cursor = cursor, rows = rows, unfound = unfound }
-end
-
----------------------------------------------------------------------------
--- Operator formatting
----------------------------------------------------------------------------
-
---- Whether operator formatting (creasty/opfmt) is switched on: it is not
---- loaded until it moves to nvim-treesitter's main branch.
-function M.opfmt_enabled()
-  return package.loaded['opfmt'] ~= nil
 end
 
 return M

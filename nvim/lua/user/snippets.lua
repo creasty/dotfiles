@@ -19,6 +19,12 @@
 --   r       the trigger is a Vim regex (matched case-sensitively, up to the
 --           cursor); its groups are in snip.captures
 --   A       expands as soon as the trigger is typed
+--   p       postfix (not UltiSnips'): the trigger follows an expression and a
+--           dot, which the snippet takes the place of too; the expression is
+--           $POSTFIX (`count.times` -> `Array.from({ length: count })`)
+--
+-- The completion menu offers a snippet only where it expands, and neither a
+-- regex nor an auto-trigger one.
 
 local ls = require('luasnip')
 local expand_conds = require('luasnip.extras.conditions.expand')
@@ -30,8 +36,52 @@ local after_space = expand_conds.trigger_not_preceded_by('%S')
 
 local parse_opts = { trim_empty = false, dedent = false }
 
-local function line_begin_show(line_to_cursor)
-  return line_to_cursor:match('^%s*%S*$') ~= nil
+--- The text before the word being typed, which the completion menu
+--- (blink.cmp) offers snippets for: its words are letters, digits, _ and -,
+--- without leading dashes. (It hands a show_condition the line up to the
+--- character before the cursor: after a lone `-`, nothing.)
+local function before_word()
+  local before = vim.api.nvim_get_current_line():sub(1, vim.api.nvim_win_get_cursor(0)[2])
+  local word = before:match('[%w_-]*$'):gsub('^%-+', '')
+  return before:sub(1, #before - #word)
+end
+
+--- At the beginning of a line, after the trigger's words before the one being
+--- typed, if any (`import ` of `import empty`).
+local function line_begin_show(trigger)
+  return function()
+    return vim.startswith(trigger, before_word():match('^%s*(.*)$'))
+  end
+end
+
+local function after_space_show()
+  local before = before_word()
+  return before == '' or before:match('%s$') ~= nil
+end
+
+--- The expression a postfix snippet follows, from the text before its
+--- trigger: `items.length` from `items.length.`.
+local function postfix_expr(before)
+  return before:match('([%w_$.]*[%w_$])%.$')
+end
+
+local function postfix_show()
+  return postfix_expr(before_word()) ~= nil
+end
+
+--- Expands a postfix snippet in place of the expression and the dot too:
+--- after its trigger, or after the part of it typed when the menu expands it.
+local function postfix_params(_, line_to_cursor, matched)
+  local expr = postfix_expr(line_to_cursor:sub(1, #line_to_cursor - #matched))
+  if not expr then
+    return nil
+  end
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return {
+    trigger = matched,
+    clear_region = { from = { row - 1, col - #matched - 1 - #expr }, to = { row - 1, col } },
+    env_override = { POSTFIX = { expr } },
+  }
 end
 
 --- A snippet: `trigger`, `description`, UltiSnips-like `options`, and a body
@@ -48,11 +98,16 @@ function M.snip(trigger, description, options, body, context)
   options = options or ''
 
   local conditions = {}
+  local show
   if options:find('r', 1, true) then
     context.trig = '\\C' .. trigger
     context.trigEngine = 'vim'
     context.wordTrig = false
     context.hidden = true
+  elseif options:find('p', 1, true) then
+    context.wordTrig = false
+    context.resolveExpandParams = postfix_params
+    show = postfix_show
   elseif options:find('i', 1, true) then
     context.wordTrig = false
   elseif options:find('w', 1, true) then
@@ -60,11 +115,13 @@ function M.snip(trigger, description, options, body, context)
   else
     context.wordTrig = false
     conditions[#conditions + 1] = after_space
+    show = after_space_show
   end
   if options:find('b', 1, true) then
     conditions[#conditions + 1] = expand_conds.line_begin
-    context.show_condition = context.show_condition or line_begin_show
+    show = line_begin_show(trigger)
   end
+  context.show_condition = context.show_condition or show
   if options:find('A', 1, true) then
     context.snippetType = 'autosnippet'
     context.hidden = true

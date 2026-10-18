@@ -2,8 +2,9 @@
 -- (golden/snippets/<file>.snippets.txt), so a new snippet engine or a
 -- converted library can be checked trigger by trigger.
 --
--- Plain triggers are typed at the start of an empty line followed by <Tab>.
--- Regex / auto-trigger snippets need sample input: add it to SAMPLES.
+-- Plain triggers are typed at the start of an empty line followed by <Tab>,
+-- as a person types them, with the completion menu on (probe.expand).
+-- Regex, auto-trigger and postfix snippets need sample input: add it to SAMPLES.
 -- Each result records the text (‸ = cursor), the mode, and the selected
 -- placeholder text when a placeholder is selected.
 
@@ -21,58 +22,18 @@ local SAMPLES = {
     ['#include '] = { { keys = '#include ', auto = true } },
     ['\\v(\\w+)\\.\\.(\\w)'] = { { keys = 'ptr..x', auto = true } },
   },
-  clike_postfix = {
-    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
-    ['\\v(\\S+)\\.if'] = { 'ok.if' },
-    ['\\v(\\S+)\\.else'] = { 'ok.else' },
-    ['\\v(\\S+)\\.(null|nil)'] = { 'p.null', 'p.nil' },
-    ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'p.notnull', 'p.nn' },
-    ['\\v(\\S+)\\.while'] = { 'running.while' },
-    ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
-  },
-  go_postfix = {
-    ['\\v(\\S+)\\.var'] = { 'f(x).var' },
-    ['\\v(\\S+)\\.varr'] = { 'f(x).varr' },
-    ['\\v(\\S+)\\.const'] = { '42.const' },
-    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
-    ['\\v(\\S+)\\.if'] = { 'ok.if' },
-    ['\\v(\\S+)\\.else'] = { 'ok.else' },
-    ['\\v(\\S+)\\.(null|nil)'] = { 'err.nil' },
-    ['\\v(\\S+)\\.(notnull|notnil|nn)'] = { 'err.nn' },
-    ['\\v(\\S+)\\.for'] = { 'items.for' },
-    ['\\v(\\S+)\\.fori'] = { 'items.fori' },
-    ['\\v(\\S+)\\.forv'] = { 'items.forv' },
-    ['\\v(\\S+)\\.while'] = { 'running.while' },
-    ['\\v(\\S+)\\.switch'] = { 'kind.switch' },
-    ['\\v(\\S+)\\.append'] = { 'items.append' },
+  javascript = {
+    times = { 'count.times', 'items.length.times', '{rows.times' },
   },
   markdown = {
     ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
     ['^-\\{3,}'] = { '---' },
-    ['\\v(<|\\s+)br'] = { 'line br' },
-  },
-  proto = {
-    ['\\vrpc (\\w+)'] = { 'rpc GetUser', 'rpc ListUsers', 'rpc CreateUser', 'rpc DeleteUser', 'rpc Ping' },
-    ['\\v(msg|message) (\\w+)'] = {
-      'message GetUserRequest',
-      'msg ListUsersResponse',
-      'message UpdateUserRequest',
-      'message UpdateMultiUsersRequest',
-      'message Plain',
-    },
   },
   ruby = {
-    ['\\v(\\w+)\\.each'] = { 'items.each' },
-    ['\\v(\\w+)\\.eachdo'] = { 'items.eachdo' },
-    ['\\v(\\w+)\\.map'] = { 'items.map' },
-    ['\\v(\\w+)\\.mapdo'] = { 'items.mapdo' },
-  },
-  ruby_postfix = {
-    ['\\v(\\S+)\\.var'] = { 'compute(1).var' },
-    ['\\v(\\S+)\\.par'] = { 'a+b.par' },
-    ['\\v(\\S+)\\.if'] = { 'ok.if' },
-    ['\\v(\\S+)\\.else'] = { 'ok.else' },
-    ['\\v(\\S+)\\.format'] = { 'value.format' },
+    each = { 'items.each', '@items.each' },
+    eachdo = { 'items.eachdo' },
+    map = { 'items.map' },
+    mapdo = { 'items.mapdo' },
   },
   tex = {
     ['\\vtr(\\d+)'] = { 'tr3' },
@@ -90,6 +51,7 @@ end
 local function normalize(text, nvim)
   text = text:gsub(vim.pesc(nvim.dir), '<SANDBOX>')
   text = text:gsub('%d%d%d%d%-%d%d%-%d%d', '<DATE>')
+  text = text:gsub(os.date('%Y'), '<YEAR>')
   return text
 end
 
@@ -147,12 +109,12 @@ local function run_case(name, filetype, case)
   local ext = snippets.extension[filetype] or filetype
   nvim:edit('example/example.' .. ext, case.before or { '' })
   nvim:cmd('set filetype=' .. filetype)
-  probe.disable_completion(nvim)
   nvim:type(case.before and 'Go' or 'A')
-  -- Trigger and <Tab> in one burst: given a moment in between, opfmt
-  -- reformats triggers such as `api-client-general` (see the quirk in
-  -- snippets_spec), and this file pins what each snippet expands to.
-  nvim:type(escape_keys(case.keys) .. (case.auto and '' or '<Tab>'))
+  if case.auto then
+    nvim:type(escape_keys(case.keys))
+  else
+    probe.expand(nvim, escape_keys(case.keys))
+  end
   local choice = resolve_choice(nvim)
   local result = capture(nvim)
   return choice and (choice .. '\n' .. result) or result
@@ -163,13 +125,13 @@ local M = {}
 --- Snippet files per spec file (several spec files run in parallel).
 --- Every snippet file must be listed; snippets_spec checks it.
 M.shards = {
-  { 'all', 'c', 'clike_postfix', 'clike_stmt', 'gitattributes', 'go', 'go_postfix' },
+  { 'all', 'c', 'clike_stmt', 'gitattributes', 'go', 'license' },
   { 'proto' },
-  { 'javascript', 'javascriptreact', 'markdown', 'pg', 'ruby', 'ruby_postfix', 'tex' },
-  { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescript_henry', 'typescriptreact', 'vim' },
+  { 'javascript', 'javascriptreact', 'markdown', 'pg', 'ruby', 'tex' },
+  { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescriptreact', 'vim' },
 }
 
---- Defines one test per snippet (per sample for regex snippets).
+--- Defines one test per snippet (per sample for those that take one).
 function M.define(files)
   for _, name in ipairs(files) do
     local filetype = snippets.filetype[name] or name
@@ -177,7 +139,7 @@ function M.define(files)
     t.describe(('%s.snippets (%s)'):format(name, filetype), function()
       for _, snip in ipairs(snippets.read(name)) do
         local cases
-        if snip.regex or snip.auto then
+        if snip.regex or snip.auto or snip.postfix then
           local samples = (SAMPLES[name] or {})[snip.trigger]
           cases = {}
           for _, sample in ipairs(samples or {}) do
@@ -185,15 +147,19 @@ function M.define(files)
           end
           if #cases == 0 then
             t.it(('/%s/ (line %d)'):format(snip.trigger, snip.line), function()
-              t.skip('regex snippet without sample input; add one to SAMPLES in lib/snippet_library.lua')
+              t.skip('snippet without sample input; add one to SAMPLES in lib/snippet_library.lua')
             end)
           end
         else
           cases = { { keys = snip.trigger } }
         end
         for _, case in ipairs(cases) do
-          local key = snip.regex and ('/%s/ %s'):format(snip.trigger, case.keys) or snip.trigger
-          local label = snip.regex and ('/%s/ with %q'):format(snip.trigger, case.keys) or snip.trigger
+          local key = snip.regex and ('/%s/ %s'):format(snip.trigger, case.keys)
+            or snip.postfix and ('%s %s'):format(snip.trigger, case.keys)
+            or snip.trigger
+          local label = snip.regex and ('/%s/ with %q'):format(snip.trigger, case.keys)
+            or snip.postfix and ('%s with %q'):format(snip.trigger, case.keys)
+            or snip.trigger
           if case.before then
             key = key .. ' (after ' .. table.concat(case.before, '\\n') .. ')'
             label = label .. ' after ' .. vim.inspect(case.before[#case.before])

@@ -35,16 +35,16 @@ attr_reader :$0]]),
 attr_writer :$0]]),
   S.snip('rw', 'attr_accessor', 'b', [[
 attr_accessor :$0]]),
-  S.snip([[\v(\w+)\.each]], '.each { |element| ... }', 'r', [[
-$LS_CAPTURE_1.each { |$1| $0 }]]),
-  S.snip([[\v(\w+)\.eachdo]], '.each do |element| ... end', 'r', [[
-$LS_CAPTURE_1.each do |$1|
+  S.snip('each', '.each { |element| ... }', 'p', [[
+$POSTFIX.each { |$1| $0 }]]),
+  S.snip('eachdo', '.each do |element| ... end', 'p', [[
+$POSTFIX.each do |$1|
 	$0
 end]]),
-  S.snip([[\v(\w+)\.map]], '.map { |element| ... }', 'r', [[
-$LS_CAPTURE_1.each { |$1| $0 }]]),
-  S.snip([[\v(\w+)\.mapdo]], '.map do |element| ... end', 'r', [[
-$LS_CAPTURE_1.map do |$1|
+  S.snip('map', '.map { |element| ... }', 'p', [[
+$POSTFIX.map { |$1| $0 }]]),
+  S.snip('mapdo', '.map do |element| ... end', 'p', [[
+$POSTFIX.map do |$1|
 	$0
 end]]),
 }
