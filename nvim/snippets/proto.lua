@@ -168,22 +168,22 @@ import "google/api/field_behavior.proto";]]),
 (google.api.field_behavior) = IMMUTABLE]]),
   S.snip('import empty', 'import from google/protobuf', 'b', [[
 import "google/protobuf/empty.proto";]]),
-  S.snip('Empty', 'google.protobuf.Empty', 'w', [[
+  S.snip('Empty', 'google.protobuf.Empty', 'b', [[
 google.protobuf.Empty]]),
   S.snip('import field_mask', 'import from google/protobuf', 'b', [[
 import "google/protobuf/field_mask.proto";]]),
-  S.snip('FieldMask', 'google.protobuf.FieldMask', 'w', [[
+  S.snip('FieldMask', 'google.protobuf.FieldMask', 'b', [[
 google.protobuf.FieldMask]]),
   S.snip('update_mask', 'define update_mask', 'b', [[
 // マスク
 google.protobuf.FieldMask update_mask = $1 [ (google.api.field_behavior) = REQUIRED ];]]),
   S.snip('import any', 'import from google/protobuf', 'b', [[
 import "google/protobuf/any.proto";]]),
-  S.snip('Any', 'google.protobuf.Any', 'w', [[
+  S.snip('Any', 'google.protobuf.Any', 'b', [[
 google.protobuf.Any]]),
   S.snip('import date', 'import from google/type', 'b', [[
 import "google/type/date.proto";]]),
-  S.snip('Date', 'google.type.Date', 'w', [[
+  S.snip('Date', 'google.type.Date', 'b', [[
 google.type.Date]]),
   S.snip('pagination', 'pagination request fields', 'b', fmta([[
 // ページサイズ
