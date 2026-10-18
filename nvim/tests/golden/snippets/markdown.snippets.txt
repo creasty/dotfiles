@@ -13,10 +13,8 @@
 -- mode: s, selected: "See details"
 
 === /^-\{3,}/ ---
----<details><summary>See detail‸s</summary>
-
-</details><br>
--- mode: s, selected: "See details"
+--------------------------------------------------------------------------------‸
+-- mode: i
 
 === /\v(<|\s+)br/ line br
 line<br>‸

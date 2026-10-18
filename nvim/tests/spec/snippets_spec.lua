@@ -112,12 +112,50 @@ describe('Snippets', function()
     end)
   end)
 
+  describe('in the completion menu', function()
+    --- The items the menu offers once `text` is typed on a line of its own.
+    local function offered(nvim, text)
+      nvim:cmd('stopinsert')
+      nvim:set_buffer('|')
+      nvim:type('A' .. text)
+      pcall(probe.wait_completion, nvim, { timeout = 300 })
+      return probe.completion(nvim).items
+    end
+
+    it('a line-start snippet only at the start of a line', function()
+      local nvim = buffer_with('javascript', 'app.js')
+      t.contains(offered(nvim, 'cl'), 'clog')
+      t.contains(offered(nvim, '  cl'), 'clog')
+      for _, text in ipairs({ 'x = cl', '-', '-cl', 'user.cl' }) do
+        t.no(vim.tbl_contains(offered(nvim, text), 'clog'), 'clog offered after ' .. text)
+      end
+      t.no(vim.tbl_contains(offered(nvim, '-'), 'lorem'), 'lorem offered after -')
+    end)
+
+    it('a snippet after whitespace only there', function()
+      local nvim = buffer_with('sh', 'script.sh')
+      t.contains(offered(nvim, 'cat a | tee'), 'teepipe')
+      t.no(vim.tbl_contains(offered(nvim, 'cat a |tee'), 'teepipe'), 'teepipe offered after |')
+    end)
+  end)
+
   describe('postfix snippets', function()
     it('typescript: count.times<Tab> makes an array of as many indices', function()
       local nvim = buffer_with('typescript', 'app.ts')
       nvim:type('A')
       probe.expand(nvim, 'const xs = count.times')
       t.buffer(nvim, 'const xs = Array.from({ length: count }, (_, i) => i|)')
+    end)
+
+    it('typescript: the menu offers times after 10.tim, and <Tab> expands it in place of 10.', function()
+      local nvim = buffer_with('typescript', 'app.ts')
+      nvim:type('Aconst xs = 10.tim')
+      probe.wait_completion(nvim, { item = 'times' })
+      nvim:type('<Tab>')
+      nvim:wait_for(function()
+        return nvim:line(1) ~= 'const xs = 10.tim'
+      end)
+      t.buffer(nvim, 'const xs = Array.from({ length: 10 }, (_, i) => i|)')
     end)
   end)
 

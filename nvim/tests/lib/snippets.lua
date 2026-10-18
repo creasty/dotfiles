@@ -50,7 +50,7 @@ local function load_luasnip()
 end
 
 --- Snippets of one file, in order: { trigger, description, options, line,
---- regex, auto }. `line` is where the snippet's definition starts.
+--- regex, auto, postfix }. `line` is where the snippet's definition starts.
 function M.read(name)
   load_luasnip()
   local path = ('%s/%s.lua'):format(M.dir, name)
@@ -73,6 +73,7 @@ function M.read(name)
       line = lines[i],
       regex = def.options:find('r', 1, true) ~= nil,
       auto = def.options:find('A', 1, true) ~= nil,
+      postfix = def.options:find('p', 1, true) ~= nil,
     }
   end
   return result

@@ -4,7 +4,7 @@
 --
 -- Plain triggers are typed at the start of an empty line followed by <Tab>,
 -- as a person types them, with the completion menu on (probe.expand).
--- Regex / auto-trigger snippets need sample input: add it to SAMPLES.
+-- Regex, auto-trigger and postfix snippets need sample input: add it to SAMPLES.
 -- Each result records the text (‸ = cursor), the mode, and the selected
 -- placeholder text when a placeholder is selected.
 
@@ -23,7 +23,7 @@ local SAMPLES = {
     ['\\v(\\w+)\\.\\.(\\w)'] = { { keys = 'ptr..x', auto = true } },
   },
   javascript = {
-    ['\\v([[:alnum:]_$.]+)\\.times'] = { 'count.times', 'items.length.times', '{rows.times' },
+    times = { 'count.times', 'items.length.times', '{rows.times' },
   },
   markdown = {
     ['\\vtb(\\d+x\\d+)'] = { 'tb2x3' },
@@ -142,7 +142,7 @@ M.shards = {
   { 'sh', 'sql', 'bq', 'tla', 'typescript', 'typescriptreact', 'vim' },
 }
 
---- Defines one test per snippet (per sample for regex snippets).
+--- Defines one test per snippet (per sample for those that take one).
 function M.define(files)
   for _, name in ipairs(files) do
     local filetype = snippets.filetype[name] or name
@@ -150,7 +150,7 @@ function M.define(files)
     t.describe(('%s.snippets (%s)'):format(name, filetype), function()
       for _, snip in ipairs(snippets.read(name)) do
         local cases
-        if snip.regex or snip.auto then
+        if snip.regex or snip.auto or snip.postfix then
           local samples = (SAMPLES[name] or {})[snip.trigger]
           cases = {}
           for _, sample in ipairs(samples or {}) do
@@ -158,15 +158,19 @@ function M.define(files)
           end
           if #cases == 0 then
             t.it(('/%s/ (line %d)'):format(snip.trigger, snip.line), function()
-              t.skip('regex snippet without sample input; add one to SAMPLES in lib/snippet_library.lua')
+              t.skip('snippet without sample input; add one to SAMPLES in lib/snippet_library.lua')
             end)
           end
         else
           cases = { { keys = snip.trigger } }
         end
         for _, case in ipairs(cases) do
-          local key = snip.regex and ('/%s/ %s'):format(snip.trigger, case.keys) or snip.trigger
-          local label = snip.regex and ('/%s/ with %q'):format(snip.trigger, case.keys) or snip.trigger
+          local key = snip.regex and ('/%s/ %s'):format(snip.trigger, case.keys)
+            or snip.postfix and ('%s %s'):format(snip.trigger, case.keys)
+            or snip.trigger
+          local label = snip.regex and ('/%s/ with %q'):format(snip.trigger, case.keys)
+            or snip.postfix and ('%s with %q'):format(snip.trigger, case.keys)
+            or snip.trigger
           if case.before then
             key = key .. ' (after ' .. table.concat(case.before, '\\n') .. ')'
             label = label .. ' after ' .. vim.inspect(case.before[#case.before])

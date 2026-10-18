@@ -20,14 +20,14 @@ console.warn(‸);
 })();
 -- mode: i
 
-=== /\v([[:alnum:]_$.]+)\.times/ count.times
+=== times count.times
 Array.from({ length: count }, (_, i) => i‸)
 -- mode: i
 
-=== /\v([[:alnum:]_$.]+)\.times/ items.length.times
+=== times items.length.times
 Array.from({ length: items.length }, (_, i) => i‸)
 -- mode: i
 
-=== /\v([[:alnum:]_$.]+)\.times/ {rows.times
+=== times {rows.times
 {Array.from({ length: rows }, (_, i) => i‸)}
 -- mode: i
