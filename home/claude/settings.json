@@ -9,6 +9,9 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "attribution": {
+    "pr": "<!-- Generated with Claude Code -->"
+  },
   "enabledPlugins": {
     "mcp-server-dev@claude-plugins-official": true
   },
