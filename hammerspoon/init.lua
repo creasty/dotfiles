@@ -55,13 +55,16 @@ local shortcuts = {
 local supers = superkey.new({
   shortcuts = shortcuts,
   -- The application switcher, which S+J and S+K go through, closes as another shortcut acts or S stops
-  before = function(action)
+  on_perform = function(action)
     if action ~= switcher.next and action ~= switcher.previous then switcher.close() end
   end,
-  finish = switcher.close,
+  on_deactivate = switcher.close,
   log = log.e,
   now = function() return hs.timer.absoluteTime() / 1e9 end,
-  after = hs.timer.doAfter,
+  schedule = function(seconds, fn)
+    local timer = hs.timer.doAfter(seconds, fn)
+    return function() timer:stop() end
+  end,
 })
 
 --  Event tap

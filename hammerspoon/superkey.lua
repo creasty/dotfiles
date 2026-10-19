@@ -25,12 +25,12 @@ local function chord_id(codes)
 end
 
 -- opts:
---   shortcuts  { ['S+D+F'] = action, ... }: the actions, by their keys' names in keycodes.lua, the super key first
---   before     function(action), called before a shortcut's action runs
---   finish     function(key), called when a super key stops acting after it performed
---   log        function(message), given an action's error
---   now        function() -> seconds
---   after      function(seconds, fn) -> timer, which :stop() cancels
+--   shortcuts      { ['S+D+F'] = action, ... }: the actions, by their keys' names in keycodes.lua, the super key first
+--   on_perform     function(action), called as a shortcut's action is about to run
+--   on_deactivate  function(key), called as a super key stops acting, after it performed
+--   log            function(message), given an action's error
+--   now            function() -> seconds
+--   schedule       function(seconds, fn) -> function() that cancels it
 function M.new(opts)
   -- [super key][chord id] = action
   local actions = {}
@@ -45,27 +45,27 @@ function M.new(opts)
   end
   local self = setmetatable({
     actions = actions,
-    before = opts.before,
-    finish = opts.finish,
+    on_perform = opts.on_perform,
+    on_deactivate = opts.on_deactivate,
     log = opts.log,
     now = opts.now,
-    after = opts.after,
+    schedule = opts.schedule,
     taken = {}, -- the keys chords took, until their release
   }, M)
   self:reset()
   return self
 end
 
--- Forgets the super key held, finishing it if it acts. The states:
+-- Forgets the super key held, deactivating it if it acts. The states:
 --   idle     none held
 --   held     held, with no other key yet
 --   pending  keys pressed with it, their chord waiting for `delay`
 --   active   chords act as their keys go down
 --   off      acting no more until its release: typing rolled over it, or a key with modifiers ended it
 function M:reset()
-  if self.state == 'active' then self.finish(self.key) end
-  if self.timer then self.timer:stop() end
-  self.timer = nil
+  if self.state == 'active' then self.on_deactivate(self.key) end
+  if self.cancel then self.cancel() end
+  self.cancel = nil
   self.state = 'idle'
   self.key = nil
   self.down_at = nil
@@ -96,9 +96,9 @@ function M:stop()
     end
     self.pressed = {}
   end
-  if self.timer then self.timer:stop() end
-  self.timer = nil
-  if self.state == 'active' then self.finish(self.key) end
+  if self.cancel then self.cancel() end
+  self.cancel = nil
+  if self.state == 'active' then self.on_deactivate(self.key) end
   self.state = 'off'
   return keys
 end
@@ -121,15 +121,16 @@ function M:perform(chord)
   for code in pairs(chord) do table.insert(codes, code) end
   local action = self.actions[self.key][chord_id(codes)]
   if not action then return end
-  self.before(action)
+  self.on_perform(action)
   local ok, err = pcall(action)
   if not ok then self.log(err) end
 end
 
-function M:schedule()
-  if self.timer then self.timer:stop() end
-  self.timer = self.after(delay, function()
-    self.timer = nil
+-- Performs the pending chord once the super key has stayed down for `delay` after its last key
+function M:wait()
+  if self.cancel then self.cancel() end
+  self.cancel = self.schedule(delay, function()
+    self.cancel = nil
     self.state = 'active'
     self.typed = {}
     self:perform(self.chord)
@@ -186,7 +187,7 @@ function M:handle(code, is_down, is_repeat, plain)
   if self.state == 'pending' then
     table.insert(self.typed, { code = code })
     self.chord = copy(self.pressed)
-    self:schedule()
+    self:wait()
   else
     self:perform(copy(self.pressed))
   end
