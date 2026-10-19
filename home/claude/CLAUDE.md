@@ -66,8 +66,10 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
   When I've staged changes, a commit takes exactly what's staged.
 - Once a PR is open and I'm reviewing it, commit and push each verified fix and tell me.
   Ask first for a merge, a push to the default branch, a PR I didn't ask for, or any other rewrite of pushed history.
-- Write commits and PRs for someone who never saw this session.
-  The title states the goal, not the mechanism; the description gives each fix's cause, when it started, and its impact, and the decisions we made in chat.
+- Write commits, issues and PRs for someone who never saw this session.
+  The title states the goal, not the mechanism.
+  The description gives the background and intent (each fix's cause, when it started, and its impact, and the decisions we made in chat), then a summary of the changes; an issue or PR without the repository's template puts them under `## Why` and `## What`.
+  Ask me whenever the Why isn't clear.
   Check each at its source before the PR opens: when something started is the first release that has it, found through every commit that touched it, not the first one you came across.
   Keep the title and description true after every push.
 - Before opening a PR, rename a random branch (`claude/peaceful-curie-r1d11b`) to say what it changes, and run the checks CI runs over the whole repository that read what the change touches; when none does (a bot's settings, docs), run none.
