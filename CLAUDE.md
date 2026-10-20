@@ -13,6 +13,8 @@ What the code and the README don't tell about this repository.
 - **Budgets on CI**: CI's runners measured `zsh -i -c exit` at 68–151 ms over 82 runs (2026-10-01 to 05), as far apart on one config as across configs.
   So the `apply` workflow benchmarks it against 200 ms (`DOTFILES_VERIFY_STARTUP_MS`), where the default is 150 ms (`nix/tests/shell.bats`): a regression fails it only once it more than doubles a typical run.
   Neovim's benchmarks keep their defaults on CI, 150 ms to start (`nvim/tests/spec/startup_spec.lua`) and 16.7 ms to follow a held key (`emacs_keys_spec.lua`), and a pass prints no time, so CI has no numbers for them; if one flakes, give CI its own `E2E_STARTUP_BUDGET_MS` or `E2E_KEY_REPEAT_BUDGET_MS` rather than loosening the default.
+- **Cloud sessions**: nothing runs `etc/claude-cloud-setup`.
+  Anthropic's docs say a cloud session doesn't read `~/.claude/settings.json`, yet it read the one the script writes (seen 2026-10-20): while it still does, `echo $DISABLE_COST_WARNINGS` in a session prints 1.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
 - **Releases a pin follows**: nothing notices when a repository stops tagging the releases a pin follows (`version` in `nvim/lua/user/plugins.lua`, `"tag"` in `home/agents/.skill-lock.json`); Renovate just proposes no more updates.
   GitHub's comparison of its latest tag with its branch (`compare/<tag>...<branch>`) tells how long its changes have waited.
