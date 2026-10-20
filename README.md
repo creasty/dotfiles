@@ -68,6 +68,7 @@ After merging, run `./apply` again, and run `:Lazy restore` in Neovim to check o
 
 - `bin/`: Commands, on `PATH`
 - `config/`: Configs, linked into `~/.config`
+- `etc/`: Files for machines other than this Mac, such as the setup script of [Claude Code's cloud environments](#claude-code-in-the-cloud)
 - `hammerspoon/`: Key bindings, on [Hammerspoon](./hammerspoon/README.md)
   - `tests/`: Specs, on a fake of Hammerspoon's API
 - `home/`: Dotfiles, linked into `~` with a leading dot
@@ -103,6 +104,47 @@ Homebrew Bundle installs the App Store apps of `nix/modules/appstore.nix` with [
 mas can't sign in to the App Store, so sign in before running `./apply`.
 `mas list` shows the IDs of installed apps, and `mas search <name>` those of others.
 mas can't install iPhone and iPad apps, such as Kindle's, so get those from the App Store app.
+
+## Claude Code in the cloud
+
+[Cloud sessions](https://code.claude.com/docs/en/claude-code-on-the-web) run on a VM without this Mac's `~/.claude`.
+A [cloud environment](https://code.claude.com/docs/en/cloud-environments) set up as follows gives them the same `CLAUDE.md` and `settings.json`.
+
+Its setup script runs `etc/claude-cloud-setup` from master, which writes them into the VM's `~/.claude`:
+
+```bash
+#!/bin/bash
+set -o pipefail
+curl -fsSL https://dotfiles.creasty.com/etc/claude-cloud-setup | bash
+```
+
+dotfiles.creasty.com redirects to `raw.githubusercontent.com`, but the VM connects to it first, and the default network access, Trusted, doesn't allow it.
+So set the network access to Custom, with `dotfiles.creasty.com` as an allowed domain and the default list included.
+A failed download fails the setup, so a session doesn't start without them.
+A session has the files as master had them when its setup ran: a VM paused while idle keeps them, and one rebuilt after being reclaimed runs the setup again.
+
+Its environment variables make you the author of the session's commits:
+
+```text
+GIT_AUTHOR_NAME=Yuki Iwanaga
+GIT_AUTHOR_EMAIL=yuki@creasty.com
+```
+
+Leave the committer to the session, which signs its commits as Claude: GitHub checks a signature against the committer's keys, so a commit with `GIT_COMMITTER_*` set shows as unverified.
+
+claude.ai's personal preferences hold the rest:
+
+```text
+Language:
+- Reply in the language the request was written in. An English request gets an English reply.
+- For code, comments, commit messages and PR bodies, follow the language the repository already uses.
+
+When the output is Japanese:
+- 句読点以外の数字・記号は半角文字を使うこと。ただし入力に全角が含まれており、エコーバックする場合のみ全角を使って良いとする。
+
+Pull Requests:
+- Ignore events of pending comments. Wait until the review is submitted before acting on them.
+```
 
 ## Author
 

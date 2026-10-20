@@ -10,7 +10,8 @@
     "defaultMode": "auto"
   },
   "attribution": {
-    "pr": "<!-- Generated with Claude Code -->"
+    "pr": "<!-- Generated with Claude Code -->",
+    "sessionUrl": false
   },
   "enabledPlugins": {
     "mcp-server-dev@claude-plugins-official": true

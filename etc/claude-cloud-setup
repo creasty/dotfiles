@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Writes Claude Code's user files from master, home/claude/CLAUDE.md and settings.json, into a cloud session's VM.
+# The setup script of a Claude Code cloud environment runs it (README.md):
+#
+#   curl -fsSL https://dotfiles.creasty.com/etc/claude-cloud-setup | bash
+
+set -euo pipefail
+
+# On a Mac, ~/.claude links these files into the checkout, which writing them would overwrite
+if [[ $(uname -s) != Linux ]]; then
+  echo "claude-cloud-setup: for a cloud session's VM; ./apply links these files on a Mac" >&2
+  exit 1
+fi
+
+base=https://dotfiles.creasty.com/home/claude
+mkdir -p ~/.claude
+curl -fsSL "$base/CLAUDE.md" -o ~/.claude/CLAUDE.md
+# CLAUDE_CODE_SHELL is the Nix profile's bash, which the VM doesn't have
+curl -fsSL "$base/settings.json" | jq 'del(.env.CLAUDE_CODE_SHELL)' > ~/.claude/settings.json
