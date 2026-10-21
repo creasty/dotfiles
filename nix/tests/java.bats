@@ -30,15 +30,17 @@ jdk_home() {
   assert_like "${lines[1]}" "* \"$version.*"
 }
 
-@test "a .java-version file switches the JDK when changing directories" {
-  local version
+@test "a .java-version file selects the JDK, as N or N.0" {
+  local version name
   for version in $(manifest '.java.versions[]'); do
-    mkdir "$BATS_TEST_TMPDIR/$version"
-    echo "$version" > "$BATS_TEST_TMPDIR/$version/.java-version"
+    for name in "$version" "$version.0"; do
+      mkdir "$BATS_TEST_TMPDIR/$name"
+      echo "$name" > "$BATS_TEST_TMPDIR/$name/.java-version"
 
-    run -0 login_zsh "cd $(q "$BATS_TEST_TMPDIR/$version") && print -r -- \$JAVA_HOME && java -version 2>&1"
-    assert_same_file "${lines[0]}" "$(jdk_home "$version")"
-    assert_like "${lines[1]}" "* \"$version.*"
+      run -0 login_zsh "cd $(q "$BATS_TEST_TMPDIR/$name") && print -r -- \$JAVA_HOME && java -version 2>&1"
+      assert_same_file "${lines[0]}" "$(jdk_home "$version")"
+      assert_like "${lines[1]}" "* \"$version.*"
+    done
   done
 }
 
