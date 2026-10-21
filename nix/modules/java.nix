@@ -4,8 +4,6 @@ let
   # The first is macOS's default JDK
   versions = [
     "25"
-    "21"
-    "17"
   ];
 
   jdk = version: "/opt/homebrew/opt/openjdk@${version}/libexec/openjdk.jdk";
