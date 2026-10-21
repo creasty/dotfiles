@@ -48,8 +48,8 @@ in
       {
         home.packages = [ pkgs.mise ];
 
-        # After the JDKs are registered, which mise would otherwise download
-        home.activation.installRuntimes = lib.hm.dag.entryAfter [ "writeBoundary" "linkJdks" ] ''
+        # After its config is linked, and the JDKs are registered, which mise would otherwise download
+        home.activation.installRuntimes = lib.hm.dag.entryAfter [ "linkDotfiles" "linkJdks" ] ''
           (
             export PATH=${path}
             export CFLAGS=-Wno-error=implicit-function-declaration

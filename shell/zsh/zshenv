@@ -2,6 +2,20 @@ if [ -n "${ZSH_PROF_ENABLED:-}" ]; then
   zmodload zsh/zprof
 fi
 
+# /nix is mounted a few seconds after login, and the apps macOS starts at login can start a shell before: wait for it
+# (at most 30 s), then read /etc/zshenv, which links into it and so wasn't read
+if [[ -d /nix && ! -e /nix/store ]]; then
+  for _ in {1..300}; do
+    [[ -e /nix/store ]] && break
+    sleep 0.1
+  done
+  if [[ -e /nix/store ]]; then
+    source /etc/zshenv
+  else
+    print -u2 'zshenv: /nix is not mounted'
+  fi
+fi
+
 if [ -f ~/.profile ]; then
   source ~/.profile
 fi
