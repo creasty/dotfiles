@@ -3,6 +3,7 @@
 let
   # The first is macOS's default JDK
   versions = [
+    "25"
     "21"
     "17"
   ];
