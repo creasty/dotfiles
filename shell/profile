@@ -65,9 +65,6 @@ export BROWSER=none
 # ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 
-# Android
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-
 #  mise
 #-----------------------------------------------
 # Shims for non-interactive shells; interactive zsh activates mise in .zshrc

@@ -111,7 +111,6 @@ alias rs='bundle exec rails s -b 0.0.0.0'
 
 alias rk='bundle exec rake'
 alias rdbm='rake-db-migrate'
-alias rdba='rake-db-migrate-all'
 
 #  Rust
 #-----------------------------------------------
@@ -129,13 +128,9 @@ alias mc='make clean'
 
 #  Xcode
 #-----------------------------------------------
-# xcodebuild test -scheme foo -destination 'platform=iOS Simulator,name=iPad' | xcpretty -c
-# xctool -scheme foo run-tests -parallelize -sdk iphonesimulator
-
 alias swift='xcrun swift'
 alias swiftc='SDKPATH=$(/usr/bin/env xcrun --show-sdk-path --sdk macosx) xcrun swiftc'
 alias xcb='xcodebuild'
-alias xct='xctool'
 
 #  Gradle
 #-----------------------------------------------
