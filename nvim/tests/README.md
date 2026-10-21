@@ -214,7 +214,9 @@ leaves the cursor at.
   placeholder), the tests pause too. An accepted completion item lands a
   moment after the key (blink.cmp may resolve it with the server first), so
   wait for the text; a dismissed menu closes a moment after it too
-  (`probe.wait_completion_closed()`). Tests that race a plugin's own
+  (`probe.wait_completion_closed()`). Leaving Insert mode strips trailing
+  whitespace 100 ms later (`init.vim`), so read a line that ends in blanks
+  before the `<Esc>`. Tests that race a plugin's own
   internals can be marked `retry`, with a random back-off; a real regression
   fails every attempt.
 
