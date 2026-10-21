@@ -14,6 +14,13 @@ in
 {
   environment.variables = env;
 
+  # postgres and initdb look for their files next to the command they're run as, the profile's (nixpkgs patches them
+  # not to follow the link), so the profile has them too
+  environment.pathsToLink = [
+    "/lib"
+    "/share/postgresql"
+  ];
+
   home-manager.users.${username} =
     { lib, ... }:
     {
