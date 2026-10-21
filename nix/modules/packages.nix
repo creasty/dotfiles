@@ -1,5 +1,12 @@
 # Command-line tools, pinned by flake.lock. Language toolchains are in their own modules.
 { pkgs, username, ... }:
+let
+  # coreutils' timeout alone, which macOS lacks: all of coreutils would put GNU's ls, sed, stat… in front of macOS's
+  timeout = pkgs.runCommand "timeout" { meta.mainProgram = "timeout"; } ''
+    mkdir -p $out/bin
+    ln -s ${pkgs.coreutils}/bin/timeout $out/bin/timeout
+  '';
+in
 {
   home-manager.users.${username}.home.packages = with pkgs; [
     awscli2 # Unified tool to manage your AWS services
@@ -36,8 +43,10 @@
     protobuf # Protocol buffers (Google's data interchange format)
     ripgrep # Search tool like grep and The Silver Searcher
     sd # Intuitive find & replace CLI
+    timeout # Run a command with a time limit
     universal-ctags # Maintained ctags implementation
     uv # Extremely fast Python package installer and resolver, written in Rust
     xh # Friendly and fast tool for sending HTTP requests
+    yq-go # Portable command-line YAML, JSON, XML, CSV, TOML and properties processor
   ];
 }
