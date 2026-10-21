@@ -476,9 +476,13 @@ function Child:floats()
   ]])
 end
 
---- Screen contents as a list of strings (what a TUI would show).
+--- Screen contents as a list of strings (what a TUI would show), with pending
+--- updates drawn first: Neovim draws them only once no events are queued, so
+--- this request can otherwise run before the redraw that shows what the
+--- requests sent before it changed.
 function Child:screen()
   return self:lua([[
+    vim.api.nvim__redraw({ flush = true })
     local rows = {}
     for r = 1, vim.o.lines do
       local cells = {}
