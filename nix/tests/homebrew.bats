@@ -41,3 +41,8 @@ has_external_apps() {
   done < <(manifest '.homebrew.casks[]')
   assert_none "$problems" 'not installed'
 }
+
+@test "Google Japanese Input's cask is pinned" {
+  run brew list --pinned --cask
+  assert_line google-japanese-ime
+}
