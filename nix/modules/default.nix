@@ -1,31 +1,13 @@
 # The Mac, as a nix-darwin configuration. Each module configures one topic, for both the system and the
 # user's home (home-manager).
-{ username, ... }:
+{ lib, username, ... }:
 {
-  imports = [
-    ./1password.nix
-    ./appstore.nix
-    ./links.nix
-    ./homebrew.nix
-    ./packages.nix
-    ./shell.nix
-    ./ssh.nix
-    ./macos.nix
-    ./hammerspoon.nix
-    ./kitty.nix
-    ./neovim.nix
-    ./vscode.nix
-    ./skills.nix
-    ./docker.nix
-    ./postgresql.nix
-    ./mise.nix
-    ./java.nix
-    ./go.nix
-    ./rust.nix
-    ./swift.nix
-    ./flutter.nix
-    ./verify.nix
-  ];
+  # Every other .nix file here, with no list to maintain
+  imports = map (file: ./. + "/${file}") (
+    lib.filter (file: lib.hasSuffix ".nix" file && file != "default.nix") (
+      lib.attrNames (builtins.readDir ./.)
+    )
+  );
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
