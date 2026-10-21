@@ -47,7 +47,8 @@ FileVault keeps the /nix volume locked until `determinate-nixd init` unlocks it,
 Until then a link into the Nix store dangles: kitty came up without its config, and the Claude app, which resolves the login shell's environment once at start, would have run every session without Nix's tools.
 So `nix/modules/links.nix` links the dotfiles straight into the checkout, and `shell/zsh/zshenv` waits for /nix before reading `/etc/zshenv`, which links into it.
 What home-manager links itself (`home.file`, `xdg.dataFile`) and the agent skills still go through the store.
-Remove both once /nix is mounted before loginwindow reopens apps: a restart's unified log has `determinate-nixd`'s mount before loginwindow's `persistentAppPreLaunch`.
+Remove both once /nix is mounted before loginwindow starts: in a restart's unified log, diskarbitrationd's `mounted disk` for the volume comes before launchd spawns `loginwindow`.
+A restart in which /nix merely beats the reopened apps doesn't tell: on 2026-10-22 the unlock took 1.3 s instead of 4.6 s, and /nix was mounted 0.2 s before macOS reopened kitty.
 
 ## The picker's toggles in its title
 
