@@ -25,9 +25,6 @@ export PATH="$PATH:$GOPATH/bin"
 # Rust
 export PATH="$PATH:$HOME/.cargo/bin"
 
-# libpq
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
 # Dart
 export PATH="$PATH:$HOME/.pub-cache/bin"
 

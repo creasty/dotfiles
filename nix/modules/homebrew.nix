@@ -1,4 +1,5 @@
-# Apps (casks), and the formulae nixpkgs doesn't have or can't replace. ./apply installs Homebrew itself.
+# Apps (casks). The formulae nixpkgs doesn't have or can't replace are in the modules that need them. ./apply installs
+# Homebrew itself.
 { ... }:
 let
   # brew upgrade leaves the casks that update themselves (auto_updates) to their own updaters: upgrading one replaces
@@ -39,12 +40,6 @@ in
       "syntax-highlight" # https://github.com/sbarex/SourceCodeSyntaxHighlight
       "tableplus" # https://tableplus.io/
       "tunnelbear" # https://www.tunnelbear.com/
-    ];
-
-    brews = [
-      "icu4c" # for the charlock_holmes gem (home/bundle/config)
-      "libiconv" # Conversion library
-      "libpq" # psql and pg_dump of the latest PostgreSQL (on PATH through shell/profile)
     ];
   };
 }
