@@ -25,9 +25,6 @@ export PATH="$PATH:$GOPATH/bin"
 # Rust
 export PATH="$PATH:$HOME/.cargo/bin"
 
-# libpq
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
 # Dart
 export PATH="$PATH:$HOME/.pub-cache/bin"
 
@@ -67,9 +64,6 @@ export BROWSER=none
 
 # ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
-
-# Android
-export ANDROID_HOME="$HOME/Library/Android/sdk"
 
 #  mise
 #-----------------------------------------------
