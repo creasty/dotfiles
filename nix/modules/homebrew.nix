@@ -1,13 +1,23 @@
 # Apps (casks). The formulae nixpkgs doesn't have or can't replace are in the modules that need them. ./apply installs
 # Homebrew itself.
-{ ... }:
+{ username, ... }:
 let
   # brew upgrade leaves the casks that update themselves (auto_updates) to their own updaters: upgrading one replaces
   # the app under its running process, which breaks Chrome's new tabs until it restarts
   env.HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS = "1";
+
+  brew = "sudo --user=${username} --set-home /opt/homebrew/bin/brew";
 in
 {
   environment.variables = env;
+
+  # Google Japanese Input updates itself too, though its cask doesn't say so: pinned, brew upgrade leaves it alone.
+  # Upgrading it uninstalls the input method first, which leaves macOS without it.
+  system.activationScripts.postActivation.text = ''
+    if ! ${brew} list --pinned --cask | grep -qx google-japanese-ime; then
+      ${brew} pin --cask google-japanese-ime
+    fi
+  '';
 
   homebrew = {
     enable = true;
