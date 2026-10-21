@@ -359,7 +359,7 @@ local function enter(nvim, name, lines, opts)
     nvim:cmd('undo')
   end
   local after = nvim:lines()
-  nvim:cmd('stopinsert')
+  nvim:stopinsert()
   return after
 end
 

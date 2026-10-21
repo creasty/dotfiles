@@ -214,7 +214,9 @@ leaves the cursor at.
   placeholder), the tests pause too. An accepted completion item lands a
   moment after the key (blink.cmp may resolve it with the server first), so
   wait for the text; a dismissed menu closes a moment after it too
-  (`probe.wait_completion_closed()`). Tests that race a plugin's own
+  (`probe.wait_completion_closed()`). Leaving Insert mode strips trailing
+  whitespace 100 ms later (`init.vim`), so read a line that ends in blanks
+  before the `<Esc>`. Tests that race a plugin's own
   internals can be marked `retry`, with a random back-off; a real regression
   fails every attempt.
 
@@ -242,10 +244,10 @@ end)
 ```
 
 - Child: `type`, `press`, `set_buffer`, `buffer`, `lines`, `line`, `cursor`,
-  `mode`, `wait_for`, `wait_mode`, `cmd`, `exec`, `eval`, `call`, `lua`,
-  `edit`, `files`, `path`, `read_file`, `floats`, `screen`, `statusline`,
-  `tabline`, `messages`, `getreg`; with `tui = true`, `wait_output`,
-  `cursor_shapes`, `close_terminal` (see `lib/child.lua`).
+  `mode`, `wait_for`, `wait_mode`, `stopinsert`, `cmd`, `exec`, `eval`,
+  `call`, `lua`, `edit`, `files`, `path`, `read_file`, `floats`, `screen`,
+  `statusline`, `tabline`, `messages`, `getreg`; with `tui = true`,
+  `wait_output`, `cursor_shapes`, `close_terminal` (see `lib/child.lua`).
 - Assertions: `eq`, `neq`, `ok`, `no`, `match`, `no_match`, `contains`,
   `buffer`, `golden_section` (see `lib/t.lua`).
 - Options: `t.it(name, fn, { timeout = ms, retry = n, tags = { 'bench' } })`,

@@ -249,12 +249,12 @@ describe('Editing keys', function()
       local nvim = t.nvim()
       -- (the first i and : load plugins, so the keys can land a moment after
       -- type() returns)
-      nvim:type('i<C-\\><Tab><Esc>')
+      nvim:type('i<C-\\><Tab>')
       nvim:wait_for(function()
         return nvim:line(1) ~= ''
       end, { message = 'the typed keys' })
       t.eq({ '\t' }, nvim:lines())
-      nvim:type(':<C-\\><Tab>')
+      nvim:type('<Esc>:<C-\\><Tab>')
       nvim:wait_for(function()
         return nvim:call('getcmdline') ~= ''
       end, { message = 'the typed keys' })

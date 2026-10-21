@@ -314,6 +314,14 @@ function Child:wait_mode(mode, opts)
   return self
 end
 
+--- Leaves Insert mode, and returns once Neovim has. :stopinsert takes effect
+--- only when Neovim has no more events queued, so requests sent after it can
+--- still run in Insert mode, and a cursor they set then moves a column left.
+function Child:stopinsert()
+  self:cmd('stopinsert')
+  return self:wait_mode('n')
+end
+
 function Child:lines(buf)
   return self:request('nvim_buf_get_lines', buf or 0, 0, -1, false)
 end
@@ -468,9 +476,13 @@ function Child:floats()
   ]])
 end
 
---- Screen contents as a list of strings (what a TUI would show).
+--- Screen contents as a list of strings (what a TUI would show), with pending
+--- updates drawn first: Neovim draws them only once no events are queued, so
+--- this request can otherwise run before the redraw that shows what the
+--- requests sent before it changed.
 function Child:screen()
   return self:lua([[
+    vim.api.nvim__redraw({ flush = true })
     local rows = {}
     for r = 1, vim.o.lines do
       local cells = {}
