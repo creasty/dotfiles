@@ -314,6 +314,14 @@ function Child:wait_mode(mode, opts)
   return self
 end
 
+--- Leaves Insert mode, and returns once Neovim has. :stopinsert takes effect
+--- only when Neovim has no more events queued, so requests sent after it can
+--- still run in Insert mode, and a cursor they set then moves a column left.
+function Child:stopinsert()
+  self:cmd('stopinsert')
+  return self:wait_mode('n')
+end
+
 function Child:lines(buf)
   return self:request('nvim_buf_get_lines', buf or 0, 0, -1, false)
 end

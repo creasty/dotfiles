@@ -242,10 +242,10 @@ end)
 ```
 
 - Child: `type`, `press`, `set_buffer`, `buffer`, `lines`, `line`, `cursor`,
-  `mode`, `wait_for`, `wait_mode`, `cmd`, `exec`, `eval`, `call`, `lua`,
-  `edit`, `files`, `path`, `read_file`, `floats`, `screen`, `statusline`,
-  `tabline`, `messages`, `getreg`; with `tui = true`, `wait_output`,
-  `cursor_shapes`, `close_terminal` (see `lib/child.lua`).
+  `mode`, `wait_for`, `wait_mode`, `stopinsert`, `cmd`, `exec`, `eval`,
+  `call`, `lua`, `edit`, `files`, `path`, `read_file`, `floats`, `screen`,
+  `statusline`, `tabline`, `messages`, `getreg`; with `tui = true`,
+  `wait_output`, `cursor_shapes`, `close_terminal` (see `lib/child.lua`).
 - Assertions: `eq`, `neq`, `ok`, `no`, `match`, `no_match`, `contains`,
   `buffer`, `golden_section` (see `lib/t.lua`).
 - Options: `t.it(name, fn, { timeout = ms, retry = n, tags = { 'bench' } })`,

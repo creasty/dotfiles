@@ -115,7 +115,7 @@ describe('Snippets', function()
   describe('in the completion menu', function()
     --- The items the menu offers once `text` is typed on a line of its own.
     local function offered(nvim, text)
-      nvim:cmd('stopinsert')
+      nvim:stopinsert()
       nvim:set_buffer('|')
       nvim:type('A' .. text)
       pcall(probe.wait_completion, nvim, { timeout = 300 })
