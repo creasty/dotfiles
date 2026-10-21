@@ -17,6 +17,7 @@
     ./vscode.nix
     ./skills.nix
     ./docker.nix
+    ./postgresql.nix
     ./mise.nix
     ./java.nix
     ./go.nix
