@@ -14,6 +14,7 @@ alias df='df -h'
 alias tf='tail -f'
 alias less='less -R'
 
+alias sort='LC_ALL=C sort'
 alias path='echo -e ${PATH//:/\\n}'
 alias :q='exit'
 
