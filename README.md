@@ -108,7 +108,7 @@ mas can't install iPhone and iPad apps, such as Kindle's, so get those from the 
 ## Claude Code in the cloud
 
 [Cloud sessions](https://code.claude.com/docs/en/claude-code-on-the-web) run on a VM without this Mac's `~/.claude`.
-A [cloud environment](https://code.claude.com/docs/en/cloud-environments) set up as follows gives them the same `CLAUDE.md` and `settings.json`.
+A [cloud environment](https://code.claude.com/docs/en/cloud-environments) set up as follows gives them the same `CLAUDE.md` and `settings.json`, and leaves out `rules/`, which holds what's true only on this Mac.
 
 Its setup script runs `etc/claude-cloud-setup` from master, which writes them into the VM's `~/.claude`:
 

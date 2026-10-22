@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-A repository's own CLAUDE.md adds what's particular to it, and wins where the two differ.
+A repository's own CLAUDE.md adds what's particular to it, and wins where it differs from mine.
 
 ## Talking with me
 
@@ -10,6 +10,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
 - "Do we need X?" about something that exists usually means we don't: remove X, or give the concrete reason it stays.
   Any other question, "explain" or "propose" gets its answer in chat, direct answer first; files wait until I've chosen.
 - When behavior is hard to follow in text (ordering, timing, state), draw it, as an inline visual or an artifact.
+- Give me times in JST.
 
 ## Decisions
 
@@ -23,7 +24,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
 
 ## Evidence
 
-- Take the answer from the thing itself, measured rather than reasoned about: run it, and read the implementation and its tests (a sibling repository's too, at `~/go/src/github.com/<owner>/<repo>`), the deployed page, the published package, the pixels.
+- Take the answer from the thing itself, measured rather than reasoned about: run it, and read the implementation and its tests (a sibling repository's too), the deployed page, the published package, the pixels.
   A schema, a doc, a blog post, a name or what I remember is a lead to check.
   A finding an earlier session measured stands until you measure otherwise, except machine state (versions, paths, configs), which you check again.
 - Report what you ran and what came back, and say up front what's untested, unread, left out or failed (a subagent's usage limit, a run that never happened); redo what failed.
@@ -76,17 +77,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where the tw
 - I squash-merge PRs myself; "#N merged" means fetch, rebase what's next onto it, force-push that branch with lease, and carry on.
 - In GitHub bodies, comments and release notes, a newline renders as a line break: write each paragraph on one line, and backtick any `@name` that isn't a mention.
 
-## This machine
+## Confidentiality
 
-- It's shared: several sessions and worktrees run at once.
-  Stop only what you started, through its handle (TaskStop, preview_stop) or a PID you captured, never by name, pattern or port; when a port is taken, use another.
-  Stop your servers when you're done unless I'm looking at them.
-- Never load it to make a race or a flaky test show up (CPU-hogging processes, parallel loops of a test): run such a load on CI, or in an isolated Docker container capped with `--cpus` and `--memory`.
-- I work in the desktop app, locally and in the cloud: push before handing work to a cloud session.
-- Give me times in JST.
 - Keep secrets out of repositories, URLs, logs and messages; read them at the point of use.
 - What's in a private repository stays out of public repositories and published artifacts unless I say otherwise.
-
-## Memory
-
-- A lesson that holds in every repository and changes your default belongs here, `home/claude/CLAUDE.md` in creasty/dotfiles: propose it rather than saving it to one project's memory.
