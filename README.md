@@ -135,9 +135,6 @@ Language:
 
 When the output is Japanese:
 - 句読点以外の数字・記号は半角文字を使うこと。ただし入力に全角が含まれており、エコーバックする場合のみ全角を使って良いとする。
-
-Pull Requests:
-- Ignore events of pending comments. Wait until the review is submitted before acting on them.
 ```
 
 ## Author

@@ -67,6 +67,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
   When I've staged changes, a commit takes exactly what's staged.
 - Once a PR is open and I'm reviewing it, commit and push each verified fix and tell me.
   Ask first for a merge, a push to the default branch, a PR I didn't ask for, or any other rewrite of pushed history.
+- Act on review comments once their review is submitted; ignore events of pending ones.
 - Write commits, issues and PRs for someone who never saw this session.
   The title states the goal, not the mechanism.
   The description gives the background and intent (each fix's cause, when it started, and its impact, and the decisions we made in chat), then a summary of the changes; an issue or PR without the repository's template puts them under `## Why` and `## What`, alongside any other sections it needs.
