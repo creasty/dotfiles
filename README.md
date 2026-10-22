@@ -123,13 +123,7 @@ So set the network access to Custom, with `dotfiles.creasty.com` as an allowed d
 A failed download fails the setup, so a session doesn't start without them.
 A session has the files as master had them when its setup ran: a VM paused while idle keeps them, and one rebuilt after being reclaimed runs the setup again.
 
-Its environment variables make you the author of the session's commits:
-
-```text
-GIT_AUTHOR_NAME=Yuki Iwanaga
-GIT_AUTHOR_EMAIL=yuki@creasty.com
-```
-
+`settings.json` sets `GIT_AUTHOR_NAME` and `GIT_AUTHOR_EMAIL` to the identity in `config/git/config`, which makes you the author of the session's commits, so the environment needs no variables.
 Leave the committer to the session, which signs its commits as Claude: GitHub checks a signature against the committer's keys, so a commit with `GIT_COMMITTER_*` set shows as unverified.
 
 claude.ai's personal preferences hold the rest:

@@ -4,7 +4,9 @@
     "CLAUDE_AFK_TIMEOUT_MS": "2147483647",
     "CLAUDE_CODE_SHELL": "/run/current-system/sw/bin/bash",
     "CLAUDE_CODE_USER_DIALOG_TIMEOUT_MS": "0",
-    "DISABLE_COST_WARNINGS": "1"
+    "DISABLE_COST_WARNINGS": "1",
+    "GIT_AUTHOR_NAME": "Yuki Iwanaga",
+    "GIT_AUTHOR_EMAIL": "yuki@creasty.com"
   },
   "permissions": {
     "defaultMode": "auto"
