@@ -2,7 +2,8 @@
 
 #  General
 #-----------------------------------------------
-export LANG=en_US.UTF-8
+# Code-point order, and Linux servers have it where en_US.UTF-8 may be missing (ssh sends it: SendEnv in /etc/ssh/ssh_config)
+export LANG=C.UTF-8
 export LC_ALL=$LANG
 
 export EDITOR=nvim
