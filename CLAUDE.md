@@ -76,3 +76,11 @@ Such a tap can't go in `homebrew.taps`, which nix-darwin taps with that check. I
 - Install the formula by its full name, with its tap unlisted: installing taps it without the check, and nix-darwin trusts the formula itself (`trusted`, for Homebrew's `HOMEBREW_REQUIRE_TAP_TRUST`).
   `nix/modules/java.nix` installs `jetbrains/utils/kotlin-lsp` so, until kotlin-lsp has a URL outside `on_macos` too and its tap can be listed.
 - Or take the tool from nixpkgs, as `nix/modules/1password.nix` does 1Password's CLI: Homebrew refuses `1password/tap`.
+
+## gcloud's placeholder token in cloud sessions
+
+A cloud session's VM sets `CLOUDSDK_AUTH_ACCESS_TOKEN=proxy-injected`, a placeholder its proxy replaces with a token only when the environment has a GCP network secret (seen in October 2026).
+gcloud uses it over the account it's logged in to, so `gcloud`, `bq` and `docker-credential-gcloud` send the placeholder and fail, and `gcloud auth print-access-token` prints it as if logged in.
+Setting it to `""`, in a project's `settings.json` `env` or in the environment's variables, leaves the placeholder, and `CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE` doesn't take its place.
+So `etc/claude-cloud-setup` unsets it on the first line of `~/.bashrc`, above the return that skips the rest in a non-interactive shell, as Claude's commands run; that also turns off the proxy's injection.
+Remove it once the VM leaves the variable unset without a GCP secret: in a new session without the line, `[ -n "${CLOUDSDK_AUTH_ACCESS_TOKEN+x}" ] && echo set || echo unset` prints `unset`.
