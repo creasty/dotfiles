@@ -4,12 +4,13 @@
 
 load helper
 
-@test "the home directory links into the dotfiles" {
+# Straight, not through the Nix store: the apps macOS starts at login read them before /nix is mounted
+@test "the home directory links straight into the dotfiles" {
   local target source problems=''
   while IFS=$'\t' read -r target source; do
-    [[ -L $HOME/$target && $HOME/$target -ef $DOTFILES_PATH/$source ]] || problems+="$target -> $source"$'\n'
+    [[ $(readlink "$HOME/$target") == "$DOTFILES_PATH/$source" ]] || problems+="$target -> $source"$'\n'
   done < <(manifest '.links | to_entries | .[] | [.key, .value] | @tsv')
-  assert_none "$problems" 'not linked'
+  assert_none "$problems" 'not linked straight'
 }
 
 @test "git reads its config from the dotfiles" {

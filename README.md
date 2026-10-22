@@ -90,7 +90,7 @@ Files are linked into the home directory by where they are in the repository, wi
 | `config/<path>` | `~/.config/<path>` (`config/git/config` → `~/.config/git/config`) |
 
 The modules link the rest: `nvim/`, `hammerspoon/`, the shell files and VS Code's settings.
-Links point into the checkout, so edits apply without a rebuild.
+Links point straight into the checkout, not through the Nix store: edits apply without a rebuild, and the apps macOS starts at login find their configs before `/nix` is mounted.
 
 ### Packages
 
