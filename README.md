@@ -110,7 +110,7 @@ mas can't install iPhone and iPad apps, such as Kindle's, so get those from the 
 [Cloud sessions](https://code.claude.com/docs/en/claude-code-on-the-web) run on a VM without this Mac's `~/.claude`.
 A [cloud environment](https://code.claude.com/docs/en/cloud-environments) set up as follows gives them the same `CLAUDE.md` and `settings.json`, and leaves out `rules/`, which holds what's true only on this Mac.
 
-Its setup script runs `etc/claude-cloud-setup` from master, which writes them into the VM's `~/.claude`:
+Its setup script runs `etc/claude-cloud-setup` from master, which writes them into the VM's `~/.claude` and has gcloud use the account you log in with:
 
 ```bash
 #!/bin/bash
@@ -123,13 +123,7 @@ So set the network access to Custom, with `dotfiles.creasty.com` as an allowed d
 A failed download fails the setup, so a session doesn't start without them.
 A session has the files as master had them when its setup ran: a VM paused while idle keeps them, and one rebuilt after being reclaimed runs the setup again.
 
-Its environment variables make you the author of the session's commits:
-
-```text
-GIT_AUTHOR_NAME=Yuki Iwanaga
-GIT_AUTHOR_EMAIL=yuki@creasty.com
-```
-
+`settings.json` sets `GIT_AUTHOR_NAME` and `GIT_AUTHOR_EMAIL` to the identity in `config/git/config`, which makes you the author of the session's commits, so the environment needs no variables.
 Leave the committer to the session, which signs its commits as Claude: GitHub checks a signature against the committer's keys, so a commit with `GIT_COMMITTER_*` set shows as unverified.
 
 claude.ai's personal preferences hold the rest:
@@ -141,9 +135,6 @@ Language:
 
 When the output is Japanese:
 - 句読点以外の数字・記号は半角文字を使うこと。ただし入力に全角が含まれており、エコーバックする場合のみ全角を使って良いとする。
-
-Pull Requests:
-- Ignore events of pending comments. Wait until the review is submitted before acting on them.
 ```
 
 ## Author
