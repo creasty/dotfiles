@@ -6,7 +6,8 @@
     "CLAUDE_CODE_USER_DIALOG_TIMEOUT_MS": "0",
     "DISABLE_COST_WARNINGS": "1",
     "GIT_AUTHOR_NAME": "Yuki Iwanaga",
-    "GIT_AUTHOR_EMAIL": "yuki@creasty.com"
+    "GIT_AUTHOR_EMAIL": "yuki@creasty.com",
+    "LANG": "C.UTF-8"
   },
   "permissions": {
     "defaultMode": "auto"
