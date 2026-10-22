@@ -44,7 +44,7 @@ jobs:
 
   nvim-e2e:
     # Same OS as the machine the behavior was pinned on.
-    runs-on: macos-14
+    runs-on: macos-26
     timeout-minutes: 45
     env:
       # Toolchain versions the plugins were pinned with: those nixpkgs
