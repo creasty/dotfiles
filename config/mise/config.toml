@@ -9,7 +9,7 @@ ruby = "4.0.7"
 # still has them. npm's run on the project's Node; RubyGems' on the Ruby they were installed with, unless the
 # project's Ruby has its own (e.g. from its bundle).
 "npm:@antfu/ni" = "30.6.0"
-"npm:@github/copilot-language-server" = "1.555.2"
+"npm:@github/copilot-language-server" = "1.555.3"
 "npm:@openai/codex" = "0.163.0"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.13.0"
