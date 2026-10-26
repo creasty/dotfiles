@@ -34,24 +34,6 @@
     },
     {
       "customType": "regex",
-      "description": "The agent skills, each at a commit of its repository's default branch",
-      "managerFilePatterns": ["/^home/agents/\\.skill-lock\\.json$/"],
-      "matchStrings": [
-        "\"(?<depName>[^\"]+)\": \\{[^{}]*?\"sourceUrl\": \"(?<packageName>[^\"]+)\",\\s*\"ref\": \"(?<currentDigest>[0-9a-f]{40})\""
-      ],
-      "datasourceTemplate": "git-refs"
-    },
-    {
-      "customType": "regex",
-      "description": "The agent skills that follow their repository's releases, each at a tag's commit",
-      "managerFilePatterns": ["/^home/agents/\\.skill-lock\\.json$/"],
-      "matchStrings": [
-        "\"(?<depName>[^\"]+)\": \\{[^{}]*?\"sourceUrl\": \"(?<packageName>[^\"]+)\",\\s*\"tag\": \"(?<currentValue>[^\"]+)\",\\s*\"ref\": \"(?<currentDigest>[0-9a-f]{40})\""
-      ],
-      "datasourceTemplate": "git-tags"
-    },
-    {
-      "customType": "regex",
       "description": "Sources Nix fetches at a release's commit, with builtins.fetchGit",
       "managerFilePatterns": ["/^nix/modules/.+\\.nix$/"],
       "matchStrings": [
@@ -59,6 +41,17 @@
       ],
       "depNameTemplate": "{{{replace 'https://github.com/' '' packageName}}}",
       "datasourceTemplate": "git-tags"
+    },
+    {
+      "customType": "regex",
+      "description": "Sources Nix fetches at a commit of the branch they follow, with builtins.fetchGit",
+      "managerFilePatterns": ["/^nix/modules/.+\\.nix$/"],
+      "matchStrings": [
+        "url = \"(?<packageName>[^\"]+)\";\\s*ref = \"refs/heads/(?<currentValue>[^\"]+)\";\\s*rev = \"(?<currentDigest>[0-9a-f]{40})\";"
+      ],
+      "depNameTemplate": "{{{replace 'https://github.com/' '' packageName}}}",
+      "datasourceTemplate": "git-refs",
+      "versioningTemplate": "git"
     }
   ],
   "packageRules": [
@@ -102,7 +95,7 @@
       "groupName": "Neovim plugins"
     },
     {
-      "matchFileNames": ["home/agents/.skill-lock.json"],
+      "matchFileNames": ["nix/modules/skills.nix"],
       "groupName": "agent skills"
     },
     {

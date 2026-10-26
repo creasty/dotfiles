@@ -1,65 +1,88 @@
-# Agent skills. `npx skills add -g` records what it installs in ~/.agents/.skill-lock.json, which is linked to
-# home/agents/.skill-lock.json, and each skill's `ref` there pins the commit of its repository a switch installs it
-# from; Renovate moves the commits. Pin a new skill as you add it, with `npx skills add <owner/repo>#<commit> -g`:
-# `gh skill install` rewrites the lock without `ref`.
-#
-# A skill whose repository tags a release of each change within weeks follows its releases: `ref` is a release's
-# commit, and the `"tag"` you add right before `ref` names that release, by which Renovate looks up newer ones to move
-# both to. `npx skills add` drops the tag when it adds the skill again. The others follow the default branch.
-{
-  lib,
-  username,
-  ...
-}:
+# Agent skills, linked for Claude Code (~/.claude/skills) and Codex (~/.agents/skills).
+# Each repository is pinned at the commit (`rev`) of the tag or branch its `ref` names, which Renovate moves: a release
+# for a repository that tags one of each change within weeks, its default branch for the others.
+# `git ls-remote <url> <ref>` prints the commit, a tag's on the line ending in ^{} when there is one.
+{ lib, username, ... }:
 let
-  lock = lib.importJSON ../../home/agents/.skill-lock.json;
+  repositories = [
+    {
+      url = "https://github.com/brycehamrick/editorial-skills";
+      ref = "refs/heads/main";
+      rev = "4043b9625b5751f5b8c65de6bf08ce6ce65ae88a";
+      skills = lib.genAttrs [
+        "editorial-context"
+        "editorial-copy"
+        "editorial-development"
+        "editorial-line"
+        "editorial-proof"
+        "editorial-structural"
+        "editorial-translation"
+        "editorial-typesetting"
+      ] (name: "skills/${name}");
+    }
+    {
+      url = "https://github.com/coreyhaines31/marketingskills";
+      ref = "refs/tags/v2.13.0";
+      rev = "e85f3cbc2e4a79bf33b2a12e9bdd9087d414735b";
+      skills.copy-editing = "skills/copy-editing";
+    }
+    {
+      url = "https://github.com/github/gh-stack";
+      ref = "refs/tags/v0.2.1";
+      rev = "29a36d314be664583705f18e41cebdf2b61ad514";
+      skills.gh-stack = "skills/gh-stack";
+    }
+    {
+      url = "https://github.com/Leonxlnx/taste-skill";
+      ref = "refs/heads/main";
+      rev = "6010f91a9935f1c167dfc500fb1a475681892e6b";
+      skills.design-taste-frontend = "skills/taste-skill";
+    }
+    {
+      url = "https://github.com/mattpocock/skills";
+      ref = "refs/tags/v1.3.1";
+      rev = "24fe0ef7737efae15c87225755e9f6f5965e4888";
+      skills = {
+        grilling = "skills/productivity/grilling";
+        handoff = "skills/productivity/handoff";
+        writing-for-agents = "skills/productivity/writing-for-agents";
+      };
+    }
+    {
+      url = "https://github.com/nanaism/yomiyasu";
+      ref = "refs/tags/v2.4.0";
+      rev = "ae258d7a57b335673e30b88a018ae08d4f72c449";
+      skills.yomiyasu = "skills/yomiyasu";
+    }
+  ];
 
-  # The skill's directory in its repository at the pinned commit (github/gh-stack's skills/gh-stack), on its own: Codex
-  # names a skill after the plugin of a manifest it finds above it (mattpocock/skills' .claude-plugin/plugin.json)
-  folder =
-    name: skill:
-    if skill ? ref then
-      builtins.path {
-        path = "${
-          builtins.fetchGit {
-            url = skill.sourceUrl;
-            rev = skill.ref;
-            # (only that commit: some repositories carry large histories)
-            shallow = true;
-          }
-        }/${dirOf skill.skillPath}";
-        inherit name;
-      }
-    else
-      throw "home/agents/.skill-lock.json: ${name} has no \"ref\", the commit of ${skill.sourceUrl} to install it from";
-
-  folders = lib.mapAttrs folder lock.skills;
+  # Each skill's directory in its repository, on its own: Codex names a skill after the plugin of a manifest it finds
+  # above it (mattpocock/skills' .claude-plugin/plugin.json)
+  skills = lib.mergeAttrsList (
+    map (
+      repository:
+      let
+        source = builtins.fetchGit {
+          inherit (repository) url ref rev;
+          # (only that commit: some repositories carry large histories)
+          shallow = true;
+        };
+      in
+      lib.mapAttrs (
+        name: dir:
+        builtins.path {
+          path = "${source}/${dir}";
+          inherit name;
+        }
+      ) repository.skills
+    ) repositories
+  );
 in
 {
-  home-manager.users.${username} =
-    { lib, ... }:
-    {
-      # Each skill in ~/.agents/skills, where Codex reads it, as a link into the Nix store; ~/.claude/skills links to
-      # it for Claude Code, as `npx skills add -g` lays them out. A link replaces whatever is there: a copy a CLI
-      # installed, or the skill at another commit.
-      home.activation.installSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        (
-          link() {
-            if [ "$(readlink "$2")" != "$1" ]; then
-              run rm -rf "$2"
-              run ln -s "$1" "$2"
-            fi
-          }
-          run mkdir -p "$HOME/.agents/skills" "$HOME/.claude/skills"
-          ${lib.concatStrings (
-            lib.mapAttrsToList (name: folder: ''
-              link ${lib.escapeShellArg folder} "$HOME/.agents/skills/"${lib.escapeShellArg name}
-              link ../../.agents/skills/${lib.escapeShellArg name} "$HOME/.claude/skills/"${lib.escapeShellArg name}
-            '') folders
-          )}
-        )
-      '';
-    };
+  home-manager.users.${username}.home.file = lib.concatMapAttrs (name: folder: {
+    ".agents/skills/${name}".source = folder;
+    ".claude/skills/${name}".source = folder;
+  }) skills;
 
-  dotfiles.manifest.skills = folders;
+  dotfiles.manifest.skills = skills;
 }
