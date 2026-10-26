@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 #
-# Writes Claude Code's user files from master, home/claude/CLAUDE.md and settings.json and the skills in
-# cloud/claude/skills/, into a cloud session's VM, and has its shells drop the placeholder token that keeps gcloud from
-# using the account you log in with.
-# The setup script of a Claude Code cloud environment runs it (README.md):
-#
-#   curl -fsSL https://raw.githubusercontent.com/creasty/dotfiles/refs/heads/master/cloud/claude/setup | bash
+# Writes Claude Code's user files, home/claude/CLAUDE.md and settings.json and the skills in cloud/claude/skills/, into
+# a cloud session's VM, and has its shells drop the placeholder token that keeps gcloud from using the account you log
+# in with. The setup script of a Claude Code cloud environment downloads it and runs it, from DOTFILES_URL (README.md).
 
 set -euo pipefail
 
@@ -15,7 +12,8 @@ if [[ $(uname -s) != Linux ]]; then
   exit 1
 fi
 
-# Where the repository's files are served from; the tests (tests/) serve the checkout's themselves
+# Where the repository's files are served from: a branch of it, which the cloud environment's setup script names, or
+# the checkout's files, which the tests (tests/) serve
 url="${DOTFILES_URL:-https://raw.githubusercontent.com/creasty/dotfiles/refs/heads/master}"
 
 mkdir -p ~/.claude

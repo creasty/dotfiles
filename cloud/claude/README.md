@@ -4,17 +4,20 @@
 A [cloud environment](https://code.claude.com/docs/en/cloud-environments) set up as follows gives them the same `CLAUDE.md` and `settings.json` (`home/claude/`), and leaves out `rules/`, which holds what's true only on this Mac.
 It also gives them the skills in [`skills/`](skills/) here, which only they need; `setup` fetches them a file at a time, so it lists each file.
 
-Its setup script runs `setup` from master, which writes them into the VM's `~/.claude` and has gcloud use the account you log in with:
+Its setup script runs `setup` from the branch `DOTFILES_URL` points at, which downloads the rest from there too, writes them into the VM's `~/.claude`, and has gcloud use the account you log in with:
 
 ```bash
 #!/bin/bash
 set -o pipefail
-curl -fsSL https://raw.githubusercontent.com/creasty/dotfiles/refs/heads/master/cloud/claude/setup | bash
+export DOTFILES_URL=https://raw.githubusercontent.com/creasty/dotfiles/refs/heads/master
+curl -fsSL $DOTFILES_URL/cloud/claude/setup | bash
 ```
+
+To try a branch, put `refs/heads/<branch>` in place of `refs/heads/master`.
 
 The default network access, Trusted, allows `raw.githubusercontent.com`.
 A failed download fails the setup, so a session doesn't start without them.
-A session has the files as master had them when its setup ran, give or take the 5 minutes `raw.githubusercontent.com` keeps them cached (`max-age=300`): a VM paused while idle keeps them, and one rebuilt after being reclaimed runs the setup again.
+A session has the files as the branch had them when its setup ran, give or take the 5 minutes `raw.githubusercontent.com` keeps them cached (`max-age=300`): a VM paused while idle keeps them, and one rebuilt after being reclaimed runs the setup again.
 
 `settings.json` sets `GIT_AUTHOR_NAME` and `GIT_AUTHOR_EMAIL` to the identity in `config/git/config`, which makes you the author of the session's commits, so the environment needs no variables.
 Leave the committer to the session, which signs its commits as Claude: GitHub checks a signature against the committer's keys, so a commit with `GIT_COMMITTER_*` set shows as unverified.
