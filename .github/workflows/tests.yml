@@ -2,6 +2,9 @@ name: tests
 
 # The test suites of the configs, which need no Mac with the configuration applied:
 #
+# - claude-cloud: the tests of what Claude Code's cloud sessions get
+#   (cloud/claude/tests): the setup script, and the scripts of the skills, with
+#   the Google Cloud CLI.
 # - hammerspoon: the specs of the Hammerspoon config (hammerspoon/tests), on a
 #   fake of Hammerspoon's API.
 # - nvim-e2e: the Neovim end-to-end workflow tests (nvim/tests), against the
@@ -27,6 +30,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  claude-cloud:
+    # The OS of a cloud session's VM; the runner image has the Google Cloud CLI
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends bats
+
+      - name: Run the tests
+        run: bats --timing --print-output-on-failure cloud/claude/tests
+
   hammerspoon:
     runs-on: ubuntu-latest
     timeout-minutes: 10

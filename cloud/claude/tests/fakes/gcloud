@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# A fake of the gcloud commands gcloud-login.sh runs, for what follows a login, which the tests can't do with Google:
+# `auth login` takes the code good-code. Each call goes on a line of $CLOUDSDK_CONFIG/calls, and one that gets the
+# placeholder token fails, on a line starting with "placeholder:".
+# FAKE_GCLOUD_KEEP_ADC=1 has ADC's revoke keep its file, as it does after the CLI's revoke.
+
+set -euo pipefail
+
+mkdir -p "$CLOUDSDK_CONFIG"
+account="$CLOUDSDK_CONFIG/account"
+adc="$CLOUDSDK_CONFIG/application_default_credentials.json"
+
+if [ -n "${CLOUDSDK_AUTH_ACCESS_TOKEN+x}" ]; then
+  echo "placeholder: $*" >> "$CLOUDSDK_CONFIG/calls"
+  exit 1
+fi
+echo "$*" >> "$CLOUDSDK_CONFIG/calls"
+
+case "$*" in
+  'auth login --no-launch-browser --update-adc')
+    printf 'Go to the following link in your browser, and complete the sign-in prompts:\n\n    %s\n\n' \
+      'https://accounts.google.com/o/oauth2/auth?response_type=code&code_challenge=fake&code_challenge_method=S256'
+    printf 'Once finished, enter the verification code provided in your browser: '
+    read -r code
+    if [ "$code" != good-code ]; then
+      echo 'ERROR: (gcloud.auth.login) invalid_grant: Malformed auth code.' >&2
+      exit 1
+    fi
+    echo user@example.com > "$account"
+    echo '{}' > "$adc"
+    ;;
+  'auth list --filter=status:ACTIVE --format=value(account)' | 'auth list --format=value(account)')
+    cat "$account" 2> /dev/null || true
+    ;;
+  'auth application-default print-access-token')
+    [ -f "$adc" ]
+    ;;
+  'auth application-default revoke --quiet')
+    [ -n "${FAKE_GCLOUD_KEEP_ADC:-}" ] || rm -f "$adc"
+    ;;
+  'auth revoke --all --quiet')
+    rm -f "$account"
+    ;;
+  *)
+    echo "fake gcloud: no such command: $*" >&2
+    exit 2
+    ;;
+esac
