@@ -42,7 +42,7 @@ They run `setup` on the checkout's files, served over HTTP (`DOTFILES_URL`), and
 
 - **Cloud sessions**: no test runs one.
   Anthropic's docs say a cloud session doesn't read `~/.claude/settings.json`, yet it read the one the script writes (seen 2026-10-20): while it still does, `echo $DISABLE_COST_WARNINGS` in a session prints 1.
-  They say the same of `~/.claude/skills/`, and no session has yet shown whether it loads the skills the script writes there: `/skills` lists `gcloud-login` in one that does.
+  They say the same of `~/.claude/skills/`, yet a session loaded the `gcloud-login` the script writes there, and logged in and out with it (seen 2026-10-26): while it still does, `/skills` in a session lists `gcloud-login`.
 - **After a login**: the fake plays what gcloud does then, including that ADC's revoke, after the CLI's, fails and keeps its file (gcloud 570.0.0, seen 2026-10-23).
 - **The login's 15 minutes**: no test waits them out.
 

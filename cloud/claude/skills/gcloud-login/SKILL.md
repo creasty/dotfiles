@@ -51,3 +51,6 @@ With it set, `gcloud auth print-access-token` succeeds without a login, so check
 ## When done
 
 Run `revoke` once the work is done, and before the user raises their permissions: a login left in place keeps its token on the VM until Google's session control expires it, and carries the raised permissions while the user holds them.
+
+`revoke` revokes ADC first, and with it the gcloud CLI's login, which holds the same token, so gcloud then warns that the account is `already inactive (previously revoked?)`: that's expected.
+It's done when it ends with `No credentials of the gcloud CLI or ADC are left`, and fails otherwise.
