@@ -10,6 +10,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
 - "Do we need X?" about something that exists usually means we don't: remove X, or give the concrete reason it stays.
   Any other question, "explain" or "propose" gets its answer in chat, direct answer first; files wait until I've chosen.
 - When behavior is hard to follow in text (ordering, timing, state), draw it, as an inline visual or an artifact.
+- Put anything I'm to answer, open or tap in the message itself, even when the next-step box shows it too: I often continue on my iPhone, whose app may lack newer features like that box.
 - Give me times in JST.
 
 ## Decisions
