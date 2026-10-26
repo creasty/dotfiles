@@ -9,7 +9,7 @@ What the code and the README don't tell about this repository.
   The `apply` workflow's `macos` job has everything installed, so a test there could start Neovim with its config.
 - **kitty**: no test starts it, so that it starts Neovim (`shell`) goes untested; `nix/tests/link.bats` loads its config, which flags only unknown options and files it can't include.
 - **Idempotency**: nothing checks that a second switch changes nothing.
-  The activation steps (mise, rustup, VS Code's extensions, the agent skills, the dotfiles' links) skip what's done, but no test runs them twice, nor drops a link to see it removed.
+  The activation steps (mise, rustup, VS Code's extensions, the dotfiles' links) skip what's done, but no test runs them twice, nor drops a link to see it removed.
 - **Login before /nix**: no test restarts macOS, so that the apps it starts at login find their configs and a shell goes untested; `nix/tests/link.bats` checks that the links point straight into the checkout, and nothing checks `shell/zsh/zshenv`'s wait for /nix.
 - **Budgets on CI**: CI's runners measured `zsh -i -c exit` at 68–151 ms over 82 runs (2026-10-01 to 05), as far apart on one config as across configs.
   So the `apply` workflow benchmarks it against 200 ms (`DOTFILES_VERIFY_STARTUP_MS`), where the default is 150 ms (`nix/tests/shell.bats`): a regression fails it only once it more than doubles a typical run.
@@ -17,7 +17,7 @@ What the code and the README don't tell about this repository.
 - **Cloud sessions**: nothing runs `etc/claude-cloud-setup`.
   Anthropic's docs say a cloud session doesn't read `~/.claude/settings.json`, yet it read the one the script writes (seen 2026-10-20): while it still does, `echo $DISABLE_COST_WARNINGS` in a session prints 1.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
-- **Releases a pin follows**: nothing notices when a repository stops tagging the releases a pin follows (`version` in `nvim/lua/user/plugins.lua`, `"tag"` in `home/agents/.skill-lock.json`); Renovate just proposes no more updates.
+- **Releases a pin follows**: nothing notices when a repository stops tagging the releases a pin follows (`version` in `nvim/lua/user/plugins.lua`, a `refs/tags/` `ref` in `nix/modules/skills.nix`); Renovate just proposes no more updates.
   GitHub's comparison of its latest tag with its branch (`compare/<tag>...<branch>`) tells how long its changes have waited.
 
 ## lazy.nvim rewriting its lockfile at start
@@ -46,7 +46,7 @@ Remove both once kitty#10581 is fixed and a new window stays on every Space.
 FileVault keeps the /nix volume locked until `determinate-nixd init` unlocks it, and macOS starts that daemon only once loginwindow is up, holding third-party daemons until then: on 26.6.2, /nix was mounted 9 s after login, 4 s after macOS had reopened the last session's apps ([nix-installer#689](https://github.com/DeterminateSystems/nix-installer/issues/689) has the same on 26.2).
 Until then a link into the Nix store dangles: kitty came up without its config, and the Claude app, which resolves the login shell's environment once at start, would have run every session without Nix's tools.
 So `nix/modules/links.nix` links the dotfiles straight into the checkout, and `shell/zsh/zshenv` waits for /nix before reading `/etc/zshenv`, which links into it.
-What home-manager links itself (`home.file`, `xdg.dataFile`) and the agent skills still go through the store.
+What home-manager links itself (`home.file`, `xdg.dataFile`), the agent skills among them, still goes through the store.
 Remove both once /nix is mounted before loginwindow starts: in a restart's unified log, diskarbitrationd's `mounted disk` for the volume comes before launchd spawns `loginwindow`.
 A restart in which /nix merely beats the reopened apps doesn't tell: on 2026-10-22 the unlock took 1.3 s instead of 4.6 s, and /nix was mounted 0.2 s before macOS reopened kitty.
 

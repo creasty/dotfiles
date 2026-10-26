@@ -54,7 +54,7 @@ Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Frida
 | `nvim/lazy-lock.json` | Neovim plugins, at the commits lazy.nvim installs | [Neovim's workflow tests](./nvim/tests/README.md) |
 | `flake.lock` | nixpkgs, nix-darwin and home-manager | The `apply` workflow |
 | `config/mise/config.toml` | Runtimes and tools, which mise installs | The `apply` workflow |
-| `home/agents/.skill-lock.json` | Agent skills, at commits of their repositories | The `apply` workflow |
+| `nix/modules/skills.nix` | Agent skills, at commits of their repositories | The `apply` workflow |
 | `nix/modules/shell.nix` | zsh plugins, at their releases' commits | The `apply` workflow |
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
