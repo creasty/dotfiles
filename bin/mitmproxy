@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-docker run \
-  --rm \
-  -it \
-  -v ~/.mitmproxy:/root/.mitmproxy \
-  -p 8080:8080 \
-  creasty/mitmproxy:latest

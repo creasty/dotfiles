@@ -10,8 +10,6 @@ alias 3='cd -3'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
-alias df='df -h'
-alias tf='tail -f'
 alias less='less -R'
 
 alias sort='LC_ALL=C sort'
@@ -26,10 +24,6 @@ alias sha1='openssl sha1 | sed "s/^.* //"'
 alias uuidgen="uuidgen | tr 'A-F' 'a-f'"
 
 alias skey='ssh-keygen -q -t ed25519 -C "yuki@creasty.com" -f'
-alias skey-rsa='ssh-keygen -q -b 4096 -t rsa -N "" -C "yuki@creasty.com" -f'
-
-alias -g H='| head'
-alias -g L='| less'
 
 #  Generic: installed
 #-----------------------------------------------
@@ -47,9 +41,6 @@ alias vi='nvim'
 alias ptex2pdf='texlive ptex2pdf -ot "-interaction=nonstopmode -file-line-error-style -shell-escape" -od "-d 5" -l'
 alias o='finder'
 alias gk='grep-kill'
-
-alias -g J='| jq .'
-alias -g JL='| jq -C . | less'
 
 #  Networks
 #-----------------------------------------------
@@ -110,7 +101,6 @@ alias rc='bundle exec rails c'
 alias rs='bundle exec rails s -b 0.0.0.0'
 
 alias rk='bundle exec rake'
-alias rdbm='rake-db-migrate'
 
 #  Rust
 #-----------------------------------------------

@@ -85,7 +85,7 @@ function M.child_env(ctx, extra)
     XDG_DATA_HOME = ctx.xdg.data,
     XDG_STATE_HOME = ctx.xdg.state,
     XDG_CACHE_HOME = ctx.xdg.cache,
-    PATH = table.concat({ ctx.bin_dir, M.repo_dir .. '/bin', os.getenv('PATH') }, ':'),
+    PATH = table.concat({ ctx.bin_dir, os.getenv('PATH') }, ':'),
     E2E_CONTEXT = ctx.context_file,
     E2E_TRASH = ctx.trash_dir,
     GHQ_ROOT = ctx.run_dir .. '/ghq',

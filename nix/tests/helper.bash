@@ -67,6 +67,84 @@ q() {
   printf '%q' "$1"
 }
 
+#  Shells in a home of their own
+#-----------------------------------------------
+# The home directory of the shells below, which they write their history and completion dump to. The shell files are
+# linked as the switch links them, the zsh plugins are the switch's, and the fakes come first on PATH.
+zsh_home() {
+  # Without links, as the shells' $PWD: zsh shows ~ for $HOME only where $PWD starts with it
+  ZSH_HOME="$(cd "$BATS_TEST_TMPDIR" && pwd -P)/home"
+  [ -d "$ZSH_HOME" ] && return
+  mkdir -p "$ZSH_HOME/.local/share/zsh" "$BATS_TEST_TMPDIR/fakes"
+  ln -s "$HOME/.local/share/zsh/plugins" "$ZSH_HOME/.local/share/zsh/plugins"
+  ln -s "$DOTFILES_PATH" "$ZSH_HOME/dotfiles"
+  local target source
+  while IFS=$'\t' read -r target source; do
+    ln -s "$DOTFILES_PATH/$source" "$ZSH_HOME/$target"
+  done < <(manifest '.links | to_entries | .[] | select(.value == "shell/*") | [.key, .value] | @tsv')
+}
+
+# Runs a command in an interactive zsh in zsh_home, from that directory: zsh_run <command>
+zsh_run() {
+  zsh_home
+  # From the home directory: mise asks whether to trust the config files of the directories above, the real home's
+  (cd "$ZSH_HOME" && HOME="$ZSH_HOME" pristine "$VERIFY_ZSH" -i +m -c "path=($(q "$BATS_TEST_TMPDIR/fakes") \$path); $1")
+}
+
+# Starts a new terminal's zsh in zsh_home, from that directory, on a pty, types each argument into it a moment apart,
+# and prints the command line it ends with, with a | at the cursor. The shell's directory then goes to
+# $BATS_TEST_TMPDIR/pwd, the suggestion it shows after the line to $BATS_TEST_TMPDIR/suggestion, and what it printed to
+# $BATS_TEST_TMPDIR/screen. $ZLE_ENV has assignments for the shell's environment.
+zle_type() {
+  local out="$BATS_TEST_TMPDIR"
+  zsh_home
+  rm -f "$out/line"
+  # ~/.zlogin, which the switch doesn't link, is read last, and leaves nothing in the history
+  cat > "$ZSH_HOME/.zlogin" <<EOF
+path=($(q "$out/fakes") \$path)
+_zle_dump() {
+  print -rn -- "\$LBUFFER|\$RBUFFER" > $(q "$out/line")
+  print -rn -- "\$POSTDISPLAY" > $(q "$out/suggestion")
+  print -rn -- "\$PWD" > $(q "$out/pwd")
+}
+zle -N _zle_dump
+bindkey '\e[24~' _zle_dump
+EOF
+  # shellcheck disable=SC2086 # assignments, split on spaces
+  (cd "$ZSH_HOME" && HOME="$ZSH_HOME" pristine env ${ZLE_ENV:-} "$VERIFY_ZSH" -f "$BATS_TEST_DIRNAME/zle.zsh" "$out" "$@") ||
+    return
+  cat "$out/line"
+}
+
+#  Fakes
+#-----------------------------------------------
+# Puts a command first on the PATH of the commands a test runs, which logs each call as a line of
+# $BATS_TEST_TMPDIR/calls, its name and arguments (in single quotes where they have spaces or quotes), then runs the
+# given bash script with them: fake <name> [<script>]
+fake() {
+  local dir="$BATS_TEST_TMPDIR/fakes"
+  mkdir -p "$dir"
+  {
+    echo '#!/usr/bin/env bash'
+    printf 'calls=%q name=%q\n' "$BATS_TEST_TMPDIR/calls" "$1"
+    cat <<'EOF'
+line="$name"
+for arg; do
+  [[ $arg =~ ^[^[:space:]\'\"]+$ ]] || arg="'${arg//\'/\'\\\'\'}'"
+  line+=" $arg"
+done
+echo "$line" >> "$calls"
+EOF
+    echo "${2:-}"
+  } > "$dir/$1"
+  chmod +x "$dir/$1"
+}
+
+# The calls the fakes logged, a line each
+calls() {
+  cat "$BATS_TEST_TMPDIR/calls" 2> /dev/null || true
+}
+
 #  Configuration
 #-----------------------------------------------
 # Queries the manifest with yq

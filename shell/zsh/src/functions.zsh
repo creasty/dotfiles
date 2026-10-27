@@ -6,7 +6,7 @@ reload() {
 # Move to project root
 cdrt() {
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-    cd `git rev-parse --show-toplevel`
+    cd "$(git rev-parse --show-toplevel)"
   fi
 }
 
@@ -15,14 +15,20 @@ mkd() {
   mkdir -p "$@" && cd "$@"
 }
 
-# Load .env
+# Load .env, then the variables of an envchain namespace if given
 load-env() {
   local envchain_ns="${1:-}"
 
   set -o allexport
   [ -r .env ] && source .env
-  [ -n "$envchain_ns" ] && envchain -l -v "$envchain_ns"
   set +o allexport
+
+  if [ -n "$envchain_ns" ]; then
+    local var
+    envchain -l -v "$envchain_ns" | while IFS= read -r var; do
+      export "$var"
+    done
+  fi
 }
 
 # which + edit
@@ -50,6 +56,6 @@ openx() {
     open *.xcodeproj
   else
     echo 'Nothing found'
-    exit 1
+    return 1
   fi
 }

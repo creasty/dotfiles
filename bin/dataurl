@@ -2,10 +2,13 @@
 
 # Create a data URL from a file
 
+set -euo pipefail
+
 MIME_TYPE=$(file -b --mime-type "$1")
+DATA=$(openssl base64 -in "$1" | tr -d '\n')
 
 if [[ $MIME_TYPE == text/* ]]; then
   MIME_TYPE="$MIME_TYPE;charset=utf-8"
 fi
 
-echo "data:$MIME_TYPE;base64,$(openssl base64 -in "$1" | tr -d '\n')"
+echo "data:$MIME_TYPE;base64,$DATA"

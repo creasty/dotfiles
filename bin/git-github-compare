@@ -11,9 +11,9 @@ REPO_URL="$(
     | grep 'github\.com' \
     | sed -E 's/^git@(github.com):/https:\/\/\1\//' \
     | sed -E 's/^git:/https:/' \
-    | sed -E 's/.git$//' \
+    | sed -E 's/\.git$//' \
     | tr -d "\n"
-)"
+)" || true
 
 if [ -z "$REPO_URL" ]; then
   echo 'Remote origin is not hosted at github.com' 1>&2

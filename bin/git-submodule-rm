@@ -20,6 +20,7 @@ fi
 
 for path in "$@"; do
   git rm --cached "$path"
-  git config -f .git/config --remove-section "submodule.$path"
+  # The repository's config has a section once the submodule is initialized
+  git config --local --remove-section "submodule.$path" 2> /dev/null || true
   git config -f .gitmodules --remove-section "submodule.$path"
 done
