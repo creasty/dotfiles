@@ -46,8 +46,7 @@ in
     { lib, ... }:
     {
       dotfiles.link = {
-        "${userDir}/settings.json" = "vscode/settings.json";
-        "${userDir}/keybindings.json" = "vscode/keybindings.json";
+        "${userDir}/settings.json" = "config/vscode/settings.json";
       };
 
       # The marketplace occasionally answers 5xx, hence the retries
