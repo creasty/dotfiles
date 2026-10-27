@@ -5,8 +5,9 @@ SHA=$1
 REPO_URL="$(
   git config --get remote.origin.url \
     | grep 'github\.com' \
-    | sed 's/^git:/https:/' \
-    | sed 's/.git$//' \
+    | sed -E 's/^git@(github.com):/https:\/\/\1\//' \
+    | sed -E 's/^git:/https:/' \
+    | sed -E 's/\.git$//' \
     | tr -d "\n"
 )"
 
@@ -24,7 +25,7 @@ PR_NUM="$(
 )"
 
 if [ -z "$PR_NUM" ]; then
-  echo "Counldn't find any pull request for the commit"
+  echo "Couldn't find any pull request for the commit"
 else
   URL="$REPO_URL/pull/$PR_NUM"
   pbcopy <<< "$URL"

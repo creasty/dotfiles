@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
+#
+# Opens a directory in Finder, in a new tab unless the front window shows it:
+#
+#   finder [<dir>]    the current directory by default
+#   finder <arg>...   anything else, with open
 
-OSAS_BIN=/usr/bin/osascript
-OPEN_BIN=/usr/bin/open
+set -euo pipefail
 
 SCRIPT='
   on run argv
@@ -22,41 +26,9 @@ SCRIPT='
 '
 
 TARGET="${1:-.}"
-REPO_URL=
 
-if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-  REPO_URL="$(
-    git config --get remote.origin.url \
-      | grep 'github\.com' \
-      | sed 's/^git:/https:/' \
-      | sed 's/.git$//' \
-      | tr -d "\n"
-  )"
-fi
-
-if [ -n "$REPO_URL" ]; then
-  if [[ "$TARGET" =~ ^-(i|issue)$ ]]; then
-    open "$REPO_URL/issues"
-    exit
-  elif [[ "$TARGET" =~ ^-i[0-9]+$ ]]; then
-    open "$REPO_URL/issues/${TARGET/i/}"
-    exit
-  elif [[ "$TARGET" =~ ^-(p|pull)$ ]]; then
-    open "$REPO_URL/pulls"
-    exit
-  elif [[ "$TARGET" =~ ^-p[0-9]+$ ]]; then
-    open "$REPO_URL/pull/${TARGET/p/}"
-    exit
-  elif [ "$TARGET" = "-" ]; then
-    open "$REPO_URL"
-    exit
-  fi
-fi
-
-if [[ "$TARGET" =~ ^:[0-9]+(/.+)?$ ]]; then
-  $OPEN_BIN "http://localhost$TARGET"
-elif [ -d "$TARGET" ]; then
-  $OSAS_BIN -e "$SCRIPT" "$(cd "$TARGET"; pwd)/" > /dev/null
+if [ -d "$TARGET" ]; then
+  osascript -e "$SCRIPT" "$(cd "$TARGET" && pwd)/" > /dev/null
 else
-  $OPEN_BIN "$@"
+  open "$@"
 fi

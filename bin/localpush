@@ -1,16 +1,17 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
+#
+# Shows a notification: localpush [<title> [<message>]]
 
-require 'json'
-require 'open3'
+set -euo pipefail
 
-title, desc = ARGV
+# An AppleScript string: its literals escape " and \ as JSON's do
+string() {
+  jq -n --arg s "$1" '$s'
+}
 
-Open3.popen3('osascript') do |i, o, e, w|
-  i.write 'display notification %s' % [desc.to_s.to_json]
-  i.write ' with title %s' % [title.to_json] if title
-  i.close
+script="display notification $(string "${2-}")"
+if [ $# -gt 0 ]; then
+  script+=" with title $(string "$1")"
+fi
 
-  e.each { |line| puts line }
-
-  exit w.value.exitstatus
-end
+osascript -e "$script"

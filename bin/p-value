@@ -44,7 +44,10 @@ module Util
   # @see https://qiita.com/reikubonaga/items/7b3ccf9f362ad72f6f41
   def prop_test(x1:, n1:, x2:, n2:, yates: 0.5)
     p = (x1 + x2) / (n1 + n2).to_f
-    diff = ((x1 - n1 * p).abs - yates) ** 2
+    # Yates' correction, as R's, is at most the difference from the expected count
+    d = (x1 - n1 * p).abs
+    yates = d if d < yates
+    diff = (d - yates) ** 2
 
     chi2 = diff / (n1 * p) +
       diff / (n1 * (1 - p)) +
@@ -113,7 +116,7 @@ EOS
     p_value = Util.prop_test(x1: @x1, n1: @n1, x2: @x2, n2: @n2)
 
     dr = r2 - r1
-    rr = r2 / r1 - (dr > 0 ? 0 : 1)
+    rr = r2 / r1 - 1
 
     dr_sign = if dr > 0
       '⬆️'

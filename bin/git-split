@@ -24,7 +24,7 @@ fi
 
 branch="$1"
 
-ref=$(git symbolic-ref -q HEAD)
+ref=$(git symbolic-ref -q HEAD || true)
 sha=$(git rev-parse HEAD)
 [ -n "$ref" ] || die "you're not on a branch"
 
@@ -49,7 +49,7 @@ fi
 git branch "$branch"
 git reset -q --hard "$tracking"
 git checkout -q "$branch"
-git branch --set-upstream-to "$branch" "$tracking"
+git branch --set-upstream-to "$tracking" "$branch"
 git reset -q --hard "$sha"
 echo "[$(shortsha "$sha")...$(shortsha $(git rev-parse $tracking))] $current"
 echo "[0000000...$(shortsha $(git rev-parse HEAD))] $branch"

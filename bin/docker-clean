@@ -7,7 +7,7 @@ docker ps \
   -a \
   --filter status=exited \
   --format '{{ .Names }}' \
-  | grep -v 'volume$' \
+  | sed '/volume$/d' \
   | xargs docker rm
 
 docker images \

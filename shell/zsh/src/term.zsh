@@ -22,10 +22,9 @@ bindkey ' ' magic-space
 # Delete backward by <Backspace>
 bindkey '^?' backward-delete-char
 
-# Delete forward by <Delete>
+# Delete forward by <Delete> and <C-Delete>
 bindkey "^[[3~" delete-char
-bindkey "^[3;5~" delete-char
-bindkey "\e[3~" delete-char
+bindkey "^[[3;5~" delete-char
 
 # Edit the current command line in $EDITOR
 autoload -U edit-command-line
@@ -140,9 +139,9 @@ _peco_select() {
 #-----------------------------------------------
 peco_insert_path() {
   if [ "$(pwd)" = "$HOME" ]; then
-    ls -aF \
+    # Not the alias: eza reads the names to list from stdin when it isn't a terminal, as in a widget
+    command ls -AF \
       | sed -E 's/@$//g' \
-      | sed -E 's/ -> .+$//g' \
       | _peco_select \
       | _buffer_insert_files
   else
@@ -222,7 +221,7 @@ _register_keycommand '^r' peco_history
 #  GHQ
 #-----------------------------------------------
 peco_cd_repo() {
-  ghq-list-monorepo \
+  ghq list \
     | _peco_select \
     | {
       repo="$(cat)"
@@ -252,24 +251,6 @@ peco_docker_container() {
     | _buffer_insert_lines
 }
 
-peco_kube_deployment() {
-  local cluster="$1"
-
-  kube "$cluster" get deployment \
-    | _peco_select \
-    | awk '{ print $1 }' \
-    | _buffer_insert_lines
-}
-
-peco_kube_pod() {
-  local cluster="$1"
-
-  kube "$cluster" get po \
-    | _peco_select \
-    | awk '{ print $1 }' \
-    | _buffer_insert_lines
-}
-
 peco_insert_resource() {
   local args=($(tr ' ' '\n' <<< "$LBUFFER"))
 
@@ -278,18 +259,6 @@ peco_insert_resource() {
       case "${args[2]}" in
         'rmi') peco_docker_image ;;
         *)     peco_docker_container ;;
-      esac
-      ;;
-
-    'kube')
-      local cluster="${args[2]}"
-      [ -z "$cluster" ] && return
-
-      case "${args[3]}" in
-        'scale') peco_kube_deployment "$cluster" ;;
-        'tags')  peco_kube_deployment "$cluster" ;;
-        'edit')  peco_kube_deployment "$cluster" ;;
-        *)       peco_kube_pod "$cluster" ;;
       esac
       ;;
   esac
@@ -303,37 +272,14 @@ autoload -Uz add-zsh-hook
 
 #  Title
 #-----------------------------------------------
+# Sets the tab's title, and the window's (the tab's unless given): title <tab> [<window>]
 title() {
   emulate -L zsh
   setopt prompt_subst
 
-  [[ "$EMACS" == *term* ]] && return
-
   : ${2=$1}
-
-  case "$TERM" in
-    cygwin|xterm*|putty*|rxvt*|ansi)
-      print -Pn "\e]2;$2:q\a" # set window name
-      print -Pn "\e]1;$1:q\a" # set tab name
-      ;;
-    screen*)
-      print -Pn "\ek$1:q\e\\" # set screen hardstatus
-      ;;
-    *)
-      if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
-        print -Pn "\e]2;$2:q\a" # set window name
-        print -Pn "\e]1;$1:q\a" # set tab name
-      else
-        # try to use terminfo to set the title
-        # if the feature is available set title
-        if [[ -n "$terminfo[fsl]" ]] && [[ -n "$terminfo[tsl]" ]]; then
-          echoti tsl
-          print -Pn "$1"
-          echoti fsl
-        fi
-      fi
-      ;;
-  esac
+  print -Pn "\e]2;$2:q\a" # set window name
+  print -Pn "\e]1;$1:q\a" # set tab name
 }
 
 title_precmd() {
@@ -389,7 +335,6 @@ notify_precmd() {
 
   [ $timestamp -eq 0 ] && return
   [ $code -ne 130 ] && [ $code -ne 146 ] || return
-  command -v 'envchain' > /dev/null 2>&1 || return
 
   local elapsed_time=$((`date +'%s'` - $timestamp))
   [ $elapsed_time -gt 30 ] || return

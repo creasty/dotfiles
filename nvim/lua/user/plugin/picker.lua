@@ -322,25 +322,44 @@ local function is_test(path)
   return false
 end
 
+--- The directories a repository of `ghq list` stands for: itself, or the
+--- packages of a monorepo, which its .ghq-monorepo lists (a directory per
+--- line; those that don't exist are left out).
+local function repo_dirs(root, repo)
+  local list = io.open(('%s/%s/.ghq-monorepo'):format(root, repo))
+  if not list then
+    return { repo }
+  end
+  local dirs, seen = {}, {}
+  for line in list:lines() do
+    local dir = repo .. '/' .. vim.trim(line)
+    local stat = line:find('%S') and not seen[dir] and vim.uv.fs_stat(root .. '/' .. dir)
+    if stat and stat.type == 'directory' then
+      dirs[#dirs + 1], seen[dir] = dir, true
+    end
+  end
+  list:close()
+  table.sort(dirs)
+  return dirs
+end
+
 --- Repositories under `ghq root`, with the packages of monorepos.
 local function repos_finder(opts, ctx)
   local root = vim.trim(vim.fn.system({ 'ghq', 'root' }))
-  return require('snacks.picker.source.proc').proc(
-    ctx:opts({
-      cmd = 'ghq-list-monorepo',
-      args = {},
-      notify = false,
-      transform = function(item)
-        if item.text == '' then
-          return false
-        end
-        item.label = item.text
-        item.file = root .. '/' .. item.text
-        item.dir = true
-      end,
-    }),
+  local list = require('snacks.picker.source.proc').proc(
+    ctx:opts({ cmd = 'ghq', args = { 'list' }, notify = false }),
     ctx
   )
+  return function(cb)
+    list(function(item)
+      if item.text == '' then
+        return
+      end
+      for _, dir in ipairs(repo_dirs(root, item.text)) do
+        cb({ text = dir, label = dir, file = root .. '/' .. dir, dir = true })
+      end
+    end)
+  end
 end
 
 --- The search <Space>/ reopens: its pattern, the directory it runs in, the

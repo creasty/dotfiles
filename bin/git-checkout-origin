@@ -16,6 +16,7 @@ select_remote_branch() {
 
 BRANCH="${1:-}"
 [ -z "$BRANCH" ] && BRANCH="$(select_remote_branch)"
+[ -n "$BRANCH" ] || exit 1
 
 section "Fetching $BRANCH..."
 git fetch origin "$BRANCH"

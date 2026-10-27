@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# Fetches the zsh plugins at the commits nix/modules/shell.nix pins, for the tests to load in place of the switch's:
+#
+#   shell/tests/plugins <dir> && SHELL_TESTS_PLUGINS=<dir> bats shell/tests
+
+set -euo pipefail
+
+dir="$1"
+nix="$(dirname "$0")/../../nix/modules/shell.nix"
+
+#   "zsh/plugins/<name>".source = builtins.fetchGit {
+#     url = "<url>";
+#     ref = "<ref>";
+#     rev = "<rev>";
+plugins="$(
+  sed -n -E 's|^ *"zsh/plugins/([^"]+)"\.source = .*|\1|p; s|^ *url = "([^"]+)";$|\1|p; s|^ *rev = "([^"]+)";$|\1|p' "$nix" \
+    | paste - - -
+)"
+[ -n "$plugins" ] || {
+  echo "plugins: none found in $nix" >&2
+  exit 1
+}
+
+while read -r name url rev; do
+  git init -q "$dir/$name"
+  git -C "$dir/$name" fetch -q --depth 1 "$url" "$rev"
+  git -C "$dir/$name" checkout -q --detach FETCH_HEAD
+  [ "$(git -C "$dir/$name" rev-parse HEAD)" = "$rev" ]
+  echo "$name $rev"
+done <<< "$plugins"

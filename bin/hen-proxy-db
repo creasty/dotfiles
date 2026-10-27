@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-REPO="$(ghq root)/github.com/bw-company/henry-infra"
-"$REPO/script/proxy-database" "$@"

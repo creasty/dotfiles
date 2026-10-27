@@ -11,6 +11,9 @@ name: tests
 #   plugin versions pinned in nvim/lazy-lock.json, so a pull request (Renovate's
 #   bumps included) shows which workflows it changes. The job summary lists
 #   every changed workflow. Its benchmarks run after the tests, alone.
+# - shell: the tests of the commands in bin/ and the zsh config (shell/tests),
+#   on macOS, which they're for, with the zsh plugins nix/modules/shell.nix
+#   pins, so that Renovate's bumps of those show what they change.
 
 on:
   push:
@@ -123,3 +126,25 @@ jobs:
 
       - name: Run the benchmarks
         run: nvim/tests/run --bench
+
+  shell:
+    runs-on: macos-26
+    timeout-minutes: 15
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # bats, and what the zsh config runs that macOS lacks: eza for ls, fd
+      # for C-o C-p
+      - name: Install tools
+        run: brew install bats-core eza fd
+
+      - name: Install the zsh plugins
+        run: |
+          echo "SHELL_TESTS_PLUGINS=$RUNNER_TEMP/zsh-plugins" >> "$GITHUB_ENV"
+          shell/tests/plugins "$RUNNER_TEMP/zsh-plugins"
+
+      - name: Run the tests
+        run: bats --timing --print-output-on-failure shell/tests

@@ -7,13 +7,13 @@ repository_age() {
 }
 
 contributor_count() {
-  git shortlog -n -s \
+  git shortlog -n -s HEAD \
     | wc -l \
     | tr -d ' '
 }
 
 contributors() {
-  git shortlog -n -s \
+  git shortlog -n -s HEAD \
     | awk '{ printf("%12d  %s\n", $1, substr($0, index($0, $2))) }' \
     | head -n 20
 }
