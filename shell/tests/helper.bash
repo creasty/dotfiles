@@ -6,6 +6,8 @@
 #   nix shell .#bats --command bats shell/tests
 
 bats_require_minimum_version 1.8.0
+bats_load_library bats-support
+bats_load_library bats-assert
 
 # The checkout under test
 DOTFILES_PATH="$(cd "$BATS_TEST_DIRNAME/../.." && pwd)"
@@ -109,27 +111,6 @@ calls() {
 
 #  Assertions
 #-----------------------------------------------
-assert_equal() {
-  [[ $1 == "$2" ]] && return
-  printf 'expected: %s\nactual:   %s\n' "$2" "$1" >&2
-  return 1
-}
-
-assert_like() {
-  # shellcheck disable=SC2053
-  [[ $1 == $2 ]] && return
-  printf 'expected like: %s\nactual:        %s\n' "$2" "$1" >&2
-  return 1
-}
-
-# Asserts that $output (set by `run`) has the given line
-# shellcheck disable=SC2154
-assert_line() {
-  grep -qxF -- "$1" <<< "$output" && return
-  printf 'expected a line: %s\nin:\n%s\n' "$1" "$output" >&2
-  return 1
-}
-
 # Asserts that a newline separated list of problems is empty: assert_none <problems> [heading]
 assert_none() {
   [ -z "$1" ] && return

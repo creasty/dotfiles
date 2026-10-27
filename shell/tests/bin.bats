@@ -72,7 +72,7 @@ docker inspect --format '$format' 4567ef01"
 @test "docker-ips, with no container running, prints nothing" {
   fake docker
   run -0 docker-ips
-  assert_equal "$output" ''
+  refute_output
   assert_equal "$(calls)" 'docker ps -q'
 }
 
@@ -100,9 +100,8 @@ sleep 5'
   fake docker '[ "$1" != start ] || exit 1'
   fake sleep
   run -0 gcloud-pubsub start
-  assert_like "$(calls)" '*
-docker run --name the-pubsub -d -p 9000:9000 -it google/cloud-sdk:latest gcloud beta emulators pubsub start --host-port=0.0.0.0:9000
-*'
+  run -0 calls
+  assert_line 'docker run --name the-pubsub -d -p 9000:9000 -it google/cloud-sdk:latest gcloud beta emulators pubsub start --host-port=0.0.0.0:9000'
 }
 
 @test "gcloud-pubsub stop, destroy and env-init act on the emulator's container" {
@@ -235,7 +234,7 @@ curl -X POST https://graph.facebook.com/v2.8/5678 -s -d access_token=app-token -
   unset FACEBOOK_APP_ID FACEBOOK_APP_SECRET FACEBOOK_APP_TEST_PASSWORD
   fake curl
   run -1 fb-testusr
-  assert_like "$output" '*FACEBOOK_APP_ID: unbound variable*'
+  assert_output --partial 'FACEBOOK_APP_ID: unbound variable'
   assert_equal "$(calls)" ''
 }
 
@@ -396,7 +395,7 @@ P-value:  1.00000 👎
   assert_equal "${stderr_lines[0]}" 'p-value N1/D1 N2/D2'
   run -1 --separate-stderr p-value 30 50/200
   assert_equal "${stderr_lines[0]}" 'p-value N1/D1 N2/D2'
-  assert_equal "$output" ''
+  refute_output
 }
 
 #  Files
@@ -404,7 +403,7 @@ P-value:  1.00000 👎
 @test "dataurl makes a text file's data URL, in UTF-8" {
   printf 'こんにちは, world\n' > 'hello world.txt'
   run -0 dataurl 'hello world.txt'
-  assert_like "$output" 'data:text/plain;charset=utf-8;base64,*'
+  assert_output --regexp '^data:text/plain;charset=utf-8;base64,'
   base64 -d <<< "${output#*,}" | cmp - 'hello world.txt'
 }
 
@@ -420,13 +419,13 @@ P-value:  1.00000 👎
   } > pixel.png
   run -0 dataurl pixel.png
   assert_equal "${#lines[@]}" 1
-  assert_like "$output" 'data:image/png;base64,*'
+  assert_output --regexp '^data:image/png;base64,'
   base64 -d <<< "${output#*,}" | cmp - pixel.png
 }
 
 @test "dataurl, given a file that isn't there, fails without a URL" {
   run -1 --separate-stderr dataurl missing.txt
-  assert_equal "$output" ''
+  refute_output
 }
 
 @test "unpkcs splits a PKCS#12 file into its certificate, its key unencrypted and the CA's certificate" {

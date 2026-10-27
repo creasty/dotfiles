@@ -52,7 +52,7 @@ load helper
   # reads from ~/.config/ctags. Warnings about it would be extra lines.
   run -0 login_zsh 'ctags -f -'
   assert_equal "${#lines[@]}" 1
-  assert_like "${lines[0]}" "Query${tab}schema.graphql${tab}*${tab}language:graphql"
+  assert_line --index 0 --regexp "^Query${tab}schema\.graphql${tab}.*${tab}language:graphql\$"
 }
 
 @test "Codebook reads its config from the dotfiles" {
@@ -62,7 +62,7 @@ load helper
   run -1 login_zsh 'codebook-lsp lint words.txt'
   # using global config /Users/me/.config/codebook/codebook.toml
   assert_same_file "${lines[0]#using global config }" "$DOTFILES_PATH/config/codebook/codebook.toml"
-  assert_like "$output" '*words.txt:4:1*qwxz*'
+  assert_output --regexp 'words\.txt:4:1.*qwxz'
   assert_line 'Found 1 spelling error(s) in 1 file(s).'
 }
 

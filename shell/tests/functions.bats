@@ -57,14 +57,15 @@ setup() {
 @test "whiche prints what a command is when it has no file" {
   fake nvim
   run -0 zsh_run 'whiche mkd'
-  assert_like "$output" 'mkd () {*mkdir -p*'
+  assert_line --index 0 'mkd () {'
+  assert_output --partial 'mkdir -p'
   assert_equal "$(calls)" ''
 }
 
 @test "whichs lists a command's file" {
   fake mycmd
   run -0 zsh_run 'whichs mycmd'
-  assert_like "$output" ".rwx* $BATS_TEST_TMPDIR/fakes/mycmd"
+  assert_output --regexp "^\.rwx.* $BATS_TEST_TMPDIR/fakes/mycmd\$"
 }
 
 @test "openx opens the Xcode workspace, or else the project" {

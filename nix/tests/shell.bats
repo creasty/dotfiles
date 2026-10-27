@@ -62,7 +62,7 @@ prefers_nix() {
 @test "Claude Code runs commands in bash 4 or later" {
   local shell
   shell="$(yq -p json -o yaml '.env.CLAUDE_CODE_SHELL' "$HOME/.claude/settings.json")"
-  assert_like "$shell" '*/bash'
+  assert_regex "$shell" '/bash$'
   run -0 "$shell" -c 'echo "${BASH_VERSINFO[0]}"'
   [ "$output" -ge 4 ]
 }

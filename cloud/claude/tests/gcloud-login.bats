@@ -3,7 +3,9 @@
 # ../skills/gcloud-login/scripts/gcloud-login.sh, with the Google Cloud CLI up to a login, which needs a person at
 # Google's page, and with a fake of it (fakes/gcloud) for what follows one
 
-bats_require_minimum_version 1.5.0
+bats_require_minimum_version 1.7.0
+bats_load_library bats-support
+bats_load_library bats-assert
 
 setup() {
   script="$BATS_TEST_DIRNAME/../skills/gcloud-login/scripts/gcloud-login.sh"
@@ -28,46 +30,47 @@ fake_gcloud() {
 #-----------------------------------------------
 @test "status shows no account and no ADC before a login" {
   run -0 "$script" status
-  [ "$output" = "gcloud CLI's account: (none)"$'\n'"ADC: invalid" ]
+  assert_equal "$output" "gcloud CLI's account: (none)"$'\n'"ADC: invalid"
 }
 
 @test "start prints Google's login URL, which PKCE binds to the login" {
   run -0 "$script" start
-  [[ ${lines[1]} == https://accounts.google.com/* ]]
-  [[ ${lines[1]} == *'code_challenge='* && ${lines[1]} == *'code_challenge_method=S256'* ]]
+  assert_line --index 1 --regexp '^https://accounts\.google\.com/'
+  assert_line --index 1 --partial code_challenge=
+  assert_line --index 1 --partial code_challenge_method=S256
 }
 
 @test "start again, while the login waits, prints the same URL" {
   run -0 "$script" start
   local url="${lines[1]}"
   run -0 "$script" start
-  [[ ${lines[0]} == 'A login is already running.'* ]]
-  [ "${lines[1]}" = "$url" ]
+  assert_line --index 0 --partial 'A login is already running.'
+  assert_equal "${lines[1]}" "$url"
 }
 
 @test "finish with a wrong code fails with gcloud's output, and logs nothing in" {
   run -0 "$script" start
   run -1 "$script" finish wrong-code
-  [ "${lines[0]}" = "The login failed. gcloud's output:" ]
-  [[ $output == *'ERROR: (gcloud.auth.login)'* ]]
+  assert_equal "${lines[0]}" "The login failed. gcloud's output:"
+  assert_output --partial 'ERROR: (gcloud.auth.login)'
   run -0 "$script" status
-  [ "${lines[0]}" = "gcloud CLI's account: (none)" ]
+  assert_equal "${lines[0]}" "gcloud CLI's account: (none)"
 }
 
 @test "finish without a login running fails" {
   run -1 "$script" finish good-code
-  [[ $output == 'No login is running'* ]]
+  assert_output --partial 'No login is running'
 }
 
 @test "revoke with nothing logged in leaves nothing" {
   run -0 "$script" revoke
-  [ "${lines[-1]}" = 'No credentials of the gcloud CLI or ADC are left' ]
+  assert_equal "${lines[-1]}" 'No credentials of the gcloud CLI or ADC are left'
 }
 
 @test "with no command, it prints its usage" {
   run -1 "$script"
-  [[ ${lines[0]} == 'Logs gcloud in'* ]]
-  [[ ${lines[-1]} == *'gcloud-login.sh revoke'* ]]
+  assert_line --index 0 --partial 'Logs gcloud in'
+  assert_line --index -1 --partial 'gcloud-login.sh revoke'
 }
 
 #  With the fake, after a login
@@ -76,7 +79,7 @@ fake_gcloud() {
   fake_gcloud
   run -0 "$script" start
   run -0 "$script" finish good-code
-  [ "$output" = "gcloud CLI's account: user@example.com"$'\n'"ADC: valid" ]
+  assert_equal "$output" "gcloud CLI's account: user@example.com"$'\n'"ADC: valid"
 }
 
 @test "no gcloud call gets the placeholder token, which status reports" {
@@ -84,8 +87,8 @@ fake_gcloud() {
   export CLOUDSDK_AUTH_ACCESS_TOKEN=proxy-injected
   run -0 "$script" start
   run -0 "$script" finish good-code
-  [[ ${lines[0]} == "gcloud CLI's account: user@example.com" ]]
-  [[ ${lines[2]} == 'CLOUDSDK_AUTH_ACCESS_TOKEN is set:'* ]]
+  assert_equal "${lines[0]}" "gcloud CLI's account: user@example.com"
+  assert_line --index 2 --partial 'CLOUDSDK_AUTH_ACCESS_TOKEN is set:'
   run -0 "$script" revoke
   run -1 grep '^placeholder:' "$CLOUDSDK_CONFIG/calls"
 }
@@ -95,7 +98,7 @@ fake_gcloud() {
   run -0 "$script" start
   run -0 "$script" finish good-code
   run -0 "$script" revoke
-  [ "${lines[-1]}" = 'No credentials of the gcloud CLI or ADC are left' ]
+  assert_equal "${lines[-1]}" 'No credentials of the gcloud CLI or ADC are left'
   diff <(grep revoke "$CLOUDSDK_CONFIG/calls") - <<< $'auth application-default revoke --quiet\nauth revoke --all --quiet'
 }
 
@@ -105,5 +108,5 @@ fake_gcloud() {
   run -0 "$script" start
   run -0 "$script" finish good-code
   run -1 "$script" revoke
-  [ "${lines[-1]}" = "Left unrevoked: ADC's file $CLOUDSDK_CONFIG/application_default_credentials.json" ]
+  assert_equal "${lines[-1]}" "Left unrevoked: ADC's file $CLOUDSDK_CONFIG/application_default_credentials.json"
 }

@@ -200,7 +200,7 @@ push_feature() {
   push_feature
   fake peco 'cat > /dev/null'
   run -1 git checkout-origin
-  assert_equal "$output" ''
+  refute_output
   assert_equal "$(git branch --show-current)" main
 }
 
@@ -332,7 +332,7 @@ github_repo() {
   # shellcheck disable=SC2154 # set by run
   assert_equal "$stderr" "$listing
 -----------------------------------------------"
-  assert_like "$output" "*$(printf '%s\n' "$listing" | shasum | cut -d ' ' -f 1)"
+  assert_output --partial "$(printf '%s\n' "$listing" | shasum | cut -d ' ' -f 1)"
 }
 
 @test "git hash prints the same SHA-1 for the same files, whatever their history, and another for others" {
@@ -349,7 +349,7 @@ github_repo() {
   assert_equal "$output" "$two"
   commit a 2
   run -0 --separate-stderr git hash
-  [ "$output" != "$two" ]
+  assert_not_equal "$output" "$two"
 }
 
 @test "git hash with a path covers the files under it" {
@@ -374,7 +374,7 @@ github_repo() {
   GIT_AUTHOR_NAME=Alice GIT_AUTHOR_DATE="@$((now - 86400)) +0000" commit a 2
   # From a script, with no terminal for input
   run -0 uncolored git info < /dev/null
-  assert_like "${lines[0]}" '         Age  3 days*'
+  assert_line --index 0 --regexp '^         Age  3 days'
   assert_equal "${output#*$'\n'}" "      Active  2 days
        Files  2
      Commits  3
@@ -455,22 +455,22 @@ releases() {
   releases r
   run -0 --separate-stderr git release-range "$C2..$C4"
   assert_equal "$output" v1.9.0..v1.10.0
-  assert_like "$stderr" "*Start:  $C2 -> v1.9.0*"
-  assert_like "$stderr" "*End:    $C4 -> v1.10.0*"
+  assert_regex "$stderr" "Start:  $C2 -> v1\.9\.0"
+  assert_regex "$stderr" "End:    $C4 -> v1\.10\.0"
 }
 
 @test "git release-range ends a range that runs past the latest release there" {
   releases r
   run -0 --separate-stderr git release-range "$C1...$C5"
   assert_equal "$output" v1.0.0..v1.10.0
-  assert_like "$stderr" "*End:    $C5 -> N/A*"
+  assert_regex "$stderr" "End:    $C5 -> N/A"
 }
 
 @test "git release-range prints no releases for a range after the latest" {
   releases r
   run -0 --separate-stderr git release-range "$C5..$C5"
-  assert_equal "$output" ''
-  assert_like "$stderr" "*Start:  $C5 -> N/A*"
+  refute_output
+  assert_regex "$stderr" "Start:  $C5 -> N/A"
 }
 
 @test "git release-range fetches origin's releases first" {
@@ -492,7 +492,7 @@ releases() {
   fake ghq "echo $(q "$BATS_TEST_TMPDIR/ghq")"
   run -0 --separate-stderr git release-range "https://github.com/org/repo/compare/$C2...$C4"
   assert_equal "$output" v1.9.0..v1.10.0
-  assert_like "$stderr" "*Repo found at $BATS_TEST_TMPDIR/ghq/github.com/org/repo*"
+  assert_regex "$stderr" "Repo found at $BATS_TEST_TMPDIR/ghq/github\.com/org/repo"
 }
 
 @test "git release-range with a compare URL of a repository ghq hasn't works in the current one" {
@@ -500,10 +500,11 @@ releases() {
   fake ghq "echo $(q "$BATS_TEST_TMPDIR/ghq")"
   run -0 --separate-stderr git release-range "https://github.com/org/other/compare/$C2...$C4"
   assert_equal "$output" v1.9.0..v1.10.0
-  assert_like "$stderr" "*Repo not found at $BATS_TEST_TMPDIR/ghq/github.com/org/other (Using the current directory instead)*"
+  assert_regex "$stderr" \
+    "Repo not found at $BATS_TEST_TMPDIR/ghq/github\.com/org/other \(Using the current directory instead\)"
   cd ..
   run -1 --separate-stderr git release-range "https://github.com/org/other/compare/$C2...$C4"
-  assert_like "$stderr" '*Not in git repository'
+  assert_regex "$stderr" 'Not in git repository$'
 }
 
 @test "git release-range with -h or no range prints its usage, and fails" {
@@ -662,13 +663,15 @@ assert_no_submodule() {
   repo r
   git worktree add --quiet --detach ../orphan
   git -C ../orphan commit --quiet --allow-empty -m orphan
-  local head
+  local head orphan
   head="$(git -C ../orphan rev-parse HEAD)"
+  # As git lists it, without links
+  orphan="$(cd ../orphan && pwd -P)"
   run -0 git worktree-remove-detached
-  assert_like "$output" '*skipped, HEAD not on any branch: */orphan'
+  assert_line "skipped, HEAD not on any branch: $orphan"
   assert_equal "$(worktrees)" $'orphan\nr'
   run -0 git worktree-remove-detached -f
-  assert_like "$output" "*removing, HEAD not on any branch: */orphan (was $head)"
+  assert_line "removing, HEAD not on any branch: $orphan (was $head)"
   assert_equal "$(worktrees)" r
 }
 

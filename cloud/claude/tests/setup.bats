@@ -2,7 +2,9 @@
 #
 # ../setup, run as a cloud session's setup script runs it, on the checkout's files served over HTTP (DOTFILES_URL)
 
-bats_require_minimum_version 1.5.0
+bats_require_minimum_version 1.7.0
+bats_load_library bats-support
+bats_load_library bats-assert
 
 setup() {
   repo="$(cd "$BATS_TEST_DIRNAME/../../.." && pwd)"
@@ -38,7 +40,8 @@ EOF
     [ -s "$BATS_TEST_TMPDIR/port" ] && break
     sleep 0.1
   done
-  export DOTFILES_URL="http://127.0.0.1:$(cat "$BATS_TEST_TMPDIR/port")"
+  DOTFILES_URL="http://127.0.0.1:$(cat "$BATS_TEST_TMPDIR/port")"
+  export DOTFILES_URL
 }
 
 # Ubuntu's, as on a cloud session's VM: a non-interactive shell returns before the rest
@@ -60,8 +63,9 @@ UBUNTU_BASHRC=/etc/skel/.bashrc
 @test "a non-interactive shell drops the placeholder token" {
   cp "$UBUNTU_BASHRC" ~/.bashrc
   run -0 "$repo/cloud/claude/setup"
+  # shellcheck disable=SC2016 # expanded by that bash
   run -0 env CLOUDSDK_AUTH_ACCESS_TOKEN=proxy-injected bash -c '. ~/.bashrc; echo "${CLOUDSDK_AUTH_ACCESS_TOKEN-unset}"'
-  [ "$output" = unset ]
+  assert_equal "$output" unset
 }
 
 @test "a second run leaves ~/.bashrc as the first did" {
@@ -74,22 +78,22 @@ UBUNTU_BASHRC=/etc/skel/.bashrc
 @test "an empty or missing ~/.bashrc gets the unset alone" {
   : > ~/.bashrc
   run -0 "$repo/cloud/claude/setup"
-  [ "$(cat ~/.bashrc)" = 'unset CLOUDSDK_AUTH_ACCESS_TOKEN' ]
+  assert_equal "$(cat ~/.bashrc)" 'unset CLOUDSDK_AUTH_ACCESS_TOKEN'
 
   rm ~/.bashrc
   run -0 "$repo/cloud/claude/setup"
-  [ "$(cat ~/.bashrc)" = 'unset CLOUDSDK_AUTH_ACCESS_TOKEN' ]
+  assert_equal "$(cat ~/.bashrc)" 'unset CLOUDSDK_AUTH_ACCESS_TOKEN'
 }
 
 # So that a session doesn't start without them
 @test "any failed download fails the setup" {
-  local file problems=''
+  local file passed_without=''
   for file in home/claude/CLAUDE.md home/claude/settings.json $(cd "$repo" && find cloud/claude/skills -type f); do
     copy_served
     rm "$served/$file"
-    "$repo/cloud/claude/setup" 2> /dev/null && problems+="$file"$'\n'
+    "$repo/cloud/claude/setup" 2> /dev/null && passed_without+="$file"$'\n'
   done
-  [ -z "$problems" ] || { printf 'passed without:\n%s' "$problems"; false; }
+  assert_equal "$passed_without" ''
 }
 
 # On a Mac, ~/.claude and ~/.bashrc link into the checkout
@@ -98,6 +102,7 @@ UBUNTU_BASHRC=/etc/skel/.bashrc
   printf '#!/bin/sh\necho Darwin\n' > "$BATS_TEST_TMPDIR/bin/uname"
   chmod +x "$BATS_TEST_TMPDIR/bin/uname"
   run -1 env PATH="$BATS_TEST_TMPDIR/bin:$PATH" "$repo/cloud/claude/setup"
-  [[ $output == *"for a cloud session's VM"* ]]
-  [ -z "$(ls -A "$HOME")" ]
+  assert_output --partial "for a cloud session's VM"
+  run -0 ls -A "$HOME"
+  refute_output
 }
