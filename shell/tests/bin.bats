@@ -309,6 +309,11 @@ EOF
 #-----------------------------------------------
 # PIDs on macOS stay below 100000: no process has the ones here
 
+# The calls the fakes logged, sorted: the commands of a pipeline start in no order
+sorted_calls() {
+  calls | sort
+}
+
 @test "grep-kill kills the processes picked in peco from procs, with the arguments as the query" {
   fake procs "printf '%s\n' '999991 me  0.0  node server.js' '999992 me  0.0  vim notes.md'"
   # The lines with the query, as Enter picks the one match
@@ -316,9 +321,9 @@ EOF
   fake kill
   run -0 --separate-stderr grep-kill node server
   assert_equal "$stderr" '999991 me  0.0  node server.js'
-  assert_equal "$(calls)" "procs --no-header --sorta cpu --nand $DOTFILES_PATH/bin/grep-kill
+  assert_equal "$(sorted_calls)" "kill -9 999991
 peco --query 'node server'
-kill -9 999991"
+procs --no-header --sorta cpu --nand $DOTFILES_PATH/bin/grep-kill"
 }
 
 @test "grep-kill, without procs, picks from ps without its header and its own process" {
@@ -330,7 +335,7 @@ kill -9 999991"
   run -0 --separate-stderr "$DOTFILES_PATH/bin/grep-kill" node
   assert_equal "$(< peco.in)" $'me 999991 0.0 node server.js\nme 999992 0.0 vim notes.md'
   assert_equal "$stderr" 'me 999991 0.0 node server.js'
-  assert_equal "$(calls)" $'ps aux\npeco --query node\nkill -9 999991'
+  assert_equal "$(sorted_calls)" $'kill -9 999991\npeco --query node\nps aux'
 }
 
 @test "grep-kill, with nothing picked, kills nothing" {
@@ -338,8 +343,8 @@ kill -9 999991"
   fake peco
   fake kill
   run -0 grep-kill
-  assert_equal "$(calls)" "procs --no-header --sorta cpu --nand $DOTFILES_PATH/bin/grep-kill
-peco --query ''"
+  assert_equal "$(sorted_calls)" "peco --query ''
+procs --no-header --sorta cpu --nand $DOTFILES_PATH/bin/grep-kill"
 }
 
 #  p-value

@@ -55,7 +55,7 @@ Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Frida
 | `flake.lock` | nixpkgs, nix-darwin and home-manager | The `apply` workflow |
 | `config/mise/config.toml` | Runtimes and tools, which mise installs | The `apply` workflow |
 | `nix/modules/skills.nix` | Agent skills, at commits of their repositories | The `apply` workflow |
-| `nix/modules/shell.nix` | zsh plugins, at their releases' commits | The `apply` workflow |
+| `nix/modules/shell.nix` | zsh plugins, at their releases' commits | The shell tests and the `apply` workflow |
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
 A Neovim plugin or an agent skill whose repository tags a release of each change within weeks is pinned at a release's commit, the others at a commit of the branch they follow.
@@ -79,6 +79,7 @@ After merging, run `./apply` again, and run `:Lazy restore` in Neovim to check o
 - `nvim/`: Neovim
   - `tests/`: [End-to-end workflow tests](./nvim/tests/README.md)
 - `shell/`: Bash and Zsh
+  - `tests/`: Behavioral tests of the commands in `bin/` and the zsh config, with fakes of what they'd reach
 - `vscode/`: VS Code's settings and key bindings
 
 ### Links
