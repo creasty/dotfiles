@@ -79,7 +79,6 @@ After merging, run `./apply` again, and run `:Lazy restore` in Neovim to check o
 - `nvim/`: Neovim
   - `tests/`: [End-to-end workflow tests](./nvim/tests/README.md)
 - `shell/`: Bash and Zsh
-- `vscode/`: VS Code's settings and key bindings
 
 ### Links
 
@@ -90,7 +89,7 @@ Files are linked into the home directory by where they are in the repository, wi
 | `home/<path>` | `~/.<path>` (`home/aws/config` → `~/.aws/config`) |
 | `config/<path>` | `~/.config/<path>` (`config/git/config` → `~/.config/git/config`) |
 
-The modules link the rest: `nvim/`, `hammerspoon/`, the shell files and VS Code's settings.
+The modules link the rest: `nvim/`, `hammerspoon/` and the shell files.
 Links point straight into the checkout, not through the Nix store: edits apply without a rebuild, and the apps macOS starts at login find their configs before `/nix` is mounted.
 
 ### Packages

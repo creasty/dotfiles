@@ -1,8 +1,6 @@
 {
   //=== Basic
   //==============================================================================================
-  "breadcrumbs.enabled": true,
-
   "diffEditor.ignoreTrimWhitespace": false,
 
   "editor.cursorBlinking": "smooth",
@@ -11,15 +9,12 @@
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.minimap.enabled": false,
-  "editor.renderControlCharacters": true,
   "editor.renderWhitespace": "boundary",
   "editor.tabCompletion": "on",
   "editor.wordWrap": "on",
-  "editor.wordWrapColumn": 120,
   "editor.wrappingIndent": "indent",
   "editor.quickSuggestions": {
     "other": true,
-    "comments": false,
     "strings": true,
   },
   "workbench.editor.focusRecentEditorAfterClose": false,
@@ -27,8 +22,6 @@
   "editor.cursorSurroundingLines": 4,
   "editor.unicodeHighlight.includeComments": false,
   "editor.unicodeHighlight.nonBasicASCII": false,
-  // "editor.fontFamily": "Fira Code",
-  // "editor.fontLigatures": true,
 
   "extensions.ignoreRecommendations": true,
 
@@ -44,10 +37,8 @@
 
   "search.showLineNumbers": true,
   "search.smartCase": true,
-  "search.useIgnoreFiles": true,
 
   "window.closeWhenEmpty": true,
-  "window.zoomLevel": 0,
   "window.newWindowDimensions": "inherit",
   "window.clickThroughInactive": false,
 
@@ -55,18 +46,12 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tips.enabled": false,
-  "workbench.editor.showTabs": "multiple",
-  "workbench.editor.enablePreview": true,
   "workbench.editor.enablePreviewFromQuickOpen": true,
   "workbench.quickOpen.closeOnFocusLost": false,
   "workbench.quickOpen.preserveInput": true,
   "workbench.settings.editor": "json",
 
   "workbench.colorTheme": "Visual Studio Dark",
-
-  "claudeCode.preferredLocation": "panel",
-
-  "go.useLanguageServer": true,
 
   //=== Liveshare
   //==============================================================================================
@@ -77,13 +62,7 @@
   "gitlens.codeLens.enabled": false,
   "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.enabled": false,
-  "gitlens.hovers.currentLine.over": "line",
-  "gitlens.mode.statusBar.enabled": false,
   "gitlens.statusBar.enabled": false,
-
-  //=== Version lens
-  //==============================================================================================
-  "versionlens.suggestions.showOnStartup": false,
 
   //=== Eslint
   //==============================================================================================
@@ -143,7 +122,6 @@
   //=== Lang: Markdown
   //==============================================================================================
   "[markdown]": {
-    "editor.defaultFormatter": null,
     "editor.formatOnSave": false,
   },
 }
