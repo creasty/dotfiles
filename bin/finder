@@ -2,9 +2,8 @@
 #
 # Opens a directory in Finder, in a new tab unless the front window shows it:
 #
-#   finder [<dir>]            the current directory by default
-#   finder :<port>[/<path>]   http://localhost:<port>[/<path>]
-#   finder <arg>...           anything else, with open
+#   finder [<dir>]    the current directory by default
+#   finder <arg>...   anything else, with open
 
 set -euo pipefail
 
@@ -28,9 +27,7 @@ SCRIPT='
 
 TARGET="${1:-.}"
 
-if [[ "$TARGET" =~ ^:[0-9]+(/.+)?$ ]]; then
-  open "http://localhost$TARGET"
-elif [ -d "$TARGET" ]; then
+if [ -d "$TARGET" ]; then
   osascript -e "$SCRIPT" "$(cd "$TARGET" && pwd)/" > /dev/null
 else
   open "$@"

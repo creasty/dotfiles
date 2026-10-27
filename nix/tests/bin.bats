@@ -261,13 +261,6 @@ fake_finder_script() {
   assert_equal "$(< "$BATS_TEST_TMPDIR/target")" "$BATS_TEST_TMPDIR/my project/docs/"
 }
 
-@test "finder opens a port of localhost, and a path on it, in the browser" {
-  fake open
-  run -0 finder :3000
-  run -0 finder :3000/admin/users
-  assert_equal "$(calls)" $'open http://localhost:3000\nopen http://localhost:3000/admin/users'
-}
-
 @test "finder hands anything else to open, with all its arguments" {
   fake open
   touch notes.txt
