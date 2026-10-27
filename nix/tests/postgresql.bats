@@ -10,7 +10,7 @@ load helper
 @test "terminals get the server's data and connect as postgres" {
   run -0 login_zsh 'print -rl -- "$PGUSER" "$(< "$PGDATA/PG_VERSION")" "$(psql --version)"'
   assert_equal "${lines[0]}" postgres
-  assert_like "${lines[2]}" "psql (PostgreSQL) ${lines[1]}.*"
+  assert_line --index 2 --partial "psql (PostgreSQL) ${lines[1]}."
 }
 
 @test "pg_ctl starts the server, which takes postgres without a password and logs every statement" {

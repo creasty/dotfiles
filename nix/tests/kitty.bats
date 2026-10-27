@@ -11,6 +11,6 @@ load helper
   # A login first, for the second to report
   run -0 pristine "${login[@]}" /usr/bin/true < /dev/null
   run -0 pristine "${login[@]}" /bin/echo started < /dev/null
-  assert_like "$output" '*started*'
-  [[ $output != *'Last login'* ]]
+  assert_output --partial started
+  refute_output --partial 'Last login'
 }

@@ -6,7 +6,7 @@ load helper
 
 @test "the login shell is zsh" {
   run -0 dscl . -read "/Users/$(id -un)" UserShell
-  assert_like "$output" 'UserShell: */zsh'
+  assert_output --regexp '^UserShell: .*/zsh$'
 }
 
 @test "zsh gets nix-darwin's environment" {

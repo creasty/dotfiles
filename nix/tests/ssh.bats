@@ -16,12 +16,12 @@ file_mode() {
 
 @test "the ssh config comes from the Nix store" {
   run -0 readlink ~/.ssh/config
-  assert_like "$output" '/nix/store/*'
+  assert_output --regexp '^/nix/store/'
 }
 
 @test "ssh uses 1Password's agent and the common config" {
   run -0 ssh -G example.com
-  assert_like "$(grep '^identityagent ' <<< "$output")" '*/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock*'
+  assert_line --regexp '^identityagent .*/Group Containers/2BUA8C4S2C\.com\.1password/t/agent\.sock'
   assert_line 'identitiesonly yes'
   assert_line 'serveraliveinterval 30'
 }
@@ -30,5 +30,5 @@ file_mode() {
   run -0 ssh -G example.com
   assert_line 'stricthostkeychecking accept-new'
   # With the home directory as `~` or expanded
-  assert_like "$(grep '^userknownhostsfile ' <<< "$output")" 'userknownhostsfile */.ssh/known_hosts *'
+  assert_line --regexp '^userknownhostsfile .*/\.ssh/known_hosts '
 }

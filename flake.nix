@@ -57,7 +57,12 @@
       # Pinned tools for ./apply and ./verify
       packages.${system} = {
         inherit (nix-darwin.packages.${system}) darwin-rebuild;
-        inherit (nixpkgs.legacyPackages.${system}) bats yq-go;
+        inherit (nixpkgs.legacyPackages.${system}) yq-go;
+        # With the libraries the tests load, which it finds in its BATS_LIB_PATH
+        bats = nixpkgs.legacyPackages.${system}.bats.withLibraries (p: [
+          p.bats-support
+          p.bats-assert
+        ]);
       };
     };
 }

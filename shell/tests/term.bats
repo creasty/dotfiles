@@ -80,7 +80,7 @@ assert_printed() {
   run -0 zle_type 'echo typed' "$C_X_E"
   assert_equal "${output/|/}" 'echo edited'
   run -0 calls
-  assert_like "$output" "nvim -c 'normal! 11go' -- *"
+  assert_output --partial "nvim -c 'normal! 11go' -- "
 }
 
 @test "C-v pastes the clipboard at the cursor" {
@@ -214,9 +214,9 @@ assert_printed() {
   run -0 zle_type "cd repo$RETURN" "$C_O_B"
   assert_equal "$output" 'g k feature|'
   run -0 peco_input
-  assert_like "${lines[0]}" '  feature*'
-  assert_like "${lines[1]}" "+ in-tree  *$ZSH_HOME/tree dir"
-  assert_like "${lines[2]}" "\\* master  *$ZSH_HOME/repo"
+  assert_line --index 0 --regexp '^  feature'
+  assert_line --index 1 --regexp "^\+ in-tree  .*$ZSH_HOME/tree dir\$"
+  assert_line --index 2 --regexp "^\* master  .*$ZSH_HOME/repo\$"
   peco_picks in-tree
   run -0 zle_type "cd repo$RETURN" "$C_O_B"
   assert_equal "$output" "cd $(q "$ZSH_HOME/tree dir")|"
@@ -324,8 +324,5 @@ takes() {
   fake_clock
   run -0 zle_type "$(takes 30)$RETURN" "$(takes 60 130)$RETURN" "$(takes 60 146)$RETURN"
   run -0 calls
-  [[ "$output" != *localpush* ]] || {
-    echo "notified: $output" >&2
-    return 1
-  }
+  refute_output --partial localpush
 }

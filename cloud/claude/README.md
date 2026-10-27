@@ -35,7 +35,7 @@ When the output is Japanese:
 
 ## Tests
 
-The `claude-cloud` job of the tests workflow runs [`tests/`](tests/) on Ubuntu 24.04, the OS of a cloud session's VM: `bats cloud/claude/tests`, on Linux with curl, jq, Python and the Google Cloud CLI.
+The `claude-cloud` job of the tests workflow runs [`tests/`](tests/) on Ubuntu 24.04, the OS of a cloud session's VM: `bats cloud/claude/tests`, on Linux with bats-support and bats-assert, curl, jq, Python and the Google Cloud CLI.
 They run `setup` on the checkout's files, served over HTTP (`DOTFILES_URL`), and `gcloud-login.sh` with the Google Cloud CLI up to a login, which needs a person at Google's page, and with a fake of it (`tests/fakes/gcloud`) for what follows one.
 
 ## Verification gaps

@@ -81,18 +81,18 @@ EOF
 @test "Caps Lock is Control" {
   run -0 hidutil property --get UserKeyMapping
   # Caps Lock (0x700000039) to left Control (0x7000000E0)
-  assert_like "$(tr -d '[:space:]' <<< "$output")" \
-    '*{HIDKeyboardModifierMappingDst=30064771296;HIDKeyboardModifierMappingSrc=30064771129;}*'
+  assert_regex "$(tr -d '[:space:]' <<< "$output")" \
+    '\{HIDKeyboardModifierMappingDst=30064771296;HIDKeyboardModifierMappingSrc=30064771129;\}'
 }
 
 @test "the Library folder is visible in Finder" {
   run -0 ls -ldO "$HOME/Library"
-  [[ $output != *hidden* ]]
+  refute_output --partial hidden
 }
 
 @test "the startup chime is muted" {
   run -0 nvram StartupMute
-  assert_like "$output" 'StartupMute*%01'
+  assert_output $'StartupMute\t%01'
 }
 
 # nix/modules/default.nix

@@ -22,8 +22,8 @@ setup() {
 @test "ruby is built with OpenSSL, libyaml, zlib and GMP" {
   # macOS has no OpenSSL 3, libyaml or GMP of its own: loading these proves Homebrew's were built in
   run -0 login_bash 'ruby -ropenssl -rpsych -rzlib -e "puts OpenSSL::OPENSSL_LIBRARY_VERSION, Psych::LIBYAML_VERSION, Integer::GMP_VERSION"'
-  assert_like "${lines[0]}" 'OpenSSL 3.*'
-  assert_like "${lines[2]}" 'GMP *'
+  assert_line --index 0 --partial 'OpenSSL 3.'
+  assert_line --index 2 --partial 'GMP '
 }
 
 # Homebrew removes a library installed as another formula's dependency along with that formula, and ruby then fails

@@ -19,7 +19,7 @@ jdk_home() {
   assert_same_file /Library/Java/JavaVirtualMachines/openjdk.jdk "$jdk"
   # java_home lists the JDKs by their resolved path
   run -0 /usr/libexec/java_home -V
-  assert_like "$output" "* $(cd "$jdk/Contents/Home" && pwd -P)*"
+  assert_output --partial " $(cd "$jdk/Contents/Home" && pwd -P)"
 }
 
 @test "terminals use the configured JDK" {
@@ -27,7 +27,7 @@ jdk_home() {
   version="$(mise_config '.tools.java')"
   run -0 login_zsh 'print -r -- $JAVA_HOME; java -version 2>&1'
   assert_same_file "${lines[0]}" "$(jdk_home "$version")"
-  assert_like "${lines[1]}" "* \"$version.*"
+  assert_line --index 1 --partial " \"$version."
 }
 
 @test "a .java-version file selects the JDK, as N or N.0" {
@@ -39,7 +39,7 @@ jdk_home() {
 
       run -0 login_zsh "cd $(q "$BATS_TEST_TMPDIR/$name") && print -r -- \$JAVA_HOME && java -version 2>&1"
       assert_same_file "${lines[0]}" "$(jdk_home "$version")"
-      assert_like "${lines[1]}" "* \"$version.*"
+      assert_line --index 1 --partial " \"$version."
     done
   done
 }

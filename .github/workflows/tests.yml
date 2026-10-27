@@ -40,10 +40,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # bats with the libraries the tests load, which it finds in /usr/lib/bats
       - name: Install bats
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends bats
+          sudo apt-get install -y --no-install-recommends bats bats-support bats-assert
 
       - name: Run the tests
         run: bats --timing --print-output-on-failure cloud/claude/tests
@@ -136,10 +137,12 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      # bats, and what the zsh config runs that macOS lacks: eza for ls, fd
-      # for C-o C-p
+      # bats with the libraries the tests load, from their tap, and what the
+      # zsh config runs that macOS lacks: eza for ls, fd for C-o C-p
       - name: Install tools
-        run: brew install bats-core eza fd
+        run: |
+          brew install bats-core bats-core/bats-core/bats-support bats-core/bats-core/bats-assert eza fd
+          echo "BATS_LIB_PATH=$(brew --prefix)/lib" >> "$GITHUB_ENV"
 
       - name: Install the zsh plugins
         run: |
