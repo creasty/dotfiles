@@ -34,22 +34,29 @@ in
     casks = [
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
       "appcleaner" # https://freemacsoft.net/appcleaner/
+      "chatgpt" # https://chatgpt.com/
+      "claude" # https://claude.com/download
       "figma" # https://www.figma.com/
       "gcloud-cli" # https://cloud.google.com/cli/
       "google-chrome" # https://www.google.com/chrome/
       "google-drive" # https://www.google.com/drive/
       "google-japanese-ime" # https://www.google.co.jp/ime/
       "imageoptim" # https://imageoptim.com/mac
+      "insomnia" # https://insomnia.rest/
+      "intellij-idea-ce" # https://www.jetbrains.com/idea/
       "istat-menus" # https://bjango.com/mac/istatmenus/
       "ngrok" # https://ngrok.com/
+      "phocus" # https://www.hasselblad.com/phocus/
       "proxyman" # https://proxyman.io/
       "qlmarkdown" # https://github.com/sbarex/QLMarkdown
       "raycast" # https://raycast.app/
       "rightfont" # https://rightfontapp.com/
+      "smoothcsv" # https://smoothcsv.com/
       "spotify" # https://www.spotify.com/
       "syntax-highlight" # https://github.com/sbarex/SourceCodeSyntaxHighlight
       "tableplus" # https://tableplus.io/
       "tunnelbear" # https://www.tunnelbear.com/
+      "typeless" # https://typeless.com/
     ];
   };
 }

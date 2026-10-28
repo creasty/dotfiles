@@ -4,8 +4,12 @@
 let
   # `mas list` shows the IDs of installed apps, and `mas search <name>` those of others
   apps = {
+    "Amazon Kindle" = 302584613;
     "Bear" = 1091189122;
+    "Brother iPrint&Scan" = 1193539993;
     "Fantastical" = 975937182;
+    "MutePod" = 6478760853;
+    "New File Menu Lite" = 1066302071;
     "The Unarchiver" = 425424353;
     "Things" = 904280696;
     "Toggl Track" = 1291898086;
