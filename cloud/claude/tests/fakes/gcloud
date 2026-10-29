@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# A fake of the gcloud commands gcloud-login.sh runs, for a login and what follows one, which the tests can't do with
+# A fake of the gcloud commands gcloud-login.py runs, for a login and what follows one, which the tests can't do with
 # Google: its client and endpoints are the fake google-oauth's, at $FAKE_GOOGLE_OAUTH_URL, and it takes that fake's
 # refresh token. Each call goes on a line of $CLOUDSDK_CONFIG/calls, and one that gets the placeholder token fails, on
 # a line starting with "placeholder:".

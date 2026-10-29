@@ -7,7 +7,7 @@ description: Logs gcloud in with the user's own Google account from this cloud s
 
 The login is the user's own account's, ADC included (`--update-adc`), so it carries the account's permissions, raised ones too while the user holds them.
 
-The script is `scripts/gcloud-login.sh`, in this skill's directory.
+The script is `scripts/gcloud-login.py`, in this skill's directory.
 
 ## Log in
 

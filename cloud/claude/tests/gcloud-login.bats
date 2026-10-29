@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 #
-# ../skills/gcloud-login/scripts/gcloud-login.sh, with the Google Cloud CLI and Google up to a login, which needs a
+# ../skills/gcloud-login/scripts/gcloud-login.py, with the Google Cloud CLI and Google up to a login, which needs a
 # person at Google's page, and with fakes of them (fakes/gcloud, fakes/google-oauth) for a login and what follows one
 
 bats_require_minimum_version 1.7.0
@@ -8,7 +8,7 @@ bats_load_library bats-support
 bats_load_library bats-assert
 
 setup() {
-  script="$BATS_TEST_DIRNAME/../skills/gcloud-login/scripts/gcloud-login.sh"
+  script="$BATS_TEST_DIRNAME/../skills/gcloud-login/scripts/gcloud-login.py"
   export HOME="$BATS_TEST_TMPDIR/home" CLOUDSDK_CONFIG="$BATS_TEST_TMPDIR/gcloud"
   mkdir -p "$HOME"
   unset CLOUDSDK_AUTH_ACCESS_TOKEN
@@ -123,7 +123,7 @@ for account, value in sqlite3.connect(sys.argv[1]).execute("select account_id, v
 @test "with no command, it prints its usage" {
   run -1 "$script"
   assert_line --index 0 --partial 'Logs gcloud in'
-  assert_line --index -1 --partial 'gcloud-login.sh revoke'
+  assert_line --index -1 --partial 'gcloud-login.py revoke'
 }
 
 #  With the Google Cloud CLI and the fake Google

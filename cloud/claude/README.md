@@ -35,9 +35,9 @@ When the output is Japanese:
 
 ## Tests
 
-The `claude-cloud` job of the tests workflow runs [`tests/`](tests/) on Ubuntu 24.04, the OS of a cloud session's VM: `bats cloud/claude/tests`, on Linux with bats-support and bats-assert, curl, jq, OpenSSL, Python and the Google Cloud CLI.
-They run `setup` on the checkout's files, served over HTTP (`DOTFILES_URL`), and `gcloud-login.sh` with the Google Cloud CLI and Google up to a login, which needs a person at Google's page, and with fakes of them ([`tests/fakes/`](tests/fakes/)) for a login and what follows one.
-Since `gcloud-login.sh` logs in the way gcloud's own login does, one test has both log in against the fake Google, and fails on any difference in what they ask Google or leave in gcloud's configuration directory, but for one it explains.
+The `claude-cloud` job of the tests workflow runs [`tests/`](tests/) on Ubuntu 24.04, the OS of a cloud session's VM: `bats cloud/claude/tests`, on Linux with bats-support and bats-assert, curl, jq, Python and the Google Cloud CLI.
+They run `setup` on the checkout's files, served over HTTP (`DOTFILES_URL`), and `gcloud-login.py` with the Google Cloud CLI and Google up to a login, which needs a person at Google's page, and with fakes of them ([`tests/fakes/`](tests/fakes/)) for a login and what follows one.
+Since `gcloud-login.py` logs in the way gcloud's own login does, one test has both log in against the fake Google, and fails on any difference in what they ask Google or leave in gcloud's configuration directory, but for one it explains.
 
 ## Verification gaps
 
