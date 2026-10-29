@@ -43,11 +43,12 @@ Since `gcloud-login.sh` logs in the way gcloud's own login does, one test has bo
 
 - **Cloud sessions**: no test runs one.
   Anthropic's docs say a cloud session doesn't read `~/.claude/settings.json`, yet it read the one the script writes (seen 2026-10-20): while it still does, `echo $DISABLE_COST_WARNINGS` in a session prints 1.
-  They say the same of `~/.claude/skills/`, yet a session loaded the `gcloud-login` the script writes there, and logged in and out with it (seen 2026-10-26): while it still does, `/skills` in a session lists `gcloud-login`.
+  They say the same of `~/.claude/skills/`, yet a session loaded the `gcloud-login` the script writes there, and logged in and out with it (seen 2026-10-29): while it still does, `/skills` in a session lists `gcloud-login`.
 - **A login**: the fake Google plays Google's side of it, and the fake gcloud what gcloud does after one, including that ADC's revoke, after the CLI's, fails and keeps its file (gcloud 570.0.0, seen 2026-10-23).
 - **gcloud's version**: the test that compares the login with gcloud's own runs the runner's gcloud, and a cloud session's VM may have another: `gcloud version` in a session tells.
 - **A VM's pause**: no test pauses one.
   The login waits in `~/.local/state/gcloud-login/`, which a pause keeps by the [docs](https://code.claude.com/docs/en/cloud-environments)' word ("pauses with its files saved"), and the tests run `finish` with nothing of `start` left running, as after a pause.
+  In a cloud session, `finish` succeeded 40 minutes after `start`, the VM having paused in between (seen 2026-10-29).
 
 ## gcloud's placeholder token
 
