@@ -23,10 +23,10 @@ curl -fsSL "$url/home/claude/settings.json" | jq 'del(.env.CLAUDE_CODE_SHELL)' >
 
 # The skills only cloud sessions need, a file at a time: the VM gets a 403 for an archive of a repository the session
 # doesn't have
-for file in gcloud-login/SKILL.md gcloud-login/scripts/gcloud-login.sh; do
+for file in gcloud-login/SKILL.md gcloud-login/scripts/gcloud-login.py; do
   curl -fsSL --create-dirs "$url/cloud/claude/skills/$file" -o ~/.claude/skills/"$file"
 done
-chmod +x ~/.claude/skills/gcloud-login/scripts/gcloud-login.sh
+chmod +x ~/.claude/skills/gcloud-login/scripts/gcloud-login.py
 
 # gcloud prefers the VM's placeholder CLOUDSDK_AUTH_ACCESS_TOKEN to your login, and only an unset removes it (README.md);
 # it goes on ~/.bashrc's first line, above the return that skips the rest in a non-interactive shell

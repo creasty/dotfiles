@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# A fake of the gcloud commands gcloud-login.sh runs, for what follows a login, which the tests can't do with Google:
-# `auth login` takes the code good-code. Each call goes on a line of $CLOUDSDK_CONFIG/calls, and one that gets the
-# placeholder token fails, on a line starting with "placeholder:".
+# A fake of the gcloud commands gcloud-login.py runs, for a login and what follows one, which the tests can't do with
+# Google: its client and endpoints are the fake google-oauth's, at $FAKE_GOOGLE_OAUTH_URL, and it takes that fake's
+# refresh token. Each call goes on a line of $CLOUDSDK_CONFIG/calls, and one that gets the placeholder token fails, on
+# a line starting with "placeholder:".
 # FAKE_GCLOUD_KEEP_ADC=1 has ADC's revoke keep its file, as it does after the CLI's revoke.
 
 set -euo pipefail
@@ -17,23 +18,24 @@ fi
 echo "$*" >> "$CLOUDSDK_CONFIG/calls"
 
 case "$*" in
-  'auth login --no-launch-browser --update-adc')
-    printf 'Go to the following link in your browser, and complete the sign-in prompts:\n\n    %s\n\n' \
-      'https://accounts.google.com/o/oauth2/auth?response_type=code&code_challenge=fake&code_challenge_method=S256'
-    printf 'Once finished, enter the verification code provided in your browser: '
-    read -r code
-    if [ "$code" != good-code ]; then
-      echo 'ERROR: (gcloud.auth.login) invalid_grant: Malformed auth code.' >&2
+  'config get auth/auth_host') echo "$FAKE_GOOGLE_OAUTH_URL/auth" ;;
+  'config get auth/token_host') echo "$FAKE_GOOGLE_OAUTH_URL/token" ;;
+  'config get auth/client_id') echo fake-client-id ;;
+  'config get auth/client_secret') echo fake-client-secret ;;
+  'auth activate-refresh-token user@example.com')
+    printf 'Refresh token: ' >&2
+    read -r token
+    if [ "$token" != fake-refresh-token ]; then
+      echo "ERROR: (gcloud.auth.activate-refresh-token) There was a problem refreshing your current auth tokens: ('invalid_grant: Bad Request')" >&2
       exit 1
     fi
     echo user@example.com > "$account"
-    echo '{}' > "$adc"
     ;;
   'auth list --filter=status:ACTIVE --format=value(account)' | 'auth list --format=value(account)')
     cat "$account" 2> /dev/null || true
     ;;
   'auth application-default print-access-token')
-    [ -f "$adc" ]
+    jq -e '.type == "authorized_user" and .refresh_token == "fake-refresh-token"' "$adc" > /dev/null 2>&1
     ;;
   'auth application-default revoke --quiet')
     [ -n "${FAKE_GCLOUD_KEEP_ADC:-}" ] || rm -f "$adc"

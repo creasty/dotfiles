@@ -7,7 +7,7 @@ description: Logs gcloud in with the user's own Google account from this cloud s
 
 The login is the user's own account's, ADC included (`--update-adc`), so it carries the account's permissions, raised ones too while the user holds them.
 
-The script is `scripts/gcloud-login.sh`, in this skill's directory.
+The script is `scripts/gcloud-login.py`, in this skill's directory.
 
 ## Log in
 
@@ -15,20 +15,21 @@ The script is `scripts/gcloud-login.sh`, in this skill's directory.
 2. Run `start`, and write the URL it prints in full in your reply's text: a command's output doesn't always reach the user's screen (the Claude app folds it), so a URL only in the output hasn't been given. The user opens it in their own browser, logs in, and pastes the verification code it shows into this chat. With the URL, tell them the rules under [The verification code](#the-verification-code).
 3. Run `finish '<code>'`, which ends with `status`'s output.
 
-A login not finished within 15 minutes of `start` is dropped: run `start` again.
+The login waits for its code in files, which the VM keeps when it pauses while the user logs in, so `finish` works after the pause too.
+Until `finish` succeeds, `start` prints the same URL again.
 
 ## The verification code
 
 The page that shows the code warns that it's a credential, like a password, to share with no one: given to a login someone else started, it completes that login with your account.
 Pasting into this chat the code of the URL this session's `start` printed isn't that:
 
-- PKCE (`code_challenge_method=S256`) binds the code to the gcloud process `start` launched, so it can't be exchanged without the code verifier that process holds.
+- PKCE (`code_challenge_method=S256`) binds the code to the code verifier `start` keeps on the VM, so it can't be exchanged without it.
 - The code works once and expires shortly (RFC 6749, 4.1.2), so once `finish` has exchanged it, the copy left in the chat's history is useless.
 
 The rules:
 
 - Open only a URL this session's `start` printed, and paste the code of no login URL from anywhere else.
-- Paste the code only into the chat of the session that printed its URL, and `finish` at once. After a failure or a long wait, drop the code and `start` again.
+- Paste the code only into the chat of the session that printed its URL, and `finish` at once. After a failure or a long wait, drop the code: the user opens the URL again for a new one.
 
 ## Once logged in
 
