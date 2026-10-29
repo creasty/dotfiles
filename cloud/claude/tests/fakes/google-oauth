@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+"""A fake of Google's OAuth endpoints, which the tests can't log in to: google-oauth REQUESTS_FILE serves on a free port
+of 127.0.0.1, which it prints, for gcloud's auth/auth_host and auth/token_host, and adds each request's method, path and
+parameters to REQUESTS_FILE, a JSON object a line.
+
+GET /auth, the login URL, plays the user logging in at Google's page: it answers the verification code it binds to the
+URL's PKCE challenge. POST /token exchanges a code once, as Google does, for the tokens of user@example.com, and
+refreshes them.
+"""
+
+import base64
+import hashlib
+import http.server
+import json
+import re
+import sys
+import urllib.parse
+
+CLIENT_ID = "fake-client-id"
+CLIENT_SECRET = "fake-client-secret"
+REFRESH_TOKEN = "fake-refresh-token"
+
+
+def base64url(data):
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
+
+
+# Its payload's base64url has, as an ID token's may, a character base64 doesn't (- or _) and no padding
+ID_TOKEN_PAYLOAD = base64url(json.dumps({"email": "user@example.com", "sub": "1>>~"}).encode())
+assert re.search(r"[-_]", ID_TOKEN_PAYLOAD) and len(ID_TOKEN_PAYLOAD) % 4
+ID_TOKEN = "e30." + ID_TOKEN_PAYLOAD + ".c2ln"
+
+# The login URL's parameters of each code issued and not yet exchanged
+logins = {}
+
+
+# Why Google would refuse the code exchange the form asks for, of the login the code was issued to, if it would
+def exchange_error(login, form):
+    verifier = form.get("code_verifier", "")
+    if login is None:
+        return "Malformed auth code."
+    if form.get("redirect_uri") != login["redirect_uri"]:
+        return "Bad redirect URI."
+    if not re.fullmatch(r"[A-Za-z0-9._~-]{43,128}", verifier):
+        return "Invalid code verifier."
+    if base64url(hashlib.sha256(verifier.encode()).digest()) != login["code_challenge"]:
+        return "Code verifier doesn't match the challenge."
+    return None
+
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        url = urllib.parse.urlsplit(self.path)
+        params = dict(urllib.parse.parse_qsl(url.query))
+        self.record(url.path, params)
+        if url.path != "/auth" or params.get("client_id") != CLIENT_ID:
+            return self.reply(400, "invalid_request")
+        if params.get("code_challenge_method") != "S256":
+            return self.reply(400, "invalid_request: no S256 challenge")
+        code = f"code-{len(logins) + 1}"
+        logins[code] = params
+        self.reply(200, code)
+
+    def do_POST(self):
+        form = dict(urllib.parse.parse_qsl(self.rfile.read(int(self.headers["Content-Length"])).decode()))
+        self.record(self.path, form)
+        if (form.get("client_id"), form.get("client_secret")) != (CLIENT_ID, CLIENT_SECRET):
+            error = "Unauthorized client."
+        elif form.get("grant_type") == "authorization_code":
+            login = logins.pop(form.get("code"), None)
+            error = exchange_error(login, form)
+            if not error:
+                return self.tokens(access_token="fake-access-token", refresh_token=REFRESH_TOKEN, scope=login["scope"])
+        elif form.get("grant_type") == "refresh_token" and form.get("refresh_token") == REFRESH_TOKEN:
+            return self.tokens(access_token="fake-access-token-refreshed")
+        else:
+            error = "Bad Request"
+        self.reply(400, json.dumps({"error": "invalid_grant", "error_description": error}))
+
+    def tokens(self, **tokens):
+        self.reply(200, json.dumps({**tokens, "expires_in": 3599, "token_type": "Bearer", "id_token": ID_TOKEN}))
+
+    def record(self, path, params):
+        with open(sys.argv[1], "a") as f:
+            print(json.dumps({"method": self.command, "path": path, "params": params}), file=f)
+
+    def reply(self, status, body):
+        self.send_response(status)
+        self.end_headers()
+        self.wfile.write(body.encode())
+
+    def log_message(self, *args):
+        pass
+
+
+server = http.server.HTTPServer(("127.0.0.1", 0), Handler)
+print(server.server_address[1], flush=True)
+server.serve_forever()

@@ -6,92 +6,100 @@
 #   gcloud-login.sh status         Shows the login, and the variables in the way of it
 #   gcloud-login.sh revoke         Revokes the gcloud CLI's credentials and ADC
 #
-# Claude's commands take no input, so gcloud runs detached from the session, and the code reaches it through a named
-# pipe. No token is printed.
+# The VM can pause while the user logs in, which ends its processes and keeps its files, so the login waits in files:
+# start keeps the PKCE code verifier, and finish exchanges the code with it, as `gcloud auth login --no-launch-browser
+# --update-adc` would, then hands the refresh token to gcloud and writes ADC. No token is printed.
 
 set -euo pipefail
 
-STATE_DIR="${TMPDIR:-/tmp}/gcloud-login-$(id -u)"
-FIFO="$STATE_DIR/code.fifo"
-LOG="$STATE_DIR/login.log"
-PID_FILE="$STATE_DIR/pid"
-EXIT_FILE="$STATE_DIR/exit"
-# How long the login waits for the code before it's dropped
-LOGIN_TIMEOUT_SECONDS=900
+STATE_DIR="$HOME/.local/state/gcloud-login"
+VERIFIER="$STATE_DIR/verifier"
+URL_FILE="$STATE_DIR/url"
 ADC_FILE="${CLOUDSDK_CONFIG:-$HOME/.config/gcloud}/application_default_credentials.json"
+
+# What gcloud's login URL asks for besides its client and PKCE challenge (tests/gcloud-login.bats compares the two)
+REDIRECT_URI=https://sdk.cloud.google.com/authcode.html
+SCOPES=(
+  openid
+  https://www.googleapis.com/auth/userinfo.email
+  https://www.googleapis.com/auth/cloud-platform
+  https://www.googleapis.com/auth/appengine.admin
+  https://www.googleapis.com/auth/sqlservice.login
+  https://www.googleapis.com/auth/compute
+  https://www.googleapis.com/auth/accounts.reauth
+)
 
 # gcloud prefers a cloud session's placeholder token to the account it's logged in to: status reports whether the
 # session still has it
 PLACEHOLDER="${CLOUDSDK_AUTH_ACCESS_TOKEN:+set}"
 unset CLOUDSDK_AUTH_ACCESS_TOKEN
 
-login_running() {
-  [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null
-}
-
-login_url() {
-  grep -o 'https://accounts\.google\.com/[^[:space:]]*' "$LOG" 2>/dev/null | head -1
+base64url() {
+  base64 | tr '+/' '-_' | tr -d '=\n'
 }
 
 do_start() {
-  if login_running; then
-    echo "A login is already running. Write this URL in full in your reply's text for the user:"
-    login_url
+  if [ -f "$URL_FILE" ]; then
+    echo "A login is already waiting for its code. Write this URL in full in your reply's text for the user:"
+    cat "$URL_FILE"
     return
   fi
 
-  rm -rf "$STATE_DIR"
+  local auth_host client_id verifier challenge url
+  auth_host="$(gcloud config get auth/auth_host)"
+  client_id="$(gcloud config get auth/client_id)"
+  verifier="$(openssl rand 48 | base64url)"
+  challenge="$(printf '%s' "$verifier" | openssl dgst -sha256 -binary | base64url)"
+  url="$(jq -nr --arg auth_host "$auth_host" --arg client_id "$client_id" --arg redirect_uri "$REDIRECT_URI" \
+    --arg scope "${SCOPES[*]}" --arg challenge "$challenge" '
+    {response_type: "code", client_id: $client_id, redirect_uri: $redirect_uri, scope: $scope, prompt: "consent",
+      token_usage: "remote", access_type: "offline", code_challenge: $challenge, code_challenge_method: "S256"}
+    | $auth_host + "?" + (to_entries | map("\(.key)=\(.value | @uri)") | join("&"))')"
+
   mkdir -m 700 -p "$STATE_DIR"
-  mkfifo -m 600 "$FIFO"
-
-  # Opened for both reading and writing, the pipe gives gcloud's input no EOF until the code arrives
-  setsid nohup bash -c 'exec 3<>"$1"; timeout "$2" gcloud auth login --no-launch-browser --update-adc <&3; echo $? > "$3"' \
-    _ "$FIFO" "$LOGIN_TIMEOUT_SECONDS" "$EXIT_FILE" > "$LOG" 2>&1 < /dev/null &
-  echo $! > "$PID_FILE"
-
-  for _ in $(seq 30); do
-    if [ -n "$(login_url)" ]; then
-      echo "Write this URL in full in your reply's text for the user, and take the verification code shown after they log in:"
-      login_url
-      return
-    fi
-    if ! login_running; then
-      break
-    fi
-    sleep 1
-  done
-
-  echo "No login URL came. gcloud's output:" >&2
-  cat "$LOG" >&2
-  exit 1
+  printf '%s' "$verifier" > "$VERIFIER"
+  echo "$url" > "$URL_FILE"
+  echo "Write this URL in full in your reply's text for the user, and take the verification code shown after they log in:"
+  echo "$url"
 }
 
 do_finish() {
   local code="${1:?pass the verification code}"
-  if ! login_running; then
-    echo "No login is running (it expired or never started): start again" >&2
+  if [ ! -f "$VERIFIER" ]; then
+    echo "No login is waiting for its code: start one" >&2
     exit 1
   fi
 
-  printf '%s\n' "$code" > "$FIFO"
-
-  local pid
-  pid="$(cat "$PID_FILE")"
-  for _ in $(seq 60); do
-    kill -0 "$pid" 2>/dev/null || break
-    sleep 1
-  done
-  if kill -0 "$pid" 2>/dev/null; then
-    echo "gcloud hasn't finished. Its output:" >&2
-    cat "$LOG" >&2
+  local client_id client_secret token_host response
+  client_id="$(gcloud config get auth/client_id)"
+  client_secret="$(gcloud config get auth/client_secret)"
+  token_host="$(gcloud config get auth/token_host)"
+  # The response holds the tokens, which go to jq and gcloud through their input
+  response="$(curl -sS --data-urlencode grant_type=authorization_code --data-urlencode "code=$code" \
+    --data-urlencode "code_verifier@$VERIFIER" --data-urlencode "redirect_uri=$REDIRECT_URI" \
+    --data-urlencode "client_id=$client_id" --data-urlencode "client_secret=$client_secret" "$token_host")"
+  if ! jq -e .refresh_token > /dev/null 2>&1 <<< "$response"; then
+    echo "Google didn't take the code: $(jq -r '[.error, .error_description] | map(values) | join(": ")' <<< "$response" 2>&1)" >&2
+    echo "The user can open the same URL again for a new code" >&2
     exit 1
   fi
 
-  if [ "$(cat "$EXIT_FILE" 2>/dev/null)" != 0 ]; then
-    echo "The login failed. gcloud's output:" >&2
-    cat "$LOG" >&2
+  local account out
+  account="$(jq -r '.id_token | split(".")[1] | gsub("-"; "+") | gsub("_"; "/") | @base64d | fromjson | .email' \
+    <<< "$response")"
+  # gcloud takes the token from its input when the command line leaves it out, and refreshes it before keeping it
+  if ! out="$(jq -r .refresh_token <<< "$response" | gcloud auth activate-refresh-token "$account" 2>&1)"; then
+    echo "gcloud didn't take the login: $out" >&2
     exit 1
   fi
+  (
+    umask 077
+    jq -S --arg client_id "$client_id" --arg client_secret "$client_secret" \
+      '{type: "authorized_user", account: "", client_id: $client_id, client_secret: $client_secret, refresh_token,
+        universe_domain: "googleapis.com"}' \
+      <<< "$response" > "$ADC_FILE"
+  )
+
   rm -rf "$STATE_DIR"
   do_status
 }
@@ -113,9 +121,9 @@ do_status() {
 }
 
 do_revoke() {
-  # The ADC of `login --update-adc` holds the gcloud CLI's refresh token. Revoked after the CLI's, ADC's revoke gets
-  # invalid_token from the server and fails without deleting its file, so ADC goes first. The CLI's revoke then takes
-  # invalid_token as already revoked, warns "already inactive" and deletes the credentials.
+  # ADC holds the gcloud CLI's refresh token. Revoked after the CLI's, ADC's revoke gets invalid_token from the server
+  # and fails without deleting its file, so ADC goes first. The CLI's revoke then takes invalid_token as already
+  # revoked, warns "already inactive" and deletes the credentials.
   gcloud auth application-default revoke --quiet || true
   gcloud auth revoke --all --quiet || true
   do_status
