@@ -9,12 +9,12 @@ ruby = "4.0.9"
 # still has them. npm's run on the project's Node; RubyGems' on the Ruby they were installed with, unless the
 # project's Ruby has its own (e.g. from its bundle).
 "npm:@antfu/ni" = "30.6.0"
-"npm:@github/copilot-language-server" = "1.555.7"
-"npm:@openai/codex" = "0.163.0"
+"npm:@github/copilot-language-server" = "1.562.0"
+"npm:@openai/codex" = "0.164.0"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.13.0"
 "npm:graphql-language-service-cli" = "3.5.0"
-"npm:pnpm" = "12.14.0" # runs the version a project's packageManager names
+"npm:pnpm" = "12.16.0" # runs the version a project's packageManager names
 "npm:typescript" = "7.0.2"
 "npm:yarn" = "1.22.22"
 "gem:cocoapods" = "1.17.0"
