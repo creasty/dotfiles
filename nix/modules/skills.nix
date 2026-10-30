@@ -22,8 +22,8 @@ let
     }
     {
       url = "https://github.com/coreyhaines31/marketingskills";
-      ref = "refs/tags/v2.13.0";
-      rev = "e85f3cbc2e4a79bf33b2a12e9bdd9087d414735b";
+      ref = "refs/tags/v2.13.10";
+      rev = "d82c6041339b8cf9d270c7b29cef82874d9044da";
       skills.copy-editing = "skills/copy-editing";
     }
     {
@@ -40,8 +40,8 @@ let
     }
     {
       url = "https://github.com/mattpocock/skills";
-      ref = "refs/tags/v1.3.1";
-      rev = "24fe0ef7737efae15c87225755e9f6f5965e4888";
+      ref = "refs/tags/v1.3.2";
+      rev = "d1478fcb140db0b93c0c8df17bcfd311844749d0";
       skills = {
         grilling = "skills/productivity/grilling";
         handoff = "skills/productivity/handoff";
