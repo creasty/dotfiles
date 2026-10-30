@@ -28,14 +28,14 @@ let
     }
     {
       url = "https://github.com/github/gh-stack";
-      ref = "refs/tags/v0.2.1";
-      rev = "29a36d314be664583705f18e41cebdf2b61ad514";
+      ref = "refs/tags/v0.3.0";
+      rev = "2a49e6751238633db504655d8a8eba3e433e827d";
       skills.gh-stack = "skills/gh-stack";
     }
     {
       url = "https://github.com/Leonxlnx/taste-skill";
       ref = "refs/heads/main";
-      rev = "6010f91a9935f1c167dfc500fb1a475681892e6b";
+      rev = "12af471f627f866411b4bd785b19646d3672784c";
       skills.design-taste-frontend = "skills/taste-skill";
     }
     {
@@ -50,8 +50,8 @@ let
     }
     {
       url = "https://github.com/nanaism/yomiyasu";
-      ref = "refs/tags/v2.4.0";
-      rev = "ae258d7a57b335673e30b88a018ae08d4f72c449";
+      ref = "refs/tags/v2.5.0";
+      rev = "29d67ccb05e370b5958d72920a9cd1aa829dee80";
       skills.yomiyasu = "skills/yomiyasu";
     }
   ];
