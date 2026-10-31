@@ -330,6 +330,17 @@ function probe.diff_view(nvim)
   return view ~= vim.NIL and view or nil
 end
 
+--- The screen row of `text` in each window in diff mode, left to right, 0 where
+--- it isn't shown.
+function probe.diff_rows(nvim, text)
+  return call(nvim, 'diff_rows', text)
+end
+
+--- How many looks the filler rows of the leftmost window in diff mode have.
+function probe.diff_filler_looks(nvim)
+  return call(nvim, 'diff_filler_looks')
+end
+
 --- Waits until a diff of many files is open (and `pred(view)` holds), and
 --- returns it (probe.diff_view).
 function probe.wait_diff_view(nvim, pred)

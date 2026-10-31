@@ -389,6 +389,194 @@ describe('Navigation', function()
       t.contains(view.sides[2], '<<<<<<< HEAD')
       t.eq({ 'a', 'X-other', 'b' }, view.sides[3])
     end)
+
+    describe('lines that wrap', function()
+      local LONG = ('long text '):rep(18)
+
+      --- Waits until every side shows `text` on the same row.
+      local function wait_aligned(nvim, text, sides)
+        local rows
+        local ok = pcall(nvim.wait_for, nvim, function()
+          rows = probe.diff_rows(nvim, text)
+          return #rows == (sides or 2) and rows[1] > 0 and #vim.tbl_filter(function(row)
+            return row ~= rows[1]
+          end, rows) == 0
+        end)
+        t.ok(ok, ('%s on rows %s'):format(text, vim.inspect(rows)))
+      end
+
+      --- A repository whose a.txt has `old`, changed to `new`, in Diffview.
+      local function diff(nvim, old, new)
+        repo(nvim, { ['a.txt'] = old })
+        nvim:write_file('a.txt', new)
+        nvim:cmd('DiffviewOpen')
+        probe.wait_diff_view(nvim, function(v)
+          return #v.sides == 2
+        end)
+      end
+
+      local OLD = { 'head', 'short', 'deleted ' .. LONG, 'same ' .. LONG, 'tail' }
+      local NEW = { 'head', 'short and ' .. LONG, 'same ' .. LONG, 'added ' .. LONG, 'more', 'tail' }
+
+      it('the sides of a diff stay aligned past lines changed, deleted and added', function()
+        local nvim = t.nvim()
+        diff(nvim, OLD, NEW)
+        wait_aligned(nvim, 'tail')
+        -- the rows filled look like the lines a side lacks
+        t.eq(1, probe.diff_filler_looks(nvim))
+      end)
+
+      it('the sides stay aligned past lines added at the top', function()
+        local nvim = t.nvim()
+        diff(nvim, { 'tail' }, { 'added ' .. LONG, 'tail' })
+        wait_aligned(nvim, 'tail')
+      end)
+
+      it('the sides stay aligned on the next file', function()
+        local nvim = t.nvim()
+        repo(nvim, { ['a.txt'] = { 'a' }, ['b.txt'] = OLD })
+        nvim:write_file('a.txt', { 'a changed' })
+        nvim:write_file('b.txt', NEW)
+        nvim:cmd('DiffviewOpen')
+        probe.wait_diff_view(nvim, function(v)
+          return v.files:find('b%.txt') and #v.sides == 2
+        end)
+        nvim:cmd('DiffviewFocusFiles')
+        nvim:type('<Tab>')
+        wait_aligned(nvim, 'tail')
+      end)
+
+      it('the sides stay aligned as a window narrows', function()
+        local nvim = t.nvim({ lines = 80 })
+        diff(nvim, OLD, NEW)
+        wait_aligned(nvim, 'tail')
+        nvim:cmd('wincmd l')
+        nvim:cmd('vertical resize 20')
+        wait_aligned(nvim, 'tail')
+      end)
+
+      it('the sides stay aligned as the terminal narrows in another tab', function()
+        local nvim = t.nvim({ lines = 80 })
+        diff(nvim, OLD, NEW)
+        wait_aligned(nvim, 'tail')
+        nvim:cmd('tabnew')
+        nvim:cmd('set columns=110')
+        nvim:cmd('tabprevious')
+        wait_aligned(nvim, 'tail')
+      end)
+
+      it('a window too narrow for any text keeps Neovim going', function()
+        local nvim = t.nvim()
+        diff(nvim, OLD, NEW)
+        wait_aligned(nvim, 'tail')
+        nvim:cmd('wincmd l')
+        -- (just the number and sign columns' width)
+        nvim:lua([[
+          vim.api.nvim_win_set_width(0, vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].textoff)
+        ]])
+        vim.uv.sleep(100)
+        t.eq(0, nvim:lua('return vim.api.nvim_win_get_width(0) - vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].textoff'))
+        t.eq('', nvim:messages())
+      end)
+
+      it('a window with its own fillchars over the diff changes nothing', function()
+        local nvim = t.nvim()
+        diff(nvim, OLD, NEW)
+        wait_aligned(nvim, 'tail')
+        nvim:lua([[
+          local buf = vim.api.nvim_create_buf(false, true)
+          local win = vim.api.nvim_open_win(buf, true, { relative = 'editor', row = 1, col = 1, width = 10, height = 2 })
+          vim.wo[win].fillchars = 'eob: '
+          vim.api.nvim_exec_autocmds('DiffUpdated', {})
+        ]])
+        vim.uv.sleep(100)
+        t.eq('', nvim:messages())
+      end)
+
+      it('the sides stay aligned as a line grows and shrinks', function()
+        local nvim = t.nvim()
+        diff(nvim, { 'head', 'x', 'y', 'tail' }, { 'head', 'x', 'changed', 'tail' })
+        wait_aligned(nvim, 'tail')
+        nvim:lua([[
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.wo[win].diff then
+              vim.api.nvim_set_current_win(win)
+            end
+          end
+        ]])
+        nvim:type('ggjjA ' .. LONG .. '<Esc>')
+        wait_aligned(nvim, 'tail')
+        nvim:type('0wD')
+        wait_aligned(nvim, 'tail')
+        t.eq(0, nvim:lua('return vim.api.nvim_win_text_height(0, {}).fill'))
+      end)
+
+      it('the sides stay aligned past a fold opened, its lines just wrapping on the narrower side', function()
+        local nvim = t.nvim()
+        local lines = { 'first', 'head' }
+        -- (as wide as the text of the wider side, a column more than the other's)
+        for _ = 1, 10 do
+          lines[#lines + 1] = ('x'):rep(34)
+        end
+        vim.list_extend(lines, { 'tail', 'a', 'b', 'c', 'd', 'e', 'f', 'last' })
+        local new = vim.deepcopy(lines)
+        new[1] = 'first changed'
+        new[#new] = 'last changed'
+        diff(nvim, lines, new)
+        t.eq({ 41, 42 }, nvim:lua([[
+          local widths = {}
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.wo[win].diff then
+              widths[#widths + 1] = vim.api.nvim_win_get_width(win)
+            end
+          end
+          return widths
+        ]]))
+        nvim:cmd('wincmd l')
+        nvim:type('zR')
+        wait_aligned(nvim, 'tail')
+      end)
+
+      it('the three sides of a merge conflict stay aligned', function()
+        local nvim = t.nvim()
+        repo(nvim, { ['a.txt'] = { 'a', 'x', 'tail' } })
+        git(nvim, 'checkout', '-q', '-b', 'other')
+        nvim:write_file('a.txt', { 'a', 'other ' .. LONG, 'tail' })
+        git(nvim, 'commit', '-q', '-am', 'other')
+        git(nvim, 'checkout', '-q', 'main')
+        nvim:write_file('a.txt', { 'a', 'main', 'tail' })
+        git(nvim, 'commit', '-q', '-am', 'main')
+        git(nvim, 'merge', '-q', 'other', true)
+        nvim:cmd('DiffviewOpen')
+        probe.wait_diff_view(nvim, function(v)
+          return #v.sides == 3
+        end)
+        wait_aligned(nvim, 'tail', 3)
+      end)
+
+      it("the file's own windows show no rows filled, during the diff or after", function()
+        local nvim = t.nvim()
+        repo(nvim, { ['a.txt'] = OLD })
+        nvim:write_file('a.txt', NEW)
+        nvim:cmd('edit a.txt')
+        local function filled()
+          return nvim:lua('return vim.api.nvim_win_text_height(0, {}).fill')
+        end
+        nvim:cmd('DiffviewOpen')
+        probe.wait_diff_view(nvim, function(v)
+          return #v.sides == 2
+        end)
+        wait_aligned(nvim, 'tail')
+        nvim:cmd('tabfirst')
+        t.eq(0, filled())
+        nvim:cmd('tablast')
+        nvim:cmd('DiffviewClose')
+        nvim:wait_for(function()
+          return probe.diff_view(nvim) == nil
+        end, { message = 'the view to close' })
+        t.eq(0, filled())
+      end)
+    end)
   end)
 
   describe('explorer', function()
