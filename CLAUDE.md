@@ -67,6 +67,20 @@ So `named_only` in `nvim/lua/user/plugin/lsp.lua` has `vim.lsp.start` start none
 It isn't each config's `root_dir`: with one, Neovim starts the server a moment after the FileType event, by when flatten.nvim's guest has deleted its buffer, and the error leaves `git commit` from a terminal waiting (`nvim/tests/spec/terminal_spec.lua`).
 Remove it once Neovim gives such a buffer a URI the servers resolve: without it, clangd answers a request after `:enew | setfiletype c`.
 
+## Wrapped lines in a diff
+
+Neovim's filler lines count buffer lines, not the rows those lines wrap to, so the sides of a diff part past a line that takes more rows on one side (`:help view-diffs`, seen with 0.12.4).
+`nvim -d` and `:diffthis` turn `'wrap'` off for that, which hides the end of a long line; Diffview sets `'diff'` itself and leaves `'wrap'` on.
+So `nvim/lua/user/plugin/diff_wrap.lua` fills, under a line, the rows its counterpart takes more, with virtual lines that look like filler lines, and `nvim/tests/spec/navigation_spec.lua` checks them.
+Each window's rows are in a namespace of its own, which `nvim__ns_set` (experimental; 0.12.4 has no `nvim_win_add_ns`) scopes to it: one of the sides is the file itself, perhaps open in another tab.
+
+What's left apart:
+
+- `'scrollbind'` goes by buffer lines, and a window can't start partway through a wrapped line, so the sides part while the top of a window is inside the rows filled, and meet again past them: at 19 to 33 of 125 scroll positions in a 90-line file with five changes, by up to 11 rows.
+- Rows filled above the first line show only with `'topfill'`, which `gg` from the other side doesn't set: they stay hidden until the next update.
+
+Remove it once filler lines count the rows lines wrap to: without it, the specs of `lines that wrap` in `navigation_spec.lua` pass.
+
 ## Ruby without a shared libruby
 
 The gem tools run on `installs/ruby/4.0`, which mise moves to each new patch release, and `mise install` leaves the tools as they are (`rewrite_gem_shebangs` in its `src/backend/gem.rs`, seen with 2026.5.12 and unchanged in 2026.10.24).

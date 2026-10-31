@@ -496,6 +496,48 @@ function M.diff_view()
   return view.files and view or nil
 end
 
+--- The screen row of `text` in each window in diff mode, left to right, 0 where
+--- it isn't shown.
+function M.diff_rows(text)
+  vim.api.nvim__redraw({ flush = true })
+  local rows = {}
+  for _, win in ipairs(tab_wins()) do
+    if vim.wo[win].diff then
+      local top, left = unpack(vim.api.nvim_win_get_position(win))
+      local found = 0
+      for row = 1, vim.api.nvim_win_get_height(win) do
+        local cells = {}
+        for col = 1, vim.api.nvim_win_get_width(win) do
+          cells[col] = vim.fn.screenstring(top + row, left + col)
+        end
+        if found == 0 and table.concat(cells):find(text, 1, true) then
+          found = top + row
+        end
+      end
+      rows[#rows + 1] = found
+    end
+  end
+  return rows
+end
+
+--- How many looks the filler rows of the leftmost window in diff mode have.
+function M.diff_filler_looks()
+  vim.api.nvim__redraw({ flush = true })
+  for _, win in ipairs(tab_wins()) do
+    if vim.wo[win].diff then
+      local top, left = unpack(vim.api.nvim_win_get_position(win))
+      local col = left + vim.fn.getwininfo(win)[1].textoff + 1
+      local looks = {}
+      for row = 1, vim.api.nvim_win_get_height(win) do
+        if vim.fn.screenstring(top + row, col) == '╱' then
+          looks[vim.fn.screenattr(top + row, col)] = true
+        end
+      end
+      return vim.tbl_count(looks)
+    end
+  end
+end
+
 ---------------------------------------------------------------------------
 -- Screen
 ---------------------------------------------------------------------------

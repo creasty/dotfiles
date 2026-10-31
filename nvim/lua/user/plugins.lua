@@ -260,6 +260,7 @@ M.spec = {
           end,
         },
       })
+      require('user.plugin.diff_wrap').setup()
     end,
   },
 
