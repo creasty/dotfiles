@@ -401,7 +401,7 @@ function M.setup()
   require('lazy').setup(M.opts)
   if ok then
     keep_pins(lockfile, pins)
-    -- (scripts and the e2e suite run what is installed)
+    -- (scripts and the e2e suite's embedded children run what is installed)
     if #vim.api.nvim_list_uis() > 0 then
       report_moved(pins)
     end

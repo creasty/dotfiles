@@ -15,7 +15,7 @@ function M.run(ctx)
     return true
   end
   vim.env.E2E_CONTEXT = ctx.context_file
-  local nvim = Child.new({ name = 'warmup' })
+  local nvim = Child.new({ name = 'warmup' }):start()
   local failures = {}
   nvim:files({ ['.git/'] = true, ['notes.txt'] = { 'needle' } })
   for _, step in ipairs(STEPS) do

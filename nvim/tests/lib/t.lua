@@ -67,8 +67,9 @@ end
 --- Spawns a child Neovim with the real config; closed after the test.
 function t.nvim(opts)
   local child = Child.new(opts)
+  -- (before it starts, for a test's timeout to end a start that hangs)
   table.insert(active_children, child)
-  return child
+  return child:start()
 end
 
 ---------------------------------------------------------------------------
