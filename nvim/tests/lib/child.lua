@@ -13,7 +13,7 @@ Child.__index = Child
 local DEFAULT_TIMEOUT = 8000
 local spawned = 0
 
---- Spawns a child.
+--- A child, which start() spawns.
 --- opts.cwd        working directory (default: a fresh sandbox directory)
 --- opts.args       extra command line arguments (e.g. files to open)
 --- opts.env        extra environment variables (or a function of the
@@ -27,9 +27,12 @@ local spawned = 0
 ---                 cursor_shapes()), and the child is driven through --listen;
 ---                 $TERM is xterm-256color unless opts.env sets it
 function Child.new(opts)
-  opts = opts or {}
-  local ctx = env.load()
-  local self = setmetatable({ ctx = ctx, opts = opts }, Child)
+  return setmetatable({ ctx = env.load(), opts = opts or {} }, Child)
+end
+
+--- Spawns the child, and returns it once it takes requests.
+function Child:start()
+  local ctx, opts = self.ctx, self.opts
   self.dir = opts.cwd or env.sandbox(ctx, opts.name)
 
   local lines, columns = opts.lines or 40, opts.columns or 120
@@ -66,6 +69,10 @@ function Child.new(opts)
     job_opts.env.TERM = job_opts.env.TERM or 'xterm-256color'
     -- (with a UI, it would select the Mac's keyboard layout: user/input_source.lua)
     job_opts.env.NVIM_KEEP_INPUT_SOURCE = '1'
+    -- (a pty answers no queries, which Neovim warns of: with one more message
+    -- at start it would wait for Enter, and take no requests)
+    job_opts.env.NVIM_NOTTYFAST = '1'
+
     job_opts.pty, job_opts.width, job_opts.height = true, columns, lines
     self.output = {}
     job_opts.on_stdout = function(_, data)
@@ -80,6 +87,8 @@ function Child.new(opts)
   if self.job <= 0 then
     error('failed to spawn nvim: ' .. vim.inspect(args))
   end
+  -- (the terminal UI's until its server tells its own: killing it ends the server too)
+  self.pid = vim.fn.jobpid(self.job)
   if opts.tui then
     local ok, err = pcall(function()
       vim.wait(DEFAULT_TIMEOUT, function()
@@ -100,7 +109,6 @@ function Child.new(opts)
     end
   else
     self.chan = self.job
-    self.pid = vim.fn.jobpid(self.chan)
   end
   self:request('nvim_get_mode')
   self.startup_ms = (vim.uv.hrtime() - started) / 1e6

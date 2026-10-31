@@ -197,7 +197,8 @@ leaves the cursor at.
   UI itself, on a pty, as kitty does, and records what the terminal receives,
   and when: `exit` closes the pty, and `emacs_keys` holds keys at the key
   repeat to check the screen keeps up and the cursor's shape. It sets
-  `$NVIM_KEEP_INPUT_SOURCE`, so the Mac's keyboard layout stays as it is.
+  `$NVIM_KEEP_INPUT_SOURCE`, so the Mac's keyboard layout stays as it is, and
+  `$NVIM_NOTTYFAST`, so Neovim doesn't query a pty that wouldn't answer.
 - **Keys.** `nvim:type(keys)` is one burst of typing followed by a pause. The
   pause resolves a pending key sequence the way moving on does — including
   submodes such as `gee` or `<C-s>+++`, which never time out in Neovim — so
