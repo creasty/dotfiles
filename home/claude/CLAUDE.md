@@ -58,6 +58,8 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
   In documents: lists for parallel items, tables only when the columns truly correspond, links on their titles, diagrams in Mermaid, emphasis from structure rather than bold.
 - The examples and background I give to explain myself are for you; only the claim goes into what you write.
 - Docs and comments describe what is and change with the behavior; history, even an unmerged draft's, stays in git.
+- Follow Gestalt's law of proximity: what sits together reads as one group before a word is read, so place things by what they belong to.
+  A comment on its own line reads as covering everything down to the next blank line or comment: one about a single line of those goes at the end of that line.
 - After restructuring docs, have a fresh subagent with no context check that nothing was lost.
 
 ## Git and pull requests
