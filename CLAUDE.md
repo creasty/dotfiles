@@ -81,6 +81,14 @@ What's left apart:
 
 Remove it once filler lines count the rows lines wrap to: without it, the specs of `lines that wrap` in `navigation_spec.lua` pass.
 
+## Ruby without a shared libruby
+
+The gem tools run on `installs/ruby/4.0`, which mise moves to each new patch release, and `mise install` leaves the tools as they are (`rewrite_gem_shebangs` in its `src/backend/gem.rs`, seen with 2026.5.12 and unchanged in 2026.10.24).
+With a shared libruby, ruby-build's default, an extension links the release it was built on, and Ruby refuses it on another: `linked to incompatible .../libruby.4.0.dylib` (`dln_incompatible_library_p` in `dln.c`).
+So `rubyConfigureOpts` in `nix/modules/mise.nix` builds Ruby with `--disable-shared`, which leaves extensions no libruby to link: `rails`, `pod` and `pry` ran on 4.0.9 with the extensions they built on 4.0.7, and `nix/tests/ruby.bats` checks that they link none.
+Only `./apply` sets that option: a newer patch release that a project pins and a shell installs is shared, and RubyGems then looks for the tools' extensions under `4.0.0` instead of `4.0.0-static` and doesn't find them.
+Remove it once mise reinstalls the gem tools when their Ruby changes: with a shared Ruby, `rails --version` still runs after the next patch release.
+
 ## Homebrew tap trap
 
 `brew tap` checks that every formula and cask of a tap loads on Linux too, and refuses the whole tap when one doesn't: a formula with a URL only `on_macos`, or a cask without Linux stanzas or `depends_on :macos`.

@@ -39,6 +39,7 @@ in
         }:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin";
 
         rubyConfigureOpts = lib.concatStringsSep " " [
+          "--disable-shared" # keeps the gem tools' extensions loading on Ruby's next patch release (CLAUDE.md)
           "--with-gmp-dir=/opt/homebrew/opt/gmp"
           "--with-openssl-dir=/opt/homebrew/opt/openssl@3"
           "--with-libyaml-dir=/opt/homebrew/opt/libyaml"

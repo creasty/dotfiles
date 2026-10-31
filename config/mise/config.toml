@@ -6,8 +6,8 @@ node = "24.22.2"
 python = "3.15.2"
 ruby = "4.0.9"
 # Tools from npm and RubyGems, each installed apart from Node and Ruby, so that a project pinning another version
-# still has them. npm's run on the project's Node; RubyGems' on the Ruby they were installed with, unless the
-# project's Ruby has its own (e.g. from its bundle).
+# still has them. npm's run on the project's Node; RubyGems' on the minor version of Ruby they were installed with,
+# unless the project's Ruby has its own (e.g. from its bundle).
 "npm:@antfu/ni" = "30.6.0"
 "npm:@github/copilot-language-server" = "1.562.0"
 "npm:@openai/codex" = "0.164.0"

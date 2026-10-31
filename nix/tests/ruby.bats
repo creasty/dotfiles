@@ -31,10 +31,10 @@ setup() {
 @test "ruby links only the Homebrew formulae that the configuration installs" {
   local prefix="$HOME/.local/share/mise/installs/ruby/$ruby_version" brews formula problems=''
   brews="$(manifest '.homebrew.brews[]' | sed 's|.*/||')"
-  # The ruby command and the libraries and extensions that come with it, not those of gems
+  # The ruby command and the extensions that come with it, not those of gems
   for formula in $(
     find "$prefix/bin/ruby" "$prefix/lib" -path "$prefix/lib/ruby/gems" -prune -o \
-      -type f \( -name ruby -o -name '*.dylib' -o -name '*.bundle' \) -print0 |
+      -type f \( -name ruby -o -name '*.bundle' \) -print0 |
       xargs -0 otool -L | grep -oE '/opt/homebrew/opt/[^/]+' | sort -u
   ); do
     grep -qxF -- "${formula##*/}" <<< "$brews" || problems+="${formula##*/}"$'\n'
@@ -49,4 +49,13 @@ setup() {
   run -0 login_zsh 'print -r -- $commands[rails]; rails --version'
   assert_equal "${lines[0]}" "$HOME/.local/share/mise/installs/gem-rails/$version/bin/rails"
   assert_equal "${lines[1]}" "Rails $version"
+}
+
+# They follow Ruby's patch releases (CLAUDE.md), and Ruby refuses an extension linked to another release's libruby
+@test "the gem tools' extensions link no libruby" {
+  local version
+  version="$(mise_config '.tools["gem:rails"]')"
+  run -0 find "$HOME/.local/share/mise/installs/gem-rails/$version/libexec" -name '*.bundle' -exec otool -L {} +
+  assert_output --partial '.bundle:'
+  refute_output --partial libruby
 }
