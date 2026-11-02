@@ -436,6 +436,30 @@ function Child:files(tree)
   return self
 end
 
+--- Runs git in the sandbox, isolated from the user's git config, and returns
+--- its output. A last argument `true` lets it fail (a merge that conflicts).
+function Child:git(...)
+  local args = { ... }
+  local allow_failure = args[#args] == true
+  if allow_failure then
+    table.remove(args)
+  end
+  local res = vim.system(vim.list_extend({ 'git' }, args), {
+    cwd = self.dir,
+    text = true,
+    env = {
+      GIT_CONFIG_NOSYSTEM = '1',
+      GIT_CONFIG_GLOBAL = '/dev/null',
+      GIT_AUTHOR_NAME = 'e2e',
+      GIT_AUTHOR_EMAIL = 'e2e@example.com',
+      GIT_COMMITTER_NAME = 'e2e',
+      GIT_COMMITTER_EMAIL = 'e2e@example.com',
+    },
+  }):wait()
+  assert(allow_failure or res.code == 0, 'git ' .. table.concat(args, ' ') .. ': ' .. (res.stderr or ''))
+  return vim.trim(res.stdout or '')
+end
+
 --- Opens a file (creating it with `content` first when given).
 function Child:edit(rel, content)
   if content ~= nil then

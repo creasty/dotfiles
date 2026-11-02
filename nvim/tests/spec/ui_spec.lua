@@ -3,27 +3,6 @@ local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
 
-local function git(nvim, ...)
-  local args = { ... }
-  local allow_failure = args[#args] == true
-  if allow_failure then
-    table.remove(args)
-  end
-  local res = vim.system(vim.list_extend({ 'git' }, args), {
-    cwd = nvim.dir,
-    text = true,
-    env = {
-      GIT_CONFIG_NOSYSTEM = '1',
-      GIT_CONFIG_GLOBAL = '/dev/null',
-      GIT_AUTHOR_NAME = 'e2e',
-      GIT_AUTHOR_EMAIL = 'e2e@example.com',
-      GIT_COMMITTER_NAME = 'e2e',
-      GIT_COMMITTER_EMAIL = 'e2e@example.com',
-    },
-  }):wait()
-  assert(allow_failure or res.code == 0, (res.stderr or ''))
-end
-
 --- A terminfo database with kitty's entry, which kitty brings: Neovim takes a
 --- terminal it has no entry for for xterm.
 local function kitty_terminfo()
@@ -137,9 +116,9 @@ describe('UI', function()
     it('shows the git branch, marked when lines are added (+), changed (~) or removed (-)', function()
       local nvim = t.nvim()
       nvim:files({ ['a.txt'] = { '1', '2', '3', '4', '5', '6', '7', '8', '9' } })
-      git(nvim, 'init', '-q', '-b', 'main')
-      git(nvim, 'add', '-A')
-      git(nvim, 'commit', '-q', '-m', 'init')
+      nvim:git('init', '-q', '-b', 'main')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'init')
       nvim:edit('a.txt')
       probe.wait_services(nvim)
       nvim:wait_for(function()
@@ -323,9 +302,9 @@ describe('UI', function()
     it('git changes are marked in the sign column; [g / ]g jump between hunks', function()
       local nvim = t.nvim()
       nvim:files({ ['a.txt'] = { '1', '2', '3', '4', '5', '6', '7', '8', '9' } })
-      git(nvim, 'init', '-q', '-b', 'main')
-      git(nvim, 'add', '-A')
-      git(nvim, 'commit', '-q', '-m', 'init')
+      nvim:git('init', '-q', '-b', 'main')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'init')
       nvim:edit('a.txt')
       probe.wait_services(nvim)
       nvim:set_buffer({ '1', 'two', '3', '4', '5', '6', '7', '8', '9', '10' })
@@ -351,9 +330,9 @@ describe('UI', function()
     it('removed lines are marked on the line above', function()
       local nvim = t.nvim()
       nvim:files({ ['a.txt'] = { '1', '2', '3', '4' } })
-      git(nvim, 'init', '-q', '-b', 'main')
-      git(nvim, 'add', '-A')
-      git(nvim, 'commit', '-q', '-m', 'init')
+      nvim:git('init', '-q', '-b', 'main')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'init')
       nvim:edit('a.txt')
       probe.wait_services(nvim)
       nvim:set_buffer({ '1', '2', '4' })
@@ -369,16 +348,16 @@ describe('UI', function()
         return { 'a', x, 'b', 'c', 'd', 'e', 'f', 'g', y }
       end
       nvim:files({ ['a.txt'] = content('x', 'y') })
-      git(nvim, 'init', '-q', '-b', 'main')
-      git(nvim, 'add', '-A')
-      git(nvim, 'commit', '-q', '-m', 'base')
-      git(nvim, 'checkout', '-q', '-b', 'other')
+      nvim:git('init', '-q', '-b', 'main')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'base')
+      nvim:git('checkout', '-q', '-b', 'other')
       nvim:write_file('a.txt', content('X-other', 'Y-other'))
-      git(nvim, 'commit', '-q', '-am', 'other')
-      git(nvim, 'checkout', '-q', 'main')
+      nvim:git('commit', '-q', '-am', 'other')
+      nvim:git('checkout', '-q', 'main')
       nvim:write_file('a.txt', content('X-main', 'Y-main'))
-      git(nvim, 'commit', '-q', '-am', 'main')
-      git(nvim, 'merge', '-q', 'other', true)
+      nvim:git('commit', '-q', '-am', 'main')
+      nvim:git('merge', '-q', 'other', true)
       nvim:edit('a.txt')
       probe.wait_services(nvim)
       local starts = {}

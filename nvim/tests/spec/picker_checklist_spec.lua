@@ -20,9 +20,9 @@ describe('Picker', function()
   -- left it (query, results in the same order, selected line, marks, prompt
   -- or list focus), each source keeps its own state, a long list scrolls
   -- with the up/down keys, and while it is open <C-l> refreshes and <C-r>
-  -- reloads. Reopening resumes only when the previous picker call happened
-  -- in the same directory (can_resume() in user.plugin.picker), and grep
-  -- only when its search left results.
+  -- reloads. Reopening resumes only when the source last opened in the same
+  -- directory (can_resume() in user.plugin.picker), and grep only when its
+  -- search left results.
   describe('every source', function()
     local FILES = {
       ['.git/'] = true,
@@ -96,6 +96,36 @@ describe('Picker', function()
         return #p.items == 4
       end)
       nvim:type('acme')
+      probe.wait_picker(nvim, function(p)
+        return #p.items == 3
+      end)
+      return select_with(nvim, '<C-n>', function(p)
+        return p.current == p.items[2]
+      end)
+    end
+
+    --- A repository with a worktree below wt/, as git ignores them, on a
+    --- branch of each name.
+    local function branches(names)
+      local nvim = project({ ['.gitignore'] = { 'wt/' } })
+      nvim:git('init', '-q', '-b', 'main')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'init')
+      for _, name in ipairs(names) do
+        nvim:git('worktree', 'add', '-q', '-b', name, 'wt/' .. name)
+      end
+      return nvim
+    end
+
+    local BRANCHES = { 'qx-a', 'qx-b', 'qx-c', 'other' }
+
+    --- Branches narrowed to qx-* with the second one selected.
+    local function branches_state(nvim)
+      nvim:type('<Space>w')
+      probe.wait_picker(nvim, function(p)
+        return #p.items == 4
+      end)
+      nvim:type('qx-')
       probe.wait_picker(nvim, function(p)
         return #p.items == 3
       end)
@@ -353,6 +383,116 @@ describe('Picker', function()
         t.contains(picker.items, 'github.com/other/x')
         t.eq('', picker.query)
         in_prompt(nvim)
+      end)
+    end)
+
+    describe('branches (<Space>w)', function()
+      it('reopens as left: query, results, selected line, in the prompt', function()
+        local nvim = branches(BRANCHES)
+        local before = branches_state(nvim)
+        close(nvim, '<C-q>')
+        nvim:type('<Space>w')
+        local after = probe.wait_picker(nvim, function(p)
+          return p.query == before.query and p.current == before.current
+        end)
+        t.eq(before.items, after.items)
+        in_prompt(nvim)
+      end)
+
+      it('<C-c> in the prompt closes it', function()
+        local nvim = branches(BRANCHES)
+        branches_state(nvim)
+        nvim:wait_mode('i')
+        nvim:type('<C-c>')
+        probe.wait_picker_closed(nvim)
+      end)
+
+      it('keeps its own state while the finder and grep are used', function()
+        local nvim = branches(BRANCHES)
+        local before = branches_state(nvim)
+        close(nvim, '<C-q>')
+        local finder = finder_state(nvim)
+        close(nvim, '<C-q>')
+        grep_state(nvim)
+        close(nvim, 'q')
+
+        nvim:type('<Space>w')
+        probe.wait_picker(nvim, function(p)
+          return p.query == before.query and p.current == before.current and vim.deep_equal(p.items, before.items)
+        end)
+        close(nvim, '<C-q>')
+        nvim:type('<C-q>')
+        probe.wait_picker(nvim, function(p)
+          return p.query == finder.query and p.current == finder.current
+        end)
+      end)
+
+      it('<C-n> / <C-p> scroll a long list; it reopens at the selected line', function()
+        local names = {}
+        for i = 1, 50 do
+          names[i] = ('branch%02d'):format(i)
+        end
+        local nvim = branches(names)
+        nvim:type('<Space>w')
+        probe.wait_picker(nvim, function(p)
+          return #p.items == 50
+        end)
+        check_scrolling(nvim, '<C-n>', '<C-p>', function()
+          close(nvim, '<C-q>')
+          nvim:type('<Space>w')
+        end)
+        in_prompt(nvim)
+      end, { timeout = 30000 })
+
+      it('down stops at the last branch', function()
+        local nvim = branches(BRANCHES)
+        nvim:type('<Space>w')
+        local items = probe.wait_picker(nvim, function(p)
+          return #p.items == 4
+        end).items
+        select_with(nvim, '<C-n>', function(p)
+          return p.current == items[4]
+        end)
+        nvim:type('<C-n><C-n>')
+        t.eq(items[4], probe.picker(nvim).current)
+      end)
+
+      it('<C-l> picks up new branches, keeps the query and selects the first line', function()
+        local nvim = branches(BRANCHES)
+        branches_state(nvim)
+        nvim:git('worktree', 'add', '-q', '-b', 'qx-d', 'wt/qx-d')
+        nvim:type('<C-l>')
+        local picker = probe.wait_picker(nvim, function(p)
+          return #p.items == 4 and p.current == p.items[1]
+        end)
+        t.contains(picker.items, 'qx-d ' .. nvim:call('fnamemodify', nvim:path('wt/qx-d'), ':~'))
+        t.eq('qx-', picker.query)
+        in_prompt(nvim)
+      end)
+
+      it('<C-r> clears the query and lists every branch again, in the prompt', function()
+        local nvim = branches(BRANCHES)
+        branches_state(nvim)
+        nvim:type('<C-r>')
+        local picker = probe.wait_picker(nvim, function(p)
+          return #p.items == 4
+        end)
+        t.eq('', picker.query)
+        in_prompt(nvim)
+      end)
+
+      it('starts fresh once changed into a worktree', function()
+        local nvim = branches(BRANCHES)
+        branches_state(nvim)
+        nvim:type('<CR>')
+        probe.wait_picker_closed(nvim)
+        nvim:sleep(300)
+        nvim:type('<Space>w')
+        local picker = probe.wait_picker(nvim, function(p)
+          return #p.items == 4
+        end)
+        t.eq('', picker.query)
+        t.contains(picker.items, 'main ' .. nvim:call('fnamemodify', nvim:path(''), ':~'))
       end)
     end)
 
@@ -659,11 +799,43 @@ describe('Picker', function()
       end)
     end, { timeout = 60000 })
 
+    it('a source that found nothing looks again when it opens', function()
+      local nvim = sandbox({ ['.git/'] = true })
+      nvim:type('<C-q>')
+      local empty = probe.wait_picker(nvim, function(p)
+        return p.open and not p.loading
+      end)
+      t.eq({}, empty.items)
+      close(nvim, '<C-q>')
+      nvim:files({ ['new.txt'] = 'x' })
+      nvim:type('<C-q>')
+      local picker = probe.wait_picker(nvim, function(p)
+        return #p.items == 1
+      end)
+      t.eq({ 'new.txt' }, picker.items)
+    end)
+
     it('a picker opened after changing directory starts fresh', function()
       local nvim = project()
       finder_state(nvim)
       close(nvim, '<C-q>')
       nvim:cmd('cd src')
+      local picker = open_finder(nvim)
+      t.eq('', picker.query)
+      t.eq({ 'a1.ts', 'a2.ts', 'a3.ts' }, sorted(picker.items))
+    end)
+
+    it('starts fresh past another source opened in the new directory', function()
+      local nvim = project()
+      finder_state(nvim)
+      close(nvim, '<C-q>')
+      nvim:cmd('cd src')
+      nvim:type('<Space>/')
+      nvim:type('x<CR>')
+      probe.wait_picker(nvim, function(p)
+        return p.source == 'rg' and #p.items == 3
+      end)
+      close(nvim, 'q')
       local picker = open_finder(nvim)
       t.eq('', picker.query)
       t.eq({ 'a1.ts', 'a2.ts', 'a3.ts' }, sorted(picker.items))
