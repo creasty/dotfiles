@@ -32,14 +32,6 @@ Writing the ShaDa file is such an error when several Neovims exit at once, as ki
 So `_exit_without_ui` in `nvim/init.vim` writes the ShaDa file as the last UI leaves, with errors silenced, and empties `'shada'` so the exit doesn't write it again.
 Remove it once neovim#42096 is fixed: the read-only case in `nvim/tests/spec/exit_spec.lua` passes without it.
 
-## kitty off every Space
-
-kitty takes each window it opens off every Space, the first at launch included, whatever Dock > Options > Assign To says ([kitty#10581](https://github.com/kovidgoyal/kitty/issues/10581), seen with 0.49.1 and 0.49.2).
-The likely cause is `_glfwPlatformShowWindow` in its `glfw/cocoa_window.m`, which resets the window's collection behavior as it shows it (from 0.43.0) and adds it to the active Space (from 0.48.0), a workaround for its quick-access terminal (kitty#8740).
-Hammerspoon can't put a window back: the private calls `hs.spaces.moveWindowToSpace` makes fail on macOS 26, and restarting the Dock doesn't either.
-So as ;+M brings kitty, `hammerspoon/kitty.lua` (called from `hammerspoon/apps.lua`) has it hide and show its windows on other Spaces through its remote control (`allow_remote_control` and `listen_on` in `config/kitty/kitty.conf`), which adds them to the current Space.
-Remove both once kitty#10581 is fixed and a new window stays on every Space.
-
 ## /nix after login
 
 FileVault keeps the /nix volume locked until `determinate-nixd init` unlocks it, and macOS starts that daemon only once loginwindow is up, holding third-party daemons until then: on 26.6.2, /nix was mounted 9 s after login, 4 s after macOS had reopened the last session's apps ([nix-installer#689](https://github.com/DeterminateSystems/nix-installer/issues/689) has the same on 26.2).
