@@ -158,62 +158,21 @@ function Window:focus()
   return self
 end
 
--- The window of fake.windows with the ID
-local function window_spec(id)
-  for _, spec in ipairs(fake.windows) do
-    if spec.id == id then return spec end
-  end
-end
-
--- macOS's temporary directory of the user, which it gives every app
-local TMPDIR, PID = '/var/folders/xx/T/', 4242
-local getenv = os.getenv
-function os.getenv(name)
-  if name == 'TMPDIR' then return TMPDIR end
-  return getenv(name)
-end
-
--- What `kitten @ ls` prints, which hs.json.decode reads as fake.windows' kitty windows
-local KITTY_LS = '<kitten @ ls>'
-
--- A task running `kitten @ <command>` against the kitty app, which ends with its output, or 1Password with its
--- options: it records the command
-local function new_task(path, fn, args)
-  local command, out
-  if path == '/Applications/net.kovidgoyal.kitty.app/Contents/MacOS/kitten' then
-    assert(table.concat(args, ' ', 1, 3) == ('@ --to unix:%skitty-%d'):format(TMPDIR, PID), table.concat(args, ' '))
-    command = 'kitten ' .. table.concat(args, ' ', 4)
-    out = args[4] == 'ls' and KITTY_LS or ''
-  else
-    assert(path == '/Applications/com.1password.1password.app/Contents/MacOS/1Password', path)
-    command = '1Password ' .. table.concat(args, ' ')
-  end
+-- A task running 1Password with its options: it records the command
+local function new_task(path, _, args)
+  assert(path == '/Applications/com.1password.1password.app/Contents/MacOS/1Password', path)
   return {
     start = function(self)
-      record(command)
-      if fn then fn(0, out or '', '') end
+      record('1Password ' .. table.concat(args, ' '))
       return self
     end,
   }
-end
-
--- kitty's OS windows as `kitten @ ls` lists them: those of fake.windows with `kitty`, the ID of a kitty window in it
-local function kitty_ls(text)
-  assert(text == KITTY_LS, text)
-  local os_windows = {}
-  for _, spec in ipairs(fake.windows) do
-    if spec.kitty then
-      table.insert(os_windows, { platform_window_id = spec.id, tabs = { { windows = { { id = spec.kitty } } } } })
-    end
-  end
-  return os_windows
 end
 
 -- A running app, by its bundle ID: fake.windows are its windows while it's the frontmost
 local function new_app(id)
   return {
     bundleID = function() return id end,
-    pid = function() return PID end,
     path = function() return '/Applications/' .. id .. '.app' end,
     isHidden = function() return fake.hidden[id] == true end,
     hide = function()
@@ -273,10 +232,8 @@ function fake.reset()
   fake.menu_bar_icons = {} -- the apps with a menu bar icon, as a set of bundle IDs
   fake.json_files = {} -- what hs.json.read decodes, by path; the others fail to read
   -- Its windows on the current space, front to back, the first focused: { id = <window ID> }, with `standard = false`
-  -- for a panel and the like, `spaces = { <space ID>, ... }` for one on those spaces only, not on every space, and
-  -- `kitty = <kitty window ID>` for one of kitty's
+  -- for a panel and the like
   fake.windows = { { id = 1 } }
-  fake.space = 1 -- the current space
   fake.autolaunch = false
 
   local logger = {}
@@ -356,16 +313,8 @@ function fake.reset()
 
     axuielement = { applicationElement = new_app_element },
     task = { new = new_task },
-    json = { decode = kitty_ls, read = function(path) return fake.json_files[path] end },
-
-    spaces = {
-      toggleMissionControl = function() record('mission control') end,
-      focusedSpace = function() return fake.space end,
-      windowSpaces = function(id)
-        local spec = assert(window_spec(id), 'no window ' .. id)
-        return spec.spaces or { fake.space }
-      end,
-    },
+    json = { read = function(path) return fake.json_files[path] end },
+    spaces = { toggleMissionControl = function() record('mission control') end },
   }
 end
 
