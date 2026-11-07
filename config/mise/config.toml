@@ -2,7 +2,7 @@
 [tools]
 bun = "1.4.4"
 java = "25" # Homebrew's openjdk, registered with `mise link` on every switch
-node = "24.22.2"
+node = "26.13.0"
 python = "3.15.2"
 ruby = "4.0.9"
 # Tools from npm and RubyGems, each installed apart from Node and Ruby, so that a project pinning another version
@@ -13,7 +13,7 @@ ruby = "4.0.9"
 "npm:@openai/codex" = "0.166.0"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.14.0"
-"npm:graphql-language-service-cli" = "3.5.0"
+"npm:graphql-language-service-cli" = "4.0.1"
 "npm:pnpm" = "12.17.0" # runs the version a project's packageManager names
 "npm:typescript" = "7.0.2"
 "npm:yarn" = "1.22.22"
