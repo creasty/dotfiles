@@ -1,11 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Renovate bumps what the repository pins, on Friday mornings, in a pull request per kind that CI tests (README.md's Updates). The window spans 4 hours, as Mend's app runs on a repository every 4 hours: a narrower one would miss its runs",
+  "description": "Renovate bumps what the repository pins, on Fridays, in a pull request per kind that CI tests (README.md's Updates). The window spans the whole day, as Mend's app queues a job every 4 hours but one can wait 8 hours or more to run: a narrower window misses them",
   "extends": ["config:best-practices", ":automergePatch", ":automergeStableNonMajor"],
   "timezone": "Asia/Tokyo",
-  "schedule": ["* 10-13 * * 5"],
+  "schedule": ["* * * * 5"],
   "lockFileMaintenance": {
-    "schedule": ["* 10-13 * * 5"]
+    "schedule": ["* * * * 5"]
   },
   "prHourlyLimit": 0,
   "labels": ["dependencies"],

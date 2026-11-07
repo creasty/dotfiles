@@ -47,7 +47,7 @@ Set `DOTFILES_NOVERIFY=1` to apply without verifying.
 
 ## Updates
 
-Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Friday mornings, in a pull request per kind:
+Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Fridays, in a pull request per kind:
 
 | Pinned in | What | Tested by |
 |---|---|---|
