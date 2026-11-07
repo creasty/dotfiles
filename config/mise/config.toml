@@ -14,12 +14,12 @@ ruby = "4.0.9"
 "npm:bash-language-server" = "5.8.1"
 "npm:eslint" = "10.13.0"
 "npm:graphql-language-service-cli" = "3.5.0"
-"npm:pnpm" = "12.16.0" # runs the version a project's packageManager names
+"npm:pnpm" = "12.16.1" # runs the version a project's packageManager names
 "npm:typescript" = "7.0.2"
 "npm:yarn" = "1.22.22"
 "gem:cocoapods" = "1.17.0"
 "gem:pry" = "0.16.1"
-"gem:rails" = "8.1.4"
+"gem:rails" = "8.1.4.1"
 
 [settings]
 # Read .java-version, .node-version, .nvmrc and .ruby-version too
