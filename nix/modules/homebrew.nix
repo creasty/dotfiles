@@ -36,6 +36,7 @@ in
       "appcleaner" # https://freemacsoft.net/appcleaner/
       "chatgpt" # https://chatgpt.com/
       "claude" # https://claude.com/download
+      "creasty/tools/git-id" # https://github.com/creasty/git-id
       "figma" # https://www.figma.com/
       "gcloud-cli" # https://cloud.google.com/cli/
       "google-chrome" # https://www.google.com/chrome/
