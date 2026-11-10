@@ -91,7 +91,7 @@ benchmarks run after the suite, in a step of their own.
 | `snippets` | `<Tab>` expansion, placeholders, postfix/arrow snippets, the snippets the menu offers and in which order | **LuaSnip**, **blink.cmp** |
 | `snippet_library_*` | golden expansion of every snippet in `nvim/snippets` | **LuaSnip** |
 | `ai` | ghost text, `<C-s><C-j>` accept, `<Esc>`/`<C-s><C-c>`/`<CR>` dismiss | **Neovim's inline completion**, `user/intelligence.lua` |
-| `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), list keys, short screens | **snacks.nvim** |
+| `picker` | `<C-q>` files / ghq repos, `<Space>/` grep, the files it searches (`f`), replace (`r` `x` `R`), `<Space>w` branches and worktrees, list keys, short screens | **snacks.nvim** |
 | `picker_checklist` | every source × reopen as left, own state, scroll, `<C-l>`, `<C-r>` (below) | **snacks.nvim** |
 | `integration` | no pairs/completion/AI in picker prompts and block inserts | `user/intelligence.lua` |
 | `ui` | tabline, statusline, title, signs (marks, git), whitespace | `user/ui.lua`, gitsigns.nvim |
@@ -108,18 +108,19 @@ completion, snippets, auto-pairs and AI suggestions share the insert-mode keys.
 
 Every picker source is checked for the same things:
 
-| | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | grep<br>`<Space>/` | locations<br>`grr`, `gll` |
-|---|---|---|---|---|
-| focus when opened | prompt | prompt | list | list |
-| `<C-c>` in the prompt | closes | closes | back to the list, still narrowed (`<Esc>` too) | back to the list, still narrowed (`<Esc>` too) |
-| reopens as left: query, results, selected line, focus | ✓ | ✓ | ✓ and marks | ✓ |
-| keeps its own state while others are used | ✓ | ✓ | ✓ | ✓ |
-| a long list scrolls; reopens at the selected line, where it was | `<C-n>` `<C-p>` | `<C-n>` `<C-p>` | `j` `k` `<Down>` `<Up>` | `j` `k` |
-| `<C-l>`: refresh, first line selected | new files, same query | new repositories, same query | searches again | asks the language server again |
-| `<C-r>`: reload | clears the query, lists every file | clears the query, lists every repository | asks for a new pattern (`<Esc>` keeps the search) | clears the query |
+| | files<br>`<C-q>` | repositories<br>`<C-q>` in `$HOME` | branches<br>`<Space>w` | grep<br>`<Space>/` | locations<br>`grr`, `gll` |
+|---|---|---|---|---|---|
+| focus when opened | prompt | prompt | prompt | list | list |
+| `<C-c>` in the prompt | closes | closes | closes | back to the list, still narrowed (`<Esc>` too) | back to the list, still narrowed (`<Esc>` too) |
+| reopens as left: query, results, selected line, focus | ✓ | ✓ | ✓ | ✓ and marks | ✓ |
+| keeps its own state while others are used | ✓ | ✓ | ✓ | ✓ | ✓ |
+| a long list scrolls; reopens at the selected line, where it was | `<C-n>` `<C-p>` | `<C-n>` `<C-p>` | `<C-n>` `<C-p>` | `j` `k` `<Down>` `<Up>` | `j` `k` |
+| `<C-l>`: refresh, first line selected | new files, same query | new repositories, same query | new branches, same query | searches again | asks the language server again |
+| `<C-r>`: reload | clears the query, lists every file | clears the query, lists every repository | clears the query, lists every branch | asks for a new pattern (`<Esc>` keeps the search) | clears the query |
 
-A picker opened after `:cd` starts fresh, and so does one opened back in the
-first directory.
+A source opened outside the directory it last opened in starts fresh, and so
+does every source once `<Space>w` switches branches. A source that found
+nothing looks again when it opens.
 
 Grep also reopens with the files it searches (`f`), the replacement its list
 previews (`r`) and the lines dropped from it (`x`); `<C-l>` and `<C-r>` bring

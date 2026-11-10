@@ -3,39 +3,15 @@ local t = require('t')
 local probe = require('probe')
 local describe, it = t.describe, t.it
 
---- Runs git in the sandbox, isolated from the user's git config. A last
---- argument `true` lets it fail (a merge that conflicts).
-local function git(nvim, ...)
-  local args = { ... }
-  local allow_failure = args[#args] == true
-  if allow_failure then
-    table.remove(args)
-  end
-  local res = vim.system(vim.list_extend({ 'git' }, args), {
-    cwd = nvim.dir,
-    text = true,
-    env = {
-      GIT_CONFIG_NOSYSTEM = '1',
-      GIT_CONFIG_GLOBAL = '/dev/null',
-      GIT_AUTHOR_NAME = 'e2e',
-      GIT_AUTHOR_EMAIL = 'e2e@example.com',
-      GIT_COMMITTER_NAME = 'e2e',
-      GIT_COMMITTER_EMAIL = 'e2e@example.com',
-    },
-  }):wait()
-  assert(allow_failure or res.code == 0, 'git ' .. table.concat(args, ' ') .. ': ' .. (res.stderr or ''))
-  return vim.trim(res.stdout or '')
-end
-
 local function repo(nvim, files, remote)
   nvim:files(files)
-  git(nvim, 'init', '-q', '-b', 'main')
-  git(nvim, 'add', '-A')
-  git(nvim, 'commit', '-q', '-m', 'init')
+  nvim:git('init', '-q', '-b', 'main')
+  nvim:git('add', '-A')
+  nvim:git('commit', '-q', '-m', 'init')
   if remote then
-    git(nvim, 'remote', 'add', 'origin', remote)
+    nvim:git('remote', 'add', 'origin', remote)
   end
-  return git(nvim, 'rev-parse', 'HEAD')
+  return nvim:git('rev-parse', 'HEAD')
 end
 
 local function current_file(nvim)
@@ -309,7 +285,7 @@ describe('Navigation', function()
       repo(nvim, { ['a.txt'] = { 'a' }, ['b.txt'] = { 'b' } })
       nvim:write_file('a.txt', { 'a changed' })
       nvim:write_file('b.txt', { 'b changed' })
-      git(nvim, 'add', 'b.txt')
+      nvim:git('add', 'b.txt')
       nvim:cmd('DiffviewOpen')
       local view = probe.wait_diff_view(nvim, function(v)
         return v.files:find('b%.txt') and #v.sides == 2
@@ -352,16 +328,16 @@ describe('Navigation', function()
     it(':DiffviewOpen main...HEAD lists what the branch changed since it forked', function()
       local nvim = t.nvim()
       repo(nvim, { ['a.txt'] = { 'a' }, ['b.txt'] = { 'b' } })
-      git(nvim, 'checkout', '-q', '-b', 'feature')
+      nvim:git('checkout', '-q', '-b', 'feature')
       nvim:write_file('b.txt', { 'b on feature' })
       nvim:write_file('c.txt', { 'c' })
-      git(nvim, 'add', '-A')
-      git(nvim, 'commit', '-q', '-m', 'feature')
-      git(nvim, 'checkout', '-q', 'main')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'feature')
+      nvim:git('checkout', '-q', 'main')
       nvim:write_file('d.txt', { 'd' })
-      git(nvim, 'add', '-A')
-      git(nvim, 'commit', '-q', '-m', 'main moves on')
-      git(nvim, 'checkout', '-q', 'feature')
+      nvim:git('add', '-A')
+      nvim:git('commit', '-q', '-m', 'main moves on')
+      nvim:git('checkout', '-q', 'feature')
       nvim:cmd('DiffviewOpen main...HEAD')
       local view = probe.wait_diff_view(nvim, function(v)
         return v.files:find('b%.txt') and v.files:find('c%.txt')
@@ -373,13 +349,13 @@ describe('Navigation', function()
     it(':DiffviewOpen shows a merge conflict as ours | the file | theirs', function()
       local nvim = t.nvim()
       repo(nvim, { ['a.txt'] = { 'a', 'x', 'b' } })
-      git(nvim, 'checkout', '-q', '-b', 'other')
+      nvim:git('checkout', '-q', '-b', 'other')
       nvim:write_file('a.txt', { 'a', 'X-other', 'b' })
-      git(nvim, 'commit', '-q', '-am', 'other')
-      git(nvim, 'checkout', '-q', 'main')
+      nvim:git('commit', '-q', '-am', 'other')
+      nvim:git('checkout', '-q', 'main')
       nvim:write_file('a.txt', { 'a', 'X-main', 'b' })
-      git(nvim, 'commit', '-q', '-am', 'main')
-      git(nvim, 'merge', '-q', 'other', true)
+      nvim:git('commit', '-q', '-am', 'main')
+      nvim:git('merge', '-q', 'other', true)
       nvim:cmd('DiffviewOpen')
       local view = probe.wait_diff_view(nvim, function(v)
         return #v.sides == 3
@@ -540,13 +516,13 @@ describe('Navigation', function()
       it('the three sides of a merge conflict stay aligned', function()
         local nvim = t.nvim()
         repo(nvim, { ['a.txt'] = { 'a', 'x', 'tail' } })
-        git(nvim, 'checkout', '-q', '-b', 'other')
+        nvim:git('checkout', '-q', '-b', 'other')
         nvim:write_file('a.txt', { 'a', 'other ' .. LONG, 'tail' })
-        git(nvim, 'commit', '-q', '-am', 'other')
-        git(nvim, 'checkout', '-q', 'main')
+        nvim:git('commit', '-q', '-am', 'other')
+        nvim:git('checkout', '-q', 'main')
         nvim:write_file('a.txt', { 'a', 'main', 'tail' })
-        git(nvim, 'commit', '-q', '-am', 'main')
-        git(nvim, 'merge', '-q', 'other', true)
+        nvim:git('commit', '-q', '-am', 'main')
+        nvim:git('merge', '-q', 'other', true)
         nvim:cmd('DiffviewOpen')
         probe.wait_diff_view(nvim, function(v)
           return #v.sides == 3

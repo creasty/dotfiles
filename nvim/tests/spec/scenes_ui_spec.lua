@@ -57,23 +57,6 @@ for i, line in ipairs({
   table.insert(CHANGED, 22 + i, line)
 end
 
---- Runs git in the sandbox, isolated from the user's git config.
-local function git(nvim, ...)
-  local res = vim.system(vim.list_extend({ 'git' }, { ... }), {
-    cwd = nvim.dir,
-    text = true,
-    env = {
-      GIT_CONFIG_NOSYSTEM = '1',
-      GIT_CONFIG_GLOBAL = '/dev/null',
-      GIT_AUTHOR_NAME = 'e2e',
-      GIT_AUTHOR_EMAIL = 'e2e@example.com',
-      GIT_COMMITTER_NAME = 'e2e',
-      GIT_COMMITTER_EMAIL = 'e2e@example.com',
-    },
-  }):wait()
-  assert(res.code == 0, 'git ' .. table.concat({ ... }, ' ') .. ': ' .. (res.stderr or ''))
-end
-
 --- A Go project in git, palette.go changed since its commit, and a directory and a file git ignores.
 local function project(scene)
   local nvim = scenes.nvim(scene)
@@ -85,9 +68,9 @@ local function project(scene)
     ['cmd/candle/main.go'] = { 'package main', '', 'func main() {}' },
     ['README.md'] = { '# palette' },
   })
-  git(nvim, 'init', '-q', '-b', 'main')
-  git(nvim, 'add', '-A')
-  git(nvim, 'commit', '-q', '-m', 'init')
+  nvim:git('init', '-q', '-b', 'main')
+  nvim:git('add', '-A')
+  nvim:git('commit', '-q', '-m', 'init')
   nvim:files({ ['palette.go'] = CHANGED, ['dist/out.js'] = 'x', ['debug.log'] = 'x' })
   return nvim
 end

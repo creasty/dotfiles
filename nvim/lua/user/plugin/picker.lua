@@ -2,17 +2,19 @@
 --
 --   <C-q>      files, or ghq repositories in $HOME (:Open)
 --   <Space>/   grep for a pattern (:Search [dir]), and replace it
+--   <Space>w   the repository's branches: changes into the worktree of one
+--              that has one, switches to one that doesn't
 --   grr        LSP locations (user.plugin.lsp); gll reopens them
 --   :e {dir}   the explorer, a tree of the files in a sidebar (nvim {dir} too):
 --              dotfiles shown, .git and backups (~) not, and files git
 --              ignores with I, dimmed
 --
 -- Each source reopens as you left it (query, results, selected line, marks)
--- as long as you stay in the directory of the previous picker, but a grep
--- that left no results asks for a new pattern; the results are gathered
--- again only with <C-l> (refresh) or <C-r> (reload). Grep and
--- the locations open in the list: i narrows it in the prompt, and <C-c> or
--- <Esc> goes back to it.
+-- in the directory it last opened in, until you switch branches from here,
+-- but one that found nothing looks again, and a grep that left no results
+-- asks for a new pattern; the results are gathered again only with <C-l>
+-- (refresh) or <C-r> (reload). Grep and the locations open in the list: i
+-- narrows it in the prompt, and <C-c> or <Esc> goes back to it.
 --
 -- In grep's list, as in VS Code's search view:
 --
@@ -29,13 +31,14 @@ local M = {}
 -- State
 ---------------------------------------------------------------------------
 
-local last_cwd
+--- The directory each source last opened in.
+local opened_in = {}
 
---- True when the previous picker was opened in the current directory.
-local function can_resume()
+--- True when `source` last opened in the current directory.
+local function can_resume(source)
   local cwd = vim.fn.getcwd()
-  local same = cwd == last_cwd
-  last_cwd = cwd
+  local same = cwd == opened_in[source]
+  opened_in[source] = cwd
   return same
 end
 
@@ -66,8 +69,9 @@ local function cached(source, finder)
   end
 end
 
-local function open(opts, resume)
-  if resume and require('snacks.picker.resume').state[opts.source] then
+local function open(opts)
+  local found_none = cache[opts.source] and #cache[opts.source] == 0
+  if can_resume(opts.source) and not found_none and require('snacks.picker.resume').state[opts.source] then
     return Snacks.picker.resume({ source = opts.source })
   end
   cache[opts.source] = nil
@@ -88,6 +92,14 @@ end
 
 local function format_file(item)
   return format_path(item.label or item.file)
+end
+
+--- A branch (the commit of a detached worktree), then its worktree's path.
+local function format_branch(item)
+  if not item.label then
+    return { { item.branch, 'Identifier' } }
+  end
+  return vim.list_extend({ { item.branch, 'Identifier' }, { ' ' } }, format_path(item.label))
 end
 
 --- The explorer's rows as snacks formats them, but with a directory git
@@ -171,12 +183,22 @@ local actions = {}
 
 for _, name in ipairs({ 'open', 'yank', 'cd' }) do
   actions['item_' .. name] = function(picker)
-    local items = picker:selected({ fallback = true })
+    local items = vim.tbl_filter(path_of, picker:selected({ fallback = true }))
     picker:close()
     vim.schedule(function()
       run_action(name, items)
     end)
   end
+end
+
+--- <CR> in the branches: changes into the branch's worktree, or switches to
+--- the branch, which leaves every source's results behind.
+function actions.branch_confirm(picker, item)
+  if item and item.dir then
+    return actions.item_cd(picker)
+  end
+  opened_in = {}
+  Snacks.picker.actions.git_checkout(picker, item)
 end
 
 --- Whether the picker opens in the list (grep, locations), where the prompt
@@ -360,6 +382,39 @@ local function repos_finder(opts, ctx)
       end
     end)
   end
+end
+
+local function git(...)
+  return vim.system({ 'git', ... }, { text = true }):wait().stdout or ''
+end
+
+--- The repository's other worktrees, then its branches without one, latest
+--- commit first. Neither has the directory of a bare repository (no HEAD), nor
+--- a worktree deleted without `git worktree remove`, whose branch git still
+--- won't switch to.
+local function branches_finder()
+  local here = vim.fs.root(vim.fn.getcwd(), '.git')
+  local items, in_worktree = {}, {}
+  for entry in vim.gsplit(git('worktree', 'list', '--porcelain'), '\n\n', { plain = true }) do
+    local path = entry:match('^worktree ([^\n]+)')
+    local head = entry:match('\nHEAD (%x+)')
+    local branch = entry:match('\nbranch refs/heads/([^\n]+)')
+    if branch then
+      in_worktree[branch] = true
+    end
+    if head and path ~= here and not entry:find('\nprunable') then
+      local name = branch or head:sub(1, 7)
+      local label = vim.fn.fnamemodify(path, ':~')
+      items[#items + 1] = { text = name .. ' ' .. label, branch = name, label = label, file = path, dir = true }
+    end
+  end
+  local refs = git('for-each-ref', '--sort=-committerdate', '--format=%(refname:lstrip=2)', 'refs/heads')
+  for branch in refs:gmatch('[^\n]+') do
+    if not in_worktree[branch] then
+      items[#items + 1] = { text = branch, branch = branch }
+    end
+  end
+  return items
 end
 
 --- The search <Space>/ reopens: its pattern, the directory it runs in, the
@@ -747,7 +802,6 @@ end
 
 --- <C-q>: files, or repositories when started in $HOME.
 function M.open()
-  local resume = can_resume()
   if vim.fn.getcwd() == vim.fs.normalize(vim.env.HOME) then
     return open({
       source = 'repositories',
@@ -755,7 +809,7 @@ function M.open()
       finder = cached('repositories', repos_finder),
       format = format_file,
       confirm = 'item_cd',
-    }, resume)
+    })
   end
   return open({
     source = 'files',
@@ -769,16 +823,25 @@ function M.open()
     end,
     -- tests after the sources that match as well
     sort = { fields = { 'score:desc', 'test', '#text', 'idx' } },
-  }, resume)
+  })
+end
+
+--- <Space>w: the other worktrees and the branches without one.
+function M.branches()
+  return open({
+    source = 'branches',
+    title = 'Branches',
+    finder = cached('branches', branches_finder),
+    format = format_branch,
+    confirm = 'branch_confirm',
+  })
 end
 
 --- <Space>/ (resume) and :Search {dir}: grep, with the results focused. A
 --- new search starts with every file, and no replacement.
 function M.search(dir, resume)
-  resume = resume and can_resume() and not (cache.rg and #cache.rg == 0)
-  if not resume then
-    last_cwd = vim.fn.getcwd()
-  end
+  local same_dir = can_resume('rg')
+  resume = resume and same_dir and not (cache.rg and #cache.rg == 0)
   if resume and require('snacks.picker.resume').state.rg and grep.pattern then
     return Snacks.picker.resume({ source = 'rg' })
   end
@@ -858,7 +921,7 @@ end
 --- Shows LSP locations (quickfix items) in the picker; `request(callback)`
 --- gathers them again.
 function M.locations(items, request)
-  last_cwd = vim.fn.getcwd()
+  opened_in.locations = vim.fn.getcwd()
   locations_request = request
   cache.locations = vim.tbl_map(location_item, items)
   return Snacks.picker({
@@ -875,7 +938,7 @@ function M.last_locations()
   if not cache.locations then
     return vim.notify('No locations', vim.log.levels.INFO)
   end
-  if can_resume() and require('snacks.picker.resume').state.locations then
+  if can_resume('locations') and require('snacks.picker.resume').state.locations then
     return Snacks.picker.resume({ source = 'locations' })
   end
   -- paths relative to the new directory
@@ -893,7 +956,6 @@ function M.last_locations()
 end
 
 function M.diagnostics()
-  last_cwd = vim.fn.getcwd()
   return Snacks.picker.diagnostics({ focus = 'list' })
 end
 
@@ -1001,6 +1063,7 @@ function M.setup()
 
   vim.keymap.set('n', '<C-q>', M.open, { desc = 'Files (repositories in $HOME)' })
   vim.keymap.set('n', '<Space>/', '<Cmd>Search!<CR>', { desc = 'Grep' })
+  vim.keymap.set('n', '<Space>w', M.branches, { desc = 'Git branches and worktrees' })
   vim.keymap.set('n', 'gll', M.last_locations, { desc = 'Last locations' })
 end
 
