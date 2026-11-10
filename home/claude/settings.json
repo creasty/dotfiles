@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 999,
   "env": {
     "CLAUDE_AFK_TIMEOUT_MS": "2147483647",
     "CLAUDE_CODE_SHELL": "/run/current-system/sw/bin/bash",
@@ -9,22 +10,22 @@
     "GIT_AUTHOR_EMAIL": "yuki@creasty.com",
     "LANG": "C.UTF-8"
   },
-  "permissions": {
-    "defaultMode": "auto"
-  },
   "attribution": {
     "pr": "<!-- Generated with Claude Code -->",
     "sessionUrl": false
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "enabledPlugins": {
     "mcp-server-dev@claude-plugins-official": true
   },
-  "effortLevel": "xhigh",
   "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
   "askUserQuestionTimeout": "never",
   "skipWorkflowUsageWarning": true,
+  "theme": "dark-daltonized",
   "switchModelsOnFlag": false,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "cleanupPeriodDays": 999
+  "agentPushNotifEnabled": true
 }
