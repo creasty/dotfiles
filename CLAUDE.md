@@ -14,7 +14,10 @@ The setup of cloud sessions (`cloud/claude/`) has its notes, its verification ga
 - **Login before /nix**: no test restarts macOS, so that the apps it starts at login find their configs and a shell goes untested; `nix/tests/link.bats` checks that the links point straight into the checkout, and nothing checks `shell/zsh/zshenv`'s wait for /nix.
 - **Budgets on CI**: CI's runners measured `zsh -i -c exit` at 68–151 ms over 82 runs (2026-10-01 to 05), as far apart on one config as across configs.
   So the `apply` workflow benchmarks it against 200 ms (`DOTFILES_VERIFY_STARTUP_MS`), where the default is 150 ms (`nix/tests/shell.bats`): a regression fails it only once it more than doubles a typical run.
-  Neovim's benchmarks keep their defaults on CI, 150 ms to start (`nvim/tests/spec/startup_spec.lua`) and 16.7 ms to follow a held key (`emacs_keys_spec.lua`), and a pass prints no time, so CI has no numbers for them; if one flakes, give CI its own `E2E_STARTUP_BUDGET_MS` or `E2E_KEY_REPEAT_BUDGET_MS` rather than loosening the default.
+  On 8 of them, Neovim's startup measured 56–177 ms over 80 runs (2026-11-10; median 83 ms, one runner's ten spanning 85–177 ms), and at up to 208 ms in the runs that failed its default, 150 ms (`nvim/tests/spec/startup_spec.lua`), from 2026-10-30 to 11-10.
+  So the `tests` workflow benchmarks it against 300 ms (`E2E_STARTUP_BUDGET_MS`), at least as far above the slowest run as the shell's budget is: a regression fails it only once it takes 3.6 times a typical run.
+  The key repeat's benchmark keeps its default on CI, 16.7 ms (`nvim/tests/spec/emacs_keys_spec.lua`); if it flakes, give CI its own `E2E_KEY_REPEAT_BUDGET_MS` rather than loosening the default.
+  A pass prints no time; a budget of 0 fails every run, which prints it.
 - **Flutter**: only the cask's installation is checked; `flutter doctor` would need the Android SDK and Xcode set up first.
 - **Releases a pin follows**: nothing notices when a repository stops tagging the releases a pin follows (`version` in `nvim/lua/user/plugins.lua`, a `refs/tags/` `ref` in `nix/modules/skills.nix`); Renovate just proposes no more updates.
   GitHub's comparison of its latest tag with its branch (`compare/<tag>...<branch>`) tells how long its changes have waited.
