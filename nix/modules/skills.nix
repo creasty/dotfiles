@@ -35,7 +35,7 @@ let
     {
       url = "https://github.com/Leonxlnx/taste-skill";
       ref = "refs/heads/main";
-      rev = "9b4bf937a1f69348126959c15d2f99a73e65699b";
+      rev = "f6b76575f949707b4e3c37cd86cb44b0b98643e8";
       skills.design-taste-frontend = "skills/taste-skill";
     }
     {
