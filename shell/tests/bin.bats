@@ -400,103 +400,73 @@ P-value:  1.00000 👎
 
 #  claude-spawn
 #-----------------------------------------------
-# A home with a checkout, whose login shell finds the fake claude first, as it would the real one. The fake logs its
-# call, its folder and the CLAUDE_* variables it got, shows Remote Control's footer, and then, as the tests have it:
-# shows the message of the session archived elsewhere (archive), exits (exit), or only waits.
+# A home with the checkout creasty/site, whose login shell finds the fake claude first, as it would the real one.
+# The fake logs its calls, their folders and the CLAUDE_* variables they got. Its -p makes the worktree --worktree
+# names, locked as claude locks it, and answers with a session id, or fails (fail).
 spawn_home() {
   export HOME="$BATS_TEST_TMPDIR/home" SHELL="$LOGIN_ZSH"
-  mkdir -p "$HOME/go/src/github.com/creasty/site"
-  echo "path=($(q "$BATS_TEST_TMPDIR/fakes") \$path)" > "$HOME/.zshrc"
-  fake claude 'pwd > "$HOME/claude-pwd"
-env | grep ^CLAUDE > "$HOME/claude-env"
-trap "exit 0" TERM
-[ -e "$HOME/no-rc" ] || printf "Remote Control\n/rc\n"
-while :; do
-  if [ -e "$HOME/archive" ]; then
-    rm "$HOME/archive"
-    echo "this session was ended or archived from another device or app (code 4090)"
+  SITE="$HOME/go/src/github.com/creasty/site"
+  mkdir -p "$SITE"
+  git -C "$SITE" init -q
+  git -C "$SITE" -c user.name=t -c user.email=t@example.com commit -q --allow-empty -m init
+  echo "path=($(q "$BATS_TEST_TMPDIR/fakes") \$path)" > "$HOME/.zprofile"
+  fake claude 'pwd -P >> "$HOME/claude-pwd"
+env | grep ^CLAUDE >> "$HOME/claude-env"
+if [ "$1" = -p ]; then
+  [ -e "$HOME/fail" ] && { echo "Not logged in"; exit 1; }
+  if [ "$2" = --worktree ]; then
+    git worktree add -q -b "worktree-$3" ".claude/worktrees/$3"
+    git worktree lock --reason "claude session $3" ".claude/worktrees/$3"
   fi
-  [ -e "$HOME/exit" ] && exit 0
-  sleep 0.1
-done'
+  echo "{\"session_id\":\"0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b\"}"
+fi'
 }
 
-teardown() {
-  [ "$HOME" = "$BATS_TEST_TMPDIR/home" ] || return 0
-  claude-spawn --list | cut -f1 | xargs -n1 claude-spawn --stop > /dev/null || true
-}
-
-# Waits up to 5 s for no session to be listed
-await_none() {
-  for _ in $(seq 50); do
-    [ -z "$(claude-spawn --list)" ] && return
-    sleep 0.1
-  done
-  return 1
-}
-
-@test "claude-spawn starts claude with Remote Control in an owner/repo checkout, as a new terminal would" {
+@test "claude-spawn opens a session made in a new worktree of an owner/repo checkout in the desktop app, as a new terminal would" {
   spawn_home
   export CLAUDE_CODE_CHILD_SESSION=1
-  run -0 claude-spawn creasty/site 'fix the header'
-  assert_output "started site in $HOME/go/src/github.com/creasty/site"
-  assert_equal "$(calls)" "claude --remote-control site 'fix the header'"
-  assert_equal "$(cat "$HOME/claude-pwd")" "$(cd "$HOME/go/src/github.com/creasty/site" && pwd -P)"
+  run -0 claude-spawn creasty/site
+  assert_output --regexp "^local_0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b $(cd "$SITE" && pwd -P)/\.claude/worktrees/spawn-[0-9a-f]{6}\$"
+  local name="${output##*/}"
+  run -0 calls
+  assert_line --index 0 --regexp "^claude -p --worktree $name --output-format json "
+  assert_line --index 1 'claude --desktop --resume 0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b'
+  # -p in the checkout; --desktop in the worktree, which is the app's own kind: unlocked, on a claude/ branch
+  assert_equal "$(cat "$HOME/claude-pwd")" "$(cd "$SITE" && pwd -P)
+$(cd "$SITE/.claude/worktrees/$name" && pwd -P)"
+  run -0 git -C "$SITE" worktree list --porcelain
+  refute_output --partial locked
+  assert_output --partial "branch refs/heads/claude/$name"
+  refute_output --partial "worktree-$name"
   assert_equal "$(cat "$HOME/claude-env")" ''
 }
 
-@test "claude-spawn names a second session in the same folder apart, and --stop ends each" {
+@test "claude-spawn, in a folder outside git, opens the session made in the folder itself" {
   spawn_home
-  run -0 claude-spawn creasty/site
-  run -0 claude-spawn "$HOME/go/src/github.com/creasty/site"
-  assert_output "started site-2 in $HOME/go/src/github.com/creasty/site"
-  run -0 claude-spawn --list
-  assert_output "site-2	$HOME/go/src/github.com/creasty/site
-site	$HOME/go/src/github.com/creasty/site"
-  local pids
-  pids="$(pgrep -f "fakes/claude --remote-control")"
-  run -0 claude-spawn --stop site
-  assert_output 'stopped site'
-  run -0 claude-spawn --stop site-2
-  run -0 claude-spawn --list
-  refute_output
-  # Nothing the sessions ran is left: claude, nor the input it was kept waiting on
-  run -1 ps -p "$(tr '\n' , <<< "$pids")"
-  run -0 ls "$HOME/.local/state/claude-spawn"
-  refute_output
+  mkdir "$HOME/notes"
+  run -0 claude-spawn "$HOME/notes"
+  assert_output "local_0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b $HOME/notes"
+  run -0 calls
+  assert_line --index 0 --regexp '^claude -p --output-format json '
+  assert_equal "$(cat "$HOME/claude-pwd")" "$(cd "$HOME/notes" && pwd -P)
+$(cd "$HOME/notes" && pwd -P)"
 }
 
-@test "claude-spawn's session ends once it's archived elsewhere" {
+@test "claude-spawn, when claude fails, opens nothing in the desktop app" {
   spawn_home
-  run -0 claude-spawn creasty/site
-  touch "$HOME/archive"
-  await_none
+  touch "$HOME/fail"
+  run -1 --separate-stderr claude-spawn creasty/site
+  refute_output
+  assert_equal "$stderr" "claude-spawn: claude failed in $SITE: Not logged in"
+  assert_equal "$(calls | grep -c -- --desktop)" 0
 }
 
-@test "claude-spawn's session ends with claude, as on /exit" {
-  spawn_home
-  run -0 claude-spawn creasty/site
-  touch "$HOME/exit"
-  await_none
-  run -0 ls "$HOME/.local/state/claude-spawn"
-  refute_output
-}
-
-@test "claude-spawn, when Remote Control doesn't come up, shows what claude shows and leaves nothing running" {
-  spawn_home
-  touch "$HOME/no-rc"
-  CLAUDE_SPAWN_READY_TIMEOUT=1 run -1 --separate-stderr claude-spawn creasty/site
-  refute_output
-  assert_equal "${stderr_lines[0]}" "claude-spawn: site did not reach Remote Control within 1s; its last output:"
-  run -0 claude-spawn --list
-  refute_output
-  run -1 pgrep -f "fakes/claude --remote-control"
-}
-
-@test "claude-spawn, given a folder that isn't there, starts nothing" {
+@test "claude-spawn, given a folder that isn't there or no folder, starts nothing" {
   spawn_home
   run -1 --separate-stderr claude-spawn creasty/nothing
   assert_equal "$stderr" 'claude-spawn: no folder creasty/nothing'
+  run -2 --separate-stderr claude-spawn
+  assert_equal "$stderr" 'claude-spawn <owner/repo | path>'
   assert_equal "$(calls)" ''
 }
 

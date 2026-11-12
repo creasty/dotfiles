@@ -1,4 +1,5 @@
-# Agent skills, linked for Claude Code (~/.claude/skills) and Codex (~/.agents/skills).
+# Agent skills, linked for Claude Code (~/.claude/skills) and Codex (~/.agents/skills), and this repository's own
+# (skills/), linked straight into the checkout for Claude Code.
 # Each repository is pinned at the commit (`rev`) of the tag or branch its `ref` names, which Renovate moves: a release
 # for a repository that tags one of each change within weeks, its default branch for the others.
 # `git ls-remote <url> <ref>` prints the commit, a tag's on the line ending in ^{} when there is one.
@@ -79,10 +80,17 @@ let
   );
 in
 {
-  home-manager.users.${username}.home.file = lib.concatMapAttrs (name: folder: {
-    ".agents/skills/${name}".source = folder;
-    ".claude/skills/${name}".source = folder;
-  }) skills;
+  home-manager.users.${username} = {
+    home.file = lib.concatMapAttrs (name: folder: {
+      ".agents/skills/${name}".source = folder;
+      ".claude/skills/${name}".source = folder;
+    }) skills;
+
+    # This repository's own skills, each folder in skills/, for Claude Code: they use the desktop app's tools
+    dotfiles.link = lib.mapAttrs' (name: _: lib.nameValuePair ".claude/skills/${name}" "skills/${name}") (
+      lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../../skills)
+    );
+  };
 
   dotfiles.manifest.skills = skills;
 }

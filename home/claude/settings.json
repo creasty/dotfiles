@@ -15,6 +15,9 @@
     "sessionUrl": false
   },
   "permissions": {
+    "allow": [
+      "mcp__ccd_session_mgmt__set_remote_control"
+    ],
     "defaultMode": "auto"
   },
   "enabledPlugins": {
