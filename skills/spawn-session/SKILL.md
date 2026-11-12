@@ -20,5 +20,7 @@ description: For a user on Remote Control (the phone or claude.ai): start a sess
 The app's restarts, its updates included, turn Remote Control off for every session; those outside the folders the app serves drop off the phone.
 
 1. Find the session the user names with `mcp__ccd_session_mgmt__list_sessions`, by its title or folder.
-2. Turn its Remote Control on, as in step 3 above.
-3. Reply with its link.
+2. Wake it with SendMessage: Remote Control needs a running session, and a restart leaves it stopped. Send
+   "Reconnecting this session to the user's phone after the app restarted; no task. Reply in this session with one line, "Back on the phone.", and wait for the user here."
+3. Turn its Remote Control on, as in step 3 above.
+4. Reply with its link.
