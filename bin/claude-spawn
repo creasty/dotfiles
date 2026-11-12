@@ -40,7 +40,7 @@ if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
   name="spawn-$(openssl rand -hex 3)"
   worktree=(--worktree "$name")
 fi
-result="$("${fresh[@]}" claude -p "${worktree[@]}" --output-format json \
+result="$("${fresh[@]}" claude -p ${worktree[@]+"${worktree[@]}"} --output-format json \
   'This session was started for the user from another device. Reply only "Ready."; the next message has the task.')" ||
   { echo "claude-spawn: claude failed in $folder: $result" >&2; exit 1; }
 id="$(jq -er .session_id <<< "$result")"
