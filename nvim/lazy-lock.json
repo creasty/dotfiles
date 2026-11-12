@@ -10,7 +10,7 @@
   "nvim-autopairs": { "branch": "master", "commit": "3172f40c16563db871a58f20d205c710ad782311", "url": "https://github.com/windwp/nvim-autopairs.git" },
   "nvim-lint": { "branch": "master", "commit": "52107ce2076a27a285af781248e2c59bad817cd0", "url": "https://github.com/mfussenegger/nvim-lint.git" },
   "nvim-lspconfig": { "branch": "master", "commit": "4d363f93c3581b9212a24f7a830d7590b3f050af", "tag": "v2.12.0", "url": "https://github.com/neovim/nvim-lspconfig.git" },
-  "nvim-treesitter": { "branch": "main", "commit": "915f2bd3d4e2a33704bfc476b5137e9befa82f3d", "url": "https://github.com/nvim-treesitter/nvim-treesitter.git" },
+  "nvim-treesitter": { "branch": "main", "commit": "60c0f468de3e636fa660a419d537e8033aca4e39", "url": "https://github.com/nvim-treesitter/nvim-treesitter.git" },
   "nvim-treesitter-context": { "branch": "master", "commit": "8decd73460d26ef0a0befb745d022dd1fc2c38b8", "url": "https://github.com/nvim-treesitter/nvim-treesitter-context.git" },
   "nvim-ts-autotag": { "branch": "main", "commit": "d7220b55e16ed3c04e88086256def5d282429493", "url": "https://github.com/windwp/nvim-ts-autotag.git" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2", "url": "https://github.com/folke/snacks.nvim.git" },
