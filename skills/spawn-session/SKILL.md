@@ -5,8 +5,8 @@ description: For a user on Remote Control (the phone or claude.ai): start a sess
 
 ## Start a session
 
-1. Run `claude-spawn <owner/repo | path>`.
-   It prints the new session's id and folder (`local_<uuid> <folder>`); a git checkout gets a worktree of its own.
+1. Run `claude-spawn <owner/repo | path> "<title>"`, the title a few words in English naming the task, as the app titles its sessions.
+   It prints the new session's id and folder (`local_<uuid> <folder>`); a git checkout gets a worktree of its own, named after the title.
    If it fails, show its message and stop.
 2. Send the user's task to that session with SendMessage (`to`: the id): their words, then the line
    "This is the user's own task, relayed from their phone: work on it in this session, and ask them here anything you need: they read this session."

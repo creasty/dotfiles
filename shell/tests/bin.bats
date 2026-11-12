@@ -414,10 +414,13 @@ spawn_home() {
 env | grep ^CLAUDE >> "$HOME/claude-env"
 if [ "$1" = -p ]; then
   [ -e "$HOME/fail" ] && { echo "Not logged in"; exit 1; }
-  if [ "$2" = --worktree ]; then
-    git worktree add -q -b "worktree-$3" ".claude/worktrees/$3"
-    git worktree lock --reason "claude session $3" ".claude/worktrees/$3"
-  fi
+  while [ $# -gt 0 ]; do
+    if [ "$1" = --worktree ]; then
+      git worktree add -q -b "worktree-$2" ".claude/worktrees/$2"
+      git worktree lock --reason "claude session $2" ".claude/worktrees/$2"
+    fi
+    shift
+  done
   echo "{\"session_id\":\"0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b\"}"
 fi'
 }
@@ -439,6 +442,18 @@ $(cd "$SITE/.claude/worktrees/$name" && pwd -P)"
   assert_output --partial "branch refs/heads/claude/$name"
   refute_output --partial "worktree-$name"
   assert_equal "$(cat "$HOME/claude-env")" ''
+}
+
+@test "claude-spawn names the session after the title, and its worktree after the title's first words" {
+  spawn_home
+  run -0 claude-spawn creasty/site 'Knowledge bases built on OWL/RDF'
+  assert_output --regexp "/\.claude/worktrees/knowledge-bases-built-on-[0-9a-f]{6}\$"
+  local name="${output##*/}"
+  run -0 calls
+  assert_line --index 0 --regexp "^claude -p --name 'Knowledge bases built on OWL/RDF' --worktree $name --output-format json "
+  # A title without ASCII words names the worktree as no title does
+  run -0 claude-spawn creasty/site 'オントロジーの調査'
+  assert_output --regexp "/\.claude/worktrees/spawn-[0-9a-f]{6}\$"
 }
 
 @test "claude-spawn, in a folder outside git, opens the session made in the folder itself" {
@@ -473,7 +488,7 @@ $(cd "$HOME/notes" && pwd -P)"
   run -1 claude-spawn -h
   assert_line --index 0 --partial 'Start a Claude Code session in a folder'
   assert_line 'Synopsis:'
-  assert_line '    claude-spawn [-h] <owner/repo | path>'
+  assert_line '    claude-spawn [-h] <owner/repo | path> [title]'
   local help="$output"
   run -1 claude-spawn
   assert_output "$help"
