@@ -461,12 +461,22 @@ $(cd "$HOME/notes" && pwd -P)"
   assert_equal "$(calls | grep -c -- --desktop)" 0
 }
 
-@test "claude-spawn, given a folder that isn't there or no folder, starts nothing" {
+@test "claude-spawn, given a folder that isn't there, starts nothing" {
   spawn_home
   run -1 --separate-stderr claude-spawn creasty/nothing
   assert_equal "$stderr" 'claude-spawn: no folder creasty/nothing'
-  run -2 --separate-stderr claude-spawn
-  assert_equal "$stderr" 'claude-spawn <owner/repo | path>'
+  assert_equal "$(calls)" ''
+}
+
+@test "claude-spawn, given -h or no folder, shows its description and synopsis and starts nothing" {
+  spawn_home
+  run -1 claude-spawn -h
+  assert_line --index 0 --partial 'Start a Claude Code session in a folder'
+  assert_line 'Synopsis:'
+  assert_line '    claude-spawn [-h] <owner/repo | path>'
+  local help="$output"
+  run -1 claude-spawn
+  assert_output "$help"
   assert_equal "$(calls)" ''
 }
 

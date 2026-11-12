@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
-#
-# Start a Claude Code session in a folder and open it in the Claude desktop app as a session of its own,
-# without the app's window: in a new worktree when the folder is a git checkout. Prints the session's id and folder.
-#
-#   claude-spawn <owner/repo | path>
+#> Start a Claude Code session in a folder and open it in the Claude desktop app as a session of its own,
+#> without the app's window: in a new worktree when the folder is a git checkout. Prints the session's id and folder.
+#>
+#> Synopsis:
+#>     claude-spawn [-h] <owner/repo | path>
 
-set -eu
-set -o pipefail
+set -euo pipefail
 
-usage() {
-  sed -n '6s/^#   //p' "$0" >&2
-  exit 2
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
 }
 
 resolve() {
@@ -21,8 +20,8 @@ resolve() {
   esac
 }
 
-[ $# -eq 1 ] || usage
-case "$1" in -*) usage ;; esac
+[ $# -eq 1 ] || do_help
+case "$1" in -*) do_help ;; esac
 
 folder="$(resolve "$1" 2>/dev/null)" || { echo "claude-spawn: no folder $1" >&2; exit 1; }
 cd "$folder"
