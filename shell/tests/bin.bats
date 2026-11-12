@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 #
 # The commands in bin/ but git-*, run in the test's directory, with fakes of what they'd reach
-# outside it: Docker, Facebook, Finder and the browser, notifications, peco's picking and kill
+# outside it: Claude Code, Docker, Facebook, Finder and the browser, notifications, peco's picking and kill
 
 load helper
 
@@ -396,6 +396,108 @@ P-value:  1.00000 👎
   run -1 --separate-stderr p-value 30 50/200
   assert_equal "${stderr_lines[0]}" 'p-value N1/D1 N2/D2'
   refute_output
+}
+
+#  claude-spawn
+#-----------------------------------------------
+# A home with a checkout, whose login shell finds the fake claude first, as it would the real one. The fake logs its
+# call, its folder and the CLAUDE_* variables it got, shows Remote Control's footer, and then, as the tests have it:
+# shows the message of the session archived elsewhere (archive), exits (exit), or only waits.
+spawn_home() {
+  export HOME="$BATS_TEST_TMPDIR/home" SHELL="$LOGIN_ZSH"
+  mkdir -p "$HOME/go/src/github.com/creasty/site"
+  echo "path=($(q "$BATS_TEST_TMPDIR/fakes") \$path)" > "$HOME/.zshrc"
+  fake claude 'pwd > "$HOME/claude-pwd"
+env | grep ^CLAUDE > "$HOME/claude-env"
+trap "exit 0" TERM
+[ -e "$HOME/no-rc" ] || printf "Remote Control\n/rc\n"
+while :; do
+  if [ -e "$HOME/archive" ]; then
+    rm "$HOME/archive"
+    echo "this session was ended or archived from another device or app (code 4090)"
+  fi
+  [ -e "$HOME/exit" ] && exit 0
+  sleep 0.1
+done'
+}
+
+teardown() {
+  [ "$HOME" = "$BATS_TEST_TMPDIR/home" ] || return 0
+  claude-spawn --list | cut -f1 | xargs -n1 claude-spawn --stop > /dev/null || true
+}
+
+# Waits up to 5 s for no session to be listed
+await_none() {
+  for _ in $(seq 50); do
+    [ -z "$(claude-spawn --list)" ] && return
+    sleep 0.1
+  done
+  return 1
+}
+
+@test "claude-spawn starts claude with Remote Control in an owner/repo checkout, as a new terminal would" {
+  spawn_home
+  export CLAUDE_CODE_CHILD_SESSION=1
+  run -0 claude-spawn creasty/site 'fix the header'
+  assert_output "started site in $HOME/go/src/github.com/creasty/site"
+  assert_equal "$(calls)" "claude --remote-control site 'fix the header'"
+  assert_equal "$(cat "$HOME/claude-pwd")" "$(cd "$HOME/go/src/github.com/creasty/site" && pwd -P)"
+  assert_equal "$(cat "$HOME/claude-env")" ''
+}
+
+@test "claude-spawn names a second session in the same folder apart, and --stop ends each" {
+  spawn_home
+  run -0 claude-spawn creasty/site
+  run -0 claude-spawn "$HOME/go/src/github.com/creasty/site"
+  assert_output "started site-2 in $HOME/go/src/github.com/creasty/site"
+  run -0 claude-spawn --list
+  assert_output "site-2	$HOME/go/src/github.com/creasty/site
+site	$HOME/go/src/github.com/creasty/site"
+  local pids
+  pids="$(pgrep -f "fakes/claude --remote-control")"
+  run -0 claude-spawn --stop site
+  assert_output 'stopped site'
+  run -0 claude-spawn --stop site-2
+  run -0 claude-spawn --list
+  refute_output
+  # Nothing the sessions ran is left: claude, nor the input it was kept waiting on
+  run -1 ps -p "$(tr '\n' , <<< "$pids")"
+  run -0 ls "$HOME/.local/state/claude-spawn"
+  refute_output
+}
+
+@test "claude-spawn's session ends once it's archived elsewhere" {
+  spawn_home
+  run -0 claude-spawn creasty/site
+  touch "$HOME/archive"
+  await_none
+}
+
+@test "claude-spawn's session ends with claude, as on /exit" {
+  spawn_home
+  run -0 claude-spawn creasty/site
+  touch "$HOME/exit"
+  await_none
+  run -0 ls "$HOME/.local/state/claude-spawn"
+  refute_output
+}
+
+@test "claude-spawn, when Remote Control doesn't come up, shows what claude shows and leaves nothing running" {
+  spawn_home
+  touch "$HOME/no-rc"
+  CLAUDE_SPAWN_READY_TIMEOUT=1 run -1 --separate-stderr claude-spawn creasty/site
+  refute_output
+  assert_equal "${stderr_lines[0]}" "claude-spawn: site did not reach Remote Control within 1s; its last output:"
+  run -0 claude-spawn --list
+  refute_output
+  run -1 pgrep -f "fakes/claude --remote-control"
+}
+
+@test "claude-spawn, given a folder that isn't there, starts nothing" {
+  spawn_home
+  run -1 --separate-stderr claude-spawn creasty/nothing
+  assert_equal "$stderr" 'claude-spawn: no folder creasty/nothing'
+  assert_equal "$(calls)" ''
 }
 
 #  Files

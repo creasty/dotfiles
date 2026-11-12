@@ -1,0 +1,159 @@
+#!/usr/bin/env bash
+#
+# Start a Claude Code session with Remote Control in a folder, in a hidden terminal,
+# so it can be continued from the phone. The session runs until /exit, --stop, or it's archived or deleted.
+#
+#   claude-spawn <owner/repo | path> [prompt...]
+#   claude-spawn --list
+#   claude-spawn --stop <name>
+
+set -eu
+set -o pipefail
+
+SELF="$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/claude-spawn"
+READY_TIMEOUT="${CLAUDE_SPAWN_READY_TIMEOUT:-30}"
+
+usage() {
+  sed -n '6,8s/^#   //p' "$0" >&2
+  exit 2
+}
+
+# The session's group (its runner leads it, so the runner's pid is the group id),
+# or claude itself, which `script` runs in a group of its own.
+alive() {
+  kill -0 "-$(cat "$1/pid")" 2>/dev/null || { [ -f "$1/claude-pid" ] && kill -0 "$(cat "$1/claude-pid")" 2>/dev/null; }
+}
+
+list() {
+  local dir
+  mkdir -p "$STATE_DIR"
+  for dir in "$STATE_DIR"/*/; do
+    [ -f "$dir/pid" ] || continue
+    if alive "$dir"; then
+      printf '%s\t%s\n' "$(basename "$dir")" "$(cat "$dir/folder")"
+    else
+      rm -rf "$dir"
+    fi
+  done
+}
+
+stop() {
+  local dir="$STATE_DIR/$1"
+  [ -f "$dir/pid" ] || { echo "claude-spawn: no session named $1" >&2; exit 1; }
+  if alive "$dir"; then
+    kill -TERM "-$(cat "$dir/pid")" 2>/dev/null || true
+    for _ in $(seq 50); do alive "$dir" || break; sleep 0.1; done
+    if alive "$dir"; then
+      kill -TERM "$(cat "$dir/claude-pid")" 2>/dev/null || true
+      for _ in $(seq 50); do alive "$dir" || break; sleep 0.1; done
+    fi
+    if alive "$dir"; then echo "claude-spawn: $1 is still running" >&2; exit 1; fi
+  fi
+  rm -rf "$dir"
+  echo "stopped $1"
+}
+
+resolve() {
+  case "$1" in
+    /* | ~* | .*) (cd "${1/#\~/$HOME}" && pwd) ;;
+    */*) (cd "$HOME/go/src/github.com/$1" && pwd) ;;
+    *) (cd "$1" && pwd) ;;
+  esac
+}
+
+# Reads the session's terminal: keeps its output until Remote Control is up, then stops claude
+# on the message of the session archived or deleted elsewhere, which only disconnects Remote Control
+# and leaves claude running, unreachable.
+read -r -d '' WATCH <<'PERL' || true
+open(my $log, ">>", "$ARGV[0]/output") or die;
+select((select($log), $| = 1)[0]);
+my $seen = "";
+while (sysread(STDIN, my $buf, 4096)) {
+  print $log $buf if $log;
+  # Without escapes and spaces: the screen is drawn with cursor moves
+  $seen = substr($seen . ($buf =~ s/\e\[[0-9;?]*[A-Za-z]|\s//gr), -2000);
+  # The footer shows /rc once Remote Control is on; the banner only without a prompt
+  if ($log && $seen =~ m{remote-controlisactive|/rc\b}) {
+    close $log;
+    undef $log;
+    open(my $ready, ">", "$ARGV[0]/ready") and close $ready;
+  } elsif (!$log && $seen =~ /endedorarchivedfromanotherdevice|deletedfromanotherdevice/) {
+    open(my $pid, "<", "$ARGV[0]/claude-pid") and kill "TERM", 0 + <$pid>;
+    $seen = "";
+  }
+}
+PERL
+
+# Runs the session, detached from whatever started it, until claude exits.
+# `script` gives claude a terminal; `tail` keeps its input open without ever writing.
+# claude starts from an empty environment and a login shell, as in a new terminal window:
+# run from a Claude session, it would otherwise inherit that session's CLAUDE_CODE_* markers
+# (CLAUDE_CODE_CHILD_SESSION turns its transcript off) and the desktop app's settings.
+run() {
+  local dir="$1" name="$2" feeder term
+  shift 2
+  echo $$ > "$dir/pid"
+  exec 3< <(exec tail -f /dev/null)
+  feeder=$!
+  # shellcheck disable=SC2016 # expanded by the login shell
+  script -q /dev/null env -i HOME="$HOME" USER="$(id -un)" LOGNAME="$(id -un)" \
+    TERM=xterm-256color LANG="${LANG:-en_US.UTF-8}" TMPDIR="${TMPDIR:-/tmp}" \
+    "$SHELL" -lic 'exec claude --remote-control "$@"' "$SHELL" "$name" "$@" \
+    <&3 > >(perl -e "$WATCH" "$dir") &
+  term=$!
+  for _ in $(seq 50); do
+    pgrep -P "$term" -f "(^|/)claude --remote-control" > "$dir/claude-pid" && break
+    sleep 0.1
+  done
+  wait "$term" || true
+  kill "$feeder" 2>/dev/null || true
+  rm -rf "$dir"
+}
+
+spawn() {
+  local folder name base n dir
+  folder="$(resolve "$1" 2>/dev/null)" || { echo "claude-spawn: no folder $1" >&2; exit 1; }
+  shift
+
+  base="$(basename "$folder")"
+  name="$base"
+  n=1
+  while [ -n "$(list | awk -F'\t' -v n="$name" '$1 == n')" ]; do
+    n=$((n + 1))
+    name="$base-$n"
+  done
+
+  dir="$STATE_DIR/$name"
+  mkdir -p "$dir"
+  echo "$folder" > "$dir/folder"
+
+  (
+    cd "$folder"
+    nohup perl -MPOSIX -e 'POSIX::setsid() or die "setsid: $!"; exec @ARGV' \
+      "$SELF" --run "$dir" "$name" "$@" >> "$dir/output" 2>&1 < /dev/null &
+  )
+
+  for _ in $(seq $((READY_TIMEOUT * 10))); do
+    if [ -e "$dir/ready" ]; then
+      echo "started $name in $folder"
+      return
+    fi
+    sleep 0.1
+  done
+
+  echo "claude-spawn: $name did not reach Remote Control within ${READY_TIMEOUT}s; its last output:" >&2
+  perl -pe 's/\e\[[0-9;?]*[A-Za-z]//g; s/\e\][^\a]*\a//g' "$dir/output" 2>/dev/null | tr -s ' \r' | tail -c 600 >&2 || true
+  echo >&2
+  stop "$name" > /dev/null
+  exit 1
+}
+
+case "${1:-}" in
+  '' | -h | --help) usage ;;
+  --list) list ;;
+  --stop) [ $# -eq 2 ] || usage; stop "$2" ;;
+  --run) shift; run "$@" ;;
+  -*) usage ;;
+  *) spawn "$@" ;;
+esac
