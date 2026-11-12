@@ -22,8 +22,8 @@ let
     }
     {
       url = "https://github.com/coreyhaines31/marketingskills";
-      ref = "refs/tags/v2.14.2";
-      rev = "96798cf38736ecdba015a1d2b0521b0c8f8f41dd";
+      ref = "refs/tags/v2.14.12";
+      rev = "1f837447b20bb6f0e72d87b80ece1c221c362c7d";
       skills.copy-editing = "skills/copy-editing";
     }
     {
