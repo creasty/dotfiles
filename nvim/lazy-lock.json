@@ -4,7 +4,7 @@
   "conform.nvim": { "branch": "master", "commit": "016802de402556da54c36bd7359b441266b01cdd", "url": "https://github.com/stevearc/conform.nvim.git" },
   "diffview-plus.nvim": { "branch": "main", "commit": "2a2d89a07f5d5d3cef7f542b99c3e28050ca205c", "tag": "v0.39", "url": "https://github.com/dlyongemallo/diffview-plus.nvim.git" },
   "flatten.nvim": { "branch": "main", "commit": "d92ca41e9c330f45c1b854a80c89c8488a9d730c", "url": "https://github.com/willothy/flatten.nvim.git" },
-  "gitsigns.nvim": { "branch": "main", "commit": "ef707fb93301a9b856f36eae4c8f56f5b988a794", "url": "https://github.com/lewis6991/gitsigns.nvim.git" },
+  "gitsigns.nvim": { "branch": "main", "commit": "7c33a797a5c0923e346cbedebe37bdea8f7ea160", "url": "https://github.com/lewis6991/gitsigns.nvim.git" },
   "hop.nvim": { "branch": "master", "commit": "6e83486f351066e38c3ae9daad2a4f01dfb262ad", "url": "https://github.com/smoka7/hop.nvim.git" },
   "lazy.nvim": { "branch": "main", "commit": "85c7ff3711b730b4030d03144f6db6375044ae82", "tag": "v11.17.5", "url": "https://github.com/folke/lazy.nvim.git" },
   "nvim-autopairs": { "branch": "master", "commit": "3172f40c16563db871a58f20d205c710ad782311", "url": "https://github.com/windwp/nvim-autopairs.git" },
