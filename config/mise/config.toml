@@ -2,7 +2,7 @@
 [tools]
 bun = "1.4.4"
 java = "25" # Homebrew's openjdk, registered with `mise link` on every switch
-node = "26.13.0"
+node = "26.13.1"
 python = "3.15.2"
 ruby = "4.0.9"
 # Tools from npm and RubyGems, each installed apart from Node and Ruby, so that a project pinning another version
