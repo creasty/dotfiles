@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#> Start a Claude Code session in a folder and open it in the Claude desktop app as a session of its own,
+#> without the app's window: in a new worktree when the folder is a git checkout. Prints the session's id and folder.
+#> The title names the session, and its worktree after it.
+#>
+#> Synopsis:
+#>     claude-spawn [-h] <owner/repo | path> [title]
+
+set -euo pipefail
+
+do_help() {
+  sed -n -E '/^#>/s/^#>[ ]?//p' < "$0"
+  exit 1
+}
+
+resolve() {
+  case "$1" in
+    /* | ~* | .*) (cd "${1/#\~/$HOME}" && pwd) ;;
+    */*) (cd "$HOME/go/src/github.com/$1" && pwd) ;;
+    *) (cd "$1" && pwd) ;;
+  esac
+}
+
+[ $# -eq 1 ] || [ $# -eq 2 ] || do_help
+case "$1" in -*) do_help ;; esac
+title="${2:-}"
+
+folder="$(resolve "$1" 2>/dev/null)" || { echo "claude-spawn: no folder $1" >&2; exit 1; }
+cd "$folder"
+
+# claude runs in the login shell from an empty environment, as in a new terminal: run from a Claude session,
+# it would otherwise inherit that session's CLAUDE_CODE_* markers (CLAUDE_CODE_CHILD_SESSION turns its transcript
+# off) and the desktop app's settings
+login="${SHELL:-/bin/zsh}"
+# shellcheck disable=SC2016 # expanded by the login shell
+fresh=("$(command -v env)" -i HOME="$HOME" USER="$(id -un)" LOGNAME="$(id -un)" TERM=xterm-256color
+  LANG="${LANG:-en_US.UTF-8}" TMPDIR="${TMPDIR:-/tmp}" "$login" -lc '"$@"' "$login")
+
+# The desktop app opens a session that has a transcript, so a first turn makes one, and takes its name as the title
+args=()
+[ -n "$title" ] && args+=(--name "$title")
+if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  # As the app names its worktrees: words, then a suffix that keeps them apart
+  slug="$(tr '[:upper:]' '[:lower:]' <<< "$title" | LC_ALL=C sed -E 's/[^a-z0-9]+/-/g; s/^-+//' | cut -d- -f1-4 | sed -E 's/-+$//')"
+  name="${slug:-spawn}-$(openssl rand -hex 3)"
+  args+=(--worktree "$name")
+fi
+result="$("${fresh[@]}" claude -p ${args[@]+"${args[@]}"} --output-format json \
+  'This session was started for the user from another device. Reply only "Ready."; the next message has the task.')" ||
+  { echo "claude-spawn: claude failed in $folder: $result" >&2; exit 1; }
+id="$(jq -er .session_id <<< "$result")"
+
+# claude's worktree, made like the app's own: unlocked once claude has exited, on a branch under the app's prefix
+if [ -n "${name:-}" ]; then
+  cd "$(git rev-parse --show-toplevel)/.claude/worktrees/$name"
+  git worktree unlock . 2> /dev/null || true
+  git branch -m "worktree-$name" "claude/$name"
+fi
+
+# --desktop needs a terminal, which `script` gives it
+script -q /dev/null "${fresh[@]}" claude --desktop --resume "$id" < /dev/null > /dev/null 2>&1 ||
+  { echo "claude-spawn: the desktop app didn't open session $id" >&2; exit 1; }
+
+echo "local_$id $PWD"

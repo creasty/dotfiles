@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 #
 # The commands in bin/ but git-*, run in the test's directory, with fakes of what they'd reach
-# outside it: Docker, Facebook, Finder and the browser, notifications, peco's picking and kill
+# outside it: Claude Code, Docker, Facebook, Finder and the browser, notifications, peco's picking and kill
 
 load helper
 
@@ -396,6 +396,103 @@ P-value:  1.00000 👎
   run -1 --separate-stderr p-value 30 50/200
   assert_equal "${stderr_lines[0]}" 'p-value N1/D1 N2/D2'
   refute_output
+}
+
+#  claude-spawn
+#-----------------------------------------------
+# A home with the checkout creasty/site, whose login shell finds the fake claude first, as it would the real one.
+# The fake logs its calls, their folders and the CLAUDE_* variables they got. Its -p makes the worktree --worktree
+# names, locked as claude locks it, and answers with a session id, or fails (fail).
+spawn_home() {
+  export HOME="$BATS_TEST_TMPDIR/home" SHELL="$LOGIN_ZSH"
+  SITE="$HOME/go/src/github.com/creasty/site"
+  mkdir -p "$SITE"
+  git -C "$SITE" init -q
+  git -C "$SITE" -c user.name=t -c user.email=t@example.com commit -q --allow-empty -m init
+  echo "path=($(q "$BATS_TEST_TMPDIR/fakes") \$path)" > "$HOME/.zprofile"
+  fake claude 'pwd -P >> "$HOME/claude-pwd"
+env | grep ^CLAUDE >> "$HOME/claude-env"
+if [ "$1" = -p ]; then
+  [ -e "$HOME/fail" ] && { echo "Not logged in"; exit 1; }
+  while [ $# -gt 0 ]; do
+    if [ "$1" = --worktree ]; then
+      git worktree add -q -b "worktree-$2" ".claude/worktrees/$2"
+      git worktree lock --reason "claude session $2" ".claude/worktrees/$2"
+    fi
+    shift
+  done
+  echo "{\"session_id\":\"0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b\"}"
+fi'
+}
+
+@test "claude-spawn opens a session made in a new worktree of an owner/repo checkout in the desktop app, as a new terminal would" {
+  spawn_home
+  export CLAUDE_CODE_CHILD_SESSION=1
+  run -0 claude-spawn creasty/site
+  assert_output --regexp "^local_0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b $(cd "$SITE" && pwd -P)/\.claude/worktrees/spawn-[0-9a-f]{6}\$"
+  local name="${output##*/}"
+  run -0 calls
+  assert_line --index 0 --regexp "^claude -p --worktree $name --output-format json "
+  assert_line --index 1 'claude --desktop --resume 0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b'
+  # -p in the checkout; --desktop in the worktree, which is the app's own kind: unlocked, on a claude/ branch
+  assert_equal "$(cat "$HOME/claude-pwd")" "$(cd "$SITE" && pwd -P)
+$(cd "$SITE/.claude/worktrees/$name" && pwd -P)"
+  run -0 git -C "$SITE" worktree list --porcelain
+  refute_output --partial locked
+  assert_output --partial "branch refs/heads/claude/$name"
+  refute_output --partial "worktree-$name"
+  assert_equal "$(cat "$HOME/claude-env")" ''
+}
+
+@test "claude-spawn names the session after the title, and its worktree after the title's first words" {
+  spawn_home
+  run -0 claude-spawn creasty/site 'Knowledge bases built on OWL/RDF'
+  assert_output --regexp "/\.claude/worktrees/knowledge-bases-built-on-[0-9a-f]{6}\$"
+  local name="${output##*/}"
+  run -0 calls
+  assert_line --index 0 --regexp "^claude -p --name 'Knowledge bases built on OWL/RDF' --worktree $name --output-format json "
+  # A title without ASCII words names the worktree as no title does
+  run -0 claude-spawn creasty/site 'オントロジーの調査'
+  assert_output --regexp "/\.claude/worktrees/spawn-[0-9a-f]{6}\$"
+}
+
+@test "claude-spawn, in a folder outside git, opens the session made in the folder itself" {
+  spawn_home
+  mkdir "$HOME/notes"
+  run -0 claude-spawn "$HOME/notes"
+  assert_output "local_0b6f3a1e-4c2d-4e8f-9a1b-2c3d4e5f6a7b $HOME/notes"
+  run -0 calls
+  assert_line --index 0 --regexp '^claude -p --output-format json '
+  assert_equal "$(cat "$HOME/claude-pwd")" "$(cd "$HOME/notes" && pwd -P)
+$(cd "$HOME/notes" && pwd -P)"
+}
+
+@test "claude-spawn, when claude fails, opens nothing in the desktop app" {
+  spawn_home
+  touch "$HOME/fail"
+  run -1 --separate-stderr claude-spawn creasty/site
+  refute_output
+  assert_equal "$stderr" "claude-spawn: claude failed in $SITE: Not logged in"
+  assert_equal "$(calls | grep -c -- --desktop)" 0
+}
+
+@test "claude-spawn, given a folder that isn't there, starts nothing" {
+  spawn_home
+  run -1 --separate-stderr claude-spawn creasty/nothing
+  assert_equal "$stderr" 'claude-spawn: no folder creasty/nothing'
+  assert_equal "$(calls)" ''
+}
+
+@test "claude-spawn, given -h or no folder, shows its description and synopsis and starts nothing" {
+  spawn_home
+  run -1 claude-spawn -h
+  assert_line --index 0 --partial 'Start a Claude Code session in a folder'
+  assert_line 'Synopsis:'
+  assert_line '    claude-spawn [-h] <owner/repo | path> [title]'
+  local help="$output"
+  run -1 claude-spawn
+  assert_output "$help"
+  assert_equal "$(calls)" ''
 }
 
 #  Files
