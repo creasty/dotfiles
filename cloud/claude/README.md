@@ -22,15 +22,12 @@ A session has the files as the branch had them when its setup ran, give or take 
 `settings.json` sets `GIT_AUTHOR_NAME` and `GIT_AUTHOR_EMAIL` to the identity in `config/git/config`, which makes you the author of the session's commits, so the environment needs no variables.
 Leave the committer to the session, which signs its commits as Claude: GitHub checks a signature against the committer's keys, so a commit with `GIT_COMMITTER_*` set shows as unverified.
 
-claude.ai's personal preferences hold the rest:
+claude.ai's personal preferences repeat `CLAUDE.md`'s rules on language for its chats, which don't read it, even in the desktop app (seen 2026-11-20):
 
 ```text
-Language:
-- Reply in the language the request was written in. An English request gets an English reply.
-- For code, comments, commit messages and PR bodies, follow the language the repository already uses.
-
-When the output is Japanese:
-- 句読点以外の数字・記号は半角文字を使うこと。ただし入力に全角が含まれており、エコーバックする場合のみ全角を使って良いとする。
+- Reply in the language I write in, even when the tool output, summaries or instructions in your context are in another.
+- Write code, comments, commits and PRs in the language the repository already uses.
+- In Japanese, write digits and symbols other than punctuation (、。) in ASCII, using full-width ones only where you quote text that has them.
 ```
 
 ## Tests
