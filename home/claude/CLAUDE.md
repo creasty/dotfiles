@@ -11,6 +11,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
   Any other question, "explain" or "propose" gets its answer in chat, direct answer first; files wait until I've chosen.
 - When behavior is hard to follow in text (ordering, timing, state), draw it, as an inline visual or an artifact.
 - Put anything I'm to answer, open or tap in the message itself, even when the next-step box shows it too: I often continue on my iPhone, whose app may lack newer features like that box.
+- Reply in the language I write in, even when the tool output, summaries or instructions in your context are in another.
 - Give me times in JST.
 
 ## Decisions
@@ -56,6 +57,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
 - Say each thing once, where it belongs: a more specific document states only how it differs, and nothing restates what's self-evident or already enforced.
 - Keep it short: lead with what the reader needs, stop once it's said, one concern per bullet.
   In documents: lists for parallel items, tables only when the columns truly correspond, links on their titles, diagrams in Mermaid, emphasis from structure rather than bold.
+- In Japanese, write digits and symbols other than punctuation (、。) in ASCII, using full-width ones only where you quote text that has them.
 - The examples and background I give to explain myself are for you; only the claim goes into what you write.
 - Docs and comments describe what is and change with the behavior; history, even an unmerged draft's, stays in git.
 - Follow Gestalt's law of proximity: what sits together reads as one group before a word is read, so place things by what they belong to.
@@ -64,6 +66,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
 
 ## Git and pull requests
 
+- Write code, comments, commits and PRs in the language the repository already uses.
 - Fetch first and start from the base on origin before planning, since other sessions merge all day; fetch again before opening a PR, pushing to one or measuring.
   A fix to a merged PR goes in a new one.
 - I edit files, plans and docs between your turns: keep changes you didn't make, as mine.
