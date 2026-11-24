@@ -29,6 +29,7 @@ A repository's own CLAUDE.md adds what's particular to it, and wins where it dif
 - Take the answer from the thing itself, measured rather than reasoned about: run it, and read the implementation and its tests (a sibling repository's too), the deployed page, the published package, the pixels.
   A schema, a doc, a blog post, a name or what I remember is a lead to check.
   A finding an earlier session measured stands until you measure otherwise, except machine state (versions, paths, configs), which you check again.
+- Before a long exhaustive run (model checking, search, load), state the size you expect from what it must prove; watch its progress and stop to revisit that premise once it exceeds it, rather than waiting it out.
 - Report what you ran and what came back, and say up front what's untested, unread, left out or failed (a subagent's usage limit, a run that never happened); redo what failed.
   A gap stays a gap.
 - Read all of what I point you to, its subpages and subfolders included, in its original form.
