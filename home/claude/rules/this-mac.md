@@ -5,6 +5,7 @@
   Stop your servers when you're done unless I'm looking at them.
 - Never load it to make a race or a flaky test show up (CPU-hogging processes, parallel loops of a test): run such a load on CI, or in an isolated Docker container capped with `--cpus` and `--memory`.
 - I work in the desktop app, locally and in the cloud: push before handing work to a cloud session.
+- When start_session refuses because I'm on Remote Control, start the session with the spawn-session skill instead of sending me to the desktop app.
 - Sibling repositories are at `~/go/src/github.com/<owner>/<repo>`.
 
 ## Memory
