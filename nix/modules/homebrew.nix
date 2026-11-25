@@ -33,6 +33,7 @@ in
     # brew list --cask --full-name
     casks = [
       "adobe-creative-cloud" # https://creative.adobe.com/products/creative-cloud
+      "anthropics/tap/ant" # https://github.com/anthropics/anthropic-cli
       "appcleaner" # https://freemacsoft.net/appcleaner/
       "chatgpt" # https://chatgpt.com/
       "claude" # https://claude.com/download
