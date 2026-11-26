@@ -51,8 +51,8 @@ let
     }
     {
       url = "https://github.com/nanaism/yomiyasu";
-      ref = "refs/tags/v3.2.3";
-      rev = "c49d5f1bee91258e33e1febc3569c6c87be7669e";
+      ref = "refs/tags/v3.4.1";
+      rev = "3979c750b5e1fe9892bd47bb354f0fb51d534ff2";
       skills.yomiyasu = "skills/yomiyasu";
     }
   ];
