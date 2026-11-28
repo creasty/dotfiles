@@ -59,7 +59,7 @@ Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Frida
 | `.github/workflows/` | GitHub Actions, by commit SHA | The workflows themselves |
 
 A Neovim plugin or an agent skill whose repository tags a release of each change within weeks is pinned at a release's commit, the others at a commit of the branch they follow.
-Patch releases, minor ones from 1.0 on and `flake.lock`'s refresh merge themselves once CI passes.
+Patch releases, minor ones from 1.0 on, the Neovim plugins', agent skills' and zsh plugins' updates other than majors, and `flake.lock`'s refresh merge themselves once CI passes.
 After merging, run `./apply` again, and run `:Lazy restore` in Neovim to check out the new plugin commits.
 
 ## Project structure

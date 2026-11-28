@@ -101,6 +101,12 @@
     {
       "matchFileNames": ["nix/modules/shell.nix"],
       "groupName": "zsh plugins"
+    },
+    {
+      "description": "The updates other than majors of the pins whose tests run them (README.md's Updates): the Neovim plugins, the agent skills and the zsh plugins, at a release's commit or a branch's",
+      "matchFileNames": ["nvim/lazy-lock.json", "nix/modules/skills.nix", "nix/modules/shell.nix"],
+      "matchUpdateTypes": ["digest", "patch", "minor"],
+      "automerge": true
     }
   ]
 }
