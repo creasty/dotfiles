@@ -32,7 +32,51 @@ jobs:
             echo
           done
 
+  dry-run:
+    # A package the binary cache lacks for macOS builds on the Mac, which can run past its job's timeout.
+    # So when flake.lock moves, this fails on the packages a switch would build that it doesn't on master.
+    # Other changes skip it: a file they add is a derivation of a new name, which every switch builds.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # for master's commits
+
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+
+      - name: Compare the builds with master's
+        run: |
+          base=$(git merge-base HEAD origin/master)
+          if git diff --quiet "$base" HEAD -- flake.lock; then
+            echo "flake.lock is as on master ($base)"
+            exit 0
+          fi
+          mkdir "$RUNNER_TEMP/base"
+          git archive "$base" | tar -x -C "$RUNNER_TEMP/base"
+
+          # The names of the derivations a switch builds, those not in the binary cache
+          builds() {
+            if ! nix build --dry-run "$1#darwinConfigurations.$2.config.system.build.toplevel" 2> "$RUNNER_TEMP/nix.log"; then
+              cat "$RUNNER_TEMP/nix.log" >&2
+              return 1
+            fi
+            sed -n '/will be built:$/,/will be fetched/s|^ */nix/store/[0-9a-z]*-||p' "$RUNNER_TEMP/nix.log" | sort -u
+          }
+          for user in creasty runner; do
+            builds "path:$RUNNER_TEMP/base" "$user" > "$RUNNER_TEMP/base.txt"
+            builds . "$user" > "$RUNNER_TEMP/head.txt"
+            comm -13 "$RUNNER_TEMP/base.txt" "$RUNNER_TEMP/head.txt"
+          done | sort -u > "$RUNNER_TEMP/new.txt"
+
+          if [ -s "$RUNNER_TEMP/new.txt" ]; then
+            echo "::error::Not in the binary cache, unlike on master ($base):"
+            cat "$RUNNER_TEMP/new.txt"
+            exit 1
+          fi
+
   macos:
+    needs: [evaluate, dry-run] # not to spend its timeout on a configuration they fail
     # cf. https://github.com/actions/runner-images/tree/main/images/macos
     runs-on: macos-26
     timeout-minutes: 90
