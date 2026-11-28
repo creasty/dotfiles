@@ -59,7 +59,7 @@ jobs:
           sudo rm -rf '/Applications/Google Chrome.app'
 
       - name: Run
-        run: ./apply --show-trace
+        run: ./apply --show-trace --print-build-logs # a long build shows what it's doing
         env:
           DOTFILES_NOVERIFY: 1 # in the next step
 

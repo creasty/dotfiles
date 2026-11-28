@@ -27,7 +27,15 @@ in
     {
       home.packages = with pkgs; [
         gradle # Open-source build automation tool based on the Groovy and Kotlin DSL
-        pre-commit # Framework for managing multi-language pre-commit hooks
+        # Framework for managing multi-language pre-commit hooks.
+        # Without its tests, which need .NET: when the binary cache lacks .NET for macOS, building them builds .NET from
+        # source, past the apply workflow's timeout (dotnet-vmr 8.0.34, 2026-11-26). preCheck names .NET too, and
+        # identify, a dependency, propagates pytest's hook, which runs the tests even without doCheck.
+        (pre-commit.overridePythonAttrs {
+          doCheck = false;
+          dontUsePytestCheck = true;
+          preCheck = "";
+        })
         coursier # Launcher for Coursier (required by pre-commit)
       ];
 
