@@ -32,7 +32,56 @@ jobs:
             echo
           done
 
+  check-nix-cache:
+    # A package the binary cache lacks for macOS builds on the Mac, which can run past its job's timeout.
+    # So this fails on the packages a switch would build that it doesn't on master.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # for master's commits
+
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+
+      - name: Compare the builds with master's
+        shell: bash # with pipefail, which the default shell lacks: a failure inside a pipe would pass
+        run: |
+          base=$(git merge-base HEAD origin/master)
+          mkdir "$RUNNER_TEMP/base"
+          git archive "$base" | tar -x -C "$RUNNER_TEMP/base"
+
+          # The names of the derivations a switch builds, those not in the binary cache, but for those built only locally
+          # (allowSubstitutes = false), such as the configuration's files: a file added is one of a new name
+          builds() {
+            if ! nix build --dry-run "$1#darwinConfigurations.$2.config.system.build.toplevel" 2> "$RUNNER_TEMP/nix.log"; then
+              cat "$RUNNER_TEMP/nix.log" >&2
+              return 1
+            fi
+            # Every switch builds the configuration's files: without the line, nix's wording changed
+            if ! grep -q 'will be built:$' "$RUNNER_TEMP/nix.log"; then
+              echo "::error::No derivations to build in nix's output:" >&2
+              cat "$RUNNER_TEMP/nix.log" >&2
+              return 1
+            fi
+            sed -n '/will be built:$/,/will be fetched/s|^ *\(/nix/store/\)|\1|p' "$RUNNER_TEMP/nix.log" |
+              xargs nix derivation show | jq -r '.derivations // . | .[] | select(.env.allowSubstitutes != "") | .name' |
+              sort -u
+          }
+          for user in creasty runner; do
+            builds "path:$RUNNER_TEMP/base" "$user" > "$RUNNER_TEMP/base.txt"
+            builds . "$user" > "$RUNNER_TEMP/head.txt"
+            comm -13 "$RUNNER_TEMP/base.txt" "$RUNNER_TEMP/head.txt"
+          done | sort -u > "$RUNNER_TEMP/new.txt"
+
+          if [ -s "$RUNNER_TEMP/new.txt" ]; then
+            echo "::error::Not in the binary cache, unlike on master ($base):"
+            cat "$RUNNER_TEMP/new.txt"
+            exit 1
+          fi
+
   macos:
+    needs: check-nix-cache # not to spend its timeout on packages the cache lacks
     # cf. https://github.com/actions/runner-images/tree/main/images/macos
     runs-on: macos-26
     timeout-minutes: 90
@@ -59,7 +108,7 @@ jobs:
           sudo rm -rf '/Applications/Google Chrome.app'
 
       - name: Run
-        run: ./apply --show-trace
+        run: ./apply --show-trace --print-build-logs # a long build shows what it's doing
         env:
           DOTFILES_NOVERIFY: 1 # in the next step
 
