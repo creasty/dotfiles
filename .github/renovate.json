@@ -95,6 +95,12 @@
       "groupName": "Neovim plugins"
     },
     {
+      "description": "The Neovim plugins' updates other than majors, on which the nvim-e2e job runs Neovim's workflow tests (nvim/tests)",
+      "matchFileNames": ["nvim/lazy-lock.json"],
+      "matchUpdateTypes": ["digest", "patch", "minor"],
+      "automerge": true
+    },
+    {
       "matchFileNames": ["nix/modules/skills.nix"],
       "groupName": "agent skills"
     },
