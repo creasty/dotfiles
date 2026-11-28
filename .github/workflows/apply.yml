@@ -45,6 +45,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Compare the builds with master's
+        shell: bash # with pipefail, which the default shell lacks: a failure inside a pipe would pass
         run: |
           base=$(git merge-base HEAD origin/master)
           mkdir "$RUNNER_TEMP/base"
