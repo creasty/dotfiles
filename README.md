@@ -60,7 +60,6 @@ Versions are pinned, and [Renovate](./.github/renovate.json) bumps them on Frida
 
 A Neovim plugin or an agent skill whose repository tags a release of each change within weeks is pinned at a release's commit, the others at a commit of the branch they follow.
 Patch releases, minor ones from 1.0 on and `flake.lock`'s refresh merge themselves once CI passes.
-Copilot reviews the others, which [the `renovate` workflow](./.github/workflows/renovate.yml) merges once CI passes if Copilot recommends approval with no open issues and reviewed every file; otherwise they wait for a person.
 After merging, run `./apply` again, and run `:Lazy restore` in Neovim to check out the new plugin commits.
 
 ## Project structure
