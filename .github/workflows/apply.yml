@@ -34,8 +34,7 @@ jobs:
 
   check-nix-cache:
     # A package the binary cache lacks for macOS builds on the Mac, which can run past its job's timeout.
-    # So when flake.lock moves, this fails on the packages a switch would build that it doesn't on master.
-    # Other changes skip it: a file they add is a derivation of a new name, which every switch builds.
+    # So this fails on the packages a switch would build that it doesn't on master.
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -48,14 +47,11 @@ jobs:
       - name: Compare the builds with master's
         run: |
           base=$(git merge-base HEAD origin/master)
-          if git diff --quiet "$base" HEAD -- flake.lock; then
-            echo "flake.lock is as on master ($base)"
-            exit 0
-          fi
           mkdir "$RUNNER_TEMP/base"
           git archive "$base" | tar -x -C "$RUNNER_TEMP/base"
 
-          # The names of the derivations a switch builds, those not in the binary cache
+          # The names of the derivations a switch builds, those not in the binary cache, but for those built only locally
+          # (allowSubstitutes = false), such as the configuration's files: a file added is one of a new name
           builds() {
             if ! nix build --dry-run "$1#darwinConfigurations.$2.config.system.build.toplevel" 2> "$RUNNER_TEMP/nix.log"; then
               cat "$RUNNER_TEMP/nix.log" >&2
@@ -67,7 +63,9 @@ jobs:
               cat "$RUNNER_TEMP/nix.log" >&2
               return 1
             fi
-            sed -n '/will be built:$/,/will be fetched/s|^ */nix/store/[0-9a-z]*-||p' "$RUNNER_TEMP/nix.log" | sort -u
+            sed -n '/will be built:$/,/will be fetched/s|^ *\(/nix/store/\)|\1|p' "$RUNNER_TEMP/nix.log" |
+              xargs nix derivation show | jq -r '.derivations // . | .[] | select(.env.allowSubstitutes != "") | .name' |
+              sort -u
           }
           for user in creasty runner; do
             builds "path:$RUNNER_TEMP/base" "$user" > "$RUNNER_TEMP/base.txt"
